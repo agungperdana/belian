@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="UTF-8"/>
+<title>Users</title>
+</head>
+<body>
+	<div th:include="menu"></div>
+	<h1>Product Management</h1>
+	<div><a th:href="@{/products/preadd}">New Product</a></div>
+	<table style="border:none;width:100%;">
+    <thead>
+    <tr style="background-color:#090;">
+    	<td>Name</td>
+        <td>Internal Code</td>
+        <td>RFID Code</td>
+    	<td colspan="2">Action</td>
+    </tr>
+    </thead>
+    <tbody>
+	<tr th:each="product:${products}">
+    	<td th:text="${product.name}"/>
+        <td th:text="${product.code}"/>
+        <td th:text="${product.rfid}"/>
+        <td>
+        	<a th:href="@{'/products/preedit/'+${product.id}}">Edit</a>
+        	&nbsp;|&nbsp;
+        	<a th:href="@{'/products/delete/'+${product.id}}">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr style="background-color:#090;">
+    	<td colspan="4">&nbsp;</td>
+    </tr>
+    </tfoot>
+    </table>
+</body>
+</html>

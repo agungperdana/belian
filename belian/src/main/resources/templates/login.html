@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="UTF-8"/>
+<title>Welcome To Belian</title>
+</head>
+<body>
+	<form role="form" th:action="@{/login}" method="post">
+	<table border="">
+	<tr>
+		<td>Username :</td>
+		<td><input name="username"/></td>
+	</tr>
+	<tr>
+		<td>Password :</td>
+		<td><input type="password" name="password"/></td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center">
+			<button autofocus="autofocus" type="submit" formenctype="application/x-www-form-urlencoded" formmethod="post">Signin</button>
+		</td>
+	</tr>
+	</table>
+	</form>
+</body>
+</html>
