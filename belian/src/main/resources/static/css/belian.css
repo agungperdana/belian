@@ -1,0 +1,16 @@
+@charset "UTF-8";
+/* CSS Document */
+body{
+	margin:0;
+	padding:0;
+	top:0;
+	left:0;
+}
+
+.menu{
+	font-size:bold;
+	top:0;
+	left:0;
+	height:28px;
+	width:100%;
+}

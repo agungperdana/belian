@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="UTF-8"/>
+<title>Users</title>
+</head>
+<body>
+	<div th:include="menu"></div>
+	<h1>Currency Management</h1>
+	<div><a th:href="@{/currencys/preadd}">New Currency</a></div>
+	<table style="border:none;width:100%;">
+    <thead>
+    <tr style="background-color:#090;">
+    	<td>Code</td>
+        <td>Name</td>
+    	<td colspan="2">Action</td>
+    </tr>
+    </thead>
+    <tbody>
+	<tr th:each="currency:${currencys}">
+        <td th:text="${currency.code}"/>
+        <td th:text="${currency.name}"/>
+        <td>
+        	<a th:href="@{'/currencys/preedit/'+${currency.id}}">Edit</a>
+        	&nbsp;|&nbsp;
+        	<a th:href="@{'/currencys/delete/'+${currency.id}}">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr style="background-color:#090;">
+    	<td colspan="5">&nbsp;</td>
+    </tr>
+    </tfoot>
+    </table>
+</body>
+</html>
