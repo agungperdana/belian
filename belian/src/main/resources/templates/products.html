@@ -15,6 +15,9 @@
     	<td>Name</td>
         <td>Internal Code</td>
         <td>RFID Code</td>
+        <td>Type</td>
+        <td>Sell Price</td>
+        <td>Buy Price</td>
     	<td colspan="2">Action</td>
     </tr>
     </thead>
@@ -23,6 +26,9 @@
     	<td th:text="${product.name}"/>
         <td th:text="${product.code}"/>
         <td th:text="${product.rfid}"/>
+        <td th:text="${product.type}"/>
+        <td><th:block th:text="${product.sellingPrice.currency}"/>&nbsp;<th:block th:text="${product.sellingPrice.amount}"/></td>
+        <td><th:block th:text="${product.buyingPrice.currency}"/>&nbsp;<th:block th:text="${product.buyingPrice.amount}"/></td>
         <td>
         	<a th:href="@{'/products/preedit/'+${product.id}}">Edit</a>
         	&nbsp;|&nbsp;
@@ -32,7 +38,7 @@
     </tbody>
     <tfoot>
     <tr style="background-color:#090;">
-    	<td colspan="4">&nbsp;</td>
+    	<td colspan="7">&nbsp;</td>
     </tr>
     </tfoot>
     </table>

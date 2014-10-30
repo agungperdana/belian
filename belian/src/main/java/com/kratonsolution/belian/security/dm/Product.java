@@ -21,6 +21,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection="product")
 public class Product
 {
+	public enum Type {SERVICE,GOODS}
+	
 	@Id
 	private String id;
 	
@@ -33,10 +35,19 @@ public class Product
 	@Field("rfid")
 	private String rfid;
 	
+	@Field("type")
+	private Type type = Type.GOODS;
+	
+	private Money sellingPrice;
+	
+	private Money buyingPrice;
+	
 	public static Product newInstance()
 	{
 		Product product = new Product();
 		product.setId(UUID.randomUUID().toString());
+		product.setBuyingPrice(new Money());
+		product.setSellingPrice(new Money());
 		
 		return product;
 	}

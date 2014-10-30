@@ -22,6 +22,34 @@
 		<td><input type="text" th:field="${product.rfid}" name="rfid" size="50"/></td>
 	</tr>
 	<tr>
+		<td align="right">Type :</td>
+		<td>
+			<select th:field="*{type}" name="type">
+				<option th:each="type:${types}" th:value="${type}" th:text="${type}"/>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td align="right">Selling Price :</td>
+		<td>
+			<input type="text" th:field="${product.sellingPrice.amount}" name="sellingPrice.amount" size="50"/>
+			&nbsp;
+			<select th:field="*{sellingPrice.currency}" name="sellingPrice.currency">
+				<option th:each="currency:${currencys}" th:value="${currency.code}" th:text="${currency.name}"/>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td align="right">Buying Price :</td>
+		<td>
+			<input type="text" th:field="${product.buyingPrice.amount}" name="buyingPrice.amount" size="50"/>
+			&nbsp;
+			<select th:field="*{buyingPrice.currency}" name="buyingPrice.currency">
+				<option th:each="currency:${currencys}" th:value="${currency.code}" th:text="${currency.name}"/>
+			</select>
+		</td>
+	</tr>
+	<tr>
 		<td colspan="2">
 			<input type="hidden" th:field="${product.id}" th:value="${product.id}"/>
 			<button type="submit" style="width:50%;">Save</button>

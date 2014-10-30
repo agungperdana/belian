@@ -21,7 +21,7 @@
 		<td align="right">Type :</td>
 		<td>
 			<select th:field="*{type}" name="type">
-				<option th:each="type:${geographic.Type}" th:value="${type}" th:text="${type}"/>
+				<option th:each="type:${types}" th:value="${type}" th:text="${type}"/>
 			</select>
 		</td>
 	</tr>

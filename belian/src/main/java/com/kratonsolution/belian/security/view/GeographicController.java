@@ -34,6 +34,7 @@ public class GeographicController
 	public String preadd(Model model)
 	{
 		model.addAttribute("geographic",Geographic.newInstance());
+		model.addAttribute("types",Geographic.Type.values());
 		return "geographic-add";
 	}
 	
@@ -48,6 +49,7 @@ public class GeographicController
 	public String preedit(@PathVariable String id,Model model)
 	{
 		model.addAttribute("geographic",repository.findOne(id));
+		model.addAttribute("types",Geographic.Type.values());
 		return "geographic-edit";
 	}
 	
