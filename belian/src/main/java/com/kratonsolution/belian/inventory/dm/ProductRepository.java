@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.security.dm;
+package com.kratonsolution.belian.inventory.dm;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 

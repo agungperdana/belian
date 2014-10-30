@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.security.dm;
+package com.kratonsolution.belian.inventory.dm;
 
 import java.util.UUID;
 
@@ -11,6 +11,8 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import com.kratonsolution.belian.general.dm.Money;
 
 /**
  * @author agungdodiperdana

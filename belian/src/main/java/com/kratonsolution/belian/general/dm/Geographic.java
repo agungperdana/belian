@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.security.dm;
+package com.kratonsolution.belian.general.dm;
 
 import java.util.UUID;
 

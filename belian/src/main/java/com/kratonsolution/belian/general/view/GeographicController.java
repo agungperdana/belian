@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.security.view;
+package com.kratonsolution.belian.general.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,8 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.kratonsolution.belian.security.dm.Geographic;
-import com.kratonsolution.belian.security.dm.GeographicRepository;
+import com.kratonsolution.belian.general.dm.Geographic;
+import com.kratonsolution.belian.general.dm.GeographicRepository;
 
 /**
  * @author agungdodiperdana
