@@ -3,8 +3,6 @@
  */
 package com.kratonsolution.belian.security.dm;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
@@ -20,25 +18,23 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@Document(collection="role")
-public class Role
+@Document(collection="module")
+public class Module
 {
 	@Id
 	private String id;
-	
+
 	@Field("code")
 	private String code;
 	
 	@Field("name")
 	private String name;
 	
-	private List<AccessRole> accesses = new ArrayList<AccessRole>();
-	
-	public static Role newInstance()
+	public static Module newInstance()
 	{
-		Role role = new Role();
-		role.setId(UUID.randomUUID().toString());
+		Module module = new Module();
+		module.setId(UUID.randomUUID().toString());
 		
-		return role;
+		return module;
 	}
 }

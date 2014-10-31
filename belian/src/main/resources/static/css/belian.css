@@ -3,14 +3,16 @@
 body{
 	margin:0;
 	padding:0;
-	top:0;
-	left:0;
 }
 
 .menu{
-	font-size:bold;
-	top:0;
-	left:0;
 	height:28px;
 	width:100%;
+	background-image: url('../img/dark-brown.jpg');
+	background-repeat: repeat-y;
+}
+
+.menu a{
+	color: white;
+	font-size: large;
 }

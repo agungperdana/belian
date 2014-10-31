@@ -10,12 +10,59 @@
 	<table style="border: none;width: 100%">
 	<tbody>
 	<tr>
-		<td width="9%" align="right">Code :</td>
-		<td width="91%"><input type="text" th:field="${role.code}" name="code" size="50"/></td>
-	</tr>
-	<tr>
-		<td align="right">Name :</td>
-		<td><input type="text" th:field="${role.name}" name="name" size="50"/></td>
+		<td width="39%" valign="top">
+			<table border="0" width="100%">
+			<tr>
+				<td width="15%" align="right">Code :</td>
+				<td width="85%"><input type="text" th:field="${role.code}" name="code" size="50"/></td>
+			</tr>
+			<tr>
+				<td align="right">Name :</td>
+				<td><input type="text" th:field="${role.name}" name="name" size="50"/></td>
+			</tr>
+			</table>
+		</td>
+		<td width="61%" align="left">
+		<fieldset>
+			<legend>Access</legend>
+			<table border="0">
+			<thead>
+			<tr>
+				<th>Module</th>
+				<th>Create</th>
+				<th>Read</th>
+				<th>Update</th>
+				<th>Delete</th>
+				<th>Print</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr th:each="access,stat :*{accesses}">
+				<td align="right">
+					<th:block th:text="${access.moduleName}"/>
+					<input type="hidden" th:field="*{accesses[__${stat.index}__].id}" th:value="*{accesses[__${stat.index}__].id}"/>
+					<input type="hidden" th:field="*{accesses[__${stat.index}__].moduleName}" th:value="*{accesses[__${stat.index}__].moduleName}"/>
+				</td>
+				<td align="center">
+					<input type="checkbox" th:field="*{accesses[__${stat.index}__].canCreate}" value="true"/>
+				</td>
+				<td align="center">
+					<input type="checkbox" th:field="*{accesses[__${stat.index}__].canRead}" value="true"/>
+				</td>
+				<td align="center">
+					<input type="checkbox" th:field="*{accesses[__${stat.index}__].canUpdate}" value="true"/>
+				</td>
+				<td align="center">
+					<input type="checkbox" th:field="*{accesses[__${stat.index}__].canDelete}" value="true"/>
+				</td>
+				<td align="center">
+					<input type="checkbox" th:field="*{accesses[__${stat.index}__].canPrint}" value="true"/>
+				</td>
+			</tr>
+			</tbody>
+			</table>
+		</fieldset>
+		</td>
 	</tr>
 	<tr>
 		<td colspan="2">

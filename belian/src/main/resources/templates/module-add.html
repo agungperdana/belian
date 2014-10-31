@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+	<meta charset="UTF-8"/>
+</head>
+<body>
+	<div th:include="menu"></div>
+	<form th:action="@{/modules/add}" role="form" th:object="${module}">
+	<table style="border: none;width: 100%">
+	<tbody>
+	<tr>
+		<td align="right">Code :</td>
+		<td><input type="text" th:field="${module.code}" name="code" size="50"/></td>
+	</tr>
+	<tr>
+		<td width="9%" align="right">Name :</td>
+		<td width="91%"><input type="text" th:field="${module.name}" name="name" size="50"/></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<input type="hidden" th:field="${module.id}" th:value="${module.id}"/>
+			<button type="submit" style="width:50%;">Save</button>
+		</td>
+	</tr>
+	</tbody>
+	</table>
+	</form>
+</body>
+</html>
