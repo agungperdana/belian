@@ -12,7 +12,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import com.kratonsolution.belian.general.dm.Money;
+import com.kratonsolution.belian.accounting.dm.Money;
 
 /**
  * @author agungdodiperdana

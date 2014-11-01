@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.general.view;
+package com.kratonsolution.belian.accounting.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,8 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.kratonsolution.belian.general.dm.Currency;
-import com.kratonsolution.belian.general.dm.CurrencyRepository;
+import com.kratonsolution.belian.accounting.dm.Currency;
+import com.kratonsolution.belian.accounting.dm.CurrencyRepository;
 
 /**
  * @author agungdodiperdana
