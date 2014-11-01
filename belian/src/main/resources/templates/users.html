@@ -2,19 +2,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-<meta charset="UTF-8"/>
-<title>Users</title>
+	<meta charset="UTF-8"/>
+	<th:block th:include="static"/>
 </head>
 <body>
 	<div th:include="menu"></div>
 	<h1>User Management</h1>
 	<div><a th:href="@{/users/preadd}">New User</a></div>
-	<table style="border:none;width:100%;">
+	<table class="pure-table pure-table-bordered pure-table-striped">
     <thead>
-    <tr style="background-color:#090;">
-    	<td>Name</td>
-        <td>Email</td>
-        <td colspan="2">Action</td>
+    <tr>
+    	<th>Name</th>
+        <th>Email</th>
+        <th>&nbsp;</th>
     </tr>
     </thead>
     <tbody>
@@ -28,11 +28,6 @@
         </td>
     </tr>
     </tbody>
-    <tfoot>
-    <tr style="background-color:#090;">
-    	<td colspan="3">&nbsp;</td>
-    </tr>
-    </tfoot>
     </table>
 </body>
 </html>

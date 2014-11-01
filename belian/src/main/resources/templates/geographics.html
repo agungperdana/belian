@@ -2,20 +2,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-<meta charset="UTF-8"/>
-<title>Users</title>
+	<meta charset="UTF-8"/>
+	<title>Geographic</title>
+	<th:block th:include="static"/>
 </head>
 <body>
 	<div th:include="menu"></div>
 	<h1>Geographic Management</h1>
 	<div><a th:href="@{/geographics/preadd}">New Geographic</a></div>
-	<table style="border:none;width:100%;">
+	<table class="pure-table pure-table-bordered pure-table-striped">
     <thead>
-    <tr style="background-color:#090;">
-    	<td>Code</td>
-        <td>Name</td>
-        <td>Type</td>
-    	<td colspan="2">Action</td>
+    <tr>
+    	<th>Code</th>
+        <th>Name</th>
+        <th>Type</th>
+    	<th>&nbsp;</th>
     </tr>
     </thead>
     <tbody>
@@ -30,11 +31,6 @@
         </td>
     </tr>
     </tbody>
-    <tfoot>
-    <tr style="background-color:#090;">
-    	<td colspan="4">&nbsp;</td>
-    </tr>
-    </tfoot>
     </table>
 </body>
 </html>

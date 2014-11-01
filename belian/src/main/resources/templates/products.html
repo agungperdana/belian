@@ -2,23 +2,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-<meta charset="UTF-8"/>
-<title>Users</title>
+	<meta charset="UTF-8"/>
+	<title>Peoduct</title>
+	<th:block th:include="static"/>
 </head>
 <body>
 	<div th:include="menu"></div>
 	<h1>Product Management</h1>
 	<div><a th:href="@{/products/preadd}">New Product</a></div>
-	<table style="border:none;width:100%;">
+	<table class="pure-table pure-table-bordered pure-table-striped">
     <thead>
-    <tr style="background-color:#090;">
-    	<td>Name</td>
-        <td>Internal Code</td>
-        <td>RFID Code</td>
-        <td>Type</td>
-        <td>Sell Price</td>
-        <td>Buy Price</td>
-    	<td colspan="2">Action</td>
+    <tr>
+    	<th>Name</th>
+        <th>Internal Code</th>
+        <th>RFID Code</th>
+        <th>Type</th>
+        <th>Sell Price</th>
+        <th>Buy Price</th>
+    	<th>&nbsp;</th>
     </tr>
     </thead>
     <tbody>
@@ -36,11 +37,6 @@
         </td>
     </tr>
     </tbody>
-    <tfoot>
-    <tr style="background-color:#090;">
-    	<td colspan="7">&nbsp;</td>
-    </tr>
-    </tfoot>
     </table>
 </body>
 </html>
