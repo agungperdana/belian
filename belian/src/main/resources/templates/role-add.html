@@ -3,6 +3,8 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
 	<meta charset="UTF-8"/>
+	<title>Role Form</title>
+	<th:block th:include="static"/>
 </head>
 <body>
 	<div th:include="menu"></div>
@@ -41,6 +43,7 @@
 				<td align="right">
 					<th:block th:text="${access.moduleName}"/>
 					<input type="hidden" th:field="*{accesses[__${stat.index}__].id}" th:value="*{accesses[__${stat.index}__].id}"/>
+					<input type="hidden" th:field="*{accesses[__${stat.index}__].moduleId}" th:value="*{accesses[__${stat.index}__].moduleId}"/>
 					<input type="hidden" th:field="*{accesses[__${stat.index}__].moduleName}" th:value="*{accesses[__${stat.index}__].moduleName}"/>
 				</td>
 				<td align="center">

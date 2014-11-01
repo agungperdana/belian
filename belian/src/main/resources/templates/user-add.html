@@ -3,6 +3,8 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
 	<meta charset="UTF-8"/>
+	<title>User Form</title>
+	<th:block th:include="static"/>
 </head>
 <body>
 	<div th:include="menu"></div>
@@ -10,16 +12,34 @@
 	<table style="border: none;width: 100%">
 	<tbody>
 	<tr>
-		<td width="9%" align="right">Username :</td>
-		<td width="91%"><input type="text" th:field="${user.name}" name="name" size="50"/></td>
-	</tr>
-	<tr>
-		<td align="right">Email :</td>
-		<td><input type="text" th:field="${user.email}" name="email" size="50"/></td>
-	</tr>
-	<tr>
-		<td align="right">Password :</td>
-		<td><input type="password" th:field="${user.password}" name="password" size="50"/></td>
+		<td align="left" valign="top" width="50%">
+			<table style="width: 100%">
+			<tr>
+				<td width="15%" align="right">Username :</td>
+				<td width="85%"><input type="text" th:field="${user.name}" name="name" size="50"/></td>
+			</tr>
+			<tr>
+				<td align="right">Email :</td>
+				<td><input type="text" th:field="${user.email}" name="email" size="50"/></td>
+			</tr>
+			<tr>
+				<td align="right">Password :</td>
+				<td><input type="password" th:field="${user.password}" name="password" size="50"/></td>
+			</tr>
+			</table>
+		</td>
+		<td>
+			<fieldset>
+				<legend>Role</legend>
+				<th:block th:each="userRole,stat:*{roles}">
+					<input type="checkbox" th:field="*{roles[__${stat.index}__].enabled}" value="false"/><th:block th:text="${userRole.roleName}"/>
+					<input type="hidden" th:field="*{roles[__${stat.index}__].id}"/>
+					<input type="hidden" th:field="*{roles[__${stat.index}__].roleId}"/>
+					<input type="hidden" th:field="*{roles[__${stat.index}__].roleName}"/>
+					<br/>
+				</th:block>
+			</fieldset>
+		</td>
 	</tr>
 	<tr>
 		<td colspan="2">

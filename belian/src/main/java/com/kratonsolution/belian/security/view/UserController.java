@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.security.dm.UserRepository;
+import com.kratonsolution.belian.security.dm.service.UserService;
 
 /**
  * @author agungdodiperdana
@@ -22,6 +23,9 @@ public class UserController
 {
 	@Autowired
 	private UserRepository repository;
+	
+	@Autowired
+	private UserService service;
 		
 	@RequestMapping("/list")
 	public String list(Model model)
@@ -33,7 +37,7 @@ public class UserController
 	@RequestMapping("/preadd")
 	public String preadd(Model model)
 	{
-		model.addAttribute("user",User.newIntsance());
+		model.addAttribute("user",service.prepareAdd());
 		return "user-add";
 	}
 	
@@ -47,7 +51,7 @@ public class UserController
 	@RequestMapping("/preedit/{id}")
 	public String preedit(@PathVariable String id,Model model)
 	{
-		model.addAttribute("user",repository.findOne(id));
+		model.addAttribute("user",service.prepareEdit(id));
 		return "user-edit";
 	}
 	
