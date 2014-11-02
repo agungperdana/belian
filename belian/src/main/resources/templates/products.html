@@ -28,8 +28,14 @@
         <td th:text="${product.code}"/>
         <td th:text="${product.rfid}"/>
         <td th:text="${product.type}"/>
-        <td><th:block th:text="${product.sellingPrice.currency}"/>&nbsp;<th:block th:text="${product.sellingPrice.amount}"/></td>
-        <td><th:block th:text="${product.buyingPrice.currency}"/>&nbsp;<th:block th:text="${product.buyingPrice.amount}"/></td>
+        <td>
+        	<th:block th:text="${product.sellingPrice.currency}"/>&nbsp;
+        	<th:block th:text="${#numbers.formatDecimal(product.sellingPrice.amount, 0, 'COMMA', 2, 'POINT')}"/>
+        </td>
+        <td>
+        	<th:block th:text="${product.buyingPrice.currency}"/>&nbsp;
+        	<th:block th:text="${#numbers.formatDecimal(product.buyingPrice.amount,0,'COMMA',2,'POINT')}"/>
+        </td>
         <td>
         	<a th:href="@{'/products/preedit/'+${product.id}}">Edit</a>
         	&nbsp;|&nbsp;

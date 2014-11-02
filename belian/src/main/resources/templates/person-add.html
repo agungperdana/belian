@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Person Form</title>
+	<th:block th:include="static"/>
+</head>
+<body>
+	<div th:include="menu"></div>
+	<form th:action="@{/persons/add}" role="form" th:object="${person}">
+	<table style="border: none;width: 100%">
+	<tbody>
+	<tr>
+		<td width="9%" align="right">Name :</td>
+		<td width="91%"><input type="text" th:field="*{name}" name="name" size="50"/></td>
+	</tr>
+	<tr>
+		<td align="right">Birth Date :</td>
+		<td><input type="text" th:field="*{birthDate}" name="birthDate" size="50"/></td>
+	</tr>
+	<tr>
+		<td align="right">Gender :</td>
+		<td>
+			<select th:field="*{gender}" name="gender">
+				<option th:each="gender:${genders}" th:value="${gender}" th:text="${gender}"/>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td align="right">Marital Status :</td>
+		<td>
+			<select th:field="*{maritalStatus}" name="maritalStatus">
+				<option th:each="maritalStatus:${maritals}" th:value="${maritalStatus}" th:text="${maritalStatus}"/>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td align="right">Tax Code :</td>
+		<td><input type="text" th:field="*{taxCode}" name="taxCode" size="50"/></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<input type="hidden" th:field="${person.id}" th:value="${person.id}"/>
+			<button type="submit" style="width:50%;">Save</button>
+		</td>
+	</tr>
+	</tbody>
+	</table>
+	</form>
+</body>
+</html>

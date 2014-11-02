@@ -44,7 +44,7 @@ public class UserController
 	@RequestMapping("/add")
 	public String add(User user)
 	{
-		repository.save(user);
+		service.add(user);
 		return "redirect:/users/list";
 	}
 	

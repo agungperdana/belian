@@ -5,9 +5,11 @@ package com.kratonsolution.belian.security.dm.service;
 
 import java.util.UUID;
 
+import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.security.dm.Role;
 import com.kratonsolution.belian.security.dm.RoleRepository;
 import com.kratonsolution.belian.security.dm.User;
@@ -26,6 +28,8 @@ public class UserService
 	
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	private StrongPasswordEncryptor encryptor = new StrongPasswordEncryptor();
 	
 	public User prepareAdd()
 	{
@@ -74,5 +78,15 @@ public class UserService
 		}
 		
 		return user;
+	}
+
+	public void add(User user)
+	{
+		if(Strings.isNullOrEmpty(user.getId()))
+			user.setId(UUID.randomUUID().toString());
+		
+		user.setPassword(encryptor.encryptPassword(user.getPassword()));
+		
+		repository.save(user);
 	}
 }

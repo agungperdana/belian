@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Geographic</title>
+	<th:block th:include="static"/>
+</head>
+<body>
+	<div th:include="menu"></div>
+	<h1>Person Management</h1>
+	<div><a th:href="@{/persons/preadd}">New Person</a></div>
+	<table class="pure-table pure-table-bordered pure-table-striped">
+    <thead>
+    <tr>
+    	<th>Name</th>
+    	<th>Birth Date</th>
+        <th>Gender</th>
+        <th>Status</th>
+        <th>Tax</th>
+    	<th>&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+	<tr th:each="person:${persons}">
+    	<td th:text="${person.name}"/>
+        <td th:text="${person.birthDate}"/>
+        <td th:text="${person.gender}"/>
+        <td th:text="${person.maritalStatus}"/>
+        <td th:text="${person.taxCode}"/>
+        <td>
+        	<a th:href="@{'/persons/preedit/'+${person.id}}">Edit</a>
+        	&nbsp;|&nbsp;
+        	<a th:href="@{'/persons/delete/'+${person.id}}">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+    </table>
+</body>
+</html>
