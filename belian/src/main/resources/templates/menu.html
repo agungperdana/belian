@@ -1,6 +1,21 @@
 <div id="demo-horizontal-menu">
     <ul id="std-menu-items">
-		<li><a th:href="@{/home}">Home</a></li>
+		<li>
+			<a href="#">Belian</a>
+			<ul>
+				<li><a th:href="@{/home}">Home</a></li>
+				<li class="pure-menu-separator"></li>
+				<li><a th:href="@{/logout}">Logout</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#">General</a>
+			<ul>
+				<li><a th:href="@{/persons/list}">Person</a></li>
+				<li class="pure-menu-separator"></li>
+				<li><a th:href="@{/geographics/list}">Geographic</a></li>
+			</ul>
+		</li>
 		<li>
 			<a href="#">Security</a>
 			<ul>
@@ -9,14 +24,6 @@
 				<li><a th:href="@{/roles/list}">Role</a></li>
 				<li class="pure-menu-separator"></li>
 				<li><a th:href="@{/modules/list}">Module</a></li>
-				<li class="pure-menu-separator"></li>
-			</ul>
-		</li>
-		<li>
-			<a href="#">General</a>
-			<ul>
-				<li><a th:href="@{/persons/list}">Person</a></li>
-				<li><a th:href="@{/geographics/list}">Geographic</a></li>
 			</ul>
 		</li>
 		<li>
