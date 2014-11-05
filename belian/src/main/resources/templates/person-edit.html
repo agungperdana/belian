@@ -8,6 +8,7 @@
 	<script>
 		$(function() {
     		$( "#birthDate" ).datepicker({dateFormat:'dd-mm-yy'});
+    		$("#tabs").tabs();
     	});
 	</script>
 </head>
@@ -46,6 +47,40 @@
 			<button type="submit" class="pure-button pure-button-primary">Save</button>
 		</div>
 	</fieldset>
+	<div id="tabs">
+		<ul>
+			<li><a href="#contacts">Contact</a></li>
+			<li><a href="#addresses">Address</a></li>
+			<li><a href="#roles">Role</a></li>
+			<li><a href="#relations">Relationship</a></li>
+		</ul>
+		<div id="contacts">
+			<div><a th:href="@{'/personcontacts/preadd/'+*{id}}">New Contact</a></div>
+			<table class="pure-table pure-table-bordered pure-table-striped">
+    		<thead>
+    		<tr>
+    			<th>Contact</th>
+    			<th>Type</th>
+    			<th>&nbsp;</th>
+    		</tr>
+    		</thead>
+    		<tbody>
+			<tr th:each="contact:*{contacts}">
+    			<td th:text="${contact.description}"/>
+        		<td th:text="${contact.type}"/>
+        		<td>
+        			<a th:href="@{'/personcontacts/preedit/'+${id}+'/'+${contact.id}}">Edit</a>
+        			&nbsp;|&nbsp;
+        			<a th:href="@{'/persons/delete/'+${id}+'/'+${contact.id}}">Delete</a>
+        		</td>
+    		</tr>
+    		</tbody>
+    		</table>
+		</div>
+		<div id="addresses"></div>
+		<div id="roles"></div>
+		<div id="relations"></div>
+	</div>
 	</form>
 	</div>
 	<th:block th:include="footer"/>

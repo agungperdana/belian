@@ -57,7 +57,7 @@ public class PersonController
 	public String add(Person person)
 	{
 		repository.save(person);
-		return "redirect:/persons/list";
+		return "redirect:/persons/preedit/"+person.getId();
 	}
 	
 	@RequestMapping("/preedit/{id}")

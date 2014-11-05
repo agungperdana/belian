@@ -3,21 +3,26 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
 	<meta charset="UTF-8"/>
-	<title>Party Role Form</title>
+	<title>Person Form</title>
 	<th:block th:include="static"/>
 </head>
 <body>
 	<div th:include="menu"></div>
 	<div class="content ui-widget-content">
-	<form class="pure-form pure-form-aligned" th:action="@{/partyroles/add}" role="form" th:object="${partyrole}">
+	<h1 class="ui-widget-header">Person Contact Management</h1>
+	<form class="pure-form pure-form-aligned" th:action="@{'/personcontacts/add/'+${partyId}}" role="form" th:object="${contact}">
 	<fieldset>
-		<legend>Party Role > New</legend>
 		<div class="pure-control-group">
-			<label>Name</label>
-			<input type="text" th:field="${partyrole.name}" name="name" class="pure-input-1-3"/>
+			<label for="description">Contact :</label>
+			<input type="text" id="description" th:field="*{description}" name="description"/>
+		</div>
+		<div class="pure-control-group">
+			<label for="type">Type :</label>
+			<select id="type" th:field="*{type}" name="type">
+				<option th:each="type:${types}" th:value="${type}" th:text="${type}"/>
+			</select>
 		</div>
 		<div class="pure-controls">
-			<input type="hidden" th:field="${partyrole.id}" th:value="${partyrole.id}"/>
 			<button type="submit" class="pure-button pure-button-primary">Save</button>
 		</div>
 	</fieldset>

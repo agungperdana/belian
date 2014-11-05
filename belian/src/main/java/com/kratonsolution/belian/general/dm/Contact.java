@@ -27,4 +27,7 @@ public class Contact
 
 	@Field("type")
 	private Type type = Type.OFFICEPHONE;
+	
+	@Field("is_deleted")
+	private boolean deleted;
 }
