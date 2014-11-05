@@ -3,31 +3,29 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
 	<meta charset="UTF-8"/>
-	<title>Currency</title>
+	<title>Party Role</title>
 	<th:block th:include="static"/>
 </head>
 <body>
 	<div th:include="menu"></div>
 	<div class="content ui-widget-content">
-	<h1>Currency Management</h1>
-	<div><a th:href="@{/currencys/preadd}">New Currency</a></div>
+	<h1>Party Role Management</h1>
+	<div><a th:href="@{/partyroles/preadd}">New Party Role</a></div>
 
 	<table class="pure-table pure-table-bordered pure-table-striped">
     <thead>
     <tr>
-    	<th>Code</th>
         <th>Name</th>
     	<th>&nbsp;</th>
     </tr>
     </thead>
     <tbody>
-	<tr th:each="currency:${currencys}">
-        <td th:text="${currency.code}">tdx</td>
-        <td th:text="${currency.name}">tdx</td>
+	<tr th:each="partyrole:${partyroles}">
+        <td th:text="${partyrole.name}"/>
         <td>
-        	<a th:href="@{'/currencys/preedit/'+${currency.id}}">Edit</a>
+        	<a th:href="@{'/partyroles/preedit/'+${partyrole.id}}">Edit</a>
         	&nbsp;|&nbsp;
-        	<a th:href="@{'/currencys/delete/'+${currency.id}}">Delete</a>
+        	<a th:href="@{'/partyroles/delete/'+${partyrole.id}}">Delete</a>
         </td>
     </tr>
     </tbody>

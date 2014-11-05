@@ -8,6 +8,7 @@
 </head>
 <body>
 	<div th:include="menu"></div>
+	<div class="content ui-widget-content">
 	<form th:action="@{/currencys/edit}" role="form" th:object="${currency}">
 	<table style="border: none;width: 100%">
 	<tbody>
@@ -28,5 +29,7 @@
 	</tbody>
 	</table>
 	</form>
+	</div>
+	<th:block th:include="footer"/>
 </body>
 </html>

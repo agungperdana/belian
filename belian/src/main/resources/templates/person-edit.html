@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
 	<meta charset="UTF-8"/>
-	<title>Person Form</title>
+	<title>Person Edit</title>
 	<th:block th:include="static"/>
 	<script>
 		$(function() {
@@ -14,8 +14,8 @@
 <body>
 	<div th:include="menu"></div>
 	<div class="content ui-widget-content">
-	<h1 class="ui-widget-header">Person Management</h1>
-	<form class="pure-form pure-form-aligned" th:action="@{/persons/add}" role="form" th:object="${person}">
+	<h1>Person Management</h1>
+	<form class="pure-form pure-form-aligned" th:action="@{/persons/edit}" role="form" th:object="${person}">
 	<fieldset>
 		<div class="pure-control-group">
 			<label for="name">Name :</label>

@@ -11,7 +11,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
@@ -20,22 +19,25 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Getter
 @Setter
-@Document(collection="party")
 public class Party
 {
 	@Id
-	protected String id;
+	private String id;
 
 	@Field("name")
-	protected String name;
+	private String name;
 	
 	@Field("birth_date")
-	protected Date birthDate;
+	private Date birthDate;
 
 	@Field("tax_code")
-	protected String taxCode;
+	private String taxCode;
 	
-	protected List<Address> addresses = new ArrayList<Address>();
+	private List<Address> addresses = new ArrayList<Address>();
 	
-	protected List<Contact> contacts = new ArrayList<Contact>();
+	private List<Contact> contacts = new ArrayList<Contact>();
+	
+	private List<PartyRole> roles = new ArrayList<PartyRole>();
+	
+	private List<PartyRelationship> relationships = new ArrayList<PartyRelationship>();
 }

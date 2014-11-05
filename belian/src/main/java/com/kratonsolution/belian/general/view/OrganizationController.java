@@ -16,19 +16,19 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.dm.PersonRepository;
+import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.dm.OrganizationRepository;
 
 /**
  * @author agungdodiperdana
  *
  */
 @Controller
-@RequestMapping("/persons")
-public class PersonController
+@RequestMapping("/organizations")
+public class OrganizationController
 {	
 	@Autowired
-	private PersonRepository repository;
+	private OrganizationRepository repository;
 	
 	@InitBinder
 	public void binder(WebDataBinder binder)
@@ -40,46 +40,42 @@ public class PersonController
 	@RequestMapping("/list")
 	public String list(Model model)
 	{
-		model.addAttribute("persons",repository.findAll());		
-		return "persons";
+		model.addAttribute("organizations",repository.findAll());		
+		return "organizations";
 	}
 	
 	@RequestMapping("/preadd")
 	public String preadd(Model model)
 	{
-		model.addAttribute("person",Person.newInstance());
-		model.addAttribute("genders",Person.Gender.values());
-		model.addAttribute("maritals",Person.MaritalStatus.values());
-		return "person-add";
+		model.addAttribute("organization",Organization.newInstance());
+		return "organization-add";
 	}
 	
 	@RequestMapping("/add")
-	public String add(Person person)
+	public String add(Organization organization)
 	{
-		repository.save(person);
-		return "redirect:/persons/list";
+		repository.save(organization);
+		return "redirect:/organizations/list";
 	}
 	
 	@RequestMapping("/preedit/{id}")
 	public String preedit(@PathVariable String id,Model model)
 	{
-		model.addAttribute("person",repository.findOne(id));
-		model.addAttribute("genders",Person.Gender.values());
-		model.addAttribute("maritals",Person.MaritalStatus.values());
-		return "person-edit";
+		model.addAttribute("organization",repository.findOne(id));
+		return "organization-edit";
 	}
 	
 	@RequestMapping("/edit")
-	public String edit(Person person)
+	public String edit(Organization organization)
 	{
-		repository.save(person);
-		return "redirect:/persons/list";
+		repository.save(organization);
+		return "redirect:/organizations/list";
 	}
 	
 	@RequestMapping("/delete/{id}")
 	public String delete(@PathVariable String id)
 	{
 		repository.delete(id);
-		return "redirect:/persons/list";
+		return "redirect:/organizations/list";
 	}
 }

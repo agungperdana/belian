@@ -3,10 +3,11 @@
  */
 package com.kratonsolution.belian.general.dm;
 
+import java.util.UUID;
+
 import lombok.Getter;
 import lombok.Setter;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -18,6 +19,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection="organization")
 public class Organization extends Party
 {
-	@Id
-	private String id;
+	public static Organization newInstance()
+	{
+		Organization organization = new Organization();
+		organization.setId(UUID.randomUUID().toString());
+		return organization;
+	}
 }

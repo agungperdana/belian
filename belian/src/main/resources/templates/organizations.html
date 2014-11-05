@@ -9,30 +9,26 @@
 <body>
 	<div th:include="menu"></div>
 	<div class="content ui-widget-content">
-		<h1>Person Management</h1>
-		<div><a th:href="@{/persons/preadd}">New Person</a></div>
+		<h1>Organization Management</h1>
+		<div><a th:href="@{/organizations/preadd}">New Organization</a></div>
 		<table class="pure-table pure-table-bordered pure-table-striped">
     	<thead>
     	<tr>
     		<th>Name</th>
     		<th>Birth Date</th>
-        	<th>Gender</th>
-        	<th>Status</th>
         	<th>Tax</th>
     		<th>&nbsp;</th>
     	</tr>
     	</thead>
     	<tbody>
-		<tr th:each="person:${persons}">
-    		<td th:text="${person.name}"/>
-        	<td th:text="${#dates.format(person.birthDate,'dd-MM-yyyy')}"/>
-        	<td th:text="${person.gender}"/>
-        	<td th:text="${person.maritalStatus}"/>
-        	<td th:text="${person.taxCode}"/>
+		<tr th:each="organization:${organizations}">
+    		<td th:text="${organization.name}"/>
+        	<td th:text="${#dates.format(organization.birthDate,'dd-MM-yyyy')}"/>
+        	<td th:text="${organization.taxCode}"/>
         	<td>
-        		<a th:href="@{'/persons/preedit/'+${person.id}}">Edit</a>
+        		<a th:href="@{'/organizations/preedit/'+${organization.id}}">Edit</a>
         		&nbsp;|&nbsp;
-        		<a th:href="@{'/persons/delete/'+${person.id}}">Delete</a>
+        		<a th:href="@{'/organizations/delete/'+${organization.id}}">Delete</a>
         	</td>
     	</tr>
     	</tbody>

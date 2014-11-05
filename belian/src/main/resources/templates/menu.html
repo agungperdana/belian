@@ -1,4 +1,4 @@
-<div id="demo-horizontal-menu">
+<div id="demo-horizontal-menu" class="ui-widget-header">
     <ul id="std-menu-items">
 		<li>
 			<a href="#">Belian</a>
@@ -11,7 +11,13 @@
 		<li>
 			<a href="#">General</a>
 			<ul>
+				<li><a th:href="@{/partyroles/list}">Party Role</a></li>
+				<li class="pure-menu-separator"></li>
+				<li><a th:href="@{/partyrelationshiptypes/list}">Party Relationship Type</a></li>
+				<li class="pure-menu-separator"></li>
 				<li><a th:href="@{/persons/list}">Person</a></li>
+				<li class="pure-menu-separator"></li>
+				<li><a th:href="@{/organizations/list}">Organization</a></li>
 				<li class="pure-menu-separator"></li>
 				<li><a th:href="@{/geographics/list}">Geographic</a></li>
 			</ul>

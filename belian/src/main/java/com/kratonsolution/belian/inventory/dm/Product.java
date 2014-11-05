@@ -23,7 +23,7 @@ import com.kratonsolution.belian.accounting.dm.Money;
 @Document(collection="product")
 public class Product
 {
-	public enum Type {SERVICE,GOODS}
+	public enum Type {SERVICE,FINISHGOOD,RAWMATERIAL,SUBASEMBLY}
 	
 	@Id
 	private String id;
@@ -38,7 +38,7 @@ public class Product
 	private String rfid;
 	
 	@Field("type")
-	private Type type = Type.GOODS;
+	private Type type = Type.FINISHGOOD;
 	
 	private Money sellingPrice;
 	

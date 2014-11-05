@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Organization Edit</title>
+	<th:block th:include="static"/>
+	<script>
+		$(function() {
+    		$( "#birthDate" ).datepicker({dateFormat:'dd-mm-yy'});
+    	});
+	</script>
+</head>
+<body>
+	<div th:include="menu"></div>
+	<form th:action="@{/organizations/edit}" role="form" th:object="${organization}">
+	<table style="border: none;width: 100%">
+	<tbody>
+	<tr>
+		<td width="9%" align="right">Name :</td>
+		<td width="91%"><input type="text" th:field="*{name}" name="name"/></td>
+	</tr>
+	<tr>
+		<td align="right">Birth Date :</td>
+		<td><input id="birthDate" type="date" th:field="*{birthDate}" name="birthDate"/></td>
+	</tr>
+	<tr>
+		<td align="right">Tax Code :</td>
+		<td><input type="text" th:field="*{taxCode}" name="taxCode" size="50"/></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<input type="hidden" th:field="${organization.id}" th:value="${organization.id}"/>
+			<button type="submit" style="width:50%;">Save</button>
+		</td>
+	</tr>
+	</tbody>
+	</table>
+	</form>
+</body>
+</html>

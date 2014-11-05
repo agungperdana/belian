@@ -16,19 +16,19 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.dm.PersonRepository;
+import com.kratonsolution.belian.general.dm.PartyRole;
+import com.kratonsolution.belian.general.dm.PartyRoleRepository;
 
 /**
  * @author agungdodiperdana
  *
  */
 @Controller
-@RequestMapping("/persons")
-public class PersonController
+@RequestMapping("/partyroles")
+public class PartyRoleController
 {	
 	@Autowired
-	private PersonRepository repository;
+	private PartyRoleRepository repository;
 	
 	@InitBinder
 	public void binder(WebDataBinder binder)
@@ -40,46 +40,42 @@ public class PersonController
 	@RequestMapping("/list")
 	public String list(Model model)
 	{
-		model.addAttribute("persons",repository.findAll());		
-		return "persons";
+		model.addAttribute("partyroles",repository.findAll());		
+		return "partyroles";
 	}
 	
 	@RequestMapping("/preadd")
 	public String preadd(Model model)
 	{
-		model.addAttribute("person",Person.newInstance());
-		model.addAttribute("genders",Person.Gender.values());
-		model.addAttribute("maritals",Person.MaritalStatus.values());
-		return "person-add";
+		model.addAttribute("partyrole",PartyRole.newInstance());
+		return "partyrole-add";
 	}
 	
 	@RequestMapping("/add")
-	public String add(Person person)
+	public String add(PartyRole partyrole)
 	{
-		repository.save(person);
-		return "redirect:/persons/list";
+		repository.save(partyrole);
+		return "redirect:/partyroles/list";
 	}
 	
 	@RequestMapping("/preedit/{id}")
 	public String preedit(@PathVariable String id,Model model)
 	{
-		model.addAttribute("person",repository.findOne(id));
-		model.addAttribute("genders",Person.Gender.values());
-		model.addAttribute("maritals",Person.MaritalStatus.values());
-		return "person-edit";
+		model.addAttribute("partyrole",repository.findOne(id));
+		return "partyrole-edit";
 	}
 	
 	@RequestMapping("/edit")
-	public String edit(Person person)
+	public String edit(PartyRole partyrole)
 	{
-		repository.save(person);
-		return "redirect:/persons/list";
+		repository.save(partyrole);
+		return "redirect:/partyroles/list";
 	}
 	
 	@RequestMapping("/delete/{id}")
 	public String delete(@PathVariable String id)
 	{
 		repository.delete(id);
-		return "redirect:/persons/list";
+		return "redirect:/partyroles/list";
 	}
 }
