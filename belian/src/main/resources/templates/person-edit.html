@@ -65,13 +65,13 @@
     		</tr>
     		</thead>
     		<tbody>
-			<tr th:each="contact:*{contacts}">
+			<tr th:each="contact:*{contacts}" th:if="${not contact.deleted}">
     			<td th:text="${contact.description}"/>
         		<td th:text="${contact.type}"/>
         		<td>
         			<a th:href="@{'/personcontacts/preedit/'+${id}+'/'+${contact.id}}">Edit</a>
         			&nbsp;|&nbsp;
-        			<a th:href="@{'/persons/delete/'+${id}+'/'+${contact.id}}">Delete</a>
+        			<a th:href="@{'/personcontacts/delete/'+${id}+'/'+${contact.id}}">Delete</a>
         		</td>
     		</tr>
     		</tbody>

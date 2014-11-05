@@ -70,13 +70,13 @@ public class PersonContactController
 		return "personcontact-edit";
 	}
 	
-	@RequestMapping("/edit/{partyId}")
-	public String edit(@PathVariable String partyId,Contact contact)
+	@RequestMapping("/edit/{partyId}/{id}")
+	public String edit(@PathVariable String partyId, @PathVariable String id,Contact contact)
 	{
 		Person person = personRepository.findOne(partyId);
 		for(Contact cont:person.getContacts())
 		{
-			if(cont.getId().equals(contact.getId()))
+			if(cont.getId().equals(id))
 			{
 				cont.setType(contact.getType());
 				cont.setDescription(contact.getDescription());

@@ -10,7 +10,7 @@
 	<div th:include="menu"></div>
 	<div class="content ui-widget-content">
 	<h1>Person Contact Management</h1>
-	<form class="pure-form pure-form-aligned" th:action="@{'/personcontacts/add/'+${partyId}}" role="form" th:object="${contact}">
+	<form class="pure-form pure-form-aligned" th:action="@{'/personcontacts/edit/'+${partyId}+'/'+${contact.id}}" role="form" th:object="${contact}">
 	<fieldset>
 		<div class="pure-control-group">
 			<label for="description">Contact :</label>
