@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kratonsolution.belian.general.dm.Address;
+import com.kratonsolution.belian.general.dm.GeographicRepository;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.dm.PersonRepository;
 
@@ -26,12 +27,16 @@ public class PersonAddressController
 	@Autowired
 	private PersonRepository personRepository;
 	
+	@Autowired
+	private GeographicRepository geographic;
+	
 	@RequestMapping("/preadd/{partyId}")
 	public String preadd(@PathVariable String partyId,Model model)
 	{
 		model.addAttribute("personId",partyId);
 		model.addAttribute("address",new Address());
 		model.addAttribute("types",Address.Type.values());
+		model.addAttribute("geographics",geographic.findAll());
 		
 		return "personaddress-add";
 	}
@@ -55,13 +60,15 @@ public class PersonAddressController
 		Person person = personRepository.findOne(partyId);
 		if(person != null)
 		{
-			for(Address address:person.getAddresses())
+			for(Address db:person.getAddresses())
 			{
-				if(address.getId().equals(id))
+				if(db.getId().equals(id))
 				{
-					model.addAttribute("address",address);
+					model.addAttribute("address",db);
 					model.addAttribute("types",Address.Type.values());
 					model.addAttribute("partyId",partyId);
+					model.addAttribute("geographics",geographic.findAll());
+					
 					break;
 				}
 			}
@@ -74,12 +81,17 @@ public class PersonAddressController
 	public String edit(@PathVariable String partyId, @PathVariable String id,Address address)
 	{
 		Person person = personRepository.findOne(partyId);
-		for(Address cont:person.getAddresses())
+		for(Address db:person.getAddresses())
 		{
-			if(cont.getId().equals(id))
+			if(db.getId().equals(id))
 			{
-				cont.setType(address.getType());
-				cont.setDescription(address.getDescription());
+				db.setActive(address.isActive());
+				db.setCityName(address.getCityName());
+				db.setCountryName(address.getCountryName());
+				db.setDescription(address.getDescription());
+				db.setPostal(address.getPostal());
+				db.setType(address.getType());
+
 				break;
 			}
 		}
