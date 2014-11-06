@@ -77,7 +77,37 @@
     		</tbody>
     		</table>
 		</div>
-		<div id="addresses"></div>
+		<div id="addresses">
+			<div><a th:href="@{'/personaddress/preadd/'+*{id}}">New Address</a></div>
+			<table class="pure-table pure-table-bordered pure-table-striped">
+    		<thead>
+    		<tr>
+    			<th>Address</th>
+    			<th>City</th>
+    			<th>Country</th>
+    			<th>Postal</th>
+    			<th>Type</th>
+    			<th>Status</th>
+    			<th>&nbsp;</th>
+    		</tr>
+    		</thead>
+    		<tbody>
+			<tr th:each="address:*{addresses}" th:if="${not address.deleted}">
+    			<td th:text="${address.description}"/>
+    			<td th:text="${address.cityName}"/>
+    			<td th:text="${address.countryName}"/>
+    			<td th:text="${address.postal}"/>
+        		<td th:text="${address.type}"/>
+        		<td th:text="${address.active?'Active':'Inactive'}"/>
+        		<td>
+        			<a th:href="@{'/personaddress/preedit/'+${id}+'/'+${address.id}}">Edit</a>
+        			&nbsp;|&nbsp;
+        			<a th:href="@{'/personaddress/delete/'+${id}+'/'+${address.id}}">Delete</a>
+        		</td>
+    		</tr>
+    		</tbody>
+    		</table>
+		</div>
 		<div id="roles"></div>
 		<div id="relations"></div>
 	</div>

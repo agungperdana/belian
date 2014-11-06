@@ -39,5 +39,8 @@ public class Address
 	
 	@Field("type")
 	private Type type = Type.OFFICE;
+	
+	@Field("is_deleted")
+	private boolean deleted;
 
 }
