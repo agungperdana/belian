@@ -3,38 +3,30 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
 	<meta charset="UTF-8"/>
-	<title>Geographic Edit</title>
+	<title>Geographic Form</title>
 	<th:block th:include="static"/>
 </head>
 <body>
-	<div th:include="menu"></div>
-	<form th:action="@{/geographics/edit}" role="form" th:object="${geographic}">
-	<table style="border: none;width: 100%">
-	<tbody>
-	<tr>
-		<td width="9%" align="right">Code :</td>
-		<td width="91%"><input type="text" th:field="${geographic.code}" name="code" size="50"/></td>
-	</tr>
-	<tr>
-		<td align="right">Name :</td>
-		<td><input type="text" th:field="${geographic.name}" name="name" size="50"/></td>
-	</tr>
-	<tr>
-		<td align="right">Type :</td>
-		<td>
+	<th:block th:include="menu"/>
+	<form class="pure-form pure-form-aligned" th:action="@{/geographics/edit}" role="form" th:object="${geographic}">
+		<div class="pure-control-group">
+			<label for="code">Code :</label>
+			<input type="text" id="code" th:field="*{code}"/>
+		</div>
+		<div class="pure-control-group">
+			<label for="name">Name :</label>
+			<input type="text" id="name" th:field="*{name}"/>
+		</div>
+		<div class="pure-control-group">
+			<label for="type">Type :</label>
 			<select th:field="*{type}" name="type">
 				<option th:each="type:${types}" th:value="${type}" th:text="${type}"/>
 			</select>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2">
+		</div>
+		<div class="pure-controls">
 			<input type="hidden" th:field="${geographic.id}" th:value="${geographic.id}"/>
-			<button type="submit" style="width:50%;">Save</button>
-		</td>
-	</tr>
-	</tbody>
-	</table>
+			<button type="submit" class="pure-button pure-button-primary">Save</button>
+		</div>
 	</form>
 </body>
 </html>
