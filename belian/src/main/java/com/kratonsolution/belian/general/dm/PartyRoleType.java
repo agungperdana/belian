@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.general.dm;
 
-import java.util.Date;
 import java.util.UUID;
 
 import lombok.Getter;
@@ -20,20 +19,11 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Getter
 @Setter
-@Document(collection="party_role")
-public class PartyRole
+@Document(collection="party_role_type")
+public class PartyRoleType
 {
 	@Id
 	private String id;
-	
-	@Field("from")
-	private Date from;
-	
-	@Field("to")
-	private Date to;
-	
-	@Field("role_id")
-	private String roleId;
 	
 	@Field("name")
 	@Indexed
@@ -42,9 +32,9 @@ public class PartyRole
 	@Field("is_deleted")
 	private boolean deleted;
 	
-	public static PartyRole newInstance()
+	public static PartyRoleType newInstance()
 	{
-		PartyRole role = new PartyRole();
+		PartyRoleType role = new PartyRoleType();
 		role.setId(UUID.randomUUID().toString());
 		
 		return role;

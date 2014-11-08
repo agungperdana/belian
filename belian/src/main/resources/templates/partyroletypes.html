@@ -9,8 +9,8 @@
 <body>
 	<div th:include="menu"></div>
 	<div class="content ui-widget-content">
-	<h1>Party Role Management</h1>
-	<div><a th:href="@{/partyroles/preadd}">New Party Role</a></div>
+	<h1>Party Role Type Management</h1>
+	<div><a th:href="@{/partyroletypes/preadd}">New Party Role Type</a></div>
 
 	<table class="pure-table pure-table-bordered pure-table-striped">
     <thead>
@@ -20,12 +20,12 @@
     </tr>
     </thead>
     <tbody>
-	<tr th:each="partyrole:${partyroles}">
+	<tr th:each="partyrole:${partyroletypes}" th:if="${not partyrole.deleted}">
         <td th:text="${partyrole.name}"/>
         <td>
-        	<a th:href="@{'/partyroles/preedit/'+${partyrole.id}}">Edit</a>
+        	<a th:href="@{'/partyroletypes/preedit/'+${partyrole.id}}">Edit</a>
         	&nbsp;|&nbsp;
-        	<a th:href="@{'/partyroles/delete/'+${partyrole.id}}">Delete</a>
+        	<a th:href="@{'/partyroletypes/delete/'+${partyrole.id}}">Delete</a>
         </td>
     </tr>
     </tbody>

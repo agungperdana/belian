@@ -27,6 +27,9 @@ public class PartyRelationshipType
 	@Field("name")
 	private String name;
 	
+	@Field("is_deleted")
+	private boolean deleted = false;
+	
 	public static PartyRelationshipType newInstance()
 	{
 		PartyRelationshipType type = new PartyRelationshipType();

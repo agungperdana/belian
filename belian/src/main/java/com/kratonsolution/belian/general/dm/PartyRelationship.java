@@ -31,13 +31,11 @@ public class PartyRelationship
 	@Field("to_date")
 	private Date toDate;
 	
-	@Field("from_party_id")
-	@Indexed
-	private String fromPartyId;
+	@Field("relationship_type_id")
+	private String relationshipTypeId;
 	
-	@Field("from_party_name")
-	@Indexed
-	private String fromPartyName;
+	@Field("relationship_type_name")
+	private String relationshipTypeName;
 	
 	@Field("from_role_id")
 	@Indexed
@@ -53,9 +51,6 @@ public class PartyRelationship
 	@Field("to_party_name")
 	private String toPartyName;
 	
-	@Field("to_role_id")
-	private String toRoleId;
-	
-	@Field("to_role_name")
-	private String toRoleName;
+	@Field("is_deleted")
+	private boolean deleted;
 }

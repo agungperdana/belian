@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Person Role Form</title>
+	<th:block th:include="static"/>
+	<script>
+		$(function() {
+    		$( "#from" ).datepicker({dateFormat:'dd-mm-yy'});
+    		$( "#to" ).datepicker({dateFormat:'dd-mm-yy'});
+    	});
+	</script>
+</head>
+<body>
+	<div th:include="menu"></div>
+	<div class="content ui-widget-content">
+	<h2>Person Role Management</h2>
+	<form class="pure-form pure-form-aligned" th:action="@{'/personrole/add/'+${partyId}}" role="form" th:object="${role}">
+	<fieldset>
+		<div class="pure-control-group">
+			<label for="name">Name :</label>
+			<select id="name" th:fiield="*{name}" name="name" autofocus="autofocus">
+				<option th:each="type:${types}" th:if="${not type.deleted}" th:value="${type.name}" th:text="${type.name}"/>
+			</select>
+		</div>
+		<div class="pure-control-group">
+			<label for="from">From Date :</label>
+			<input type="date" id="from" th:field="*{from}"/>
+		</div>
+		<div class="pure-control-group">
+			<label for="to">To Date :</label>
+			<input type="date" id="to" th:field="*{to}"/>
+		</div>
+		<div class="pure-controls">
+			<button type="submit" class="pure-button pure-button-primary">Save</button>
+		</div>
+	</fieldset>
+	</form>
+	</div>
+	<th:block th:include="footer"/>
+</body>
+</html>

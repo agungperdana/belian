@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  * @author agungdodiperdana
  *
  */
-public interface PartyRoleRepository extends MongoRepository<PartyRole, String>
+public interface PartyRoleTypeRepository extends MongoRepository<PartyRoleType, String>
 {
-
+	public PartyRoleType findOneByName(String name);
 }

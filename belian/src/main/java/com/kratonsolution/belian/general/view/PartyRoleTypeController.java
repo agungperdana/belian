@@ -16,19 +16,19 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.kratonsolution.belian.general.dm.PartyRole;
-import com.kratonsolution.belian.general.dm.PartyRoleRepository;
+import com.kratonsolution.belian.general.dm.PartyRoleType;
+import com.kratonsolution.belian.general.dm.PartyRoleTypeRepository;
 
 /**
  * @author agungdodiperdana
  *
  */
 @Controller
-@RequestMapping("/partyroles")
-public class PartyRoleController
+@RequestMapping("/partyroletypes")
+public class PartyRoleTypeController
 {	
 	@Autowired
-	private PartyRoleRepository repository;
+	private PartyRoleTypeRepository repository;
 	
 	@InitBinder
 	public void binder(WebDataBinder binder)
@@ -40,42 +40,47 @@ public class PartyRoleController
 	@RequestMapping("/list")
 	public String list(Model model)
 	{
-		model.addAttribute("partyroles",repository.findAll());		
-		return "partyroles";
+		model.addAttribute("partyroletypes",repository.findAll());		
+		return "partyroletypes";
 	}
 	
 	@RequestMapping("/preadd")
 	public String preadd(Model model)
 	{
-		model.addAttribute("partyrole",PartyRole.newInstance());
-		return "partyrole-add";
+		model.addAttribute("partyrole",PartyRoleType.newInstance());
+		return "partyroletype-add";
 	}
 	
 	@RequestMapping("/add")
-	public String add(PartyRole partyrole)
+	public String add(PartyRoleType partyrole)
 	{
 		repository.save(partyrole);
-		return "redirect:/partyroles/list";
+		return "redirect:/partyroletypes/list";
 	}
 	
 	@RequestMapping("/preedit/{id}")
 	public String preedit(@PathVariable String id,Model model)
 	{
 		model.addAttribute("partyrole",repository.findOne(id));
-		return "partyrole-edit";
+		return "partyroletype-edit";
 	}
 	
 	@RequestMapping("/edit")
-	public String edit(PartyRole partyrole)
+	public String edit(PartyRoleType partyrole)
 	{
 		repository.save(partyrole);
-		return "redirect:/partyroles/list";
+		return "redirect:/partyroletypes/list";
 	}
 	
 	@RequestMapping("/delete/{id}")
 	public String delete(@PathVariable String id)
 	{
-		repository.delete(id);
-		return "redirect:/partyroles/list";
+		PartyRoleType type = repository.findOne(id);
+		if(type != null)
+			type.setDeleted(true);
+		
+		repository.save(type);
+		
+		return "redirect:/partyroletypes/list";
 	}
 }

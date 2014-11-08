@@ -108,8 +108,60 @@
     		</tbody>
     		</table>
 		</div>
-		<div id="roles"></div>
-		<div id="relations"></div>
+		<div id="roles">
+			<div><a th:href="@{'/personrole/preadd/'+*{id}}">New Role</a></div>
+			<table class="pure-table pure-table-bordered pure-table-striped">
+    		<thead>
+    		<tr>
+    			<th>From</th>
+    			<th>To</th>
+    			<th>Name</th>
+    			<th>&nbsp;</th>
+    		</tr>
+    		</thead>
+    		<tbody>
+			<tr th:each="role:*{roles}" th:if="${not role.deleted}">
+    			<td th:text="${#dates.format(role.from,'dd-MM-yyyy')}"/>
+    			<td th:text="${role.to != null?#dates.format(role.to,'dd-MM-yyyy'):''}"/>
+    			<td th:text="${role.name}"/>
+        		<td>
+        			<a th:href="@{'/personrole/preedit/'+${id}+'/'+${role.id}}">Edit</a>
+        			&nbsp;|&nbsp;
+        			<a th:href="@{'/personrole/delete/'+${id}+'/'+${role.id}}">Delete</a>
+        		</td>
+    		</tr>
+    		</tbody>
+    		</table>
+		</div>
+		<div id="relations">
+			<div><a th:href="@{'/personrelationships/preadd/'+*{id}}">New Role</a></div>
+			<table class="pure-table pure-table-bordered pure-table-striped">
+    		<thead>
+    		<tr>
+    			<th>Type</th>
+    			<th>From</th>
+    			<th>To</th>
+    			<th>Role</th>
+    			<th>To Party</th>
+    			<th>&nbsp;</th>
+    		</tr>
+    		</thead>
+    		<tbody>
+			<tr th:each="relationship:*{relationships}" th:if="${not relationship.deleted}">
+    			<td th:text="${relationship.relationshipTypeName}"/>			
+    			<td th:text="${#dates.format(relationship.fromDate,'dd-MM-yyyy')}"/>
+    			<td th:text="${relationship.toDate != null?#dates.format(relationship.toDate,'dd-MM-yyyy'):''}"/>
+    			<td th:text="${relationship.fromRoleName}"/>
+    			<td th:text="${relationship.toPartyName}"/>
+        		<td>
+        			<a th:href="@{'/personrelationships/preedit/'+${id}+'/'+${relationship.id}}">Edit</a>
+        			&nbsp;|&nbsp;
+        			<a th:href="@{'/personrelationships/delete/'+${id}+'/'+${relationship.id}}">Delete</a>
+        		</td>
+    		</tr>
+    		</tbody>
+    		</table>
+		</div>
 	</div>
 	</form>
 	</div>

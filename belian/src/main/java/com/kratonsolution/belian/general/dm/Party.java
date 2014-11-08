@@ -33,6 +33,9 @@ public class Party
 	@Field("tax_code")
 	private String taxCode;
 	
+	@Field("is_deleted")
+	private boolean deleted;
+	
 	private List<Address> addresses = new ArrayList<Address>();
 	
 	private List<Contact> contacts = new ArrayList<Contact>();
