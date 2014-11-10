@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Contact Form</title>
+	<th:block th:include="static"/>
+</head>
+<body>
+	<th:block th:include="menu"/>
+	<div class="content ui-widget-content">
+	<h1>Organization Contact Management</h1>
+	<form class="pure-form pure-form-aligned" th:action="@{'/organizationcontacts/add/'+${partyId}}" role="form" th:object="${contact}">
+	<fieldset>
+		<div class="pure-control-group">
+			<label for="description">Contact :</label>
+			<input type="text" id="description" th:field="*{description}" name="description"/>
+		</div>
+		<div class="pure-control-group">
+			<label for="type">Type :</label>
+			<select id="type" th:field="*{type}" name="type">
+				<option th:each="type:${types}" th:value="${type}" th:text="${type}"/>
+			</select>
+		</div>
+		<div class="pure-controls">
+			<button type="submit" autofocus="autofocus" class="pure-button pure-button-primary">Save</button>
+		</div>
+	</fieldset>
+	</form>
+	</div>
+	<th:block th:include="footer"/>
+</body>
+</html>

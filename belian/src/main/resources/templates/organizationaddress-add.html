@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Address Form</title>
+	<th:block th:include="static"/>
+</head>
+<body>
+	<div th:include="menu"></div>
+	<div class="content ui-widget-content">
+	<h1>Organization Address Management</h1>
+	<form class="pure-form pure-form-aligned" th:action="@{'/organizationaddress/add/'+${partyId}}" role="form" th:object="${address}">
+	<fieldset>
+		<div class="pure-control-group">
+			<label for="description">Address :</label>
+			<input type="text" id="description" th:field="*{description}" name="description"/>
+		</div>
+		<div class="pure-control-group">
+			<label for="city">City :</label>
+			<select id="city" th:field="*{cityName}" name="cityName">
+				<option th:each="city:${geographics}" th:if="${city.type.name() == 'CITY'}" th:value="${city.name}" th:text="${city.name}"/>
+			</select>
+		</div>
+		<div class="pure-control-group">
+			<label for="country">Country :</label>
+			<select id="country" th:field="*{countryName}" name="countryName">
+				<option th:each="country:${geographics}" th:if="${country.type.name() == 'COUNTRY'}" th:value="${country.name}" th:text="${country.name}"/>
+			</select>
+		</div>
+		<div class="pure-control-group">
+			<label for="postal">Postal :</label>
+			<input type="text" id="postal" th:field="*{postal}" name="postal"/>
+		</div>
+		<div class="pure-control-group">
+			<label for="type">Type :</label>
+			<select id="type" th:field="*{type}" name="type">
+				<option th:each="type:${types}" th:value="${type}" th:text="${type}"/>
+			</select>
+		</div>
+		<div class="pure-control-group">
+			<label for="status">Status :</label>
+			<input type="checkbox" id="status" th:field="*{active}" name="active" value="true"/> &nbsp;Active
+		</div>
+		<div class="pure-controls">
+			<button type="submit" class="pure-button pure-button-primary">Save</button>
+		</div>
+	</fieldset>
+	</form>
+	</div>
+	<th:block th:include="footer"/>
+</body>
+</html>
