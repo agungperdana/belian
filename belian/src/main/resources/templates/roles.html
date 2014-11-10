@@ -7,28 +7,30 @@
 	<th:block th:include="static"/>
 </head>
 <body>
-	<div th:include="menu"></div>
-	<h1>Role Management</h1>
-	<div><a th:href="@{/roles/preadd}">New Role</a></div>
-	<table class="pure-table pure-table-bordered pure-table-striped">
-    <thead>
-    <tr>
-    	<th>Code</th>
-        <th>Name</th>
-        <th>&nbsp;</th>
-    </tr>
-    </thead>
-    <tbody>
-	<tr th:each="role:${roles}">
-    	<td th:text="${role.code}"/>
-        <td th:text="${role.name}"/>
-        <td>
-        	<a th:href="@{'/roles/preedit/'+${role.id}}">Edit</a>
-        	&nbsp;|&nbsp;
-        	<a th:href="@{'/roles/delete/'+${role.id}}">Delete</a>
-        </td>
-    </tr>
-    </tbody>
-    </table>
+	<th:block th:include="menu"/>
+	<div class="content ui-widget-content">
+		<h2>Role Management</h2>
+		<div><a th:href="@{/roles/preadd}">New Role</a></div>
+		<table class="pure-table pure-table-bordered pure-table-striped">
+	    <thead>
+	    <tr>
+	    	<th>Code</th>
+	        <th>Name</th>
+	        <th>&nbsp;</th>
+	    </tr>
+	    </thead>
+	    <tbody>
+		<tr th:each="role:${roles}">
+	    	<td th:text="${role.code}"/>
+	        <td th:text="${role.name}"/>
+	        <td>
+	        	<a th:href="@{'/roles/preedit/'+${role.id}}">Edit</a>
+	        	&nbsp;|&nbsp;
+	        	<a th:href="@{'/roles/delete/'+${role.id}}">Delete</a>
+	        </td>
+	    </tr>
+	    </tbody>
+	    </table>
+    </div>
 </body>
 </html>

@@ -6,28 +6,31 @@
 	<th:block th:include="static"/>
 </head>
 <body>
-	<div th:include="menu"></div>
-	<h1>User Management</h1>
-	<div><a th:href="@{/users/preadd}">New User</a></div>
-	<table class="pure-table pure-table-bordered pure-table-striped">
-    <thead>
-    <tr>
-    	<th>Name</th>
-        <th>Email</th>
-        <th>&nbsp;</th>
-    </tr>
-    </thead>
-    <tbody>
-	<tr th:each="user:${users}">
-    	<td th:text="${user.name}"/>
-        <td th:text="${user.email}"/>
-        <td>
-        	<a th:href="@{'/users/preedit/'+${user.id}}">Edit</a>
-        	&nbsp;|&nbsp;
-        	<a th:href="@{'/users/delete/'+${user.id}}">Delete</a>
-        </td>
-    </tr>
-    </tbody>
-    </table>
+	<th:block th:include="menu"/>
+	<div class="content ui-widget-content">
+		<h2>User Management</h2>
+		<div><a th:href="@{/users/preadd}">New User</a></div>
+		<table class="pure-table pure-table-bordered pure-table-striped">
+	    <thead>
+	    <tr>
+	    	<th>Name</th>
+	        <th>Email</th>
+	        <th>&nbsp;</th>
+	    </tr>
+	    </thead>
+	    <tbody>
+		<tr th:each="user:${users}">
+	    	<td th:text="${user.name}"/>
+	        <td th:text="${user.email}"/>
+	        <td>
+	        	<a th:href="@{'/users/preedit/'+${user.id}}">Edit</a>
+	        	&nbsp;|&nbsp;
+	        	<a th:href="@{'/users/delete/'+${user.id}}">Delete</a>
+	        </td>
+	    </tr>
+	    </tbody>
+	    </table>
+    </div>
+    <th:block th:include="footer"/>
 </body>
 </html>

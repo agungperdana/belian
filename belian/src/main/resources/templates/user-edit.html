@@ -7,48 +7,51 @@
 	<th:block th:include="static"/>
 </head>
 <body>
-	<div th:include="menu"></div>
-	<form th:action="@{/users/edit}" role="form" th:object="${user}">
-	<table style="border: none;width: 100%">
-	<tbody>
-	<tr>
-		<td align="left" valign="top" width="50%">
-			<table style="width: 100%">
-			<tr>
-				<td width="15%" align="right">Username :</td>
-				<td width="85%"><input type="text" th:field="${user.name}" name="name" size="50"/></td>
-			</tr>
-			<tr>
-				<td align="right">Email :</td>
-				<td><input type="text" th:field="${user.email}" name="email" size="50"/></td>
-			</tr>
-			<tr>
-				<td align="right"></td>
-				<td><input type="checkbox" th:field="${user.enabled}"/>&nbsp;Active</td>
-			</tr>
-			</table>
-		</td>
-		<td>
-			<fieldset>
-				<legend>Role</legend>
-				<th:block th:each="userRole,stat:*{roles}">
-					<input type="checkbox" th:field="*{roles[__${stat.index}__].enabled}" value="false"/><th:block th:text="${userRole.roleName}"/>
-					<input type="hidden" th:field="*{roles[__${stat.index}__].id}"/>
-					<input type="hidden" th:field="*{roles[__${stat.index}__].roleId}"/>
-					<input type="hidden" th:field="*{roles[__${stat.index}__].roleName}"/>
-					<br/>
-				</th:block>
-			</fieldset>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<input type="hidden" th:field="${user.id}" th:value="${user.id}"/>
-			<button type="submit" style="width:50%;">Save</button>
-		</td>
-	</tr>
-	</tbody>
-	</table>
-	</form>
+	<th:block th:include="menu"/>
+	<div class="content ui-widget-content">
+		<form class="pure-form pure-form-aligned" th:action="@{/users/edit}" role="form" th:object="${user}">
+		<table style="border: none;width: 100%">
+		<tbody>
+		<tr>
+			<td align="left" valign="top" width="50%">
+				<table style="width: 100%">
+				<tr>
+					<td width="15%" align="right">Username :</td>
+					<td width="85%"><input type="text" th:field="${user.name}" name="name" size="50"/></td>
+				</tr>
+				<tr>
+					<td align="right">Email :</td>
+					<td><input type="text" th:field="${user.email}" name="email" size="50"/></td>
+				</tr>
+				<tr>
+					<td align="right"></td>
+					<td><input type="checkbox" th:field="${user.enabled}"/>&nbsp;Active</td>
+				</tr>
+				</table>
+			</td>
+			<td>
+				<fieldset>
+					<legend>Role</legend>
+					<th:block th:each="userRole,stat:*{roles}">
+						<input type="checkbox" th:field="*{roles[__${stat.index}__].enabled}" value="false"/><th:block th:text="${userRole.roleName}"/>
+						<input type="hidden" th:field="*{roles[__${stat.index}__].id}"/>
+						<input type="hidden" th:field="*{roles[__${stat.index}__].roleId}"/>
+						<input type="hidden" th:field="*{roles[__${stat.index}__].roleName}"/>
+						<br/>
+					</th:block>
+				</fieldset>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<input type="hidden" th:field="${user.id}" th:value="${user.id}"/>
+				<button type="submit" style="width:50%;">Save</button>
+			</td>
+		</tr>
+		</tbody>
+		</table>
+		</form>
+	</div>
+	<th:block th:include="footer"/>
 </body>
 </html>

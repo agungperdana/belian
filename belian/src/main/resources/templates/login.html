@@ -4,26 +4,23 @@
 <head>
 	<meta charset="UTF-8"/>
 	<title>Welcome To Belian</title>
+	<th:block th:include="static"/>
 </head>
 <body>
-	<div align="center">
-	<form role="form" th:action="@{/login}" method="post">
-	<table>
-	<tr>
-		<td>Email :</td>
-		<td><input name="username"/></td>
-	</tr>
-	<tr>
-		<td>Password :</td>
-		<td><input type="password" name="password"/></td>
-	</tr>
-	<tr>
-		<td colspan="2" align="center">
-			<button autofocus="autofocus" type="submit" formenctype="application/x-www-form-urlencoded" formmethod="post">Signin</button>
-		</td>
-	</tr>
-	</table>
-	</form>
+	<div id="loginContainer" style="width: 500px;margin: 0 auto;padding-top: 100px;">
+		<form class="pure-form pure-form-aligned" role="form" th:action="@{/login}" method="post">
+			<div class="pure-control-group">
+				<label for="code">Email :</label>
+				<input type="email" id="code" name="username"/>
+			</div>
+			<div class="pure-control-group">
+				<label for="name">Password :</label>
+				<input type="password" id="name" name="password"/>
+			</div>
+			<div class="pure-controls">
+				<button type="submit" class="pure-button pure-button-primary">Save</button>
+			</div>
+		</form>
 	</div>
 </body>
 </html>
