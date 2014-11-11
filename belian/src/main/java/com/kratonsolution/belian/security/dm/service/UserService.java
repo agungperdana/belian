@@ -53,6 +53,7 @@ public class UserService
 		User user = repository.findOne(id);
 		if(user != null)
 		{
+			user.setPassword(null);
 			for(Role role:roleRepository.findAll())
 			{
 				boolean exist = false;
@@ -82,11 +83,14 @@ public class UserService
 
 	public void add(User user)
 	{
-		if(Strings.isNullOrEmpty(user.getId()))
-			user.setId(UUID.randomUUID().toString());
-		
-		user.setPassword(encryptor.encryptPassword(user.getPassword()));
-		
-		repository.save(user);
+		if(!Strings.isNullOrEmpty(user.getPassword()))
+		{
+			if(Strings.isNullOrEmpty(user.getId()))
+				user.setId(UUID.randomUUID().toString());
+			
+			user.setPassword(encryptor.encryptPassword(user.getPassword()));
+			
+			repository.save(user);
+		}
 	}
 }

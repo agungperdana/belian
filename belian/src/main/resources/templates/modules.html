@@ -7,28 +7,31 @@
 	<th:block th:include="static"/>
 </head>
 <body>
-	<div th:include="menu"></div>
-	<h1>Module Management</h1>
-	<div><a th:href="@{/modules/preadd}">New Module</a></div>
-	<table class="pure-table pure-table-bordered pure-table-striped">
-    <thead>
-    <tr>
-    	<th>Code</th>
-        <th>Name</th>
-    	<th>&nbsp;</th>
-    </tr>
-    </thead>
-    <tbody>
-	<tr th:each="module:${modules}">
-        <td th:text="${module.code}"/>
-        <td th:text="${module.name}"/>
-        <td>
-        	<a th:href="@{'/modules/preedit/'+${module.id}}">Edit</a>
-        	&nbsp;|&nbsp;
-        	<a th:href="@{'/modules/delete/'+${module.id}}">Delete</a>
-        </td>
-    </tr>
-    </tbody>
-    </table>
+	<th:block th:include="menu"/>
+	<div class="content ui-content-widget">
+		<h2>Module Management</h2>
+		<div><a th:href="@{/modules/preadd}">New Module</a></div>
+		<table class="pure-table pure-table-bordered pure-table-striped">
+	    <thead>
+	    <tr>
+	    	<th>Code</th>
+	        <th>Name</th>
+	    	<th>&nbsp;</th>
+	    </tr>
+	    </thead>
+	    <tbody>
+		<tr th:each="module:${modules}">
+	        <td th:text="${module.code}"/>
+	        <td th:text="${module.name}"/>
+	        <td>
+	        	<a th:href="@{'/modules/preedit/'+${module.id}}">Edit</a>
+	        	&nbsp;|&nbsp;
+	        	<a th:href="@{'/modules/delete/'+${module.id}}">Delete</a>
+	        </td>
+	    </tr>
+	    </tbody>
+	    </table>
+    </div>
+    <th:block th:include="footer"/>
 </body>
 </html>

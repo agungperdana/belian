@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.security.core.GrantedAuthority;
@@ -37,6 +38,9 @@ public class User implements UserDetails
 	
 	@Field("password")
 	private String password;
+	
+	@Transient
+	private String rePassword;
 	
 	@Field("enabled")
 	private boolean enabled;

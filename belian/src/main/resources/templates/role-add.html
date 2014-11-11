@@ -25,34 +25,35 @@
 				<tr><th colspan="6">Module Access</th></tr>
 				<tr>
 					<th>Module</th>
-					<th>Create</th>
-					<th>Read</th>
-					<th>Update</th>
-					<th>Delete</th>
-					<th>Print</th>
+					<th align="center">Create</th>
+					<th align="center">Read</th>
+					<th align="center">Update</th>
+					<th align="center">Delete</th>
+					<th align="center">Print</th>
 				</tr>
 				</thead>
 				<tbody>
 				<tr th:each="access,stat :*{accesses}">
-					<td th:text="${access.moduleName}" align="right">
+					<td align="right">
+						<th:block th:text="${access.moduleName}"/>
 						<input type="hidden" th:field="*{accesses[__${stat.index}__].id}" th:value="*{accesses[__${stat.index}__].id}"/>
 						<input type="hidden" th:field="*{accesses[__${stat.index}__].moduleId}" th:value="*{accesses[__${stat.index}__].moduleId}"/>
 						<input type="hidden" th:field="*{accesses[__${stat.index}__].moduleName}" th:value="*{accesses[__${stat.index}__].moduleName}"/>
 					</td>
 					<td align="center">
-						<input type="checkbox" th:field="*{accesses[__${stat.index}__].canCreate}"/>
+						<input class="create" type="checkbox" th:field="*{accesses[__${stat.index}__].canCreate}"/>
 					</td>
 					<td align="center">
-						<input type="checkbox" th:field="*{accesses[__${stat.index}__].canRead}"/>
+						<input class="read" type="checkbox" th:field="*{accesses[__${stat.index}__].canRead}"/>
 					</td>
 					<td align="center">
-						<input type="checkbox" th:field="*{accesses[__${stat.index}__].canUpdate}"/>
+						<input class="update" type="checkbox" th:field="*{accesses[__${stat.index}__].canUpdate}"/>
 					</td>
 					<td align="center">
-						<input type="checkbox" th:field="*{accesses[__${stat.index}__].canDelete}"/>
+						<input class="delete" type="checkbox" th:field="*{accesses[__${stat.index}__].canDelete}"/>
 					</td>
 					<td align="center">
-						<input type="checkbox" th:field="*{accesses[__${stat.index}__].canPrint}"/>
+						<input class="print" type="checkbox" th:field="*{accesses[__${stat.index}__].canPrint}"/>
 					</td>
 				</tr>
 				</tbody>

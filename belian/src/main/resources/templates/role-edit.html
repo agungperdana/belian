@@ -34,7 +34,8 @@
 				</thead>
 				<tbody>
 				<tr th:each="access,stat :*{accesses}">
-					<td th:text="${access.moduleName}" align="right">
+					<td align="right">
+						<th:block th:text="${access.moduleName}"/>
 						<input type="hidden" th:field="*{accesses[__${stat.index}__].id}" th:value="*{accesses[__${stat.index}__].id}"/>
 						<input type="hidden" th:field="*{accesses[__${stat.index}__].moduleId}" th:value="*{accesses[__${stat.index}__].moduleId}"/>
 						<input type="hidden" th:field="*{accesses[__${stat.index}__].moduleName}" th:value="*{accesses[__${stat.index}__].moduleName}"/>

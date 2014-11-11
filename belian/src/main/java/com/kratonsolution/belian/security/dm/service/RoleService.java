@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.security.dm.AccessRole;
 import com.kratonsolution.belian.security.dm.Module;
 import com.kratonsolution.belian.security.dm.ModuleRepository;
@@ -45,31 +46,38 @@ public class RoleService
 	
 	public Role prepareEdit(String id)
 	{
-		Role role = roleRepository.findOne(id);
-		
-		for(Module module:moduleRepository.findAll())
+		if(!Strings.isNullOrEmpty(id))
 		{
-			boolean exist = false;
-			for(AccessRole access:role.getAccesses())
+			Role role = roleRepository.findOne(id);
+			if(role != null)
 			{
-				if(access.getModuleId().equals(module.getId()))
+				for(Module module:moduleRepository.findAll())
 				{
-					exist = true;
-					break;
+					boolean exist = false;
+					for(AccessRole access:role.getAccesses())
+					{						
+						if(access.getModuleId().equals(module.getId()))
+						{
+							exist = true;
+							break;
+						}
+					}
+					
+					if(!exist)
+					{
+						AccessRole access = new AccessRole();
+						access.setId(UUID.randomUUID().toString());
+						access.setModuleId(module.getId());
+						access.setModuleName(module.getName());
+						
+						role.getAccesses().add(access);
+					}
 				}
 			}
 			
-			if(!exist)
-			{
-				AccessRole access = new AccessRole();
-				access.setId(UUID.randomUUID().toString());
-				access.setModuleId(module.getId());
-				access.setModuleName(module.getName());
-				
-				role.getAccesses().add(access);
-			}
+			return role;
 		}
-		
-		return role;
+
+		return Role.newInstance();
 	}
 }

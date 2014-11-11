@@ -40,9 +40,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth)throws Exception
 	{
-		// Uncommend this for development only,its create static user/password for login into application
-//		auth.inMemoryAuthentication().withUser("user").password("password").roles("USERS");
-		auth.authenticationProvider(authProvider());
+//		 Uncommend this for development only,its create static user/password for login into application
+		auth.inMemoryAuthentication().withUser("user").password("password").roles("USERS");
+//		auth.authenticationProvider(authProvider());
 	}
 	
 	@Bean

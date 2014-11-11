@@ -7,42 +7,44 @@
 	<th:block th:include="static"/>
 </head>
 <body>
-	<div th:include="menu"></div>
-	<h1>Product Management</h1>
-	<div><a th:href="@{/products/preadd}">New Product</a></div>
-	<table class="pure-table pure-table-bordered pure-table-striped">
-    <thead>
-    <tr>
-    	<th>Name</th>
-        <th>Internal Code</th>
-        <th>RFID Code</th>
-        <th>Type</th>
-        <th>Sell Price</th>
-        <th>Buy Price</th>
-    	<th>&nbsp;</th>
-    </tr>
-    </thead>
-    <tbody>
-	<tr th:each="product:${products}">
-    	<td th:text="${product.name}"/>
-        <td th:text="${product.code}"/>
-        <td th:text="${product.rfid}"/>
-        <td th:text="${product.type}"/>
-        <td>
-        	<th:block th:text="${product.sellingPrice.currency}"/>&nbsp;
-        	<th:block th:text="${#numbers.formatDecimal(product.sellingPrice.amount, 0, 'COMMA', 2, 'POINT')}"/>
-        </td>
-        <td>
-        	<th:block th:text="${product.buyingPrice.currency}"/>&nbsp;
-        	<th:block th:text="${#numbers.formatDecimal(product.buyingPrice.amount,0,'COMMA',2,'POINT')}"/>
-        </td>
-        <td>
-        	<a th:href="@{'/products/preedit/'+${product.id}}">Edit</a>
-        	&nbsp;|&nbsp;
-        	<a th:href="@{'/products/delete/'+${product.id}}">Delete</a>
-        </td>
-    </tr>
-    </tbody>
-    </table>
+	<th:block th:include="menu"/>
+	<div class="content ui-widget-content">
+		<h2>Product Management</h2>
+		<div><a th:href="@{/products/preadd}">New Product</a></div>
+		<table class="pure-table pure-table-bordered pure-table-striped">
+	    <thead>
+	    <tr>
+	    	<th>Name</th>
+	        <th>Internal Code</th>
+	        <th>RFID Code</th>
+	        <th>Type</th>
+	        <th>Sell Price</th>
+	        <th>Buy Price</th>
+	    	<th>&nbsp;</th>
+	    </tr>
+	    </thead>
+	    <tbody>
+		<tr th:each="product:${products}">
+	    	<td th:text="${product.name}"/>
+	        <td th:text="${product.code}"/>
+	        <td th:text="${product.rfid}"/>
+	        <td th:text="${product.type}"/>
+	        <td>
+	        	<th:block th:text="${product.sellingPrice.currency}"/>&nbsp;
+	        	<th:block th:text="${#numbers.formatDecimal(product.sellingPrice.amount, 0, 'COMMA', 2, 'POINT')}"/>
+	        </td>
+	        <td>
+	        	<th:block th:text="${product.buyingPrice.currency}"/>&nbsp;
+	        	<th:block th:text="${#numbers.formatDecimal(product.buyingPrice.amount,0,'COMMA',2,'POINT')}"/>
+	        </td>
+	        <td>
+	        	<a th:href="@{'/products/preedit/'+${product.id}}">Edit</a>
+	        	&nbsp;|&nbsp;
+	        	<a th:href="@{'/products/delete/'+${product.id}}">Delete</a>
+	        </td>
+	    </tr>
+	    </tbody>
+    	</table>
+    </div>
 </body>
 </html>

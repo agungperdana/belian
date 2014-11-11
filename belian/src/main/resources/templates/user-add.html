@@ -5,17 +5,6 @@
 	<meta charset="UTF-8"/>
 	<title>User Form</title>
 	<th:block th:include="static"/>
-	<script th:inline="javascript">
-		/*
-			<![CDATA[
-				function send()
-				{
-					if(document.getElementById("password").value == document.getElementById("password").value)
-						document.userForm.submit();
-				}
-			]]>
-		*/
-	</script>
 </head>
 <body>
 	<th:block th:include="menu"/>
@@ -37,7 +26,7 @@
 			</div>
 			<div class="pure-control-group">
 				<label for="re-password">Re-type Password</label>
-				<input id="re-password" type="password"/>
+				<input id="re-password" type="password" th:field="*{rePassword}"/>
 			</div>
 			<div class="pure-control-group">
 				<label for="status">Status</label>
@@ -62,7 +51,7 @@
 				</table>
 			</div>
 			<div class="pure-controls">
-				<button type="submit" class="pure-button pure-button-primary" onclick="send()">Save</button>
+				<button type="submit" class="pure-button pure-button-primary">Save</button>
 			</div>
 		</fieldset>
 		</form>

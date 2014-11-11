@@ -9,6 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.google.common.base.Strings;
+import com.kratonsolution.belian.security.dm.AccessRole;
+import com.kratonsolution.belian.security.dm.Module;
 import com.kratonsolution.belian.security.dm.ModuleRepository;
 import com.kratonsolution.belian.security.dm.Role;
 import com.kratonsolution.belian.security.dm.RoleRepository;
@@ -48,6 +51,15 @@ public class RoleController
 	@RequestMapping("/add")
 	public String add(Role role)
 	{
+		for(AccessRole access:role.getAccesses())
+		{
+			if(Strings.isNullOrEmpty(access.getModuleId()))
+			{
+				Module module = moduleRepository.findOneByName(access.getModuleName());
+				access.setModuleId(module.getId());
+			}
+		}
+		
 		repository.save(role);
 		return "redirect:/roles/list";
 	}

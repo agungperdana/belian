@@ -44,7 +44,11 @@ public class UserController
 	@RequestMapping("/add")
 	public String add(User user)
 	{
+		if(!user.getPassword().equals(user.getRePassword()))
+			throw new RuntimeException("Password not equals");
+		
 		service.add(user);
+		
 		return "redirect:/users/list";
 	}
 	
