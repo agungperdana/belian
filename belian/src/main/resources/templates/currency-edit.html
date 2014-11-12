@@ -3,31 +3,28 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
 	<meta charset="UTF-8"/>
-	<title>Currency Edit</title>
+	<title>Currency Form</title>
 	<th:block th:include="static"/>
 </head>
 <body>
-	<div th:include="menu"></div>
+	<th:block th:include="menu"/>
 	<div class="content ui-widget-content">
-	<form th:action="@{/currencys/edit}" role="form" th:object="${currency}">
-	<table style="border: none;width: 100%">
-	<tbody>
-	<tr>
-		<td align="right">Code :</td>
-		<td><input type="text" th:field="${currency.code}" name="code" size="50"/></td>
-	</tr>
-	<tr>
-		<td width="9%" align="right">Name :</td>
-		<td width="91%"><input type="text" th:field="${currency.name}" name="name" size="50"/></td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<input type="hidden" th:field="${currency.id}" th:value="${currency.id}"/>
-			<button type="submit" style="width:50%;">Save</button>
-		</td>
-	</tr>
-	</tbody>
-	</table>
+	<form class="pure-form pure-form-aligned" th:action="@{/currencys/edit}" role="form" th:object="${currency}">
+	<fieldset>
+		<legend>Currency > New</legend>
+		<div class="pure-control-group">
+			<label>Code</label>
+			<input type="text" th:field="*{code}"/>
+		</div>
+		<div class="pure-control-group">
+			<label>Name</label>
+			<input type="text" th:field="*{name}"/>
+		</div>
+		<div class="pure-controls">
+			<input type="hidden" th:field="*{id}"/>
+			<button type="submit" class="pure-button pure-button-primary">Save</button>
+		</div>
+	</fieldset>
 	</form>
 	</div>
 	<th:block th:include="footer"/>

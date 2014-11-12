@@ -42,6 +42,9 @@ public class User implements UserDetails
 	@Transient
 	private String rePassword;
 	
+	@Transient
+	private String oldPassword;
+	
 	@Field("enabled")
 	private boolean enabled;
 	
@@ -58,7 +61,14 @@ public class User implements UserDetails
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities()
 	{
-		return this.roles;
+		List<UserRole> temp = new ArrayList<UserRole>();
+		for(UserRole role:this.roles)
+		{
+			if(!role.isDeleted())
+				temp.add(role);
+		}
+		
+		return temp;
 	}
 
 	@Override

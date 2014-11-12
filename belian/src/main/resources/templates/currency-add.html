@@ -7,21 +7,21 @@
 	<th:block th:include="static"/>
 </head>
 <body>
-	<div th:include="menu"></div>
+	<th:block th:include="menu"/>
 	<div class="content ui-widget-content">
 	<form class="pure-form pure-form-aligned" th:action="@{/currencys/add}" role="form" th:object="${currency}">
 	<fieldset>
 		<legend>Currency > New</legend>
 		<div class="pure-control-group">
 			<label>Code</label>
-			<input type="text" th:field="${currency.code}" name="code" class="pure-input-1-3"/>
+			<input type="text" th:field="*{code}"/>
 		</div>
 		<div class="pure-control-group">
 			<label>Name</label>
-			<input type="text" th:field="${currency.name}" name="name" class="pure-input-1-3"/>
+			<input type="text" th:field="*{name}"/>
 		</div>
 		<div class="pure-controls">
-			<input type="hidden" th:field="${currency.id}" th:value="${currency.id}"/>
+			<input type="hidden" th:field="*{id}"/>
 			<button type="submit" class="pure-button pure-button-primary">Save</button>
 		</div>
 	</fieldset>

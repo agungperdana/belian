@@ -10,7 +10,7 @@
 	<th:block th:include="menu"/>
 	<div class="content ui-widget-content">
 		<h2>User Management</h2>
-		<form id="userForm" class="pure-form pure-form-aligned" th:action="@{/users/edit}" role="form" th:object="${user}">
+		<form id="userForm" class="pure-form pure-form-aligned" th:action="@{/users/edit}" method="post" th:object="${user}">
 		<fieldset>
 			<div class="pure-control-group">
 				<label for="username">Username</label>
@@ -22,7 +22,7 @@
 			</div>
 			<div class="pure-control-group">
 				<label for="password">Password</label>
-				<a th:href="@{'/users/changePassword'+${user.id}}">Change Password</a>
+				<a th:href="@{'/users/preparechangepassword/'+${user.id}}">Change Password</a>
 			</div>
 			<div class="pure-control-group">
 				<label for="status">Status</label>
@@ -34,7 +34,7 @@
 				<tr><th colspan="2">User Role</th></tr>
 				</thead>
 				<tbody>
-				<tr th:each="role,stat:*{roles}">
+				<tr th:each="role,stat:*{roles}" th:if="${not role.deleted}">
 					<td th:text="${role.roleName}"/>
 					<td>
 						<input type="checkbox" th:field="*{roles[__${stat.index}__].enabled}" value="false"/>&nbsp;Active
@@ -47,6 +47,7 @@
 				</table>
 			</div>
 			<div class="pure-controls">
+				<input type="hidden" th:field="*{id}"/>
 				<button type="submit" class="pure-button pure-button-primary">Save</button>
 			</div>
 		</fieldset>

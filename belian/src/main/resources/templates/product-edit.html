@@ -9,28 +9,28 @@
 <body>
 	<th:block th:include="menu"/>
 	<div class="content ui-widget-content">
-		<form th:action="@{/products/edit}" role="form" th:object="${product}">
+		<form class="pure-form pure-form-aligned" th:action="@{/products/edit}" role="form" th:object="${product}">
 		<fieldset>
 			<div class="pure-control-groups">
 				<label for="name">Name</label>
-				<input id="name" type="text" th:field="*{name}" name="name"/>
+				<input id="name" type="text" th:field="*{name}"/>
 			</div>
 			<div class="pure-control-groups">
 				<label for="code">Code</label>
-				<input id="code" type="text" th:field="code" name="code"/>
+				<input id="code" type="text" th:field="*{code}"/>
 			</div>
 			<div class="pure-control-groups">
 				<label for="rfid">Name</label>
-				<input id="rfid" type="text" th:field="rfid" name="rfid"/>
+				<input id="rfid" type="text" th:field="*{rfid}"/>
 			</div>
 			<div class="pure-control-groups">
 				<label for="type">Type</label>
-				<select id="type" th:field="*{type}" name="type">
+				<select id="type" th:field="*{type}">
 					<option th:each="type:${types}" th:value="${type}" th:text="${type}"/>
 				</select>
 			</div>
 			<div class="pure-controls">
-				<input type="hidden" th:field="${product.id}" th:value="${product.id}"/>
+				<input type="hidden" th:field="*{id}"/>
 				<button type="submit" class="pure-button pure-button-primary">Save</button>
 			</div>
 		</fieldset>

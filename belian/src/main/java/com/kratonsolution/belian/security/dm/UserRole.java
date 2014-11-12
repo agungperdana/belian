@@ -30,6 +30,9 @@ public class UserRole implements GrantedAuthority
 	@Field("enabled")
 	private boolean enabled;
 
+	@Field("is_deleted")
+	private boolean deleted;
+	
 	@Override
 	public String getAuthority()
 	{
