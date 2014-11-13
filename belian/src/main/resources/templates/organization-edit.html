@@ -5,11 +5,13 @@
 	<meta charset="UTF-8"/>
 	<title>Organization Edit</title>
 	<th:block th:include="static"/>
-	<script>
-		$(function() {
-    		$( "#birthDate" ).datepicker({dateFormat:'dd-mm-yy'});
-    		$("#tabs").tabs();
-    	});
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+			$(function() {
+	    		$( "#birthDate" ).datepicker({dateFormat:'dd-mm-yy'});
+	    		$("#tabs").tabs();
+	    	});
+    	/*]]>*/
 	</script>
 </head>
 <body>

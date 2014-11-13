@@ -3,11 +3,19 @@
  */
 package com.kratonsolution.belian.inventory.view;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.kratonsolution.belian.accounting.dm.CurrencyRepository;
 import com.kratonsolution.belian.inventory.dm.Product;
@@ -27,6 +35,13 @@ public class ProductController
 	@Autowired
 	private CurrencyRepository currency;
 	
+	@InitBinder
+	public void binder(WebDataBinder binder)
+	{
+		DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(format, true));
+	}
+	
 	@RequestMapping("/list")
 	public String list(Model model)
 	{
@@ -44,7 +59,7 @@ public class ProductController
 		return "product-add";
 	}
 	
-	@RequestMapping("/add")
+	@RequestMapping(value="/add",method=RequestMethod.POST)
 	public String add(Product product)
 	{
 		repository.save(product);
@@ -60,7 +75,7 @@ public class ProductController
 		return "product-edit";
 	}
 	
-	@RequestMapping("/edit")
+	@RequestMapping(value="/edit",method=RequestMethod.POST)
 	public String edit(Product product)
 	{
 		repository.save(product);

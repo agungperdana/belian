@@ -5,35 +5,164 @@
 	<meta charset="UTF-8"/>
 	<title>Product Form</title>
 	<th:block th:include="static"/>
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+			$(function() {
+	    		$( "#start" ).datepicker({dateFormat:'dd-mm-yy'});
+	    		$( "#end" ).datepicker({dateFormat:'dd-mm-yy'});
+	    		$("#tabs").tabs();
+	    	});
+    	/*]]>*/
+	</script>
 </head>
 <body>
 	<th:block th:include="menu"/>
 	<div class="content ui-widget-content">
-		<form class="pure-form pure-form-aligned" th:action="@{/products/edit}" role="form" th:object="${product}">
+		<form class="pure-form pure-form-aligned" th:action="@{/products/edit}" th:object="${product}" method="post">
 		<fieldset>
-			<div class="pure-control-groups">
+			<div class="pure-control-group">
 				<label for="name">Name</label>
 				<input id="name" type="text" th:field="*{name}"/>
 			</div>
-			<div class="pure-control-groups">
+			<div class="pure-control-group">
 				<label for="code">Code</label>
 				<input id="code" type="text" th:field="*{code}"/>
 			</div>
-			<div class="pure-control-groups">
-				<label for="rfid">Name</label>
+			<div class="pure-control-group">
+				<label for="rfid">Rfid</label>
 				<input id="rfid" type="text" th:field="*{rfid}"/>
 			</div>
-			<div class="pure-control-groups">
+			<div class="pure-control-group">
 				<label for="type">Type</label>
 				<select id="type" th:field="*{type}">
 					<option th:each="type:${types}" th:value="${type}" th:text="${type}"/>
 				</select>
+			</div>
+			<div class="pure-control-group">
+				<label for="start">Availability Start Date</label>
+				<input id="start" type="date" th:field="*{start}"/>
+			</div>
+			<div class="pure-control-group">
+				<label for="end">Availability End Date</label>
+				<input id="end" type="date" th:field="*{end}"/>
 			</div>
 			<div class="pure-controls">
 				<input type="hidden" th:field="*{id}"/>
 				<button type="submit" class="pure-button pure-button-primary">Save</button>
 			</div>
 		</fieldset>
+		<div id="tabs">
+		<ul>
+			<li><a href="#components">Component</a></li>
+			<li><a href="#features">Feature</a></li>
+			<li><a href="#prices">Price</a></li>
+			<li><a href="#suppliers">Supplier</a></li>
+		</ul>
+		<div id="components">
+			<div><a th:href="@{'/productcomponents/preadd/'+*{id}}">New Component</a></div>
+			<table class="pure-table pure-table-bordered pure-table-striped">
+    		<thead>
+    		<tr>
+    			<th>Name</th>
+    			<th>Quantity</th>
+    			<th>&nbsp;</th>
+    		</tr>
+    		</thead>
+    		<tbody>
+			<tr th:each="component:*{components}" th:if="${not component.deleted}">
+    			<td th:text="${component.productName}"/>
+        		<td th:text="${#numbers.formatDecimal(component.amount,1,'POINT',1,'COMMA')}"/>
+        		<td>
+        			<a th:href="@{'/productcomponents/preedit/'+${id}+'/'+${component.id}}">Edit</a>
+        			&nbsp;|&nbsp;
+        			<a th:href="@{'/productcomponents/delete/'+${id}+'/'+${component.id}}">Delete</a>
+        		</td>
+    		</tr>
+    		</tbody>
+    		</table>
+		</div>
+		<div id="features">
+			<div><a th:href="@{'/productfeatures/preadd/'+*{id}}">New Feature</a></div>
+			<table class="pure-table pure-table-bordered pure-table-striped">
+    		<thead>
+    		<tr>
+    			<th>Type</th>
+    			<th>Value</th>
+    			<th>&nbsp;</th>
+    		</tr>
+    		</thead>
+    		<tbody>
+			<tr th:each="feature:*{features}" th:if="${not feature.deleted}">
+    			<td th:text="${feature.type}"/>
+    			<td th:text="${feature.value}"/>
+        		<td>
+        			<a th:href="@{'/productfeatures/preedit/'+${id}+'/'+${feature.id}}">Edit</a>
+        			&nbsp;|&nbsp;
+        			<a th:href="@{'/productfeatures/delete/'+${id}+'/'+${feature.id}}">Delete</a>
+        		</td>
+    		</tr>
+    		</tbody>
+    		</table>
+		</div>
+		<div id="prices">
+			<div><a th:href="@{'/productprices/preadd/'+*{id}}">New Role</a></div>
+			<table class="pure-table pure-table-bordered pure-table-striped">
+    		<thead>
+    		<tr>
+    			<th>From</th>
+    			<th>To</th>
+    			<th>Price</th>
+    			<th>Type</th>
+    			<th>Geographic</th>
+    			<th>Party</th>
+    			<th>&nbsp;</th>
+    		</tr>
+    		</thead>
+    		<tbody>
+			<tr th:each="price:*{prices}" th:if="${not price.deleted}">
+    			<td th:text="${#dates.format(price.from,'dd-MM-yyyy')}"/>
+    			<td th:text="${price.to != null?#dates.format(price.to,'dd-MM-yyyy'):''}"/>
+    			<td>
+    				<th:block th:text="${price.price.currency}"/>&nbsp;<th:block th:text="${#numbers.formatDecimal(price.price.amount,3,'POINT',2,'COMMA')}"/>
+    			</td>
+        		<td>
+        			<a th:href="@{'/productprices/preedit/'+${id}+'/'+${price.id}}">Edit</a>
+        			&nbsp;|&nbsp;
+        			<a th:href="@{'/productprices/delete/'+${id}+'/'+${price.id}}">Delete</a>
+        		</td>
+        		<td th:text="${price.type}"/>
+        		<td th:text="${price.geographicName}"/>
+        		<td th:text="${price.partyName}"/>
+    		</tr>
+    		</tbody>
+    		</table>
+		</div>
+		<div id="suppliers">
+			<div><a th:href="@{'/productsuppliers/preadd/'+*{id}}">New Supplier</a></div>
+			<table class="pure-table pure-table-bordered pure-table-striped">
+    		<thead>
+    		<tr>
+    			<th>From</th>
+    			<th>To</th>
+    			<th>Supplier</th>
+    			<th>&nbsp;</th>
+    		</tr>
+    		</thead>
+    		<tbody>
+			<tr th:each="supplier:*{suppliers}" th:if="${not supplier.deleted}">
+    			<td th:text="${#dates.format(supplier.from,'dd-MM-yyyy')}"/>
+    			<td th:text="${supplier.to != null?#dates.format(supplier.to,'dd-MM-yyyy'):''}"/>
+    			<td th:text="${supplier.partyName}"/>
+        		<td>
+        			<a th:href="@{'/productsuppliers/preedit/'+${id}+'/'+${supplier.id}}">Edit</a>
+        			&nbsp;|&nbsp;
+        			<a th:href="@{'/productsuppliers/delete/'+${id}+'/'+${supplier.id}}">Delete</a>
+        		</td>
+    		</tr>
+    		</tbody>
+    		</table>
+		</div>
+	</div>
 	</form>
 	</div>
 </body>

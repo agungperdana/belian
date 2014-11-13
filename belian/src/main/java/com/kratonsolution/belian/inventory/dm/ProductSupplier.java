@@ -3,12 +3,13 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
+import java.util.Date;
+
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import lombok.Setter;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author agungdodiperdana
@@ -16,19 +17,22 @@ import lombok.Getter;
  */
 @Getter
 @Setter
-@Document(collection="product_feature")
-public class ProductFeature
+public class ProductSupplier
 {
-	public enum Type{SIZE,WEIGH,HEIGH,COLOR}
-	
 	@Id
 	private String id;
+
+	@Field("from_date")
+	private Date from;
 	
-	@Field("value")
-	private String value;
+	@Field("to_date")
+	private Date to;
 	
-	@Field("type")
-	private Type type;
+	@Field("party_id")
+	private String partyId;
+	
+	@Field("party_name")
+	private String partyName;
 	
 	@Field("is_deleted")
 	private boolean deleted;
