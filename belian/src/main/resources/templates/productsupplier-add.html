@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Product Supplier Form</title>
+	<th:block th:include="static"/>
+	<script>
+		$(function() {
+    		$( "#from" ).datepicker({dateFormat:'dd-mm-yy'});
+    		$( "#to" ).datepicker({dateFormat:'dd-mm-yy'});
+    	});
+	</script>
+</head>
+<body>
+	<div th:include="menu"></div>
+	<div class="content ui-widget-content">
+	<h2>Price for <th:block th:text="${product.name}"/></h2>
+	<form class="pure-form pure-form-aligned" th:action="@{'/productsuppliers/add/'+${productId}}" method="post" th:object="${supplier}">
+	<fieldset>
+		<div class="pure-control-group">
+			<label for="from">From Date :</label>
+			<input type="date" id="from" th:field="*{from}"/>
+		</div>
+		<div class="pure-control-group">
+			<label for="to">To Date :</label>
+			<input type="date" id="to" th:field="*{to}"/>
+		</div>
+		<div class="pure-control-group">
+			<label for="currency">Supplier :</label>
+			<select id="currency" th:field="*{partyId}">
+				<option th:each="party:${suppliers}" th:value="${party.id}" th:text="${party.name}"/>
+			</select>
+		</div>
+		<div class="pure-controls">
+			<button type="submit" class="pure-button pure-button-primary" autofocus="autofocus">Save</button>
+		</div>
+	</fieldset>
+	</form>
+	</div>
+	<th:block th:include="footer"/>
+</body>
+</html>

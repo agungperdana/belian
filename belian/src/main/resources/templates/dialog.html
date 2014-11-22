@@ -1,0 +1,33 @@
+<script th:inline="javascript">
+	/*<![CDATA[*/
+		$(function(){
+			var $url;
+			$("#remove-dialog").dialog({
+				autoOpen:false,
+				modal:true,
+				resizeable:false,
+				buttons:{
+					"Delete":function(){
+						$("#dialogForm").submit();
+					},
+					
+					"Cancel":function(){
+						$(this).dialog("close");
+					}
+				}
+			});
+			
+			$(".remove-dialog-link").each(function(){
+				$(this).click(function(){
+					$("#dialogForm").attr('action',$(this).attr("target"));
+					$("#remove-dialog").dialog("open");
+				});
+			});
+		})
+	/*]]>*/
+</script>
+<div id="remove-dialog" class="remove-dialog" title="Warning">
+	<form id="dialogForm" method="get">
+	</form>
+	You about to delete the data,continue?
+</div>

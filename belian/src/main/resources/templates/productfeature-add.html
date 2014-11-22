@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Product Feature Form</title>
+	<th:block th:include="static"/>
+</head>
+<body>
+	<div th:include="menu"></div>
+	<div class="content ui-widget-content">
+	<h1>Product Feature Management</h1>
+	<form class="pure-form pure-form-aligned" th:action="@{'/productfeatures/add/'+${productId}}" method="post" th:object="${feature}">
+	<fieldset>
+		<div class="pure-control-group">
+			<label for="amount">Value :</label>
+			<input type="text" id="amount" th:field="*{value}"/>
+		</div>
+		<div class="pure-control-group">
+			<label for="product">Type :</label>
+			<select id="product" th:field="*{type}">
+				<option th:each="type:${types}" th:value="${type}" th:text="${type}"/>
+			</select>
+		</div>
+		<div class="pure-controls">
+			<button type="submit" class="pure-button pure-button-primary" autofocus="autofocus">Save</button>
+		</div>
+	</fieldset>
+	</form>
+	</div>
+	<th:block th:include="footer"/>
+</body>
+</html>

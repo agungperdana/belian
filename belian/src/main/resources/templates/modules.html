@@ -26,12 +26,13 @@
 	        <td>
 	        	<a th:href="@{'/modules/preedit/'+${module.id}}">Edit</a>
 	        	&nbsp;|&nbsp;
-	        	<a th:href="@{'/modules/delete/'+${module.id}}">Delete</a>
+	        	<a class="remove-dialog-link" th:attr="target=@{'/modules/delete/'+${module.id}}">Delete</a>
 	        </td>
 	    </tr>
 	    </tbody>
 	    </table>
     </div>
     <th:block th:include="footer"/>
+    <th:block th:include="dialog"/>
 </body>
 </html>

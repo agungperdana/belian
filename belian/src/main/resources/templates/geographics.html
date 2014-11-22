@@ -28,12 +28,13 @@
         	<td>
         		<a th:href="@{'/geographics/preedit/'+${geographic.id}}">Edit</a>
         		&nbsp;|&nbsp;
-        		<a th:href="@{'/geographics/delete/'+${geographic.id}}">Delete</a>
+        		<a class="remove-dialog-link" th:attr="target=@{'/geographics/delete/'+${geographic.id}}">Delete</a>
         	</td>
     	</tr>
     	</tbody>
     	</table>
     </div>
     <th:block th:include="footer"/>
+    <th:block th:include="dialog"/>
 </body>
 </html>

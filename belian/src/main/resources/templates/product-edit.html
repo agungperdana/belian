@@ -105,7 +105,7 @@
     		</table>
 		</div>
 		<div id="prices">
-			<div><a th:href="@{'/productprices/preadd/'+*{id}}">New Role</a></div>
+			<div><a th:href="@{'/productprices/preadd/'+*{id}}">New Price</a></div>
 			<table class="pure-table pure-table-bordered pure-table-striped">
     		<thead>
     		<tr>
@@ -113,8 +113,8 @@
     			<th>To</th>
     			<th>Price</th>
     			<th>Type</th>
-    			<th>Geographic</th>
-    			<th>Party</th>
+    			<th>For Geographic</th>
+    			<th>For Party</th>
     			<th>&nbsp;</th>
     		</tr>
     		</thead>
@@ -123,16 +123,16 @@
     			<td th:text="${#dates.format(price.from,'dd-MM-yyyy')}"/>
     			<td th:text="${price.to != null?#dates.format(price.to,'dd-MM-yyyy'):''}"/>
     			<td>
-    				<th:block th:text="${price.price.currency}"/>&nbsp;<th:block th:text="${#numbers.formatDecimal(price.price.amount,3,'POINT',2,'COMMA')}"/>
+    				<th:block th:text="${price.currencyCode}"/>&nbsp;<th:block th:text="${#numbers.formatDecimal(price.price,3,'POINT',2,'COMMA')}"/>
     			</td>
+        		<td th:text="${price.type}"/>
+        		<td th:text="${price.geographicName}"/>
+        		<td th:text="${price.partyName}"/>
         		<td>
         			<a th:href="@{'/productprices/preedit/'+${id}+'/'+${price.id}}">Edit</a>
         			&nbsp;|&nbsp;
         			<a th:href="@{'/productprices/delete/'+${id}+'/'+${price.id}}">Delete</a>
         		</td>
-        		<td th:text="${price.type}"/>
-        		<td th:text="${price.geographicName}"/>
-        		<td th:text="${price.partyName}"/>
     		</tr>
     		</tbody>
     		</table>

@@ -12,30 +12,27 @@
 	</script>
 </head>
 <body>
-	<div th:include="menu"></div>
-	<form th:action="@{/organizations/add}" role="form" th:object="${organization}">
-	<table style="border: none;width: 100%">
-	<tbody>
-	<tr>
-		<td width="9%" align="right">Name :</td>
-		<td width="91%"><input type="text" th:field="*{name}" name="name"/></td>
-	</tr>
-	<tr>
-		<td align="right">Birth Date :</td>
-		<td><input id="birthDate" type="date" th:field="*{birthDate}" name="birthDate"/></td>
-	</tr>
-	<tr>
-		<td align="right">Tax Code :</td>
-		<td><input type="text" th:field="*{taxCode}" name="taxCode" size="50"/></td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<input type="hidden" th:field="${organization.id}" th:value="${organization.id}"/>
-			<button type="submit" style="width:50%;">Save</button>
-		</td>
-	</tr>
-	</tbody>
-	</table>
-	</form>
+	<th:block th:include="menu"/>
+	<div class="content ui-widget-content">
+		<fieldset>
+			<form class="pure-form pure-form-aligned" th:action="@{/organizations/add}" role="form" th:object="${organization}">
+			<div class="pure-control-group">
+				<label for="name">Name :</label>
+				<input type="text" id="name" th:field="*{name}"/>
+			</div>
+			<div class="pure-control-group">
+				<label for="birthDate">Birth Date :</label>
+				<input type="date" id="birthDate" th:field="*{birthDate}"/>
+			</div>
+			<div class="pure-control-group">
+				<label for="tax">Tax Code :</label>
+				<input type="text" id="taxCode" th:field="*{taxCode}"/>
+			</div>
+			<div class="pure-controls">
+				<button type="submit" class="pure-button pure-button-primary" autofocus="autofocus">Save</button>
+			</div>
+			</form>
+		</fieldset>
+	</div>
 </body>
 </html>

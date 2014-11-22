@@ -34,11 +34,13 @@
 	        <td>
 	        	<a th:href="@{'/products/preedit/'+${product.id}}">Edit</a>
 	        	&nbsp;|&nbsp;
-	        	<a th:href="@{'/products/delete/'+${product.id}}">Delete</a>
+	        	<a class="remove-dialog-link" th:attr="target=@{'/products/delete/'+${product.id}}">Delete</a>
 	        </td>
 	    </tr>
 	    </tbody>
     	</table>
     </div>
+    <th:block th:include="footer"/>
+    <th:block th:include="dialog"/>
 </body>
 </html>

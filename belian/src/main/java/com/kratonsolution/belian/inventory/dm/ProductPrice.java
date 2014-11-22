@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import lombok.Getter;
@@ -12,8 +13,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-
-import com.kratonsolution.belian.accounting.dm.Money;
 
 /**
  * @author agungdodiperdana
@@ -35,10 +34,17 @@ public class ProductPrice
 	@Field("to_date")
 	private Date to;
 	
-	private Money price;
+	@Field("price")
+	private BigDecimal price = BigDecimal.ONE;
+	
+	@Field("currency_id")
+	private String currencyId;
+	
+	@Field("currency_code")
+	private String currencyCode;
 	
 	@Field("type")
-	private Type type = Type.BASE;
+	private String type;
 	
 	@Field("geographic_id")
 	@Indexed
@@ -55,4 +61,7 @@ public class ProductPrice
 	@Field("party_name")
 	@Indexed
 	private String partyName;
+	
+	@Field("is_deleted")
+	private boolean deleted;
 }

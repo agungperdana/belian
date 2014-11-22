@@ -28,7 +28,7 @@ public class ProductFeature
 	private String value;
 	
 	@Field("type")
-	private Type type;
+	private String type;
 	
 	@Field("is_deleted")
 	private boolean deleted;

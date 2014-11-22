@@ -50,4 +50,14 @@ public class PartyRepositoryImpl implements PartyRepository
 		
 		return partys;
 	}
+
+	@Override
+	public List<Party> findAllByRole(String roleName)
+	{
+		List<Party> partys = new ArrayList<Party>();
+		partys.addAll(personRepository.findAllByRolesName(roleName));
+		partys.addAll(organizationRepository.findAllByRolesName(roleName));
+		
+		return partys;
+	}
 }

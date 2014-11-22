@@ -25,12 +25,13 @@
         <td>
         	<a th:href="@{'/partyroletypes/preedit/'+${partyrole.id}}">Edit</a>
         	&nbsp;|&nbsp;
-        	<a th:href="@{'/partyroletypes/delete/'+${partyrole.id}}">Delete</a>
+        	<a class="remove-dialog-link" th:attr="target=@{'/partyroletypes/delete/'+${partyrole.id}}">Delete</a>
         </td>
     </tr>
     </tbody>
     </table>
     </div>
     <th:block th:include="footer"/>
+    <th:block th:include="dialog"/>
 </body>
 </html>

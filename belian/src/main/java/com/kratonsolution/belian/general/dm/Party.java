@@ -22,25 +22,25 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class Party
 {
 	@Id
-	private String id;
+	protected String id;
 
 	@Field("name")
-	private String name;
+	protected String name;
 	
 	@Field("birth_date")
-	private Date birthDate;
+	protected Date birthDate;
 
 	@Field("tax_code")
-	private String taxCode;
+	protected String taxCode;
 	
 	@Field("is_deleted")
-	private boolean deleted;
+	protected boolean deleted;
 	
-	private List<Address> addresses = new ArrayList<Address>();
+	protected List<Address> addresses = new ArrayList<Address>();
 	
-	private List<Contact> contacts = new ArrayList<Contact>();
+	protected List<Contact> contacts = new ArrayList<Contact>();
 	
-	private List<PartyRole> roles = new ArrayList<PartyRole>();
+	protected List<PartyRole> roles = new ArrayList<PartyRole>();
 	
-	private List<PartyRelationship> relationships = new ArrayList<PartyRelationship>();
+	protected List<PartyRelationship> relationships = new ArrayList<PartyRelationship>();
 }

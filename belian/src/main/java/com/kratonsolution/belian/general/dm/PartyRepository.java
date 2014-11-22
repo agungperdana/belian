@@ -7,7 +7,7 @@ import java.util.List;
 
 
 /**
- * @author agungdodiperdana
+ * @author Agung Dodi Perdana
  *
  */
 public interface PartyRepository
@@ -15,4 +15,6 @@ public interface PartyRepository
 	public Party findOne(String id);
 	
 	public List<Party> findAll();
+	
+	public List<Party> findAllByRole(String roleName);
 }

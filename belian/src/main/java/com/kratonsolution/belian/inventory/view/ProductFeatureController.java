@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductComponent;
+import com.kratonsolution.belian.inventory.dm.ProductFeature;
 import com.kratonsolution.belian.inventory.dm.ProductRepository;
 
 /**
@@ -21,82 +21,77 @@ import com.kratonsolution.belian.inventory.dm.ProductRepository;
  *
  */
 @Controller
-@RequestMapping("/productcomponents")
-public class ProductComponentController
+@RequestMapping("/productfeatures")
+public class ProductFeatureController
 {
 	@Autowired
 	private ProductRepository repository;
-
+	
 	@RequestMapping("/preadd/{productId}")
 	public String preadd(@PathVariable String productId,Model model)
 	{
-		model.addAttribute("component",new ProductComponent());
-		model.addAttribute("products",repository.findAll());
-		return "productcomponent-add";
+		model.addAttribute("feature",new ProductFeature());
+		model.addAttribute("types",ProductFeature.Type.values());
+		
+		return "productfeature-add";
 	}
-
+	
 	@RequestMapping(value="/add/{productId}",method=RequestMethod.POST)
-	public String add(@PathVariable String productId, ProductComponent component)
+	public String add(@PathVariable String productId, ProductFeature feature)
 	{
-		Product root = repository.findOne(productId);
-
-		Product product = repository.findOne(component.getProductId());
+		Product product = repository.findOne(productId);
 		if(product != null)
 		{
-			component.setId(UUID.randomUUID().toString());
-			component.setProductName(product.getName());
-
-			root.getComponents().add(component);
+			feature.setId(UUID.randomUUID().toString());
+			product.getFeatures().add(feature);
 		}
 
-		repository.save(root);
-
+		repository.save(product);
+		
 		return "redirect:/products/preedit/"+productId;
 	}
-
+	
 	@RequestMapping("/preedit/{productId}/{id}")
 	public String preedit(@PathVariable String productId,@PathVariable String id,Model model)
 	{
 		Product product = repository.findOne(productId);
-		for(ProductComponent component:product.getComponents())
+		for(ProductFeature feature:product.getFeatures())
 		{
-			if(component.getId().equals(id))
+			if(feature.getId().equals(id))
 			{
-				model.addAttribute("component",component);
-				model.addAttribute("products",repository.findAll());
+				model.addAttribute("feature",feature);
+				model.addAttribute("types",ProductFeature.Type.values());
 				break;
 			}
 		}
-
-		return "productcomponent-edit";
+		
+		return "productfeature-edit";
 	}
-
+	
 	@RequestMapping(value="/edit/{productId}",method=RequestMethod.POST)
-	public String edit(@PathVariable String productId,ProductComponent component)
+	public String edit(@PathVariable String productId,ProductFeature feature)
 	{
 		Product product = repository.findOne(productId);
-		for(ProductComponent comp:product.getComponents())
+		for(ProductFeature comp:product.getFeatures())
 		{
-			if(comp.getId().equals(component.getId()))
+			if(comp.getId().equals(feature.getId()))
 			{
-				comp.setAmount(component.getAmount());
-				comp.setDeleted(component.isDeleted());
-				comp.setProductId(component.getProductId());
-				comp.setProductName(component.getProductName());
+				comp.setValue(feature.getValue());
+				comp.setType(feature.getType());
 				break;
 			}
 		}
-
+		
 		repository.save(product);
-
+		
 		return "redirect:/products/preedit/"+productId;
 	}
-
+	
 	@RequestMapping("/delete/{productId}/{id}")
 	public String delete(@PathVariable String productId,@PathVariable String id)
 	{
 		Product product = repository.findOne(productId);
-		for(ProductComponent comp:product.getComponents())
+		for(ProductFeature comp:product.getFeatures())
 		{
 			if(comp.getId().equals(id))
 			{
@@ -104,7 +99,7 @@ public class ProductComponentController
 				break;
 			}
 		}
-
+		
 		repository.save(product);
 		
 		return "redirect:/products/preedit/"+productId;

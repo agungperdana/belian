@@ -6,6 +6,7 @@ package com.kratonsolution.belian.general.view;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -54,6 +55,7 @@ public class OrganizationController
 	@RequestMapping("/add")
 	public String add(Organization organization)
 	{
+		organization.setId(UUID.randomUUID().toString());
 		repository.save(organization);
 		return "redirect:/organizations/list";
 	}
