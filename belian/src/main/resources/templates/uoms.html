@@ -3,29 +3,29 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
 	<meta charset="UTF-8"/>
-	<title>Role</title>
+	<title>Unit of Measure</title>
 	<th:block th:include="static"/>
 </head>
 <body>
-	<th:block th:include="menu"/>
+	<div th:include="menu"></div>
 	<div class="content ui-widget-content">
-		<h2>Role Management</h2>
-		<div><a th:href="@{/roles/preadd}">New Role</a></div>
+		<h2>Unit of Measure Management</h2>
+		<div><a th:href="@{/uoms/preadd}">New Unit of Measure</a></div>
 		<table class="pure-table pure-table-bordered pure-table-striped">
 	    <thead>
 	    <tr>
 	    	<th>Code</th>
 	        <th>Name</th>
-	        <th>&nbsp;</th>
+	    	<th>&nbsp;</th>
 	    </tr>
 	    </thead>
 	    <tbody>
-		<tr th:each="role:${roles}">
-	    	<td th:text="${role.code}"/>
-	        <td th:text="${role.name}"/>
+		<tr th:each="uom:${uoms}">
+	        <td th:text="${uom.code}"/>
+	        <td th:text="${uom.name}"/>
 	        <td>
-	        	<a class="ui-icon ui-icon-pencil" th:href="@{'/roles/preedit/'+${role.id}}">Edit</a>
-	        	<a class="remove-dialog-link ui-icon ui-icon-trash" th:attr="target=@{'/roles/delete/'+${role.id}}">Delete</a>
+	        	<a class="ui-icon ui-icon-pencil" th:href="@{'/uoms/preedit/'+${uom.id}}">Edit</a>
+	        	<a class="remove-dialog-link ui-icon ui-icon-trash" th:attr="target=@{'/uoms/delete/'+${uom.id}}">Delete</a>
 	        </td>
 	    </tr>
 	    </tbody>

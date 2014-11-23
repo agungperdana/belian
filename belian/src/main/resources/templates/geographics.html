@@ -26,9 +26,8 @@
         	<td th:text="${geographic.name}"/>
         	<td th:text="${geographic.type}"/>
         	<td>
-        		<a th:href="@{'/geographics/preedit/'+${geographic.id}}">Edit</a>
-        		&nbsp;|&nbsp;
-        		<a class="remove-dialog-link" th:attr="target=@{'/geographics/delete/'+${geographic.id}}">Delete</a>
+        		<a class="ui-icon ui-icon-pencil" th:href="@{'/geographics/preedit/'+${geographic.id}}">&nbsp;</a>
+        		<a class="remove-dialog-link ui-icon ui-icon-trash" th:attr="target=@{'/geographics/delete/'+${geographic.id}}">&nbsp;</a>
         	</td>
     	</tr>
     	</tbody>

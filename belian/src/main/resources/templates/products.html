@@ -32,9 +32,8 @@
 	        <td th:text="${product.rfid}"/>
 	        <td th:text="${product.type}"/>
 	        <td>
-	        	<a th:href="@{'/products/preedit/'+${product.id}}">Edit</a>
-	        	&nbsp;|&nbsp;
-	        	<a class="remove-dialog-link" th:attr="target=@{'/products/delete/'+${product.id}}">Delete</a>
+	        	<a class="ui-icon ui-icon-pencil" th:href="@{'/products/preedit/'+${product.id}}">Edit</a>
+	        	<a class="remove-dialog-link ui-icon ui-icon-trash" th:attr="target=@{'/products/delete/'+${product.id}}">Delete</a>
 	        </td>
 	    </tr>
 	    </tbody>

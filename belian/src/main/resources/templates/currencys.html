@@ -24,9 +24,8 @@
 	        <td th:text="${currency.code}">tdx</td>
 	        <td th:text="${currency.name}">tdx</td>
 	        <td>
-	        	<a th:href="@{'/currencys/preedit/'+${currency.id}}">Edit</a>
-	        	&nbsp;|&nbsp;
-	        	<a class="remove-dialog-link" th:attr="target=@{'/currencys/delete/'+${currency.id}}">Delete</a>
+	        	<a class="ui-icon ui-icon-pencil" th:href="@{'/currencys/preedit/'+${currency.id}}">Edit</a>
+	        	<a class="remove-dialog-link ui-icon ui-icon-trash" th:attr="target=@{'/currencys/delete/'+${currency.id}}">Delete</a>
 	        </td>
 	    </tr>
 	    </tbody>

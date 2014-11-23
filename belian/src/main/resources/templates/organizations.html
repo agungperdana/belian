@@ -26,9 +26,8 @@
         	<td th:text="${#dates.format(organization.birthDate,'dd-MM-yyyy')}"/>
         	<td th:text="${organization.taxCode}"/>
         	<td>
-        		<a th:href="@{'/organizations/preedit/'+${organization.id}}">Edit</a>
-        		&nbsp;|&nbsp;
-        		<a class="remove-dialog-link" th:attr="target=@{'/organizations/delete/'+${organization.id}}">Delete</a>
+        		<a class="ui-icon ui-icon-pencil" th:href="@{'/organizations/preedit/'+${organization.id}}">Edit</a>
+        		<a class="remove-dialog-link ui-icon ui-icon-trash" th:attr="target=@{'/organizations/delete/'+${organization.id}}">Delete</a>
         	</td>
     	</tr>
     	</tbody>

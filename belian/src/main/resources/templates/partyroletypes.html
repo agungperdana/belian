@@ -23,9 +23,8 @@
 	<tr th:each="partyrole:${partyroletypes}" th:if="${not partyrole.deleted}">
         <td th:text="${partyrole.name}"/>
         <td>
-        	<a th:href="@{'/partyroletypes/preedit/'+${partyrole.id}}">Edit</a>
-        	&nbsp;|&nbsp;
-        	<a class="remove-dialog-link" th:attr="target=@{'/partyroletypes/delete/'+${partyrole.id}}">Delete</a>
+        	<a class="ui-icon ui-icon-pencil" th:href="@{'/partyroletypes/preedit/'+${partyrole.id}}">Edit</a>
+        	<a class="remove-dialog-link ui-icon ui-icon-trash" th:attr="target=@{'/partyroletypes/delete/'+${partyrole.id}}">Delete</a>
         </td>
     </tr>
     </tbody>

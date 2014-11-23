@@ -8,25 +8,29 @@
 </head>
 <body>
 	<th:block th:include="menu"/>
-	<form class="pure-form pure-form-aligned" th:action="@{/geographics/edit}" role="form" th:object="${geographic}">
-		<div class="pure-control-group">
-			<label for="code">Code :</label>
-			<input type="text" id="code" th:field="*{code}"/>
-		</div>
-		<div class="pure-control-group">
-			<label for="name">Name :</label>
-			<input type="text" id="name" th:field="*{name}"/>
-		</div>
-		<div class="pure-control-group">
-			<label for="type">Type :</label>
-			<select th:field="*{type}" name="type">
-				<option th:each="type:${types}" th:value="${type}" th:text="${type}"/>
-			</select>
-		</div>
-		<div class="pure-controls">
-			<input type="hidden" th:field="${geographic.id}" th:value="${geographic.id}"/>
-			<button type="submit" class="pure-button pure-button-primary">Save</button>
-		</div>
-	</form>
+	<div class="content ui-widget-content">
+		<h2>Geographic Management</h2>
+		<form id="documentForm" class="pure-form pure-form-aligned" th:action="@{/geographics/edit}" th:object="${geographic}">
+			<div class="pure-control-group">
+				<label for="code">Code :</label>
+				<input type="text" id="code" th:field="*{code}"/>
+			</div>
+			<div class="pure-control-group">
+				<label for="name">Name :</label>
+				<input type="text" id="name" th:field="*{name}"/>
+			</div>
+			<div class="pure-control-group">
+				<label for="type">Type :</label>
+				<select th:field="*{type}" name="type">
+					<option th:each="type:${types}" th:value="${type}" th:text="${type}"/>
+				</select>
+			</div>
+			<div class="pure-controls">
+				<input type="hidden" th:field="${geographic.id}" th:value="${geographic.id}"/>
+				<button type="submit" class="pure-button pure-button-primary">Save</button>
+			</div>
+		</form>
+	</div>
+	<th:block th:include="footer"/>
 </body>
 </html>

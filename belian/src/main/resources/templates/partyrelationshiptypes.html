@@ -23,9 +23,8 @@
 	<tr th:each="partyrelationshiptype:${partyrelationshiptypes}">
         <td th:text="${partyrelationshiptype.name}"/>
         <td>
-        	<a th:href="@{'/partyrelationshiptypes/preedit/'+${partyrelationshiptype.id}}">Edit</a>
-        	&nbsp;|&nbsp;
-        	<a class="remove-dialog-link" th:attr="target=@{'/partyrelationshiptypes/delete/'+${partyrelationshiptype.id}}">Delete</a>
+        	<a class="ui-icon ui-icon-pencil" th:href="@{'/partyrelationshiptypes/preedit/'+${partyrelationshiptype.id}}">Edit</a>
+        	<a class="remove-dialog-link ui-icon ui-icon-trash" th:attr="target=@{'/partyrelationshiptypes/delete/'+${partyrelationshiptype.id}}">Delete</a>
         </td>
     </tr>
     </tbody>

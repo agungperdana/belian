@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Unit of Measure Form</title>
+	<th:block th:include="static"/>
+</head>
+<body>
+	<th:block th:include="menu"/>
+	<div class="content ui-widget-content">
+		<h2>Unit of Measure Management</h2>
+		<form class="pure-form pure-form-aligned" th:action="@{/uoms/add}" method="post" th:object="${uom}">
+		<fieldset>
+			<div class="pure-control-group">
+				<label>Code</label>
+				<input type="text" th:field="*{code}"/>
+			</div>
+			<div class="pure-control-group">
+				<label>Name</label>
+				<input type="text" th:field="*{name}"/>
+			</div>
+			<div class="pure-controls">
+				<input type="hidden" th:field="*{id}"/>
+				<button type="submit" autofocus="autofocus" class="pure-button pure-button-primary">Save</button>
+			</div>
+		</fieldset>
+		</form>
+	</div>
+	<th:block th:include="footer"/>
+</body>
+</html>

@@ -30,9 +30,8 @@
         	<td th:text="${person.maritalStatus}"/>
         	<td th:text="${person.taxCode}"/>
         	<td>
-        		<a th:href="@{'/persons/preedit/'+${person.id}}">Edit</a>
-        		&nbsp;|&nbsp;
-        		<a class="remove-dialog-link" th:attr="target=@{'/persons/delete/'+${person.id}}">Delete</a>
+        		<a class="ui-icon ui-icon-pencil" th:href="@{'/persons/preedit/'+${person.id}}">Edit</a>
+        		<a class="remove-dialog-link ui-icon ui-icon-trash" th:attr="target=@{'/persons/delete/'+${person.id}}">Delete</a>
         	</td>
     	</tr>
     	</tbody>

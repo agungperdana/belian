@@ -10,7 +10,7 @@
 	<th:block th:include="menu"/>
 	<div class="content ui-widget-content">
 		<h2>User Management</h2>
-		<form id="userForm" class="pure-form pure-form-aligned" th:action="@{/users/add}" role="form" th:object="${user}">
+		<form id="userForm" class="pure-form pure-form-aligned" th:action="@{/users/add}" method="post" th:object="${user}">
 		<fieldset>
 			<div class="pure-control-group">
 				<label for="username">Username</label>

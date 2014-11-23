@@ -24,9 +24,8 @@
 	        <td th:text="${module.code}"/>
 	        <td th:text="${module.name}"/>
 	        <td>
-	        	<a th:href="@{'/modules/preedit/'+${module.id}}">Edit</a>
-	        	&nbsp;|&nbsp;
-	        	<a class="remove-dialog-link" th:attr="target=@{'/modules/delete/'+${module.id}}">Delete</a>
+	        	<a class="ui-icon ui-icon-pencil" th:href="@{'/modules/preedit/'+${module.id}}">Edit</a>
+	        	<a class="remove-dialog-link ui-icon ui-icon-trash" th:attr="target=@{'/modules/delete/'+${module.id}}">Delete</a>
 	        </td>
 	    </tr>
 	    </tbody>
