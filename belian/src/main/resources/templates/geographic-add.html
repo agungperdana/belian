@@ -5,31 +5,40 @@
 	<meta charset="UTF-8"/>
 	<title>Geographic Form</title>
 	<th:block th:include="static"/>
+	<th:block th:include="script"/>
 </head>
 <body>
 	<th:block th:include="menu"/>
 	<div class="content ui-widget-content">
-		<h2>Geographic Management</h2>
-		<form class="pure-form pure-form-aligned" th:action="@{/geographics/add}" role="form" th:object="${geographic}">
-			<div class="pure-control-group">
-				<label for="code">Code :</label>
-				<input type="text" id="code" th:field="*{code}"/>
-			</div>
-			<div class="pure-control-group">
-				<label for="name">Name :</label>
-				<input type="text" id="name" th:field="*{name}"/>
-			</div>
-			<div class="pure-control-group">
-				<label for="type">Type :</label>
-				<select th:field="*{type}" name="type">
-					<option th:each="type:${types}" th:value="${type}" th:text="${type}"/>
-				</select>
-			</div>
-			<div class="pure-controls">
-				<input type="hidden" th:field="${geographic.id}" th:value="${geographic.id}"/>
-				<button type="submit" class="pure-button pure-button-primary">Save</button>
-			</div>
-		</form>
+		<fieldset>
+			<div class="rcrumbs" id="breadcrumbs">
+        	<ul>
+            	<li><a>Geographic Management</a><span class="divider">></span></li>
+            	<li><a th:href="@{/geographics/list}">List</a><span class="divider">></span></li>
+            	<li><a>Form</a></li>
+        	</ul>
+        	</div>
+			<form class="pure-form pure-form-aligned" th:action="@{/geographics/add}" role="form" th:object="${geographic}">
+				<div class="pure-control-group">
+					<label for="code">Code :</label>
+					<input type="text" id="code" th:field="*{code}"/>
+				</div>
+				<div class="pure-control-group">
+					<label for="name">Name :</label>
+					<input type="text" id="name" th:field="*{name}"/>
+				</div>
+				<div class="pure-control-group">
+					<label for="type">Type :</label>
+					<select th:field="*{type}" name="type">
+						<option th:each="type:${types}" th:value="${type}" th:text="${type}"/>
+					</select>
+				</div>
+				<div class="pure-controls">
+					<input type="hidden" th:field="${geographic.id}" th:value="${geographic.id}"/>
+					<button type="submit" class="pure-button pure-button-primary">Save</button>
+				</div>
+			</form>
+		</fieldset>
 	</div>
 	<th:block th:include="footer"/>
 </body>

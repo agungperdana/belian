@@ -5,50 +5,51 @@
 	<meta charset="UTF-8"/>
 	<title>Organization Relationship Form</title>
 	<th:block th:include="static"/>
-	<script>
-		$(function() {
-    		$( "#from" ).datepicker({dateFormat:'dd-mm-yy'});
-    		$( "#to" ).datepicker({dateFormat:'dd-mm-yy'});
-    	});
-	</script>
+	<th:block th:include="script"/>
 </head>
 <body>
 	<div th:include="menu"></div>
 	<div class="content ui-widget-content">
-	<h2>Organization Relationship Management</h2>
-	<form class="pure-form pure-form-aligned" th:action="@{'/organizationrelationships/edit/'+${partyId}+'/'+${relationship.id}}" role="form" th:object="${relationship}">
-	<fieldset>
-		<div class="pure-control-group">
-			<label for="name">Relationship Type :</label>
-			<select id="name" name="relationshipTypeId" autofocus="autofocus">
-				<option th:each="type:${types}" th:selected="${relationship.relationshipTypeId == type.id}" th:if="${not type.deleted}" th:value="${type.id}" th:text="${type.name}"/>
-			</select>
-		</div>
-		<div class="pure-control-group">
-			<label for="from">From Date :</label>
-			<input type="date" id="from" th:field="*{fromDate}"/>
-		</div>
-		<div class="pure-control-group">
-			<label for="to">To Date :</label>
-			<input type="date" id="to" th:field="*{toDate}"/>
-		</div>
-		<div class="pure-control-group">
-			<label for="name">From Role :</label>
-			<select id="name" name="fromRoleId">
-				<option th:each="type:${roles}" th:selected="${relationship.fromRoleId == type.roleId}" th:if="${not type.deleted}" th:value="${type.roleId}" th:text="${type.name}"/>
-			</select>
-		</div>
-		<div class="pure-control-group">
-			<label for="name">To Party :</label>
-			<select id="name" name="toPartyId">
-				<option th:each="type:${partys}" th:selected="${relationship.toPartyId == type.id}" th:if="${not type.deleted}" th:value="${type.id}" th:text="${type.name}"/>
-			</select>
-		</div>
-		<div class="pure-controls">
-			<button type="submit" class="pure-button pure-button-primary">Save</button>
-		</div>
-	</fieldset>
-	</form>
+		<fieldset>
+			<div class="rcrumbs" id="breadcrumbs">
+	        	<ul>
+	            	<li><a th:href="@{'/organizations/preedit/'+${partyId}}">Organization</a><span class="divider">></span></li>
+					<li><a>Relationship</a><span class="divider">></span></li>
+	            	<li><a>Form</a></li>
+	        	</ul>
+	        </div>
+			<form class="pure-form pure-form-aligned" th:action="@{'/organizationrelationships/edit/'+${partyId}+'/'+${relationship.id}}" th:object="${relationship}">
+				<div class="pure-control-group">
+					<label for="name">Relationship Type :</label>
+					<select id="name" name="relationshipTypeId" autofocus="autofocus">
+						<option th:each="type:${types}" th:selected="${relationship.relationshipTypeId == type.id}" th:if="${not type.deleted}" th:value="${type.id}" th:text="${type.name}"/>
+					</select>
+				</div>
+				<div class="pure-control-group">
+					<label for="from">From Date :</label>
+					<input class="dates" type="date" id="from" th:field="*{fromDate}"/>
+				</div>
+				<div class="pure-control-group">
+					<label for="to">To Date :</label>
+					<input class="dates" type="date" id="to" th:field="*{toDate}"/>
+				</div>
+				<div class="pure-control-group">
+					<label for="name">From Role :</label>
+					<select id="name" name="fromRoleId">
+						<option th:each="type:${roles}" th:selected="${relationship.fromRoleId == type.roleId}" th:if="${not type.deleted}" th:value="${type.roleId}" th:text="${type.name}"/>
+					</select>
+				</div>
+				<div class="pure-control-group">
+					<label for="name">To Party :</label>
+					<select id="name" name="toPartyId">
+						<option th:each="type:${partys}" th:selected="${relationship.toPartyId == type.id}" th:if="${not type.deleted}" th:value="${type.id}" th:text="${type.name}"/>
+					</select>
+				</div>
+				<div class="pure-controls">
+					<button type="submit" autofocus="autofocus" class="pure-button pure-button-primary">Save</button>
+				</div>
+			</form>
+		</fieldset>
 	</div>
 	<th:block th:include="footer"/>
 </body>

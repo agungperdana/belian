@@ -5,30 +5,32 @@
 	<meta charset="UTF-8"/>
 	<title>Party Relationship Type</title>
 	<th:block th:include="static"/>
+	<th:block th:include="script"/>
 </head>
 <body>
 	<div th:include="menu"></div>
 	<div class="content ui-widget-content">
-	<h1>Party Relationship Type Management</h1>
-	<div><a th:href="@{/partyrelationshiptypes/preadd}">New Party Relationship Type</a></div>
-
-	<table class="pure-table pure-table-bordered pure-table-striped">
-    <thead>
-    <tr>
-        <th>Name</th>
-    	<th>&nbsp;</th>
-    </tr>
-    </thead>
-    <tbody>
-	<tr th:each="partyrelationshiptype:${partyrelationshiptypes}">
-        <td th:text="${partyrelationshiptype.name}"/>
-        <td>
-        	<a class="ui-icon ui-icon-pencil" th:href="@{'/partyrelationshiptypes/preedit/'+${partyrelationshiptype.id}}">Edit</a>
-        	<a class="remove-dialog-link ui-icon ui-icon-trash" th:attr="target=@{'/partyrelationshiptypes/delete/'+${partyrelationshiptype.id}}">Delete</a>
-        </td>
-    </tr>
-    </tbody>
-    </table>
+		<fieldset>
+			<h2>Party Relationship Type Management</h2>
+			<div><a th:href="@{/partyrelationshiptypes/preadd}">New Party Relationship Type</a></div>
+			<table class="pure-table pure-table-bordered pure-table-striped">
+		    <thead>
+		    <tr>
+		        <th>Name</th>
+		    	<th>&nbsp;</th>
+		    </tr>
+		    </thead>
+		    <tbody>
+			<tr th:each="partyrelationshiptype:${partyrelationshiptypes}">
+		        <td th:text="${partyrelationshiptype.name}"/>
+		        <td>
+		        	<a class="ui-icon ui-icon-pencil" th:href="@{'/partyrelationshiptypes/preedit/'+${partyrelationshiptype.id}}">Edit</a>
+		        	<a class="remove-dialog-link ui-icon ui-icon-trash" th:attr="target=@{'/partyrelationshiptypes/delete/'+${partyrelationshiptype.id}}">Delete</a>
+		        </td>
+		    </tr>
+		    </tbody>
+		    </table>
+    	</fieldset>
     </div>
     <th:block th:include="footer"/>
     <th:block th:include="dialog"/>

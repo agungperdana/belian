@@ -1,0 +1,47 @@
+<script th:inline="javascript">
+	/*<![CDATA[*/
+		$(function(){
+			if(!$.isEmptyObject($("#remove-dialog")))
+			{
+				$("#remove-dialog").dialog({
+				autoOpen:false,
+				modal:true,
+				resizeable:false,
+				buttons:{
+					"Delete":function(){
+						$("#dialogForm").submit();
+					},
+					
+					"Cancel":function(){
+						$(this).dialog("close");
+					}
+				}
+				});
+			
+				$(".remove-dialog-link").each(function(){
+					$(this).click(function(){
+						$("#dialogForm").attr('action',$(this).attr("target"));
+						$("#remove-dialog").dialog("open");
+					});
+				});
+			}
+			
+			if(!$.isEmptyObject($("#breadcrumbs")))
+			{
+				$("#breadcrumbs").rcrumbs();
+			}
+			
+			if(!$.isEmptyObject($(".dates")))
+			{
+				$(".dates").each(function(){
+					$(this).datepicker({dateFormat:'dd-mm-yy'});
+				});
+			}
+			
+			if(!$.isEmptyObject($("#tabs")))
+			{
+				$("#tabs").tabs();
+			}
+		})
+	/*]]>*/
+</script>

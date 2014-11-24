@@ -5,24 +5,26 @@
 	<meta charset="UTF-8"/>
 	<title>Organization Form</title>
 	<th:block th:include="static"/>
-	<script>
-		$(function() {
-    		$( "#birthDate" ).datepicker({dateFormat:'dd-mm-yy'});
-    	});
-	</script>
+	<th:block th:include="script"/>
 </head>
 <body>
 	<th:block th:include="menu"/>
 	<div class="content ui-widget-content">
 		<fieldset>
-			<form class="pure-form pure-form-aligned" th:action="@{/organizations/add}" role="form" th:object="${organization}">
+			<div class="rcrumbs" id="breadcrumbs">
+        	<ul>
+            	<li><a th:href="@{/organizations/list}">List</a><span class="divider">></span></li>
+            	<li><a>Form</a></li>
+        	</ul>
+        	</div>
+			<form class="pure-form pure-form-aligned" th:action="@{/organizations/add}" th:object="${organization}">
 			<div class="pure-control-group">
 				<label for="name">Name :</label>
 				<input type="text" id="name" th:field="*{name}"/>
 			</div>
 			<div class="pure-control-group">
 				<label for="birthDate">Birth Date :</label>
-				<input type="date" id="birthDate" th:field="*{birthDate}"/>
+				<input class="dates" type="date" id="birthDate" th:field="*{birthDate}"/>
 			</div>
 			<div class="pure-control-group">
 				<label for="tax">Tax Code :</label>
