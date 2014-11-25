@@ -5,48 +5,49 @@
 	<meta charset="UTF-8"/>
 	<title>Person Form</title>
 	<th:block th:include="static"/>
-	<script>
-		$(function() {
-    		$( "#birthDate" ).datepicker({dateFormat:'dd-mm-yy'});
-    	});
-	</script>
+	<th:block th:include="script"/>
 </head>
 <body>
 	<div th:include="menu"></div>
 	<div class="content ui-widget-content">
-	<h2>Person Management</h2>
-	<form class="pure-form pure-form-aligned" th:action="@{/persons/add}" role="form" th:object="${person}">
 	<fieldset>
-		<div class="pure-control-group">
-			<label for="name">Name :</label>
-			<input type="text" id="name" th:field="*{name}" name="name"/>
-		</div>
-		<div class="pure-control-group">
-			<label for="birthDate">Birth Date :</label>
-			<input type="date" id="birthDate" th:field="*{birthDate}" name="birthDate"/>
-		</div>
-		<div class="pure-control-group">
-			<label for="gender">Gender :</label>
-			<select id="gender" th:field="*{gender}" name="gender">
-				<option th:each="gender:${genders}" th:value="${gender}" th:text="${gender}"/>
-			</select>
-		</div>
-		<div class="pure-control-group">
-			<label for="marital">Marital Status :</label>
-			<select id="marital" th:field="*{maritalStatus}" name="maritalStatus">
-				<option th:each="maritalStatus:${maritals}" th:value="${maritalStatus}" th:text="${maritalStatus}"/>
-			</select>
-		</div>
-		<div class="pure-control-group">
-			<label for="tax">Tax Code :</label>
-			<input type="text" id="tax" th:field="*{taxCode}" name="taxCode"/>
-		</div>
-		<div class="pure-controls">
-			<input type="hidden" th:field="${person.id}" th:value="${person.id}"/>
-			<button type="submit" class="pure-button pure-button-primary">Save</button>
-		</div>
+		<div class="rcrumbs" id="breadcrumbs">
+        	<ul>
+            	<li><a th:href="@{/persons/list}">List</a><span class="divider">></span></li>
+            	<li><a>Form</a></li>
+        	</ul>
+        </div>
+		<form class="pure-form pure-form-aligned" th:action="@{/persons/add}" role="form" th:object="${person}">
+			<div class="pure-control-group">
+				<label for="name">Name :</label>
+				<input type="text" id="name" th:field="*{name}"/>
+			</div>
+			<div class="pure-control-group">
+				<label for="birthDate">Birth Date :</label>
+				<input class="dates" type="date" id="birthDate" th:field="*{birthDate}"/>
+			</div>
+			<div class="pure-control-group">
+				<label for="gender">Gender :</label>
+				<select id="gender" th:field="*{gender}" name="gender">
+					<option th:each="gender:${genders}" th:value="${gender}" th:text="${gender}"/>
+				</select>
+			</div>
+			<div class="pure-control-group">
+				<label for="marital">Marital Status :</label>
+				<select id="marital" th:field="*{maritalStatus}" name="maritalStatus">
+					<option th:each="maritalStatus:${maritals}" th:value="${maritalStatus}" th:text="${maritalStatus}"/>
+				</select>
+			</div>
+			<div class="pure-control-group">
+				<label for="tax">Tax Code :</label>
+				<input type="text" id="tax" th:field="*{taxCode}"/>
+			</div>
+			<div class="pure-controls">
+				<input type="hidden" th:field="*{id}"/>
+				<button type="submit" autofocus="autofocus" class="pure-button pure-button-primary">Save</button>
+			</div>
+		</form>
 	</fieldset>
-	</form>
 	</div>
 	<th:block th:include="footer"/>
 </body>

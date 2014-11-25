@@ -5,26 +5,27 @@
 	<meta charset="UTF-8"/>
 	<title>Product Supplier Form</title>
 	<th:block th:include="static"/>
-	<script>
-		$(function() {
-    		$( "#from" ).datepicker({dateFormat:'dd-mm-yy'});
-    		$( "#to" ).datepicker({dateFormat:'dd-mm-yy'});
-    	});
-	</script>
+	<th:block th:include="script"/>
 </head>
 <body>
 	<div th:include="menu"></div>
 	<div class="content ui-widget-content">
-	<h2>Price for <th:block th:text="${product.name}"/></h2>
-	<form class="pure-form pure-form-aligned" th:action="@{'/productsuppliers/edit/'+${productId}}" method="post" th:object="${supplier}">
 	<fieldset>
+		<div class="rcrumbs" id="breadcrumbs">
+        	<ul>
+            	<li><a th:href="@{'/products/preedit/'+${productId}}">List</a><span class="divider">></span></li>
+            	<li><a>Supplier</a><span class="divider">></span></li>
+            	<li><a>Form</a></li>
+        	</ul>
+        </div>
+		<form class="pure-form pure-form-aligned" th:action="@{'/productsuppliers/edit/'+${productId}}" method="post" th:object="${supplier}">
 		<div class="pure-control-group">
 			<label for="from">From Date :</label>
-			<input type="date" id="from" th:field="*{from}"/>
+			<input class="dates" type="date" id="from" th:field="*{from}"/>
 		</div>
 		<div class="pure-control-group">
 			<label for="to">To Date :</label>
-			<input type="date" id="to" th:field="*{to}"/>
+			<input class="dates" type="date" id="to" th:field="*{to}"/>
 		</div>
 		<div class="pure-control-group">
 			<label for="currency">Supplier :</label>
@@ -36,8 +37,8 @@
 			<input type="hidden" th:field="*{id}"/>
 			<button type="submit" class="pure-button pure-button-primary" autofocus="autofocus">Save</button>
 		</div>
+		</form>
 	</fieldset>
-	</form>
 	</div>
 	<th:block th:include="footer"/>
 </body>

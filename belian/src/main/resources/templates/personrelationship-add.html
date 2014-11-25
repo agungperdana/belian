@@ -5,19 +5,20 @@
 	<meta charset="UTF-8"/>
 	<title>Person Relationship Form</title>
 	<th:block th:include="static"/>
-	<script>
-		$(function() {
-    		$( "#from" ).datepicker({dateFormat:'dd-mm-yy'});
-    		$( "#to" ).datepicker({dateFormat:'dd-mm-yy'});
-    	});
-	</script>
+	<th:block th:include="script"/>
 </head>
 <body>
 	<div th:include="menu"></div>
 	<div class="content ui-widget-content">
-	<h2>Person Relationship Management</h2>
-	<form class="pure-form pure-form-aligned" th:action="@{'/personrelationships/add/'+${partyId}}" role="form" th:object="${relationship}">
 	<fieldset>
+		<div class="rcrumbs" id="breadcrumbs">
+        	<ul>
+            	<li><a th:href="@{'/persons/preedit/'+${partyId}}">Person</a><span class="divider">></span></li>
+            	<li><a>Relationship</a><span class="divider">></span></li>
+            	<li><a>Form</a></li>
+        	</ul>
+        </div>
+	<form class="pure-form pure-form-aligned" th:action="@{'/personrelationships/add/'+${partyId}}" th:object="${relationship}">
 		<div class="pure-control-group">
 			<label for="name">Relationship Type :</label>
 			<select id="name" th:fiield="*{relationshipTypeId}" name="relationshipTypeId" autofocus="autofocus">
@@ -26,11 +27,11 @@
 		</div>
 		<div class="pure-control-group">
 			<label for="from">From Date :</label>
-			<input type="date" id="from" th:field="*{fromDate}"/>
+			<input class="dates" type="date" id="from" th:field="*{fromDate}"/>
 		</div>
 		<div class="pure-control-group">
 			<label for="to">To Date :</label>
-			<input type="date" id="to" th:field="*{toDate}"/>
+			<input class="dates" type="date" id="to" th:field="*{toDate}"/>
 		</div>
 		<div class="pure-control-group">
 			<label for="name">From Role :</label>
@@ -45,10 +46,10 @@
 			</select>
 		</div>
 		<div class="pure-controls">
-			<button type="submit" class="pure-button pure-button-primary">Save</button>
+			<button type="submit" autofocus="autofocus" class="pure-button pure-button-primary">Save</button>
 		</div>
-	</fieldset>
 	</form>
+	</fieldset>
 	</div>
 	<th:block th:include="footer"/>
 </body>

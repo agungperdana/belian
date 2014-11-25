@@ -5,11 +5,19 @@
 	<meta charset="UTF-8"/>
 	<title>Product Component Form</title>
 	<th:block th:include="static"/>
+	<th:block th:include="script"/>
 </head>
 <body>
 	<div th:include="menu"></div>
 	<div class="content ui-widget-content">
-	<h1>Product Component Management</h1>
+	<fieldset>
+		<div class="rcrumbs" id="breadcrumbs">
+        	<ul>
+            	<li><a th:href="@{'/products/preedit/'+${productId}}">Products</a><span class="divider">></span></li>
+            	<li><a>Component</a><span class="divider">></span></li>
+            	<li><a>Form</a></li>
+        	</ul>
+        </div>
 	<form class="pure-form pure-form-aligned" th:action="@{'/productcomponents/add/'+${productId}}" method="post" th:object="${component}">
 	<fieldset>
 		<div class="pure-control-group">
@@ -27,6 +35,7 @@
 		</div>
 	</fieldset>
 	</form>
+	</fieldset>
 	</div>
 	<th:block th:include="footer"/>
 </body>

@@ -10,15 +10,14 @@
 <body>
 	<th:block th:include="menu"/>
 	<div class="content ui-widget-content">
-	<form class="pure-form pure-form-aligned" th:action="@{/taxs/add}" role="form" th:object="${tax}">
 	<fieldset>
 		<div class="rcrumbs" id="breadcrumbs">
         	<ul>
-            	<li><a>Tax Management</a><span class="divider">></span></li>
             	<li><a th:href="@{/taxs/list}">List</a><span class="divider">></span></li>
             	<li><a>Form</a></li>
         	</ul>
         </div>
+		<form class="pure-form pure-form-aligned" th:action="@{/taxs/add}" th:object="${tax}" method="post">
 		<div class="pure-control-group">
 			<label>Name</label>
 			<input type="text" th:field="*{name}"/>
@@ -35,8 +34,8 @@
 			<input type="hidden" th:field="*{id}"/>
 			<button type="submit" autofocus="autofocus" class="pure-button pure-button-primary">Save</button>
 		</div>
+		</form>
 	</fieldset>
-	</form>
 	</div>
 	<th:block th:include="footer"/>
 </body>

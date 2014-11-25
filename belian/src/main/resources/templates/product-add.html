@@ -5,52 +5,51 @@
 	<meta charset="UTF-8"/>
 	<title>Role Form</title>
 	<th:block th:include="static"/>
-	<script th:inline="javascript">
-		/*<![CDATA[*/
-			$(function() {
-	    		$( "#start" ).datepicker({dateFormat:'dd-mm-yy'});
-	    		$( "#end" ).datepicker({dateFormat:'dd-mm-yy'});
-	    	});
-    	/*]]>*/
-	</script>
+	<th:block th:include="script"/>
 </head>
 <body>
 	<th:block th:include="menu"/>
 	<div class="content ui-widget-content">
-		<form class="pure-form pure-form-aligned" th:action="@{/products/add}" method="post" th:object="${product}">
 		<fieldset>
-			<div class="pure-control-group">
-				<label for="code">Code</label>
-				<input id="code" type="text" th:field="*{code}" name="code"/>
-			</div>
-			<div class="pure-control-group">
-				<label for="name">Name</label>
-				<input id="name" type="text" th:field="*{name}" name="name"/>
-			</div>
-			<div class="pure-control-group">
-				<label for="rfid">RFID</label>
-				<input id="rfid" type="text" th:field="*{rfid}" name="rfid"/>
-			</div>
-			<div class="pure-control-group">
-				<label for="type">Type</label>
-				<select id="type" th:field="*{type}" name="type">
-					<option th:each="type:${types}" th:value="${type}" th:text="${type}"/>
-				</select>
-			</div>
-			<div class="pure-control-group">
-				<label for="start">Availability Start Date</label>
-				<input id="start" type="date" th:field="*{start}" name="start"/>
-			</div>
-			<div class="pure-control-group">
-				<label for="end">Availability End Date</label>
-				<input id="end" type="date" th:field="*{end}" name="end"/>
-			</div>
-			<div class="pure-controls">
-				<input type="hidden" th:field="*{id}"/>
-				<button type="submit" class="pure-button pure-button-primary">Save</button>
-			</div>
+			<div class="rcrumbs" id="breadcrumbs">
+        	<ul>
+            	<li><a th:href="@{/products/list}">List</a><span class="divider">></span></li>
+            	<li><a>Form</a></li>
+        	</ul>
+        	</div>
+			<form class="pure-form pure-form-aligned" th:action="@{/products/add}" method="post" th:object="${product}">
+				<div class="pure-control-group">
+					<label for="code">Code</label>
+					<input id="code" type="text" th:field="*{code}"/>
+				</div>
+				<div class="pure-control-group">
+					<label for="name">Name</label>
+					<input id="name" type="text" th:field="*{name}"/>
+				</div>
+				<div class="pure-control-group">
+					<label for="rfid">RFID</label>
+					<input id="rfid" type="text" th:field="*{rfid}"/>
+				</div>
+				<div class="pure-control-group">
+					<label for="type">Type</label>
+					<select id="type" th:field="*{type}" name="type">
+						<option th:each="type:${types}" th:value="${type}" th:text="${type}"/>
+					</select>
+				</div>
+				<div class="pure-control-group">
+					<label for="start">Availability Start Date</label>
+					<input class="dates" id="start" type="date" th:field="*{start}"/>
+				</div>
+				<div class="pure-control-group">
+					<label for="end">Availability End Date</label>
+					<input class="dates" id="end" type="date" th:field="*{end}"/>
+				</div>
+				<div class="pure-controls">
+					<input type="hidden" th:field="*{id}"/>
+					<button type="submit" autofocus="autofocus" class="pure-button pure-button-primary">Save</button>
+				</div>
+			</form>
 		</fieldset>
-		</form>
 	</div>
 	<th:block th:include="footer"/>
 </body>

@@ -5,26 +5,26 @@
 	<meta charset="UTF-8"/>
 	<title>Person Edit</title>
 	<th:block th:include="static"/>
-	<script>
-		$(function() {
-    		$( "#birthDate" ).datepicker({dateFormat:'dd-mm-yy'});
-    		$("#tabs").tabs();
-    	});
-	</script>
+	<th:block th:include="script"/>
 </head>
 <body>
 	<div th:include="menu"></div>
 	<div class="content ui-widget-content">
-	<h1>Person Management</h1>
-	<form class="pure-form pure-form-aligned" th:action="@{/persons/edit}" role="form" th:object="${person}">
 	<fieldset>
+		<div class="rcrumbs" id="breadcrumbs">
+        	<ul>
+            	<li><a th:href="@{/persons/list}">List</a><span class="divider">></span></li>
+            	<li><a>Form</a></li>
+        	</ul>
+        </div>
+	<form class="pure-form pure-form-aligned" th:action="@{/persons/edit}" th:object="${person}">
 		<div class="pure-control-group">
 			<label for="name">Name :</label>
-			<input type="text" id="name" th:field="*{name}" name="name"/>
+			<input type="text" id="name" th:field="*{name}"/>
 		</div>
 		<div class="pure-control-group">
 			<label for="birthDate">Birth Date :</label>
-			<input type="date" id="birthDate" th:field="*{birthDate}" name="birthDate"/>
+			<input class="dates" type="date" id="birthDate" th:field="*{birthDate}"/>
 		</div>
 		<div class="pure-control-group">
 			<label for="gender">Gender :</label>
@@ -40,130 +40,130 @@
 		</div>
 		<div class="pure-control-group">
 			<label for="tax">Tax Code :</label>
-			<input type="text" id="tax" th:field="*{taxCode}" name="taxCode"/>
+			<input type="text" id="tax" th:field="*{taxCode}"/>
 		</div>
 		<div class="pure-controls">
 			<input type="hidden" th:field="${person.id}" th:value="${person.id}"/>
-			<button type="submit" class="pure-button pure-button-primary">Save</button>
+			<button type="submit" autofocus="autofocus" class="pure-button pure-button-primary">Save</button>
 		</div>
-	</fieldset>
-	<div id="tabs">
-		<ul>
-			<li><a href="#contacts">Contact</a></li>
-			<li><a href="#addresses">Address</a></li>
-			<li><a href="#roles">Role</a></li>
-			<li><a href="#relations">Relationship</a></li>
-		</ul>
-		<div id="contacts">
-			<div><a th:href="@{'/personcontacts/preadd/'+*{id}}">New Contact</a></div>
-			<table class="pure-table pure-table-bordered pure-table-striped">
-    		<thead>
-    		<tr>
-    			<th>Contact</th>
-    			<th>Type</th>
-    			<th>&nbsp;</th>
-    		</tr>
-    		</thead>
-    		<tbody>
-			<tr th:each="contact:*{contacts}" th:if="${not contact.deleted}">
-    			<td th:text="${contact.description}"/>
-        		<td th:text="${contact.type}"/>
-        		<td>
-        			<a th:href="@{'/personcontacts/preedit/'+${id}+'/'+${contact.id}}">Edit</a>
-        			&nbsp;|&nbsp;
-        			<a th:href="@{'/personcontacts/delete/'+${id}+'/'+${contact.id}}">Delete</a>
-        		</td>
-    		</tr>
-    		</tbody>
-    		</table>
+		<div id="tabs">
+			<ul>
+				<li><a href="#contacts">Contact</a></li>
+				<li><a href="#addresses">Address</a></li>
+				<li><a href="#roles">Role</a></li>
+				<li><a href="#relations">Relationship</a></li>
+			</ul>
+			<div id="contacts">
+				<div><a th:href="@{'/personcontacts/preadd/'+*{id}}">New Contact</a></div>
+				<table class="pure-table pure-table-bordered pure-table-striped">
+	    		<thead>
+	    		<tr>
+	    			<th>Contact</th>
+	    			<th>Type</th>
+	    			<th>&nbsp;</th>
+	    		</tr>
+	    		</thead>
+	    		<tbody>
+				<tr th:each="contact:*{contacts}" th:if="${not contact.deleted}">
+	    			<td th:text="${contact.description}"/>
+	        		<td th:text="${contact.type}"/>
+	        		<td>
+	        			<a th:href="@{'/personcontacts/preedit/'+${id}+'/'+${contact.id}}">Edit</a>
+	        			&nbsp;|&nbsp;
+	        			<a th:href="@{'/personcontacts/delete/'+${id}+'/'+${contact.id}}">Delete</a>
+	        		</td>
+	    		</tr>
+	    		</tbody>
+	    		</table>
+			</div>
+			<div id="addresses">
+				<div><a th:href="@{'/personaddress/preadd/'+*{id}}">New Address</a></div>
+				<table class="pure-table pure-table-bordered pure-table-striped">
+	    		<thead>
+	    		<tr>
+	    			<th>Address</th>
+	    			<th>City</th>
+	    			<th>Country</th>
+	    			<th>Postal</th>
+	    			<th>Type</th>
+	    			<th>Status</th>
+	    			<th>&nbsp;</th>
+	    		</tr>
+	    		</thead>
+	    		<tbody>
+				<tr th:each="address:*{addresses}" th:if="${not address.deleted}">
+	    			<td th:text="${address.description}"/>
+	    			<td th:text="${address.cityName}"/>
+	    			<td th:text="${address.countryName}"/>
+	    			<td th:text="${address.postal}"/>
+	        		<td th:text="${address.type}"/>
+	        		<td th:text="${address.active?'Active':'Inactive'}"/>
+	        		<td>
+	        			<a th:href="@{'/personaddress/preedit/'+${id}+'/'+${address.id}}">Edit</a>
+	        			&nbsp;|&nbsp;
+	        			<a th:href="@{'/personaddress/delete/'+${id}+'/'+${address.id}}">Delete</a>
+	        		</td>
+	    		</tr>
+	    		</tbody>
+	    		</table>
+			</div>
+			<div id="roles">
+				<div><a th:href="@{'/personrole/preadd/'+*{id}}">New Role</a></div>
+				<table class="pure-table pure-table-bordered pure-table-striped">
+	    		<thead>
+	    		<tr>
+	    			<th>From</th>
+	    			<th>To</th>
+	    			<th>Name</th>
+	    			<th>&nbsp;</th>
+	    		</tr>
+	    		</thead>
+	    		<tbody>
+				<tr th:each="role:*{roles}" th:if="${not role.deleted}">
+	    			<td th:text="${#dates.format(role.from,'dd-MM-yyyy')}"/>
+	    			<td th:text="${role.to != null?#dates.format(role.to,'dd-MM-yyyy'):''}"/>
+	    			<td th:text="${role.name}"/>
+	        		<td>
+	        			<a th:href="@{'/personrole/preedit/'+${id}+'/'+${role.id}}">Edit</a>
+	        			&nbsp;|&nbsp;
+	        			<a th:href="@{'/personrole/delete/'+${id}+'/'+${role.id}}">Delete</a>
+	        		</td>
+	    		</tr>
+	    		</tbody>
+	    		</table>
+			</div>
+			<div id="relations">
+				<div><a th:href="@{'/personrelationships/preadd/'+*{id}}">New Relationship</a></div>
+				<table class="pure-table pure-table-bordered pure-table-striped">
+	    		<thead>
+	    		<tr>
+	    			<th>Type</th>
+	    			<th>From</th>
+	    			<th>To</th>
+	    			<th>Role</th>
+	    			<th>To Party</th>
+	    			<th>&nbsp;</th>
+	    		</tr>
+	    		</thead>
+	    		<tbody>
+				<tr th:each="relationship:*{relationships}" th:if="${not relationship.deleted}">
+	    			<td th:text="${relationship.relationshipTypeName}"/>			
+	    			<td th:text="${#dates.format(relationship.fromDate,'dd-MM-yyyy')}"/>
+	    			<td th:text="${relationship.toDate != null?#dates.format(relationship.toDate,'dd-MM-yyyy'):''}"/>
+	    			<td th:text="${relationship.fromRoleName}"/>
+	    			<td th:text="${relationship.toPartyName}"/>
+	        		<td>
+	        			<a th:href="@{'/personrelationships/preedit/'+${id}+'/'+${relationship.id}}">Edit</a>
+	        			&nbsp;|&nbsp;
+	        			<a th:href="@{'/personrelationships/delete/'+${id}+'/'+${relationship.id}}">Delete</a>
+	        		</td>
+	    		</tr>
+	    		</tbody>
+	    		</table>
+			</div>
 		</div>
-		<div id="addresses">
-			<div><a th:href="@{'/personaddress/preadd/'+*{id}}">New Address</a></div>
-			<table class="pure-table pure-table-bordered pure-table-striped">
-    		<thead>
-    		<tr>
-    			<th>Address</th>
-    			<th>City</th>
-    			<th>Country</th>
-    			<th>Postal</th>
-    			<th>Type</th>
-    			<th>Status</th>
-    			<th>&nbsp;</th>
-    		</tr>
-    		</thead>
-    		<tbody>
-			<tr th:each="address:*{addresses}" th:if="${not address.deleted}">
-    			<td th:text="${address.description}"/>
-    			<td th:text="${address.cityName}"/>
-    			<td th:text="${address.countryName}"/>
-    			<td th:text="${address.postal}"/>
-        		<td th:text="${address.type}"/>
-        		<td th:text="${address.active?'Active':'Inactive'}"/>
-        		<td>
-        			<a th:href="@{'/personaddress/preedit/'+${id}+'/'+${address.id}}">Edit</a>
-        			&nbsp;|&nbsp;
-        			<a th:href="@{'/personaddress/delete/'+${id}+'/'+${address.id}}">Delete</a>
-        		</td>
-    		</tr>
-    		</tbody>
-    		</table>
-		</div>
-		<div id="roles">
-			<div><a th:href="@{'/personrole/preadd/'+*{id}}">New Role</a></div>
-			<table class="pure-table pure-table-bordered pure-table-striped">
-    		<thead>
-    		<tr>
-    			<th>From</th>
-    			<th>To</th>
-    			<th>Name</th>
-    			<th>&nbsp;</th>
-    		</tr>
-    		</thead>
-    		<tbody>
-			<tr th:each="role:*{roles}" th:if="${not role.deleted}">
-    			<td th:text="${#dates.format(role.from,'dd-MM-yyyy')}"/>
-    			<td th:text="${role.to != null?#dates.format(role.to,'dd-MM-yyyy'):''}"/>
-    			<td th:text="${role.name}"/>
-        		<td>
-        			<a th:href="@{'/personrole/preedit/'+${id}+'/'+${role.id}}">Edit</a>
-        			&nbsp;|&nbsp;
-        			<a th:href="@{'/personrole/delete/'+${id}+'/'+${role.id}}">Delete</a>
-        		</td>
-    		</tr>
-    		</tbody>
-    		</table>
-		</div>
-		<div id="relations">
-			<div><a th:href="@{'/personrelationships/preadd/'+*{id}}">New Relationship</a></div>
-			<table class="pure-table pure-table-bordered pure-table-striped">
-    		<thead>
-    		<tr>
-    			<th>Type</th>
-    			<th>From</th>
-    			<th>To</th>
-    			<th>Role</th>
-    			<th>To Party</th>
-    			<th>&nbsp;</th>
-    		</tr>
-    		</thead>
-    		<tbody>
-			<tr th:each="relationship:*{relationships}" th:if="${not relationship.deleted}">
-    			<td th:text="${relationship.relationshipTypeName}"/>			
-    			<td th:text="${#dates.format(relationship.fromDate,'dd-MM-yyyy')}"/>
-    			<td th:text="${relationship.toDate != null?#dates.format(relationship.toDate,'dd-MM-yyyy'):''}"/>
-    			<td th:text="${relationship.fromRoleName}"/>
-    			<td th:text="${relationship.toPartyName}"/>
-        		<td>
-        			<a th:href="@{'/personrelationships/preedit/'+${id}+'/'+${relationship.id}}">Edit</a>
-        			&nbsp;|&nbsp;
-        			<a th:href="@{'/personrelationships/delete/'+${id}+'/'+${relationship.id}}">Delete</a>
-        		</td>
-    		</tr>
-    		</tbody>
-    		</table>
-		</div>
-	</div>
 	</form>
+	</fieldset>
 	</div>
 	<th:block th:include="footer"/>
 </body>

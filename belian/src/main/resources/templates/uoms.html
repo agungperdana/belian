@@ -10,6 +10,7 @@
 <body>
 	<div th:include="menu"></div>
 	<div class="content ui-widget-content">
+		<fieldset>
 		<h2>Unit of Measure Management</h2>
 		<div><a th:href="@{/uoms/preadd}">New Unit of Measure</a></div>
 		<table class="pure-table pure-table-bordered pure-table-striped">
@@ -31,6 +32,7 @@
 	    </tr>
 	    </tbody>
 	    </table>
+		</fieldset>
     </div>
     <th:block th:include="footer"/>
     <th:block th:include="dialog"/>

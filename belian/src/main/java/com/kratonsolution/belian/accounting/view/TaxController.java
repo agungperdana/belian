@@ -14,6 +14,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.accounting.dm.TaxRepository;
@@ -49,7 +50,7 @@ public class TaxController
 		return "tax-add";
 	}
 	
-	@RequestMapping("/add")
+	@RequestMapping(value="/add",method=RequestMethod.POST)
 	public String add(Tax tax)
 	{
 		tax.setId(UUID.randomUUID().toString());
@@ -64,7 +65,7 @@ public class TaxController
 		return "tax-edit";
 	}
 	
-	@RequestMapping("/edit")
+	@RequestMapping(value="/edit",method=RequestMethod.POST)
 	public String edit(Tax tax)
 	{
 		repository.save(tax);
