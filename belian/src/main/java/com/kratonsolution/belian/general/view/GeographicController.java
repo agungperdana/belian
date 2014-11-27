@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.general.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ public class GeographicController
 	private GeographicRepository repository;
 		
 	@RequestMapping("/list")
+	@Secured("ROLE_GEOGRAPHIC_READ")
 	public String list(Model model)
 	{
 		model.addAttribute("geographics",repository.findAll());		
@@ -31,6 +33,7 @@ public class GeographicController
 	}
 	
 	@RequestMapping("/preadd")
+	@Secured("ROLE_GEOGRAPHIC_CREATE")
 	public String preadd(Model model)
 	{
 		model.addAttribute("geographic",Geographic.newInstance());
@@ -39,12 +42,14 @@ public class GeographicController
 	}
 	
 	@RequestMapping("/add")
+	@Secured("ROLE_GEOGRAPHIC_CREATE")
 	public String add(Geographic geographic)
 	{
 		repository.save(geographic);
 		return "redirect:/geographics/list";
 	}
 	
+	@Secured("ROLE_GEOGRAPHIC_UPDATE")
 	@RequestMapping("/preedit/{id}")
 	public String preedit(@PathVariable String id,Model model)
 	{
@@ -53,6 +58,7 @@ public class GeographicController
 		return "geographic-edit";
 	}
 	
+	@Secured("ROLE_GEOGRAPHIC_UPDATE")
 	@RequestMapping("/edit")
 	public String edit(Geographic geographic)
 	{
@@ -60,6 +66,7 @@ public class GeographicController
 		return "redirect:/geographics/list";
 	}
 	
+	@Secured("ROLE_GEOGRAPHIC_DELETE")
 	@RequestMapping("/delete/{id}")
 	public String delete(@PathVariable String id)
 	{

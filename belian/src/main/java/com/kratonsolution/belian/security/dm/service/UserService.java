@@ -33,7 +33,7 @@ public class UserService
 
 	public User prepareAdd()
 	{
-		User user = User.newIntsance();
+		User user = new User();
 
 		for(Role role:roleRepository.findAll())
 		{

@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -44,6 +45,7 @@ public class OrganizationRoleController
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(format, true));
 	}
 	
+	@Secured("ROLE_ORGROLE_CREATE")
 	@RequestMapping("/preadd/{partyId}")
 	public String preadd(@PathVariable String partyId,Model model)
 	{
@@ -54,6 +56,7 @@ public class OrganizationRoleController
 		return "organizationrole-add";
 	}
 	
+	@Secured("ROLE_ORGROLE_CREATE")
 	@RequestMapping("/add/{partyId}")
 	public String add(@PathVariable String partyId,PartyRole role)
 	{
@@ -70,6 +73,7 @@ public class OrganizationRoleController
 		return "redirect:/organizations/preedit/"+partyId;
 	}
 	
+	@Secured("ROLE_ORGROLE_UPDATE")
 	@RequestMapping("/preedit/{partyId}/{id}")
 	public String preedit(@PathVariable String partyId,@PathVariable String id,Model model)
 	{
@@ -92,6 +96,7 @@ public class OrganizationRoleController
 		return "organizationrole-edit";
 	}
 	
+	@Secured("ROLE_ORGROLE_UPDATE")
 	@RequestMapping("/edit/{partyId}/{id}")
 	public String edit(@PathVariable String partyId, @PathVariable String id,PartyRole role)
 	{
@@ -116,6 +121,7 @@ public class OrganizationRoleController
 		return "redirect:/organizations/preedit/"+partyId;
 	}
 	
+	@Secured("ROLE_ORGROLE_DELETE")
 	@RequestMapping("/delete/{partyId}/{id}")
 	public String delete(@PathVariable String partyId,@PathVariable String id)
 	{

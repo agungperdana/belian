@@ -12,6 +12,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -60,6 +61,7 @@ public class ProductPriceController
 		binder.registerCustomEditor(BigDecimal.class,new CustomNumberEditor(BigDecimal.class,false));
 	}
 	
+	@Secured("ROLE_PRDPRICE_CREATE")
 	@RequestMapping("/preadd/{productId}")
 	public String preadd(@PathVariable String productId,Model model)
 	{
@@ -73,6 +75,7 @@ public class ProductPriceController
 		return "productprice-add";
 	}
 	
+	@Secured("ROLE_PRDPRICE_CREATE")
 	@RequestMapping(value="/add/{productId}",method=RequestMethod.POST)
 	public String add(@PathVariable String productId, ProductPrice price)
 	{
@@ -110,6 +113,7 @@ public class ProductPriceController
 		return "redirect:/products/preedit/"+productId;
 	}
 	
+	@Secured("ROLE_PRDPRICE_UPDATE")
 	@RequestMapping("/preedit/{productId}/{id}")
 	public String preedit(@PathVariable String productId,@PathVariable String id,Model model)
 	{
@@ -131,6 +135,7 @@ public class ProductPriceController
 		return "productprice-edit";
 	}
 	
+	@Secured("ROLE_PRDPRICE_UPDATE")
 	@RequestMapping(value="/edit/{productId}",method=RequestMethod.POST)
 	public String edit(@PathVariable String productId,ProductPrice price)
 	{
@@ -183,6 +188,7 @@ public class ProductPriceController
 		return "redirect:/products/preedit/"+productId;
 	}
 	
+	@Secured("ROLE_PRDPRICE_DELETE")
 	@RequestMapping("/delete/{productId}/{id}")
 	public String delete(@PathVariable String productId,@PathVariable String id)
 	{

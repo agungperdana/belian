@@ -9,6 +9,7 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -42,6 +43,7 @@ public class ProductController
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(format, true));
 	}
 	
+	@Secured("ROLE_PRODUCT_READ")
 	@RequestMapping("/list")
 	public String list(Model model)
 	{
@@ -49,6 +51,7 @@ public class ProductController
 		return "products";
 	}
 	
+	@Secured("ROLE_PRODUCT_CREATE")
 	@RequestMapping("/preadd")
 	public String preadd(Model model)
 	{
@@ -59,6 +62,7 @@ public class ProductController
 		return "product-add";
 	}
 	
+	@Secured("ROLE_PRODUCT_CREATE")
 	@RequestMapping(value="/add",method=RequestMethod.POST)
 	public String add(Product product)
 	{
@@ -66,6 +70,7 @@ public class ProductController
 		return "redirect:/products/list";
 	}
 	
+	@Secured("ROLE_PRODUCT_UPDATE")
 	@RequestMapping("/preedit/{id}")
 	public String preedit(@PathVariable String id,Model model)
 	{
@@ -75,6 +80,7 @@ public class ProductController
 		return "product-edit";
 	}
 	
+	@Secured("ROLE_PRODUCT_UPDATE")
 	@RequestMapping(value="/edit",method=RequestMethod.POST)
 	public String edit(Product product)
 	{
@@ -82,6 +88,7 @@ public class ProductController
 		return "redirect:/products/list";
 	}
 	
+	@Secured("ROLE_PRODUCT_DELETE")
 	@RequestMapping("/delete/{id}")
 	public String delete(@PathVariable String id)
 	{

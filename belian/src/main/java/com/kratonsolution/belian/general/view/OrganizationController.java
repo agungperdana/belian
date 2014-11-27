@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -38,6 +39,7 @@ public class OrganizationController
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(format, false));
 	}
 		
+	@Secured("ROLE_ORGANIZATION_READ")
 	@RequestMapping("/list")
 	public String list(Model model)
 	{
@@ -45,6 +47,7 @@ public class OrganizationController
 		return "organizations";
 	}
 	
+	@Secured("ROLE_ORGANIZATION_CREATE")
 	@RequestMapping("/preadd")
 	public String preadd(Model model)
 	{
@@ -52,6 +55,7 @@ public class OrganizationController
 		return "organization-add";
 	}
 	
+	@Secured("ROLE_ORGANIZATION_CREATE")
 	@RequestMapping("/add")
 	public String add(Organization organization)
 	{
@@ -60,6 +64,7 @@ public class OrganizationController
 		return "redirect:/organizations/list";
 	}
 	
+	@Secured("ROLE_ORGANIZATION_UPDATE")
 	@RequestMapping("/preedit/{id}")
 	public String preedit(@PathVariable String id,Model model)
 	{
@@ -67,6 +72,7 @@ public class OrganizationController
 		return "organization-edit";
 	}
 	
+	@Secured("ROLE_ORGANIZATION_UPDATE")
 	@RequestMapping("/edit")
 	public String edit(Organization organization)
 	{
@@ -74,6 +80,7 @@ public class OrganizationController
 		return "redirect:/organizations/list";
 	}
 	
+	@Secured("ROLE_ORGANIZATION_DELETE")
 	@RequestMapping("/delete/{id}")
 	public String delete(@PathVariable String id)
 	{

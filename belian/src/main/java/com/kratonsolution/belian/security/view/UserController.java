@@ -3,7 +3,10 @@
  */
 package com.kratonsolution.belian.security.view;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +32,7 @@ public class UserController
 	@Autowired
 	private UserService service;
 		
+	@Secured("ROLE_USR_READ")
 	@RequestMapping("/list")
 	public String list(Model model)
 	{
@@ -36,6 +40,7 @@ public class UserController
 		return "users";
 	}
 	
+	@Secured("ROLE_USR_CREATE")
 	@RequestMapping("/preadd")
 	public String preadd(Model model)
 	{
@@ -43,9 +48,12 @@ public class UserController
 		return "user-add";
 	}
 	
+	@Secured("ROLE_USR_CREATE")
 	@RequestMapping(value="/add",method=RequestMethod.POST)
 	public String add(User user)
 	{
+		user.setId(UUID.randomUUID().toString());
+		
 		if(!user.getPassword().equals(user.getRePassword()))
 			throw new RuntimeException("Password not equals");
 		
@@ -54,6 +62,7 @@ public class UserController
 		return "redirect:/users/list";
 	}
 	
+	@Secured("ROLE_USR_UPDATE")
 	@RequestMapping("/preedit/{id}")
 	public String preedit(@PathVariable String id,Model model)
 	{
@@ -61,6 +70,7 @@ public class UserController
 		return "user-edit";
 	}
 	
+	@Secured("ROLE_USR_UPDATE")
 	@RequestMapping(value="/edit",method=RequestMethod.POST)
 	public String edit(User user)
 	{
@@ -72,6 +82,7 @@ public class UserController
 		return "redirect:/users/list";
 	}
 	
+	@Secured("ROLE_USR_DELETE")
 	@RequestMapping("/delete/{id}")
 	public String delete(@PathVariable String id)
 	{
@@ -79,6 +90,7 @@ public class UserController
 		return "redirect:/users/list";
 	}
 	
+	@Secured("ROLE_USR_UPDATE")
 	@RequestMapping("/preparechangepassword/{id}")
 	public String prepareChangePassword(@PathVariable String id,Model model)
 	{
@@ -89,6 +101,7 @@ public class UserController
 		return "changepassword";
 	}
 	
+	@Secured("ROLE_USR_UPDATE")
 	@RequestMapping(value="/changepassword",method=RequestMethod.POST)
 	public String changePassword(User user)
 	{

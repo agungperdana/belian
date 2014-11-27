@@ -3,11 +3,15 @@
  */
 package com.kratonsolution.belian.security.view;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.security.dm.AccessRole;
@@ -34,6 +38,7 @@ public class RoleController
 	@Autowired
 	private RoleService service;
 	
+	@Secured("ROLE_ROLE_READ")
 	@RequestMapping("/list")
 	public String list(Model model)
 	{
@@ -41,6 +46,7 @@ public class RoleController
 		return "roles";
 	}
 	
+	@Secured("ROLE_ROLE_CREATE")
 	@RequestMapping("/preadd")
 	public String preadd(Model model)
 	{
@@ -48,14 +54,18 @@ public class RoleController
 		return "role-add";
 	}
 	
-	@RequestMapping("/add")
+	@Secured("ROLE_ROLE_CREATE")
+	@RequestMapping(value="/add",method=RequestMethod.POST)
 	public String add(Role role)
 	{
+		role.setId(UUID.randomUUID().toString());
+		
 		for(AccessRole access:role.getAccesses())
 		{
 			if(Strings.isNullOrEmpty(access.getModuleId()))
 			{
-				Module module = moduleRepository.findOneByName(access.getModuleName());
+				Module module = moduleRepository.findOne(access.getModuleId());
+				access.setModuleCode(module.getCode());
 				access.setModuleId(module.getId());
 			}
 		}
@@ -64,6 +74,7 @@ public class RoleController
 		return "redirect:/roles/list";
 	}
 	
+	@Secured("ROLE_ROLE_UPDATE")
 	@RequestMapping("/preedit/{id}")
 	public String preedit(@PathVariable String id,Model model)
 	{
@@ -71,13 +82,26 @@ public class RoleController
 		return "role-edit";
 	}
 	
-	@RequestMapping("/edit")
+	@Secured("ROLE_ROLE_UPDATE")
+	@RequestMapping(value="/edit",method=RequestMethod.POST)
 	public String edit(Role role)
 	{
+		for(AccessRole accessRole:role.getAccesses())
+		{
+			if(Strings.isNullOrEmpty(accessRole.getModuleCode()))
+			{
+				Module module = moduleRepository.findOne(accessRole.getModuleId());
+				if(module != null)
+					accessRole.setModuleCode(module.getCode());
+			}
+		}
+		
 		repository.save(role);
+		
 		return "redirect:/roles/list";
 	}
 	
+	@Secured("ROLE_ROLE_DELETE")
 	@RequestMapping("/delete/{id}")
 	public String delete(@PathVariable String id)
 	{

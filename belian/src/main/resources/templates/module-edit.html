@@ -13,23 +13,22 @@
 		<fieldset>
 			<div class="rcrumbs" id="breadcrumbs">
 	        	<ul>
-	            	<li><a>Module Management</a><span class="divider">></span></li>
 	            	<li><a th:href="@{/modules/list}">List</a><span class="divider">></span></li>
 	            	<li><a>Form</a></li>
 	        	</ul>
 	        </div>
-	        <form class="pure-form pure-form-aligned" th:action="@{/modules/edit}" role="form" th:object="${module}">
+	        <form class="pure-form pure-form-aligned" th:action="@{/modules/edit}" method="post" th:object="${module}">
 			<div class="pure-control-group">
 				<label for="code">Code</label>
-				<input id="code" type="text" th:field="*{code}" name="code"/>
+				<input id="code" type="text" th:field="*{code}"/>
 			</div>
 			<div class="pure-control-group">
 				<label for="name">Name</label>
-				<input id="name" type="text" th:field="*{code}" name="code"/>
+				<input id="name" type="text" th:field="*{name}" name="name"/>
 			</div>
 			<div class="pure-controls">
-				<input type="hidden" th:field="${module.id}" th:value="${module.id}"/>
-				<button type="submit" class="pure-button pure-button-primary">Save</button>
+				<input type="hidden" th:field="*{id}"/>
+				<button type="submit" autofocus="autofocus" class="pure-button pure-button-primary">Save</button>
 			</div>
 			</form>
 		</fieldset>

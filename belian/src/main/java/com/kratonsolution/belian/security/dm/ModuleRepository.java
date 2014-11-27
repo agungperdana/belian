@@ -11,5 +11,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  */
 public interface ModuleRepository extends MongoRepository<Module, String>
 {
+	public Module findOneByCode(String code);
+	
 	public Module findOneByName(String name);
 }

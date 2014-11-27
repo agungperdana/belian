@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -36,6 +37,7 @@ public class TaxController
 		binder.registerCustomEditor(BigDecimal.class, new CustomNumberEditor(BigDecimal.class,false));
 	}
 		
+	@Secured("ROLE_TAX_READ")
 	@RequestMapping("/list")
 	public String list(Model model)
 	{
@@ -43,6 +45,7 @@ public class TaxController
 		return "taxs";
 	}
 	
+	@Secured("ROLE_TAX_CREATE")
 	@RequestMapping("/preadd")
 	public String preadd(Model model)
 	{
@@ -50,6 +53,7 @@ public class TaxController
 		return "tax-add";
 	}
 	
+	@Secured("ROLE_TAX_CREATE")
 	@RequestMapping(value="/add",method=RequestMethod.POST)
 	public String add(Tax tax)
 	{
@@ -58,6 +62,7 @@ public class TaxController
 		return "redirect:/taxs/list";
 	}
 	
+	@Secured("ROLE_TAX_UPDATE")
 	@RequestMapping("/preedit/{id}")
 	public String preedit(@PathVariable String id,Model model)
 	{
@@ -65,6 +70,7 @@ public class TaxController
 		return "tax-edit";
 	}
 	
+	@Secured("ROLE_TAX_UPDATE")
 	@RequestMapping(value="/edit",method=RequestMethod.POST)
 	public String edit(Tax tax)
 	{
@@ -72,6 +78,7 @@ public class TaxController
 		return "redirect:/taxs/list";
 	}
 	
+	@Secured("ROLE_TAX_DELETE")
 	@RequestMapping("/delete/{id}")
 	public String delete(@PathVariable String id)
 	{

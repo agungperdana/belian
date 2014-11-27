@@ -9,6 +9,7 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -37,6 +38,7 @@ public class PartyRoleTypeController
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(format, false));
 	}
 		
+	@Secured("ROLE_PTYROLETYPE_READ")
 	@RequestMapping("/list")
 	public String list(Model model)
 	{
@@ -44,6 +46,7 @@ public class PartyRoleTypeController
 		return "partyroletypes";
 	}
 	
+	@Secured("ROLE_PTYROLETYPE_CREATE")
 	@RequestMapping("/preadd")
 	public String preadd(Model model)
 	{
@@ -51,6 +54,7 @@ public class PartyRoleTypeController
 		return "partyroletype-add";
 	}
 	
+	@Secured("ROLE_PTYROLETYPE_CREATE")
 	@RequestMapping("/add")
 	public String add(PartyRoleType partyrole)
 	{
@@ -58,6 +62,7 @@ public class PartyRoleTypeController
 		return "redirect:/partyroletypes/list";
 	}
 	
+	@Secured("ROLE_PTYROLETYPE_UPDATE")
 	@RequestMapping("/preedit/{id}")
 	public String preedit(@PathVariable String id,Model model)
 	{
@@ -65,6 +70,7 @@ public class PartyRoleTypeController
 		return "partyroletype-edit";
 	}
 	
+	@Secured("ROLE_PTYROLETYPE_UPDATE")
 	@RequestMapping("/edit")
 	public String edit(PartyRoleType partyrole)
 	{
@@ -72,6 +78,7 @@ public class PartyRoleTypeController
 		return "redirect:/partyroletypes/list";
 	}
 	
+	@Secured("ROLE_PTYROLETYPE_DELETE")
 	@RequestMapping("/delete/{id}")
 	public String delete(@PathVariable String id)
 	{

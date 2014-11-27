@@ -3,12 +3,11 @@
  */
 package com.kratonsolution.belian.security.dm;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.security.core.GrantedAuthority;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author agungdodiperdana
@@ -16,7 +15,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class UserRole implements GrantedAuthority
+public class UserRole
 {
 	@Id
 	private String id;
@@ -32,10 +31,4 @@ public class UserRole implements GrantedAuthority
 
 	@Field("is_deleted")
 	private boolean deleted;
-	
-	@Override
-	public String getAuthority()
-	{
-		return getRoleId();
-	}
 }

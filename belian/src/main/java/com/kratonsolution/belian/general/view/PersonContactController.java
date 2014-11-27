@@ -6,6 +6,7 @@ package com.kratonsolution.belian.general.view;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ public class PersonContactController
 	@Autowired
 	private PersonRepository personRepository;
 	
+	@Secured("ROLE_PRSCONTACT_CREATE")
 	@RequestMapping("/preadd/{partyId}")
 	public String preadd(@PathVariable String partyId,Model model)
 	{
@@ -36,6 +38,7 @@ public class PersonContactController
 		return "personcontact-add";
 	}
 	
+	@Secured("ROLE_PRSCONTACT_CREATE")
 	@RequestMapping("/add/{partyId}")
 	public String add(@PathVariable String partyId,Contact contact)
 	{
@@ -49,6 +52,7 @@ public class PersonContactController
 		return "redirect:/persons/preedit/"+partyId;
 	}
 	
+	@Secured("ROLE_PRSCONTACT_UPDATE")
 	@RequestMapping("/preedit/{partyId}/{id}")
 	public String preedit(@PathVariable String partyId,@PathVariable String id,Model model)
 	{
@@ -70,6 +74,7 @@ public class PersonContactController
 		return "personcontact-edit";
 	}
 	
+	@Secured("ROLE_PRSCONTACT_UPDATE")
 	@RequestMapping("/edit/{partyId}/{id}")
 	public String edit(@PathVariable String partyId, @PathVariable String id,Contact contact)
 	{
@@ -89,6 +94,7 @@ public class PersonContactController
 		return "redirect:/persons/preedit/"+partyId;
 	}
 	
+	@Secured("ROLE_PRSCONTACT_DELETE")
 	@RequestMapping("/delete/{partyId}/{id}")
 	public String delete(@PathVariable String partyId,@PathVariable String id)
 	{

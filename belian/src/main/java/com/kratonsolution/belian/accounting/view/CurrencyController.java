@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.accounting.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ public class CurrencyController
 	@Autowired
 	private CurrencyRepository repository;
 		
+	@Secured("ROLE_CURRENCY_READ")
 	@RequestMapping("/list")
 	public String list(Model model)
 	{
@@ -30,6 +32,7 @@ public class CurrencyController
 		return "currencys";
 	}
 	
+	@Secured("ROLE_CURRENCY_CREATE")
 	@RequestMapping("/preadd")
 	public String preadd(Model model)
 	{
@@ -37,6 +40,7 @@ public class CurrencyController
 		return "currency-add";
 	}
 	
+	@Secured("ROLE_CURRENCY_CREATE")
 	@RequestMapping("/add")
 	public String add(Currency currency)
 	{
@@ -44,6 +48,7 @@ public class CurrencyController
 		return "redirect:/currencys/list";
 	}
 	
+	@Secured("ROLE_CURRENCY_UPDATE")
 	@RequestMapping("/preedit/{id}")
 	public String preedit(@PathVariable String id,Model model)
 	{
@@ -51,6 +56,7 @@ public class CurrencyController
 		return "currency-edit";
 	}
 	
+	@Secured("ROLE_CURRENCY_UPDATE")
 	@RequestMapping("/edit")
 	public String edit(Currency currency)
 	{
@@ -58,6 +64,7 @@ public class CurrencyController
 		return "redirect:/currencys/list";
 	}
 	
+	@Secured("ROLE_CURRENCY_DELETE")
 	@RequestMapping("/delete/{id}")
 	public String delete(@PathVariable String id)
 	{

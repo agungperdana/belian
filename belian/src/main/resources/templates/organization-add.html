@@ -17,7 +17,7 @@
             	<li><a>Form</a></li>
         	</ul>
         	</div>
-			<form class="pure-form pure-form-aligned" th:action="@{/organizations/add}" th:object="${organization}">
+			<form class="pure-form pure-form-aligned" method="post" th:action="@{/organizations/add}" th:object="${organization}">
 			<div class="pure-control-group">
 				<label for="name">Name :</label>
 				<input type="text" id="name" th:field="*{name}"/>

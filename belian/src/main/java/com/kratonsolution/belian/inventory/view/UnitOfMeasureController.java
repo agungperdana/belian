@@ -6,6 +6,7 @@ package com.kratonsolution.belian.inventory.view;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ public class UnitOfMeasureController
 	@Autowired
 	private UnitOfMeasureRepository repository;
 	
+	@Secured("ROLE_UOM_READ")
 	@RequestMapping("/list")
 	public String list(Model model)
 	{
@@ -33,6 +35,7 @@ public class UnitOfMeasureController
 		return "uoms";
 	}
 	
+	@Secured("ROLE_UOM_CREATE")
 	@RequestMapping("/preadd")
 	public String preadd(Model model)
 	{
@@ -41,6 +44,7 @@ public class UnitOfMeasureController
 		return "uom-add";
 	}
 	
+	@Secured("ROLE_UOM_CREATE")
 	@RequestMapping(value="/add",method=RequestMethod.POST)
 	public String add(UnitOfMeasure uom)
 	{
@@ -49,6 +53,7 @@ public class UnitOfMeasureController
 		return "redirect:/uoms/list";
 	}
 	
+	@Secured("ROLE_UOM_UPDATE")
 	@RequestMapping("/preedit/{id}")
 	public String preedit(@PathVariable String id,Model model)
 	{
@@ -56,6 +61,7 @@ public class UnitOfMeasureController
 		return "uom-edit";
 	}
 	
+	@Secured("ROLE_UOM_UPDATE")
 	@RequestMapping(value="/edit",method=RequestMethod.POST)
 	public String edit(UnitOfMeasure uom)
 	{
@@ -63,6 +69,7 @@ public class UnitOfMeasureController
 		return "redirect:/uoms/list";
 	}
 	
+	@Secured("ROLE_UOM_DELETE")
 	@RequestMapping("/delete/{id}")
 	public String delete(@PathVariable String id)
 	{

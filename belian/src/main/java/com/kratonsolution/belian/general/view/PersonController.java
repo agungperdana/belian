@@ -9,6 +9,7 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -37,6 +38,7 @@ public class PersonController
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(format, false));
 	}
 		
+	@Secured("ROLE_PERSON_READ")
 	@RequestMapping("/list")
 	public String list(Model model)
 	{
@@ -44,6 +46,7 @@ public class PersonController
 		return "persons";
 	}
 	
+	@Secured("ROLE_PERSON_CREATE")
 	@RequestMapping("/preadd")
 	public String preadd(Model model)
 	{
@@ -53,6 +56,7 @@ public class PersonController
 		return "person-add";
 	}
 	
+	@Secured("ROLE_PERSON_CREATE")
 	@RequestMapping("/add")
 	public String add(Person person)
 	{
@@ -60,6 +64,7 @@ public class PersonController
 		return "redirect:/persons/preedit/"+person.getId();
 	}
 	
+	@Secured("ROLE_PERSON_UPDATE")
 	@RequestMapping("/preedit/{id}")
 	public String preedit(@PathVariable String id,Model model)
 	{
@@ -69,6 +74,7 @@ public class PersonController
 		return "person-edit";
 	}
 	
+	@Secured("ROLE_PERSON_UPDATE")
 	@RequestMapping("/edit")
 	public String edit(Person person)
 	{
@@ -76,6 +82,7 @@ public class PersonController
 		return "redirect:/persons/list";
 	}
 	
+	@Secured("ROLE_PERSON_DELETE")
 	@RequestMapping("/delete/{id}")
 	public String delete(@PathVariable String id)
 	{

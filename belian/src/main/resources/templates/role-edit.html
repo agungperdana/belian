@@ -17,7 +17,7 @@
             	<li><a>Form</a></li>
         	</ul>
         </div>
-		<form class="pure-form pure-form-aligned" th:action="@{/roles/edit}" th:object="${role}">
+		<form class="pure-form pure-form-aligned" th:action="@{/roles/edit}" method="post" th:object="${role}">
 			<div class="pure-control-group">
 				<label for="code">Code</label>
 				<input type="text" th:field="*{code}"/>

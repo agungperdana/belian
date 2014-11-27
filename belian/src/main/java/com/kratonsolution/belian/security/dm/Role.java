@@ -5,7 +5,6 @@ package com.kratonsolution.belian.security.dm;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -33,12 +32,4 @@ public class Role
 	private String name;
 	
 	private List<AccessRole> accesses = new ArrayList<AccessRole>();
-	
-	public static Role newInstance()
-	{
-		Role role = new Role();
-		role.setId(UUID.randomUUID().toString());
-		
-		return role;
-	}
 }

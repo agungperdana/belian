@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.general.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ public class PartyRelationshipTypeController
 	@Autowired
 	private PartyRelationshipTypeRepository repository;
 		
+	@Secured("ROLE_PTYRELTYPE_READ")
 	@RequestMapping("/list")
 	public String list(Model model)
 	{
@@ -30,6 +32,7 @@ public class PartyRelationshipTypeController
 		return "partyrelationshiptypes";
 	}
 	
+	@Secured("ROLE_PTYRELTYPE_CREATE")
 	@RequestMapping("/preadd")
 	public String preadd(Model model)
 	{
@@ -37,6 +40,7 @@ public class PartyRelationshipTypeController
 		return "partyrelationshiptype-add";
 	}
 	
+	@Secured("ROLE_PTYRELTYPE_CREATE")
 	@RequestMapping("/add")
 	public String add(PartyRelationshipType partyrelationshiptype)
 	{
@@ -44,6 +48,7 @@ public class PartyRelationshipTypeController
 		return "redirect:/partyrelationshiptypes/list";
 	}
 	
+	@Secured("ROLE_PTYRELTYPE_UPDATE")
 	@RequestMapping("/preedit/{id}")
 	public String preedit(@PathVariable String id,Model model)
 	{
@@ -51,6 +56,7 @@ public class PartyRelationshipTypeController
 		return "partyrelationshiptype-edit";
 	}
 	
+	@Secured("ROLE_PTYRELTYPE_UPDATE")
 	@RequestMapping("/edit")
 	public String edit(PartyRelationshipType partyrelationshiptype)
 	{
@@ -58,6 +64,7 @@ public class PartyRelationshipTypeController
 		return "redirect:/partyrelationshiptypes/list";
 	}
 	
+	@Secured("ROLE_PTYRELTYPE_DELETE")
 	@RequestMapping("/delete/{id}")
 	public String delete(@PathVariable String id)
 	{

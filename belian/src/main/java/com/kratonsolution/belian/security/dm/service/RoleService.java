@@ -30,7 +30,7 @@ public class RoleService
 	
 	public Role prepareAdd()
 	{
-		Role role = Role.newInstance();
+		Role role = new Role();
 		for(Module module:moduleRepository.findAll())
 		{
 			AccessRole accessRole = new AccessRole();
@@ -78,6 +78,6 @@ public class RoleService
 			return role;
 		}
 
-		return Role.newInstance();
+		return new Role();
 	}
 }

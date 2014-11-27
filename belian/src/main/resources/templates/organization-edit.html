@@ -17,7 +17,7 @@
             	<li><a>Form</a></li>
         	</ul>
         	</div>
-			<form class="pure-form pure-form-aligned" th:action="@{/organizations/edit}" th:object="${organization}">
+			<form class="pure-form pure-form-aligned" method="post" th:action="@{/organizations/edit}" th:object="${organization}">
 				<div class="pure-control-group">
 					<label for="name">Name</label>
 					<input type="text" th:field="*{name}"/>
@@ -34,6 +34,7 @@
 					<input type="hidden" th:field="${organization.id}" th:value="${organization.id}"/>
 					<button type="submit" autofocus="autofocus" class="pure-button pure-button-primary">Save</button>
 				</div>
+				<br/>
 				<div id="tabs">
 				<ul>
 					<li><a href="#contacts">Contact</a></li>
@@ -56,9 +57,8 @@
 		    			<td th:text="${contact.description}"/>
 		        		<td th:text="${contact.type}"/>
 		        		<td>
-		        			<a th:href="@{'/organizationcontacts/preedit/'+${id}+'/'+${contact.id}}">Edit</a>
-		        			&nbsp;|&nbsp;
-		        			<a th:href="@{'/organizationcontacts/delete/'+${id}+'/'+${contact.id}}">Delete</a>
+		        			<a class="ui-icon ui-icon-pencil" th:href="@{'/organizationcontacts/preedit/'+${id}+'/'+${contact.id}}">Edit</a>
+		        			<a class="remove-dialog-link ui-icon ui-icon-trash" th:attr="target=@{'/organizationcontacts/delete/'+${id}+'/'+${contact.id}}">Delete</a>
 		        		</td>
 		    		</tr>
 		    		</tbody>
@@ -87,9 +87,8 @@
 		        		<td th:text="${address.type}"/>
 		        		<td th:text="${address.active?'Active':'Inactive'}"/>
 		        		<td>
-		        			<a th:href="@{'/organizationaddress/preedit/'+${id}+'/'+${address.id}}">Edit</a>
-		        			&nbsp;|&nbsp;
-		        			<a th:href="@{'/organizationaddress/delete/'+${id}+'/'+${address.id}}">Delete</a>
+		        			<a class="ui-icon ui-icon-pencil" th:href="@{'/organizationaddress/preedit/'+${id}+'/'+${address.id}}">Edit</a>
+		        			<a class="remove-dialog-link ui-icon ui-icon-trash" th:attr="target=@{'/organizationaddress/delete/'+${id}+'/'+${address.id}}">Delete</a>
 		        		</td>
 		    		</tr>
 		    		</tbody>
@@ -112,9 +111,8 @@
 		    			<td th:text="${role.to != null?#dates.format(role.to,'dd-MM-yyyy'):''}"/>
 		    			<td th:text="${role.name}"/>
 		        		<td>
-		        			<a th:href="@{'/organizationrole/preedit/'+${id}+'/'+${role.id}}">Edit</a>
-		        			&nbsp;|&nbsp;
-		        			<a th:href="@{'/organizationrole/delete/'+${id}+'/'+${role.id}}">Delete</a>
+		        			<a class="ui-icon ui-icon-pencil" th:href="@{'/organizationrole/preedit/'+${id}+'/'+${role.id}}">Edit</a>
+		        			<a class="remove-dialog-link ui-icon ui-icon-trash" th:attr="target=@{'/organizationrole/delete/'+${id}+'/'+${role.id}}">Delete</a>
 		        		</td>
 		    		</tr>
 		    		</tbody>
@@ -141,9 +139,8 @@
 		    			<td th:text="${relationship.fromRoleName}"/>
 		    			<td th:text="${relationship.toPartyName}"/>
 		        		<td>
-		        			<a th:href="@{'/organizationrelationships/preedit/'+${id}+'/'+${relationship.id}}">Edit</a>
-		        			&nbsp;|&nbsp;
-		        			<a th:href="@{'/organizationrelationships/delete/'+${id}+'/'+${relationship.id}}">Delete</a>
+		        			<a class="ui-icon ui-icon-pencil" th:href="@{'/organizationrelationships/preedit/'+${id}+'/'+${relationship.id}}">Edit</a>
+		        			<a class="remove-dialog-link ui-icon ui-icon-trash" th:attr="target=@{'/organizationrelationships/delete/'+${id}+'/'+${relationship.id}}">Delete</a>
 		        		</td>
 		    		</tr>
 		    		</tbody>
@@ -153,5 +150,7 @@
 			</form>
 		</fieldset>
 	</div>
+	<th:block th:include="footer"/>
+	<th:block th:include="dialog"/>
 </body>
 </html>

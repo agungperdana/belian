@@ -6,6 +6,7 @@ package com.kratonsolution.belian.general.view;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ public class OrganizationAddressController
 	@Autowired
 	private GeographicRepository geographic;
 	
+	@Secured("ROLE_ORGADDRESS_CREATE")
 	@RequestMapping("/preadd/{partyId}")
 	public String preadd(@PathVariable String partyId,Model model)
 	{
@@ -41,6 +43,7 @@ public class OrganizationAddressController
 		return "organizationaddress-add";
 	}
 	
+	@Secured("ROLE_ORGADDRESS_CREATE")
 	@RequestMapping("/add/{partyId}")
 	public String add(@PathVariable String partyId,Address address)
 	{
@@ -54,6 +57,7 @@ public class OrganizationAddressController
 		return "redirect:/organizations/preedit/"+partyId;
 	}
 	
+	@Secured("ROLE_ORGADDRESS_UPDATE")
 	@RequestMapping("/preedit/{partyId}/{id}")
 	public String preedit(@PathVariable String partyId,@PathVariable String id,Model model)
 	{
@@ -77,6 +81,7 @@ public class OrganizationAddressController
 		return "organizationaddress-edit";
 	}
 	
+	@Secured("ROLE_ORGADDRESS_UPDATE")
 	@RequestMapping("/edit/{partyId}/{id}")
 	public String edit(@PathVariable String partyId, @PathVariable String id,Address address)
 	{
@@ -101,6 +106,7 @@ public class OrganizationAddressController
 		return "redirect:/organizations/preedit/"+partyId;
 	}
 	
+	@Secured("ROLE_ORGADDRESS_DELETE")
 	@RequestMapping("/delete/{partyId}/{id}")
 	public String delete(@PathVariable String partyId,@PathVariable String id)
 	{

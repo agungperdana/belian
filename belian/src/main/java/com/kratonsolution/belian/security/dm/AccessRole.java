@@ -23,6 +23,9 @@ public class AccessRole
 	@Field("module_id")
 	private String moduleId;
 	
+	@Field("module_code")
+	private String moduleCode;
+	
 	@Field("module_name")
 	private String moduleName;
 	
