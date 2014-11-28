@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Container Form</title>
+	<th:block th:include="static"/>
+	<th:block th:include="script"/>
+</head>
+<body>
+	<div th:include="menu"></div>
+	<div class="content ui-widget-content">
+	<fieldset>
+		<div class="rcrumbs" id="breadcrumbs">
+        	<ul>
+            	<li><a th:href="@{'/facilitys/preedit/'+${facilityId}}">Facility</a><span class="divider">></span></li>
+            	<li><a>Form</a></li>
+        	</ul>
+        </div>
+		<form class="pure-form pure-form-aligned" th:action="@{'/containers/add/'+${facilityId}}" method="post" th:object="${container}">
+			<div class="pure-control-group">
+				<label for="from">Name :</label>
+				<input type="text" id="name" th:field="*{name}"/>
+			</div>
+			<div class="pure-control-group">
+				<label for="type">Type :</label>
+				<select id="type" th:field="*{type}">
+					<option th:each="type:${types}" th:value="${type}" th:text="${type}"/>
+				</select>
+			</div>
+			<div class="pure-controls">
+				<button type="submit" autofocus="autofocus" class="pure-button pure-button-primary">Save</button>
+			</div>
+		</form>
+	</fieldset>
+	</div>
+	<th:block th:include="footer"/>
+</body>
+</html>

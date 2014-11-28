@@ -6,6 +6,7 @@ package com.kratonsolution.belian.inventory.view;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -55,7 +56,7 @@ public class ProductController
 	@RequestMapping("/preadd")
 	public String preadd(Model model)
 	{
-		model.addAttribute("product",Product.newInstance());
+		model.addAttribute("product",new Product());
 		model.addAttribute("types",Product.Type.values());
 		model.addAttribute("currencys",currency.findAll());
 		
@@ -66,6 +67,7 @@ public class ProductController
 	@RequestMapping(value="/add",method=RequestMethod.POST)
 	public String add(Product product)
 	{
+		product.setId(UUID.randomUUID().toString());
 		repository.save(product);
 		return "redirect:/products/list";
 	}

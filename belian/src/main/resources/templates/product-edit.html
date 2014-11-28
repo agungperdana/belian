@@ -54,6 +54,7 @@
 			<li><a href="#features">Feature</a></li>
 			<li><a href="#prices">Price</a></li>
 			<li><a href="#suppliers">Supplier</a></li>
+			<li><a href="#costs">Estimated Cost</a></li>
 		</ul>
 		<div id="components">
 			<div><a th:href="@{'/productcomponents/preadd/'+*{id}}">New Component</a></div>
@@ -70,9 +71,8 @@
     			<td th:text="${component.productName}"/>
         		<td th:text="${#numbers.formatDecimal(component.amount,1,'POINT',1,'COMMA')}"/>
         		<td>
-        			<a th:href="@{'/productcomponents/preedit/'+${id}+'/'+${component.id}}">Edit</a>
-        			&nbsp;|&nbsp;
-        			<a th:href="@{'/productcomponents/delete/'+${id}+'/'+${component.id}}">Delete</a>
+        			<a class="ui-icon ui-icon-pencil" th:href="@{'/productcomponents/preedit/'+${id}+'/'+${component.id}}">Edit</a>
+        			<a class="remove-dialog-link ui-icon ui-icon-trash" th:attr="target=@{'/productcomponents/delete/'+${id}+'/'+${component.id}}">Delete</a>
         		</td>
     		</tr>
     		</tbody>
@@ -93,9 +93,8 @@
     			<td th:text="${feature.type}"/>
     			<td th:text="${feature.value}"/>
         		<td>
-        			<a th:href="@{'/productfeatures/preedit/'+${id}+'/'+${feature.id}}">Edit</a>
-        			&nbsp;|&nbsp;
-        			<a th:href="@{'/productfeatures/delete/'+${id}+'/'+${feature.id}}">Delete</a>
+        			<a class="ui-icon ui-icon-pencil" th:href="@{'/productfeatures/preedit/'+${id}+'/'+${feature.id}}">Edit</a>
+        			<a class="remove-dialog-link ui-icon ui-icon-trash" th:attr="target=@{'/productfeatures/delete/'+${id}+'/'+${feature.id}}">Delete</a>
         		</td>
     		</tr>
     		</tbody>
@@ -126,9 +125,8 @@
         		<td th:text="${price.geographicName}"/>
         		<td th:text="${price.partyName}"/>
         		<td>
-        			<a th:href="@{'/productprices/preedit/'+${id}+'/'+${price.id}}">Edit</a>
-        			&nbsp;|&nbsp;
-        			<a th:href="@{'/productprices/delete/'+${id}+'/'+${price.id}}">Delete</a>
+        			<a class="ui-icon ui-icon-pencil" th:href="@{'/productprices/preedit/'+${id}+'/'+${price.id}}">Edit</a>
+        			<a class="remove-dialog-link ui-icon ui-icon-trash" th:attr="target=@{'/productprices/delete/'+${id}+'/'+${price.id}}">Delete</a>
         		</td>
     		</tr>
     		</tbody>
@@ -151,9 +149,38 @@
     			<td th:text="${supplier.to != null?#dates.format(supplier.to,'dd-MM-yyyy'):''}"/>
     			<td th:text="${supplier.partyName}"/>
         		<td>
-        			<a th:href="@{'/productsuppliers/preedit/'+${id}+'/'+${supplier.id}}">Edit</a>
-        			&nbsp;|&nbsp;
-        			<a th:href="@{'/productsuppliers/delete/'+${id}+'/'+${supplier.id}}">Delete</a>
+        			<a class="ui-icon ui-icon-pencil" th:href="@{'/productsuppliers/preedit/'+${id}+'/'+${supplier.id}}">Edit</a>
+        			<a class="remove-dialog-link ui-icon ui-icon-trash" th:attr="target=@{'/productsuppliers/delete/'+${id}+'/'+${supplier.id}}">Delete</a>
+        		</td>
+    		</tr>
+    		</tbody>
+    		</table>
+		</div>
+		<div id="costs">
+			<div><a th:href="@{'/productcosts/preadd/'+*{id}}">New Estimated Cost</a></div>
+			<table class="pure-table pure-table-bordered pure-table-striped">
+    		<thead>
+    		<tr>
+    			<th>From</th>
+    			<th>To</th>
+    			<th>Estimated Cost</th>
+    			<th>For Area</th>
+    			<th>Type</th>
+    			<th>&nbsp;</th>
+    		</tr>
+    		</thead>
+    		<tbody>
+			<tr th:each="cost:*{costs}" th:if="${not cost.deleted}">
+    			<td th:text="${#dates.format(cost.from,'dd-MM-yyyy')}"/>
+    			<td th:text="${cost.to != null?#dates.format(cost.to,'dd-MM-yyyy'):''}"/>
+    			<td>
+        			<th:block th:text="${cost.currencyCode}"/>&nbsp;<th:block th:text="${#numbers.formatDecimal(cost.estimated,3,'POINT',2,'COMMA')}"/>
+        		</td>
+        		<td th:text="${cost.areaName}"/>
+        		<td th:text="${cost.type}"/>
+        		<td>
+        			<a class="ui-icon ui-icon-pencil" th:href="@{'/productcosts/preedit/'+${id}+'/'+${cost.id}}">Edit</a>
+        			<a class="remove-dialog-link ui-icon ui-icon-trash" th:attr="target=@{'/productcosts/delete/'+${id}+'/'+${cost.id}}">Delete</a>
         		</td>
     		</tr>
     		</tbody>
@@ -163,5 +190,7 @@
 	</form>
 	</fieldset>
 	</div>
+	<th:block th:include="footer"/>
+	<th:block th:include="dialog"/>
 </body>
 </html>

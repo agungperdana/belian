@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Product Cost Form</title>
+	<th:block th:include="static"/>
+	<th:block th:include="script"/>
+</head>
+<body>
+	<th:block th:include="menu"/>
+	<div class="content ui-widget-content">
+	<fieldset>
+		<div class="rcrumbs" id="breadcrumbs">
+        	<ul>
+            	<li><a th:href="@{'/products/preedit/'+${productId}}">Product</a><span class="divider">></span></li>
+            	<li><a>Cost</a><span class="divider">></span></li>
+            	<li><a>Form</a></li>
+        	</ul>
+        </div>
+	<form class="pure-form pure-form-aligned" th:action="@{'/productcosts/add/'+${productId}}" method="post" th:object="${cost}">
+		<div class="pure-control-group">
+			<label for="from">From Date :</label>
+			<input class="dates" type="date" id="from" th:field="*{from}"/>
+		</div>
+		<div class="pure-control-group">
+			<label for="to">To Date :</label>
+			<input class="dates" type="date" id="to" th:field="*{to}"/>
+		</div>
+		<div class="pure-control-group">
+			<label for="estimated">Estimated Cost :</label>
+			<input type="text" id="estimated" th:field="*{estimated}"/>
+		</div>
+		<div class="pure-control-group">
+			<label for="currency">Currency :</label>
+			<select id="currency" th:field="*{currencyId}">
+				<option th:each="currency:${currencys}" th:value="${currency.id}" th:text="${currency.code}"/>
+			</select>
+		</div>
+		<div class="pure-control-group">
+			<label for="product">Type :</label>
+			<select id="product" th:field="*{type}">
+				<option th:each="type:${types}" th:value="${type}" th:text="${type}"/>
+			</select>
+		</div>
+		<div class="pure-control-group">
+			<label for="geo">For Area :</label>
+			<select id="geo" th:field="*{areaId}">
+				<option th:each="geographic:${geographics}" th:value="${geographic.id}" th:text="${geographic.name}"/>
+			</select>
+		</div>
+		<div class="pure-controls">
+			<button type="submit" class="pure-button pure-button-primary" autofocus="autofocus">Save</button>
+		</div>
+	</form>
+	</fieldset>
+	</div>
+	<th:block th:include="footer"/>
+</body>
+</html>
