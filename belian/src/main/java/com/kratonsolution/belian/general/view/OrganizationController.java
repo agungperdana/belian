@@ -17,6 +17,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.OrganizationRepository;
@@ -36,7 +37,7 @@ public class OrganizationController
 	public void binder(WebDataBinder binder)
 	{
 		DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(format, false));
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(format, true));
 	}
 		
 	@Secured("ROLE_ORGANIZATION_READ")
@@ -51,12 +52,12 @@ public class OrganizationController
 	@RequestMapping("/preadd")
 	public String preadd(Model model)
 	{
-		model.addAttribute("organization",Organization.newInstance());
+		model.addAttribute("organization",new Organization());
 		return "organization-add";
 	}
 	
 	@Secured("ROLE_ORGANIZATION_CREATE")
-	@RequestMapping("/add")
+	@RequestMapping(value="/add",method=RequestMethod.POST)
 	public String add(Organization organization)
 	{
 		organization.setId(UUID.randomUUID().toString());
@@ -73,7 +74,7 @@ public class OrganizationController
 	}
 	
 	@Secured("ROLE_ORGANIZATION_UPDATE")
-	@RequestMapping("/edit")
+	@RequestMapping(value="/edit",method=RequestMethod.POST)
 	public String edit(Organization organization)
 	{
 		repository.save(organization);

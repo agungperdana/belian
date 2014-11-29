@@ -24,7 +24,7 @@
     	<tbody>
 		<tr th:each="organization:${organizations}">
     		<td th:text="${organization.name}"/>
-        	<td th:text="${#dates.format(organization.birthDate,'dd-MM-yyyy')}"/>
+        	<td th:text="${organization.birthDate != null?#dates.format(organization.birthDate,'dd-MM-yyyy'):''}"/>
         	<td th:text="${organization.taxCode}"/>
         	<td>
         		<a class="ui-icon ui-icon-pencil" th:href="@{'/organizations/preedit/'+${organization.id}}">Edit</a>

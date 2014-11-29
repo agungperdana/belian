@@ -16,23 +16,21 @@
 		<table class="pure-table pure-table-bordered pure-table-striped">
 	    <thead>
 	    <tr>
-	    	<th>Code</th>
 	    	<th>Name</th>
 	    	<th>Valid From</th>
 	    	<th>Valid To</th>
-	        <th>RFID Code</th>
 	        <th>Type</th>
-	    	<th>&nbsp;</th>
+	        <th>Category</th>
+	       	<th>&nbsp;</th>
 	    </tr>
 	    </thead>
 	    <tbody>
 		<tr th:each="product:${products}">
-	    	<td th:text="${product.code}"/>
 	    	<td th:text="${product.name}"/>
 	    	<td th:text="${#dates.format(product.start,'dd-MM-yyyy')}"/>
 	    	<td th:text="${product.end  != null?#dates.format(product.end,'dd-MM-yyyy'):''}"/>
-	        <td th:text="${product.rfid}"/>
 	        <td th:text="${product.type}"/>
+	        <td th:text="${product.categoryName}"/>
 	        <td>
 	        	<a class="ui-icon ui-icon-pencil" th:href="@{'/products/preedit/'+${product.id}}">Edit</a>
 	        	<a class="remove-dialog-link ui-icon ui-icon-trash" th:attr="target=@{'/products/delete/'+${product.id}}">Delete</a>

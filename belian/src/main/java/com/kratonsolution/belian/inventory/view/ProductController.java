@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.kratonsolution.belian.accounting.dm.CurrencyRepository;
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.inventory.dm.ProductCategory;
+import com.kratonsolution.belian.inventory.dm.ProductCategoryRepository;
 import com.kratonsolution.belian.inventory.dm.ProductRepository;
 
 /**
@@ -33,9 +35,9 @@ public class ProductController
 {
 	@Autowired
 	private ProductRepository repository;
-		
+	
 	@Autowired
-	private CurrencyRepository currency;
+	private ProductCategoryRepository categoryRepository;
 	
 	@InitBinder
 	public void binder(WebDataBinder binder)
@@ -58,7 +60,7 @@ public class ProductController
 	{
 		model.addAttribute("product",new Product());
 		model.addAttribute("types",Product.Type.values());
-		model.addAttribute("currencys",currency.findAll());
+		model.addAttribute("categorys",categoryRepository.findAll());
 		
 		return "product-add";
 	}
@@ -68,6 +70,14 @@ public class ProductController
 	public String add(Product product)
 	{
 		product.setId(UUID.randomUUID().toString());
+		
+		if(!Strings.isNullOrEmpty(product.getCategoryId()))
+		{
+			ProductCategory category = categoryRepository.findOne(product.getCategoryId());
+			if(category != null)
+				product.setCategoryName(category.getName());
+		}
+		
 		repository.save(product);
 		return "redirect:/products/list";
 	}
@@ -78,7 +88,7 @@ public class ProductController
 	{
 		model.addAttribute("product",repository.findOne(id));
 		model.addAttribute("types",Product.Type.values());
-		model.addAttribute("currencys",currency.findAll());
+		model.addAttribute("categorys",categoryRepository.findAll());
 		return "product-edit";
 	}
 	
@@ -86,6 +96,13 @@ public class ProductController
 	@RequestMapping(value="/edit",method=RequestMethod.POST)
 	public String edit(Product product)
 	{
+		if(!Strings.isNullOrEmpty(product.getCategoryId()))
+		{
+			ProductCategory category = categoryRepository.findOne(product.getCategoryId());
+			if(category != null)
+				product.setCategoryName(category.getName());
+		}
+		
 		repository.save(product);
 		return "redirect:/products/list";
 	}

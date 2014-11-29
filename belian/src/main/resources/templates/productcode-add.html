@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Product Code Form</title>
+	<th:block th:include="static"/>
+	<th:block th:include="script"/>
+</head>
+<body>
+	<div th:include="menu"></div>
+	<div class="content ui-widget-content">
+	<fieldset>
+		<div class="rcrumbs" id="breadcrumbs">
+        	<ul>
+            	<li><a th:href="@{'/products/preedit/'+${productId}}">Product</a><span class="divider">></span></li>
+            	<li><a>Product Code</a><span class="divider">></span></li>
+            	<li><a>Form</a></li>
+        	</ul>
+        </div>
+	<form class="pure-form pure-form-aligned" th:action="@{'/productcodes/add/'+${productId}}" method="post" th:object="${code}">
+		<div class="pure-control-group">
+			<label for="code">Code :</label>
+			<input type="text" id="code" th:field="*{code}"/>
+		</div>
+		<div class="pure-control-group">
+			<label for="product">Type :</label>
+			<select id="product" th:field="*{type}">
+				<option th:each="type:${types}" th:value="${type}" th:text="${type}"/>
+			</select>
+		</div>
+		<div class="pure-controls">
+			<button type="submit" class="pure-button pure-button-primary" autofocus="autofocus">Save</button>
+		</div>
+	</form>
+	</fieldset>
+	</div>
+	<th:block th:include="footer"/>
+</body>
+</html>

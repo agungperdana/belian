@@ -3,12 +3,11 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
-
-import lombok.Setter;
 import lombok.Getter;
+import lombok.Setter;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author agungdodiperdana
@@ -16,7 +15,6 @@ import lombok.Getter;
  */
 @Getter
 @Setter
-@Document(collection="product_feature")
 public class ProductFeature
 {
 	public enum Type{SIZE,WEIGH,HEIGH,COLOR}

@@ -37,11 +37,11 @@ public class Product
 	@Field("name")
 	private String name;
 	
-	@Field("code")
-	private String code;
+	@Field("category_id")
+	private String categoryId;
 	
-	@Field("rfid")
-	private String rfid;
+	@Field("category_name")
+	private String categoryName;
 	
 	@Field("type")
 	private Type type = Type.FINISHGOOD;
@@ -55,4 +55,6 @@ public class Product
 	private List<ProductComponent> components = new ArrayList<ProductComponent>();
 	
 	private List<ProductCost> costs = new ArrayList<ProductCost>();
+	
+	private List<ProductCode> codes = new ArrayList<ProductCode>();
 }

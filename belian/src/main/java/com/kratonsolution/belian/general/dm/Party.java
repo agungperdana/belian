@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
@@ -25,6 +26,7 @@ public class Party
 	protected String id;
 
 	@Field("name")
+	@Indexed(unique=true)
 	protected String name;
 	
 	@Field("birth_date")
