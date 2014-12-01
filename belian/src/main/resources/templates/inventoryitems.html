@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Inventory Item Management</title>
+	<th:block th:include="static"/>
+	<th:block th:include="script"/>
+</head>
+<body>
+	<div th:include="menu"></div>
+	<div class="content ui-widget-content">
+		<fieldset>
+		<h2>Inventory Item Management</h2>
+		<div><a th:href="@{/inventoryitems/preadd}">New Inventory Item</a></div>
+		<table class="pure-table pure-table-bordered pure-table-striped">
+	    <thead>
+	    <tr>
+	    	<th>Product</th>
+	        <th>Serial</th>
+	        <th>On Hand</th>
+	        <th>Facility</th>
+	        <th>Container</th>
+	    	<th>&nbsp;</th>
+	    </tr>
+	    </thead>
+	    <tbody>
+		<tr th:each="inventoryitem:${inventoryitems}">
+	        <td th:text="${inventoryitem.productName}"/>
+	        <td th:text="${inventoryitem.serialNumber}"/>
+	        <td th:text="${inventoryitem.onhand}"/>
+	        <td th:text="${inventoryitem.facilityName}"/>
+	        <td th:text="${inventoryitem.containerName}"/>
+	        <td>
+	        	<a class="ui-icon ui-icon-pencil" th:href="@{'/inventoryitems/preedit/'+${inventoryitem.id}}">Edit</a>
+	        	<a class="remove-dialog-link ui-icon ui-icon-trash" th:attr="target=@{'/inventoryitems/delete/'+${inventoryitem.id}}">Delete</a>
+	        </td>
+	    </tr>
+	    </tbody>
+	    </table>
+		</fieldset>
+    </div>
+    <th:block th:include="footer"/>
+    <th:block th:include="dialog"/>
+</body>
+</html>
