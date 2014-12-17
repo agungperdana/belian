@@ -14,13 +14,15 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.kratonsolution.belian.global.EconomicAgent;
+
 /**
  * @author agungdodiperdana
  *
  */
 @Getter
 @Setter
-public class Party
+public class Party implements EconomicAgent
 {
 	@Id
 	protected String id;

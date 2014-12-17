@@ -57,4 +57,12 @@ public class Product
 	private List<ProductCost> costs = new ArrayList<ProductCost>();
 	
 	private List<ProductCode> codes = new ArrayList<ProductCode>();
+	
+	public Product(){}
+	
+	public Product(String id,String name)
+	{
+		this.id = id;
+		this.name = name;
+	}
 }

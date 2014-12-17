@@ -12,6 +12,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.kratonsolution.belian.global.EconomicResource;
+
 /**
  * @author agungdodiperdana
  *
@@ -19,7 +21,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Getter
 @Setter
 @Document(collection="inventory_item")
-public class InventoryItem
+public class InventoryItem implements EconomicResource
 {
 	@Id
 	private String id;
@@ -47,4 +49,19 @@ public class InventoryItem
 	
 	@Field("on_hand")
 	private BigDecimal onhand = BigDecimal.ZERO;
+
+	@Override
+	public void increment(BigDecimal value)
+	{
+		setOnhand(getOnhand().add(value));
+	}
+
+	@Override
+	public void decrement(BigDecimal value)
+	{
+		if((getOnhand().subtract(value)).compareTo(BigDecimal.ZERO) >= 0)
+			setOnhand(getOnhand().subtract(value));
+		else
+			setOnhand(BigDecimal.ZERO);
+	}
 }
