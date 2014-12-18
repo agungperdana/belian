@@ -48,7 +48,7 @@ public class CashSales extends Sales implements ExchangeProccess
 		
 		return party;
 	}
-
+	
 	@Override
 	public Collection<CashPayment> getIncrementEvents()
 	{

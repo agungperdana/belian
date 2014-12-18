@@ -52,7 +52,7 @@ public class CashAccount implements EconomicResource
 	private String ownerName;
 	
 	@Field("amount")
-	private BigDecimal amount;
+	private BigDecimal amount = BigDecimal.ZERO;
 
 	@Override
 	public void increment(BigDecimal value)
