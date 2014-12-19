@@ -21,7 +21,7 @@ import com.kratonsolution.belian.global.EconomicResource;
  */
 @Getter
 @Setter
-@Document(collection="cash")
+@Document(collection="cash_account")
 public class CashAccount implements EconomicResource
 {
 	@Id

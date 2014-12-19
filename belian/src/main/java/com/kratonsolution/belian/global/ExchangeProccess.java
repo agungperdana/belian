@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.global;
 
 import java.util.Collection;
+import java.util.Date;
 
 /**
  * @author agungdodiperdana
@@ -11,6 +12,8 @@ import java.util.Collection;
  */
 public interface ExchangeProccess
 {
+	public Date getDate();
+	
 	public EconomicAgent getProducer();
 	
 	public EconomicAgent getConsumer();

@@ -6,6 +6,9 @@ package com.kratonsolution.belian.accounting.dm;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -14,6 +17,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * @author Agung Dodi Perdana
  *
  */
+@Getter
+@Setter
 @Document(collection="economic_exchange_log")
 public class EconomicExchangeLog
 {

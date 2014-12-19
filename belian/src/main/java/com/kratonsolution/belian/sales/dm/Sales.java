@@ -46,4 +46,7 @@ public abstract class Sales
 	
 	@Field("credit_term")
 	protected BigDecimal creditTerm;
+	
+	@Field("is_deleted")
+	protected boolean deleted;
 }

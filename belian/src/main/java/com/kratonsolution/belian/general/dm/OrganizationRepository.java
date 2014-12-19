@@ -14,4 +14,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface OrganizationRepository extends MongoRepository<Organization, String>
 {
 	public List<Organization> findAllByRolesName(String roleName);
+	
+	public List<Organization> findAllByRelationshipsRelationshipTypeName(String name);
 }

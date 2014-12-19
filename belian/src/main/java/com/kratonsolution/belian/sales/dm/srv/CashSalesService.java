@@ -11,11 +11,13 @@ import org.springframework.stereotype.Service;
 import com.kratonsolution.belian.accounting.dm.CashAccount;
 import com.kratonsolution.belian.accounting.dm.CashAccountRepository;
 import com.kratonsolution.belian.global.DecrementEvent;
+import com.kratonsolution.belian.global.EconomicExchangeEvent;
 import com.kratonsolution.belian.global.IncrementEvent;
 import com.kratonsolution.belian.inventory.dm.InventoryItem;
 import com.kratonsolution.belian.inventory.dm.InventoryItemRepository;
 import com.kratonsolution.belian.sales.dm.CashSales;
 import com.kratonsolution.belian.sales.dm.CashSalesRepository;
+import com.kratonsolution.belian.sales.dm.SalesLine;
 
 /**
  * @author agungdodiperdana
@@ -33,6 +35,7 @@ public class CashSalesService
 	@Autowired
 	private InventoryItemRepository inventoryItemRepository;
 
+	@EconomicExchangeEvent
 	public void create(CashSales sales)
 	{
 		sales.setId(UUID.randomUUID().toString());
@@ -58,6 +61,12 @@ public class CashSalesService
 			
 			item.decrement(event.getValue());
 			inventoryItemRepository.save(item);
+		
+			SalesLine line = (SalesLine)event;
+			line.setProductId(item.getProductId());
+			line.setProductName(item.getProductName());
 		}
+		
+		repository.save(sales);
 	}
 }

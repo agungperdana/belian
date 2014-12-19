@@ -26,7 +26,7 @@ public class PartyRoleType
 	private String id;
 	
 	@Field("name")
-	@Indexed
+	@Indexed(unique=true)
 	private String name;
 
 	@Field("is_deleted")

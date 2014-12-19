@@ -46,7 +46,7 @@ public class AspectTest
 		{
 			SalesLine line = new SalesLine();
 			line.setId(UUID.randomUUID().toString());
-			line.setInventoryId(UUID.randomUUID().toString());
+			line.setInventoryId("9feebb45-1eab-43a7-ab51-ce594f28aede");
 			line.setQuantity(BigDecimal.TEN);
 			
 			cash.getItems().add(line);
@@ -54,7 +54,7 @@ public class AspectTest
 		
 		CashPayment payment = new CashPayment();
 		payment.setId(UUID.randomUUID().toString());
-		payment.setCashAccountId(UUID.randomUUID().toString());
+		payment.setCashAccountId("c0fbddf7-ff52-47af-a536-0bccdc9e174f");
 		payment.setAmount(BigDecimal.valueOf(100000));
 		
 		cash.setPayment(payment);

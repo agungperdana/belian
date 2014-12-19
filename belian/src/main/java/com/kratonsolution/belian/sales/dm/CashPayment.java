@@ -25,10 +25,13 @@ public class CashPayment implements IncrementEvent
 	@Id
 	private String id;
 	
-	@Field("cash_id")
+	@Field("cash_account_id")
 	private String cashAccountId;
 	
-	@Field("cash_name")
+	@Field("cash_account_number")
+	private String cashAccountNumber;
+	
+	@Field("cash_account_name")
 	private String cashAccountName;
 	
 	@Field("amount")
