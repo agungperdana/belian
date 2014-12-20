@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
@@ -22,6 +23,10 @@ public abstract class Sales
 {
 	@Id
 	protected String id;
+	
+	@Field("doc_serial")
+	@Indexed(unique=true)
+	protected String number;
 	
 	@Field("date")
 	protected Date date;

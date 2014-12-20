@@ -50,7 +50,7 @@ public class PartyRoleTypeController
 	@RequestMapping("/preadd")
 	public String preadd(Model model)
 	{
-		model.addAttribute("partyrole",PartyRoleType.newInstance());
+		model.addAttribute("partyrole",new PartyRoleType());
 		return "partyroletype-add";
 	}
 	

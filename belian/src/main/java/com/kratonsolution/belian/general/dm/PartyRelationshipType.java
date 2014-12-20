@@ -5,13 +5,12 @@ package com.kratonsolution.belian.general.dm;
 
 import java.util.UUID;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author agungdodiperdana
@@ -26,7 +25,6 @@ public class PartyRelationshipType
 	private String id;
 	
 	@Field("name")
-	@Indexed(unique=true)
 	private String name;
 	
 	@Field("is_deleted")

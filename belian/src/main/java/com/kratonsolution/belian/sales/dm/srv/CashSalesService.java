@@ -13,6 +13,8 @@ import com.kratonsolution.belian.accounting.dm.CashAccountRepository;
 import com.kratonsolution.belian.global.DecrementEvent;
 import com.kratonsolution.belian.global.EconomicExchangeEvent;
 import com.kratonsolution.belian.global.IncrementEvent;
+import com.kratonsolution.belian.global.dm.DocumentNumber.Type;
+import com.kratonsolution.belian.global.dm.srv.DocumentNumberService;
 import com.kratonsolution.belian.inventory.dm.InventoryItem;
 import com.kratonsolution.belian.inventory.dm.InventoryItemRepository;
 import com.kratonsolution.belian.sales.dm.CashSales;
@@ -34,11 +36,15 @@ public class CashSalesService
 	
 	@Autowired
 	private InventoryItemRepository inventoryItemRepository;
+	
+	@Autowired
+	private DocumentNumberService documentNumberService;
 
 	@EconomicExchangeEvent
 	public void create(CashSales sales)
 	{
 		sales.setId(UUID.randomUUID().toString());
+		sales.setNumber(documentNumberService.nextForType(Type.CASHSALES));
 		sales.getPayment().setId(UUID.randomUUID().toString());
 		
 		repository.save(sales);

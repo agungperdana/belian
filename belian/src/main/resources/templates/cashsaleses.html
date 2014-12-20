@@ -25,8 +25,8 @@
 	    </tr>
 	    </thead>
 	    <tbody>
-		<tr th:each="cash:${cashsaleses}" th:if="${not cash.deleted}")>
-	        <td th:text="#dates.format(cash.date,'dd-MM-yyyy')"/>
+		<tr th:each="cash:${cashsaleses}" th:if="${not cash.deleted}">
+	        <td th:text="${#dates.format(cash.date,'dd-MM-yyyy')}"/>
 	        <td th:text="${cash.companyName}"/>
 	        <td th:text="${cash.salesName}"/>
 	        <td th:text="${cash.customerName}"/>
