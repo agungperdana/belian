@@ -36,7 +36,7 @@ public class SalesLine implements DecrementEvent
 	
 	@Field("quantity")
 	private BigDecimal quantity;
-
+	
 	@Override
 	public InventoryItem getResource()
 	{

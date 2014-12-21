@@ -46,6 +46,7 @@
 			<div class="pure-control-group">
 				<label>Currency</label>
 				<select id="currency" th:field="*{currencyId}">
+					<option value="" selected="selected"></option>
 					<option th:each="currency:${currencys}" th:value="${currency.id}" th:text="${currency.name}"/>
 				</select>
 				<input id="currencyCode" type="hidden" th:field="*{currencyCode}"/>
@@ -53,6 +54,7 @@
 			<div class="pure-control-group">
 				<label>Owner</label>
 				<select id="owner" th:field="*{ownerId}">
+					<option value="" selected="selected"></option>
 					<option th:each="owner:${owners}" th:value="${owner.id}" th:text="${owner.name}"/>
 				</select>
 				<input id="ownerName" type="hidden" th:field="*{ownerName}"/>

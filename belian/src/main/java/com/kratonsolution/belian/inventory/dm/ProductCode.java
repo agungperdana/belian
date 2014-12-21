@@ -3,12 +3,12 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Field;
-
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author agungdodiperdana
@@ -24,7 +24,7 @@ public class ProductCode
 	private String id;
 	
 	@Field("code")
-	@Indexed(unique=true)
+	@Indexed(unique=true,sparse=true)
 	private String code;
 	
 	@Field("type")

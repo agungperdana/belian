@@ -10,7 +10,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
@@ -45,19 +44,15 @@ public class ProductPrice
 	private String type;
 	
 	@Field("geographic_id")
-	@Indexed
 	private String geographicId;
 	
 	@Field("geographic_name")
-	@Indexed
 	private String geographicName;
 	
 	@Field("party_id")
-	@Indexed
 	private String partyId;
 	
 	@Field("party_name")
-	@Indexed
 	private String partyName;
 	
 	@Field("is_deleted")
