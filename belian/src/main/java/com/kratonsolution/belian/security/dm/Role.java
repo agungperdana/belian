@@ -27,11 +27,11 @@ public class Role
 	private String id;
 	
 	@Field("code")
-	@Indexed(unique=true)
+	@Indexed(unique=true,name="role_code")
 	private String code;
 	
 	@Field("name")
-	@Indexed(unique=true)
+	@Indexed(unique=true,name="role_name")
 	private String name;
 	
 	private List<AccessRole> accesses = new ArrayList<AccessRole>();

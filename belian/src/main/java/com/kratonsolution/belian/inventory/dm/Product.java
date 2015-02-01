@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -37,11 +38,8 @@ public class Product
 	@Field("name")
 	private String name;
 	
-	@Field("category_id")
-	private String categoryId;
-	
-	@Field("category_name")
-	private String categoryName;
+	@DBRef
+	private ProductCategory category;
 	
 	@Field("type")
 	private Type type = Type.FINISHGOOD;

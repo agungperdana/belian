@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
@@ -20,11 +21,8 @@ public class UserRole
 	@Id
 	private String id;
 	
-	@Field("role_id")
-	private String roleId;
-	
-	@Field("role_name")
-	private String roleName;
+	@DBRef
+	private Role role;
 
 	@Field("enabled")
 	private boolean enabled;

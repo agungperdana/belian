@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan
-public class EntryPoint 
+public class EntryPoint
 {
     public static void main( String[] args )
     {

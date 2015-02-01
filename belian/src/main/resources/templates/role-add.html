@@ -6,6 +6,47 @@
 	<title>Role Form</title>
 	<th:block th:include="static"/>
 	<th:block th:include="script"/>
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+			$(function(){
+				$("#read").click(function(){
+
+					if($(this).prop("checked"))
+						$(".read").prop("checked",true);
+					else
+						$(".read").prop("checked",false);
+				});
+				
+				$("#create").click(function(){
+					if($(this).prop("checked"))
+						$(".create").prop("checked",true);
+					else
+						$(".create").prop("checked",false);
+				});
+				
+				$("#update").click(function(){
+					if($(this).prop("checked"))
+						$(".update").prop("checked",true);
+					else
+						$(".update").prop("checked",false);
+				});
+				
+				$("#delete").click(function(){
+					if($(this).prop("checked"))
+						$(".delete").prop("checked",true);
+					else
+						$(".delete").prop("checked",false);
+				});
+				
+				$("#print").click(function(){
+					if($(this).prop("checked"))
+						$(".print").prop("checked",true);
+					else
+						$(".print").prop("checked",false);
+				});
+			});
+		/*]]>*/
+	</script>
 </head>
 <body>
 	<th:block th:include="menu"/>
@@ -32,20 +73,34 @@
 				<tr><th colspan="6">Module Access</th></tr>
 				<tr>
 					<th>Module</th>
-					<th align="center">Create</th>
-					<th align="center">Read</th>
-					<th align="center">Update</th>
-					<th align="center">Delete</th>
-					<th align="center">Print</th>
+					<th align="center">
+						Create<br/>
+						<input type="checkbox" id="create"/>
+					</th>
+					<th align="center">
+						Read<br/>
+						<input type="checkbox" id="read"/>
+					</th>
+					<th align="center">
+						Update<br/>
+						<input type="checkbox" id="update"/>
+					</th>
+					<th align="center">
+						Delete<br/>
+						<input type="checkbox" id="delete"/>
+					</th>
+					<th align="center">
+						Print<br/>
+						<input type="checkbox" id="print"/>
+					</th>
 				</tr>
 				</thead>
 				<tbody>
 				<tr th:each="access,stat :*{accesses}">
 					<td align="right">
-						<th:block th:text="${access.moduleName}"/>
+						<th:block th:value="*{accesses[__${stat.index}__].module.id}" th:text="*{accesses[__${stat.index}__].module.name}"/>
 						<input type="hidden" th:field="*{accesses[__${stat.index}__].id}" th:value="*{accesses[__${stat.index}__].id}"/>
-						<input type="hidden" th:field="*{accesses[__${stat.index}__].moduleId}" th:value="*{accesses[__${stat.index}__].moduleId}"/>
-						<input type="hidden" th:field="*{accesses[__${stat.index}__].moduleName}" th:value="*{accesses[__${stat.index}__].moduleName}"/>
+						<input type="hidden" th:field="*{accesses[__${stat.index}__].module.id}" th:value="*{accesses[__${stat.index}__].module.id}"/>
 					</td>
 					<td align="center">
 						<input class="create" type="checkbox" th:field="*{accesses[__${stat.index}__].canCreate}"/>

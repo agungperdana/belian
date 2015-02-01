@@ -30,20 +30,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 	{
 		http.authorizeRequests()
 			.antMatchers("/resources/**").permitAll()
+			.antMatchers("/fonts/**").permitAll()
 			.antMatchers("/css/**").permitAll()
+			.antMatchers("/images/**").permitAll()
 			.antMatchers("/js/**").permitAll()
 			.anyRequest().authenticated();
 
 		http.formLogin().failureUrl("/failur").loginPage("/login").permitAll()
 			.and()
         	.logout().logoutUrl("/logout").permitAll();
+		
+		http.csrf().disable();
 	}
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth)throws Exception
 	{
 //		 Uncommend this for development only,its create static user/password for login into application
-//		auth.inMemoryAuthentication().withUser("user").password("password").roles("USERS");
+//		auth.inMemoryAuthentication()
+//			.withUser("user")
+//			.password("password")
+//			.roles("RLE_READ","RLE_CREATE","RLE_UPDATE","RLE_DELETE",
+//					"MODULE_READ","MODULE_UPDATE","MODULE_DELETE",
+//					"USER_READ","USER_UPDATE","USER_CREATE","USER_DELETE");
 		auth.authenticationProvider(authProvider());
 	}
 	

@@ -41,12 +41,11 @@
 				</thead>
 				<tbody>
 				<tr th:each="role,stat:*{roles}" th:if="${not role.deleted}">
-					<td th:text="${role.roleName}"/>
+					<td th:text="${role.role.name}"/>
 					<td>
 						<input type="checkbox" th:field="*{roles[__${stat.index}__].enabled}" value="false"/>&nbsp;Active
 						<input type="hidden" th:field="*{roles[__${stat.index}__].id}"/>
-						<input type="hidden" th:field="*{roles[__${stat.index}__].roleId}"/>
-						<input type="hidden" th:field="*{roles[__${stat.index}__].roleName}"/>
+						<input type="hidden" th:field="*{roles[__${stat.index}__].role.id}"/>
 					</td>
 				</tr>
 				</tbody>

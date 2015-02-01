@@ -3,19 +3,14 @@
  */
 package com.kratonsolution.belian.security.view;
 
-import java.util.UUID;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.stereotype.Service;
 
-import com.google.common.base.Strings;
-import com.kratonsolution.belian.security.dm.AccessRole;
-import com.kratonsolution.belian.security.dm.Module;
+import com.kratonsolution.belian.security.dm.ModuleEditor;
 import com.kratonsolution.belian.security.dm.ModuleRepository;
 import com.kratonsolution.belian.security.dm.Role;
 import com.kratonsolution.belian.security.dm.RoleRepository;
@@ -25,8 +20,7 @@ import com.kratonsolution.belian.security.dm.service.RoleService;
  * @author agungdodiperdana
  *
  */
-@Controller
-@RequestMapping("/roles")
+@Service
 public class RoleController
 {
 	@Autowired
@@ -38,74 +32,42 @@ public class RoleController
 	@Autowired
 	private RoleService service;
 	
-	@Secured("ROLE_ROLE_READ")
-	@RequestMapping("/list")
-	public String list(Model model)
+	@Autowired
+	private ModuleEditor moduleEditor;
+	
+	@Secured("ROLE_RLE_READ")
+	public List<Role> findAll()
 	{
-		model.addAttribute("roles",repository.findAll());		
-		return "roles";
+		return repository.findAll();
 	}
 	
-	@Secured("ROLE_ROLE_CREATE")
-	@RequestMapping("/preadd")
-	public String preadd(Model model)
+	@Secured("ROLE_RLE_READ")
+	public List<Role> findAll(int pageSize,int itemSize)
 	{
-		model.addAttribute("role",service.prepareAdd());
-		return "role-add";
+		return repository.findAll(new PageRequest(pageSize, itemSize)).getContent();
 	}
 	
-	@Secured("ROLE_ROLE_CREATE")
-	@RequestMapping(value="/add",method=RequestMethod.POST)
-	public String add(Role role)
+	@Secured("ROLE_RLE_READ")
+	public int size()
 	{
-		role.setId(UUID.randomUUID().toString());
-		
-		for(AccessRole access:role.getAccesses())
-		{
-			if(Strings.isNullOrEmpty(access.getModuleId()))
-			{
-				Module module = moduleRepository.findOne(access.getModuleId());
-				access.setModuleCode(module.getCode());
-				access.setModuleId(module.getId());
-			}
-		}
-		
+		return Long.valueOf(repository.count()).intValue();
+	}
+	
+	@Secured("ROLE_RLE_CREATE")
+	public void add(Role role)
+	{
 		repository.save(role);
-		return "redirect:/roles/list";
 	}
 	
-	@Secured("ROLE_ROLE_UPDATE")
-	@RequestMapping("/preedit/{id}")
-	public String preedit(@PathVariable String id,Model model)
-	{
-		model.addAttribute("role",service.prepareEdit(id));
-		return "role-edit";
-	}
-	
-	@Secured("ROLE_ROLE_UPDATE")
-	@RequestMapping(value="/edit",method=RequestMethod.POST)
-	public String edit(Role role)
-	{
-		for(AccessRole accessRole:role.getAccesses())
-		{
-			if(Strings.isNullOrEmpty(accessRole.getModuleCode()))
-			{
-				Module module = moduleRepository.findOne(accessRole.getModuleId());
-				if(module != null)
-					accessRole.setModuleCode(module.getCode());
-			}
-		}
-		
+	@Secured("ROLE_RLE_UPDATE")
+	public void edit(Role role)
+	{		
 		repository.save(role);
-		
-		return "redirect:/roles/list";
 	}
 	
-	@Secured("ROLE_ROLE_DELETE")
-	@RequestMapping("/delete/{id}")
-	public String delete(@PathVariable String id)
+	@Secured("ROLE_RLE_DELETE")
+	public void delete(String id)
 	{
 		repository.delete(id);
-		return "redirect:/roles/list";
 	}
 }

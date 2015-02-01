@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.general.dm;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import lombok.Getter;
@@ -24,13 +25,7 @@ public class Address
 	
 	@Field("description")
 	private String description;
-	
-	@Field("city_name")
-	private String cityName;
-	
-	@Field("country_name")
-	private String countryName;
-	
+		
 	@Field("postal")
 	private String postal;
 	
@@ -43,4 +38,9 @@ public class Address
 	@Field("is_deleted")
 	private boolean deleted;
 
+	@DBRef
+	private Geographic province;
+	
+	@DBRef
+	private Geographic country;
 }

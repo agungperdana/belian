@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.google.common.base.Strings;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductCategory;
 import com.kratonsolution.belian.inventory.dm.ProductCategoryRepository;
@@ -39,11 +38,15 @@ public class ProductController
 	@Autowired
 	private ProductCategoryRepository categoryRepository;
 	
+	@Autowired
+	private ProductCategoryEditor categoryEditor;
+	
 	@InitBinder
 	public void binder(WebDataBinder binder)
 	{
 		DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(format, true));
+		binder.registerCustomEditor(ProductCategory.class, categoryEditor);
 	}
 	
 	@Secured("ROLE_PRODUCT_READ")
@@ -70,14 +73,6 @@ public class ProductController
 	public String add(Product product)
 	{
 		product.setId(UUID.randomUUID().toString());
-		
-		if(!Strings.isNullOrEmpty(product.getCategoryId()))
-		{
-			ProductCategory category = categoryRepository.findOne(product.getCategoryId());
-			if(category != null)
-				product.setCategoryName(category.getName());
-		}
-		
 		repository.save(product);
 		return "redirect:/products/list";
 	}
@@ -96,13 +91,6 @@ public class ProductController
 	@RequestMapping(value="/edit",method=RequestMethod.POST)
 	public String edit(Product product)
 	{
-		if(!Strings.isNullOrEmpty(product.getCategoryId()))
-		{
-			ProductCategory category = categoryRepository.findOne(product.getCategoryId());
-			if(category != null)
-				product.setCategoryName(category.getName());
-		}
-		
 		repository.save(product);
 		return "redirect:/products/list";
 	}

@@ -3,8 +3,6 @@
  */
 package com.kratonsolution.belian.inventory.view;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -42,15 +40,7 @@ public class ProductComponentController
 	public String add(@PathVariable String productId, ProductComponent component)
 	{
 		Product root = repository.findOne(productId);
-
-		Product product = repository.findOne(component.getProductId());
-		if(product != null)
-		{
-			component.setId(UUID.randomUUID().toString());
-			component.setProductName(product.getName());
-
-			root.getComponents().add(component);
-		}
+		root.getComponents().add(component);
 
 		repository.save(root);
 
@@ -85,9 +75,7 @@ public class ProductComponentController
 			if(comp.getId().equals(component.getId()))
 			{
 				comp.setAmount(component.getAmount());
-				comp.setDeleted(component.isDeleted());
-				comp.setProductId(component.getProductId());
-				comp.setProductName(component.getProductName());
+				comp.setProduct(component.getProduct());
 				break;
 			}
 		}

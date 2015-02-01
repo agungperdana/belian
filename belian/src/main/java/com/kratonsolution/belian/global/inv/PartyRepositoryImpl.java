@@ -55,8 +55,8 @@ public class PartyRepositoryImpl implements PartyRepository
 	public List<Party> findAllByRole(String roleName)
 	{
 		List<Party> partys = new ArrayList<Party>();
-		partys.addAll(personRepository.findAllByRolesName(roleName));
-		partys.addAll(organizationRepository.findAllByRolesName(roleName));
+		partys.addAll(personRepository.findAllByRolesTypeName(roleName));
+		partys.addAll(organizationRepository.findAllByRolesTypeName(roleName));
 		
 		return partys;
 	}

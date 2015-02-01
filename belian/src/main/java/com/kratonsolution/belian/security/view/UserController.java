@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.security.dm.UserRepository;
+import com.kratonsolution.belian.security.dm.UserRole;
 import com.kratonsolution.belian.security.dm.service.UserService;
 
 /**
@@ -56,6 +57,9 @@ public class UserController
 		
 		if(!user.getPassword().equals(user.getRePassword()))
 			throw new RuntimeException("Password not equals");
+		
+		for(UserRole role:user.getRoles())
+			role.setId(UUID.randomUUID().toString());
 		
 		service.add(user);
 		

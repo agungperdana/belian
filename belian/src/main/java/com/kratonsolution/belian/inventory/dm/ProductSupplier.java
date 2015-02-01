@@ -6,7 +6,10 @@ package com.kratonsolution.belian.inventory.dm;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import com.kratonsolution.belian.general.dm.Party;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -28,11 +31,8 @@ public class ProductSupplier
 	@Field("to_date")
 	private Date to;
 	
-	@Field("party_id")
-	private String partyId;
-	
-	@Field("party_name")
-	private String partyName;
+	@DBRef
+	private Party supplier;
 	
 	@Field("is_deleted")
 	private boolean deleted;

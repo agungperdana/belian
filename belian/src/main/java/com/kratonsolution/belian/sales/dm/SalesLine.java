@@ -9,10 +9,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.kratonsolution.belian.global.DecrementEvent;
 import com.kratonsolution.belian.inventory.dm.InventoryItem;
+import com.kratonsolution.belian.inventory.dm.Product;
 
 /**
  * @author agungdodiperdana
@@ -25,14 +27,11 @@ public class SalesLine implements DecrementEvent
 	@Id
 	private String id;
 	
-	@Field("product_id")
-	private String productId;
+	@DBRef
+	private Product product;
 	
-	@Field("product_name")
-	private String productName;
-	
-	@Field("inventory_item_id")
-	private String inventoryId;
+	@DBRef
+	private InventoryItem inventory;
 	
 	@Field("quantity")
 	private BigDecimal quantity;
@@ -40,10 +39,7 @@ public class SalesLine implements DecrementEvent
 	@Override
 	public InventoryItem getResource()
 	{
-		InventoryItem item = new InventoryItem();
-		item.setId(inventoryId);
-		
-		return item;
+		return getInventory();
 	}
 
 	@Override

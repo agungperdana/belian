@@ -15,7 +15,7 @@ public interface PersonRepository extends MongoRepository<Person, String>
 {
 	public Person findOneByName(String name);
 	
-	public List<Person> findAllByRolesName(String name);
+	public List<Person> findAllByRolesTypeName(String name);
 	
 	public List<Person> findAllByNameNot(String name);
 }

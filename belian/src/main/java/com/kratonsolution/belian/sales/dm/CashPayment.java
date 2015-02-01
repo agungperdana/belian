@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.kratonsolution.belian.accounting.dm.CashAccount;
@@ -25,14 +26,8 @@ public class CashPayment implements IncrementEvent
 	@Id
 	private String id;
 	
-	@Field("cash_account_id")
-	private String cashAccountId;
-	
-	@Field("cash_account_number")
-	private String cashAccountNumber;
-	
-	@Field("cash_account_name")
-	private String cashAccountName;
+	@DBRef
+	private CashAccount account;
 	
 	@Field("amount")
 	private BigDecimal amount;
@@ -40,9 +35,6 @@ public class CashPayment implements IncrementEvent
 	@Override
 	public CashAccount getResource()
 	{
-		CashAccount account = new CashAccount();
-		account.setId(cashAccountId);
-		
 		return account;
 	}
 

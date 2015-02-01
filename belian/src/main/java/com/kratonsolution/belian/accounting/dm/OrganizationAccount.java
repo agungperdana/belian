@@ -4,15 +4,16 @@
 package com.kratonsolution.belian.accounting.dm;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+
+import com.kratonsolution.belian.general.dm.Organization;
 
 /**
  * @author agungdodiperdana
@@ -25,18 +26,9 @@ public class OrganizationAccount
 {
 	@Id
 	private String id;
-	
-	@Field("organization_id")
-	private String organizationId;
-	
-	@Field("organization_name")
-	private String organizationName;
 
-	@Field("from_date")
-	private Date from;
+	@DBRef
+	private Organization organization;
 	
-	@Field("to_date")
-	private Date to;
-	
-	private List<GLAccount> accounts = new ArrayList<GLAccount>();
+	private List<OGLAccount> accounts = new ArrayList<OGLAccount>();
 }

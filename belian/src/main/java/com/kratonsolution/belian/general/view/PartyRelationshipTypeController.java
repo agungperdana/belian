@@ -36,7 +36,7 @@ public class PartyRelationshipTypeController
 	@RequestMapping("/preadd")
 	public String preadd(Model model)
 	{
-		model.addAttribute("partyrelationshiptype",PartyRelationshipType.newInstance());
+		model.addAttribute("partyrelationshiptype",new PartyRelationshipType());
 		return "partyrelationshiptype-add";
 	}
 	

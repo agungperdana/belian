@@ -3,8 +3,6 @@
  */
 package com.kratonsolution.belian.general.dm;
 
-import java.util.UUID;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,12 +27,4 @@ public class Person extends Party
 	
 	@Field("marital_status")
 	private MaritalStatus maritalStatus = MaritalStatus.SINGLE;
-	
-	public static Person newInstance()
-	{
-		Person person = new Person();
-		person.setId(UUID.randomUUID().toString());
-		
-		return person;
-	}
 }

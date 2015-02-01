@@ -3,14 +3,12 @@
  */
 package com.kratonsolution.belian.general.dm;
 
-import java.util.UUID;
+import lombok.Getter;
+import lombok.Setter;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author Agung Dodi Perdana
@@ -21,7 +19,7 @@ import lombok.Setter;
 @Document(collection="geographic")
 public class Geographic 
 {
-	public enum Type{COUNTRY,CITY,KECAMATAN,KELURAHAN,RW,RT}
+	public enum Type{COUNTRY,CITY,PROVINCE,KECAMATAN,KELURAHAN,RW,RT}
 	
 	@Id
 	private String id;
@@ -34,12 +32,4 @@ public class Geographic
 	
 	@Field("type")
 	private Type type = Type.COUNTRY;
-	
-	public static Geographic newInstance()
-	{
-		Geographic geographic = new Geographic();
-		geographic.setId(UUID.randomUUID().toString());
-		
-		return geographic;
-	}
 }

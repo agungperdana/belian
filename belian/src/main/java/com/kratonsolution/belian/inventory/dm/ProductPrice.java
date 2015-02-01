@@ -10,7 +10,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import com.kratonsolution.belian.accounting.dm.Currency;
+import com.kratonsolution.belian.general.dm.Geographic;
+import com.kratonsolution.belian.general.dm.Party;
 
 /**
  * @author agungdodiperdana
@@ -34,26 +39,17 @@ public class ProductPrice
 	@Field("price")
 	private BigDecimal price = BigDecimal.ONE;
 	
-	@Field("currency_id")
-	private String currencyId;
-	
-	@Field("currency_code")
-	private String currencyCode;
+	@DBRef
+	private Currency currency;
 	
 	@Field("type")
-	private String type;
+	private Type type = Type.BASE;
 	
-	@Field("geographic_id")
-	private String geographicId;
+	@DBRef
+	private Geographic geographic;
 	
-	@Field("geographic_name")
-	private String geographicName;
-	
-	@Field("party_id")
-	private String partyId;
-	
-	@Field("party_name")
-	private String partyName;
+	@DBRef
+	private Party party;
 	
 	@Field("is_deleted")
 	private boolean deleted;

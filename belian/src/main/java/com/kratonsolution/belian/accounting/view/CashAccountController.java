@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,6 +39,19 @@ public class CashAccountController
 	@Autowired
 	private CurrencyRepository currencyRepository;
 	
+	@Autowired
+	private CurrencyEditor  currencyEditor;
+	
+	@Autowired
+	private PartyEditor partyEditor;
+	
+	@InitBinder
+	public void binder(WebDataBinder binder)
+	{
+		binder.registerCustomEditor(Currency.class, currencyEditor);
+		binder.registerCustomEditor(Party.class, partyEditor);
+	}
+	
 	@Secured("ROLE_CASHACCOUNT_READ")
 	@RequestMapping("/list")
 	public String list(Model model)
@@ -61,14 +76,8 @@ public class CashAccountController
 	public String add(CashAccount cashaccount)
 	{
 		cashaccount.setId(UUID.randomUUID().toString());
-		
-		Currency currency = currencyRepository.findOne(cashaccount.getCurrencyId());
-		cashaccount.setCurrencyCode(currency.getCode());
-		
-		Party party = partyRepository.findOne(cashaccount.getOwnerId());
-		cashaccount.setOwnerName(party.getName());
-		
 		repository.save(cashaccount);
+
 		return "redirect:/cashaccounts/list";
 	}
 	
@@ -86,12 +95,6 @@ public class CashAccountController
 	@RequestMapping(value="/edit",method=RequestMethod.POST)
 	public String edit(CashAccount cashaccount)
 	{
-		Currency currency = currencyRepository.findOne(cashaccount.getCurrencyId());
-		cashaccount.setCurrencyCode(currency.getCode());
-		
-		Party party = partyRepository.findOne(cashaccount.getOwnerId());
-		cashaccount.setOwnerName(party.getName());
-		
 		repository.save(cashaccount);
 		return "redirect:/cashaccounts/list";
 	}

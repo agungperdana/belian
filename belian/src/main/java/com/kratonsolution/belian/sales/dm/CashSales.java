@@ -12,7 +12,6 @@ import lombok.Setter;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.global.EconomicAgent;
 import com.kratonsolution.belian.global.ExchangeProccess;
 
@@ -31,22 +30,14 @@ public class CashSales extends Sales implements ExchangeProccess
 	
 	@Override
 	public EconomicAgent getProducer()
-	{
-		Party party = new Party();
-		party.setId(getSalesId());
-		party.setName(getSalesName());
-		
-		return party;
+	{		
+		return getSales();
 	}
 
 	@Override
 	public EconomicAgent getConsumer()
 	{
-		Party party = new Party();
-		party.setId(getCustomerId());
-		party.setName(getCustomerName());
-		
-		return party;
+		return getCustomer();
 	}
 	
 	@Override

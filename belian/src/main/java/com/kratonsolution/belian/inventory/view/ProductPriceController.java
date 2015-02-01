@@ -21,13 +21,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.dm.CurrencyRepository;
+import com.kratonsolution.belian.accounting.view.CurrencyEditor;
+import com.kratonsolution.belian.accounting.view.PartyEditor;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.GeographicRepository;
 import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.PartyRepository;
+import com.kratonsolution.belian.general.view.GeographicEditor;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
 import com.kratonsolution.belian.inventory.dm.ProductRepository;
@@ -52,12 +54,24 @@ public class ProductPriceController
 	@Autowired
 	private CurrencyRepository currencyRepository;
 	
+	@Autowired
+	private CurrencyEditor currencyEditor;
+	
+	@Autowired
+	private GeographicEditor geoEditor;
+	
+	@Autowired
+	private PartyEditor partyEditor;
+	
 	@InitBinder
 	public void binder(WebDataBinder binder)
 	{
 		DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(format, true));
+		binder.registerCustomEditor(Currency.class, currencyEditor);
+		binder.registerCustomEditor(Geographic.class, geoEditor);
+		binder.registerCustomEditor(Party.class,partyEditor);
 		binder.registerCustomEditor(BigDecimal.class,new CustomNumberEditor(BigDecimal.class,false));
 	}
 	
@@ -83,28 +97,6 @@ public class ProductPriceController
 		if(product != null)
 		{
 			price.setId(UUID.randomUUID().toString());
-			
-			if(!Strings.isNullOrEmpty(price.getCurrencyId()) && !price.getCurrencyId().equals("0"))
-			{
-				Currency currency = currencyRepository.findOne(price.getCurrencyId());
-				if(currency != null)
-					price.setCurrencyCode(currency.getCode());
-			}
-			
-			if(!Strings.isNullOrEmpty(price.getGeographicId()) && !price.getGeographicId().equals("0"))
-			{
-				Geographic geographic = geoRepository.findOne(price.getGeographicId());
-				if(geographic != null)
-					price.setGeographicName(geographic.getName());
-			}
-			
-			if(!Strings.isNullOrEmpty(price.getPartyId()) && !price.getPartyId().equals("0"))
-			{
-				Party party = partyRepository.findOne(price.getPartyId());
-				if(party != null)
-					price.setPartyName(party.getName());
-			}
-			
 			product.getPrices().add(price);
 		}
 
@@ -148,36 +140,9 @@ public class ProductPriceController
 				comp.setTo(price.getTo());
 				comp.setType(price.getType());
 				comp.setPrice(price.getPrice());
-				
-				if(!Strings.isNullOrEmpty(price.getCurrencyId()))
-				{
-					Currency currency = currencyRepository.findOne(price.getCurrencyId());
-					if(currency != null)
-					{
-						comp.setId(currency.getId());
-						comp.setGeographicName(currency.getCode());
-					}
-				}
-				
-				if(!Strings.isNullOrEmpty(price.getGeographicId()))
-				{
-					Geographic geographic = geoRepository.findOne(price.getGeographicId());
-					if(geographic != null)
-					{
-						comp.setId(geographic.getId());
-						comp.setGeographicName(geographic.getName());						
-					}
-				}
-				
-				if(!Strings.isNullOrEmpty(price.getPartyId()))
-				{
-					Party party = partyRepository.findOne(price.getPartyId());
-					if(party != null)
-					{
-						comp.setPartyId(party.getId());
-						comp.setPartyName(party.getName());						
-					}
-				}
+				comp.setCurrency(price.getCurrency());
+				comp.setGeographic(price.getGeographic());
+				comp.setParty(price.getParty());
 				
 				break;
 			}

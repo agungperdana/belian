@@ -1,0 +1,10 @@
+<zk>
+	<richlet>
+	    <richlet-name>Home</richlet-name>
+	    <richlet-class>com.kratonsolution.belian.ui.Desktop</richlet-class>
+	</richlet>
+	<richlet-mapping>
+	    <richlet-name>Home</richlet-name>
+	    <url-pattern>/home</url-pattern>
+	</richlet-mapping>
+</zk>

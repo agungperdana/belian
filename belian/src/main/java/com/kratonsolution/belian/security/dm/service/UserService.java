@@ -38,9 +38,7 @@ public class UserService
 		for(Role role:roleRepository.findAll())
 		{
 			UserRole userRole = new UserRole();
-			userRole.setId(UUID.randomUUID().toString());
-			userRole.setRoleId(role.getId());
-			userRole.setRoleName(role.getName());
+			userRole.setRole(role);
 
 			user.getRoles().add(userRole);
 		}
@@ -55,7 +53,7 @@ public class UserService
 		{
 			for(UserRole userRole:user.getRoles())
 			{
-				Role role = roleRepository.findOne(userRole.getRoleId());
+				Role role = roleRepository.findOne(userRole.getRole().getId());
 				if(role == null)
 					userRole.setDeleted(true);
 			}
@@ -67,7 +65,7 @@ public class UserService
 				boolean exist = false;
 				for(UserRole userRole:user.getRoles())
 				{
-					if(userRole.getRoleId().equals(role.getId()))
+					if(userRole.getRole().getId().equals(role.getId()))
 					{
 						exist = true;
 						break;
@@ -78,8 +76,7 @@ public class UserService
 				{
 					UserRole userRole = new UserRole();
 					userRole.setId(UUID.randomUUID().toString());
-					userRole.setRoleId(role.getId());
-					userRole.setRoleName(role.getName());
+					userRole.setRole(role);
 
 					user.getRoles().add(userRole);
 				}

@@ -1,7 +1,5 @@
 package com.kratonsolution.belian;
 
-import java.util.UUID;
-
 import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,11 +9,10 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.kratonsolution.belian.security.dm.Module;
+import com.kratonsolution.belian.security.dm.AccessRole;
 import com.kratonsolution.belian.security.dm.ModuleRepository;
 import com.kratonsolution.belian.security.dm.Role;
 import com.kratonsolution.belian.security.dm.RoleRepository;
-import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.security.dm.UserRepository;
 
 /**
@@ -38,25 +35,36 @@ public class AppTest
 	
 	private StrongPasswordEncryptor encryptor = new StrongPasswordEncryptor();
 	
+//	@Test
+//	public void createSecurityData()
+//	{
+//		Module module = new Module();
+//		module.setId(UUID.randomUUID().toString());
+//		module.setCode("ADMIN");
+//		module.setName("Administrator");
+//		
+//		//Default user
+//		User admin = new User();
+//		admin.setId(UUID.randomUUID().toString());
+//		admin.setName("Admin");
+//		admin.setEmail("admin@belian.com");
+//		admin.setPassword(encryptor.encryptPassword("admin"));
+//		
+//		repository.save(admin);
+//		
+//		Role role = new Role();
+//		role.setCode("ADMIN");
+//		role.setName("Administrator");
+//	}
+	
 	@Test
-	public void createSecurityData()
+	public void testRole()
 	{
-		Module module = new Module();
-		module.setId(UUID.randomUUID().toString());
-		module.setCode("ADMIN");
-		module.setName("Administrator");
-		
-		//Default user
-		User admin = new User();
-		admin.setId(UUID.randomUUID().toString());
-		admin.setName("Admin");
-		admin.setEmail("admin@belian.com");
-		admin.setPassword(encryptor.encryptPassword("admin"));
-		
-		repository.save(admin);
-		
-		Role role = new Role();
-		role.setCode("ADMIN");
-		role.setName("Administrator");
+		for(Role role:roleRepository.findAll())
+		{
+			System.out.println(role.getName());
+			for(AccessRole accessRole:role.getAccesses())
+				System.out.println("module :"+accessRole.getModule());
+		}
 	}
 }

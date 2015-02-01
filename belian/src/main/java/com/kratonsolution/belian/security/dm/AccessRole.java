@@ -3,11 +3,12 @@
  */
 package com.kratonsolution.belian.security.dm;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Field;
-
-import lombok.Setter;
 import lombok.Getter;
+import lombok.Setter;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author agungdodiperdana
@@ -20,14 +21,8 @@ public class AccessRole
 	@Id
 	private String id;
 	
-	@Field("module_id")
-	private String moduleId;
-	
-	@Field("module_code")
-	private String moduleCode;
-	
-	@Field("module_name")
-	private String moduleName;
+	@DBRef
+	private Module module;
 	
 	@Field("is_can_read")
 	private boolean canRead;

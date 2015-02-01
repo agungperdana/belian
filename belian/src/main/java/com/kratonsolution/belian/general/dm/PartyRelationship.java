@@ -5,13 +5,13 @@ package com.kratonsolution.belian.general.dm;
 
 import java.util.Date;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-
-import lombok.Setter;
-import lombok.Getter;
 
 /**
  * @author agungdodiperdana
@@ -31,25 +31,14 @@ public class PartyRelationship
 	@Field("to_date")
 	private Date toDate;
 	
-	@Field("relationship_type_id")
-	private String relationshipTypeId;
+	@DBRef
+	private PartyRelationshipType type;
 	
-	@Field("relationship_type_name")
-	private String relationshipTypeName;
-	
-	@Field("from_role_id")
-	@Indexed
-	private String fromRoleId;
-	
-	@Field("from_role_name")
-	@Indexed
-	private String fromRoleName;
+	@DBRef
+	private PartyRole fromRole;
 
-	@Field("to_party_id")
-	private String toPartyId;
-	
-	@Field("to_party_name")
-	private String toPartyName;
+	@DBRef
+	private Party toParty;
 	
 	@Field("is_deleted")
 	private boolean deleted;

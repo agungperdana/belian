@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.kratonsolution.belian.accounting.view.PartyEditor;
 import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.PartyRelationship;
 import com.kratonsolution.belian.general.dm.PartyRelationshipType;
@@ -48,11 +49,24 @@ public class OrganizationRelationshipController
 	@Autowired
 	private PartyRelationshipTypeRepository typeRepository;
 	
+	@Autowired
+	private PartyEditor partyEditor;
+	
+	@Autowired
+	private PartyRoleTypeEditor roleEditor;
+	
+	@Autowired
+	private PartyRelationshipTypeEditor relationTypeEditor;
+	
 	@InitBinder
 	public void binder(WebDataBinder binder)
 	{
 		DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(format, true));
+		binder.registerCustomEditor(PartyRoleType.class, roleEditor);
+		binder.registerCustomEditor(Party.class, partyEditor);		
+		binder.registerCustomEditor(PartyRelationshipType.class, relationTypeEditor);
 	}
 	
 	@Secured("ROLE_ORGRELATIONSHIP_CREATE")
@@ -75,17 +89,8 @@ public class OrganizationRelationshipController
 	public String add(@PathVariable String partyId,PartyRelationship relationship)
 	{
 		Organization organization = organizationRepository.findOne(partyId);
-		Party to = partyRepository.findOne(relationship.getToPartyId());
-		PartyRelationshipType relationshipType = typeRepository.findOne(relationship.getRelationshipTypeId());
-		PartyRoleType roleType = roleTypeRepository.findOne(relationship.getFromRoleId());
-		
 		relationship.setId(UUID.randomUUID().toString());
-		relationship.setToPartyName(to.getName());
-		relationship.setRelationshipTypeName(relationshipType.getName());
-		relationship.setFromRoleName(roleType.getName());
-		
 		organization.getRelationships().add(relationship);
-		
 		organizationRepository.save(organization);
 		
 		return "redirect:/organizations/preedit/"+partyId;
@@ -125,18 +130,8 @@ public class OrganizationRelationshipController
 		{
 			if(db.getId().equals(id))
 			{
-				Party to = partyRepository.findOne(relationship.getToPartyId());
-				PartyRelationshipType relationshipType = typeRepository.findOne(relationship.getRelationshipTypeId());
-				PartyRoleType roleType = roleTypeRepository.findOne(relationship.getFromRoleId());
-				
 				db.setFromDate(relationship.getFromDate());
 				db.setToDate(relationship.getToDate());
-				db.setToPartyId(relationship.getToPartyId());
-				db.setToPartyName(to.getName());
-				db.setRelationshipTypeId(relationship.getRelationshipTypeId());
-				db.setRelationshipTypeName(relationshipType.getName());
-				db.setFromRoleId(relationship.getFromRoleId());
-				db.setFromRoleName(roleType.getName());
 				
 				break;
 			}

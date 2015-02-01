@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+	<meta charset="UTF-8"/>
+    <title>Belian Bussiness Suite V-1.0</title>
+    <style type="text/css" th:inline="text">
+		body{
+			margin:0;
+			padding:0;
+			background-image: url("[[@{/images/blue-background.jpg}]]");
+		}
+	</style>
+    <link rel="stylesheet" th:href="@{/js/dijit/themes/claro/claro.css}"/>
+	<script data-dojo-config="async: true" th:src="@{/js/dojo/dojo.js}"></script>
+	<script th:inline="text">
+		/*<![CDATA[*/			
+			require([
+				"dijit/MenuBar",
+				"dijit/PopupMenuBarItem",
+				"dijit/DropDownMenu",
+				"dijit/MenuItem",
+				"dijit/MenuSeparator",
+				"dijit/Dialog",
+				"dojo/domReady!"
+			],function(MenuBar,PopupMenuBarItem,DropDownMenu,MenuItem,MenuSeparator,Dialog){
+				
+				/* Menu for belian*/
+				about = new MenuItem({
+					label	: 'About Belian',
+					onClick : function(){
+						new Dialog({
+							title : 'About Belian'
+						}).show();
+					}
+				});
+				
+				home = new MenuItem({label:'Home'});
+				logout = new MenuItem({
+					label	: 'Logout'
+				});
+				help = new PopupMenuBarItem({label	: 'Help'});
+				
+				belian = new DropDownMenu({});
+				belian.addChild(about);
+				belian.addChild(new MenuSeparator());
+				belian.addChild(home);
+				belian.addChild(new MenuSeparator());
+				belian.addChild(logout);
+				/* end of menu belian*/
+			
+				/* Menu for general */
+				geographic = new MenuItem({label	: 'Geographic'});
+				roleType = new MenuItem({label:'Role Type'});
+				relationshipType = new MenuItem({label: 'Relationship Type'});
+				person = new MenuItem({label	: 'Person'});
+				organization = new MenuItem({label	: 'Organization'});
+				
+				general = new DropDownMenu({});
+				general.addChild(geographic);
+				general.addChild(new MenuSeparator());
+				general.addChild(roleType);
+				general.addChild(new MenuSeparator());
+				general.addChild(relationshipType);
+				general.addChild(new MenuSeparator());
+				general.addChild(person);
+				general.addChild(new MenuSeparator());
+				general.addChild(organization);
+				/* end of menu general*/
+				
+				/* Menu for Security */
+				module = new MenuItem({label: 'Module'});
+				role = new MenuItem({label	: 'Role'});
+				user = new MenuItem({label	: 'User'});
+			
+				security = new DropDownMenu({});
+				security.addChild(module);
+				security.addChild(new MenuSeparator());
+				security.addChild(role);
+				security.addChild(new MenuSeparator());
+				security.addChild(user);
+				/* end of menu security*/
+			
+				/* Menu for Accounting */
+				tax = new MenuItem({label	: 'Tax'});
+				currency = new MenuItem({label	: 'Currency'});
+				bank = new MenuItem({label	: 'Bank Account'});
+				cash = new MenuItem({label	: 'Cash Account'});
+				period = new MenuItem({label	: 'Accounting Period'});
+				coa = new MenuItem({label	: 'Chart of Account'});
+				orgaccount = new MenuItem({label	: 'Organization Account'});
+				
+				accounting = new DropDownMenu({});
+				accounting.addChild(tax);
+				accounting.addChild(new MenuSeparator());
+				accounting.addChild(currency);
+				accounting.addChild(new MenuSeparator());
+				accounting.addChild(bank);
+				accounting.addChild(new MenuSeparator());
+				accounting.addChild(cash);
+				accounting.addChild(new MenuSeparator());
+				accounting.addChild(period);
+				accounting.addChild(new MenuSeparator());
+				accounting.addChild(coa);
+				accounting.addChild(new MenuSeparator());
+				accounting.addChild(orgaccount);
+				/* end of menu accounting */
+			
+				/* Menu for Inventory */
+				uom = new MenuItem({label	: 'Unit of Measure'});
+				facility = new MenuItem({label	: 'Facility'});
+				category = new MenuItem({label	: 'Product Category'});
+				product = new MenuItem({label	: 'Product'});
+				invitem = new MenuItem({label	: 'Inventory Item'});
+				
+				inventory = new DropDownMenu({});
+				inventory.addChild(uom);
+				inventory.addChild(new MenuSeparator());
+				inventory.addChild(facility);
+				inventory.addChild(new MenuSeparator());
+				inventory.addChild(category);
+				inventory.addChild(new MenuSeparator());
+				inventory.addChild(product);
+				inventory.addChild(new MenuSeparator());
+				inventory.addChild(invitem);
+				/* end of menu inventory */
+				
+				/* Menu for Sales */
+				cashsales = new MenuItem({label	: 'Cash Sales'});				
+				
+				sales = new DropDownMenu({});
+				sales.addChild(cashsales);
+				/* end of menu sales */
+				
+				popbelian = new PopupMenuBarItem({
+					label	: 'Belian',
+					hovering: true,
+					popup	: belian
+				});
+				
+				popgeneral = new PopupMenuBarItem({
+					label	: 'General',
+					popup	: general
+				});
+				
+				popsecurity = new PopupMenuBarItem({
+					label	: 'Security',
+					popup	: security
+				});
+				
+				popaccounting = new PopupMenuBarItem({
+					label	: 'Accounting',
+					popup	: accounting
+				});
+				
+				popinventory = new PopupMenuBarItem({
+					label	: 'Inventory',
+					popup	: inventory
+				});
+				
+				popsales = new PopupMenuBarItem({
+					label	: 'Sales',
+					popup	: sales
+				});
+				
+				menubar = new MenuBar({});
+				menubar.addChild(popbelian);
+				menubar.addChild(popgeneral);
+				menubar.addChild(popsecurity);
+				menubar.addChild(popaccounting);
+				menubar.addChild(popinventory);
+				menubar.addChild(popsales);
+				menubar.placeAt('menubar')
+				menubar.startup();
+			});
+		/*]]>*/
+	</script>
+</head>
+<body class="claro">
+	<div id="menubar" style="top: 0;left: 0"></div>
+</body>
+</html>

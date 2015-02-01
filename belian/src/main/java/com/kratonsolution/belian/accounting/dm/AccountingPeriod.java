@@ -5,12 +5,13 @@ package com.kratonsolution.belian.accounting.dm;
 
 import java.util.Date;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author agungdodiperdana
@@ -35,4 +36,7 @@ public class AccountingPeriod
 	
 	@Field("date_to")
 	private Date to;
+	
+	@DBRef
+	private AccountingPeriod parent;
 }

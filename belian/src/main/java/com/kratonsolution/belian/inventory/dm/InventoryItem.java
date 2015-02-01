@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -26,23 +27,14 @@ public class InventoryItem implements EconomicResource
 	@Id
 	private String id;
 	
-	@Field("product_id")
-	private String productId;
+	@DBRef
+	private Product product;
 	
-	@Field("product_name")
-	private String productName;
+	@DBRef
+	private Facility facility;
 	
-	@Field("facility_id")
-	private String facilityId;
-	
-	@Field("facility_name")
-	private String facilityName;
-	
-	@Field("container_id")
-	private String containerId;
-	
-	@Field("container_name")
-	private String containerName;
+	@DBRef
+	private Container container;
 	
 	@Field("serial_number")
 	private String serialNumber;

@@ -69,8 +69,7 @@ public class CashSalesService
 			inventoryItemRepository.save(item);
 		
 			SalesLine line = (SalesLine)event;
-			line.setProductId(item.getProductId());
-			line.setProductName(item.getProductName());
+			line.setProduct(item.getProduct());
 		}
 		
 		repository.save(sales);

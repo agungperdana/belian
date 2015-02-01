@@ -84,8 +84,8 @@ public class CashSalesController
 	public String preadd(Model model)
 	{
 		model.addAttribute("cashsales",new CashSales());
-		model.addAttribute("saleses",personRepository.findAllByRolesName("Sales"));
-		model.addAttribute("companys",organizationRepository.findAllByRelationshipsRelationshipTypeName("Organization Structure"));
+		model.addAttribute("saleses",personRepository.findAllByRolesTypeName("Sales"));
+		model.addAttribute("companys",organizationRepository.findAllByRelationshipsTypeName("Organization Structure"));
 		model.addAttribute("customers",partyRepository.findAllByRole("Customer"));
 		model.addAttribute("accounts",cashRepository.findAll());
 		
@@ -102,8 +102,8 @@ public class CashSalesController
 		cashsales.getItems().add(line);
 		
 		model.addAttribute("cashsales",cashsales);
-		model.addAttribute("saleses",personRepository.findAllByRolesName("Sales"));
-		model.addAttribute("companys",organizationRepository.findAllByRelationshipsRelationshipTypeName("Organization Structure"));
+		model.addAttribute("saleses",personRepository.findAllByRolesTypeName("Sales"));
+		model.addAttribute("companys",organizationRepository.findAllByRelationshipsTypeName("Organization Structure"));
 		model.addAttribute("customers",partyRepository.findAllByRole("Customer"));
 		model.addAttribute("accounts",cashRepository.findAll());
 		model.addAttribute("inventorys",inventoryRepository.findAll());
@@ -126,8 +126,8 @@ public class CashSalesController
 		sales.setItems(lines);
 		
 		model.addAttribute("cashsales",sales);
-		model.addAttribute("saleses",personRepository.findAllByRolesName("Sales"));
-		model.addAttribute("companys",organizationRepository.findAllByRelationshipsRelationshipTypeName("Organization Structure"));
+		model.addAttribute("saleses",personRepository.findAllByRolesTypeName("Sales"));
+		model.addAttribute("companys",organizationRepository.findAllByRelationshipsTypeName("Organization Structure"));
 		model.addAttribute("customers",partyRepository.findAllByRole("Customer"));
 		model.addAttribute("accounts",cashRepository.findAll());
 		model.addAttribute("inventorys",inventoryRepository.findAll());
@@ -148,8 +148,8 @@ public class CashSalesController
 	public String preedit(@PathVariable String id,Model model)
 	{
 		model.addAttribute("cashsales",repository.findOne(id));
-		model.addAttribute("salesPerson",personRepository.findAllByRolesName("Sales"));
-		model.addAttribute("companys",organizationRepository.findAllByRelationshipsRelationshipTypeName("Internal Organization"));
+		model.addAttribute("salesPerson",personRepository.findAllByRolesTypeName("Sales"));
+		model.addAttribute("companys",organizationRepository.findAllByRelationshipsTypeName("Internal Organization"));
 		model.addAttribute("customers",partyRepository.findAllByRole("Customer"));
 		
 		return "cashsales-edit";

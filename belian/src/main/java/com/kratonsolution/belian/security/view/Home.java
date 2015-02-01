@@ -16,12 +16,12 @@ public class Home
 	@RequestMapping("/")
 	public String index()
 	{
-		return "home";
+		return "redirect:/svc/home";
 	}
 	
 	@RequestMapping("/home")
 	public String home()
 	{
-		return "home";
+		return "redirect:/svc/home";
 	}
 }

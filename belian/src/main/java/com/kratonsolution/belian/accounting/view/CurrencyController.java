@@ -36,7 +36,7 @@ public class CurrencyController
 	@RequestMapping("/preadd")
 	public String preadd(Model model)
 	{
-		model.addAttribute("currency",Currency.newInstance());
+		model.addAttribute("currency",new Currency());
 		return "currency-add";
 	}
 	

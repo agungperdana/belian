@@ -3,8 +3,6 @@
  */
 package com.kratonsolution.belian.general.dm;
 
-import java.util.UUID;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,12 +27,4 @@ public class PartyRelationshipType
 	
 	@Field("is_deleted")
 	private boolean deleted = false;
-	
-	public static PartyRelationshipType newInstance()
-	{
-		PartyRelationshipType type = new PartyRelationshipType();
-		type.setId(UUID.randomUUID().toString());
-		
-		return type;
-	}
 }

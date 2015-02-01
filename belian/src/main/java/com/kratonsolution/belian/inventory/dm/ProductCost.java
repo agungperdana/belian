@@ -7,7 +7,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import com.kratonsolution.belian.accounting.dm.Currency;
+import com.kratonsolution.belian.general.dm.Geographic;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -28,11 +32,8 @@ public class ProductCost
 	@Field("estimated_cost")
 	private BigDecimal estimated = BigDecimal.ZERO;
 	
-	@Field("for_area_id")
-	private String areaId;
-	
-	@Field("for_area_name")
-	private String areaName;
+	@DBRef
+	private Geographic area;
 	
 	@Field("from_date")
 	private Date from;
@@ -41,13 +42,10 @@ public class ProductCost
 	private Date to;
 	
 	@Field("type")
-	private String type;
+	private Type type = Type.PURCHASE;
 
-	@Field("currency_id")
-	private String currencyId;
-	
-	@Field("currency_code")
-	private String currencyCode;
+	@DBRef
+	private Currency currency;
 	
 	@Field("is_deleted")
 	private boolean deleted;

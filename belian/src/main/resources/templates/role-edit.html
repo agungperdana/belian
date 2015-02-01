@@ -42,10 +42,9 @@
 				<tbody>
 				<tr th:each="access,stat :*{accesses}">
 					<td align="right">
-						<th:block th:text="${access.moduleName}"/>
+						<th:block th:text="${access.module.name}"/>
 						<input type="hidden" th:field="*{accesses[__${stat.index}__].id}" th:value="*{accesses[__${stat.index}__].id}"/>
-						<input type="hidden" th:field="*{accesses[__${stat.index}__].moduleId}" th:value="*{accesses[__${stat.index}__].moduleId}"/>
-						<input type="hidden" th:field="*{accesses[__${stat.index}__].moduleName}" th:value="*{accesses[__${stat.index}__].moduleName}"/>
+						<input type="hidden" th:field="*{accesses[__${stat.index}__].module.id}" th:value="*{accesses[__${stat.index}__].module.id}"/>
 					</td>
 					<td align="center">
 						<input type="checkbox" th:field="*{accesses[__${stat.index}__].canCreate}"/>

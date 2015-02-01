@@ -1,86 +1,73 @@
-<div id="demo-horizontal-menu" class="ui-widget-header">
-    <ul id="std-menu-items">
-		<li>
-			<a href="#">Belian</a>
-			<ul>
-				<li><a th:href="@{/home}">Home</a></li>
-				<li class="pure-menu-separator"></li>
-				<li><a th:href="@{/logout}">Logout</a></li>
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li class="dropdown">
+         				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+         					Belian<span class="caret"></span>
+         				</a>
+		          <ul class="dropdown-menu" role="menu">
+		          	<li><a href="#">About Belian</a></li>
+		       		<li><a th:href="@{/logout}">Logout</a></li>
+		          </ul>
+		        </li>
+		        <li class="dropdown">
+         				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+         					General<span class="caret"></span>
+         				</a>
+		          <ul class="dropdown-menu" role="menu">
+		          	<li><a id="roleType" th:href="@{/geographics/list}">Geographic</a></li>
+					<li><a id="roleType" th:href="@{/partyroletypes/list}">Role Type</a></li>
+					<li><a id="relationshipType" th:href="@{/partyrelationshiptypes/list}">Relationship Type</a></li>
+					<li><a id="person" th:href="@{/persons/list}">Person</a></li>
+					<li><a id="organization" th:href="@{/organizations/list}">Organization</a></li>
+		          </ul>
+		        </li>
+		        <li class="dropdown">
+         				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+         					Security<span class="caret"></span>
+         				</a>
+		          <ul class="dropdown-menu" role="menu">
+		          	<li><a th:href="@{/modules/list}">Module</a></li>
+					<li><a th:href="@{/roles/list}">Role</a></li>
+					<li><a th:href="@{/users/list}">User</a></li>
+		          </ul>
+		        </li>
+		        <li class="dropdown">
+         				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+         					Accounting<span class="caret"></span>
+         				</a>
+		          <ul class="dropdown-menu" role="menu">
+		          	<li><a th:href="@{/currencys/list}">Currency</a></li>
+					<li><a th:href="@{/taxs/list}">Tax</a></li>
+					<li><a th:href="@{/bankaccounts/list}">Bank Account</a></li>
+					<li><a th:href="@{/cashaccounts/list}">Cash Account</a></li>
+					<li><a th:href="@{/accountingperiods/list}">Accounting Period</a></li>
+					<li><a th:href="@{/coas/list}">Chart of Account</a></li>
+					<li><a th:href="@{/organizationaccounts/list}">Organization Account</a></li>
+		          </ul>
+		        </li>
+		        <li class="dropdown">
+         				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+         					Inventory<span class="caret"></span>
+         				</a>
+		          <ul class="dropdown-menu" role="menu">
+		          	<li><a th:href="@{/uoms/list}">Unit of Measure</a></li>
+					<li><a th:href="@{/facilitys/list}">Facility</a></li>
+					<li><a th:href="@{/productcategorys/list}">Product Category</a></li>
+					<li><a th:href="@{/products/list}">Product</a></li>
+					<li><a th:href="@{/inventoryitems/list}">Inventory Item</a></li>
+		          </ul>
+		        </li>
+		        <li class="dropdown">
+         				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+         					Sales<span class="caret"></span>
+         				</a>
+		          <ul class="dropdown-menu" role="menu">
+		          	<li><a th:href="@{/cashsales/list}">Cash Sales</a></li>
+		          </ul>
+		        </li>
 			</ul>
-		</li>
-		<li>
-			<a href="#">General</a>
-			<ul>
-				<li><a th:href="@{/geographics/list}">Geographic</a></li>
-				<li class="pure-menu-separator"></li>
-				<li><a th:href="@{/partyroletypes/list}">Party Role Type</a></li>
-				<li class="pure-menu-separator"></li>
-				<li><a th:href="@{/partyrelationshiptypes/list}">Party Relationship Type</a></li>
-				<li class="pure-menu-separator"></li>
-				<li><a th:href="@{/persons/list}">Person</a></li>
-				<li class="pure-menu-separator"></li>
-				<li><a th:href="@{/organizations/list}">Organization</a></li>
-			</ul>
-		</li>
-		<li>
-			<a href="#">Security</a>
-			<ul>
-				<li><a th:href="@{/users/list}">Users</a></li>
-				<li class="pure-menu-separator"></li>
-				<li><a th:href="@{/roles/list}">Role</a></li>
-				<li class="pure-menu-separator"></li>
-				<li><a th:href="@{/modules/list}">Module</a></li>
-			</ul>
-		</li>
-		<li>
-			<a href="#">Accounting</a>
-			<ul>
-				<li><a th:href="@{/currencys/list}">Currency</a></li>
-				<li class="pure-menu-separator"></li>
-				<li><a th:href="@{/taxs/list}">Tax</a></li>
-				<li class="pure-menu-separator"></li>
-				<li><a th:href="@{/bankaccounts/list}">Bank Account</a></li>
-				<li class="pure-menu-separator"></li>
-				<li><a th:href="@{/cashaccounts/list}">Cash Account</a></li>
-			</ul>
-		</li>
-		<li>
-			<a href="#">Inventory</a>
-			<ul>
-				<li><a th:href="@{/uoms/list}">Unit of Measure</a></li>
-				<li class="pure-menu-separator"></li>
-				<li><a th:href="@{/facilitys/list}">Facility</a></li>
-				<li class="pure-menu-separator"></li>
-				<li><a th:href="@{/categorys/list}">Product Category</a></li>
-				<li class="pure-menu-separator"></li>
-				<li><a th:href="@{/products/list}">Product</a></li>
-				<li class="pure-menu-separator"></li>
-				<li><a th:href="@{/inventoryitems/list}">Inventory Item</a></li>
-			</ul>
-		</li>
-		<li>
-			<a href="#">Sales</a>
-			<ul>
-				<li><a th:href="@{/cashsales/list}">Cash Sales</a></li>
-			</ul>
-		</li>
-	</ul>
-</div>
-<script>
-YUI({
-    classNamePrefix: 'pure'
-}).use('gallery-sm-menu', function (Y) {
-
-    var horizontalMenu = new Y.Menu({
-        container         : '#demo-horizontal-menu',
-        sourceNode        : '#std-menu-items',
-        orientation       : 'horizontal',
-        hideOnOutsideClick: false,
-        hideOnClick       : false
-    });
-
-    horizontalMenu.render();
-    horizontalMenu.show();
-
-});
-</script>
+		</div>
+	</div>
+</nav>

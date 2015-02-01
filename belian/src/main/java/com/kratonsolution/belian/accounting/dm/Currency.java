@@ -3,14 +3,13 @@
  */
 package com.kratonsolution.belian.accounting.dm;
 
-import java.util.UUID;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author agungdodiperdana
@@ -25,16 +24,10 @@ public class Currency
 	private String id;
 	
 	@Field("code")
+	@Indexed(unique=true,name="currency_code")
 	private String code;
 	
 	@Field("name")
+	@Indexed(unique=true,name="currency_name")
 	private String name;
-	
-	public static Currency newInstance()
-	{
-		Currency currency = new Currency();
-		currency.setId(UUID.randomUUID().toString());
-		
-		return currency;
-	}
 }

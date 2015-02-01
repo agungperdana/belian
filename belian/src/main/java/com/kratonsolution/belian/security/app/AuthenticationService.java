@@ -49,25 +49,25 @@ public class AuthenticationService implements UserDetailsService
 		{
 			if(!userRole.isDeleted() && userRole.isEnabled())
 			{
-				Role role = roleRepository.findOneByName(userRole.getRoleName());
+				Role role = roleRepository.findOneByName(userRole.getRole().getName());
 				if(role != null)
 				{
 					for(AccessRole accessRole : role.getAccesses())
 					{
 						if(accessRole.isCanCreate())
-							list.add(new Authority("ROLE_"+accessRole.getModuleCode()+"_CREATE"));
+							list.add(new Authority("ROLE_"+accessRole.getModule().getCode()+"_CREATE"));
 						
 						if(accessRole.isCanDelete())
-							list.add(new Authority("ROLE_"+accessRole.getModuleCode()+"_DELETE"));
+							list.add(new Authority("ROLE_"+accessRole.getModule().getCode()+"_DELETE"));
 						
 						if(accessRole.isCanPrint())
-							list.add(new Authority("ROLE_"+accessRole.getModuleCode()+"_PRINT"));
+							list.add(new Authority("ROLE_"+accessRole.getModule().getCode()+"_PRINT"));
 						
 						if(accessRole.isCanRead())
-							list.add(new Authority("ROLE_"+accessRole.getModuleCode()+"_READ"));
+							list.add(new Authority("ROLE_"+accessRole.getModule().getCode()+"_READ"));
 						
 						if(accessRole.isCanUpdate())
-							list.add(new Authority("ROLE_"+accessRole.getModuleCode()+"_UPDATE"));
+							list.add(new Authority("ROLE_"+accessRole.getModule().getCode()+"_UPDATE"));
 					}
 				}
 			}

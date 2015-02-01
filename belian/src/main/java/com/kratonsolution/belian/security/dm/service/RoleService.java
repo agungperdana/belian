@@ -34,9 +34,7 @@ public class RoleService
 		for(Module module:moduleRepository.findAll())
 		{
 			AccessRole accessRole = new AccessRole();
-			accessRole.setId(UUID.randomUUID().toString());
-			accessRole.setModuleId(module.getId());
-			accessRole.setModuleName(module.getName());
+			accessRole.setModule(module);
 			
 			role.getAccesses().add(accessRole);
 		}
@@ -56,7 +54,7 @@ public class RoleService
 					boolean exist = false;
 					for(AccessRole access:role.getAccesses())
 					{						
-						if(access.getModuleId().equals(module.getId()))
+						if(access.getModule().getId().equals(module.getId()))
 						{
 							exist = true;
 							break;
@@ -67,8 +65,7 @@ public class RoleService
 					{
 						AccessRole access = new AccessRole();
 						access.setId(UUID.randomUUID().toString());
-						access.setModuleId(module.getId());
-						access.setModuleName(module.getName());
+						access.setModule(module);
 						
 						role.getAccesses().add(access);
 					}

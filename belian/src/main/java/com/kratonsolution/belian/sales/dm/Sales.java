@@ -11,7 +11,12 @@ import lombok.Setter;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.dm.Party;
+import com.kratonsolution.belian.general.dm.Person;
 
 /**
  * @author agungdodiperdana
@@ -31,23 +36,14 @@ public abstract class Sales
 	@Field("date")
 	protected Date date;
 	
-	@Field("company_id")
-	protected String companyId;
+	@DBRef
+	private Organization organization;
 	
-	@Field("company_name")
-	protected String companyName;
+	@DBRef
+	protected Person sales;
 	
-	@Field("sales_id")
-	protected String salesId;
-	
-	@Field("sales_name")
-	protected String salesName;
-	
-	@Field("customer_id")
-	protected String customerId;
-	
-	@Field("customer_name")
-	protected String customerName;
+	@DBRef
+	protected Party customer;
 	
 	@Field("credit_term")
 	protected BigDecimal creditTerm;

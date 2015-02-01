@@ -5,41 +5,45 @@
 	<meta charset="UTF-8"/>
 	<title>Geographic Form</title>
 	<th:block th:include="static"/>
-	<th:block th:include="script"/>
 </head>
 <body>
 	<th:block th:include="menu"/>
-	<div class="content ui-widget-content">
-		<fieldset>
-			<div class="rcrumbs" id="breadcrumbs">
-        	<ul>
-            	<li><a>Geographic Management</a><span class="divider">></span></li>
-            	<li><a th:href="@{/geographics/list}">List</a><span class="divider">></span></li>
-            	<li><a>Form</a></li>
-        	</ul>
-        	</div>
-			<form class="pure-form pure-form-aligned" th:action="@{/geographics/add}" role="form" th:object="${geographic}">
-				<div class="pure-control-group">
-					<label for="code">Code :</label>
-					<input type="text" id="code" th:field="*{code}"/>
-				</div>
-				<div class="pure-control-group">
-					<label for="name">Name :</label>
-					<input type="text" id="name" th:field="*{name}"/>
-				</div>
-				<div class="pure-control-group">
-					<label for="type">Type :</label>
-					<select th:field="*{type}" name="type">
-						<option th:each="type:${types}" th:value="${type}" th:text="${type}"/>
-					</select>
-				</div>
-				<div class="pure-controls">
-					<input type="hidden" th:field="${geographic.id}" th:value="${geographic.id}"/>
-					<button type="submit" class="pure-button pure-button-primary">Save</button>
-				</div>
-			</form>
-		</fieldset>
+	<div class="container-fluid">
+		<ol class="breadcrumb">
+  			<li><a href="#">General</a></li>
+  			<li><a th:href="@{/geographics/list}">Geographic</a></li>
+  			<li class="active">Form</li>
+		</ol>
+		<div class="panel panel-default">
+  			<div class="panel-heading">Create new Geographic</div>
+  			<div class="panel-body">
+				<form class="form-horizontal" th:action="@{/geographics/add}" th:object="${geographic}">
+					<div class="form-group">
+				    	<label for="code" class="col-sm-2 control-label">Code</label>
+				    	<div class="col-sm-10">
+				      		<input type="text" class="form-control" id="code" placeholder="Geographic Code" th:field="*{code}"/>
+				    	</div>
+				  	</div>
+				  	<div class="form-group">
+				    	<label for="name" class="col-sm-2 control-label">Name</label>
+				    	<div class="col-sm-10">
+				      		<input type="text" class="form-control" id="name" placeholder="Geographic Name" th:field="*{name}"/>
+				    	</div>
+				  	</div>
+				  	<div class="form-group">
+				    	<label for="name" class="col-sm-2 control-label">Type</label>
+				    	<div class="col-sm-10">
+				      		<select class="form-control" th:field="*{type}" name="type">
+								<option th:each="type:${types}" th:value="${type}" th:text="${type}"/>
+							</select>
+				    	</div>
+				    </div>
+				</form>
+  			</div>
+  			<div class="panel-footer clearfix">
+  				<div class="pull-center">sfasfsf</div>
+  			</div>
+		</div>
 	</div>
-	<th:block th:include="footer"/>
 </body>
 </html>

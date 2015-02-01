@@ -3,74 +3,72 @@
  */
 package com.kratonsolution.belian.general.view;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.stereotype.Service;
 
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.GeographicRepository;
+import com.kratonsolution.belian.security.dm.AccessGrantedFor;
 
 /**
  * @author agungdodiperdana
  *
  */
-@Controller
-@RequestMapping("/geographics")
+@Service
 public class GeographicController
 {
 	@Autowired
 	private GeographicRepository repository;
 		
-	@RequestMapping("/list")
-	@Secured("ROLE_GEOGRAPHIC_READ")
-	public String list(Model model)
+	@Secured(AccessGrantedFor.ROLE_GEOGRAPHIC_READ)
+	public List<Geographic> findAll()
 	{
-		model.addAttribute("geographics",repository.findAll());		
-		return "geographics";
+		return repository.findAll();
 	}
 	
-	@RequestMapping("/preadd")
-	@Secured("ROLE_GEOGRAPHIC_CREATE")
-	public String preadd(Model model)
+	@Secured(AccessGrantedFor.ROLE_GEOGRAPHIC_READ)
+	public int getSize()
 	{
-		model.addAttribute("geographic",Geographic.newInstance());
-		model.addAttribute("types",Geographic.Type.values());
-		return "geographic-add";
+		return (int)repository.count();
 	}
 	
-	@RequestMapping("/add")
-	@Secured("ROLE_GEOGRAPHIC_CREATE")
-	public String add(Geographic geographic)
+	@Secured(AccessGrantedFor.ROLE_GEOGRAPHIC_CREATE)
+	public boolean add(Geographic geographic)
 	{
 		repository.save(geographic);
-		return "redirect:/geographics/list";
+		return true;
 	}
 	
-	@Secured("ROLE_GEOGRAPHIC_UPDATE")
-	@RequestMapping("/preedit/{id}")
-	public String preedit(@PathVariable String id,Model model)
-	{
-		model.addAttribute("geographic",repository.findOne(id));
-		model.addAttribute("types",Geographic.Type.values());
-		return "geographic-edit";
-	}
-	
-	@Secured("ROLE_GEOGRAPHIC_UPDATE")
-	@RequestMapping("/edit")
-	public String edit(Geographic geographic)
+	@Secured(AccessGrantedFor.ROLE_GEOGRAPHIC_UPDATE)
+	public boolean edit(Geographic geographic)
 	{
 		repository.save(geographic);
-		return "redirect:/geographics/list";
+		return true;
 	}
 	
-	@Secured("ROLE_GEOGRAPHIC_DELETE")
-	@RequestMapping("/delete/{id}")
-	public String delete(@PathVariable String id)
+	@Secured(AccessGrantedFor.ROLE_GEOGRAPHIC_DELETE)
+	public boolean delete(String id)
 	{
 		repository.delete(id);
-		return "redirect:/geographics/list";
+		return true;
+	}
+	
+	@Secured(AccessGrantedFor.ROLE_GEOGRAPHIC_READ)
+	public Page<Geographic> findAll(int pageIndex,int itemsSize)
+	{		
+		PageRequest request = new PageRequest(pageIndex, itemsSize);
+		return repository.findAll(request);
+	}
+	
+	@Secured(AccessGrantedFor.ROLE_GEOGRAPHIC_READ)
+	public List<Geographic> findAll(Pageable pageable)
+	{
+		return repository.findAll(pageable).getContent();
 	}
 }

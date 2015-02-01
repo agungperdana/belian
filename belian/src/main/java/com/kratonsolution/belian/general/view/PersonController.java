@@ -50,7 +50,7 @@ public class PersonController
 	@RequestMapping("/preadd")
 	public String preadd(Model model)
 	{
-		model.addAttribute("person",Person.newInstance());
+		model.addAttribute("person",new Person());
 		model.addAttribute("genders",Person.Gender.values());
 		model.addAttribute("maritals",Person.MaritalStatus.values());
 		return "person-add";

@@ -6,7 +6,6 @@ package com.kratonsolution.belian.inventory.view;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.kratonsolution.belian.accounting.view.PartyEditor;
 import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.PartyRepository;
 import com.kratonsolution.belian.inventory.dm.Product;
@@ -38,12 +38,16 @@ public class ProductSupplierController
 	
 	@Autowired
 	private PartyRepository partyRepository;
+	
+	@Autowired
+	private PartyEditor partyEditor;
 
 	@InitBinder
 	public void binder(WebDataBinder binder)
 	{
 		DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(format, true));
+		binder.registerCustomEditor(Party.class, partyEditor);
 	}
 	
 	@Secured("ROLE_PRDSUPPLIER_CREATE")
@@ -62,15 +66,7 @@ public class ProductSupplierController
 	public String add(@PathVariable String productId, ProductSupplier supplier)
 	{
 		Product product = repository.findOne(productId);
-
-		Party party = partyRepository.findOne(supplier.getPartyId());
-		if(party != null)
-		{
-			supplier.setId(UUID.randomUUID().toString());
-			supplier.setPartyName(party.getName());
-
-			product.getSuppliers().add(supplier);
-		}
+		product.getSuppliers().add(supplier);
 
 		repository.save(product);
 
@@ -107,14 +103,8 @@ public class ProductSupplierController
 			{
 				comp.setFrom(supplier.getFrom());
 				comp.setTo(supplier.getTo());
+				comp.setSupplier(supplier.getSupplier());
 				
-				Party party = partyRepository.findOne(supplier.getPartyId());
-				if(party != null)
-				{
-					comp.setPartyId(party.getId());
-					comp.setPartyName(party.getName());					
-				}
-
 				break;
 			}
 		}

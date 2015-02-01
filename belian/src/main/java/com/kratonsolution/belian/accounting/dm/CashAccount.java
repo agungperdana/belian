@@ -10,9 +10,11 @@ import lombok.Getter;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.global.EconomicResource;
 
 /**
@@ -35,21 +37,12 @@ public class CashAccount implements EconomicResource
 	@Indexed(unique=true)
 	private String name;
 	
-	@Field("currency_id")
-	@Indexed
-	private String currencyId;
-	
-	@Field("currency_code")
-	@Indexed
-	private String currencyCode;
+	@DBRef
+	private Currency currency;
 
-	@Field("owner_id")
-	@Indexed
-	private String ownerId;
+	@DBRef
+	private Party owner;
 	
-	@Field("owner_name")
-	@Indexed
-	private String ownerName;
 	
 	@Field("amount")
 	private BigDecimal amount = BigDecimal.ZERO;

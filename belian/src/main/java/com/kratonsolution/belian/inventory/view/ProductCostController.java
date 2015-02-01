@@ -21,11 +21,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.dm.CurrencyRepository;
+import com.kratonsolution.belian.accounting.view.CurrencyEditor;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.GeographicRepository;
+import com.kratonsolution.belian.general.view.GeographicEditor;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductCost;
 import com.kratonsolution.belian.inventory.dm.ProductRepository;
@@ -46,12 +47,20 @@ public class ProductCostController
 	
 	@Autowired
 	private CurrencyRepository currencyRepository;
+
+	@Autowired
+	private CurrencyEditor currencyEditor;
+	
+	@Autowired
+	private GeographicEditor geoEditor;
 	
 	@InitBinder
 	public void binder(WebDataBinder binder)
 	{
 		DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(format, true));
+		binder.registerCustomEditor(Currency.class, currencyEditor);
+		binder.registerCustomEditor(Geographic.class, geoEditor);
 		binder.registerCustomEditor(BigDecimal.class,new CustomNumberEditor(BigDecimal.class, false));
 	}
 
@@ -71,21 +80,6 @@ public class ProductCostController
 	public String add(@PathVariable String productId, ProductCost cost)
 	{
 		cost.setId(UUID.randomUUID().toString());
-		
-		if(!Strings.isNullOrEmpty(cost.getAreaId()))
-		{
-			Geographic geographic = geographicRepository.findOne(cost.getAreaId());
-			if(geographic != null)
-				cost.setAreaName(geographic.getName());
-		}
-		
-		if(!Strings.isNullOrEmpty(cost.getCurrencyId()))
-		{
-			Currency currency = currencyRepository.findOne(cost.getCurrencyId());
-			if(currency != null)
-				cost.setCurrencyCode(currency.getCode());
-		}
-		
 		Product root = repository.findOne(productId);
 		root.getCosts().add(cost);
 
@@ -129,20 +123,8 @@ public class ProductCostController
 				comp.setEstimated(cost.getEstimated());
 				comp.setDeleted(cost.isDeleted());
 				comp.setType(cost.getType());
-				
-				if(!Strings.isNullOrEmpty(cost.getAreaId()))
-				{
-					Geographic geographic = geographicRepository.findOne(cost.getAreaId());
-					if(geographic != null)
-						cost.setAreaName(geographic.getName());
-				}
-				
-				if(!Strings.isNullOrEmpty(cost.getCurrencyId()))
-				{
-					Currency currency = currencyRepository.findOne(cost.getCurrencyId());
-					if(currency != null)
-						cost.setCurrencyCode(currency.getCode());
-				}
+				comp.setCurrency(cost.getCurrency());
+				comp.setArea(cost.getArea());
 				
 				break;
 			}

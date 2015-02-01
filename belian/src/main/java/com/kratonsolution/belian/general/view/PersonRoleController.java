@@ -38,11 +38,15 @@ public class PersonRoleController
 	@Autowired
 	private PartyRoleTypeRepository partyRoleTypeRepository;
 	
+	@Autowired
+	private PartyRoleTypeEditor roleEditor;
+	
 	@InitBinder
 	public void binder(WebDataBinder binder)
 	{
 		DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(format, true));
+		binder.registerCustomEditor(PartyRoleType.class, roleEditor);
 	}
 	
 	@Secured("ROLE_PRSROLE_CREATE")
@@ -60,10 +64,7 @@ public class PersonRoleController
 	@RequestMapping("/add/{partyId}")
 	public String add(@PathVariable String partyId,PartyRole role)
 	{
-		PartyRoleType roleType = partyRoleTypeRepository.findOneByName(role.getName());
-		
 		role.setId(UUID.randomUUID().toString());
-		role.setRoleId(roleType.getId());
 		
 		Person person = personRepository.findOne(partyId);
 		person.getRoles().add(role);
@@ -105,12 +106,8 @@ public class PersonRoleController
 		{
 			if(db.getId().equals(id))
 			{
-				PartyRoleType type = partyRoleTypeRepository.findOneByName(role.getName());
-				
-				db.setRoleId(type.getId());
 				db.setFrom(role.getFrom());
 				db.setTo(role.getTo());
-				db.setName(role.getName());
 
 				break;
 			}
