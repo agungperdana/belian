@@ -59,7 +59,7 @@ public class RoleModel implements ListModel<Role>
 
 	public void next(int pageIndex,int itemSize)
 	{
-		if(data.size() < getSize())
-			data.addAll(controller.findAll(pageIndex,itemSize));
+		data.clear();
+		data.addAll(controller.findAll(0, (itemSize*pageIndex)+itemSize));
 	}
 }

@@ -6,9 +6,7 @@ package com.kratonsolution.belian.general.view;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
@@ -60,15 +58,8 @@ public class GeographicController
 	}
 	
 	@Secured(AccessGrantedFor.ROLE_GEOGRAPHIC_READ)
-	public Page<Geographic> findAll(int pageIndex,int itemsSize)
-	{		
-		PageRequest request = new PageRequest(pageIndex, itemsSize);
-		return repository.findAll(request);
-	}
-	
-	@Secured(AccessGrantedFor.ROLE_GEOGRAPHIC_READ)
-	public List<Geographic> findAll(Pageable pageable)
+	public List<Geographic> findAll(int pageIndex,int itemsSize)
 	{
-		return repository.findAll(pageable).getContent();
+		return repository.findAll(new PageRequest(pageIndex, itemsSize)).getContent();
 	}
 }

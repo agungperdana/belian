@@ -33,8 +33,15 @@ public class ModuleItem extends Listitem
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				if(window == null || !window.isVisible())
+				if(window == null)
 					window = ModuleWindow.injectInto(getPage());
+				else if(!window.isVisible())
+				{
+					window.setVisible(true);
+					window.setTopmost();
+				}
+				else
+					window.setTopmost();
 			}
 		});
 	}

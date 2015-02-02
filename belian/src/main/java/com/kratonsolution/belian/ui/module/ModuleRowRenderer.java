@@ -20,9 +20,12 @@ public class ModuleRowRenderer implements RowRenderer<Module>
 	@Override
 	public void render(Row row, Module data, int index) throws Exception
 	{
-		row.appendChild(new Checkbox());
-		row.appendChild(new Label(data.getCode()));
-		row.appendChild(new Label(data.getName()));
-		row.appendChild(new Label(data.getId()));
+		if(data != null)
+		{
+			row.appendChild(new Checkbox());
+			row.appendChild(new Label(data.getCode()));
+			row.appendChild(new Label(data.getName()));
+			row.appendChild(new Label(data.getId()));
+		}
 	}
 }

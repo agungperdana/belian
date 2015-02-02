@@ -23,11 +23,13 @@ public abstract class FormContent extends Vlayout implements Callable
 	{
 		setSpacing("3px");
 		setWidth("100%");
-		setHeight("100%");
+		setHeight("97%");
+		setStyle("overflow:auto");
 		
 		grid.appendChild(rows);
-		toolbar.setParent(this);
-		grid.setParent(this);
+		
+		appendChild(toolbar);
+		appendChild(grid);
 	}
 	
 	public abstract void initToolbar();

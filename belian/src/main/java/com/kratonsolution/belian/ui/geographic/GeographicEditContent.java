@@ -21,7 +21,7 @@ import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.view.GeographicController;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.Springs;
-import com.kratonsolution.belian.ui.nav.Utils;
+import com.kratonsolution.belian.ui.nav.RowUtils;
 
 /**
  * @author agungdodiperdana
@@ -73,7 +73,7 @@ public class GeographicEditContent extends FormContent
 					throw new WrongValueException(name,"Name cannot be empty");
 			
 				Geographic geographic = new Geographic();
-				geographic.setId(Utils.rowValue(row, 4));
+				geographic.setId(RowUtils.rowValue(row, 4));
 				geographic.setCode(code.getText());
 				geographic.setName(name.getText());
 				geographic.setType(Geographic.Type.valueOf(type.getSelectedItem().getValue().toString()));
@@ -91,15 +91,15 @@ public class GeographicEditContent extends FormContent
 	public void initForm()
 	{
 		code.setConstraint("no empty");
-		code.setText(Utils.rowValue(this.row,1));
+		code.setText(RowUtils.rowValue(this.row,1));
 		
 		name.setConstraint("no empty");
-		name.setText(Utils.rowValue(row, 2));
+		name.setText(RowUtils.rowValue(row, 2));
 		
 		for(Geographic.Type geo :Geographic.Type.values())
 		{
 			Listitem listitem = new Listitem(geo.toString(),geo.toString());
-			if(geo.toString().equals(Utils.rowValue(row, 3)))
+			if(geo.toString().equals(RowUtils.rowValue(row, 3)))
 				listitem.setSelected(true);
 				
 			type.appendChild(listitem);

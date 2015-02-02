@@ -32,7 +32,7 @@ public class ModuleModel implements ListModel<Module>
 	public Module getElementAt(int index)
 	{
 		if(index >= data.size())
-			return data.get(data.size()-1);
+			return null;
 		
 		return data.get(index);
 	}
@@ -59,7 +59,7 @@ public class ModuleModel implements ListModel<Module>
 
 	public void next(int pageIndex,int itemSize)
 	{
-		if(data.size() < getSize())
-			data.addAll(controller.findAll(pageIndex,itemSize));
+		data.clear();
+		data.addAll(controller.findAll(0, (itemSize*pageIndex)+itemSize));
 	}
 }

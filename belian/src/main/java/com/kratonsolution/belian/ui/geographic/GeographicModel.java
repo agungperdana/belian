@@ -6,7 +6,6 @@ package com.kratonsolution.belian.ui.geographic;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.data.domain.Page;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
@@ -48,11 +47,8 @@ public class GeographicModel implements ListModel<Geographic>
 	
 	public void next(int pageIndex,int itemSize)
 	{
-		if(data.size() < getSize())
-		{
-			Page<Geographic> page = controller.findAll(pageIndex,itemSize);
-			data.addAll(page.getContent());
-		}
+		data.clear();
+		data.addAll(controller.findAll(0, (itemSize*pageIndex)+itemSize));
 	}
 	
 	@Override

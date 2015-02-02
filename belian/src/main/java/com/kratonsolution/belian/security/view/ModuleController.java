@@ -25,6 +25,12 @@ public class ModuleController
 	private ModuleRepository repository;
 		
 	@Secured("ROLE_MODULE_READ")
+	public Module findOne(String id)
+	{
+		return repository.findOne(id);
+	}
+	
+	@Secured("ROLE_MODULE_READ")
 	public List<Module> findAll()
 	{
 		return repository.findAll();

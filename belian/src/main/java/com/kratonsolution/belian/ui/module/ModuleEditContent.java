@@ -19,7 +19,7 @@ import com.kratonsolution.belian.security.dm.Module;
 import com.kratonsolution.belian.security.view.ModuleController;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.Springs;
-import com.kratonsolution.belian.ui.nav.Utils;
+import com.kratonsolution.belian.ui.nav.RowUtils;
 
 /**
  * @author agungdodiperdana
@@ -69,7 +69,7 @@ public class ModuleEditContent extends FormContent
 					throw new WrongValueException(name,"Name cannot be empty");
 			
 				Module module = new Module();
-				module.setId(Utils.rowValue(row, 4));
+				module.setId(RowUtils.rowValue(row, 4));
 				module.setCode(code.getText());
 				module.setName(name.getText());
 				
@@ -86,10 +86,10 @@ public class ModuleEditContent extends FormContent
 	public void initForm()
 	{
 		code.setConstraint("no empty");
-		code.setText(Utils.rowValue(this.row,1));
+		code.setText(RowUtils.rowValue(this.row,1));
 		
 		name.setConstraint("no empty");
-		name.setText(Utils.rowValue(row, 2));
+		name.setText(RowUtils.rowValue(row, 2));
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));

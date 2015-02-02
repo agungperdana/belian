@@ -4,17 +4,19 @@
 package com.kratonsolution.belian.security.view;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
-import com.kratonsolution.belian.security.dm.ModuleEditor;
+import com.google.common.base.Strings;
+import com.kratonsolution.belian.security.dm.AccessRole;
+import com.kratonsolution.belian.security.dm.Module;
 import com.kratonsolution.belian.security.dm.ModuleRepository;
 import com.kratonsolution.belian.security.dm.Role;
 import com.kratonsolution.belian.security.dm.RoleRepository;
-import com.kratonsolution.belian.security.dm.service.RoleService;
 
 /**
  * @author agungdodiperdana
@@ -28,12 +30,12 @@ public class RoleController
 	
 	@Autowired
 	private ModuleRepository moduleRepository;
-		
-	@Autowired
-	private RoleService service;
 	
-	@Autowired
-	private ModuleEditor moduleEditor;
+	@Secured("ROLE_RLE_READ")
+	public Role findOne(String id)
+	{
+		return repository.findOne(id);
+	}
 	
 	@Secured("ROLE_RLE_READ")
 	public List<Role> findAll()
@@ -69,5 +71,57 @@ public class RoleController
 	public void delete(String id)
 	{
 		repository.delete(id);
+	}
+	
+	@Secured("ROLE_RLE_CREATE")
+	public Role prepareAdd()
+	{
+		Role role = new Role();
+		for(Module module:moduleRepository.findAll())
+		{
+			AccessRole accessRole = new AccessRole();
+			accessRole.setModule(module);
+			
+			role.getAccesses().add(accessRole);
+		}
+		
+		return role;
+	}
+	
+	@Secured("ROLE_RLE_UPDATE")
+	public Role prepareEdit(String id)
+	{
+		if(!Strings.isNullOrEmpty(id))
+		{
+			Role role = repository.findOne(id);
+			if(role != null)
+			{
+				for(Module module:moduleRepository.findAll())
+				{
+					boolean exist = false;
+					for(AccessRole access:role.getAccesses())
+					{						
+						if(access.getModule().getId().equals(module.getId()))
+						{
+							exist = true;
+							break;
+						}
+					}
+					
+					if(!exist)
+					{
+						AccessRole access = new AccessRole();
+						access.setId(UUID.randomUUID().toString());
+						access.setModule(module);
+						
+						role.getAccesses().add(access);
+					}
+				}
+			}
+			
+			return role;
+		}
+
+		return new Role();
 	}
 }
