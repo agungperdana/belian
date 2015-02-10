@@ -11,7 +11,7 @@ import org.zkoss.zul.event.ListDataListener;
 
 import com.kratonsolution.belian.security.dm.Role;
 import com.kratonsolution.belian.security.view.RoleController;
-import com.kratonsolution.belian.ui.Springs;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * @author agungdodiperdana

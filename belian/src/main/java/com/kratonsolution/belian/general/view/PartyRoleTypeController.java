@@ -3,19 +3,12 @@
  */
 package com.kratonsolution.belian.general.view;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.stereotype.Service;
 
 import com.kratonsolution.belian.general.dm.PartyRoleType;
 import com.kratonsolution.belian.general.dm.PartyRoleTypeRepository;
@@ -24,70 +17,44 @@ import com.kratonsolution.belian.general.dm.PartyRoleTypeRepository;
  * @author agungdodiperdana
  *
  */
-@Controller
-@RequestMapping("/partyroletypes")
+@Service
 public class PartyRoleTypeController
 {	
 	@Autowired
 	private PartyRoleTypeRepository repository;
-	
-	@InitBinder
-	public void binder(WebDataBinder binder)
-	{
-		DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(format, false));
-	}
 		
 	@Secured("ROLE_PTYROLETYPE_READ")
-	@RequestMapping("/list")
-	public String list(Model model)
+	public List<PartyRoleType> findAll()
 	{
-		model.addAttribute("partyroletypes",repository.findAll());		
-		return "partyroletypes";
+		return repository.findAll();
+	}
+	
+	@Secured("ROLE_PTYROLETYPE_READ")
+	public List<PartyRoleType> findAll(int pageIndex,int pageSize)
+	{
+		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+	}
+	
+	public int size()
+	{
+		return Long.valueOf(repository.count()).intValue();
 	}
 	
 	@Secured("ROLE_PTYROLETYPE_CREATE")
-	@RequestMapping("/preadd")
-	public String preadd(Model model)
-	{
-		model.addAttribute("partyrole",new PartyRoleType());
-		return "partyroletype-add";
-	}
-	
-	@Secured("ROLE_PTYROLETYPE_CREATE")
-	@RequestMapping("/add")
-	public String add(PartyRoleType partyrole)
+	public void add(PartyRoleType partyrole)
 	{
 		repository.save(partyrole);
-		return "redirect:/partyroletypes/list";
 	}
 	
 	@Secured("ROLE_PTYROLETYPE_UPDATE")
-	@RequestMapping("/preedit/{id}")
-	public String preedit(@PathVariable String id,Model model)
-	{
-		model.addAttribute("partyrole",repository.findOne(id));
-		return "partyroletype-edit";
-	}
-	
-	@Secured("ROLE_PTYROLETYPE_UPDATE")
-	@RequestMapping("/edit")
-	public String edit(PartyRoleType partyrole)
+	public void edit(PartyRoleType partyrole)
 	{
 		repository.save(partyrole);
-		return "redirect:/partyroletypes/list";
 	}
 	
 	@Secured("ROLE_PTYROLETYPE_DELETE")
-	@RequestMapping("/delete/{id}")
-	public String delete(@PathVariable String id)
+	public void delete(String id)
 	{
-		PartyRoleType type = repository.findOne(id);
-		if(type != null)
-			type.setDeleted(true);
-		
-		repository.save(type);
-		
-		return "redirect:/partyroletypes/list";
+		repository.delete(id);
 	}
 }

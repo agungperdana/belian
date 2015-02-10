@@ -9,21 +9,21 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Caption;
+import org.zkoss.zul.Row;
 
 import com.kratonsolution.belian.ui.AbstractWindow;
+import com.kratonsolution.belian.ui.HasCreateForm;
+import com.kratonsolution.belian.ui.HasEditForm;
+import com.kratonsolution.belian.ui.HasGrid;
 import com.kratonsolution.belian.ui.nav.NavigatorBar;
 
 /**
  * @author agungdodiperdana
  *
  */
-public class GeographicWindow extends AbstractWindow
+public class GeographicWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
 	private final Caption caption = new Caption("Geographic");
-	
-	private GeographicFormContent form = new GeographicFormContent();
-	
-	private GeographicGridContent grid = new GeographicGridContent();
 	
 	private Geographicbutton status = new Geographicbutton();
 	
@@ -44,10 +44,8 @@ public class GeographicWindow extends AbstractWindow
 	protected void init()
 	{		
 		caption.setImage("/icons/geographic.png");
-		caption.setParent(this);
-		
-		grid.setParent(this);
-		
+		appendChild(caption);
+		insertGrid();
 		insertStatus();
 		status.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
@@ -67,29 +65,7 @@ public class GeographicWindow extends AbstractWindow
 	{
 		setVisible(false);
 		removeStatus();
-		setParent(null);
-	}
-	
-	public void removeGrid()
-	{
-		removeChild(this.grid);
-	}
-	
-	public void removeForm()
-	{
-		removeChild(form);
-	}
-
-	public void insertGrid()
-	{
-		grid = new GeographicGridContent();
-		appendChild(grid);
-	}
-	
-	public void insertForm()
-	{
-		form = new GeographicFormContent();
-		appendChild(form);
+		setPage(null);
 	}
 
 	@Override
@@ -112,6 +88,63 @@ public class GeographicWindow extends AbstractWindow
 			if(component instanceof NavigatorBar)
 			{
 				component.removeChild(status);
+			}
+		}
+	}
+
+	@Override
+	public void insertEditForm(Row row)
+	{
+		appendChild(new GeographicEditContent(row));
+	}
+
+	@Override
+	public void removeEditForm()
+	{
+		for(Component component:getChildren())
+		{
+			if(component instanceof GeographicEditContent)
+			{
+				removeChild(component);
+				break;
+			}
+		}
+	}
+
+	@Override
+	public void insertCreateForm()
+	{
+		appendChild(new GeographicFormContent());
+	}
+
+	@Override
+	public void removeCreateForm()
+	{
+		for(Component component:getChildren())
+		{
+			if(component instanceof GeographicFormContent)
+			{
+				removeChild(component);
+				break;
+			}
+		}
+	}
+
+	@Override
+	public void insertGrid()
+	{
+		appendChild(new GeographicGridContent());
+	}
+
+	@Override
+	public void removeGrid()
+	{
+		for(Component component:getChildren())
+		{
+			if(component instanceof GeographicGridContent)
+			{
+				removeChild(component);
+				break;
 			}
 		}
 	}

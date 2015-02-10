@@ -3,20 +3,15 @@
  */
 package com.kratonsolution.belian.general.view;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.kratonsolution.belian.general.dm.Address;
-import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.GeographicRepository;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.dm.PersonRepository;
@@ -25,8 +20,7 @@ import com.kratonsolution.belian.general.dm.PersonRepository;
  * @author Agung Dodi Perdana
  *
  */
-@Controller
-@RequestMapping("/personaddress")
+@Service
 public class PersonAddressController 
 {
 	@Autowired
@@ -35,39 +29,17 @@ public class PersonAddressController
 	@Autowired
 	private GeographicRepository geographic;
 	
-	@Autowired
-	private GeographicEditor geographicEditor;
-	
-	@InitBinder
-	public void binder(WebDataBinder binder)
-	{
-		binder.registerCustomEditor(Geographic.class, geographicEditor);
-	}
-	
 	@Secured("ROLE_PRSADDRESS_CREATE")
-	@RequestMapping("/preadd/{partyId}")
-	public String preadd(@PathVariable String partyId,Model model)
+	public void add(Address address)
 	{
-		model.addAttribute("personId",partyId);
-		model.addAttribute("address",new Address());
-		model.addAttribute("types",Address.Type.values());
-		model.addAttribute("geographics",geographic.findAll());
-		
-		return "personaddress-add";
-	}
-	
-	@Secured("ROLE_PRSADDRESS_CREATE")
-	@RequestMapping(value="/add/{partyId}",method=RequestMethod.POST)
-	public String add(@PathVariable String partyId,Address address)
-	{
-		address.setId(UUID.randomUUID().toString());
-		
-		Person person = personRepository.findOne(partyId);
-		person.getAddresses().add(address);
-		
-		personRepository.save(person);
-		
-		return "redirect:/persons/preedit/"+partyId;
+//		address.setId(UUID.randomUUID().toString());
+//		
+//		Person person = personRepository.findOne(partyId);
+//		person.getAddresses().add(address);
+//		
+//		personRepository.save(person);
+//		
+//		return "redirect:/persons/preedit/"+partyId;
 	}
 	
 	@Secured("ROLE_PRSADDRESS_UPDATE")

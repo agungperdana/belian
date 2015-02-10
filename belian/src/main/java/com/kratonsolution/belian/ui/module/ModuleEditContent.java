@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.ui.module;
 
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -18,8 +17,8 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.security.dm.Module;
 import com.kratonsolution.belian.security.view.ModuleController;
 import com.kratonsolution.belian.ui.FormContent;
-import com.kratonsolution.belian.ui.Springs;
-import com.kratonsolution.belian.ui.nav.RowUtils;
+import com.kratonsolution.belian.ui.util.RowUtils;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * @author agungdodiperdana
@@ -52,7 +51,7 @@ public class ModuleEditContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				ModuleWindow window = (ModuleWindow)getParent();
-				window.removeChild(getInstance());
+				window.removeEditForm();
 				window.insertGrid();
 			}
 		});
@@ -76,7 +75,7 @@ public class ModuleEditContent extends FormContent
 				controller.edit(module);
 				
 				ModuleWindow window = (ModuleWindow)getParent();
-				window.removeForm();
+				window.removeEditForm();
 				window.insertGrid();
 			}
 		});
@@ -105,11 +104,5 @@ public class ModuleEditContent extends FormContent
 		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
-	}
-
-	@Override
-	public Component getInstance()
-	{
-		return this;
 	}
 }

@@ -87,43 +87,28 @@ public class NavigationMenu extends Window
 		list.setStyle("border:none");
 		list.setParent(general);
 		
-		Listitem role = new Listitem("Role Type");
-		role.setImage("/icons/roletype.png");
-		
-		Listitem relationship = new Listitem("Relationship Type");
-		relationship.setImage("/icons/relationship.png");
-		
-		Listitem organization = new Listitem("Organization");
-		organization.setImage("/icons/organization.png");
-		
 		Listitem person = new Listitem("Person");
 		person.setImage("/icons/person.png");
 		
 		list.appendChild(new GeographicItem());
-		list.appendChild(role);
-		list.appendChild(relationship);
-		list.appendChild(organization);
-		list.appendChild(person);
+		list.appendChild(new PartyRoleTypeItem());
+		list.appendChild(new PartyRelationshipTypeItem());
+		list.appendChild(new OrganizationItem());
+		list.appendChild(new PersonItem());
 	}
 	
 	protected void initSecurity()
 	{
 		Tabpanel panel = new Tabpanel();
-		panel.setParent(panels);
-
+				
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
-		list.setParent(panel);
-		
-		Listitem role = new Listitem("Role");
-		role.setImage("/icons/role.png");
-		
-		Listitem user = new Listitem("User");
-		user.setImage("/icons/user.png");
-		
 		list.appendChild(new ModuleItem());
 		list.appendChild(new RoleItem());
-		list.appendChild(user);
+		list.appendChild(new UserItem());
+	
+		panel.appendChild(list);
+		panels.appendChild(panel);
 	}
 	
 	protected void initAccounting()

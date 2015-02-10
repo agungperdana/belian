@@ -11,7 +11,7 @@ import org.zkoss.zul.Vlayout;
  * @author agungdodiperdana
  *
  */
-public abstract class FormContent extends Vlayout implements Callable
+public abstract class FormContent extends Vlayout
 {
 	protected FormToolbar toolbar = new FormToolbar();
 	

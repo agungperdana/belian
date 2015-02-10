@@ -39,6 +39,9 @@ public class Address
 	private boolean deleted;
 
 	@DBRef
+	private Geographic city;
+	
+	@DBRef
 	private Geographic province;
 	
 	@DBRef

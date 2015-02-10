@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.ui.geographic;
 
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -20,7 +19,7 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.view.GeographicController;
 import com.kratonsolution.belian.ui.FormContent;
-import com.kratonsolution.belian.ui.Springs;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * @author agungdodiperdana
@@ -52,7 +51,7 @@ public class GeographicFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				GeographicWindow window = (GeographicWindow)getParent();
-				window.removeForm();
+				window.removeCreateForm();
 				window.insertGrid();
 			}
 		});
@@ -76,7 +75,7 @@ public class GeographicFormContent extends FormContent
 				controller.add(geographic);
 				
 				GeographicWindow window = (GeographicWindow)getParent();
-				window.removeForm();
+				window.removeCreateForm();
 				window.insertGrid();
 			}
 		});
@@ -116,11 +115,5 @@ public class GeographicFormContent extends FormContent
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
-	}
-
-	@Override
-	public Component getInstance()
-	{
-		return this;
 	}
 }

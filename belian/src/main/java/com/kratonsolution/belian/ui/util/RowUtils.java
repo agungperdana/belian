@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.nav;
+package com.kratonsolution.belian.ui.util;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Checkbox;

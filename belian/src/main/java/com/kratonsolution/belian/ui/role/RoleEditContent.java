@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
+import org.zkoss.zk.ui.event.CheckEvent;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -30,8 +30,8 @@ import com.kratonsolution.belian.security.dm.Role;
 import com.kratonsolution.belian.security.view.ModuleController;
 import com.kratonsolution.belian.security.view.RoleController;
 import com.kratonsolution.belian.ui.FormContent;
-import com.kratonsolution.belian.ui.Springs;
-import com.kratonsolution.belian.ui.nav.RowUtils;
+import com.kratonsolution.belian.ui.util.RowUtils;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * @author agungdodiperdana
@@ -69,7 +69,7 @@ public class RoleEditContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				RoleWindow window = (RoleWindow)getParent();
-				window.removeChild(getInstance());
+				window.removeEditForm();
 				window.insertGrid();
 			}
 		});
@@ -86,7 +86,7 @@ public class RoleEditContent extends FormContent
 					throw new WrongValueException(name,"Name cannot be empty");
 				
 				Role role = new Role();
-				role.setId(UUID.randomUUID().toString());
+				role.setId(RowUtils.rowValue(row, 3));
 				role.setCode(code.getText());
 				role.setName(name.getText());
 				
@@ -113,7 +113,7 @@ public class RoleEditContent extends FormContent
 				controller.add(role);
 				
 				RoleWindow window = (RoleWindow)getParent();
-				window.removeForm();
+				window.removeEditForm();
 				window.insertGrid();
 			}
 		});
@@ -167,10 +167,94 @@ public class RoleEditContent extends FormContent
 		column7.setVisible(false);
 		
 		Checkbox check1 = new Checkbox("Create");
+		check1.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
+		{
+			@Override
+			public void onEvent(CheckEvent event) throws Exception
+			{
+				Rows rows = accessModules.getRows();
+				for(Object object:rows.getChildren())
+				{
+					Row _row = (Row)object;
+					if(event.isChecked())
+						RowUtils.checked(_row, 1);
+					else
+						RowUtils.unchecked(_row, 1);
+				}
+			}
+		});
+		
 		Checkbox check2 = new Checkbox("Read");
+		check2.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
+		{
+			@Override
+			public void onEvent(CheckEvent event) throws Exception
+			{
+				Rows rows = accessModules.getRows();
+				for(Object object:rows.getChildren())
+				{
+					Row _row = (Row)object;
+					if(event.isChecked())
+						RowUtils.checked(_row, 2);
+					else
+						RowUtils.unchecked(_row, 2);
+				}
+			}
+		});
+		
 		Checkbox check3 = new Checkbox("Update");
+		check3.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
+		{
+			@Override
+			public void onEvent(CheckEvent event) throws Exception
+			{
+				Rows rows = accessModules.getRows();
+				for(Object object:rows.getChildren())
+				{
+					Row _row = (Row)object;
+					if(event.isChecked())
+						RowUtils.checked(_row, 3);
+					else
+						RowUtils.unchecked(_row, 3);
+				}
+			}
+		});
+		
 		Checkbox check4 = new Checkbox("Delete");
+		check4.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
+		{
+			@Override
+			public void onEvent(CheckEvent event) throws Exception
+			{
+				Rows rows = accessModules.getRows();
+				for(Object object:rows.getChildren())
+				{
+					Row _row = (Row)object;
+					if(event.isChecked())
+						RowUtils.checked(_row, 4);
+					else
+						RowUtils.unchecked(_row, 4);
+				}
+			}
+		});
+		
 		Checkbox check5 = new Checkbox("Print");
+		check5.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
+		{
+			@Override
+			public void onEvent(CheckEvent event) throws Exception
+			{
+				Rows rows = accessModules.getRows();
+				for(Object object:rows.getChildren())
+				{
+					Row _row = (Row)object;
+					if(event.isChecked())
+						RowUtils.checked(_row, 5);
+					else
+						RowUtils.unchecked(_row, 5);
+				}
+			}
+		});
 		
 		column2.appendChild(check1);
 		column3.appendChild(check2);
@@ -193,34 +277,37 @@ public class RoleEditContent extends FormContent
 		Role role = controller.findOne(RowUtils.rowValue(this.row, 3));
 		for(AccessRole accessRole:role.getAccesses())
 		{
-			Module module = moduleController.findOne(accessRole.getModule().getId());
-			if(module != null)
+			if(accessRole.getModule() != null)
 			{
-				Checkbox create = new Checkbox();
-				create.setChecked(accessRole.isCanCreate());
-				
-				Checkbox read = new Checkbox();
-				read.setChecked(accessRole.isCanRead());
-				
-				Checkbox update = new Checkbox();
-				update.setChecked(accessRole.isCanUpdate());
-				
-				Checkbox delete = new Checkbox();
-				delete.setChecked(accessRole.isCanDelete());
-				
-				Checkbox print = new Checkbox();
-				print.setChecked(accessRole.isCanPrint());
-				
-				Row row = new Row();
-				row.appendChild(new Label(module.getName()));
-				row.appendChild(create);
-				row.appendChild(read);
-				row.appendChild(update);
-				row.appendChild(delete);
-				row.appendChild(print);
-				row.appendChild(new Label(module.getId()));
-				
-				moduleRows.appendChild(row);
+				Module module = moduleController.findOne(accessRole.getModule().getId());
+				if(module != null)
+				{
+					Checkbox create = new Checkbox();
+					create.setChecked(accessRole.isCanCreate());
+					
+					Checkbox read = new Checkbox();
+					read.setChecked(accessRole.isCanRead());
+					
+					Checkbox update = new Checkbox();
+					update.setChecked(accessRole.isCanUpdate());
+					
+					Checkbox delete = new Checkbox();
+					delete.setChecked(accessRole.isCanDelete());
+					
+					Checkbox print = new Checkbox();
+					print.setChecked(accessRole.isCanPrint());
+					
+					Row row = new Row();
+					row.appendChild(new Label(module.getName()));
+					row.appendChild(create);
+					row.appendChild(read);
+					row.appendChild(update);
+					row.appendChild(delete);
+					row.appendChild(print);
+					row.appendChild(new Label(module.getId()));
+					
+					moduleRows.appendChild(row);
+				}
 			}
 		}
 		
@@ -229,7 +316,7 @@ public class RoleEditContent extends FormContent
 			boolean exist = false;
 			for(AccessRole accessRole:role.getAccesses())
 			{
-				if(accessRole.getModule().getId().equals(module.getId()))
+				if(accessRole.getModule() != null && accessRole.getModule().getId().equals(module.getId()))
 					exist = true;
 			}
 		
@@ -259,11 +346,5 @@ public class RoleEditContent extends FormContent
 		accessModules.appendChild(moduleRows);
 		
 		appendChild(accessModules);
-	}
-	
-	@Override
-	public Component getInstance()
-	{
-		return this;
 	}
 }

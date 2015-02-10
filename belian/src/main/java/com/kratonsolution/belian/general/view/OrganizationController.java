@@ -3,21 +3,13 @@
  */
 package com.kratonsolution.belian.general.view;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.stereotype.Service;
 
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.OrganizationRepository;
@@ -26,66 +18,52 @@ import com.kratonsolution.belian.general.dm.OrganizationRepository;
  * @author agungdodiperdana
  *
  */
-@Controller
-@RequestMapping("/organizations")
+@Service
 public class OrganizationController
 {	
 	@Autowired
 	private OrganizationRepository repository;
-	
-	@InitBinder
-	public void binder(WebDataBinder binder)
-	{
-		DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(format, true));
-	}
 		
 	@Secured("ROLE_ORGANIZATION_READ")
-	@RequestMapping("/list")
-	public String list(Model model)
+	public Organization findOne(String id)
 	{
-		model.addAttribute("organizations",repository.findAll());		
-		return "organizations";
+		return repository.findOne(id);
+	}
+	
+	@Secured("ROLE_ORGANIZATION_READ")
+	public List<Organization> findAll()
+	{
+		return repository.findAll();
+	}
+	
+	@Secured("ROLE_ORGANIZATION_READ")
+	public List<Organization> findAll(int pageIndex,int pageSize)
+	{
+		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+	}
+	
+	@Secured("ROLE_ORGANIZATION_READ")
+	public int size()
+	{
+		return Long.valueOf(repository.count()).intValue();
 	}
 	
 	@Secured("ROLE_ORGANIZATION_CREATE")
-	@RequestMapping("/preadd")
-	public String preadd(Model model)
-	{
-		model.addAttribute("organization",new Organization());
-		return "organization-add";
-	}
-	
-	@Secured("ROLE_ORGANIZATION_CREATE")
-	@RequestMapping(value="/add",method=RequestMethod.POST)
-	public String add(Organization organization)
+	public void add(Organization organization)
 	{
 		organization.setId(UUID.randomUUID().toString());
 		repository.save(organization);
-		return "redirect:/organizations/list";
 	}
 	
 	@Secured("ROLE_ORGANIZATION_UPDATE")
-	@RequestMapping("/preedit/{id}")
-	public String preedit(@PathVariable String id,Model model)
-	{
-		model.addAttribute("organization",repository.findOne(id));
-		return "organization-edit";
-	}
-	
-	@Secured("ROLE_ORGANIZATION_UPDATE")
-	@RequestMapping(value="/edit",method=RequestMethod.POST)
-	public String edit(Organization organization)
+	public void edit(Organization organization)
 	{
 		repository.save(organization);
-		return "redirect:/organizations/list";
 	}
 	
 	@Secured("ROLE_ORGANIZATION_DELETE")
-	@RequestMapping("/delete/{id}")
-	public String delete(@PathVariable String id)
+	public void delete(String id)
 	{
 		repository.delete(id);
-		return "redirect:/organizations/list";
 	}
 }

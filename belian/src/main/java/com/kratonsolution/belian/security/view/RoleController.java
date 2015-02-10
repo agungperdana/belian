@@ -16,6 +16,8 @@ import com.kratonsolution.belian.security.dm.AccessRole;
 import com.kratonsolution.belian.security.dm.Module;
 import com.kratonsolution.belian.security.dm.ModuleRepository;
 import com.kratonsolution.belian.security.dm.Role;
+import com.kratonsolution.belian.security.dm.RoleAddedListener;
+import com.kratonsolution.belian.security.dm.RoleRemovedListener;
 import com.kratonsolution.belian.security.dm.RoleRepository;
 
 /**
@@ -30,6 +32,12 @@ public class RoleController
 	
 	@Autowired
 	private ModuleRepository moduleRepository;
+	
+	@Autowired
+	private List<RoleAddedListener> addListeners;
+	
+	@Autowired
+	private List<RoleRemovedListener> removeListeners;
 	
 	@Secured("ROLE_RLE_READ")
 	public Role findOne(String id)
@@ -59,6 +67,9 @@ public class RoleController
 	public void add(Role role)
 	{
 		repository.save(role);
+		
+		for(RoleAddedListener listener:addListeners)
+			listener.fireRoleAdded(role);
 	}
 	
 	@Secured("ROLE_RLE_UPDATE")
@@ -70,6 +81,9 @@ public class RoleController
 	@Secured("ROLE_RLE_DELETE")
 	public void delete(String id)
 	{
+		for(RoleRemovedListener listener:removeListeners)
+			listener.fireRoleRemoved(repository.findOne(id));
+		
 		repository.delete(id);
 	}
 	

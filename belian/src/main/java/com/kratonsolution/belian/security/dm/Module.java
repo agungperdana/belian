@@ -30,4 +30,7 @@ public class Module
 	@Field("name")
 	@Indexed(unique=true)
 	private String name;
+	
+	@Field("is_deleted")
+	private boolean deleted;
 }

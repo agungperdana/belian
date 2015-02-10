@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.ui.module;
 
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -18,7 +17,7 @@ import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.security.view.ModuleController;
 import com.kratonsolution.belian.ui.GridContent;
-import com.kratonsolution.belian.ui.Springs;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * @author agungdodiperdana
@@ -55,7 +54,7 @@ public class ModuleGridContent extends GridContent
 			{
 				ModuleWindow window = (ModuleWindow)getParent();
 				window.removeGrid();
-				window.insertForm();
+				window.insertCreateForm();
 			}
 		});
 		
@@ -193,18 +192,11 @@ public class ModuleGridContent extends GridContent
 				@Override
 				public void onEvent(Event event) throws Exception
 				{
-					ModuleEditContent content = new ModuleEditContent(row);
 					ModuleWindow window = (ModuleWindow)getParent();
-					window.removeChild(getInstance());
-					window.appendChild(content);
+					window.removeGrid();
+					window.insertEditForm(row);
 				}
 			});
 		}
-	}
-
-	@Override
-	public Component getInstance()
-	{
-		return this;
 	}
 }

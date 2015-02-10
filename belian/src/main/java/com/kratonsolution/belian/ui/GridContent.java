@@ -10,7 +10,7 @@ import org.zkoss.zul.Vlayout;
  * @author agungdodiperdana
  *
  */
-public abstract class GridContent extends Vlayout implements Callable
+public abstract class GridContent extends Vlayout
 {
 	protected final GridToolbar gridToolbar = new GridToolbar();
 	

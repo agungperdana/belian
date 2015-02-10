@@ -3,19 +3,13 @@
  */
 package com.kratonsolution.belian.general.view;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.stereotype.Service;
 
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.dm.PersonRepository;
@@ -24,69 +18,52 @@ import com.kratonsolution.belian.general.dm.PersonRepository;
  * @author agungdodiperdana
  *
  */
-@Controller
-@RequestMapping("/persons")
+@Service
 public class PersonController
 {	
 	@Autowired
 	private PersonRepository repository;
-	
-	@InitBinder
-	public void binder(WebDataBinder binder)
-	{
-		DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(format, false));
-	}
 		
 	@Secured("ROLE_PERSON_READ")
-	@RequestMapping("/list")
-	public String list(Model model)
+	public Person findOne(String id)
 	{
-		model.addAttribute("persons",repository.findAll());		
-		return "persons";
+		return repository.findOne(id);
+	}
+	
+	@Secured("ROLE_PERSON_READ")
+	public List<Person> findAll()
+	{
+		return repository.findAll();
+	}
+	
+	@Secured("ROLE_PERSON_READ")
+	public List<Person> findAll(int pageIndex,int pageSize)
+	{
+		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+	}
+	
+	@Secured("ROLE_PERSON_READ")
+	public int size()
+	{
+		return Long.valueOf(repository.count()).intValue();
 	}
 	
 	@Secured("ROLE_PERSON_CREATE")
-	@RequestMapping("/preadd")
-	public String preadd(Model model)
+	public void add(Person person)
 	{
-		model.addAttribute("person",new Person());
-		model.addAttribute("genders",Person.Gender.values());
-		model.addAttribute("maritals",Person.MaritalStatus.values());
-		return "person-add";
-	}
-	
-	@Secured("ROLE_PERSON_CREATE")
-	@RequestMapping("/add")
-	public String add(Person person)
-	{
+		person.setId(UUID.randomUUID().toString());
 		repository.save(person);
-		return "redirect:/persons/preedit/"+person.getId();
 	}
 	
 	@Secured("ROLE_PERSON_UPDATE")
-	@RequestMapping("/preedit/{id}")
-	public String preedit(@PathVariable String id,Model model)
-	{
-		model.addAttribute("person",repository.findOne(id));
-		model.addAttribute("genders",Person.Gender.values());
-		model.addAttribute("maritals",Person.MaritalStatus.values());
-		return "person-edit";
-	}
-	
-	@Secured("ROLE_PERSON_UPDATE")
-	@RequestMapping("/edit")
-	public String edit(Person person)
+	public void edit(Person person)
 	{
 		repository.save(person);
-		return "redirect:/persons/list";
 	}
 	
 	@Secured("ROLE_PERSON_DELETE")
-	@RequestMapping("/delete/{id}")
-	public String delete(@PathVariable String id)
+	public void delete(String id)
 	{
 		repository.delete(id);
-		return "redirect:/persons/list";
 	}
 }

@@ -9,21 +9,21 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Caption;
+import org.zkoss.zul.Row;
 
 import com.kratonsolution.belian.ui.AbstractWindow;
+import com.kratonsolution.belian.ui.HasCreateForm;
+import com.kratonsolution.belian.ui.HasEditForm;
+import com.kratonsolution.belian.ui.HasGrid;
 import com.kratonsolution.belian.ui.nav.NavigatorBar;
 
 /**
  * @author agungdodiperdana
  *
  */
-public class ModuleWindow extends AbstractWindow
+public class ModuleWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
 	private final Caption caption = new Caption("Module");
-	
-	private ModuleFormContent form = new ModuleFormContent();
-	
-	private ModuleGridContent grid = new ModuleGridContent();
 	
 	private Modulebutton status = new Modulebutton();
 	
@@ -44,10 +44,8 @@ public class ModuleWindow extends AbstractWindow
 	protected void init()
 	{
 		caption.setImage("/icons/module.png");
-		caption.setParent(this);
-		
-		grid.setParent(this);
-		
+		appendChild(caption);
+		insertGrid();
 		insertStatus();
 		status.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
@@ -67,29 +65,7 @@ public class ModuleWindow extends AbstractWindow
 	{
 		setVisible(false);
 		removeStatus();
-		setParent(null);
-	}
-	
-	public void removeGrid()
-	{
-		removeChild(this.grid);
-	}
-	
-	public void removeForm()
-	{
-		removeChild(form);
-	}
-
-	public void insertGrid()
-	{
-		grid = new ModuleGridContent();
-		appendChild(grid);
-	}
-	
-	public void insertForm()
-	{
-		form = new ModuleFormContent();
-		appendChild(form);
+		setPage(null);
 	}
 
 	@Override
@@ -111,5 +87,61 @@ public class ModuleWindow extends AbstractWindow
 				component.removeChild(status);
 		}
 	}
-	
+
+	@Override
+	public void insertEditForm(Row row)
+	{
+		appendChild(new ModuleEditContent(row));
+	}
+
+	@Override
+	public void removeEditForm()
+	{
+		for(Component component:getChildren())
+		{
+			if(component instanceof ModuleEditContent)
+			{
+				removeChild(component);
+				break;
+			}
+		}
+	}
+
+	@Override
+	public void insertCreateForm()
+	{
+		appendChild(new ModuleFormContent());
+	}
+
+	@Override
+	public void removeCreateForm()
+	{
+		for(Component component:getChildren())
+		{
+			if(component instanceof ModuleFormContent)
+			{
+				removeChild(component);
+				break;
+			}
+		}
+	}
+
+	@Override
+	public void insertGrid()
+	{
+		appendChild(new ModuleGridContent());
+	}
+
+	@Override
+	public void removeGrid()
+	{
+		for(Component component:getChildren())
+		{
+			if(component instanceof ModuleGridContent)
+			{
+				removeChild(component);
+				break;
+			}
+		}
+	}	
 }

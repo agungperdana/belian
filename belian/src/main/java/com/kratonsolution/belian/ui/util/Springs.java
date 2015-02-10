@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui;
+package com.kratonsolution.belian.ui.util;
 
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;

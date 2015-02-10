@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.ui.nav;
 
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -16,8 +17,6 @@ import com.kratonsolution.belian.ui.module.ModuleWindow;
  */
 public class ModuleItem extends Listitem
 {
-	private ModuleWindow window;
-	
 	public ModuleItem()
 	{
 		init();
@@ -33,8 +32,17 @@ public class ModuleItem extends Listitem
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
+				ModuleWindow window = null;
+				
+				for(Component component:getPage().getRoots())
+				{
+					if(component instanceof ModuleWindow)
+						window = (ModuleWindow)component;
+				}
+				
 				if(window == null)
 					window = ModuleWindow.injectInto(getPage());
+				
 				else if(!window.isVisible())
 				{
 					window.setVisible(true);

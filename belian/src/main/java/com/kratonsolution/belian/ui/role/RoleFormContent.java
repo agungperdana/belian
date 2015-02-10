@@ -5,7 +5,6 @@ package com.kratonsolution.belian.ui.role;
 
 import java.util.UUID;
 
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.CheckEvent;
 import org.zkoss.zk.ui.event.Event;
@@ -29,8 +28,8 @@ import com.kratonsolution.belian.security.dm.Role;
 import com.kratonsolution.belian.security.view.ModuleController;
 import com.kratonsolution.belian.security.view.RoleController;
 import com.kratonsolution.belian.ui.FormContent;
-import com.kratonsolution.belian.ui.Springs;
-import com.kratonsolution.belian.ui.nav.RowUtils;
+import com.kratonsolution.belian.ui.util.RowUtils;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * @author agungdodiperdana
@@ -65,7 +64,7 @@ public class RoleFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				RoleWindow window = (RoleWindow)getParent();
-				window.removeForm();
+				window.removeCreateForm();
 				window.insertGrid();
 			}
 		});
@@ -109,7 +108,7 @@ public class RoleFormContent extends FormContent
 				controller.add(role);
 				
 				RoleWindow window = (RoleWindow)getParent();
-				window.removeForm();
+				window.removeCreateForm();
 				window.insertGrid();
 			}
 		});
@@ -284,11 +283,5 @@ public class RoleFormContent extends FormContent
 		accessModules.appendChild(moduleRows);
 		
 		appendChild(accessModules);
-	}
-
-	@Override
-	public Component getInstance()
-	{
-		return this;
 	}
 }

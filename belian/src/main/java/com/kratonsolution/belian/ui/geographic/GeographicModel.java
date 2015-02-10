@@ -11,7 +11,7 @@ import org.zkoss.zul.event.ListDataListener;
 
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.view.GeographicController;
-import com.kratonsolution.belian.ui.Springs;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * @author agungdodiperdana

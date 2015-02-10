@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.ui.role;
 
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -18,7 +17,7 @@ import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.security.view.RoleController;
 import com.kratonsolution.belian.ui.GridContent;
-import com.kratonsolution.belian.ui.Springs;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * @author agungdodiperdana
@@ -55,7 +54,7 @@ public class RoleGridContent extends GridContent
 			{
 				RoleWindow window = (RoleWindow)getParent();
 				window.removeGrid();
-				window.insertForm();
+				window.insertCreateForm();
 			}
 		});
 		
@@ -193,18 +192,11 @@ public class RoleGridContent extends GridContent
 				@Override
 				public void onEvent(Event event) throws Exception
 				{
-					RoleEditContent content = new RoleEditContent(row);
 					RoleWindow window = (RoleWindow)getParent();
-					window.removeChild(getInstance());
-					window.appendChild(content);
+					window.removeGrid();
+					window.insertEditForm(row);
 				}
 			});
 		}
-	}
-
-	@Override
-	public Component getInstance()
-	{
-		return this;
 	}
 }

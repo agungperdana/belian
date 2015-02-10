@@ -25,6 +25,12 @@ public class GeographicController
 	private GeographicRepository repository;
 		
 	@Secured(AccessGrantedFor.ROLE_GEOGRAPHIC_READ)
+	public Geographic findOne(String id)
+	{
+		return repository.findOne(id);
+	}
+	
+	@Secured(AccessGrantedFor.ROLE_GEOGRAPHIC_READ)
 	public List<Geographic> findAll()
 	{
 		return repository.findAll();
@@ -34,6 +40,12 @@ public class GeographicController
 	public int getSize()
 	{
 		return (int)repository.count();
+	}
+	
+	@Secured(AccessGrantedFor.ROLE_GEOGRAPHIC_READ)
+	public List<Geographic> findAllByType(Geographic.Type type)
+	{
+		return repository.findAllByType(type);
 	}
 	
 	@Secured(AccessGrantedFor.ROLE_GEOGRAPHIC_CREATE)

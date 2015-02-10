@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.ui.nav;
 
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -16,8 +17,6 @@ import com.kratonsolution.belian.ui.role.RoleWindow;
  */
 public class RoleItem extends Listitem
 {
-	private RoleWindow window;
-	
 	public RoleItem()
 	{
 		init();
@@ -33,6 +32,14 @@ public class RoleItem extends Listitem
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
+				RoleWindow window = null;
+				
+				for(Component component:getPage().getRoots())
+				{
+					if(component instanceof RoleWindow)
+						window = (RoleWindow)component;
+				}
+				
 				if(window == null)
 					window = RoleWindow.injectInto(getPage());
 

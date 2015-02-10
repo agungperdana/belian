@@ -11,7 +11,7 @@ import org.zkoss.zul.event.ListDataListener;
 
 import com.kratonsolution.belian.security.dm.Module;
 import com.kratonsolution.belian.security.view.ModuleController;
-import com.kratonsolution.belian.ui.Springs;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * @author agungdodiperdana
