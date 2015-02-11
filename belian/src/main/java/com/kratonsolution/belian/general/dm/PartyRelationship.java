@@ -26,20 +26,20 @@ public class PartyRelationship
 	private String id;
 	
 	@Field("from_date")
-	private Date fromDate;
+	private Date from;
 	
 	@Field("to_date")
-	private Date toDate;
+	private Date to;
 	
 	@DBRef
-	private PartyRelationshipType type;
-	
-	@DBRef
-	private PartyRole fromRole;
+	private PartyRoleType fromRole;
 
 	@DBRef
 	private Party toParty;
 	
 	@Field("is_deleted")
 	private boolean deleted;
+
+	@DBRef
+	private PartyRelationshipType type;
 }

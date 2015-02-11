@@ -24,9 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.dm.CurrencyRepository;
 import com.kratonsolution.belian.accounting.view.CurrencyEditor;
-import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.GeographicRepository;
-import com.kratonsolution.belian.general.view.GeographicEditor;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductCost;
 import com.kratonsolution.belian.inventory.dm.ProductRepository;
@@ -51,8 +49,8 @@ public class ProductCostController
 	@Autowired
 	private CurrencyEditor currencyEditor;
 	
-	@Autowired
-	private GeographicEditor geoEditor;
+//	@Autowired
+//	private GeographicEditor geoEditor;
 	
 	@InitBinder
 	public void binder(WebDataBinder binder)
@@ -60,7 +58,7 @@ public class ProductCostController
 		DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(format, true));
 		binder.registerCustomEditor(Currency.class, currencyEditor);
-		binder.registerCustomEditor(Geographic.class, geoEditor);
+//		binder.registerCustomEditor(Geographic.class, geoEditor);
 		binder.registerCustomEditor(BigDecimal.class,new CustomNumberEditor(BigDecimal.class, false));
 	}
 

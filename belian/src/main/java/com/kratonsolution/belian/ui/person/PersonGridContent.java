@@ -165,8 +165,8 @@ public class PersonGridContent extends GridContent
 		
 		Column select = new Column(null,null,"25px");
 		Column name = new Column("Name");
-		Column date = new Column("Birth Date");
-		Column tax = new Column("Tax");
+		Column date = new Column("Birth Date",null,"75px");
+		Column tax = new Column("Tax",null,"100px");
 		Column id = new Column();
 		id.setVisible(false);
 		

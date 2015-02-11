@@ -97,7 +97,7 @@ public class PartyInformation extends Tree implements Refreshable
 		this.roles.appendChild(information);
 	}
 	
-	public void addRelationship(ContactInformation information)
+	public void addRelationship(RelationshipInformation information)
 	{
 		this.relationships.appendChild(information);
 	}

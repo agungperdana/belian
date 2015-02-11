@@ -10,7 +10,6 @@ import lombok.Setter;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
@@ -19,7 +18,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Getter
 @Setter
-@Document(collection="party_role")
 public class PartyRole
 {
 	@Id
@@ -34,6 +32,6 @@ public class PartyRole
 	@Field("is_deleted")
 	private boolean deleted;
 	
-	@DBRef
+	@DBRef(lazy=false,db="party_role_type")
 	private PartyRoleType type;
 }

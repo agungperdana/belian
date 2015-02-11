@@ -25,6 +25,12 @@ public class PartyRelationshipTypeController
 	private PartyRelationshipTypeRepository repository;
 		
 	@Secured("ROLE_PTYRELTYPE_READ")
+	public PartyRelationshipType findOne(String id)
+	{
+		return repository.findOne(id);
+	}
+	
+	@Secured("ROLE_PTYRELTYPE_READ")
 	public List<PartyRelationshipType> findAll()
 	{
 		return repository.findAll();

@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.ui.party;
 
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 
 import org.zkoss.zk.ui.event.Event;
@@ -14,7 +15,7 @@ import org.zkoss.zul.Treecell;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
 
-import com.kratonsolution.belian.general.dm.Contact;
+import com.kratonsolution.belian.general.dm.PartyRelationship;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.Person;
@@ -31,29 +32,42 @@ public class RelationshipInformation extends Treeitem
 {
 	private Treerow row = new Treerow();
 	
-	public RelationshipInformation(Contact contact,Party party)
+	private SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+	
+	public RelationshipInformation(PartyRelationship relationship,Party party)
 	{
-		addDescription(contact, party);
-		addIcon(party, contact);
+		addDescription(relationship, party);
+		addIcon(party, relationship);
 		appendChild(row);
 	}
 	
-	protected void addDescription(final Contact contact,final Party party)
+	protected void addDescription(final PartyRelationship relationship,final Party party)
 	{
-		Treecell cell = new Treecell(contact.getDescription()+", "+contact.getType());
+		StringBuilder builder = new StringBuilder();
+		builder.append("[");
+		builder.append(format.format(relationship.getFrom()));
+		builder.append(" - ");
+		builder.append(relationship.getTo()!=null?format.format(relationship.getTo()):"");
+		builder.append("] - ");
+		builder.append("AS ");
+		builder.append(relationship.getFromRole().getName());
+		builder.append(" to ");
+		builder.append(relationship.getToParty().getName());
+		
+		Treecell cell = new Treecell(builder.toString());
 		cell.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				appendChild(new ContactEditWindow(party, contact));
+				getTree().getParent().appendChild(new RelationshipEditWindow(party, relationship));
 			}
 		});
 	
 		row.appendChild(cell);
 	}
 	
-	protected void addIcon(final Party party,final Contact contact)
+	protected void addIcon(final Party party,final PartyRelationship contact)
 	{
 		Image remove = new Image("/icons/deletesmall.png");
 		Treecell delcell = new Treecell();
@@ -78,13 +92,13 @@ public class RelationshipInformation extends Treeitem
 		row.appendChild(delcell);
 	}
 	
-	protected void remove(final Party party,final Contact contact)
+	protected void remove(final Party party,final PartyRelationship relationship)
 	{
-		Iterator<Contact> iterator = party.getContacts().iterator();
+		Iterator<PartyRelationship> iterator = party.getRelationships().iterator();
 		while (iterator.hasNext())
 		{
-			Contact contact2 = (Contact) iterator.next();
-			if(contact2.getId().equals(contact.getId()))
+			PartyRelationship relation = (PartyRelationship) iterator.next();
+			if(relation.getId().equals(relationship.getId()))
 				iterator.remove();
 		}
 		

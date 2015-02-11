@@ -18,6 +18,7 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Contact;
 import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.dm.PartyRelationship;
 import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.view.OrganizationController;
 import com.kratonsolution.belian.ui.FormContent;
@@ -28,6 +29,8 @@ import com.kratonsolution.belian.ui.party.ContactAddWindow;
 import com.kratonsolution.belian.ui.party.ContactInformation;
 import com.kratonsolution.belian.ui.party.PartyInformation;
 import com.kratonsolution.belian.ui.party.PartyToolbar;
+import com.kratonsolution.belian.ui.party.RelationshipAddWindow;
+import com.kratonsolution.belian.ui.party.RelationshipInformation;
 import com.kratonsolution.belian.ui.party.RoleAddWindow;
 import com.kratonsolution.belian.ui.party.RoleInformation;
 import com.kratonsolution.belian.ui.util.RowUtils;
@@ -169,6 +172,15 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 				appendChild(new RoleAddWindow(controller.findOne(RowUtils.rowValue(row,4))));
 			}
 		});
+		
+		partyToolbar.getRelationship().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				appendChild(new RelationshipAddWindow(controller.findOne(RowUtils.rowValue(row,4))));
+			}
+		});
 	}
 	
 	protected void initTree()
@@ -194,6 +206,12 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 			{
 				for(final PartyRole role:organization.getRoles())
 					information.addRole(new RoleInformation(role, organization));
+			}
+			
+			if(!organization.getRelationships().isEmpty())
+			{
+				for(final PartyRelationship relation:organization.getRelationships())
+					information.addRelationship(new RelationshipInformation(relation, organization));
 			}
 		}
 		
