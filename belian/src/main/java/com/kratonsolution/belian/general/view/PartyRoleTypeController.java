@@ -24,6 +24,12 @@ public class PartyRoleTypeController
 	private PartyRoleTypeRepository repository;
 		
 	@Secured("ROLE_PTYROLETYPE_READ")
+	public PartyRoleType findOne(String id)
+	{
+		return repository.findOne(id);
+	}
+	
+	@Secured("ROLE_PTYROLETYPE_READ")
 	public List<PartyRoleType> findAll()
 	{
 		return repository.findAll();

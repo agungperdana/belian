@@ -92,7 +92,7 @@ public class PartyInformation extends Tree implements Refreshable
 		this.contacts.appendChild(information);
 	}
 	
-	public void addRole(ContactInformation information)
+	public void addRole(RoleInformation information)
 	{
 		this.roles.appendChild(information);
 	}

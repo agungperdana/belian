@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.ui.party;
 
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 
 import org.zkoss.zk.ui.event.Event;
@@ -14,9 +15,9 @@ import org.zkoss.zul.Treecell;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
 
-import com.kratonsolution.belian.general.dm.Contact;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Party;
+import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.view.OrganizationController;
 import com.kratonsolution.belian.general.view.PersonController;
@@ -31,29 +32,31 @@ public class RoleInformation extends Treeitem
 {
 	private Treerow row = new Treerow();
 	
-	public RoleInformation(Contact contact,Party party)
+	private SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+	
+	public RoleInformation(PartyRole role,Party party)
 	{
-		addDescription(contact, party);
-		addIcon(party, contact);
+		addDescription(role, party);
+		addIcon(party, role);
 		appendChild(row);
 	}
 	
-	protected void addDescription(final Contact contact,final Party party)
+	protected void addDescription(final PartyRole role,final Party party)
 	{
-		Treecell cell = new Treecell(contact.getDescription()+", "+contact.getType());
+		Treecell cell = new Treecell("["+format.format(role.getFrom())+" - "+(role.getTo()!=null?format.format(role.getTo()):"")+"]"+" AS  "+role.getType().getName());
 		cell.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				appendChild(new ContactEditWindow(party, contact));
+				getTree().getParent().appendChild(new RoleEditWindow(party, role));
 			}
 		});
 	
 		row.appendChild(cell);
 	}
 	
-	protected void addIcon(final Party party,final Contact contact)
+	protected void addIcon(final Party party,final PartyRole role)
 	{
 		Image remove = new Image("/icons/deletesmall.png");
 		Treecell delcell = new Treecell();
@@ -69,7 +72,7 @@ public class RoleInformation extends Treeitem
 					public void onEvent(Event event) throws Exception
 					{
 						if(event.getName().equals("onOK"))
-							remove(party, contact);
+							remove(party, role);
 					}
 				});
 			}
@@ -78,13 +81,13 @@ public class RoleInformation extends Treeitem
 		row.appendChild(delcell);
 	}
 	
-	protected void remove(final Party party,final Contact contact)
+	protected void remove(final Party party,final PartyRole role)
 	{
-		Iterator<Contact> iterator = party.getContacts().iterator();
+		Iterator<PartyRole> iterator = party.getRoles().iterator();
 		while (iterator.hasNext())
 		{
-			Contact contact2 = (Contact) iterator.next();
-			if(contact2.getId().equals(contact.getId()))
+			PartyRole role2 = (PartyRole) iterator.next();
+			if(role2.getId().equals(role.getId()))
 				iterator.remove();
 		}
 		
