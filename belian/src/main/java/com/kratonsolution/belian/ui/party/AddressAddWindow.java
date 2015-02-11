@@ -129,7 +129,7 @@ public class AddressAddWindow extends Window
 						organizationController.edit(organization);
 						
 						OrganizationEditContent content = (OrganizationEditContent)getParent();
-						content.refreshTree();
+						content.refresh();
 					}
 				}
 				
@@ -153,7 +153,7 @@ public class AddressAddWindow extends Window
 						personController.edit(person);
 						
 						PersonEditContent content = (PersonEditContent)getParent();
-						content.refreshTree();
+						content.refresh();
 					}
 				}
 				

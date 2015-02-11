@@ -3,8 +3,6 @@
  */
 package com.kratonsolution.belian.ui.person;
 
-import java.util.Iterator;
-
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -12,25 +10,22 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
-import org.zkoss.zul.Image;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
-import org.zkoss.zul.Tree;
-import org.zkoss.zul.Treecell;
-import org.zkoss.zul.Treechildren;
-import org.zkoss.zul.Treecol;
-import org.zkoss.zul.Treecols;
-import org.zkoss.zul.Treeitem;
-import org.zkoss.zul.Treerow;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.Address;
+import com.kratonsolution.belian.general.dm.Contact;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.view.PersonController;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.party.AddressAddWindow;
-import com.kratonsolution.belian.ui.party.AddressEditWindow;
+import com.kratonsolution.belian.ui.party.AddressInformation;
+import com.kratonsolution.belian.ui.party.ContactAddWindow;
+import com.kratonsolution.belian.ui.party.ContactInformation;
+import com.kratonsolution.belian.ui.party.PartyInformation;
 import com.kratonsolution.belian.ui.party.PartyToolbar;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -39,7 +34,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author agungdodiperdana
  *
  */
-public class PersonEditContent extends FormContent
+public class PersonEditContent extends FormContent implements Refreshable
 {	
 	private final PersonController controller = Springs.get(PersonController.class);
 	
@@ -51,7 +46,7 @@ public class PersonEditContent extends FormContent
 	
 	private Row row;
 	
-	private Tree tree;
+	private PartyInformation information = new PartyInformation("Person Information");
 	
 	private PartyToolbar partyToolbar = new PartyToolbar();
 	
@@ -153,123 +148,43 @@ public class PersonEditContent extends FormContent
 				appendChild(new AddressAddWindow(controller.findOne(RowUtils.rowValue(row,4))));
 			}
 		});
+		
+		partyToolbar.getContact().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				appendChild(new ContactAddWindow(controller.findOne(RowUtils.rowValue(row,4))));
+			}
+		});
 	}
 	
 	protected void initTree()
 	{
-		tree = new Tree();
-		tree.setWidth("100%");
-		tree.setStyle("overflow:auto");
-		
-		Treecols cols = new Treecols();
-		cols.appendChild(new Treecol("Person Information"));
-		cols.appendChild(new Treecol(null,null,"25px"));
-		
-		Treechildren treechildren = new Treechildren();
-		
-		Treeitem item1 = new Treeitem();
-		Treeitem item2 = new Treeitem();
-		Treeitem item3 = new Treeitem();
-		Treeitem item4 = new Treeitem();
-
-		Treecell address = new Treecell("Address");
-		address.setImage("/icons/address.png");
-		
-		Treecell contact = new Treecell("Contacts");
-		contact.setImage("/icons/roletypesmall.png");
-		
-		Treecell role = new Treecell("Role");
-		role.setImage("/icons/contact.png");
-		
-		Treecell relation = new Treecell("Relationship");
-		relation.setImage("/icons/relationshiptype.png");
-		
-		Treerow row1 = new Treerow();
-		row1.appendChild(address);
-		
-		Treerow row2 = new Treerow();
-		row2.appendChild(contact);
-		
-		Treerow row3 = new Treerow();
-		row3.appendChild(role);
-		
-		Treerow row4 = new Treerow();
-		row4.appendChild(relation);
-		
-		item1.appendChild(row1);
-		item2.appendChild(row2);
-		item3.appendChild(row3);
-		item4.appendChild(row4);
-		
-		treechildren.appendChild(item1);
-		treechildren.appendChild(item2);
-		treechildren.appendChild(item3);
-		treechildren.appendChild(item4);
+		information = new PartyInformation("Person Information");
 		
 		final Person person = controller.findOne(RowUtils.rowValue(row, 4));
 		if(person != null)
 		{
 			if(!person.getAddresses().isEmpty())
 			{
-				Treechildren addresses = new Treechildren();
-				for(final Address add:person.getAddresses())
-				{
-					Treerow tr = new Treerow();
-					Treecell tc = new Treecell(add.getDescription()+", "+add.getCity().getName()+", "+add.getProvince().getName()+", "+add.getCountry().getName());
-					tc.setId(add.getId());
-					tc.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-					{
-						@Override
-						public void onEvent(Event event) throws Exception
-						{
-							appendChild(new AddressEditWindow(person, add));
-						}
-					});
-					
-					Image remove = new Image("/icons/deletesmall.png");
-					Treecell delcell = new Treecell();
-					delcell.appendChild(remove);
-					delcell.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-					{
-						@Override
-						public void onEvent(Event event) throws Exception
-						{
-							Iterator<Address> iterator = person.getAddresses().iterator();
-							while (iterator.hasNext())
-							{
-								Address address2 = (Address) iterator.next();
-								if(address2.getId().equals(add.getId()))
-									iterator.remove();
-							}
-							
-							controller.edit(person);
-							refreshTree();
-						}
-					});
-					
-					tr.appendChild(tc);
-					tr.appendChild(delcell);
-					
-					Treeitem ti = new Treeitem();
-					ti.appendChild(tr);
-					
-					addresses.appendChild(ti);
-					
-					item1.appendChild(addresses);
-				}
+				for(final Address address:person.getAddresses())
+					information.addAddress(new AddressInformation(address,person));
+			}
+			
+			if(!person.getContacts().isEmpty())
+			{
+				for(final Contact contact:person.getContacts())
+					information.addContact(new ContactInformation(contact, person));
 			}
 		}
 		
-		tree.appendChild(cols);
-		tree.appendChild(treechildren);
-		
-		appendChild(tree);
+		appendChild(information);
 	}
 	
-	public void refreshTree()
+	public void refresh()
 	{
-		removeChild(tree);
-		this.tree = new Tree();
+		removeChild(information);
 		initTree();
 	}
 }
