@@ -10,7 +10,7 @@ import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
 import com.kratonsolution.belian.general.dm.PartyRelationshipType;
-import com.kratonsolution.belian.general.view.PartyRelationshipTypeController;
+import com.kratonsolution.belian.general.svc.PartyRelationshipTypeService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -19,7 +19,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PartyRelationshipTypeModel implements ListModel<PartyRelationshipType>
 {
-	private final PartyRelationshipTypeController controller = Springs.get(PartyRelationshipTypeController.class);
+	private final PartyRelationshipTypeService controller = Springs.get(PartyRelationshipTypeService.class);
 	
 	private List<PartyRelationshipType> data = new ArrayList<PartyRelationshipType>();
 	

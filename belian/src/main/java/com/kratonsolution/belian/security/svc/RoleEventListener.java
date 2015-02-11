@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.security.view;
+package com.kratonsolution.belian.security.svc;
 
 import java.util.Iterator;
 import java.util.UUID;

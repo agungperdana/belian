@@ -10,7 +10,7 @@ import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
 import com.kratonsolution.belian.general.dm.Geographic;
-import com.kratonsolution.belian.general.view.GeographicController;
+import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -21,7 +21,7 @@ public class GeographicModel implements ListModel<Geographic>
 {
 	private List<Geographic> data = new ArrayList<Geographic>();
 	
-	private GeographicController controller = Springs.get(GeographicController.class);
+	private GeographicService controller = Springs.get(GeographicService.class);
 	
 	private GeographicModel(){}
 	

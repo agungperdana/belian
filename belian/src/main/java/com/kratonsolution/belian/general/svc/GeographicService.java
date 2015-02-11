@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.general.view;
+package com.kratonsolution.belian.general.svc;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import com.kratonsolution.belian.security.dm.AccessGrantedFor;
  *
  */
 @Service
-public class GeographicController
+public class GeographicService
 {
 	@Autowired
 	private GeographicRepository repository;

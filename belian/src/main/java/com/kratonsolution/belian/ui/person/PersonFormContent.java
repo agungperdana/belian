@@ -16,7 +16,7 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.view.PersonController;
+import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -26,7 +26,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PersonFormContent extends FormContent
 {	
-	private final PersonController controller = Springs.get(PersonController.class);
+	private final PersonService controller = Springs.get(PersonService.class);
 		
 	private Textbox name = new Textbox();
 	

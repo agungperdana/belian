@@ -10,7 +10,7 @@ import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
 import com.kratonsolution.belian.security.dm.Role;
-import com.kratonsolution.belian.security.view.RoleController;
+import com.kratonsolution.belian.security.svc.RoleService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -19,7 +19,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class RoleModel implements ListModel<Role>
 {
-	private final RoleController controller = Springs.get(RoleController.class);
+	private final RoleService controller = Springs.get(RoleService.class);
 	
 	private List<Role> data = new ArrayList<Role>();
 	

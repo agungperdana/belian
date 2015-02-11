@@ -15,7 +15,7 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.PartyRoleType;
-import com.kratonsolution.belian.general.view.PartyRoleTypeController;
+import com.kratonsolution.belian.general.svc.PartyRoleTypeService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -25,7 +25,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PartyRoleTypeFormContent extends FormContent
 {	
-	private final PartyRoleTypeController controller = Springs.get(PartyRoleTypeController.class);
+	private final PartyRoleTypeService controller = Springs.get(PartyRoleTypeService.class);
 		
 	private Textbox name = new Textbox();
 	

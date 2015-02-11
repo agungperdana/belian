@@ -15,7 +15,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.security.view.ModuleController;
+import com.kratonsolution.belian.security.svc.ModuleService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -25,7 +25,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PartyRoleTypeGridContent extends GridContent
 {
-	private final ModuleController controller = Springs.get(ModuleController.class);
+	private final ModuleService controller = Springs.get(ModuleService.class);
 	
 	public PartyRoleTypeGridContent()
 	{

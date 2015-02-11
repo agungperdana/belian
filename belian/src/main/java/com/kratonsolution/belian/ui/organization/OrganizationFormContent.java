@@ -16,7 +16,7 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.Organization;
-import com.kratonsolution.belian.general.view.OrganizationController;
+import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -26,7 +26,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class OrganizationFormContent extends FormContent
 {	
-	private final OrganizationController controller = Springs.get(OrganizationController.class);
+	private final OrganizationService controller = Springs.get(OrganizationService.class);
 		
 	private Textbox name = new Textbox();
 	

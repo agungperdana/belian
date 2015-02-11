@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.general.view;
+package com.kratonsolution.belian.general.svc;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,7 +19,7 @@ import com.kratonsolution.belian.general.dm.PartyRelationshipTypeRepository;
  *
  */
 @Service
-public class PartyRelationshipTypeController
+public class PartyRelationshipTypeService
 {	
 	@Autowired
 	private PartyRelationshipTypeRepository repository;

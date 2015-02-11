@@ -15,7 +15,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.general.view.PersonController;
+import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -25,7 +25,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PersonGridContent extends GridContent
 {
-	private final PersonController controller = Springs.get(PersonController.class);
+	private final PersonService controller = Springs.get(PersonService.class);
 	
 	public PersonGridContent()
 	{

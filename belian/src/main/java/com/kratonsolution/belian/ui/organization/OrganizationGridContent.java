@@ -15,7 +15,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.general.view.OrganizationController;
+import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -25,7 +25,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class OrganizationGridContent extends GridContent
 {
-	private final OrganizationController controller = Springs.get(OrganizationController.class);
+	private final OrganizationService controller = Springs.get(OrganizationService.class);
 	
 	public OrganizationGridContent()
 	{

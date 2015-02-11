@@ -15,7 +15,7 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.security.dm.Module;
-import com.kratonsolution.belian.security.view.ModuleController;
+import com.kratonsolution.belian.security.svc.ModuleService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -26,7 +26,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class ModuleEditContent extends FormContent
 {	
-	private final ModuleController controller = Springs.get(ModuleController.class);
+	private final ModuleService controller = Springs.get(ModuleService.class);
 	
 	private Textbox code = new Textbox();
 	

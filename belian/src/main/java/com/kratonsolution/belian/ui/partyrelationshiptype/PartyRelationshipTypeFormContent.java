@@ -15,7 +15,7 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.PartyRelationshipType;
-import com.kratonsolution.belian.general.view.PartyRelationshipTypeController;
+import com.kratonsolution.belian.general.svc.PartyRelationshipTypeService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -25,7 +25,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PartyRelationshipTypeFormContent extends FormContent
 {	
-	private final PartyRelationshipTypeController controller = Springs.get(PartyRelationshipTypeController.class);
+	private final PartyRelationshipTypeService controller = Springs.get(PartyRelationshipTypeService.class);
 		
 	private Textbox name = new Textbox();
 	

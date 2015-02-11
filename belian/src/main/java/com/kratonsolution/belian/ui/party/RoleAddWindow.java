@@ -25,9 +25,9 @@ import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.dm.PartyRoleType;
 import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.view.OrganizationController;
-import com.kratonsolution.belian.general.view.PartyRoleTypeController;
-import com.kratonsolution.belian.general.view.PersonController;
+import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.general.svc.PartyRoleTypeService;
+import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -48,11 +48,11 @@ public class RoleAddWindow extends Window
 
 	private Listbox roles = new Listbox();
 	
-	private PersonController personController = Springs.get(PersonController.class);
+	private PersonService personController = Springs.get(PersonService.class);
 	
-	private OrganizationController organizationController = Springs.get(OrganizationController.class);
+	private OrganizationService organizationController = Springs.get(OrganizationService.class);
 	
-	private PartyRoleTypeController partyRoleTypeController = Springs.get(PartyRoleTypeController.class);
+	private PartyRoleTypeService partyRoleTypeController = Springs.get(PartyRoleTypeService.class);
 	
 	private Party party;
 	

@@ -17,7 +17,7 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.Geographic;
-import com.kratonsolution.belian.general.view.GeographicController;
+import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -27,7 +27,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class GeographicFormContent extends FormContent
 {	
-	private final GeographicController controller = Springs.get(GeographicController.class);
+	private final GeographicService controller = Springs.get(GeographicService.class);
 	
 	private Textbox code = new Textbox();
 	

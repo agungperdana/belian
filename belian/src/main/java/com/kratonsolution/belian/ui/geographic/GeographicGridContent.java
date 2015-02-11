@@ -15,7 +15,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.general.view.GeographicController;
+import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -25,7 +25,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class GeographicGridContent extends GridContent
 {
-	private final GeographicController controller = Springs.get(GeographicController.class);
+	private final GeographicService controller = Springs.get(GeographicService.class);
 	
 	public GeographicGridContent()
 	{

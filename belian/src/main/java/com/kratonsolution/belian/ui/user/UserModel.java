@@ -10,7 +10,7 @@ import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
 import com.kratonsolution.belian.security.dm.User;
-import com.kratonsolution.belian.security.view.UserController;
+import com.kratonsolution.belian.security.svc.UserService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -19,7 +19,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class UserModel implements ListModel<User>
 {
-	private final UserController controller = Springs.get(UserController.class);
+	private final UserService controller = Springs.get(UserService.class);
 	
 	private List<User> data = new ArrayList<User>();
 	

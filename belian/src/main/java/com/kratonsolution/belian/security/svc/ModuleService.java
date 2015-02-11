@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.security.view;
+package com.kratonsolution.belian.security.svc;
 
 import java.util.Iterator;
 import java.util.List;
@@ -23,7 +23,7 @@ import com.kratonsolution.belian.security.dm.RoleRepository;
  *
  */
 @Service
-public class ModuleController
+public class ModuleService
 {
 	@Autowired
 	private ModuleRepository repository;

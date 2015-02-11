@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.general.view;
+package com.kratonsolution.belian.general.svc;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,7 +19,7 @@ import com.kratonsolution.belian.general.dm.OrganizationRepository;
  *
  */
 @Service
-public class OrganizationController
+public class OrganizationService
 {	
 	@Autowired
 	private OrganizationRepository repository;

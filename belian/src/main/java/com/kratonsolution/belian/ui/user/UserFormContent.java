@@ -24,8 +24,8 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.security.dm.Role;
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.security.dm.UserRole;
-import com.kratonsolution.belian.security.view.RoleController;
-import com.kratonsolution.belian.security.view.UserController;
+import com.kratonsolution.belian.security.svc.RoleService;
+import com.kratonsolution.belian.security.svc.UserService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -36,9 +36,9 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class UserFormContent extends FormContent
 {	
-	private final UserController controller = Springs.get(UserController.class);
+	private final UserService controller = Springs.get(UserService.class);
 	
-	private final RoleController roleController = Springs.get(RoleController.class);
+	private final RoleService roleController = Springs.get(RoleService.class);
 	
 	private Textbox name = new Textbox();
 	

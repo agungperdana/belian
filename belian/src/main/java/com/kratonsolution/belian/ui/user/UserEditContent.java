@@ -22,7 +22,7 @@ import org.zkoss.zul.Textbox;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.security.dm.UserRole;
-import com.kratonsolution.belian.security.view.UserController;
+import com.kratonsolution.belian.security.svc.UserService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -33,7 +33,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class UserEditContent extends FormContent
 {	
-	private final UserController controller = Springs.get(UserController.class);
+	private final UserService controller = Springs.get(UserService.class);
 	
 	private Textbox name = new Textbox();
 	

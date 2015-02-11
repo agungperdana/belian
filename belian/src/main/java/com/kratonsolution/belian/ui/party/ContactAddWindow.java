@@ -25,8 +25,8 @@ import com.kratonsolution.belian.general.dm.Contact;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.view.OrganizationController;
-import com.kratonsolution.belian.general.view.PersonController;
+import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -47,9 +47,9 @@ public class ContactAddWindow extends Window
 	
 	private Checkbox status = new Checkbox("Active");
 	
-	private PersonController personController = Springs.get(PersonController.class);
+	private PersonService personController = Springs.get(PersonService.class);
 	
-	private OrganizationController organizationController = Springs.get(OrganizationController.class);
+	private OrganizationService organizationController = Springs.get(OrganizationService.class);
 	
 	private Party party;
 	

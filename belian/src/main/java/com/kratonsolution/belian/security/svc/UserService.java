@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.security.view;
+package com.kratonsolution.belian.security.svc;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,7 +22,7 @@ import com.kratonsolution.belian.security.dm.UserRepository;
  *
  */
 @Service
-public class UserController
+public class UserService
 {
 	@Autowired
 	private UserRepository repository;

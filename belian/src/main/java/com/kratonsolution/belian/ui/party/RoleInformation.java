@@ -19,8 +19,8 @@ import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.view.OrganizationController;
-import com.kratonsolution.belian.general.view.PersonController;
+import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -92,9 +92,9 @@ public class RoleInformation extends Treeitem
 		}
 		
 		if(party instanceof Person)
-			Springs.get(PersonController.class).edit((Person)party);
+			Springs.get(PersonService.class).edit((Person)party);
 		else if(party instanceof Organization)
-			Springs.get(OrganizationController.class).edit((Organization)party);
+			Springs.get(OrganizationService.class).edit((Organization)party);
 		
 		((Refreshable)getTree()).refresh();
 	}

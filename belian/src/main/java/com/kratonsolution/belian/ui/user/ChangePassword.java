@@ -14,7 +14,7 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
-import com.kratonsolution.belian.security.view.UserController;
+import com.kratonsolution.belian.security.svc.UserService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -25,7 +25,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class ChangePassword extends FormContent
 {
-	private final UserController controller = Springs.get(UserController.class);
+	private final UserService controller = Springs.get(UserService.class);
 	
 	private Row row;
 	

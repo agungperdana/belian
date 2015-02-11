@@ -15,7 +15,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.general.view.PartyRelationshipTypeController;
+import com.kratonsolution.belian.general.svc.PartyRelationshipTypeService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -25,7 +25,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PartyRelationshipTypeGridContent extends GridContent
 {
-	private final PartyRelationshipTypeController controller = Springs.get(PartyRelationshipTypeController.class);
+	private final PartyRelationshipTypeService controller = Springs.get(PartyRelationshipTypeService.class);
 	
 	public PartyRelationshipTypeGridContent()
 	{

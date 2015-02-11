@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.general.view;
+package com.kratonsolution.belian.general.svc;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import com.kratonsolution.belian.general.dm.PartyRoleTypeRepository;
  *
  */
 @Service
-public class PartyRoleTypeController
+public class PartyRoleTypeService
 {	
 	@Autowired
 	private PartyRoleTypeRepository repository;

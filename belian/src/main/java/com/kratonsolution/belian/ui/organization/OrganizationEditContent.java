@@ -20,7 +20,7 @@ import com.kratonsolution.belian.general.dm.Contact;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.PartyRelationship;
 import com.kratonsolution.belian.general.dm.PartyRole;
-import com.kratonsolution.belian.general.view.OrganizationController;
+import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.party.AddressAddWindow;
@@ -42,7 +42,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class OrganizationEditContent extends FormContent implements Refreshable
 {	
-	private final OrganizationController controller = Springs.get(OrganizationController.class);
+	private final OrganizationService controller = Springs.get(OrganizationService.class);
 
 	private Textbox name = new Textbox();
 

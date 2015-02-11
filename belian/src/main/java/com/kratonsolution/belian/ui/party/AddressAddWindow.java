@@ -26,9 +26,9 @@ import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.view.GeographicController;
-import com.kratonsolution.belian.general.view.OrganizationController;
-import com.kratonsolution.belian.general.view.PersonController;
+import com.kratonsolution.belian.general.svc.GeographicService;
+import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.organization.OrganizationEditContent;
 import com.kratonsolution.belian.ui.person.PersonEditContent;
@@ -58,11 +58,11 @@ public class AddressAddWindow extends Window
 	
 	private Listbox country = new Listbox();
 	
-	private GeographicController geographicController = Springs.get(GeographicController.class);
+	private GeographicService geographicController = Springs.get(GeographicService.class);
 	
-	private PersonController personController = Springs.get(PersonController.class);
+	private PersonService personController = Springs.get(PersonService.class);
 	
-	private OrganizationController organizationController = Springs.get(OrganizationController.class);
+	private OrganizationService organizationController = Springs.get(OrganizationService.class);
 	
 	private Party party;
 	
