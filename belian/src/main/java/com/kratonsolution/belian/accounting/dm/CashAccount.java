@@ -43,6 +43,8 @@ public class CashAccount implements EconomicResource
 	@DBRef
 	private Party owner;
 	
+	@Field("is_active")
+	private boolean active;
 	
 	@Field("amount")
 	private BigDecimal amount = BigDecimal.ZERO;
