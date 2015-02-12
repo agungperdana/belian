@@ -3,6 +3,9 @@
  */
 package com.kratonsolution.belian.accounting.dm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,19 +30,22 @@ public class GLAccount
 	private String id;
 	
 	@Field("number")
-	@Indexed(unique=true,sparse=true)
+	@Indexed(unique=true,sparse=true,name="gl_account_number_index")
 	private String number;
 	
-	@Field("number")
-	@Indexed(unique=true,sparse=true)
+	@Field("name")
+	@Indexed(unique=true,sparse=true,name="gl_account_name_index")
 	private String name;
 	
 	@Field("note")
 	private String note;
 
 	@Field("type")
-	private Type type;
+	private Type type = Type.CAPITAL;
 	
 	@DBRef
 	private GLAccount parent;
+	
+	@DBRef(lazy=true)
+	private List<GLAccount> members = new ArrayList<GLAccount>();
 }

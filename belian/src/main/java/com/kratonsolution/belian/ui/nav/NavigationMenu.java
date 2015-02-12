@@ -121,9 +121,6 @@ public class NavigationMenu extends Window
 		list.setStyle("border:none");
 		list.setParent(panel);
 		
-		Listitem coa = new Listitem("Chart of account");
-		coa.setImage("/icons/coa.png");
-		
 		Listitem period = new Listitem("Accounting Period");
 		period.setImage("/icons/period.png");
 		
@@ -134,7 +131,7 @@ public class NavigationMenu extends Window
 		list.appendChild(new TaxItem());
 		list.appendChild(new BankAccountItem());
 		list.appendChild(new CashAccountItem());
-		list.appendChild(coa);
+		list.appendChild(new CoAItem());
 		list.appendChild(period);
 		list.appendChild(organization);
 	}
