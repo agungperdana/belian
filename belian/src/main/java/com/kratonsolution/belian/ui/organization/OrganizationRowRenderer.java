@@ -30,6 +30,7 @@ public class OrganizationRowRenderer implements RowRenderer<Organization>
 			row.appendChild(new Label(data.getName()));
 			row.appendChild(new Label(format.format(data.getBirthDate())));
 			row.appendChild(new Label(data.getTaxCode()));
+			row.appendChild(new Label(data.getType() != null?data.getType().name():""));
 			row.appendChild(new Label(data.getId()));
 		}
 	}

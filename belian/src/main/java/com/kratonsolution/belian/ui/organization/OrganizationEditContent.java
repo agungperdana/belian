@@ -11,6 +11,8 @@ import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
@@ -20,6 +22,7 @@ import com.kratonsolution.belian.general.dm.Contact;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.PartyRelationship;
 import com.kratonsolution.belian.general.dm.PartyRole;
+import com.kratonsolution.belian.general.dm.Organization.IndustryType;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.Refreshable;
@@ -49,6 +52,8 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 	private Datebox date = new Datebox();
 
 	private Textbox tax = new Textbox();
+	
+	private Listbox types = new Listbox();
 
 	private Row row;
 
@@ -89,10 +94,11 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 					throw new WrongValueException(name,"Name cannot be empty");
 
 				Organization org = new Organization();
-				org.setId(RowUtils.rowValue(row, 2));
+				org.setId(RowUtils.rowValue(row, 5));
 				org.setName(name.getText());
 				org.setBirthDate(date.getValue());
 				org.setTaxCode(tax.getText());
+				org.setType(IndustryType.valueOf(types.getSelectedItem().getValue().toString()));
 
 				controller.edit(org);
 
@@ -106,7 +112,7 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 	@Override
 	public void initForm()
 	{
-		Organization organization = controller.findOne(RowUtils.rowValue(row, 4));
+		Organization organization = controller.findOne(RowUtils.rowValue(row, 5));
 		if(organization != null)
 		{
 			name.setConstraint("no empty");
@@ -119,6 +125,16 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 
 			tax.setText(organization.getTaxCode());
 			tax.setWidth("300px");
+			
+			types.setMold("select");
+			
+			for(IndustryType type:IndustryType.values())
+			{
+				Listitem listitem = new Listitem(type.name(),type.name());
+				types.appendChild(listitem);
+				if(type.name().equals(RowUtils.rowValue(row, 4)))
+					types.setSelectedItem(listitem);
+			}
 
 			grid.appendChild(new Columns());
 			grid.getColumns().appendChild(new Column(null,null,"75px"));
@@ -135,10 +151,15 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 			Row row3 = new Row();
 			row3.appendChild(new Label("Tax Number"));
 			row3.appendChild(tax);
+			
+			Row row4 = new Row();
+			row4.appendChild(new Label("Industry"));
+			row4.appendChild(types);
 
 			rows.appendChild(row1);
 			rows.appendChild(row2);
 			rows.appendChild(row3);
+			rows.appendChild(row4);
 		}
 	}
 	

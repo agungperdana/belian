@@ -8,8 +8,11 @@ import lombok.Setter;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import com.kratonsolution.belian.general.dm.Organization;
 
 /**
  * @author agungdodiperdana
@@ -24,15 +27,18 @@ public class BankAccount
 	private String id;
 	
 	@Field("number")
-	@Indexed(unique=true)
+	@Indexed(unique=true,name="bnk_acc_number")
 	private String number;
 	
-	@Field("bank_id")
-	private String bankId;
+	@Field("holder")
+	private String holder;
 	
-	@Field("bank_name")
-	private String bankName;
+	@DBRef
+	private Organization bank;
 	
 	@Field("is_enabled")
 	private boolean enabled;
+	
+	@Field("is_active")
+	private boolean active;
 }

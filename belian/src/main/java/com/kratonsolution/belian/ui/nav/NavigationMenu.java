@@ -120,15 +120,6 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		list.setParent(panel);
-
-		Listitem currency = new Listitem("Currency");
-		currency.setImage("/icons/currency.png");
-		
-		Listitem tax = new Listitem("Tax");
-		tax.setImage("/icons/tax.png");
-		
-		Listitem bank = new Listitem("Bank Account");
-		bank.setImage("/icons/bank.png");
 		
 		Listitem cash = new Listitem("Cash Account");
 		cash.setImage("/icons/cash.png");
@@ -142,13 +133,13 @@ public class NavigationMenu extends Window
 		Listitem organization = new Listitem("Organization account");
 		organization.setImage("/icons/orgacc.png");
 		
-		currency.setParent(list);
-		tax.setParent(list);
-		bank.setParent(list);
-		cash.setParent(list);
-		coa.setParent(list);
-		period.setParent(list);
-		organization.setParent(list);
+		list.appendChild(new CurrencyItem());
+		list.appendChild(new TaxItem());
+		list.appendChild(new BankAccountItem());
+		list.appendChild(cash);
+		list.appendChild(coa);
+		list.appendChild(period);
+		list.appendChild(organization);
 	}
 	
 	protected void initInventory()

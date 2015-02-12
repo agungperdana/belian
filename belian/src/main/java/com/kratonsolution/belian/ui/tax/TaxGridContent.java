@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.organization;
+package com.kratonsolution.belian.ui.tax;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -15,7 +15,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.accounting.svc.TaxService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -23,11 +23,11 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author agungdodiperdana
  *
  */
-public class OrganizationGridContent extends GridContent
+public class TaxGridContent extends GridContent
 {
-	private final OrganizationService controller = Springs.get(OrganizationService.class);
+	private final TaxService service = Springs.get(TaxService.class);
 	
-	public OrganizationGridContent()
+	public TaxGridContent()
 	{
 		super();
 		initToolbar();
@@ -43,7 +43,7 @@ public class OrganizationGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new OrganizationModel(8));
+				grid.setModel(new TaxModel(8));
 			}
 		});
 		
@@ -52,7 +52,7 @@ public class OrganizationGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				OrganizationWindow window = (OrganizationWindow)getParent();
+				TaxWindow window = (TaxWindow)getParent();
 				window.removeGrid();
 				window.insertCreateForm();
 			}
@@ -123,14 +123,12 @@ public class OrganizationGridContent extends GridContent
 									if(check.isChecked())
 									{
 										Label label = (Label)row.getLastChild();
-										controller.delete(label.getValue());
+										service.delete(label.getValue());
 									}
 								}
 							}
 							
-							OrganizationWindow window = (OrganizationWindow)getParent();
-							window.removeGrid();
-							window.insertGrid();
+							grid.setModel(new TaxModel(8));
 						}
 					}
 				});
@@ -149,13 +147,13 @@ public class OrganizationGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final OrganizationModel model = new OrganizationModel(8);
+		final TaxModel model = new TaxModel(8);
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No organization data exist.");
+		grid.setEmptyMessage("No tax data exist.");
 		grid.setModel(model);
-		grid.setRowRenderer(new OrganizationRowRenderer());
+		grid.setRowRenderer(new TaxRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(8);
@@ -163,18 +161,16 @@ public class OrganizationGridContent extends GridContent
 		Columns columns = new Columns();
 		
 		Column select = new Column(null,null,"25px");
+		Column code = new Column("Code",null,"75px");
 		Column name = new Column("Name");
-		Column date = new Column("Birth Date",null,"75px");
-		Column tax = new Column("Tax",null,"100px");
-		Column type = new Column("Industry",null,"100px");
+		Column value = new Column("Value",null,"50px");
 		Column id = new Column();
 		id.setVisible(false);
 		
 		columns.appendChild(select);
+		columns.appendChild(code);
 		columns.appendChild(name);
-		columns.appendChild(date);
-		columns.appendChild(tax);
-		columns.appendChild(type);
+		columns.appendChild(value);
 		columns.appendChild(id);
 		
 		grid.appendChild(columns);
@@ -197,7 +193,7 @@ public class OrganizationGridContent extends GridContent
 				@Override
 				public void onEvent(Event event) throws Exception
 				{
-					OrganizationWindow window = (OrganizationWindow)getParent();
+					TaxWindow window = (TaxWindow)getParent();
 					window.removeGrid();
 					window.insertEditForm(row);
 				}

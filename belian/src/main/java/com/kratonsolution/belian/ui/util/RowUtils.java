@@ -14,10 +14,13 @@ import org.zkoss.zul.Row;
  */
 public class RowUtils
 {
-	public static String rowValue(Row row,int idex)
+	public static String rowValue(Row row,int index)
 	{
-		Label label = (Label)row.getChildren().get(idex);
-		return label.getValue();
+		Object object = row.getChildren().get(index);
+		if(object != null && object instanceof Label)
+			return ((Label)object).getValue();
+		
+		return "";
 	}
 
 	public static boolean isChecked(Row row,int idex)
@@ -25,7 +28,13 @@ public class RowUtils
 		Component component = row.getChildren().get(idex);
 		if(component != null && component instanceof Checkbox)
 			return ((Checkbox)component).isChecked();
-
+		else if(component instanceof Label)
+		{
+			Label label = (Label)component;
+			if(label.getValue().equals("Active"))
+				return true;
+		}
+		
 		return false;
 	}
 

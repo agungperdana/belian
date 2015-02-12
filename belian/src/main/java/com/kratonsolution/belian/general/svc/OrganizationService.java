@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.OrganizationRepository;
+import com.kratonsolution.belian.general.dm.Organization.IndustryType;
 
 /**
  * @author agungdodiperdana
@@ -40,6 +41,12 @@ public class OrganizationService
 	public List<Organization> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+	}
+	
+	@Secured("ROLE_ORGANIZATION_READ")
+	public List<Organization> findAllByIndustryType(IndustryType type)
+	{
+		return repository.findAllByType(type);
 	}
 	
 	@Secured("ROLE_ORGANIZATION_READ")

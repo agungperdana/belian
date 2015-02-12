@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.organization;
+package com.kratonsolution.belian.ui.currency;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -15,7 +15,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -23,11 +23,11 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author agungdodiperdana
  *
  */
-public class OrganizationGridContent extends GridContent
+public class CurrencyGridContent extends GridContent
 {
-	private final OrganizationService controller = Springs.get(OrganizationService.class);
+	private final CurrencyService service = Springs.get(CurrencyService.class);
 	
-	public OrganizationGridContent()
+	public CurrencyGridContent()
 	{
 		super();
 		initToolbar();
@@ -43,7 +43,7 @@ public class OrganizationGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new OrganizationModel(8));
+				grid.setModel(new CurrencyModel(8));
 			}
 		});
 		
@@ -52,7 +52,7 @@ public class OrganizationGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				OrganizationWindow window = (OrganizationWindow)getParent();
+				CurrencyWindow window = (CurrencyWindow)getParent();
 				window.removeGrid();
 				window.insertCreateForm();
 			}
@@ -106,34 +106,33 @@ public class OrganizationGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
-				{
-					@Override
-					public void onEvent(Event event) throws Exception
-					{
-						if(event.getName().equals("onOK"))
+				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",
+						Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 						{
-							for(Object object:grid.getRows().getChildren())
+							@Override
+							public void onEvent(Event event) throws Exception
 							{
-								Row row = (Row)object;
-								
-								if(row.getFirstChild() instanceof Checkbox)
+								if(event.getName().equals("onOK"))
 								{
-									Checkbox check = (Checkbox)row.getFirstChild();
-									if(check.isChecked())
+									for(Object object:grid.getRows().getChildren())
 									{
-										Label label = (Label)row.getLastChild();
-										controller.delete(label.getValue());
+										Row row = (Row)object;
+										
+										if(row.getFirstChild() instanceof Checkbox)
+										{
+											Checkbox check = (Checkbox)row.getFirstChild();
+											if(check.isChecked())
+											{
+												Label label = (Label)row.getLastChild();
+												service.delete(label.getValue());
+											}
+										}
 									}
+									
+									grid.setModel(new CurrencyModel(8));
 								}
 							}
-							
-							OrganizationWindow window = (OrganizationWindow)getParent();
-							window.removeGrid();
-							window.insertGrid();
-						}
-					}
-				});
+						});
 			}
 		});
 		
@@ -149,13 +148,13 @@ public class OrganizationGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final OrganizationModel model = new OrganizationModel(8);
+		final CurrencyModel model = new CurrencyModel(8);
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No organization data exist.");
+		grid.setEmptyMessage("No currency data exist.");
 		grid.setModel(model);
-		grid.setRowRenderer(new OrganizationRowRenderer());
+		grid.setRowRenderer(new CurrencyRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(8);
@@ -163,18 +162,14 @@ public class OrganizationGridContent extends GridContent
 		Columns columns = new Columns();
 		
 		Column select = new Column(null,null,"25px");
+		Column code = new Column("Code");
 		Column name = new Column("Name");
-		Column date = new Column("Birth Date",null,"75px");
-		Column tax = new Column("Tax",null,"100px");
-		Column type = new Column("Industry",null,"100px");
 		Column id = new Column();
 		id.setVisible(false);
 		
 		columns.appendChild(select);
+		columns.appendChild(code);
 		columns.appendChild(name);
-		columns.appendChild(date);
-		columns.appendChild(tax);
-		columns.appendChild(type);
 		columns.appendChild(id);
 		
 		grid.appendChild(columns);
@@ -197,7 +192,7 @@ public class OrganizationGridContent extends GridContent
 				@Override
 				public void onEvent(Event event) throws Exception
 				{
-					OrganizationWindow window = (OrganizationWindow)getParent();
+					CurrencyWindow window = (CurrencyWindow)getParent();
 					window.removeGrid();
 					window.insertEditForm(row);
 				}

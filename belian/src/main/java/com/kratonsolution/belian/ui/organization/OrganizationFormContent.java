@@ -11,11 +11,14 @@ import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.dm.Organization.IndustryType;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -33,6 +36,8 @@ public class OrganizationFormContent extends FormContent
 	private Datebox date = new Datebox();
 	
 	private Textbox tax = new Textbox();
+	
+	private Listbox types = new Listbox();
 	
 	public OrganizationFormContent()
 	{
@@ -90,6 +95,12 @@ public class OrganizationFormContent extends FormContent
 		date.setWidth("250px");
 		
 		tax.setWidth("300px");
+		types.setMold("select");
+		
+		for(IndustryType type:IndustryType.values())
+			types.appendChild(new Listitem(type.name(),type.name()));
+		
+		types.setSelectedIndex(0);
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));
@@ -107,8 +118,13 @@ public class OrganizationFormContent extends FormContent
 		row3.appendChild(new Label("Tax Number"));
 		row3.appendChild(tax);
 		
+		Row row4 = new Row();
+		row4.appendChild(new Label("Industry"));
+		row4.appendChild(types);
+		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
+		rows.appendChild(row4);
 	}
 }

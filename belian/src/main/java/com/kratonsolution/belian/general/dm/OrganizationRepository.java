@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import com.kratonsolution.belian.general.dm.Organization.IndustryType;
+
 /**
  * @author agungdodiperdana
  *
@@ -16,4 +18,6 @@ public interface OrganizationRepository extends MongoRepository<Organization, St
 	public List<Organization> findAllByRolesTypeName(String roleName);
 	
 	public List<Organization> findAllByRelationshipsTypeName(String name);
+
+	public List<Organization> findAllByType(IndustryType type);
 }

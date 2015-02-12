@@ -32,6 +32,6 @@ public class PartyRole
 	@Field("is_deleted")
 	private boolean deleted;
 	
-	@DBRef(lazy=false,db="party_role_type")
+	@DBRef
 	private PartyRoleType type;
 }
