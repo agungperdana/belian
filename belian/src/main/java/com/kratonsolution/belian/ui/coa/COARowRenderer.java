@@ -14,7 +14,7 @@ import com.kratonsolution.belian.accounting.dm.GLAccount;
  * @author agungdodiperdana
  *
  */
-public class CoARowRenderer implements RowRenderer<GLAccount>
+public class COARowRenderer implements RowRenderer<GLAccount>
 {
 
 	@Override

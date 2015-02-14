@@ -23,7 +23,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author agungdodiperdana
  *
  */
-public class CoAFormContent extends FormContent
+public class COAFormContent extends FormContent
 {	
 	private final GLAccountService controller = Springs.get(GLAccountService.class);
 	
@@ -33,7 +33,7 @@ public class CoAFormContent extends FormContent
 	
 	private Textbox note = new Textbox();
 	
-	public CoAFormContent()
+	public COAFormContent()
 	{
 		super();
 		initToolbar();
@@ -48,7 +48,7 @@ public class CoAFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				CoAWindow window = (CoAWindow)getParent();
+				COAWindow window = (COAWindow)getParent();
 				window.removeCreateForm();
 				window.insertGrid();
 			}
@@ -72,7 +72,7 @@ public class CoAFormContent extends FormContent
 				
 				controller.add(coa);
 				
-				CoAWindow window = (CoAWindow)getParent();
+				COAWindow window = (COAWindow)getParent();
 				window.removeCreateForm();
 				window.insertGrid();
 			}

@@ -17,17 +17,18 @@ import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.accounting.svc.GLAccountService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * @author agungdodiperdana
  *
  */
-public class CoAGridContent extends GridContent
+public class COAGridContent extends GridContent
 {
 	private final GLAccountService service = Springs.get(GLAccountService.class);
 	
-	public CoAGridContent()
+	public COAGridContent()
 	{
 		super();
 		initToolbar();
@@ -43,7 +44,7 @@ public class CoAGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new CoAModel(8));
+				grid.setModel(new COAModel(8));
 			}
 		});
 		
@@ -52,7 +53,7 @@ public class CoAGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				CoAWindow window = (CoAWindow)getParent();
+				COAWindow window = (COAWindow)getParent();
 				window.removeGrid();
 				window.insertCreateForm();
 			}
@@ -129,7 +130,7 @@ public class CoAGridContent extends GridContent
 										}
 									}
 									
-									grid.setModel(new CoAModel(8));
+									grid.setModel(new COAModel(8));
 								}
 							}
 						});
@@ -148,13 +149,13 @@ public class CoAGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final CoAModel model = new CoAModel(8);
+		final COAModel model = new COAModel(8);
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
 		grid.setEmptyMessage("No chart of account data exist.");
 		grid.setModel(model);
-		grid.setRowRenderer(new CoARowRenderer());
+		grid.setRowRenderer(new COARowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(8);
@@ -194,9 +195,11 @@ public class CoAGridContent extends GridContent
 				@Override
 				public void onEvent(Event event) throws Exception
 				{
-					CoAWindow window = (CoAWindow)getParent();
+					COAWindow window = (COAWindow)getParent();
 					window.removeGrid();
-					window.insertEditForm(row);
+//					window.insertEditForm(row);
+					COAEditContent content = new COAEditContent(service.findOne(RowUtils.rowValue(row, 4)));
+					window.appendChild(content);
 				}
 			});
 		}

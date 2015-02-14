@@ -17,13 +17,13 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author agungdodiperdana
  *
  */
-public class CoAModel implements ListModel<GLAccount>
+public class COAModel implements ListModel<GLAccount>
 {
 	private final GLAccountService service = Springs.get(GLAccountService.class);
 	
 	private List<GLAccount> data = new ArrayList<GLAccount>();
 	
-	public CoAModel(int itemSize)
+	public COAModel(int itemSize)
 	{
 		next(0, itemSize);
 	}
@@ -40,7 +40,7 @@ public class CoAModel implements ListModel<GLAccount>
 	@Override
 	public int getSize()
 	{
-		return service.size();
+		return service.findAllRoot().size();
 	}
 
 	@Override

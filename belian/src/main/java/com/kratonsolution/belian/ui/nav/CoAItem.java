@@ -9,7 +9,7 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
-import com.kratonsolution.belian.ui.coa.CoAWindow;
+import com.kratonsolution.belian.ui.coa.COAWindow;
 
 /**
  * @author agungdodiperdana
@@ -32,16 +32,16 @@ public class CoAItem extends Listitem
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				CoAWindow window = null;
+				COAWindow window = null;
 				
 				for(Component component:getPage().getRoots())
 				{
-					if(component instanceof CoAWindow)
-						window = (CoAWindow)component;
+					if(component instanceof COAWindow)
+						window = (COAWindow)component;
 				}
 				
 				if(window == null)
-					window = CoAWindow.injectInto(getPage());
+					window = COAWindow.injectInto(getPage());
 				
 				else if(!window.isVisible())
 				{

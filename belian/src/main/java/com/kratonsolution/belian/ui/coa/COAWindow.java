@@ -21,22 +21,22 @@ import com.kratonsolution.belian.ui.nav.NavigatorBar;
  * @author agungdodiperdana
  *
  */
-public class CoAWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
+public class COAWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
 	private final Caption caption = new Caption("Chart of Account");
 	
-	private CoAButton status = new CoAButton();
+	private COAButton status = new COAButton();
 	
-	public static CoAWindow injectInto(Page page)
+	public static COAWindow injectInto(Page page)
 	{
-		CoAWindow window = new CoAWindow();
+		COAWindow window = new COAWindow();
 		window.setPage(page);
 		window.init();
 		
 		return window;
 	}
 	
-	private CoAWindow()
+	private COAWindow()
 	{
 		super();
 	}
@@ -91,7 +91,7 @@ public class CoAWindow extends AbstractWindow implements HasGrid,HasCreateForm,H
 	@Override
 	public void insertEditForm(Row row)
 	{
-		appendChild(new CoAEditContent(row));
+//		appendChild(new COAEditContent(row));
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class CoAWindow extends AbstractWindow implements HasGrid,HasCreateForm,H
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof CoAEditContent)
+			if(component instanceof COAEditContent)
 			{
 				removeChild(component);
 				break;
@@ -110,7 +110,7 @@ public class CoAWindow extends AbstractWindow implements HasGrid,HasCreateForm,H
 	@Override
 	public void insertCreateForm()
 	{
-		appendChild(new CoAFormContent());
+		appendChild(new COAFormContent());
 	}
 
 	@Override
@@ -118,7 +118,7 @@ public class CoAWindow extends AbstractWindow implements HasGrid,HasCreateForm,H
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof CoAFormContent)
+			if(component instanceof COAFormContent)
 			{
 				removeChild(component);
 				break;
@@ -129,7 +129,7 @@ public class CoAWindow extends AbstractWindow implements HasGrid,HasCreateForm,H
 	@Override
 	public void insertGrid()
 	{
-		appendChild(new CoAGridContent());
+		appendChild(new COAGridContent());
 	}
 
 	@Override
@@ -137,7 +137,7 @@ public class CoAWindow extends AbstractWindow implements HasGrid,HasCreateForm,H
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof CoAGridContent)
+			if(component instanceof COAGridContent)
 			{
 				removeChild(component);
 				break;

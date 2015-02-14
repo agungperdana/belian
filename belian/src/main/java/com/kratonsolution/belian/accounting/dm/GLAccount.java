@@ -34,7 +34,6 @@ public class GLAccount
 	private String number;
 	
 	@Field("name")
-	@Indexed(unique=true,sparse=true,name="gl_account_name_index")
 	private String name;
 	
 	@Field("note")

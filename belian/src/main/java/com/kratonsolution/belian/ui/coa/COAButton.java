@@ -9,9 +9,9 @@ import org.zkoss.zul.Toolbarbutton;
  * @author agungdodiperdana
  *
  */
-public class CoAButton extends Toolbarbutton
+public class COAButton extends Toolbarbutton
 {
-	public CoAButton()
+	public COAButton()
 	{
 		setImage("/icons/coa.png");
 		setTooltip("Chart of Account Management");
