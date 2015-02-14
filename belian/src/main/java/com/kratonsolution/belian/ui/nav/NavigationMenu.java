@@ -121,9 +121,6 @@ public class NavigationMenu extends Window
 		list.setStyle("border:none");
 		list.setParent(panel);
 		
-		Listitem period = new Listitem("Accounting Period");
-		period.setImage("/icons/period.png");
-		
 		Listitem organization = new Listitem("Organization account");
 		organization.setImage("/icons/orgacc.png");
 		
@@ -132,7 +129,7 @@ public class NavigationMenu extends Window
 		list.appendChild(new BankAccountItem());
 		list.appendChild(new CashAccountItem());
 		list.appendChild(new CoAItem());
-		list.appendChild(period);
+		list.appendChild(new AccountingPeriodItem());
 		list.appendChild(organization);
 	}
 	

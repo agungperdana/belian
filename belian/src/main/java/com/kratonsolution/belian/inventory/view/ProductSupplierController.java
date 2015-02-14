@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.kratonsolution.belian.accounting.view.PartyEditor;
-import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.PartyRepository;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductRepository;
@@ -39,15 +37,11 @@ public class ProductSupplierController
 	@Autowired
 	private PartyRepository partyRepository;
 	
-	@Autowired
-	private PartyEditor partyEditor;
-
 	@InitBinder
 	public void binder(WebDataBinder binder)
 	{
 		DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(format, true));
-		binder.registerCustomEditor(Party.class, partyEditor);
 	}
 	
 	@Secured("ROLE_PRDSUPPLIER_CREATE")

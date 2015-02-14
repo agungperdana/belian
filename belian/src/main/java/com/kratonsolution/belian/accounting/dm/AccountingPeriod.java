@@ -3,7 +3,9 @@
  */
 package com.kratonsolution.belian.accounting.dm;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,11 +24,13 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection="accounting_period")
 public class AccountingPeriod
 {
+	public enum Month{January,February,March,April,May,June,July,August,September,October,November,December}
+	
 	@Id
 	private String id;
 	
 	@Field("number")
-	private int number;
+	private String number;
 	
 	@Field("name")
 	private String name;
@@ -37,6 +41,12 @@ public class AccountingPeriod
 	@Field("date_to")
 	private Date to;
 	
+	@Field("month_name")
+	private Month month = Month.January;
+	
 	@DBRef
 	private AccountingPeriod parent;
+	
+	@DBRef
+	private List<AccountingPeriod> members = new ArrayList<AccountingPeriod>();
 }

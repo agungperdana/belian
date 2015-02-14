@@ -80,7 +80,10 @@ public class ModuleFormContent extends FormContent
 	public void initForm()
 	{
 		code.setConstraint("no empty");
+		code.setWidth("250px");
+		
 		name.setConstraint("no empty");
+		name.setWidth("250px");
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));

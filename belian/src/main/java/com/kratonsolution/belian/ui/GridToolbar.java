@@ -18,9 +18,9 @@ public class GridToolbar extends Toolbar
 
 	private final Toolbarbutton select = new Toolbarbutton("Select All","/icons/selectall.png");
 	
-	private final Toolbarbutton deselect = new Toolbarbutton("Deselect All","/icons/delete.png");
+	private final Toolbarbutton deselect = new Toolbarbutton("Deselect All","/icons/deselect.png");
 	
-	private final Toolbarbutton delete = new Toolbarbutton("Remove","/icons/deselect.png");
+	private final Toolbarbutton delete = new Toolbarbutton("Remove","/icons/delete.png");
 	
 	private final Toolbarbutton search = new Toolbarbutton("Search","/icons/search.png");
 	
@@ -34,7 +34,6 @@ public class GridToolbar extends Toolbar
 		appendChild(newData);
 		appendChild(select);
 		appendChild(delete);
-//		appendChild(search);
 	}
 	
 	public Toolbarbutton getRefresh()
