@@ -137,12 +137,6 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		list.setParent(panel);
-
-		Listitem uom = new Listitem("Unit of Measure");
-		uom.setImage("/icons/measure.png");
-		
-		Listitem facility = new Listitem("Facility");
-		facility.setImage("/icons/facility.png");
 		
 		Listitem prodCat = new Listitem("Product Category");
 		prodCat.setImage("/icons/category.png");
@@ -153,11 +147,11 @@ public class NavigationMenu extends Window
 		Listitem invItem = new Listitem("Inventory Item");
 		invItem.setImage("/icons/inventoryitem.png");
 		
-		uom.setParent(list);
-		facility.setParent(list);
-		prodCat.setParent(list);
-		product.setParent(list);
-		invItem.setParent(list);
+		list.appendChild(new UOMItem());
+		list.appendChild(new FacilityItem());
+		list.appendChild(prodCat);
+		list.appendChild(product);
+		list.appendChild(invItem);
 	}
 	
 	protected void initSales()
