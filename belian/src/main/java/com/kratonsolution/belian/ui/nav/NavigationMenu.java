@@ -81,20 +81,18 @@ public class NavigationMenu extends Window
 	protected void initGeneral()
 	{
 		Tabpanel general = new Tabpanel();
-		general.setParent(panels);
 
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
-		list.setParent(general);
-		
-		Listitem person = new Listitem("Person");
-		person.setImage("/icons/person.png");
 		
 		list.appendChild(new GeographicItem());
 		list.appendChild(new PartyRoleTypeItem());
 		list.appendChild(new PartyRelationshipTypeItem());
 		list.appendChild(new OrganizationItem());
 		list.appendChild(new PersonItem());
+
+		general.appendChild(list);
+		panels.appendChild(general);
 	}
 	
 	protected void initSecurity()
@@ -113,16 +111,11 @@ public class NavigationMenu extends Window
 	
 	protected void initAccounting()
 	{
-		Tabpanel panel = new Tabpanel();
-		panel.setStyle("overflow:auto");
-		panel.setParent(panels);
+		Tabpanel accounting = new Tabpanel();
+		accounting.setStyle("overflow:auto");
 
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
-		list.setParent(panel);
-		
-		Listitem organization = new Listitem("Organization account");
-		organization.setImage("/icons/orgacc.png");
 		
 		list.appendChild(new CurrencyItem());
 		list.appendChild(new TaxItem());
@@ -130,7 +123,10 @@ public class NavigationMenu extends Window
 		list.appendChild(new CashAccountItem());
 		list.appendChild(new CoAItem());
 		list.appendChild(new AccountingPeriodItem());
-		list.appendChild(organization);
+		list.appendChild(new OrganizationAccountItem());
+		
+		accounting.appendChild(list);
+		panels.appendChild(accounting);
 	}
 	
 	protected void initInventory()

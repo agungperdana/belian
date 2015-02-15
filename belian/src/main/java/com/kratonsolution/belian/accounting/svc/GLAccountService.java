@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kratonsolution.belian.accounting.dm.GLAccount;
+import com.kratonsolution.belian.accounting.dm.GLAccountChangeEventListener;
 import com.kratonsolution.belian.accounting.dm.GLAccountRepository;
 
 /**
@@ -23,6 +24,9 @@ public class GLAccountService
 {
 	@Autowired
 	private GLAccountRepository repository;
+	
+	@Autowired
+	private List<GLAccountChangeEventListener> listeners;
 	
 	@Secured("ROLE_COA_READ")
 	public int size()
@@ -70,6 +74,9 @@ public class GLAccountService
 	public void add(GLAccount coa)
 	{
 		repository.save(coa);
+		
+		for(GLAccountChangeEventListener listener:listeners)
+			listener.fireObjectCreated(coa);
 	}
 	
 	@Secured("ROLE_COA_UPDATE")
@@ -82,5 +89,8 @@ public class GLAccountService
 	public void delete(@PathVariable String id)
 	{
 		repository.delete(id);
+		
+		for(GLAccountChangeEventListener listener:listeners)
+			listener.fireObjectDeleted(id);
 	}
 }
