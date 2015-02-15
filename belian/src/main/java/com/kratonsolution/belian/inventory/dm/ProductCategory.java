@@ -22,9 +22,13 @@ public class ProductCategory
 {
 	@Id
 	private String id;
+	
+	@Field("code")
+	@Indexed(unique=true,name="category_code_index")
+	private String code;
 
 	@Field("name")
-	@Indexed(unique=true)
+	@Indexed(unique=true,name="category_name_index")
 	private String name;
 	
 	@Field("description")

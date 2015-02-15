@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductCategory;
 import com.kratonsolution.belian.inventory.dm.ProductCategoryRepository;
 import com.kratonsolution.belian.inventory.dm.ProductRepository;
 
@@ -38,15 +37,11 @@ public class ProductController
 	@Autowired
 	private ProductCategoryRepository categoryRepository;
 	
-	@Autowired
-	private ProductCategoryEditor categoryEditor;
-	
 	@InitBinder
 	public void binder(WebDataBinder binder)
 	{
 		DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(format, true));
-		binder.registerCustomEditor(ProductCategory.class, categoryEditor);
 	}
 	
 	@Secured("ROLE_PRODUCT_READ")
