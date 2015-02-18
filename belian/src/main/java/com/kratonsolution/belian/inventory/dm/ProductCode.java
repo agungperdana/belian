@@ -24,11 +24,14 @@ public class ProductCode
 	private String id;
 	
 	@Field("code")
-	@Indexed(unique=true,sparse=true)
+	@Indexed(unique=true,sparse=true,name="product_code_code_index")
 	private String code;
 	
 	@Field("type")
 	private Type type = Type.STANDARD;
+	
+	@Field("note")
+	private String note;
 	
 	@Field("is_deleted")
 	private boolean deleted;

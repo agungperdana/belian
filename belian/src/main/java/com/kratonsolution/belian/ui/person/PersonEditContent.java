@@ -211,18 +211,7 @@ public class PersonEditContent extends FormContent implements Refreshable
 			if(!person.getRelationships().isEmpty())
 			{
 				for(final PartyRelationship partyRelationship:person.getRelationships())
-				{
-					System.out.println("role1 "+partyRelationship);
-					System.out.println("role1 "+partyRelationship.getId());
-					System.out.println("role1 "+partyRelationship.getFrom());
-					System.out.println("role1 "+partyRelationship.getTo());
-					System.out.println("role1 "+partyRelationship.getFromRole());
-					System.out.println("role1 "+partyRelationship.getType());
-					System.out.println("role1 "+partyRelationship.getToParty());
-					
 					information.addRelationship(new RelationshipInformation(partyRelationship, person));
-				}
-				
 			}
 		}
 		

@@ -19,8 +19,7 @@ public abstract class AbstractWindow extends Window implements HasStatus
 		setClosable(true);
 		setMinimizable(true);
 		setMaximizable(true);
-		setLeft("350px");
-		setTop("100px");
 		setSizable(true);
+		setPosition("center");
 	}
 }

@@ -23,11 +23,14 @@ public class ProductComponent
 	@Id
 	private String id;
 	
-	@Field("amount")
-	private BigDecimal amount = BigDecimal.ONE;
+	@Field("quantity")
+	private BigDecimal quantity = BigDecimal.ONE;
 	
 	@DBRef
 	private Product product;
+	
+	@Field("note")
+	private String note;
 	
 	@Field("is_deleted")
 	private boolean deleted;

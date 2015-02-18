@@ -26,7 +26,10 @@ public class ProductFeature
 	private String value;
 	
 	@Field("type")
-	private String type;
+	private Type type = Type.WEIGH;
+	
+	@Field("note")
+	private String note;
 	
 	@Field("is_deleted")
 	private boolean deleted;

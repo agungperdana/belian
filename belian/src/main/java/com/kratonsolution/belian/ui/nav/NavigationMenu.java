@@ -138,16 +138,13 @@ public class NavigationMenu extends Window
 		list.setStyle("border:none");
 		list.setParent(panel);
 		
-		Listitem product = new Listitem("Product");
-		product.setImage("/icons/product.png");
-		
 		Listitem invItem = new Listitem("Inventory Item");
 		invItem.setImage("/icons/inventoryitem.png");
 		
 		list.appendChild(new UOMItem());
 		list.appendChild(new FacilityItem());
 		list.appendChild(new ProductCategoryItem());
-		list.appendChild(product);
+		list.appendChild(new ProductItem());
 		list.appendChild(invItem);
 	}
 	
