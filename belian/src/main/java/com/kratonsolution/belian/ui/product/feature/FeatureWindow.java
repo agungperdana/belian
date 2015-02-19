@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.product;
+package com.kratonsolution.belian.ui.product.feature;
 
 import java.util.UUID;
 
@@ -25,7 +25,7 @@ import com.kratonsolution.belian.inventory.dm.ProductFeature;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
-import com.kratonsolution.belian.ui.Refreshable;
+import com.kratonsolution.belian.ui.product.ProductEditContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -54,6 +54,7 @@ public class FeatureWindow extends AbstractWindow
 	{
 		super();
 		this.product = product;
+		
 		setMode(Mode.POPUP);
 		
 		Caption caption = new Caption("Product Feature");
@@ -92,7 +93,11 @@ public class FeatureWindow extends AbstractWindow
 				
 				service.edit(product);
 				
-				((Refreshable)getParent()).refresh();
+				ProductEditContent parent = (ProductEditContent)getParent();
+				parent.refresh();
+				parent.setSelectedTab(1);
+				
+				onClose();
 			}
 		});
 		

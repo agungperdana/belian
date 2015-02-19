@@ -26,6 +26,7 @@ import com.kratonsolution.belian.inventory.svc.ProductCategoryService;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.Refreshable;
+import com.kratonsolution.belian.ui.product.feature.FeatureTab;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -204,5 +205,10 @@ public class ProductEditContent extends FormContent implements Refreshable
 	{
 		removeChild(tabbox);
 		initTab();
+	}
+	
+	public void setSelectedTab(int index)
+	{
+		this.tabbox.setSelectedIndex(index);
 	}
 }

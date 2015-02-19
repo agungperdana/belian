@@ -65,7 +65,7 @@ public class PriceTab implements TabedDisplay
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				parent.appendChild(new FeatureWindow(product));
+//				parent.appendChild(new FeatureWindow(product));
 			}
 		});
 
