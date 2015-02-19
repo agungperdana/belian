@@ -33,6 +33,9 @@ public class ProductSupplier
 	
 	@DBRef
 	private Party supplier;
+
+	@Field("note")
+	private String note;
 	
 	@Field("is_deleted")
 	private boolean deleted;

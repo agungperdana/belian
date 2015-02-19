@@ -1,9 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.product;
-
-import java.util.UUID;
+package com.kratonsolution.belian.ui.product.code;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -21,18 +19,18 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vlayout;
 
 import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductFeature;
+import com.kratonsolution.belian.inventory.dm.ProductCode;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
-import com.kratonsolution.belian.ui.Refreshable;
+import com.kratonsolution.belian.ui.product.ProductEditContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * @author agungdodiperdana
  *
  */
-public class ComponentWindow extends AbstractWindow
+public class CodeEditWindow extends AbstractWindow
 {
 	private Vlayout layout = new Vlayout();
 	
@@ -44,19 +42,24 @@ public class ComponentWindow extends AbstractWindow
 	
 	private Product product;
 	
-	private Textbox value = new Textbox();
+	private Textbox code = new Textbox();
 	
 	private Textbox note = new Textbox();
 	
 	private Listbox types = new Listbox();
+
+	private String codeId;
 	
-	public ComponentWindow(Product product)
+	public CodeEditWindow(Product product,String codeId)
 	{
 		super();
+
 		this.product = product;
+		this.codeId = codeId;
+		
 		setMode(Mode.POPUP);
 		
-		Caption caption = new Caption("Product Component");
+		Caption caption = new Caption("Product Code");
 		caption.setImage("/icons/product.png");
 		
 		appendChild(caption);
@@ -82,17 +85,25 @@ public class ComponentWindow extends AbstractWindow
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				ProductFeature feature = new ProductFeature();
-				feature.setId(UUID.randomUUID().toString());
-				feature.setValue(value.getText());
-				feature.setNote(note.getText());
-				feature.setType(ProductFeature.Type.valueOf(types.getSelectedItem().getValue().toString()));
-				
-				product.getFeatures().add(feature);
-				
-				service.edit(product);
-				
-				((Refreshable)getParent()).refresh();
+				for(ProductCode productCode:product.getCodes())
+				{
+					if(productCode.getId().equals(codeId))
+					{
+						productCode.setCode(code.getText());
+						productCode.setNote(note.getText());
+						productCode.setType(ProductCode.Type.valueOf(types.getSelectedItem().getValue().toString()));
+						
+						service.edit(product);
+						
+						ProductEditContent parent = (ProductEditContent)getParent();
+						parent.refresh();
+						parent.setSelectedTab(0);
+						
+						onClose();
+						
+						break;
+					}
+				}
 			}
 		});
 		
@@ -108,36 +119,51 @@ public class ComponentWindow extends AbstractWindow
 	
 	protected void initContent()
 	{
-		value.setConstraint("no empty");
-		value.setWidth("250px");
+		for(ProductCode productCode:product.getCodes())
+		{
+			if(productCode.getId().equals(codeId))
+			{
+				code.setText(productCode.getCode());
+				code.setConstraint("no empty");
+				code.setWidth("250px");
+				
+				note.setText(productCode.getNote());
+				note.setWidth("300px");
+				
+				for(ProductCode.Type type:ProductCode.Type.values())
+				{
+					Listitem listitem = new Listitem(type.name(),type.name());
+					types.appendChild(listitem);
+					if(type.equals(productCode.getType()))
+						types.setSelectedItem(listitem);
+				}
+				
+				types.setMold("select");
+				
+				content.getColumns().appendChild(new Column(null,null,"100px"));
+				content.getColumns().appendChild(new Column());
+				
+				Row row1 = new Row();
+				row1.appendChild(new Label("Code"));
+				row1.appendChild(code);
+				
+				Row row2 = new Row();
+				row2.appendChild(new Label("Type"));
+				row2.appendChild(types);
+				
+				Row row3 = new Row();
+				row3.appendChild(new Label("Note"));
+				row3.appendChild(note);
+				
+				content.setWidth("100%");
+				content.getRows().appendChild(row1);
+				content.getRows().appendChild(row2);
+				content.getRows().appendChild(row3);
+				
+				break;
+			}
+		}
 		
-		note.setWidth("300px");
-		
-		for(ProductFeature.Type type:ProductFeature.Type.values())
-			types.appendChild(new Listitem(type.name(),type.name()));
-		
-		types.setMold("select");
-		types.setSelectedIndex(0);
-		
-		content.getColumns().appendChild(new Column(null,null,"100px"));
-		content.getColumns().appendChild(new Column());
-		
-		Row row1 = new Row();
-		row1.appendChild(new Label("Value"));
-		row1.appendChild(value);
-		
-		Row row2 = new Row();
-		row2.appendChild(new Label("Type"));
-		row2.appendChild(types);
-		
-		Row row3 = new Row();
-		row3.appendChild(new Label("Note"));
-		row3.appendChild(note);
-		
-		content.setWidth("100%");
-		content.getRows().appendChild(row1);
-		content.getRows().appendChild(row2);
-		content.getRows().appendChild(row3);
 	}
 	
 	@Override

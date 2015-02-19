@@ -1,8 +1,9 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.product;
+package com.kratonsolution.belian.ui.product.supplier;
 
+import java.util.Date;
 import java.util.UUID;
 
 import org.zkoss.zk.ui.event.Event;
@@ -11,6 +12,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
+import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
@@ -20,12 +22,14 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vlayout;
 
+import com.kratonsolution.belian.general.dm.Party;
+import com.kratonsolution.belian.general.dm.PartyRepository;
 import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductFeature;
+import com.kratonsolution.belian.inventory.dm.ProductSupplier;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
-import com.kratonsolution.belian.ui.Refreshable;
+import com.kratonsolution.belian.ui.product.ProductEditContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -42,18 +46,23 @@ public class SupplierWindow extends AbstractWindow
 	
 	private ProductService service = Springs.get(ProductService.class);
 	
+	private PartyRepository partyRepository = Springs.get(PartyRepository.class);
+	
 	private Product product;
 	
-	private Textbox value = new Textbox();
+	private Datebox from = new Datebox(new Date());
+	
+	private Datebox to = new Datebox();
 	
 	private Textbox note = new Textbox();
 	
-	private Listbox types = new Listbox();
+	private Listbox suppliers = new Listbox();
 	
 	public SupplierWindow(Product product)
 	{
 		super();
 		this.product = product;
+		
 		setMode(Mode.POPUP);
 		
 		Caption caption = new Caption("Product Supplier");
@@ -82,17 +91,22 @@ public class SupplierWindow extends AbstractWindow
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				ProductFeature feature = new ProductFeature();
-				feature.setId(UUID.randomUUID().toString());
-				feature.setValue(value.getText());
-				feature.setNote(note.getText());
-				feature.setType(ProductFeature.Type.valueOf(types.getSelectedItem().getValue().toString()));
+				ProductSupplier supplier = new ProductSupplier();
+				supplier.setId(UUID.randomUUID().toString());
+				supplier.setFrom(from.getValue());
+				supplier.setTo(to.getValue());
+				supplier.setNote(note.getText());
+				supplier.setSupplier(partyRepository.findOne(suppliers.getSelectedItem().getValue().toString()));
 				
-				product.getFeatures().add(feature);
+				product.getSuppliers().add(supplier);
 				
 				service.edit(product);
 				
-				((Refreshable)getParent()).refresh();
+				ProductEditContent parent = (ProductEditContent)getParent();
+				parent.refresh();
+				parent.setSelectedTab(2);
+				
+				onClose();
 			}
 		});
 		
@@ -108,36 +122,43 @@ public class SupplierWindow extends AbstractWindow
 	
 	protected void initContent()
 	{
-		value.setConstraint("no empty");
-		value.setWidth("250px");
+		from.setConstraint("no empty");
+		from.setWidth("150px");
+		
+		to.setWidth("150px");
 		
 		note.setWidth("300px");
 		
-		for(ProductFeature.Type type:ProductFeature.Type.values())
-			types.appendChild(new Listitem(type.name(),type.name()));
+		for(Party party:partyRepository.findAllByRolesTypeName("Supplier"))
+			suppliers.appendChild(new Listitem(party.getName(),party.getId()));
 		
-		types.setMold("select");
-		types.setSelectedIndex(0);
+		suppliers.setMold("select");
+		suppliers.setSelectedIndex(0);
 		
 		content.getColumns().appendChild(new Column(null,null,"100px"));
 		content.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Value"));
-		row1.appendChild(value);
+		row1.appendChild(new Label("From"));
+		row1.appendChild(from);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Type"));
-		row2.appendChild(types);
+		row2.appendChild(new Label("To"));
+		row2.appendChild(to);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Note"));
-		row3.appendChild(note);
+		row3.appendChild(new Label("Supplier"));
+		row3.appendChild(suppliers);
+		
+		Row row4 = new Row();
+		row4.appendChild(new Label("Note"));
+		row4.appendChild(note);
 		
 		content.setWidth("100%");
 		content.getRows().appendChild(row1);
 		content.getRows().appendChild(row2);
 		content.getRows().appendChild(row3);
+		content.getRows().appendChild(row4);
 	}
 	
 	@Override

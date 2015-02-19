@@ -16,5 +16,5 @@ public interface PartyRepository
 	
 	public List<Party> findAll();
 	
-	public List<Party> findAllByRole(String roleName);
+	public List<Party> findAllByRolesTypeName(String name);
 }

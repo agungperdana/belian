@@ -27,7 +27,7 @@ public class BankAccount
 	private String id;
 	
 	@Field("number")
-	@Indexed(unique=true,name="bnk_acc_number")
+	@Indexed(unique=true,sparse=true,dropDups=true)
 	private String number;
 	
 	@Field("holder")

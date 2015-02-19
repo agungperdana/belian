@@ -52,7 +52,7 @@ public class PartyRepositoryImpl implements PartyRepository
 	}
 
 	@Override
-	public List<Party> findAllByRole(String roleName)
+	public List<Party> findAllByRolesTypeName(String roleName)
 	{
 		List<Party> partys = new ArrayList<Party>();
 		partys.addAll(personRepository.findAllByRolesTypeName(roleName));

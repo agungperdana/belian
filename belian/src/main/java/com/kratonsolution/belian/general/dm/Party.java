@@ -28,7 +28,7 @@ public class Party implements EconomicAgent
 	protected String id;
 
 	@Field("name")
-	@Indexed(unique=true)
+	@Indexed(unique=true,sparse=true,dropDups=true)
 	protected String name;
 	
 	@Field("birth_date")

@@ -46,17 +46,17 @@ public class Product
 	@Field("type")
 	private Type type = Type.FINISHGOOD;
 	
+	private List<ProductCode> codes = new ArrayList<ProductCode>();
+	
 	private List<ProductFeature> features = new ArrayList<ProductFeature>();
+	
+	private List<ProductComponent> components = new ArrayList<ProductComponent>();
 	
 	private List<ProductSupplier> suppliers = new ArrayList<ProductSupplier>();
 	
 	private List<ProductPrice> prices = new ArrayList<ProductPrice>();
 	
-	private List<ProductComponent> components = new ArrayList<ProductComponent>();
-	
 	private List<ProductCost> costs = new ArrayList<ProductCost>();
-	
-	private List<ProductCode> codes = new ArrayList<ProductCode>();
 	
 	public Product(){}
 	

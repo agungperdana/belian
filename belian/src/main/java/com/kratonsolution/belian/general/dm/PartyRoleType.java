@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -23,6 +24,7 @@ public class PartyRoleType
 	private String id;
 	
 	@Field("name")
+	@Indexed(unique=true,sparse=true,dropDups=true)
 	private String name;
 
 	@Field("is_deleted")

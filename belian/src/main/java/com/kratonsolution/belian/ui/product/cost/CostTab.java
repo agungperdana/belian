@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.product;
+package com.kratonsolution.belian.ui.product.cost;
 
 import java.util.Iterator;
 
@@ -30,13 +30,13 @@ import com.kratonsolution.belian.ui.TabedDisplay;
  * @author agungdodiperdana
  *
  */
-public class PriceTab implements TabedDisplay
+public class CostTab implements TabedDisplay
 {
 	private Product product;
 
 	private Component parent;
 
-	public PriceTab(Product product,Component parent)
+	public CostTab(Product product,Component parent)
 	{
 		this.product = product;
 		this.parent = parent;
@@ -44,7 +44,7 @@ public class PriceTab implements TabedDisplay
 
 	public Tab getHeader()
 	{
-		return new Tab("Price");
+		return new Tab("Cost");
 	}
 
 	public Tabpanel getBody()
@@ -59,7 +59,7 @@ public class PriceTab implements TabedDisplay
 		panel.appendChild(layout);
 
 		Toolbar toolbar = new Toolbar();
-		Toolbarbutton create = new Toolbarbutton("New Price","/icons/new.png");
+		Toolbarbutton create = new Toolbarbutton("New Cost","/icons/new.png");
 		create.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override

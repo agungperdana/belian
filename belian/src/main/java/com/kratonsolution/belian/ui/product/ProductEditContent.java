@@ -26,7 +26,12 @@ import com.kratonsolution.belian.inventory.svc.ProductCategoryService;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.Refreshable;
+import com.kratonsolution.belian.ui.product.code.CodeTab;
+import com.kratonsolution.belian.ui.product.component.ComponentTab;
+import com.kratonsolution.belian.ui.product.cost.CostTab;
 import com.kratonsolution.belian.ui.product.feature.FeatureTab;
+import com.kratonsolution.belian.ui.product.price.PriceTab;
+import com.kratonsolution.belian.ui.product.supplier.SupplierTab;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
