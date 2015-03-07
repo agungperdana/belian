@@ -3,8 +3,15 @@
  */
 package com.kratonsolution.belian.general.dm;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Field;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +22,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Entity
+@Table(name="contact")
 public class Contact
 {
 	public enum Type{CELLPHONE,HOMEPHONE,OFFICEPHONE,PAGER,EMAIL,POSTBOX}
@@ -22,15 +31,20 @@ public class Contact
 	@Id
 	private String id;
 	
-	@Field("description")
-	private String description;
+	@Column(name="contact",nullable=false)
+	private String contact;
 
-	@Field("type")
+	@Column(name="type",nullable=false)
+	@Enumerated(EnumType.STRING)
 	private Type type = Type.OFFICEPHONE;
 	
-	@Field("is_active")
+	@Column(name="active")
 	private boolean active;
+
+	@ManyToOne
+	@JoinColumn(name="fk_party")
+	private Party party;
 	
-	@Field("is_deleted")
-	private boolean deleted;
+	@Version
+	private Long version;
 }

@@ -4,11 +4,13 @@
 package com.kratonsolution.belian.general.svc;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.GeographicRepository;
@@ -19,6 +21,7 @@ import com.kratonsolution.belian.security.dm.AccessGrantedFor;
  *
  */
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class GeographicService
 {
 	@Autowired
@@ -49,24 +52,22 @@ public class GeographicService
 	}
 	
 	@Secured(AccessGrantedFor.ROLE_GEOGRAPHIC_CREATE)
-	public boolean add(Geographic geographic)
+	public void add(Geographic geographic)
 	{
+		geographic.setId(UUID.randomUUID().toString());
 		repository.save(geographic);
-		return true;
 	}
 	
 	@Secured(AccessGrantedFor.ROLE_GEOGRAPHIC_UPDATE)
-	public boolean edit(Geographic geographic)
+	public void edit(Geographic geographic)
 	{
-		repository.save(geographic);
-		return true;
+		repository.saveAndFlush(geographic);
 	}
 	
 	@Secured(AccessGrantedFor.ROLE_GEOGRAPHIC_DELETE)
-	public boolean delete(String id)
+	public void delete(String id)
 	{
 		repository.delete(id);
-		return true;
 	}
 	
 	@Secured(AccessGrantedFor.ROLE_GEOGRAPHIC_READ)

@@ -58,7 +58,7 @@ public class PartyRelationshipTypeService
 	@Secured("ROLE_PTYRELTYPE_UPDATE")
 	public void edit(PartyRelationshipType partyrelationshiptype)
 	{
-		repository.save(partyrelationshiptype);
+		repository.saveAndFlush(partyrelationshiptype);
 	}
 	
 	@Secured("ROLE_PTYRELTYPE_DELETE")

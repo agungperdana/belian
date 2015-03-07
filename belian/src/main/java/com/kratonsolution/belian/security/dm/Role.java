@@ -3,16 +3,19 @@
  */
 package com.kratonsolution.belian.security.dm;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author Agung Dodi Perdana
@@ -20,19 +23,25 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Getter
 @Setter
-@Document(collection="role")
+@Entity
+@Table(name="role")
 public class Role
 {
 	@Id
 	private String id;
 	
-	@Field("code")
-	@Indexed(unique=true,name="role_code")
+	@Column(name="code",unique=true,nullable=false)
 	private String code;
 	
-	@Field("name")
-	@Indexed(unique=true,name="role_name")
+	@Column(name="name",unique=true,nullable=false)
 	private String name;
 	
-	private List<AccessRole> accesses = new ArrayList<AccessRole>();
+	@Column(name="note")
+	private String note;
+	
+	@Version
+	private Long version;
+	
+	@OneToMany(mappedBy="role",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<AccessRole> accesses = new HashSet<AccessRole>();
 }

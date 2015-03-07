@@ -3,12 +3,14 @@
  */
 package com.kratonsolution.belian.general.dm;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author agungdodiperdana
@@ -16,15 +18,16 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Getter
 @Setter
-@Document(collection="party_relationship_type")
+@Entity
+@Table(name="party_relationship_type")
 public class PartyRelationshipType
 {
 	@Id
 	private String id;
 	
-	@Field("name")
+	@Column(name="name",unique=true,nullable=false)
 	private String name;
 	
-	@Field("is_deleted")
-	private boolean deleted = false;
+	@Version
+	private Long version;
 }

@@ -85,7 +85,7 @@ public class CashSalesController
 	{
 		model.addAttribute("cashsales",new CashSales());
 		model.addAttribute("saleses",personRepository.findAllByRolesTypeName("Sales"));
-		model.addAttribute("companys",organizationRepository.findAllByRelationshipsTypeName("Organization Structure"));
+		model.addAttribute("companys",organizationRepository.findAllByRelationshipsRelationshipTypeName("Organization Structure"));
 		model.addAttribute("customers",partyRepository.findAllByRolesTypeName("Customer"));
 		model.addAttribute("accounts",cashRepository.findAll());
 		
@@ -103,7 +103,7 @@ public class CashSalesController
 		
 		model.addAttribute("cashsales",cashsales);
 		model.addAttribute("saleses",personRepository.findAllByRolesTypeName("Sales"));
-		model.addAttribute("companys",organizationRepository.findAllByRelationshipsTypeName("Organization Structure"));
+		model.addAttribute("companys",organizationRepository.findAllByRelationshipsRelationshipTypeName("Organization Structure"));
 		model.addAttribute("customers",partyRepository.findAllByRolesTypeName("Customer"));
 		model.addAttribute("accounts",cashRepository.findAll());
 		model.addAttribute("inventorys",inventoryRepository.findAll());
@@ -127,7 +127,7 @@ public class CashSalesController
 		
 		model.addAttribute("cashsales",sales);
 		model.addAttribute("saleses",personRepository.findAllByRolesTypeName("Sales"));
-		model.addAttribute("companys",organizationRepository.findAllByRelationshipsTypeName("Organization Structure"));
+		model.addAttribute("companys",organizationRepository.findAllByRelationshipsRelationshipTypeName("Organization Structure"));
 		model.addAttribute("customers",partyRepository.findAllByRolesTypeName("Customer"));
 		model.addAttribute("accounts",cashRepository.findAll());
 		model.addAttribute("inventorys",inventoryRepository.findAll());
@@ -149,7 +149,7 @@ public class CashSalesController
 	{
 		model.addAttribute("cashsales",repository.findOne(id));
 		model.addAttribute("salesPerson",personRepository.findAllByRolesTypeName("Sales"));
-		model.addAttribute("companys",organizationRepository.findAllByRelationshipsTypeName("Internal Organization"));
+		model.addAttribute("companys",organizationRepository.findAllByRelationshipsRelationshipTypeName("Internal Organization"));
 		model.addAttribute("customers",partyRepository.findAllByRolesTypeName("Customer"));
 		
 		return "cashsales-edit";

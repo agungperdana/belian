@@ -25,7 +25,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class RoleGridContent extends GridContent
 {
-	private final RoleService controller = Springs.get(RoleService.class);
+	private final RoleService service = Springs.get(RoleService.class);
 	
 	public RoleGridContent()
 	{
@@ -124,7 +124,7 @@ public class RoleGridContent extends GridContent
 											if(check.isChecked())
 											{
 												Label label = (Label)row.getLastChild();
-												controller.delete(label.getValue());
+												service.delete(label.getValue());
 											}
 										}
 									}
@@ -158,21 +158,16 @@ public class RoleGridContent extends GridContent
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(8);
+		grid.appendChild(new Columns());
 		
-		Columns columns = new Columns();
+		grid.getColumns().appendChild(new Column(null,null,"25px"));
+		grid.getColumns().appendChild(new Column("Code",null,"100px"));
+		grid.getColumns().appendChild(new Column("Name",null,"150px"));
+		grid.getColumns().appendChild(new Column("Note"));
+		grid.getColumns().appendChild(new Column(null,null,"1px"));
+		grid.getColumns().getChildren().get(4).setVisible(false);
+		grid.setSpan("3");
 		
-		Column select = new Column(null,null,"25px");
-		Column code = new Column("Code");
-		Column name = new Column("Name");
-		Column id = new Column();
-		id.setVisible(false);
-		
-		columns.appendChild(select);
-		columns.appendChild(code);
-		columns.appendChild(name);
-		columns.appendChild(id);
-		
-		grid.appendChild(columns);
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override

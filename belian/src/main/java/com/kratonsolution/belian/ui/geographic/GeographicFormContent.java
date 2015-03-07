@@ -27,13 +27,15 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class GeographicFormContent extends FormContent
 {	
-	private final GeographicService controller = Springs.get(GeographicService.class);
+	private final GeographicService service = Springs.get(GeographicService.class);
 	
 	private Textbox code = new Textbox();
 	
 	private Textbox name = new Textbox();
 	
 	private Listbox type = new Listbox();
+	
+	private Textbox note = new Textbox();
 	
 	public GeographicFormContent()
 	{
@@ -71,8 +73,9 @@ public class GeographicFormContent extends FormContent
 				geographic.setCode(code.getText());
 				geographic.setName(name.getText());
 				geographic.setType(Geographic.Type.valueOf(type.getSelectedItem().getValue().toString()));
+				geographic.setNote(note.getText());
 				
-				controller.add(geographic);
+				service.add(geographic);
 				
 				GeographicWindow window = (GeographicWindow)getParent();
 				window.removeCreateForm();
@@ -85,7 +88,12 @@ public class GeographicFormContent extends FormContent
 	public void initForm()
 	{
 		code.setConstraint("no empty");
+		code.setWidth("200px");
+		
 		name.setConstraint("no empty");
+		name.setWidth("250px");
+		
+		note.setWidth("300px");
 		
 		for(Geographic.Type geo :Geographic.Type.values())
 		{
@@ -112,8 +120,13 @@ public class GeographicFormContent extends FormContent
 		row3.appendChild(new Label("Type"));
 		row3.appendChild(type);
 		
+		Row row4 = new Row();
+		row4.appendChild(new Label("Note"));
+		row4.appendChild(note);
+		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
+		rows.appendChild(row4);
 	}
 }

@@ -29,7 +29,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class OrganizationFormContent extends FormContent
 {	
-	private final OrganizationService controller = Springs.get(OrganizationService.class);
+	private final OrganizationService service = Springs.get(OrganizationService.class);
 		
 	private Textbox name = new Textbox();
 	
@@ -76,7 +76,7 @@ public class OrganizationFormContent extends FormContent
 				org.setBirthDate(date.getValue());
 				org.setTaxCode(tax.getText());
 				
-				controller.add(org);
+				service.add(org);
 				
 				OrganizationWindow window = (OrganizationWindow)getParent();
 				window.removeCreateForm();
@@ -95,12 +95,12 @@ public class OrganizationFormContent extends FormContent
 		date.setWidth("250px");
 		
 		tax.setWidth("300px");
-		types.setMold("select");
 		
 		for(IndustryType type:IndustryType.values())
 			types.appendChild(new Listitem(type.name(),type.name()));
 		
 		types.setSelectedIndex(0);
+		types.setMold("select");
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));

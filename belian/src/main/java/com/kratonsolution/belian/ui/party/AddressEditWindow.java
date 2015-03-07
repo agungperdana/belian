@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.ui.party;
 
+import java.util.Iterator;
+
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -21,15 +23,11 @@ import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Geographic;
-import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Party;
-import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.svc.GeographicService;
-import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.general.svc.PartyService;
 import com.kratonsolution.belian.ui.FormToolbar;
-import com.kratonsolution.belian.ui.organization.OrganizationEditContent;
-import com.kratonsolution.belian.ui.person.PersonEditContent;
+import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -58,9 +56,7 @@ public class AddressEditWindow extends Window
 	
 	private GeographicService geographicController = Springs.get(GeographicService.class);
 	
-	private PersonService personController = Springs.get(PersonService.class);
-	
-	private OrganizationService organizationController = Springs.get(OrganizationService.class);
+	private PartyService service = Springs.get(PartyService.class);
 	
 	private Party party;
 	
@@ -110,58 +106,26 @@ public class AddressEditWindow extends Window
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				if(party instanceof Organization)
+				Iterator<Address> iterator = party.getAddresses().iterator();
+				while (iterator.hasNext())
 				{
-					Organization organization = organizationController.findOne(party.getId());
-					if(organization != null)
+					Address add = (Address) iterator.next();
+					if(add.getId().equals(edited.getId()))
 					{
-						for(Address on:organization.getAddresses())
-						{
-							if(on.getId().equals(edited.getId()))
-							{
-								on.setDescription(address.getText());
-								on.setPostal(postal.getText());
-								on.setActive(status.isChecked());
-								on.setType(Address.Type.valueOf(type.getSelectedItem().getValue().toString()));
-								on.setCity(geographicController.findOne(city.getSelectedItem().getValue().toString()));
-								on.setProvince(geographicController.findOne(province.getSelectedItem().getValue().toString()));
-								on.setCountry(geographicController.findOne(country.getSelectedItem().getValue().toString()));
-							}
-						}
+						add.setAddress(address.getText());
+						add.setPostal(postal.getText());
+						add.setActive(status.isChecked());
+						add.setType(Address.Type.valueOf(type.getSelectedItem().getValue().toString()));
+						add.setCity(geographicController.findOne(city.getSelectedItem().getValue().toString()));
+						add.setProvince(geographicController.findOne(province.getSelectedItem().getValue().toString()));
+						add.setCountry(geographicController.findOne(country.getSelectedItem().getValue().toString()));
 						
-						organizationController.edit(organization);
-						
-						OrganizationEditContent content = (OrganizationEditContent)getParent();
-						content.refresh();
+						break;
 					}
 				}
 				
-				if(party instanceof Person)
-				{
-					Person person = personController.findOne(party.getId());
-					if(person != null)
-					{
-						for(Address on:person.getAddresses())
-						{
-							if(on.getId().equals(edited.getId()))
-							{
-								on.setDescription(address.getText());
-								on.setPostal(postal.getText());
-								on.setActive(status.isChecked());
-								on.setType(Address.Type.valueOf(type.getSelectedItem().getValue().toString()));
-								on.setCity(geographicController.findOne(city.getSelectedItem().getValue().toString()));
-								on.setProvince(geographicController.findOne(province.getSelectedItem().getValue().toString()));
-								on.setCountry(geographicController.findOne(country.getSelectedItem().getValue().toString()));
-							}
-						}
-						
-						personController.edit(person);
-						
-						PersonEditContent content = (PersonEditContent)getParent();
-						content.refresh();
-					}
-				}
-				
+				service.edit(party);
+				((Refreshable)getParent()).refresh();
 				detach();
 			}
 		});
@@ -171,7 +135,7 @@ public class AddressEditWindow extends Window
 	{
 		address.setWidth("300px");
 		address.setConstraint("no empty");
-		address.setText(edited.getDescription());
+		address.setText(edited.getAddress());
 		
 		postal.setWidth("150px");
 		postal.setText(edited.getPostal());

@@ -159,25 +159,15 @@ public class OrganizationGridContent extends GridContent
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(8);
-		
-		Columns columns = new Columns();
-		
-		Column select = new Column(null,null,"25px");
-		Column name = new Column("Name");
-		Column date = new Column("Birth Date",null,"75px");
-		Column tax = new Column("Tax",null,"100px");
-		Column type = new Column("Industry",null,"100px");
-		Column id = new Column();
-		id.setVisible(false);
-		
-		columns.appendChild(select);
-		columns.appendChild(name);
-		columns.appendChild(date);
-		columns.appendChild(tax);
-		columns.appendChild(type);
-		columns.appendChild(id);
-		
-		grid.appendChild(columns);
+		grid.appendChild(new Columns());
+		grid.getColumns().appendChild(new Column(null,null,"25px"));
+		grid.getColumns().appendChild(new Column("Name"));
+		grid.getColumns().appendChild(new Column("Birth Date",null,"75px"));
+		grid.getColumns().appendChild(new Column("Tax",null,"100px"));
+		grid.getColumns().appendChild(new Column("Industry",null,"100px"));
+		grid.getColumns().appendChild(new Column(null,null,"1px"));
+		grid.getColumns().getChildren().get(5).setVisible(false);
+
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override

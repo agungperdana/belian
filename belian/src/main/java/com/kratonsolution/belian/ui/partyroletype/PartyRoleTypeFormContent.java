@@ -25,7 +25,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PartyRoleTypeFormContent extends FormContent
 {	
-	private final PartyRoleTypeService controller = Springs.get(PartyRoleTypeService.class);
+	private final PartyRoleTypeService service = Springs.get(PartyRoleTypeService.class);
 		
 	private Textbox name = new Textbox();
 	
@@ -61,7 +61,7 @@ public class PartyRoleTypeFormContent extends FormContent
 				PartyRoleType type = new PartyRoleType();
 				type.setName(name.getText());
 				
-				controller.add(type);
+				service.add(type);
 				
 				PartyRoleTypeWindow window = (PartyRoleTypeWindow)getParent();
 				window.removeCreateForm();
@@ -74,6 +74,7 @@ public class PartyRoleTypeFormContent extends FormContent
 	public void initForm()
 	{
 		name.setConstraint("no empty");
+		name.setWidth("300px");
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));

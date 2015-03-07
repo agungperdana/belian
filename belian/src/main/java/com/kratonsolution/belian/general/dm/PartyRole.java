@@ -5,12 +5,16 @@ package com.kratonsolution.belian.general.dm;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author agungdodiperdana
@@ -18,20 +22,27 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Getter
 @Setter
+@Entity
+@Table(name="party_role")
 public class PartyRole
 {
 	@Id
 	private String id;
 	
-	@Field("from")
+	@Column(name="date_from",nullable=false)
 	private Date from;
 	
-	@Field("to")
+	@Column(name="date_to")
 	private Date to;
-
-	@Field("is_deleted")
-	private boolean deleted;
 	
-	@DBRef
+	@ManyToOne
+	@JoinColumn(name="fk_party_role_type")
 	private PartyRoleType type;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_party")
+	private Party party;
+	
+	@Version
+	private Long version;
 }

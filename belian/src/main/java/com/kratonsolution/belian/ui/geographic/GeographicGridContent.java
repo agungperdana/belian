@@ -106,33 +106,32 @@ public class GeographicGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",
-						Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				{
+					@Override
+					public void onEvent(Event event) throws Exception
+					{
+						if(event.getName().equals("onOK"))
 						{
-							@Override
-							public void onEvent(Event event) throws Exception
+							for(Object object:grid.getRows().getChildren())
 							{
-								if(event.getName().equals("onOK"))
+								Row row = (Row)object;
+								
+								if(row.getFirstChild() instanceof Checkbox)
 								{
-									for(Object object:grid.getRows().getChildren())
+									Checkbox check = (Checkbox)row.getFirstChild();
+									if(check.isChecked())
 									{
-										Row row = (Row)object;
-										
-										if(row.getFirstChild() instanceof Checkbox)
-										{
-											Checkbox check = (Checkbox)row.getFirstChild();
-											if(check.isChecked())
-											{
-												Label label = (Label)row.getLastChild();
-												controller.delete(label.getValue());
-											}
-										}
+										Label label = (Label)row.getLastChild();
+										controller.delete(label.getValue());
 									}
-									
-									grid.setModel(new GeographicModel(8));
 								}
 							}
-						});
+							
+							grid.setModel(new GeographicModel(8));
+						}
+					}
+				});
 			}
 		});
 		
@@ -158,23 +157,17 @@ public class GeographicGridContent extends GridContent
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(8);
+		grid.appendChild(new Columns());
 		
-		Columns columns = new Columns();
-		
-		Column select = new Column(null,null,"25px");
-		Column code = new Column("Code");
-		Column name = new Column("Name");
-		Column type = new Column("Type");
-		Column id = new Column();
-		id.setVisible(false);
-		
-		columns.appendChild(select);
-		columns.appendChild(code);
-		columns.appendChild(name);
-		columns.appendChild(type);
-		columns.appendChild(id);
-		
-		grid.appendChild(columns);
+		grid.getColumns().appendChild(new Column(null,null,"25px"));
+		grid.getColumns().appendChild(new Column("Code",null,"75px"));
+		grid.getColumns().appendChild(new Column("Name",null,"150px"));
+		grid.getColumns().appendChild(new Column("Type",null,"75px"));
+		grid.getColumns().appendChild(new Column("Note"));
+		grid.getColumns().appendChild(new Column(null,null,"1px"));
+		grid.getColumns().getChildren().get(5).setVisible(false);
+		grid.setSpan("4");
+
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override

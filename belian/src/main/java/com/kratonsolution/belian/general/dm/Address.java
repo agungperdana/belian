@@ -3,9 +3,15 @@
  */
 package com.kratonsolution.belian.general.dm;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Field;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +22,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Entity
+@Table(name="address")
 public class Address
 {
 	public enum Type{HOME,OFFICE,WAREHOUSE}
@@ -23,27 +31,35 @@ public class Address
 	@Id
 	private String id;
 	
-	@Field("description")
-	private String description;
+	@Column(name="address",nullable=false)
+	private String address;
 		
-	@Field("postal")
+	@Column(name="postal",nullable=false)
 	private String postal;
 	
-	@Field("is_active")
+	@Column(name="active",nullable=false)
 	private boolean active;
 	
-	@Field("type")
+	@Column(name="type",nullable=false)
+	@Enumerated(EnumType.STRING)
 	private Type type = Type.OFFICE;
-	
-	@Field("is_deleted")
-	private boolean deleted;
 
-	@DBRef
+	@ManyToOne
+	@JoinColumn(name="fk_geographic_city")
 	private Geographic city;
 	
-	@DBRef
+	@ManyToOne
+	@JoinColumn(name="fk_geographic_province")
 	private Geographic province;
 	
-	@DBRef
+	@ManyToOne
+	@JoinColumn(name="fk_geographic_country")
 	private Geographic country;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_party")
+	private Party party;
+	
+	@Version
+	private Long version;
 }

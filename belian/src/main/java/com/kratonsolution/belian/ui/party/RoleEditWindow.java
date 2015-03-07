@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.ui.party;
 
+import java.util.Iterator;
+
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -18,14 +20,11 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Window;
 
-import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.dm.PartyRoleType;
-import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.PartyRoleTypeService;
-import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.general.svc.PartyService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -46,19 +45,14 @@ public class RoleEditWindow extends Window
 	
 	private Listbox roles = new Listbox();
 	
-	private PersonService personController = Springs.get(PersonService.class);
-	
-	private OrganizationService organizationController = Springs.get(OrganizationService.class);
+	private PartyService service = Springs.get(PartyService.class);
 
 	private PartyRoleTypeService partyRoleTypeController = Springs.get(PartyRoleTypeService.class);
 	
-	private Party party;
-	
 	private PartyRole edited;
 	
-	public RoleEditWindow(Party party,PartyRole edited)
+	public RoleEditWindow(PartyRole edited)
 	{
-		this.party = party;
 		this.edited = edited;
 		
 		setMode(Mode.POPUP);
@@ -95,46 +89,24 @@ public class RoleEditWindow extends Window
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				if(party instanceof Organization)
+				Party party = service.findOne(edited.getParty().getId());
+				if(party != null)
 				{
-					Organization organization = organizationController.findOne(party.getId());
-					if(organization != null)
+					Iterator<PartyRole> iterator = party.getRoles().iterator();
+					while (iterator.hasNext())
 					{
-						for(PartyRole on:organization.getRoles())
+						PartyRole role = (PartyRole) iterator.next();
+						if(role.getId().equals(edited.getId()))
 						{
-							if(on.getId().equals(edited.getId()))
-							{
-								on.setFrom(from.getValue());
-								on.setTo(to.getValue());
-								on.setType(partyRoleTypeController.findOne(roles.getSelectedItem().getValue().toString()));
-								break;
-							}
+							role.setFrom(from.getValue());
+							role.setTo(to.getValue());
+							role.setType(partyRoleTypeController.findOne(roles.getSelectedItem().getValue().toString()));
+							break;
 						}
-						
-						organizationController.edit(organization);
-						((Refreshable)getParent()).refresh();
 					}
-				}
-				
-				if(party instanceof Person)
-				{
-					Person person = personController.findOne(party.getId());
-					if(person != null)
-					{
-						for(PartyRole on:person.getRoles())
-						{
-							if(on.getId().equals(edited.getId()))
-							{
-								on.setFrom(from.getValue());
-								on.setTo(to.getValue());
-								on.setType(partyRoleTypeController.findOne(roles.getSelectedItem().getValue().toString()));
-								break;
-							}
-						}
-						
-						personController.edit(person);
-						((Refreshable)getParent()).refresh();
-					}
+					
+					service.edit(party);
+					((Refreshable)getParent()).refresh();
 				}
 				
 				detach();

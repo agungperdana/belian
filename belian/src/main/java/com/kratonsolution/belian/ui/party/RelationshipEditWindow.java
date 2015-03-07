@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.ui.party;
 
+import java.util.Iterator;
+
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -18,17 +20,13 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Window;
 
-import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.PartyRelationship;
 import com.kratonsolution.belian.general.dm.PartyRelationshipType;
-import com.kratonsolution.belian.general.dm.PartyRepository;
 import com.kratonsolution.belian.general.dm.PartyRole;
-import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.PartyRelationshipTypeService;
 import com.kratonsolution.belian.general.svc.PartyRoleTypeService;
-import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.general.svc.PartyService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -53,23 +51,16 @@ public class RelationshipEditWindow extends Window
 	
 	private Listbox toParty = new Listbox();
 	
-	private PersonService personController = Springs.get(PersonService.class);
-	
-	private OrganizationService organizationController = Springs.get(OrganizationService.class);
+	private PartyService service = Springs.get(PartyService.class);
 
 	private PartyRelationshipTypeService relationshipTypeController = Springs.get(PartyRelationshipTypeService.class);
 	
-	private PartyRepository partyRepository = Springs.get(PartyRepository.class);
-	
 	private PartyRoleTypeService roleTypeController = Springs.get(PartyRoleTypeService.class);
-	
-	private Party party;
 	
 	private PartyRelationship edited;
 	
-	public RelationshipEditWindow(Party party,PartyRelationship edited)
+	public RelationshipEditWindow(PartyRelationship edited)
 	{
-		this.party = party;
 		this.edited = edited;
 		
 		setMode(Mode.POPUP);
@@ -106,51 +97,27 @@ public class RelationshipEditWindow extends Window
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				if(party instanceof Organization)
+				Party party = service.findOne(edited.getParty().getId());
+				if(party != null)
 				{
-					Organization organization = organizationController.findOne(party.getId());
-					if(organization != null)
+					Iterator<PartyRelationship> iterator = party.getRelationships().iterator();
+					while (iterator.hasNext())
 					{
-						for(PartyRelationship on:organization.getRelationships())
+						PartyRelationship rel = (PartyRelationship) iterator.next();
+						if(rel.getId().equals(edited.getId()))
 						{
-							if(on.getId().equals(edited.getId()))
-							{
-								on.setFrom(from.getValue());
-								on.setTo(to.getValue());
-								on.setType(relationshipTypeController.findOne(types.getSelectedItem().getValue().toString()));
-								on.setToParty(partyRepository.findOne(toParty.getSelectedItem().getValue().toString()));
-								on.setFromRole(roleTypeController.findOne(fromRole.getSelectedItem().getValue().toString()));
-								
-								break;
-							}
+							rel.setFrom(from.getValue());
+							rel.setTo(to.getValue());
+							rel.setRelationshipType(relationshipTypeController.findOne(types.getSelectedItem().getValue().toString()));
+							rel.setResponsibleTo(service.findOne(toParty.getSelectedItem().getValue().toString()));
+							rel.setResponsibleAs(roleTypeController.findOne(fromRole.getSelectedItem().getValue().toString()));
+							
+							break;
 						}
-						
-						organizationController.edit(organization);
-						((Refreshable)getParent()).refresh();
 					}
-				}
-				
-				if(party instanceof Person)
-				{
-					Person person = personController.findOne(party.getId());
-					if(person != null)
-					{
-						for(PartyRelationship on:person.getRelationships())
-						{
-							if(on.getId().equals(edited.getId()))
-							{
-								on.setFrom(from.getValue());
-								on.setTo(to.getValue());
-								on.setType(relationshipTypeController.findOne(types.getSelectedItem().getValue().toString()));
-								on.setToParty(partyRepository.findOne(toParty.getSelectedItem().getValue().toString()));
-								on.setFromRole(roleTypeController.findOne(fromRole.getSelectedItem().getValue().toString()));
-								break;
-							}
-						}
 						
-						personController.edit(person);
-						((Refreshable)getParent()).refresh();
-					}
+					service.edit(party);
+					((Refreshable)getParent()).refresh();
 				}
 				
 				detach();
@@ -200,25 +167,25 @@ public class RelationshipEditWindow extends Window
 			Listitem listitem = new Listitem(type.getName(),type.getId());
 			types.appendChild(listitem);
 			
-			if(type.getId().equals(edited.getType().getId()))
+			if(type.getId().equals(edited.getRelationshipType().getId()))
 				types.setSelectedItem(listitem);
 		}
 		
-		for(Party pty:partyRepository.findAll())
+		for(Party pty:service.findAll())
 		{
 			Listitem listitem = new Listitem(pty.getName(),pty.getId());
 			toParty.appendChild(listitem);
 			
-			if(pty.getId().equals(edited.getToParty().getId()))
+			if(pty.getId().equals(edited.getResponsibleTo().getId()))
 				toParty.setSelectedItem(listitem);
 		}
 		
-		for(PartyRole role:party.getRoles())
+		for(PartyRole role:service.findOne(edited.getParty().getId()).getRoles())
 		{
 			Listitem listitem = new Listitem(role.getType().getName(),role.getType().getId());
 			fromRole.appendChild(listitem);
 			
-			if(role.getType().getId().equals(edited.getFromRole().getId()))
+			if(role.getType().getId().equals(edited.getResponsibleAs().getId()))
 				fromRole.setSelectedItem(listitem);
 		}
 		

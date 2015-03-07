@@ -15,11 +15,8 @@ import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
 
 import com.kratonsolution.belian.general.dm.Contact;
-import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Party;
-import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.general.svc.PartyService;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -31,6 +28,8 @@ public class ContactInformation extends Treeitem
 {
 	private Treerow row = new Treerow();
 	
+	private PartyService service = Springs.get(PartyService.class);
+	
 	public ContactInformation(Contact contact,Party party)
 	{
 		addDescription(contact, party);
@@ -40,13 +39,13 @@ public class ContactInformation extends Treeitem
 	
 	protected void addDescription(final Contact contact,final Party party)
 	{
-		Treecell cell = new Treecell((contact.isActive()?"Active - ":"Inactive - ")+contact.getDescription()+" - "+contact.getType());
+		Treecell cell = new Treecell((contact.isActive()?"Active - ":"Inactive - ")+contact.getContact()+" - "+contact.getType());
 		cell.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				getTree().getParent().appendChild(new ContactEditWindow(party, contact));
+				getTree().getParent().appendChild(new ContactEditWindow(contact));
 			}
 		});
 	
@@ -88,10 +87,7 @@ public class ContactInformation extends Treeitem
 				iterator.remove();
 		}
 		
-		if(party instanceof Person)
-			Springs.get(PersonService.class).edit((Person)party);
-		else if(party instanceof Organization)
-			Springs.get(OrganizationService.class).edit((Organization)party);
+		service.edit(party);
 		
 		((Refreshable)getTree()).refresh();
 	}

@@ -20,9 +20,9 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Contact;
 import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.dm.Organization.IndustryType;
 import com.kratonsolution.belian.general.dm.PartyRelationship;
 import com.kratonsolution.belian.general.dm.PartyRole;
-import com.kratonsolution.belian.general.dm.Organization.IndustryType;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.Refreshable;
@@ -45,7 +45,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class OrganizationEditContent extends FormContent implements Refreshable
 {	
-	private final OrganizationService controller = Springs.get(OrganizationService.class);
+	private final OrganizationService service = Springs.get(OrganizationService.class);
 
 	private Textbox name = new Textbox();
 
@@ -93,14 +93,13 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 
-				Organization org = new Organization();
-				org.setId(RowUtils.rowValue(row, 5));
+				Organization org = service.findOne(RowUtils.rowValue(row, 5));
 				org.setName(name.getText());
 				org.setBirthDate(date.getValue());
 				org.setTaxCode(tax.getText());
 				org.setType(IndustryType.valueOf(types.getSelectedItem().getValue().toString()));
 
-				controller.edit(org);
+				service.edit(org);
 
 				OrganizationWindow window = (OrganizationWindow)getParent();
 				window.removeEditForm();
@@ -112,7 +111,7 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 	@Override
 	public void initForm()
 	{
-		Organization organization = controller.findOne(RowUtils.rowValue(row, 5));
+		Organization organization = service.findOne(RowUtils.rowValue(row, 5));
 		if(organization != null)
 		{
 			name.setConstraint("no empty");
@@ -172,7 +171,7 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				appendChild(new AddressAddWindow(controller.findOne(RowUtils.rowValue(row,4))));
+				appendChild(new AddressAddWindow(RowUtils.rowValue(row,5)));
 			}
 		});
 		
@@ -181,7 +180,7 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				appendChild(new ContactAddWindow(controller.findOne(RowUtils.rowValue(row,4))));
+				appendChild(new ContactAddWindow(RowUtils.rowValue(row,5)));
 			}
 		});
 		
@@ -190,7 +189,7 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				appendChild(new RoleAddWindow(controller.findOne(RowUtils.rowValue(row,4))));
+				appendChild(new RoleAddWindow(RowUtils.rowValue(row,5)));
 			}
 		});
 		
@@ -199,7 +198,7 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				appendChild(new RelationshipAddWindow(controller.findOne(RowUtils.rowValue(row,4))));
+				appendChild(new RelationshipAddWindow(RowUtils.rowValue(row,5)));
 			}
 		});
 	}
@@ -208,7 +207,7 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 	{
 		information = new PartyInformation("Organization Information");
 
-		final Organization organization = controller.findOne(RowUtils.rowValue(row, 4));
+		final Organization organization = service.findOne(RowUtils.rowValue(row, 5));
 		if(organization != null)
 		{
 			if(!organization.getAddresses().isEmpty())

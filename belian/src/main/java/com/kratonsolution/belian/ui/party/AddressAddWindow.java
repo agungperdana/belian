@@ -23,15 +23,11 @@ import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Geographic;
-import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Party;
-import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.svc.GeographicService;
-import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.general.svc.PartyService;
 import com.kratonsolution.belian.ui.FormToolbar;
-import com.kratonsolution.belian.ui.organization.OrganizationEditContent;
-import com.kratonsolution.belian.ui.person.PersonEditContent;
+import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -58,17 +54,15 @@ public class AddressAddWindow extends Window
 	
 	private Listbox country = new Listbox();
 	
-	private GeographicService geographicController = Springs.get(GeographicService.class);
+	private GeographicService geographicService = Springs.get(GeographicService.class);
 	
-	private PersonService personController = Springs.get(PersonService.class);
+	private PartyService service = Springs.get(PartyService.class);
 	
-	private OrganizationService organizationController = Springs.get(OrganizationService.class);
+	private String partyId;;
 	
-	private Party party;
-	
-	public AddressAddWindow(Party party)
+	public AddressAddWindow(String partyId)
 	{
-		this.party = party;
+		this.partyId = partyId;
 		
 		setMode(Mode.POPUP);
 		setWidth("450px");
@@ -109,54 +103,26 @@ public class AddressAddWindow extends Window
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				if(party instanceof Organization)
+				Party party = service.findOne(partyId);
+				if(party != null)
 				{
-					Organization organization = organizationController.findOne(party.getId());
-					if(organization != null)
-					{
-						Address _address = new Address();
-						_address.setId(UUID.randomUUID().toString());
-						_address.setDescription(address.getText());
-						_address.setPostal(postal.getText());
-						_address.setActive(status.isChecked());
-						_address.setType(Address.Type.valueOf(type.getSelectedItem().getValue().toString()));
-						_address.setCity(geographicController.findOne(city.getSelectedItem().getValue().toString()));
-						_address.setProvince(geographicController.findOne(province.getSelectedItem().getValue().toString()));
-						_address.setCountry(geographicController.findOne(country.getSelectedItem().getValue().toString()));
+					Address add = new Address();
+					add.setId(UUID.randomUUID().toString());
+					add.setParty(party);
+					add.setAddress(address.getText());
+					add.setPostal(postal.getText());
+					add.setActive(status.isChecked());
+					add.setType(Address.Type.valueOf(type.getSelectedItem().getValue().toString()));
+					add.setCity(geographicService.findOne(city.getSelectedItem().getValue().toString()));
+					add.setProvince(geographicService.findOne(province.getSelectedItem().getValue().toString()));
+					add.setCountry(geographicService.findOne(country.getSelectedItem().getValue().toString()));
+				
+					party.getAddresses().add(add);
 					
-						organization.getAddresses().add(_address);
-						
-						organizationController.edit(organization);
-						
-						OrganizationEditContent content = (OrganizationEditContent)getParent();
-						content.refresh();
-					}
+					service.edit(party);
 				}
 				
-				if(party instanceof Person)
-				{
-					Person person = personController.findOne(party.getId());
-					if(person != null)
-					{
-						Address _address = new Address();
-						_address.setId(UUID.randomUUID().toString());
-						_address.setDescription(address.getText());
-						_address.setPostal(postal.getText());
-						_address.setActive(status.isChecked());
-						_address.setType(Address.Type.valueOf(type.getSelectedItem().getValue().toString()));
-						_address.setCity(geographicController.findOne(city.getSelectedItem().getValue().toString()));
-						_address.setProvince(geographicController.findOne(province.getSelectedItem().getValue().toString()));
-						_address.setCountry(geographicController.findOne(country.getSelectedItem().getValue().toString()));
-					
-						person.getAddresses().add(_address);
-						
-						personController.edit(person);
-						
-						PersonEditContent content = (PersonEditContent)getParent();
-						content.refresh();
-					}
-				}
-				
+				((Refreshable)getParent()).refresh();
 				detach();
 			}
 		});
@@ -205,7 +171,7 @@ public class AddressAddWindow extends Window
 		for(Address.Type _type:Address.Type.values())
 			type.appendChild(new Listitem(_type.name(),_type.name()));
 		
-		for(Geographic geographic:geographicController.findAll())
+		for(Geographic geographic:geographicService.findAll())
 		{
 			if(geographic.getType().equals(Geographic.Type.CITY))
 				city.appendChild(new Listitem(geographic.getName(), geographic.getId()));

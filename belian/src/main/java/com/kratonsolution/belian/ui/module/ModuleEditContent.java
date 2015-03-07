@@ -26,11 +26,13 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class ModuleEditContent extends FormContent
 {	
-	private final ModuleService controller = Springs.get(ModuleService.class);
+	private final ModuleService service = Springs.get(ModuleService.class);
 	
 	private Textbox code = new Textbox();
 	
 	private Textbox name = new Textbox();
+	
+	private Textbox note = new Textbox();
 	
 	private Row row;
 	
@@ -67,12 +69,15 @@ public class ModuleEditContent extends FormContent
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 			
-				Module module = new Module();
-				module.setId(RowUtils.rowValue(row, 4));
-				module.setCode(code.getText());
-				module.setName(name.getText());
-				
-				controller.edit(module);
+				Module module = service.findOne(RowUtils.rowValue(row, 4));
+				if(module != null)
+				{
+					module.setCode(code.getText());
+					module.setName(name.getText());
+					module.setNote(note.getText());
+					
+					service.edit(module);
+				}
 				
 				ModuleWindow window = (ModuleWindow)getParent();
 				window.removeEditForm();
@@ -90,6 +95,8 @@ public class ModuleEditContent extends FormContent
 		name.setConstraint("no empty");
 		name.setText(RowUtils.rowValue(row, 2));
 		
+		note.setText(RowUtils.rowValue(row,3));
+		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));
 		grid.getColumns().appendChild(new Column());
@@ -102,7 +109,12 @@ public class ModuleEditContent extends FormContent
 		row2.appendChild(new Label("Name"));
 		row2.appendChild(name);
 		
+		Row row3 = new Row();
+		row3.appendChild(new Label("Note"));
+		row3.appendChild(note);
+		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
+		rows.appendChild(row3);
 	}
 }

@@ -15,9 +15,9 @@ import org.zkoss.zul.Treecell;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
 
-import com.kratonsolution.belian.general.dm.PartyRelationship;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Party;
+import com.kratonsolution.belian.general.dm.PartyRelationship;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.PersonService;
@@ -50,9 +50,9 @@ public class RelationshipInformation extends Treeitem
 		builder.append(relationship.getTo()!=null?format.format(relationship.getTo()):"");
 		builder.append("] - ");
 		builder.append("AS ");
-		builder.append(relationship.getFromRole().getName());
+		builder.append(relationship.getRelationshipType().getName());
 		builder.append(" to ");
-		builder.append(relationship.getToParty().getName());
+		builder.append(relationship.getResponsibleTo().getName());
 		
 		Treecell cell = new Treecell(builder.toString());
 		cell.addEventListener(Events.ON_CLICK,new EventListener<Event>()
@@ -60,7 +60,7 @@ public class RelationshipInformation extends Treeitem
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				getTree().getParent().appendChild(new RelationshipEditWindow(party, relationship));
+				getTree().getParent().appendChild(new RelationshipEditWindow(relationship));
 			}
 		});
 	

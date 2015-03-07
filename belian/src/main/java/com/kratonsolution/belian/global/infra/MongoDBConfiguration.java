@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.global;
+package com.kratonsolution.belian.global.infra;
 
 import java.net.UnknownHostException;
 
@@ -19,7 +19,7 @@ import com.mongodb.MongoClient;
  *
  */
 @Configuration
-public class DatabaseConfiguration
+public class MongoDBConfiguration
 {
 	@Bean
 	public Mongo mongoServer() throws UnknownHostException

@@ -3,15 +3,18 @@
  */
 package com.kratonsolution.belian.security.dm;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  * @author agungdodiperdana
  *
  */
-public interface UserRepository extends MongoRepository<User, String>
+public interface UserRepository extends JpaRepository<User, String>
 {
-	public User findOneByName(String name);
+	@Query("SELECT user FROM User user WHERE user.name = ?1")
+	public User findByName(String name);
 	
-	public User findOneByEmail(String email);
+	@Query("SELECT user FROM User user WHERE user.email = ?1")
+	public User findByEmail(String email);
 }

@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.ui.user;
 
+import java.util.Iterator;
+
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -88,18 +90,16 @@ public class UserEditContent extends FormContent
 					user.setEmail(email.getText());
 					user.setEnabled(enabled.isChecked());
 					
-					Rows _rows = roles.getRows();
-					
-					for(UserRole accessRole:user.getRoles())
+					for(Object object:roles.getRows().getChildren())
 					{
-						for(Object object:_rows.getChildren())
+						Row target = (Row)object;
+						
+						Iterator<UserRole> iterator = user.getRoles().iterator();
+						while (iterator.hasNext())
 						{
-							Row row = (Row)object;
-							if(accessRole.getRole().getId().equals(RowUtils.rowValue(row, 2)))
-							{
-								accessRole.setEnabled(RowUtils.isChecked(row, 1));
-								break;
-							}
+							UserRole userRole = (UserRole) iterator.next();
+							if(userRole.getId().equals(RowUtils.rowValue(target, 2)))
+								userRole.setEnabled(RowUtils.isChecked(target, 1));
 						}
 					}
 					
@@ -219,19 +219,16 @@ public class UserEditContent extends FormContent
 			Rows _rows = new Rows();
 			for(UserRole role:user.getRoles())
 			{
-				if(!role.isDeleted())
-				{
-					Row row = new Row();
-					row.appendChild(new Label(role.getRole().getName()));
-					
-					Checkbox checkbox = new Checkbox();
-					checkbox.setChecked(role.isEnabled());
-					
-					row.appendChild(checkbox);
-					row.appendChild(new Label(role.getRole().getId()));
-					
-					_rows.appendChild(row);
-				}
+				Row row = new Row();
+				row.appendChild(new Label(role.getRole().getName()));
+				
+				Checkbox checkbox = new Checkbox();
+				checkbox.setChecked(role.isEnabled());
+				
+				row.appendChild(checkbox);
+				row.appendChild(new Label(role.getId()));
+				
+				_rows.appendChild(row);
 			}
 			
 			roles.appendChild(_rows);

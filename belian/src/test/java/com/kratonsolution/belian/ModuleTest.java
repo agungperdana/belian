@@ -1,5 +1,7 @@
 package com.kratonsolution.belian;
 
+import java.util.UUID;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.kratonsolution.belian.security.dm.Module;
-import com.kratonsolution.belian.security.dm.ModuleRepository;
+import com.kratonsolution.belian.security.svc.ModuleService;
 
 /**
  * Unit test for simple App.
@@ -21,15 +23,22 @@ import com.kratonsolution.belian.security.dm.ModuleRepository;
 public class ModuleTest
 {
 	@Autowired
-	private ModuleRepository repository;
+	private ModuleService service;
 	
 	@Test
 	public void updateModule()
 	{
-		for(Module module:repository.findAll())
+		for(Module module:service.findAll())
 		{
-			module.setDeleted(false);
-			repository.save(module);
+			Module one = new Module();
+			one.setId(UUID.randomUUID().toString());
+			one.setCode(module.getCode());
+			one.setEnabled(true);
+			one.setName(module.getName());
+			one.setNote(module.getNote());
+			
+			service.delete(module.getId());
+			service.add(one);
 		}
 	}
 }

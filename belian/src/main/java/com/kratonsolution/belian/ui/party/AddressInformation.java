@@ -40,7 +40,7 @@ public class AddressInformation extends Treeitem
 	
 	protected void addDescription(final Address address,final Party party)
 	{
-		Treecell cell = new Treecell(address.getDescription()+", "+address.getCity().getName()+", "+address.getProvince().getName()+", "+address.getCountry().getName());
+		Treecell cell = new Treecell(address.getAddress()+", "+address.getCity().getName()+", "+address.getProvince().getName()+", "+address.getCountry().getName());
 		cell.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override

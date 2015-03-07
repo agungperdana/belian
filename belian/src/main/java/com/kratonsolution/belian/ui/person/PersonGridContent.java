@@ -25,7 +25,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PersonGridContent extends GridContent
 {
-	private final PersonService controller = Springs.get(PersonService.class);
+	private final PersonService service = Springs.get(PersonService.class);
 	
 	public PersonGridContent()
 	{
@@ -106,35 +106,34 @@ public class PersonGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",
-						Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				{
+					@Override
+					public void onEvent(Event event) throws Exception
+					{
+						if(event.getName().equals("onOK"))
 						{
-							@Override
-							public void onEvent(Event event) throws Exception
+							for(Object object:grid.getRows().getChildren())
 							{
-								if(event.getName().equals("onOK"))
+								Row row = (Row)object;
+								
+								if(row.getFirstChild() instanceof Checkbox)
 								{
-									for(Object object:grid.getRows().getChildren())
+									Checkbox check = (Checkbox)row.getFirstChild();
+									if(check.isChecked())
 									{
-										Row row = (Row)object;
-										
-										if(row.getFirstChild() instanceof Checkbox)
-										{
-											Checkbox check = (Checkbox)row.getFirstChild();
-											if(check.isChecked())
-											{
-												Label label = (Label)row.getLastChild();
-												controller.delete(label.getValue());
-											}
-										}
+										Label label = (Label)row.getLastChild();
+										service.delete(label.getValue());
 									}
-									
-									PersonWindow window = (PersonWindow)getParent();
-									window.removeGrid();
-									window.insertGrid();
 								}
 							}
-						});
+							
+							PersonWindow window = (PersonWindow)getParent();
+							window.removeGrid();
+							window.insertGrid();
+						}
+					}
+				});
 			}
 		});
 		
@@ -160,23 +159,17 @@ public class PersonGridContent extends GridContent
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(8);
+		grid.appendChild(new Columns());
 		
-		Columns columns = new Columns();
+		grid.getColumns().appendChild(new Column(null,null,"25px"));
+		grid.getColumns().appendChild(new Column("Name",null,"125px"));
+		grid.getColumns().appendChild(new Column("Birth Date",null,"75px"));
+		grid.getColumns().appendChild(new Column("Gender",null,"75px"));
+		grid.getColumns().appendChild(new Column("Status",null,"75px"));
+		grid.getColumns().appendChild(new Column("Tax",null,"100px"));
+		grid.getColumns().appendChild(new Column(null,null,"1px"));
+		grid.getColumns().getChildren().get(6).setVisible(false);
 		
-		Column select = new Column(null,null,"25px");
-		Column name = new Column("Name");
-		Column date = new Column("Birth Date",null,"75px");
-		Column tax = new Column("Tax",null,"100px");
-		Column id = new Column();
-		id.setVisible(false);
-		
-		columns.appendChild(select);
-		columns.appendChild(name);
-		columns.appendChild(date);
-		columns.appendChild(tax);
-		columns.appendChild(id);
-		
-		grid.appendChild(columns);
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override

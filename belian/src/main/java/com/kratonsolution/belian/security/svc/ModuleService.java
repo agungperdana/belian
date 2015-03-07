@@ -3,19 +3,21 @@
  */
 package com.kratonsolution.belian.security.svc;
 
-import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.kratonsolution.belian.security.dm.AccessRole;
 import com.kratonsolution.belian.security.dm.Module;
+import com.kratonsolution.belian.security.dm.ModuleEventListener;
 import com.kratonsolution.belian.security.dm.ModuleRepository;
-import com.kratonsolution.belian.security.dm.Role;
 import com.kratonsolution.belian.security.dm.RoleRepository;
 
 /**
@@ -23,6 +25,7 @@ import com.kratonsolution.belian.security.dm.RoleRepository;
  *
  */
 @Service
+@Transactional(rollbackFor=Exception.class,isolation=Isolation.DEFAULT,propagation=Propagation.REQUIRED)
 public class ModuleService
 {
 	@Autowired
@@ -30,23 +33,29 @@ public class ModuleService
 	
 	@Autowired
 	private RoleRepository roleRepository;
-		
+
+	@Autowired
+	private Set<ModuleEventListener> listeners;
+	
 	@Secured("ROLE_MODULE_READ")
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public Module findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 	
 	@Secured("ROLE_MODULE_READ")
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<Module> findAll()
 	{
-		return repository.findAllByDeleted(false);
+		return repository.findAll();
 	}
 	
 	@Secured("ROLE_MODULE_READ")
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<Module> findAll(int pageindex,int itemSize)
 	{
-		return repository.findAllByDeleted(false,new PageRequest(pageindex, itemSize));
+		return repository.findAll(new PageRequest(pageindex, itemSize)).getContent();
 	}
 	
 	@Secured("ROLE_MODULE_READ")
@@ -60,6 +69,9 @@ public class ModuleService
 	{
 		module.setId(UUID.randomUUID().toString());
 		repository.save(module);
+
+		for(ModuleEventListener listener:listeners)
+			listener.fireModuleAdded(module);
 	}
 	
 	@Secured("ROLE_MODULE_UPDATE")
@@ -71,18 +83,9 @@ public class ModuleService
 	@Secured("ROLE_MODULE_DELETE")
 	public void delete(String id)
 	{
-		for(Role role:roleRepository.findAll())
-		{
-			Iterator<AccessRole> iterator = role.getAccesses().iterator();
-			while (iterator.hasNext())
-			{
-				AccessRole accessRole = (AccessRole) iterator.next();
-				if(accessRole.getModule() == null || accessRole.getModule().getId().equals(id))
-					iterator.remove();
-			}
-			
-			roleRepository.save(role);
-			repository.delete(id);
-		}
+		for(ModuleEventListener listener:listeners)
+			listener.fireModuleRemoved(id);
+		
+		repository.delete(id);
 	}
 }

@@ -37,13 +37,15 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class RoleFormContent extends FormContent
 {	
-	private final RoleService controller = Springs.get(RoleService.class);
+	private final RoleService service = Springs.get(RoleService.class);
 	
-	private final ModuleService moduleController = Springs.get(ModuleService.class);
+	private final ModuleService moduleService = Springs.get(ModuleService.class);
 	
 	private Textbox code = new Textbox();
 	
 	private Textbox name = new Textbox();
+	
+	private Textbox note = new Textbox();
 	
 	private Grid accessModules = new Grid();
 	
@@ -84,28 +86,33 @@ public class RoleFormContent extends FormContent
 				role.setId(UUID.randomUUID().toString());
 				role.setCode(code.getText());
 				role.setName(name.getText());
+				role.setNote(note.getText());
+				
+				service.add(role);
 				
 				Rows moduleRows = accessModules.getRows();
 				for(Object object:moduleRows.getChildren())
 				{
 					Row _row = (Row)object;
 					
-					Module module = new Module();
-					module.setId(RowUtils.rowValue(_row, 6));
-					
-					AccessRole accessRole = new AccessRole();
-					accessRole.setId(UUID.randomUUID().toString());
-					accessRole.setModule(module);
-					accessRole.setCanCreate(RowUtils.isChecked(_row, 1));
-					accessRole.setCanRead(RowUtils.isChecked(_row, 2));
-					accessRole.setCanUpdate(RowUtils.isChecked(_row, 3));
-					accessRole.setCanDelete(RowUtils.isChecked(_row, 4));
-					accessRole.setCanPrint(RowUtils.isChecked(_row, 5));
-					
-					role.getAccesses().add(accessRole);
+					Module module = moduleService.findOne(RowUtils.rowValue(_row, 6));
+					if(module != null)
+					{
+						AccessRole accessRole = new AccessRole();
+						accessRole.setId(UUID.randomUUID().toString());
+						accessRole.setModule(module);
+						accessRole.setRole(role);
+						accessRole.setCanCreate(RowUtils.isChecked(_row, 1));
+						accessRole.setCanRead(RowUtils.isChecked(_row, 2));
+						accessRole.setCanUpdate(RowUtils.isChecked(_row, 3));
+						accessRole.setCanDelete(RowUtils.isChecked(_row, 4));
+						accessRole.setCanPrint(RowUtils.isChecked(_row, 5));
+						
+						role.getAccesses().add(accessRole);
+					}
 				}
 				
-				controller.add(role);
+				service.edit(role);
 				
 				RoleWindow window = (RoleWindow)getParent();
 				window.removeCreateForm();
@@ -118,7 +125,12 @@ public class RoleFormContent extends FormContent
 	public void initForm()
 	{
 		code.setConstraint("no empty");
+		code.setWidth("250px");
+
 		name.setConstraint("no empty");
+		name.setWidth("250px");
+		
+		note.setWidth("300px");
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));
@@ -132,8 +144,13 @@ public class RoleFormContent extends FormContent
 		row2.appendChild(new Label("Name"));
 		row2.appendChild(name);
 		
+		Row row3 = new Row();
+		row3.appendChild(new Label("Note"));
+		row3.appendChild(note);
+		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
+		rows.appendChild(row3);
 	}
 	
 	protected void initModules()
@@ -147,16 +164,16 @@ public class RoleFormContent extends FormContent
 		
 		Columns columns = new Columns();
 		
-		Column column1 = new Column("Module");
-		column1.setWidth("175px");
+		Column moduleName = new Column("Module");
+		moduleName.setWidth("175px");
 		
-		Column column2 = new Column();
-		Column column3 = new Column();
-		Column column4 = new Column();
-		Column column5 = new Column();
-		Column column6 = new Column();
-		Column column7 = new Column();
-		column7.setVisible(false);
+		Column canCreate = new Column();
+		Column canRead = new Column();
+		Column canUpdate = new Column();
+		Column canDelete = new Column();
+		Column canPrint = new Column();
+		Column moduleId = new Column();
+		moduleId.setVisible(false);
 		
 		Checkbox check1 = new Checkbox("Create");
 		check1.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
@@ -248,23 +265,23 @@ public class RoleFormContent extends FormContent
 			}
 		});
 		
-		column2.appendChild(check1);
-		column3.appendChild(check2);
-		column4.appendChild(check3);
-		column5.appendChild(check4);
-		column6.appendChild(check5);
+		canCreate.appendChild(check1);
+		canRead.appendChild(check2);
+		canUpdate.appendChild(check3);
+		canDelete.appendChild(check4);
+		canPrint.appendChild(check5);
 		
-		columns.appendChild(column1);
-		columns.appendChild(column2);
-		columns.appendChild(column3);
-		columns.appendChild(column4);
-		columns.appendChild(column5);
-		columns.appendChild(column6);
-		columns.appendChild(column7);
+		columns.appendChild(moduleName);
+		columns.appendChild(canCreate);
+		columns.appendChild(canRead);
+		columns.appendChild(canUpdate);
+		columns.appendChild(canDelete);
+		columns.appendChild(canPrint);
+		columns.appendChild(moduleId);
 	
 		Rows moduleRows = new Rows();
 		
-		for(Module module:moduleController.findAll())
+		for(Module module:moduleService.findAll())
 		{
 			Row row = new Row();
 			row.appendChild(new Label(module.getName()));

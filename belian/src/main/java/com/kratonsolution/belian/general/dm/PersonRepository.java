@@ -5,13 +5,13 @@ package com.kratonsolution.belian.general.dm;
 
 import java.util.List;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * @author agungdodiperdana
  *
  */
-public interface PersonRepository extends MongoRepository<Person, String>
+public interface PersonRepository extends JpaRepository<Person, String>
 {
 	public Person findOneByName(String name);
 	

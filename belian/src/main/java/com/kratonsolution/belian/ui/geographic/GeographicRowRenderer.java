@@ -25,6 +25,7 @@ public class GeographicRowRenderer implements RowRenderer<Geographic>
 			row.appendChild(new Label(data.getCode()));
 			row.appendChild(new Label(data.getName()));
 			row.appendChild(new Label(data.getType().toString()));
+			row.appendChild(new Label(data.getNote()));
 			row.appendChild(new Label(data.getId()));
 		}
 	}

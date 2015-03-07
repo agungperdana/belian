@@ -5,13 +5,16 @@ package com.kratonsolution.belian.general.dm;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author agungdodiperdana
@@ -19,27 +22,35 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Getter
 @Setter
-@Document(collection="party_relationship")
+@Entity
+@Table(name="party_relationship")
 public class PartyRelationship
 {
 	@Id
 	private String id;
 	
-	@Field("from_date")
+	@Column(name="date_from",nullable=false)
 	private Date from;
 	
-	@Field("to_date")
+	@Column(name="date_to")
 	private Date to;
 	
-	@DBRef
-	private PartyRoleType fromRole;
+	@ManyToOne
+	@JoinColumn(name="fk_party")
+	private Party party;
 
-	@DBRef
-	private Party toParty;
+	@ManyToOne
+	@JoinColumn(name="fk_party_responsible_to")
+	private Party responsibleTo;
+
+	@ManyToOne
+	@JoinColumn(name="fk_party_role_type")
+	private PartyRoleType responsibleAs;
 	
-	@Field("is_deleted")
-	private boolean deleted;
-
-	@DBRef
-	private PartyRelationshipType type;
+	@ManyToOne
+	@JoinColumn(name="fk_party_relationhip_type")
+	private PartyRelationshipType relationshipType;
+	
+	@Version
+	private Long version;
 }

@@ -25,11 +25,13 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class ModuleFormContent extends FormContent
 {	
-	private final ModuleService controller = Springs.get(ModuleService.class);
+	private final ModuleService moduleService = Springs.get(ModuleService.class);
 	
 	private Textbox code = new Textbox();
 	
 	private Textbox name = new Textbox();
+	
+	private Textbox note = new Textbox();
 	
 	public ModuleFormContent()
 	{
@@ -66,8 +68,9 @@ public class ModuleFormContent extends FormContent
 				Module module = new Module();
 				module.setCode(code.getText());
 				module.setName(name.getText());
+				module.setNote(note.getText());
 				
-				controller.add(module);
+				moduleService.add(module);
 				
 				ModuleWindow window = (ModuleWindow)getParent();
 				window.removeCreateForm();
@@ -85,6 +88,8 @@ public class ModuleFormContent extends FormContent
 		name.setConstraint("no empty");
 		name.setWidth("250px");
 		
+		note.setWidth("300px");
+		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));
 		grid.getColumns().appendChild(new Column());
@@ -97,7 +102,12 @@ public class ModuleFormContent extends FormContent
 		row2.appendChild(new Label("Name"));
 		row2.appendChild(name);
 		
+		Row row3 = new Row();
+		row3.appendChild(new Label("Note"));
+		row3.appendChild(note);
+		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
+		rows.appendChild(row3);
 	}
 }

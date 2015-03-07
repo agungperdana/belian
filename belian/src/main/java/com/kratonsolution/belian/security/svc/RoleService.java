@@ -10,14 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.base.Strings;
-import com.kratonsolution.belian.security.dm.AccessRole;
-import com.kratonsolution.belian.security.dm.Module;
 import com.kratonsolution.belian.security.dm.ModuleRepository;
 import com.kratonsolution.belian.security.dm.Role;
-import com.kratonsolution.belian.security.dm.RoleAddedListener;
-import com.kratonsolution.belian.security.dm.RoleRemovedListener;
+import com.kratonsolution.belian.security.dm.RoleEventListener;
 import com.kratonsolution.belian.security.dm.RoleRepository;
 
 /**
@@ -25,6 +22,7 @@ import com.kratonsolution.belian.security.dm.RoleRepository;
  *
  */
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class RoleService
 {
 	@Autowired
@@ -34,10 +32,7 @@ public class RoleService
 	private ModuleRepository moduleRepository;
 	
 	@Autowired
-	private List<RoleAddedListener> addListeners;
-	
-	@Autowired
-	private List<RoleRemovedListener> removeListeners;
+	private List<RoleEventListener> listeners;
 	
 	@Secured("ROLE_RLE_READ")
 	public Role findOne(String id)
@@ -66,76 +61,25 @@ public class RoleService
 	@Secured("ROLE_RLE_CREATE")
 	public void add(Role role)
 	{
+		role.setId(UUID.randomUUID().toString());
 		repository.save(role);
-		
-		for(RoleAddedListener listener:addListeners)
+	
+		for(RoleEventListener listener:listeners)
 			listener.fireRoleAdded(role);
 	}
 	
 	@Secured("ROLE_RLE_UPDATE")
 	public void edit(Role role)
 	{		
-		repository.save(role);
+		repository.saveAndFlush(role);
 	}
 	
 	@Secured("ROLE_RLE_DELETE")
 	public void delete(String id)
 	{
-		for(RoleRemovedListener listener:removeListeners)
-			listener.fireRoleRemoved(repository.findOne(id));
+		for(RoleEventListener listener:listeners)
+			listener.fireRoleRemoved(id);
 		
 		repository.delete(id);
-	}
-	
-	@Secured("ROLE_RLE_CREATE")
-	public Role prepareAdd()
-	{
-		Role role = new Role();
-		for(Module module:moduleRepository.findAll())
-		{
-			AccessRole accessRole = new AccessRole();
-			accessRole.setModule(module);
-			
-			role.getAccesses().add(accessRole);
-		}
-		
-		return role;
-	}
-	
-	@Secured("ROLE_RLE_UPDATE")
-	public Role prepareEdit(String id)
-	{
-		if(!Strings.isNullOrEmpty(id))
-		{
-			Role role = repository.findOne(id);
-			if(role != null)
-			{
-				for(Module module:moduleRepository.findAll())
-				{
-					boolean exist = false;
-					for(AccessRole access:role.getAccesses())
-					{						
-						if(access.getModule().getId().equals(module.getId()))
-						{
-							exist = true;
-							break;
-						}
-					}
-					
-					if(!exist)
-					{
-						AccessRole access = new AccessRole();
-						access.setId(UUID.randomUUID().toString());
-						access.setModule(module);
-						
-						role.getAccesses().add(access);
-					}
-				}
-			}
-			
-			return role;
-		}
-
-		return new Role();
 	}
 }

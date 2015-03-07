@@ -3,12 +3,16 @@
  */
 package com.kratonsolution.belian.general.dm;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author Agung Dodi Perdana
@@ -16,20 +20,28 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Getter
 @Setter
-@Document(collection="geographic")
+@Entity
+@Table(name="geographic")
 public class Geographic 
 {
 	public enum Type{COUNTRY,CITY,PROVINCE,KECAMATAN,KELURAHAN,RW,RT}
-	
+
 	@Id
 	private String id;
 
-	@Field("code")
+	@Column(name="code",unique=true,nullable=false)
 	private String code;
 	
-	@Field("name")
+	@Column(name="name",unique=true,nullable=false)
 	private String name;
 	
-	@Field("type")
+	@Column(name="type")
+	@Enumerated(EnumType.STRING)
 	private Type type = Type.COUNTRY;
+	
+	@Column(name="note")
+	private String note;
+	
+	@Version
+	private Long version;
 }

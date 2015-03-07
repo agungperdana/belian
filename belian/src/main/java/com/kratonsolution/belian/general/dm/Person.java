@@ -3,11 +3,14 @@
  */
 package com.kratonsolution.belian.general.dm;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Table;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author agungdodiperdana
@@ -15,16 +18,19 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Getter
 @Setter
-@Document(collection="person")
+@Entity
+@Table(name="person")
 public class Person extends Party
 {
 	public enum MaritalStatus {MARIED,DEFORCE,SINGLE}
 	
 	public enum Gender{MALE,FEMALE}
 
-	@Field("gender")
+	@Column(name="gender")
+	@Enumerated(EnumType.STRING)
 	private Gender gender = Gender.MALE;
 	
-	@Field("marital_status")
+	@Column(name="marital_status")
+	@Enumerated(EnumType.STRING)
 	private MaritalStatus maritalStatus = MaritalStatus.SINGLE;
 }

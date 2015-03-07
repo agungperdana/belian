@@ -25,6 +25,7 @@ public class ModuleRowRenderer implements RowRenderer<Module>
 			row.appendChild(new Checkbox());
 			row.appendChild(new Label(data.getCode()));
 			row.appendChild(new Label(data.getName()));
+			row.appendChild(new Label(data.getNote()));
 			row.appendChild(new Label(data.getId()));
 		}
 	}

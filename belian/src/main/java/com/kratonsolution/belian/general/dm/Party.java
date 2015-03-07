@@ -3,16 +3,22 @@
  */
 package com.kratonsolution.belian.general.dm;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
+import javax.persistence.Version;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.kratonsolution.belian.global.EconomicAgent;
 
@@ -22,29 +28,35 @@ import com.kratonsolution.belian.global.EconomicAgent;
  */
 @Getter
 @Setter
+@Entity
+@Inheritance(strategy=InheritanceType.JOINED)
+@DiscriminatorColumn(name="party_type")
 public class Party implements EconomicAgent
 {
 	@Id
 	protected String id;
 
-	@Field("name")
-	@Indexed(unique=true,sparse=true,dropDups=true)
+	@Column(name="name")
 	protected String name;
 	
-	@Field("birth_date")
+	@Column(name="birth_date")
 	protected Date birthDate;
 
-	@Field("tax_code")
+	@Column(name="tax_code")
 	protected String taxCode;
 	
-	@Field("is_deleted")
-	protected boolean deleted;
+	@Version
+	protected Long version;
 	
-	protected List<Address> addresses = new ArrayList<Address>();
+	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true)
+	protected Set<Address> addresses = new HashSet<Address>();
 	
-	protected List<Contact> contacts = new ArrayList<Contact>();
+	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true)
+	protected Set<Contact> contacts = new HashSet<Contact>();
 	
-	protected List<PartyRole> roles = new ArrayList<PartyRole>();
+	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true)
+	protected Set<PartyRole> roles = new HashSet<PartyRole>();
 	
-	protected List<PartyRelationship> relationships = new ArrayList<PartyRelationship>();
+	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true)
+	protected Set<PartyRelationship> relationships = new HashSet<PartyRelationship>();
 }

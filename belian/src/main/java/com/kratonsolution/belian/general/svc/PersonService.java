@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.dm.PersonRepository;
@@ -19,6 +20,7 @@ import com.kratonsolution.belian.general.dm.PersonRepository;
  *
  */
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class PersonService
 {	
 	@Autowired

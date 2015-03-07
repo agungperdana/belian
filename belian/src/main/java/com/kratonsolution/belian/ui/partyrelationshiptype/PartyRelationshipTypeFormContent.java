@@ -25,7 +25,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PartyRelationshipTypeFormContent extends FormContent
 {	
-	private final PartyRelationshipTypeService controller = Springs.get(PartyRelationshipTypeService.class);
+	private final PartyRelationshipTypeService service = Springs.get(PartyRelationshipTypeService.class);
 		
 	private Textbox name = new Textbox();
 	
@@ -61,7 +61,7 @@ public class PartyRelationshipTypeFormContent extends FormContent
 				PartyRelationshipType type = new PartyRelationshipType();
 				type.setName(name.getText());
 				
-				controller.add(type);
+				service.add(type);
 				
 				PartyRelationshipTypeWindow window = (PartyRelationshipTypeWindow)getParent();
 				window.removeCreateForm();
@@ -74,6 +74,7 @@ public class PartyRelationshipTypeFormContent extends FormContent
 	public void initForm()
 	{
 		name.setConstraint("no empty");
+		name.setWidth("300px");
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));

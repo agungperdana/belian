@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.google.common.base.Strings;
@@ -22,10 +23,13 @@ import com.kratonsolution.belian.security.dm.UserRepository;
  *
  */
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class UserService
 {
 	@Autowired
 	private UserRepository repository;
+		
+	private StrongPasswordEncryptor encryptor = new StrongPasswordEncryptor();
 		
 	@Secured("ROLE_USER_READ")
 	public User findOne(String id)
@@ -55,12 +59,6 @@ public class UserService
 	public void add(User user)
 	{
 		user.setId(UUID.randomUUID().toString());
-		
-		if(!user.getPassword().equals(user.getRePassword()))
-			throw new RuntimeException("Password not equals");
-		
-		StrongPasswordEncryptor encryptor = new StrongPasswordEncryptor();
-		
 		user.setPassword(encryptor.encryptPassword(user.getPassword()));
 		
 		repository.save(user);
@@ -69,7 +67,7 @@ public class UserService
 	@Secured("ROLE_USER_UPDATE")
 	public void edit(User user)
 	{
-		repository.save(user);
+		repository.saveAndFlush(user);
 	}
 	
 	@Secured("ROLE_USER_DELETE")

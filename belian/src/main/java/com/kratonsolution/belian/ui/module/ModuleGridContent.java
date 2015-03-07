@@ -9,7 +9,6 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
-import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
@@ -17,6 +16,7 @@ import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.security.svc.ModuleService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -25,7 +25,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class ModuleGridContent extends GridContent
 {
-	private final ModuleService controller = Springs.get(ModuleService.class);
+	private final ModuleService service = Springs.get(ModuleService.class);
 	
 	public ModuleGridContent()
 	{
@@ -106,33 +106,27 @@ public class ModuleGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",
-						Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				{
+					@Override
+					public void onEvent(Event event) throws Exception
+					{
+						if(event.getName().equals("onOK"))
 						{
-							@Override
-							public void onEvent(Event event) throws Exception
+							for(Object object:grid.getRows().getChildren())
 							{
-								if(event.getName().equals("onOK"))
-								{
-									for(Object object:grid.getRows().getChildren())
-									{
-										Row row = (Row)object;
-										
-										if(row.getFirstChild() instanceof Checkbox)
-										{
-											Checkbox check = (Checkbox)row.getFirstChild();
-											if(check.isChecked())
-											{
-												Label label = (Label)row.getLastChild();
-												controller.delete(label.getValue());
-											}
-										}
-									}
-									
-									grid.setModel(new ModuleModel(8));
-								}
+								Row row = (Row)object;
+
+								if(RowUtils.isChecked(row,0))
+									service.delete(RowUtils.rowValue(row, 4));
 							}
-						});
+							
+							ModuleWindow window = (ModuleWindow)getParent();
+							window.removeGrid();
+							window.insertGrid();
+						}
+					}
+				});
 			}
 		});
 		
@@ -152,27 +146,20 @@ public class ModuleGridContent extends GridContent
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No geographic data exist.");
+		grid.setEmptyMessage("No Module data exist.");
 		grid.setModel(model);
 		grid.setRowRenderer(new ModuleRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(8);
+		grid.appendChild(new Columns());
+		grid.getColumns().appendChild(new Column(null,null,"25px"));
+		grid.getColumns().appendChild(new Column("Code",null,"125px"));
+		grid.getColumns().appendChild(new Column("Name",null,"150px"));
+		grid.getColumns().appendChild(new Column("Note"));
+		grid.getColumns().appendChild(new Column(null,null,"1px"));
+		grid.getColumns().getChildren().get(4).setVisible(false);
 		
-		Columns columns = new Columns();
-		
-		Column select = new Column(null,null,"25px");
-		Column code = new Column("Code");
-		Column name = new Column("Name");
-		Column id = new Column();
-		id.setVisible(false);
-		
-		columns.appendChild(select);
-		columns.appendChild(code);
-		columns.appendChild(name);
-		columns.appendChild(id);
-		
-		grid.appendChild(columns);
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override

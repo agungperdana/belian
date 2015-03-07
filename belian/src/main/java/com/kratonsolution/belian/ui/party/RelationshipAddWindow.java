@@ -20,17 +20,13 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Window;
 
-import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.PartyRelationship;
 import com.kratonsolution.belian.general.dm.PartyRelationshipType;
-import com.kratonsolution.belian.general.dm.PartyRepository;
 import com.kratonsolution.belian.general.dm.PartyRole;
-import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.PartyRelationshipTypeService;
 import com.kratonsolution.belian.general.svc.PartyRoleTypeService;
-import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.general.svc.PartyService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -55,21 +51,17 @@ public class RelationshipAddWindow extends Window
 	
 	private Listbox types = new Listbox();
 	
-	private PersonService personController = Springs.get(PersonService.class);
-	
-	private OrganizationService organizationController = Springs.get(OrganizationService.class);
+	private PartyService service = Springs.get(PartyService.class);
 	
 	private PartyRelationshipTypeService relationshipTypeController = Springs.get(PartyRelationshipTypeService.class);
 	
-	private PartyRepository partyRepository = Springs.get(PartyRepository.class);
-	
 	private PartyRoleTypeService roleTypeController = Springs.get(PartyRoleTypeService.class);
 	
-	private Party party;
+	private String partyId;
 	
-	public RelationshipAddWindow(Party party)
+	public RelationshipAddWindow(String partyId)
 	{
-		this.party = party;
+		this.partyId = partyId;
 		
 		setMode(Mode.POPUP);
 		setWidth("450px");
@@ -105,35 +97,26 @@ public class RelationshipAddWindow extends Window
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PartyRelationship relationship = new PartyRelationship();
-				relationship.setId(UUID.randomUUID().toString());
-				relationship.setFrom(from.getValue());
-				relationship.setTo(to.getValue());
-				relationship.setType(relationshipTypeController.findOne(types.getSelectedItem().getValue().toString()));
-				relationship.setToParty(partyRepository.findOne(toParty.getSelectedItem().getValue().toString()));
-				relationship.setFromRole(roleTypeController.findOne(fromRole.getSelectedItem().getValue().toString()));
-				
-				if(party instanceof Organization)
+				Party party = service.findOne(partyId);
+				if(party != null)
 				{
-					Organization organization = organizationController.findOne(party.getId());
-					if(organization != null)
-					{
-						organization.getRelationships().add(relationship);
-						organizationController.edit(organization);
-						((Refreshable)getParent()).refresh();
-					}
+					PartyRelationship relationship = new PartyRelationship();
+					relationship.setId(UUID.randomUUID().toString());
+					relationship.setFrom(from.getValue());
+					relationship.setTo(to.getValue());
+					relationship.setRelationshipType(relationshipTypeController.findOne(types.getSelectedItem().getValue().toString()));
+					relationship.setResponsibleTo(service.findOne(toParty.getSelectedItem().getValue().toString()));
+					relationship.setResponsibleAs(roleTypeController.findOne(fromRole.getSelectedItem().getValue().toString()));
+					relationship.setParty(party);
+					
+					party.getRelationships().add(relationship);
+					
+					service.edit(party);
+
+					((Refreshable)getParent()).refresh();
 				}
 				
-				if(party instanceof Person)
-				{
-					Person person = personController.findOne(party.getId());
-					if(person != null)
-					{
-						person.getRelationships().add(relationship);
-						personController.edit(person);
-						((Refreshable)getParent()).refresh();
-					}
-				}
+
 				
 				detach();
 			}
@@ -175,10 +158,10 @@ public class RelationshipAddWindow extends Window
 		for(PartyRelationshipType type:relationshipTypeController.findAll())
 			types.appendChild(new Listitem(type.getName(),type.getId()));
 		
-		for(PartyRole role:party.getRoles())
+		for(PartyRole role:service.findOne(partyId).getRoles())
 			fromRole.appendChild(new Listitem(role.getType().getName(),role.getType().getId()));
 
-		for(Party party:partyRepository.findAll())
+		for(Party party:service.findAll())
 			toParty.appendChild(new Listitem(party.getName(),party.getId()));
 		
 		types.setSelectedIndex(0);

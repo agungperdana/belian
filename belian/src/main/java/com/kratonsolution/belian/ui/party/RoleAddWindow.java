@@ -20,14 +20,11 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Window;
 
-import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.dm.PartyRoleType;
-import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.PartyRoleTypeService;
-import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.general.svc.PartyService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -48,17 +45,15 @@ public class RoleAddWindow extends Window
 
 	private Listbox roles = new Listbox();
 	
-	private PersonService personController = Springs.get(PersonService.class);
-	
-	private OrganizationService organizationController = Springs.get(OrganizationService.class);
+	private PartyService service = Springs.get(PartyService.class);
 	
 	private PartyRoleTypeService partyRoleTypeController = Springs.get(PartyRoleTypeService.class);
 	
-	private Party party;
+	private String partyId;
 	
-	public RoleAddWindow(Party party)
+	public RoleAddWindow(String partyId)
 	{
-		this.party = party;
+		this.partyId = partyId;
 		
 		setMode(Mode.POPUP);
 		setWidth("450px");
@@ -94,32 +89,19 @@ public class RoleAddWindow extends Window
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PartyRole role = new PartyRole();
-				role.setId(UUID.randomUUID().toString());
-				role.setFrom(from.getValue());
-				role.setTo(to.getValue());
-				role.setType(partyRoleTypeController.findOne(roles.getSelectedItem().getValue().toString()));
-				
-				if(party instanceof Organization)
+				Party party = service.findOne(partyId);
+				if(party != null)
 				{
-					Organization organization = organizationController.findOne(party.getId());
-					if(organization != null)
-					{
-						organization.getRoles().add(role);
-						organizationController.edit(organization);
-						((Refreshable)getParent()).refresh();
-					}
-				}
+					PartyRole role = new PartyRole();
+					role.setId(UUID.randomUUID().toString());
+					role.setFrom(from.getValue());
+					role.setTo(to.getValue());
+					role.setParty(service.findOne(partyId));
+					role.setType(partyRoleTypeController.findOne(roles.getSelectedItem().getValue().toString()));
 				
-				if(party instanceof Person)
-				{
-					Person person = personController.findOne(party.getId());
-					if(person != null)
-					{
-						person.getRoles().add(role);
-						personController.edit(person);
-						((Refreshable)getParent()).refresh();
-					}
+					party.getRoles().add(role);
+					service.edit(party);
+					((Refreshable)getParent()).refresh();
 				}
 				
 				detach();

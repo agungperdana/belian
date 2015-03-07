@@ -23,6 +23,7 @@ public class RoleRowRenderer implements RowRenderer<Role>
 		row.appendChild(new Checkbox());
 		row.appendChild(new Label(data.getCode()));
 		row.appendChild(new Label(data.getName()));
+		row.appendChild(new Label(data.getNote()));
 		row.appendChild(new Label(data.getId()));
 	}
 }

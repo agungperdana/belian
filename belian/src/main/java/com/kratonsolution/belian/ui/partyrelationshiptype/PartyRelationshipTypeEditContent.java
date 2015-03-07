@@ -26,7 +26,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PartyRelationshipTypeEditContent extends FormContent
 {	
-	private final PartyRelationshipTypeService controller = Springs.get(PartyRelationshipTypeService.class);
+	private final PartyRelationshipTypeService service = Springs.get(PartyRelationshipTypeService.class);
 	
 	private Textbox name = new Textbox();
 	
@@ -62,11 +62,10 @@ public class PartyRelationshipTypeEditContent extends FormContent
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 			
-				PartyRelationshipType type = new PartyRelationshipType();
-				type.setId(RowUtils.rowValue(row, 2));
+				PartyRelationshipType type = service.findOne(RowUtils.rowValue(row,2));
 				type.setName(name.getText());
 				
-				controller.edit(type);
+				service.edit(type);
 				
 				PartyRelationshipTypeWindow window = (PartyRelationshipTypeWindow)getParent();
 				window.removeEditForm();
@@ -80,6 +79,7 @@ public class PartyRelationshipTypeEditContent extends FormContent
 	{
 		name.setConstraint("no empty");
 		name.setText(RowUtils.rowValue(row, 1));
+		name.setWidth("300px");
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));

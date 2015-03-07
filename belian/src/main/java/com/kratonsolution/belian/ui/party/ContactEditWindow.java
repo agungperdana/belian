@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.ui.party;
 
+import java.util.Iterator;
+
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -20,11 +22,8 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.general.dm.Contact;
-import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Party;
-import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.general.svc.PartyService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -45,17 +44,12 @@ public class ContactEditWindow extends Window
 	
 	private Checkbox status = new Checkbox("Active");
 	
-	private PersonService personController = Springs.get(PersonService.class);
-	
-	private OrganizationService organizationController = Springs.get(OrganizationService.class);
-	
-	private Party party;
+	private PartyService service = Springs.get(PartyService.class);
 	
 	private Contact edited;
 	
-	public ContactEditWindow(Party party,Contact edited)
+	public ContactEditWindow(Contact edited)
 	{
-		this.party = party;
 		this.edited = edited;
 		
 		setMode(Mode.POPUP);
@@ -94,46 +88,24 @@ public class ContactEditWindow extends Window
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				if(party instanceof Organization)
+				Party party = service.findOne(edited.getParty().getId());
+				if(party != null)
 				{
-					Organization organization = organizationController.findOne(party.getId());
-					if(organization != null)
+					Iterator<Contact> iterator = party.getContacts().iterator();
+					while (iterator.hasNext())
 					{
-						for(Contact on:organization.getContacts())
+						Contact contact = (Contact) iterator.next();
+						if(contact.getId().equals(edited.getId()))
 						{
-							if(on.getId().equals(edited.getId()))
-							{
-								on.setDescription(number.getText());
-								on.setActive(status.isChecked());
-								on.setType(Contact.Type.valueOf(type.getSelectedItem().getValue().toString()));
-								break;
-							}
+							contact.setContact(number.getText());
+							contact.setActive(status.isChecked());
+							contact.setType(Contact.Type.valueOf(type.getSelectedItem().getValue().toString()));
+							break;
 						}
-						
-						organizationController.edit(organization);
-						((Refreshable)getParent()).refresh();
 					}
-				}
-				
-				if(party instanceof Person)
-				{
-					Person person = personController.findOne(party.getId());
-					if(person != null)
-					{
-						for(Contact on:person.getContacts())
-						{
-							if(on.getId().equals(edited.getId()))
-							{
-								on.setDescription(number.getText());
-								on.setActive(status.isChecked());
-								on.setType(Contact.Type.valueOf(type.getSelectedItem().getValue().toString()));
-								break;
-							}
-						}
-						
-						personController.edit(person);
-						((Refreshable)getParent()).refresh();
-					}
+					
+					service.edit(party);
+					((Refreshable)getParent()).refresh();
 				}
 				
 				detach();
@@ -145,7 +117,7 @@ public class ContactEditWindow extends Window
 	{
 		number.setWidth("300px");
 		number.setConstraint("no empty");
-		number.setText(edited.getDescription());
+		number.setText(edited.getContact());
 		
 		status.setChecked(edited.isActive());
 		

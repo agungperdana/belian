@@ -36,9 +36,9 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class UserFormContent extends FormContent
 {	
-	private final UserService controller = Springs.get(UserService.class);
+	private final UserService service = Springs.get(UserService.class);
 	
-	private final RoleService roleController = Springs.get(RoleService.class);
+	private final RoleService roleService = Springs.get(RoleService.class);
 	
 	private Textbox name = new Textbox();
 	
@@ -98,7 +98,6 @@ public class UserFormContent extends FormContent
 				user.setName(name.getText());
 				user.setEmail(email.getText());
 				user.setPassword(password.getText());
-				user.setRePassword(repassword.getText());
 				user.setEnabled(enabled.isChecked());
 				
 				Rows _rows = roles.getRows();
@@ -106,19 +105,20 @@ public class UserFormContent extends FormContent
 				{
 					Row row = (Row)object;
 					
-					Role role = roleController.findOne(RowUtils.rowValue(row, 2));
+					Role role = roleService.findOne(RowUtils.rowValue(row, 2));
 					if(role != null)
 					{
 						UserRole userRole = new UserRole();
 						userRole.setId(UUID.randomUUID().toString());
 						userRole.setRole(role);
+						userRole.setUser(user);
 						userRole.setEnabled(RowUtils.isChecked(row, 1));
 						
 						user.getRoles().add(userRole);
 					}
 				}
 				
-				controller.add(user);
+				service.add(user);
 				
 				UserWindow window = (UserWindow)getParent();
 				window.removeCreateForm();
@@ -222,7 +222,7 @@ public class UserFormContent extends FormContent
 		columns.appendChild(col3);
 
 		Rows _rows = new Rows();
-		for(Role role:roleController.findAll())
+		for(Role role:roleService.findAll())
 		{
 			Row row = new Row();
 			row.appendChild(new Label(role.getName()));

@@ -3,13 +3,13 @@
  */
 package com.kratonsolution.belian.security.dm;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * @author agungdodiperdana
  *
  */
-public interface RoleRepository extends MongoRepository<Role,String>
+public interface RoleRepository extends JpaRepository<Role,String>
 {
 	public Role findOneByCode(String code);
 	

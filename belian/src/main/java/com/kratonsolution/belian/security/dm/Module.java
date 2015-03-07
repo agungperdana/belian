@@ -3,13 +3,14 @@
  */
 package com.kratonsolution.belian.security.dm;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author agungdodiperdana
@@ -17,20 +18,27 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Getter
 @Setter
-@Document(collection="module")
+@Entity
+@Table(name="module")
 public class Module
 {
 	@Id
 	private String id;
 
-	@Field("code")
-	@Indexed(unique=true)
+	@Column(name="code",unique=true,nullable=false)
 	private String code;
 	
-	@Field("name")
-	@Indexed(unique=true)
+	@Column(name="name",unique=true,nullable=false)
 	private String name;
 	
-	@Field("is_deleted")
-	private boolean deleted;
+	@Column(name="note")
+	private String note;
+	
+	@Column(name="is_enabled")
+	private boolean enabled;
+	
+	@Version
+	private Long version;
+	
+	public Module(){}
 }

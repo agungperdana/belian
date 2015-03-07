@@ -49,7 +49,7 @@ public class RoleInformation extends Treeitem
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				getTree().getParent().appendChild(new RoleEditWindow(party, role));
+				getTree().getParent().appendChild(new RoleEditWindow(role));
 			}
 		});
 	

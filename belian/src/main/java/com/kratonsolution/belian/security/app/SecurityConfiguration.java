@@ -19,7 +19,7 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
  */
 @Configuration
 @EnableWebMvcSecurity
-@EnableGlobalMethodSecurity(securedEnabled=true)
+@EnableGlobalMethodSecurity(securedEnabled=true,proxyTargetClass=true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 {
 	@Autowired
@@ -51,8 +51,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 //			.withUser("user")
 //			.password("password")
 //			.roles("RLE_READ","RLE_CREATE","RLE_UPDATE","RLE_DELETE",
-//					"MODULE_READ","MODULE_UPDATE","MODULE_DELETE",
-//					"USER_READ","USER_UPDATE","USER_CREATE","USER_DELETE");
+//					"MODULE_READ","MODULE_CREATE","MODULE_UPDATE","MODULE_DELETE",
+//					"USER_READ","USER_CREATE","USER_UPDATE","USER_CREATE","USER_DELETE");
 		auth.authenticationProvider(authProvider());
 	}
 	

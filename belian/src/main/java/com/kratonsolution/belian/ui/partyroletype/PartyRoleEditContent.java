@@ -26,7 +26,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PartyRoleEditContent extends FormContent
 {	
-	private final PartyRoleTypeService controller = Springs.get(PartyRoleTypeService.class);
+	private final PartyRoleTypeService service = Springs.get(PartyRoleTypeService.class);
 	
 	private Textbox name = new Textbox();
 	
@@ -62,11 +62,10 @@ public class PartyRoleEditContent extends FormContent
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 			
-				PartyRoleType type = new PartyRoleType();
-				type.setId(RowUtils.rowValue(row, 2));
+				PartyRoleType type = service.findOne(RowUtils.rowValue(row, 2));
 				type.setName(name.getText());
 				
-				controller.edit(type);
+				service.edit(type);
 				
 				PartyRoleTypeWindow window = (PartyRoleTypeWindow)getParent();
 				window.removeEditForm();
@@ -80,6 +79,7 @@ public class PartyRoleEditContent extends FormContent
 	{
 		name.setConstraint("no empty");
 		name.setText(RowUtils.rowValue(row, 1));
+		name.setWidth("300px");
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));

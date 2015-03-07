@@ -22,11 +22,8 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.general.dm.Contact;
-import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Party;
-import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.general.svc.PartyService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -47,15 +44,13 @@ public class ContactAddWindow extends Window
 	
 	private Checkbox status = new Checkbox("Active");
 	
-	private PersonService personController = Springs.get(PersonService.class);
+	private PartyService service = Springs.get(PartyService.class);
 	
-	private OrganizationService organizationController = Springs.get(OrganizationService.class);
+	private String partyId;
 	
-	private Party party;
-	
-	public ContactAddWindow(Party party)
+	public ContactAddWindow(String partyId)
 	{
-		this.party = party;
+		this.partyId = partyId;
 		
 		setMode(Mode.POPUP);
 		setWidth("450px");
@@ -93,42 +88,21 @@ public class ContactAddWindow extends Window
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				if(party instanceof Organization)
+				Party party = service.findOne(partyId);
+				if(party != null)
 				{
-					Organization organization = organizationController.findOne(party.getId());
-					if(organization != null)
-					{
-						Contact contact = new Contact();
-						contact.setId(UUID.randomUUID().toString());
-						contact.setDescription(number.getText());
-						contact.setActive(status.isChecked());
-						contact.setType(Contact.Type.valueOf(type.getSelectedItem().getValue().toString()));
-					
-						organization.getContacts().add(contact);
-						
-						organizationController.edit(organization);
-						
-						((Refreshable)getParent()).refresh();
-					}
-				}
+					Contact contact = new Contact();
+					contact.setId(UUID.randomUUID().toString());
+					contact.setContact(number.getText());
+					contact.setActive(status.isChecked());
+					contact.setParty(party);
+					contact.setType(Contact.Type.valueOf(type.getSelectedItem().getValue().toString()));
 				
-				if(party instanceof Person)
-				{
-					Person person = personController.findOne(party.getId());
-					if(person != null)
-					{
-						Contact contact = new Contact();
-						contact.setId(UUID.randomUUID().toString());
-						contact.setDescription(number.getText());
-						contact.setActive(status.isChecked());
-						contact.setType(Contact.Type.valueOf(type.getSelectedItem().getValue().toString()));
+					party.getContacts().add(contact);
 					
-						person.getContacts().add(contact);
-						
-						personController.edit(person);
-						
-						((Refreshable)getParent()).refresh();
-					}
+					service.edit(party);
+					
+					((Refreshable)getParent()).refresh();
 				}
 				
 				detach();

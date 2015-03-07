@@ -3,13 +3,13 @@
  */
 package com.kratonsolution.belian.general.dm;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * @author agungdodiperdana
  *
  */
-public interface PartyRelationshipTypeRepository extends MongoRepository<PartyRelationshipType, String>
+public interface PartyRelationshipTypeRepository extends JpaRepository<PartyRelationshipType, String>
 {
 
 }

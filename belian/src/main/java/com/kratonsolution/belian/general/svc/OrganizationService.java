@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.OrganizationRepository;
@@ -20,6 +21,7 @@ import com.kratonsolution.belian.general.dm.Organization.IndustryType;
  *
  */
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class OrganizationService
 {	
 	@Autowired
@@ -65,7 +67,7 @@ public class OrganizationService
 	@Secured("ROLE_ORGANIZATION_UPDATE")
 	public void edit(Organization organization)
 	{
-		repository.save(organization);
+		repository.saveAndFlush(organization);
 	}
 	
 	@Secured("ROLE_ORGANIZATION_DELETE")

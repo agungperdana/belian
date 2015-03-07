@@ -4,7 +4,6 @@
 package com.kratonsolution.belian.general.svc;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -12,8 +11,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kratonsolution.belian.general.dm.PartyRoleType;
-import com.kratonsolution.belian.general.dm.PartyRoleTypeRepository;
+import com.kratonsolution.belian.general.dm.Party;
+import com.kratonsolution.belian.general.dm.PartyRepository;
 
 /**
  * @author agungdodiperdana
@@ -21,48 +20,42 @@ import com.kratonsolution.belian.general.dm.PartyRoleTypeRepository;
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
-public class PartyRoleTypeService
-{	
+public class PartyService
+{
 	@Autowired
-	private PartyRoleTypeRepository repository;
+	private PartyRepository repository;
 		
-	@Secured("ROLE_PTYROLETYPE_READ")
-	public PartyRoleType findOne(String id)
+	@Secured("ROLE_PARTY_READ")
+	public Party findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 	
-	@Secured("ROLE_PTYROLETYPE_READ")
-	public List<PartyRoleType> findAll()
+	@Secured("ROLE_PARTY_READ")
+	public List<Party> findAll()
 	{
 		return repository.findAll();
 	}
 	
-	@Secured("ROLE_PTYROLETYPE_READ")
-	public List<PartyRoleType> findAll(int pageIndex,int pageSize)
+	@Secured("ROLE_PARTY_READ")
+	public List<Party> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
 	}
 	
+	@Secured("ROLE_PARTY_READ")
 	public int size()
 	{
 		return Long.valueOf(repository.count()).intValue();
 	}
 	
-	@Secured("ROLE_PTYROLETYPE_CREATE")
-	public void add(PartyRoleType partyrole)
+	@Secured("ROLE_PARTY_UPDATE")
+	public void edit(Party party)
 	{
-		partyrole.setId(UUID.randomUUID().toString());
-		repository.save(partyrole);
+		repository.saveAndFlush(party);
 	}
 	
-	@Secured("ROLE_PTYROLETYPE_UPDATE")
-	public void edit(PartyRoleType partyrole)
-	{
-		repository.saveAndFlush(partyrole);
-	}
-	
-	@Secured("ROLE_PTYROLETYPE_DELETE")
+	@Secured("ROLE_PARTY_DELETE")
 	public void delete(String id)
 	{
 		repository.delete(id);

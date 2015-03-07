@@ -19,7 +19,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class RoleModel implements ListModel<Role>
 {
-	private final RoleService controller = Springs.get(RoleService.class);
+	private final RoleService service = Springs.get(RoleService.class);
 	
 	private List<Role> data = new ArrayList<Role>();
 	
@@ -40,7 +40,7 @@ public class RoleModel implements ListModel<Role>
 	@Override
 	public int getSize()
 	{
-		return controller.size();
+		return service.size();
 	}
 
 	@Override
@@ -60,6 +60,6 @@ public class RoleModel implements ListModel<Role>
 	public void next(int pageIndex,int itemSize)
 	{
 		data.clear();
-		data.addAll(controller.findAll(0, (itemSize*pageIndex)+itemSize));
+		data.addAll(service.findAll(0, (itemSize*pageIndex)+itemSize));
 	}
 }
