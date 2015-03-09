@@ -4,11 +4,13 @@
 package com.kratonsolution.belian.accounting.svc;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kratonsolution.belian.accounting.dm.Tax;
@@ -19,6 +21,7 @@ import com.kratonsolution.belian.accounting.dm.TaxRepository;
  *
  */
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class TaxService
 {
 	@Autowired
@@ -49,15 +52,16 @@ public class TaxService
 	}
 	
 	@Secured("ROLE_TAX_CREATE")
-	public void add(Tax currency)
+	public void add(Tax tax)
 	{
-		repository.save(currency);
+		tax.setId(UUID.randomUUID().toString());
+		repository.save(tax);
 	}
 	
 	@Secured("ROLE_TAX_UPDATE")
-	public void edit(Tax currency)
+	public void edit(Tax tax)
 	{
-		repository.save(currency);
+		repository.saveAndFlush(tax);
 	}
 	
 	@Secured("ROLE_TAX_DELETE")

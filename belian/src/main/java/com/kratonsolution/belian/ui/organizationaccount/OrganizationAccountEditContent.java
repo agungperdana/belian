@@ -100,6 +100,7 @@ public class OrganizationAccountEditContent extends FormContent
 					oglAccount.setId(account.getId());
 					oglAccount.setAccount(account);
 					oglAccount.setSelected(treeitem.isSelected());
+					oglAccount.setParent(org);
 					
 					org.getAccounts().add(oglAccount);
 				}

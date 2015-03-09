@@ -5,13 +5,14 @@ package com.kratonsolution.belian.accounting.dm;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author agungdodiperdana
@@ -19,20 +20,22 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Getter
 @Setter
-@Document(collection="tax")
+@Entity
+@Table(name="tax")
 public class Tax
 {
 	@Id
 	private String id;
 	
-	@Field("code")
-	@Indexed(unique=true,name="tax_code_index")
+	@Column(name="code",nullable=false,unique=true)
 	private String code;
 	
-	@Field("name")
-	@Indexed(unique=true,name="tax_name_index")
+	@Column(name="name",nullable=false,unique=true)
 	private String name;
 	
-	@Field("value")
+	@Column(name="value",nullable=false)
 	private BigDecimal value = BigDecimal.ZERO;
+
+	@Version
+	private Long version;
 }

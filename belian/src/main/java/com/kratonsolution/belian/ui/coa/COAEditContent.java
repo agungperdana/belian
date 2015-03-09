@@ -91,9 +91,7 @@ public class COAEditContent extends Vlayout implements Refreshable
 						if(event.getName().equals("onOK"))
 						{
 							if(tree.getSelectedItem() != null)
-							{
 								remove(service.findOne(tree.getSelectedItem().getId()));
-							}
 							
 							refresh();
 						}

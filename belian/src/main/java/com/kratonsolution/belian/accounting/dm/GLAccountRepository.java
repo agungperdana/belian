@@ -6,13 +6,13 @@ package com.kratonsolution.belian.accounting.dm;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * @author agungdodiperdana
  *
  */
-public interface GLAccountRepository extends MongoRepository<GLAccount, String>
+public interface GLAccountRepository extends JpaRepository<GLAccount, String>
 {
 	public List<GLAccount> findAllByParentIsNull();
 	

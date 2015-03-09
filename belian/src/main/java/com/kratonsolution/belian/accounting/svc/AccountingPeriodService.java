@@ -4,11 +4,13 @@
 package com.kratonsolution.belian.accounting.svc;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kratonsolution.belian.accounting.dm.AccountingPeriod;
@@ -19,6 +21,7 @@ import com.kratonsolution.belian.accounting.dm.AccountingPeriodRepository;
  *
  */
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class AccountingPeriodService
 {
 	@Autowired
@@ -55,15 +58,16 @@ public class AccountingPeriodService
 	}
 	
 	@Secured("ROLE_ACCOUNTINGPERIOD_CREATE")
-	public void add(AccountingPeriod currency)
+	public void add(AccountingPeriod period)
 	{
-		repository.save(currency);
+		period.setId(UUID.randomUUID().toString());
+		repository.save(period);
 	}
 	
 	@Secured("ROLE_ACCOUNTINGPERIOD_UPDATE")
-	public void edit(AccountingPeriod currency)
+	public void edit(AccountingPeriod period)
 	{
-		repository.save(currency);
+		repository.saveAndFlush(period);
 	}
 	
 	@Secured("ROLE_ACCOUNTINGPERIOD_DELETE")

@@ -4,11 +4,13 @@
 package com.kratonsolution.belian.accounting.svc;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kratonsolution.belian.accounting.dm.GLAccount;
@@ -20,6 +22,7 @@ import com.kratonsolution.belian.accounting.dm.GLAccountRepository;
  *
  */
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class GLAccountService
 {
 	@Autowired
@@ -73,6 +76,7 @@ public class GLAccountService
 	@Secured("ROLE_COA_CREATE")
 	public void add(GLAccount coa)
 	{
+		coa.setId(UUID.randomUUID().toString());
 		repository.save(coa);
 		
 		for(GLAccountChangeEventListener listener:listeners)
@@ -82,7 +86,7 @@ public class GLAccountService
 	@Secured("ROLE_COA_UPDATE")
 	public void edit(GLAccount coa)
 	{
-		repository.save(coa);
+		repository.saveAndFlush(coa);
 	}
 	
 	@Secured("ROLE_COA_DELETE")

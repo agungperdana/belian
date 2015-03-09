@@ -18,7 +18,9 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.BankAccount;
+import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.svc.BankAccountService;
+import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Organization.IndustryType;
 import com.kratonsolution.belian.general.svc.OrganizationService;
@@ -35,6 +37,8 @@ public class BankAccountEditContent extends FormContent
 	private final BankAccountService service = Springs.get(BankAccountService.class);
 
 	private final OrganizationService organizationService = Springs.get(OrganizationService.class);
+
+	private CurrencyService currencyService = Springs.get(CurrencyService.class);
 	
 	private Textbox number = new Textbox();
 
@@ -43,6 +47,8 @@ public class BankAccountEditContent extends FormContent
 	private Listbox bank = new Listbox();
 
 	private Checkbox status = new Checkbox("Active");
+	
+	private Listbox currencys = new Listbox();
 
 	private Row row;
 
@@ -79,14 +85,17 @@ public class BankAccountEditContent extends FormContent
 				if(Strings.isNullOrEmpty(holder.getText()))
 					throw new WrongValueException(holder,"Holder cannot be empty");
 		
-				BankAccount account = new BankAccount();
-				account.setId(RowUtils.rowValue(row, 5));
-				account.setNumber(number.getText());
-				account.setHolder(holder.getText());
-				account.setActive(status.isChecked());
-				account.setBank(organizationService.findOne(bank.getSelectedItem().getValue().toString()));
-		
-				service.edit(account);
+				BankAccount account = service.findOne(RowUtils.rowValue(row, 6));
+				if(account != null)
+				{
+					account.setNumber(number.getText());
+					account.setHolder(holder.getText());
+					account.setActive(status.isChecked());
+					account.setBank(organizationService.findOne(bank.getSelectedItem().getValue().toString()));
+					account.setCurrency(currencyService.findOne(currencys.getSelectedItem().getValue().toString()));
+			
+					service.edit(account);
+				}
 		
 				BankAccountWindow window = (BankAccountWindow)getParent();
 				window.removeEditForm();
@@ -109,6 +118,13 @@ public class BankAccountEditContent extends FormContent
 		status.setChecked(RowUtils.isChecked(row, 4));
 		
 		bank.setMold("select");
+		currencys.setMold("select");
+		
+		for(Currency currency:currencyService.findAll())
+			currencys.appendChild(new Listitem(currency.getCode(), currency.getId()));
+		
+		if(!currencys.getChildren().isEmpty())
+			currencys.setSelectedIndex(0);
 		
 		for(Organization organization :organizationService.findAllByIndustryType(IndustryType.BANKING))
 		{
@@ -139,9 +155,14 @@ public class BankAccountEditContent extends FormContent
 		row4.appendChild(new Label("Status"));
 		row4.appendChild(status);
 
+		Row row5 = new Row();
+		row5.appendChild(new Label("Currency"));
+		row5.appendChild(currencys);
+		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
 		rows.appendChild(row4);
+		rows.appendChild(row5);
 	}
 }

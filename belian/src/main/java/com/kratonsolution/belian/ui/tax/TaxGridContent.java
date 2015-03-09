@@ -163,7 +163,7 @@ public class TaxGridContent extends GridContent
 		Column select = new Column(null,null,"25px");
 		Column code = new Column("Code",null,"75px");
 		Column name = new Column("Name");
-		Column value = new Column("Value",null,"50px");
+		Column value = new Column("Value (%)",null,"75px");
 		Column id = new Column();
 		id.setVisible(false);
 		

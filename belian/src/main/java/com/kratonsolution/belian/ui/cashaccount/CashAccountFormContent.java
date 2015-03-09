@@ -119,8 +119,11 @@ public class CashAccountFormContent extends FormContent
 		for(Party party:partyRepository.findAll())
 			owner.appendChild(new Listitem(party.getName(),party.getId()));
 		
-		currency.setSelectedIndex(0);
-		owner.setSelectedIndex(0);
+		if(!currency.getChildren().isEmpty())
+			currency.setSelectedIndex(0);
+		
+		if(!owner.getChildren().isEmpty())
+			owner.setSelectedIndex(0);
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));

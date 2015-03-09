@@ -3,14 +3,16 @@
  */
 package com.kratonsolution.belian.accounting.dm;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.kratonsolution.belian.general.dm.Organization;
 
@@ -20,25 +22,30 @@ import com.kratonsolution.belian.general.dm.Organization;
  */
 @Getter
 @Setter
-@Document(collection="bank_account")
+@Entity
+@Table(name="bank_account")
 public class BankAccount
 {
 	@Id
 	private String id;
 	
-	@Field("number")
-	@Indexed(unique=true,sparse=true,dropDups=true)
+	@Column(name="number",nullable=false,unique=true)
 	private String number;
 	
-	@Field("holder")
+	@Column(name="holder",nullable=false)
 	private String holder;
 	
-	@DBRef
+	@ManyToOne
+	@JoinColumn(name="fk_organization_bank")
 	private Organization bank;
-	
-	@Field("is_enabled")
-	private boolean enabled;
-	
-	@Field("is_active")
+
+	@Column(name="status")
 	private boolean active;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_currency")
+	private Currency currency;
+	
+	@Version
+	private Long version;
 }

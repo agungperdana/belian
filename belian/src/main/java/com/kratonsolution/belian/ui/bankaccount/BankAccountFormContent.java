@@ -20,7 +20,9 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.BankAccount;
+import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.svc.BankAccountService;
+import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Organization.IndustryType;
 import com.kratonsolution.belian.general.svc.OrganizationService;
@@ -37,6 +39,8 @@ public class BankAccountFormContent extends FormContent
 	
 	private final OrganizationService organizationService = Springs.get(OrganizationService.class);
 	
+	private CurrencyService currencyService = Springs.get(CurrencyService.class);
+	
 	private Textbox number = new Textbox();
 	
 	private Textbox holder = new Textbox();
@@ -44,6 +48,8 @@ public class BankAccountFormContent extends FormContent
 	private Listbox bank = new Listbox();
 	
 	private Checkbox status = new Checkbox("Active");
+	
+	private Listbox currencys = new Listbox();
 	
 	public BankAccountFormContent()
 	{
@@ -83,6 +89,7 @@ public class BankAccountFormContent extends FormContent
 				account.setBank(organizationService.findOne(bank.getSelectedItem().getValue().toString()));
 				account.setHolder(holder.getText());
 				account.setActive(status.isChecked());
+				account.setCurrency(currencyService.findOne(currencys.getSelectedItem().getValue().toString()));
 				
 				service.add(account);
 				
@@ -104,11 +111,19 @@ public class BankAccountFormContent extends FormContent
 		
 		status.setChecked(true);
 		bank.setMold("select");
+		currencys.setMold("select");
 		
 		for(Organization organization :organizationService.findAllByIndustryType(IndustryType.BANKING))
 			bank.appendChild(new Listitem(organization.getName(),organization.getId()));
 		
-		bank.setSelectedIndex(0);
+		for(Currency currency:currencyService.findAll())
+			currencys.appendChild(new Listitem(currency.getCode(), currency.getId()));
+		
+		if(!currencys.getChildren().isEmpty())
+			currencys.setSelectedIndex(0);
+		
+		if(!bank.getChildren().isEmpty())
+			bank.setSelectedIndex(0);
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));
@@ -130,9 +145,14 @@ public class BankAccountFormContent extends FormContent
 		row4.appendChild(new Label("Status"));
 		row4.appendChild(status);
 		
+		Row row5 = new Row();
+		row5.appendChild(new Label("Currency"));
+		row5.appendChild(currencys);
+		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
 		rows.appendChild(row4);
+		rows.appendChild(row5);
 	}
 }

@@ -7,13 +7,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author agungdodiperdana
@@ -21,7 +28,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Getter
 @Setter
-@Document(collection="accounting_period")
+@Entity
+@Table(name="accounting_period")
 public class AccountingPeriod
 {
 	public enum Month{January,February,March,April,May,June,July,August,September,October,November,December}
@@ -29,24 +37,29 @@ public class AccountingPeriod
 	@Id
 	private String id;
 	
-	@Field("number")
+	@Column(name="number",nullable=false,unique=true)
 	private String number;
 	
-	@Field("name")
+	@Column(name="name",nullable=false,unique=true)
 	private String name;
 	
-	@Field("date_from")
+	@Column(name="date_from")
 	private Date from;
 	
-	@Field("date_to")
+	@Column(name="date_to")
 	private Date to;
 	
-	@Field("month_name")
+	@Column(name="month")
+	@Enumerated(EnumType.STRING)
 	private Month month = Month.January;
 	
-	@DBRef
+	@ManyToOne
+	@JoinColumn(name="fk_accounting_period_parent")
 	private AccountingPeriod parent;
 	
-	@DBRef
+	@Version
+	private Long version;
+	
+	@OneToMany(mappedBy="parent",cascade=CascadeType.REMOVE,orphanRemoval=true)
 	private List<AccountingPeriod> members = new ArrayList<AccountingPeriod>();
 }

@@ -75,6 +75,7 @@ public class OrganizationFormContent extends FormContent
 				org.setName(name.getText());
 				org.setBirthDate(date.getValue());
 				org.setTaxCode(tax.getText());
+				org.setType(IndustryType.valueOf(types.getSelectedItem().getValue().toString()));
 				
 				service.add(org);
 				

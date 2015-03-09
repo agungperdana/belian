@@ -157,25 +157,17 @@ public class BankAccountGridContent extends GridContent
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(8);
+		grid.appendChild(new Columns());
+		grid.getColumns().appendChild(new Column(null,null,"25px"));
+		grid.getColumns().appendChild(new Column("Number"));
+		grid.getColumns().appendChild(new Column("Bank",null,"150px"));
+		grid.getColumns().appendChild(new Column("Holder",null,"125px"));
+		grid.getColumns().appendChild(new Column("Status",null,"45px"));
+		grid.getColumns().appendChild(new Column("Curr",null,"55px"));
+		grid.getColumns().appendChild(new Column(null,null,"1px"));
+		grid.getColumns().getChildren().get(6).setVisible(false);
+		grid.setSpan("1");
 		
-		Columns columns = new Columns();
-		
-		Column select = new Column(null,null,"25px");
-		Column number = new Column("Number");
-		Column bank = new Column("Bank",null,"150px");
-		Column holder = new Column("Holder",null,"150px");
-		Column status = new Column("Status",null,"45px");
-		Column id = new Column();
-		id.setVisible(false);
-		
-		columns.appendChild(select);
-		columns.appendChild(number);
-		columns.appendChild(bank);
-		columns.appendChild(holder);
-		columns.appendChild(status);
-		columns.appendChild(id);
-		
-		grid.appendChild(columns);
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override

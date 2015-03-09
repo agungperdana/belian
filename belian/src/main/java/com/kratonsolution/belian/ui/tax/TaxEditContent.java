@@ -75,8 +75,7 @@ public class TaxEditContent extends FormContent
 				if(Strings.isNullOrEmpty(value.getText()))
 					throw new WrongValueException(value,"Value cannot be empty");
 			
-				Tax tax = new Tax();
-				tax.setId(RowUtils.rowValue(row, 4));
+				Tax tax = service.findOne(RowUtils.rowValue(row, 4));
 				tax.setCode(code.getText());
 				tax.setName(name.getText());
 				tax.setValue(BigDecimal.valueOf(value.doubleValue()));

@@ -3,16 +3,21 @@
  */
 package com.kratonsolution.belian.accounting.dm;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.kratonsolution.belian.general.dm.Organization;
 
@@ -22,23 +27,29 @@ import com.kratonsolution.belian.general.dm.Organization;
  */
 @Getter
 @Setter
-@Document(collection="organization_account")
+@Entity
+@Table(name="organization_account")
 public class OrganizationAccount
 {
 	@Id
 	private String id;
 	
-	@Field("name")
+	@Column(name="name",nullable=false,unique=true)
 	private String name;
 
-	@Field("note")
+	@Column(name="note")
 	private String note;
 	
-	@Field("is_active")
+	@Column(name="status")
 	private boolean active;
 
-	@DBRef
+	@ManyToOne
+	@JoinColumn(name="fk_organization")
 	private Organization organization;
 	
-	private List<OGLAccount> accounts = new ArrayList<OGLAccount>();
+	@Version
+	private Long version;
+	
+	@OneToMany(mappedBy="parent",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<OGLAccount> accounts = new HashSet<OGLAccount>();
 }

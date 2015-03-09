@@ -27,6 +27,7 @@ public class BankAccountRowRenderer implements RowRenderer<BankAccount>
 			row.appendChild(new Label(data.getBank().getName()));
 			row.appendChild(new Label(data.getHolder()));
 			row.appendChild(new Label(data.isActive()?"Active":"Inactive"));
+			row.appendChild(new Label(data.getCurrency().getCode()));
 			row.appendChild(new Label(data.getId()));
 		}
 	}

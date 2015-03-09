@@ -80,7 +80,10 @@ public class CurrencyFormContent extends FormContent
 	public void initForm()
 	{
 		code.setConstraint("no empty");
+		code.setWidth("200px");
+		
 		name.setConstraint("no empty");
+		name.setWidth("300px");
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));

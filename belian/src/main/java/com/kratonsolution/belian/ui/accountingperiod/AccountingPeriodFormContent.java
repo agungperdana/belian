@@ -120,12 +120,6 @@ public class AccountingPeriodFormContent extends AbstractWindow
 				
 				service.add(period);
 				
-				if(parent != null)
-				{
-					parent.getMembers().add(period);
-					service.edit(parent);
-				}
-				
 				((Refreshable)getParent()).refresh();
 				onClose();
 			}

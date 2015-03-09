@@ -3,12 +3,16 @@
  */
 package com.kratonsolution.belian.accounting.dm;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author agungdodiperdana
@@ -16,14 +20,24 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Getter
 @Setter
+@Entity
+@Table(name="organization_gl_account")
 public class OGLAccount
 {
 	@Id
 	private String id;
 	
-	@Field("is_selected")
+	@Column(name="is_selected")
 	private boolean selected;
 		
-	@DBRef
+	@ManyToOne
+	@JoinColumn(name="fk_account")
 	private GLAccount account;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_organization_account")
+	private OrganizationAccount parent;
+	
+	@Version
+	private Long version;
 }

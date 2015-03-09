@@ -33,7 +33,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class GLAFormContent extends AbstractWindow
 {	
-	private final GLAccountService controller = Springs.get(GLAccountService.class);
+	private final GLAccountService service = Springs.get(GLAccountService.class);
 	
 	private Textbox number = new Textbox();
 	
@@ -91,24 +91,28 @@ public class GLAFormContent extends AbstractWindow
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				if(Strings.isNullOrEmpty(number.getText()))
-					throw new WrongValueException(number,"Number cannot be empty");
-			
-				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
-			
-				GLAccount coa = new GLAccount();
-				coa.setNumber(number.getText());
-				coa.setName(name.getText());
-				coa.setNote(note.getText());
-				coa.setType(GLAccount.Type.valueOf(types.getSelectedItem().getValue().toString()));
-				coa.setParent(parent);
+				parent = service.findOne(parent.getId());
+				if(parent != null)
+				{
+					if(Strings.isNullOrEmpty(number.getText()))
+						throw new WrongValueException(number,"Number cannot be empty");
 				
-				controller.add(coa);
+					if(Strings.isNullOrEmpty(name.getText()))
+						throw new WrongValueException(name,"Name cannot be empty");
 				
-				parent.getMembers().add(coa);
-				
-				controller.edit(parent);
+					GLAccount coa = new GLAccount();
+					coa.setNumber(number.getText());
+					coa.setName(name.getText());
+					coa.setNote(note.getText());
+					coa.setType(GLAccount.Type.valueOf(types.getSelectedItem().getValue().toString()));
+					coa.setParent(parent);
+					
+					service.add(coa);
+					
+					parent.getMembers().add(coa);
+					
+					service.edit(parent);
+				}
 
 				((Refreshable)getParent()).refresh();
 				

@@ -5,14 +5,16 @@ package com.kratonsolution.belian.accounting.dm;
 
 import java.math.BigDecimal;
 
-import lombok.Setter;
-import lombok.Getter;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+import lombok.Getter;
+import lombok.Setter;
 
 import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.global.EconomicResource;
@@ -23,33 +25,36 @@ import com.kratonsolution.belian.global.EconomicResource;
  */
 @Getter
 @Setter
-@Document(collection="cash_account")
+@Entity
+@Table(name="cash_account")
 public class CashAccount implements EconomicResource
 {
 	@Id
 	private String id;
 	
-	@Field("number")
-	@Indexed(unique=true)
+	@Column(name="number",nullable=false,unique=true)
 	private String number;
 
-	@Field("name")
-	@Indexed(unique=true)
+	@Column(name="name",nullable=false,unique=true)
 	private String name;
 	
-	@DBRef
+	@ManyToOne
+	@JoinColumn(name="fk_currency")
 	private Currency currency;
 
-	@DBRef
+	@ManyToOne
+	@JoinColumn(name="fk_party_owner")
 	private Party owner;
 	
-	@Field("is_active")
+	@Column(name="status")
 	private boolean active;
 	
-	@Field("amount")
+	@Column(name="amount")
 	private BigDecimal amount = BigDecimal.ZERO;
+	
+	@Version
+	private Long version;
 
-	@Override
 	public void increment(BigDecimal value)
 	{
 		setAmount(getAmount().add(value));

@@ -25,7 +25,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class COAFormContent extends FormContent
 {	
-	private final GLAccountService controller = Springs.get(GLAccountService.class);
+	private final GLAccountService service = Springs.get(GLAccountService.class);
 	
 	private Textbox number = new Textbox();
 	
@@ -70,7 +70,7 @@ public class COAFormContent extends FormContent
 				coa.setName(name.getText());
 				coa.setNote(note.getText());
 				
-				controller.add(coa);
+				service.add(coa);
 				
 				COAWindow window = (COAWindow)getParent();
 				window.removeCreateForm();

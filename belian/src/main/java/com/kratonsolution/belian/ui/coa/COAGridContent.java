@@ -107,33 +107,32 @@ public class COAGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",
-						Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				{
+					@Override
+					public void onEvent(Event event) throws Exception
+					{
+						if(event.getName().equals("onOK"))
 						{
-							@Override
-							public void onEvent(Event event) throws Exception
+							for(Object object:grid.getRows().getChildren())
 							{
-								if(event.getName().equals("onOK"))
+								Row row = (Row)object;
+								
+								if(row.getFirstChild() instanceof Checkbox)
 								{
-									for(Object object:grid.getRows().getChildren())
+									Checkbox check = (Checkbox)row.getFirstChild();
+									if(check.isChecked())
 									{
-										Row row = (Row)object;
-										
-										if(row.getFirstChild() instanceof Checkbox)
-										{
-											Checkbox check = (Checkbox)row.getFirstChild();
-											if(check.isChecked())
-											{
-												Label label = (Label)row.getLastChild();
-												service.delete(label.getValue());
-											}
-										}
+										Label label = (Label)row.getLastChild();
+										service.delete(label.getValue());
 									}
-									
-									grid.setModel(new COAModel(8));
 								}
 							}
-						});
+							
+							grid.setModel(new COAModel(8));
+						}
+					}
+				});
 			}
 		});
 		

@@ -73,8 +73,8 @@ public class AccountingPeriodGridContent extends GridContent implements Refresha
 						if(event.getName().equals("onOK"))
 						{
 							if(tree.getSelectedItem() != null)
-								remove(service.findOne(tree.getSelectedItem().getId()));
-							
+								service.delete(tree.getSelectedItem().getId());
+								
 							refresh();
 						}
 					}

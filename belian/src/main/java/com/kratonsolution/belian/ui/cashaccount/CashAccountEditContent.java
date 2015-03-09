@@ -84,8 +84,7 @@ public class CashAccountEditContent extends FormContent
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 
-				CashAccount account = new CashAccount();
-				account.setId(RowUtils.rowValue(row, 6));
+				CashAccount account = service.findOne(RowUtils.rowValue(row, 6));
 				account.setNumber(number.getText());
 				account.setName(name.getText());
 				account.setActive(status.isChecked());
