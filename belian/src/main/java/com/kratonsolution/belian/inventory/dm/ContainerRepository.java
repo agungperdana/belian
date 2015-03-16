@@ -3,13 +3,13 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * @author agungdodiperdana
  *
  */
-public interface ContainerRepository extends MongoRepository<Container, String>
+public interface ContainerRepository extends JpaRepository<Container, String>
 {
 
 }

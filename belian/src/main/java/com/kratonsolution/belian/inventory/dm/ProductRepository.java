@@ -5,13 +5,13 @@ package com.kratonsolution.belian.inventory.dm;
 
 import java.util.List;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * @author agungdodiperdana
  *
  */
-public interface ProductRepository extends MongoRepository<Product, String>
+public interface ProductRepository extends JpaRepository<Product, String>
 {
 	public Product findOneByName(String name);
 	

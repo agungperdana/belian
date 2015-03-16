@@ -3,8 +3,6 @@
  */
 package com.kratonsolution.belian.ui.uom;
 
-import java.util.UUID;
-
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -68,7 +66,6 @@ public class UOMFormContent extends FormContent
 					throw new WrongValueException(name,"Name cannot be empty");
 				
 				UnitOfMeasure uom = new UnitOfMeasure();
-				uom.setId(UUID.randomUUID().toString());
 				uom.setCode(code.getText());
 				uom.setName(name.getText());
 				uom.setNote(note.getText());

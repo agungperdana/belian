@@ -5,13 +5,16 @@ package com.kratonsolution.belian.inventory.dm;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.kratonsolution.belian.global.EconomicResource;
 
@@ -21,27 +24,34 @@ import com.kratonsolution.belian.global.EconomicResource;
  */
 @Getter
 @Setter
-@Document(collection="inventory_item")
+@Entity
+@Table(name="inventory_item")
 public class InventoryItem implements EconomicResource
 {
 	@Id
 	private String id;
 	
-	@DBRef
+	@ManyToOne
+	@JoinColumn(name="fk_product")
 	private Product product;
 	
-	@DBRef
+	@ManyToOne
+	@JoinColumn(name="fk_facility")
 	private Facility facility;
 	
-	@DBRef
+	@ManyToOne
+	@JoinColumn(name="fk_container")
 	private Container container;
 	
-	@Field("serial_number")
+	@Column(name="serial_number")
 	private String serialNumber;
 	
-	@Field("on_hand")
+	@Column(name="onhand")
 	private BigDecimal onhand = BigDecimal.ZERO;
 
+	@Version
+	private Long version;
+	
 	@Override
 	public void increment(BigDecimal value)
 	{

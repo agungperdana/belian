@@ -4,7 +4,6 @@
 package com.kratonsolution.belian.ui.product;
 
 import java.util.Date;
-import java.util.UUID;
 
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
@@ -40,6 +39,8 @@ public class ProductFormContent extends FormContent
 	private Datebox start = new Datebox();
 	
 	private Datebox end = new Datebox();
+	
+	private Textbox code = new Textbox();
 	
 	private Textbox name = new Textbox();
 	
@@ -80,9 +81,9 @@ public class ProductFormContent extends FormContent
 					throw new WrongValueException(name,"Name cannot be empty");
 			
 				Product product = new Product();
-				product.setId(UUID.randomUUID().toString());
 				product.setStart(start.getValue());
 				product.setEnd(end.getValue());
+				product.setCode(code.getText());
 				product.setName(name.getText());
 				product.setType(Product.Type.valueOf(types.getSelectedItem().getValue().toString()));
 				product.setCategory(categoryService.findOne(categorys.getSelectedItem().getValue().toString()));
@@ -101,6 +102,9 @@ public class ProductFormContent extends FormContent
 	{
 		start.setConstraint("no empty");
 		start.setValue(new Date());
+		
+		code.setConstraint("no empty");
+		code.setWidth("250px");
 		
 		name.setConstraint("no empty");
 		name.setWidth("300px");
@@ -132,21 +136,26 @@ public class ProductFormContent extends FormContent
 		row2.appendChild(end);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Name"));
-		row3.appendChild(name);
+		row3.appendChild(new Label("Code"));
+		row3.appendChild(code);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Type"));
-		row4.appendChild(types);
+		row4.appendChild(new Label("Name"));
+		row4.appendChild(name);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Category"));
-		row5.appendChild(categorys);
+		row5.appendChild(new Label("Type"));
+		row5.appendChild(types);
+		
+		Row row6 = new Row();
+		row6.appendChild(new Label("Category"));
+		row6.appendChild(categorys);
 		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
 		rows.appendChild(row4);
 		rows.appendChild(row5);
+		rows.appendChild(row6);
 	}
 }

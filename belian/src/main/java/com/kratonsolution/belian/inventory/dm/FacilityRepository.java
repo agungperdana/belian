@@ -5,13 +5,13 @@ package com.kratonsolution.belian.inventory.dm;
 
 import java.util.List;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * @author agungdodiperdana
  *
  */
-public interface FacilityRepository extends MongoRepository<Facility, String>
+public interface FacilityRepository extends JpaRepository<Facility, String>
 {
 	public Facility findOneByCode(String code);
 	

@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.inventory.svc;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -51,13 +52,14 @@ public class ContainerService
 	@Secured("ROLE_CONTAINER_CREATE")
 	public void add(Container container)
 	{
+		container.setId(UUID.randomUUID().toString());
 		repository.save(container);
 	}
 	
 	@Secured("ROLE_CONTAINER_UPDATE")
 	public void edit(Container container)
 	{
-		repository.save(container);
+		repository.saveAndFlush(container);
 	}
 	
 	@Secured("ROLE_CONTAINER_DELETE")

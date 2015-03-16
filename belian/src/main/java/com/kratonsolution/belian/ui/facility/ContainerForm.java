@@ -3,8 +3,6 @@
  */
 package com.kratonsolution.belian.ui.facility;
 
-import java.util.UUID;
-
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -98,26 +96,16 @@ public class ContainerForm extends AbstractWindow
 			public void onEvent(Event event) throws Exception
 			{
 				Container container = new Container();
-				container.setId(UUID.randomUUID().toString());
 				container.setCode(code.getText());
 				container.setName(name.getText());
 				container.setNote(note.getText());
-				container.setFacility(facility);
 				container.setParent(parent);
 				container.setType(Container.Type.valueOf(types.getSelectedItem().getValue().toString()));
 				
-				containerService.add(container);
+				if(parent == null)
+					container.setFacility(facility);
 				
-				if(container.getParent() != null)
-				{
-					parent.getMembers().add(container);
-					containerService.edit(parent);
-				}
-				else if(container.getFacility() != null)
-				{
-					facility.getContainers().add(container);
-					facilityService.edit(facility);
-				}
+				containerService.add(container);
 				
 				((Refreshable)getParent()).refresh();
 				onClose();

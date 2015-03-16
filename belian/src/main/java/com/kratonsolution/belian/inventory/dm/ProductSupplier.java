@@ -5,14 +5,18 @@ package com.kratonsolution.belian.inventory.dm;
 
 import java.util.Date;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Field;
-
-import com.kratonsolution.belian.general.dm.Party;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
 import lombok.Getter;
 import lombok.Setter;
+
+import com.kratonsolution.belian.general.dm.Party;
 
 /**
  * @author agungdodiperdana
@@ -20,23 +24,30 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Entity
+@Table(name="product_supplier")
 public class ProductSupplier
 {
 	@Id
 	private String id;
 
-	@Field("from_date")
+	@Column(name="from_date")
 	private Date from;
 	
-	@Field("to_date")
+	@Column(name="to_date")
 	private Date to;
 	
-	@DBRef
+	@ManyToOne
+	@JoinColumn(name="fk_party_supplier")
 	private Party supplier;
 
-	@Field("note")
+	@Column(name="note")
 	private String note;
 	
-	@Field("is_deleted")
-	private boolean deleted;
+	@ManyToOne
+	@JoinColumn(name="fk_product")
+	private Product product;
+	
+	@Version
+	private Long version;
 }

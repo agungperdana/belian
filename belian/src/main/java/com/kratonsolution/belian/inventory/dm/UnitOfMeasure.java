@@ -3,33 +3,37 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author agungdodiperdana
  *
  */
-@Document(collection="unit_of_measure")
 @Getter
 @Setter
+@Entity
+@Table(name="unit_of_measure")
 public class UnitOfMeasure
 {
 	@Id
 	private String id;
 	
-	@Field("code")
+	@Column(name="code",nullable=false,unique=true)
 	private String code;
 	
-	@Field("name")
-	@Indexed
+	@Column(name="name",nullable=false,unique=true)
 	private String name;
 
-	@Field("note")
+	@Column(name="note")
 	private String note;
+	
+	@Version
+	private Long version;
 }

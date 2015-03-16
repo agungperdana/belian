@@ -48,6 +48,8 @@ public class ProductEditContent extends FormContent implements Refreshable
 	private Datebox start = new Datebox();
 
 	private Datebox end = new Datebox();
+	
+	private Textbox code = new Textbox();
 
 	private Textbox name = new Textbox();
 
@@ -93,9 +95,10 @@ public class ProductEditContent extends FormContent implements Refreshable
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 
-				Product product = service.findOne(RowUtils.rowValue(row, 6));
+				Product product = service.findOne(RowUtils.rowValue(row, 7));
 				product.setStart(start.getValue());
 				product.setEnd(end.getValue());
+				product.setCode(code.getText());
 				product.setName(name.getText());
 				product.setType(Product.Type.valueOf(types.getSelectedItem().getValue().toString()));
 				product.setCategory(categoryService.findOne(categorys.getSelectedItem().getValue().toString()));
@@ -112,12 +115,16 @@ public class ProductEditContent extends FormContent implements Refreshable
 	@Override
 	public void initForm()
 	{
-		Product product = service.findOne(RowUtils.rowValue(row, 6));
+		Product product = service.findOne(RowUtils.rowValue(row, 7));
 		
 		start.setConstraint("no empty");
 		start.setValue(product.getStart());
 		
 		end.setValue(product.getEnd());
+		
+		code.setConstraint("no empty");
+		code.setWidth("250px");
+		code.setText(product.getCode());
 		
 		name.setConstraint("no empty");
 		name.setWidth("300px");
@@ -155,27 +162,32 @@ public class ProductEditContent extends FormContent implements Refreshable
 		row2.appendChild(end);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Name"));
-		row3.appendChild(name);
+		row3.appendChild(new Label("Code"));
+		row3.appendChild(code);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Type"));
-		row4.appendChild(types);
+		row4.appendChild(new Label("Name"));
+		row4.appendChild(name);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Category"));
-		row5.appendChild(categorys);
+		row5.appendChild(new Label("Type"));
+		row5.appendChild(types);
+		
+		Row row6 = new Row();
+		row6.appendChild(new Label("Category"));
+		row6.appendChild(categorys);
 		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
 		rows.appendChild(row4);
 		rows.appendChild(row5);
+		rows.appendChild(row6);
 	}
 	
 	protected void initTab()
 	{
-		Product product = service.findOne(RowUtils.rowValue(row, 6));
+		Product product = service.findOne(RowUtils.rowValue(row, 7));
 	
 		tabbox = new Tabbox();
 		tabbox.appendChild(new Tabs());

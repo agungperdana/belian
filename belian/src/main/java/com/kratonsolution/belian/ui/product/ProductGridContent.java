@@ -15,7 +15,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.accounting.svc.TaxService;
+import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -25,7 +25,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class ProductGridContent extends GridContent
 {
-	private final TaxService service = Springs.get(TaxService.class);
+	private final ProductService service = Springs.get(ProductService.class);
 	
 	public ProductGridContent()
 	{
@@ -158,27 +158,18 @@ public class ProductGridContent extends GridContent
 		grid.setMold("paging");
 		grid.setPageSize(8);
 		grid.setSpan("3");
-		
-		Columns columns = new Columns();
-		
-		Column select = new Column(null,null,"25px");
-		Column start = new Column("Start",null,"100px");
-		Column end = new Column("End",null,"100px");
-		Column name = new Column("Name");
-		Column category = new Column("Category",null,"100px");
-		Column type = new Column("Type",null,"100px");
-		Column id = new Column("",null,"1px");
-		id.setVisible(false);
-		
-		columns.appendChild(select);
-		columns.appendChild(start);
-		columns.appendChild(end);
-		columns.appendChild(name);
-		columns.appendChild(category);
-		columns.appendChild(type);
-		columns.appendChild(id);
-		
-		grid.appendChild(columns);
+		grid.appendChild(new Columns());
+		grid.getColumns().appendChild(new Column(null,null,"25px"));
+		grid.getColumns().appendChild(new Column("Start",null,"85px"));
+		grid.getColumns().appendChild(new Column("End",null,"85px"));
+		grid.getColumns().appendChild(new Column("Code",null,"85px"));
+		grid.getColumns().appendChild(new Column("Name"));
+		grid.getColumns().appendChild(new Column("Category",null,"100px"));
+		grid.getColumns().appendChild(new Column("Type",null,"100px"));
+		grid.getColumns().appendChild(new Column("",null,"1px"));
+		grid.getColumns().getChildren().get(7).setVisible(false);
+		grid.setSpan("4");
+
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override

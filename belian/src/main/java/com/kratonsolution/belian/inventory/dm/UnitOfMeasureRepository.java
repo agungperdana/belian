@@ -3,13 +3,13 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * @author agungdodiperdana
  *
  */
-public interface UnitOfMeasureRepository extends MongoRepository<UnitOfMeasure, String>
+public interface UnitOfMeasureRepository extends JpaRepository<UnitOfMeasure, String>
 {
 	public UnitOfMeasure findOneByName(String name);
 }

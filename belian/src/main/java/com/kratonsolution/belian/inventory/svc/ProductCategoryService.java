@@ -4,11 +4,13 @@
 package com.kratonsolution.belian.inventory.svc;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kratonsolution.belian.inventory.dm.ProductCategory;
@@ -19,6 +21,7 @@ import com.kratonsolution.belian.inventory.dm.ProductCategoryRepository;
  *
  */
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class ProductCategoryService
 {
 	@Autowired
@@ -51,13 +54,14 @@ public class ProductCategoryService
 	@Secured("ROLE_PRDCATEGORY_CREATE")
 	public void add(ProductCategory container)
 	{
+		container.setId(UUID.randomUUID().toString());
 		repository.save(container);
 	}
 	
 	@Secured("ROLE_PRDCATEGORY_UPDATE")
 	public void edit(ProductCategory container)
 	{
-		repository.save(container);
+		repository.saveAndFlush(container);
 	}
 	
 	@Secured("ROLE_PRDCATEGORY_DELETE")

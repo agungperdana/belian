@@ -6,12 +6,18 @@ package com.kratonsolution.belian.inventory.dm;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.general.dm.Geographic;
@@ -23,6 +29,8 @@ import com.kratonsolution.belian.general.dm.Party;
  */
 @Getter
 @Setter
+@Entity
+@Table(name="product_price")
 public class ProductPrice
 {
 	public enum Type {BASE,DISCOUNT,CHARGE}
@@ -30,27 +38,35 @@ public class ProductPrice
 	@Id
 	private String id;
 	
-	@Field("from_date")
+	@Column(name="from_date")
 	private Date from;
 	
-	@Field("to_date")
+	@Column(name="to_date")
 	private Date to;
 	
-	@Field("price")
+	@Column(name="price")
 	private BigDecimal price = BigDecimal.ONE;
 	
-	@DBRef
+	@ManyToOne
+	@JoinColumn(name="fk_currency")
 	private Currency currency;
 	
-	@Field("type")
+	@Column(name="type")
+	@Enumerated(EnumType.STRING)
 	private Type type = Type.BASE;
-	
-	@DBRef
+
+	@ManyToOne
+	@JoinColumn(name="fk_geographic")
 	private Geographic geographic;
 	
-	@DBRef
+	@ManyToOne
+	@JoinColumn(name="fk_party")
 	private Party party;
 	
-	@Field("is_deleted")
-	private boolean deleted;
+	@ManyToOne
+	@JoinColumn(name="fk_product")
+	private Product product;
+	
+	@Version
+	private Long version;
 }

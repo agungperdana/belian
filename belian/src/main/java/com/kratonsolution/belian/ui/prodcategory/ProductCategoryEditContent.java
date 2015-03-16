@@ -72,8 +72,7 @@ public class ProductCategoryEditContent extends FormContent
 				if(Strings.isNullOrEmpty(note.getText()))
 					throw new WrongValueException(note,"Value cannot be empty");
 			
-				ProductCategory category = new ProductCategory();
-				category.setId(RowUtils.rowValue(row, 4));
+				ProductCategory category = service.findOne(RowUtils.rowValue(row, 4));
 				category.setCode(code.getText());
 				category.setName(name.getText());
 				category.setNote(note.getText());

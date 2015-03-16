@@ -59,23 +59,17 @@ public class NavigationMenu extends Window
 		accordion.setParent(this);
 		accordion.setHeight("97%");
 		
-		tabs.setParent(accordion);
-		panels.setParent(accordion);
+		accordion.appendChild(tabs);
+		accordion.appendChild(panels);
 	}
 
 	protected void initHeaders()
 	{
-		Tab generalTab = new Tab("General");
-		Tab securityTab = new Tab("Security");
-		Tab accountingTab = new Tab("Accounting");
-		Tab inventoryTab = new Tab("Inventory");
-		Tab salesTab = new Tab("Sales");
-
-		generalTab.setParent(tabs);
-		securityTab.setParent(tabs);
-		accountingTab.setParent(tabs);
-		inventoryTab.setParent(tabs);
-		salesTab.setParent(tabs);
+		tabs.appendChild(new Tab("General"));
+		tabs.appendChild(new Tab("Security"));
+		tabs.appendChild(new Tab("Accounting"));
+		tabs.appendChild(new Tab("Inventory"));
+		tabs.appendChild(new Tab("Sales"));
 	}
 
 	protected void initGeneral()

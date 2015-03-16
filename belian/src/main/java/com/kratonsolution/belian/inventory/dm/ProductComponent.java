@@ -5,12 +5,16 @@ package com.kratonsolution.belian.inventory.dm;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author Agung Dodi Perdana
@@ -18,20 +22,27 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Getter
 @Setter
+@Entity
+@Table(name="product_component")
 public class ProductComponent
 {
 	@Id
 	private String id;
 	
-	@Field("quantity")
+	@Column(name="quantity")
 	private BigDecimal quantity = BigDecimal.ONE;
 	
-	@DBRef
+	@ManyToOne
+	@JoinColumn(name="fk_product_component")
+	private Product component;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_product_parent")
 	private Product product;
 	
-	@Field("note")
+	@Column(name="note")
 	private String note;
 	
-	@Field("is_deleted")
-	private boolean deleted;
+	@Version
+	private Long version;
 }

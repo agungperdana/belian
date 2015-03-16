@@ -95,13 +95,15 @@ public class FacilityEditContent extends FormContent implements Refreshable
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 				
-				Facility uom = new Facility();
-				uom.setId(RowUtils.rowValue(row, 4));
-				uom.setCode(code.getText());
-				uom.setName(name.getText());
-				uom.setNote(note.getText());
-				
-				service.edit(uom);
+				Facility facility = service.findOne(RowUtils.rowValue(row, 4));
+				if(facility != null)
+				{
+					facility.setCode(code.getText());
+					facility.setName(name.getText());
+					facility.setNote(note.getText());
+					
+					service.edit(facility);
+				}
 				
 				FacilityWindow window = (FacilityWindow)getParent();
 				window.removeEditForm();
@@ -229,7 +231,7 @@ public class FacilityEditContent extends FormContent implements Refreshable
 				@Override
 				public void onEvent(Event event) throws Exception
 				{
-					appendChild(new ContainerForm(facility, container));
+					appendChild(new ContainerEditForm(container));
 				}
 			});
 			

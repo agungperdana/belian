@@ -3,13 +3,14 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author agungdodiperdana
@@ -17,20 +18,22 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Getter
 @Setter
-@Document(collection="product_category")
+@Entity
+@Table(name="product_category")
 public class ProductCategory
 {
 	@Id
 	private String id;
 	
-	@Field("code")
-	@Indexed(unique=true,name="category_code_index")
+	@Column(name="code",nullable=false,unique=true)
 	private String code;
 
-	@Field("name")
-	@Indexed(unique=true,name="category_name_index")
+	@Column(name="name",nullable=false,unique=true)
 	private String name;
 	
-	@Field("description")
+	@Column(name="note")
 	private String note;
+	
+	@Version
+	private Long version;
 }

@@ -69,14 +69,16 @@ public class UOMEditContent extends FormContent
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 				
-				UnitOfMeasure uom = new UnitOfMeasure();
-				uom.setId(RowUtils.rowValue(row, 4));
-				uom.setCode(code.getText());
-				uom.setName(name.getText());
-				uom.setNote(note.getText());
-				
-				service.edit(uom);
-				
+				UnitOfMeasure uom = service.findOne(RowUtils.rowValue(row, 4));
+				if(uom != null)
+				{
+					uom.setCode(code.getText());
+					uom.setName(name.getText());
+					uom.setNote(note.getText());
+					
+					service.edit(uom);
+				}
+
 				UOMWindow window = (UOMWindow)getParent();
 				window.removeEditForm();
 				window.insertGrid();

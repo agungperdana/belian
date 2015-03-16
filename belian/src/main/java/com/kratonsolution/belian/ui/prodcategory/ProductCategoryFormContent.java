@@ -3,8 +3,6 @@
  */
 package com.kratonsolution.belian.ui.prodcategory;
 
-import java.util.UUID;
-
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -68,7 +66,6 @@ public class ProductCategoryFormContent extends FormContent
 					throw new WrongValueException(name,"Name cannot be empty");
 			
 				ProductCategory category = new ProductCategory();
-				category.setId(UUID.randomUUID().toString());
 				category.setCode(code.getText());
 				category.setName(name.getText());
 				category.setNote(note.getText());

@@ -3,12 +3,18 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author agungdodiperdana
@@ -16,6 +22,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Getter
 @Setter
+@Entity
+@Table(name="product_code")
 public class ProductCode
 {
 	public enum Type{STANDARD,RFID,ISBN,BARCODE}
@@ -23,16 +31,20 @@ public class ProductCode
 	@Id
 	private String id;
 	
-	@Field("code")
-	@Indexed(unique=true,sparse=true,name="product_code_code_index")
+	@Column(name="code",nullable=false,unique=true)
 	private String code;
 	
-	@Field("type")
+	@Column(name="type")
+	@Enumerated(EnumType.STRING)
 	private Type type = Type.STANDARD;
 	
-	@Field("note")
+	@Column(name="note")
 	private String note;
 	
-	@Field("is_deleted")
-	private boolean deleted;
+	@ManyToOne
+	@JoinColumn(name="fk_product")
+	private Product product;
+	
+	@Version
+	private Long version;
 }

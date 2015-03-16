@@ -3,8 +3,6 @@
  */
 package com.kratonsolution.belian.ui.facility;
 
-import java.util.UUID;
-
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -72,7 +70,6 @@ public class FacilityFormContent extends FormContent
 					throw new WrongValueException(name,"Name cannot be empty");
 				
 				Facility facility = new Facility();
-				facility.setId(UUID.randomUUID().toString());
 				facility.setCode(code.getText());
 				facility.setName(name.getText());
 				facility.setNote(note.getText());

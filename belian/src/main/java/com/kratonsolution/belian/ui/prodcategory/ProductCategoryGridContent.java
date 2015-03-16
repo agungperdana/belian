@@ -157,23 +157,15 @@ public class ProductCategoryGridContent extends GridContent
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(8);
+		grid.appendChild(new Columns());
 		
-		Columns columns = new Columns();
-		
-		Column select = new Column(null,null,"25px");
-		Column code = new Column("Code",null,"100px");
-		Column name = new Column("Name",null,"150px");
-		Column note = new Column("Note");
-		Column id = new Column();
-		id.setVisible(false);
-		
-		columns.appendChild(select);
-		columns.appendChild(code);
-		columns.appendChild(name);
-		columns.appendChild(note);
-		columns.appendChild(id);
-		
-		grid.appendChild(columns);
+		grid.getColumns().appendChild(new Column(null,null,"25px"));
+		grid.getColumns().appendChild(new Column("Code",null,"100px"));
+		grid.getColumns().appendChild(new Column("Name",null,"150px"));
+		grid.getColumns().appendChild(new Column("Note"));
+		grid.getColumns().appendChild(new Column(null,null,"1px"));
+		grid.getColumns().getChildren().get(4).setVisible(false);
+
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override

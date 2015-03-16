@@ -3,14 +3,13 @@
  */
 package com.kratonsolution.belian.ui.product;
 
-import java.text.SimpleDateFormat;
-
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
 import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.ui.util.Dates;
 
 /**
  * @author agungdodiperdana
@@ -24,11 +23,10 @@ public class ProductRowRenderer implements RowRenderer<Product>
 	{
 		if(data != null)
 		{
-			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-			
 			row.appendChild(new Checkbox());
-			row.appendChild(new Label(format.format(data.getStart())));
-			row.appendChild(new Label(data.getEnd()!=null?format.format(data.getEnd()):""));
+			row.appendChild(new Label(Dates.format(data.getStart())));
+			row.appendChild(new Label(Dates.format(data.getEnd())));
+			row.appendChild(new Label(data.getCode()));
 			row.appendChild(new Label(data.getName()));
 			row.appendChild(new Label(data.getCategory().getName()));
 			row.appendChild(new Label(data.getType().name()));
