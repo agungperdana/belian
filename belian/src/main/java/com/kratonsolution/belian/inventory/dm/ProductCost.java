@@ -42,7 +42,7 @@ public class ProductCost
 	
 	@ManyToOne
 	@JoinColumn(name="fk_geographic_for_area")
-	private Geographic area;
+	private Geographic geographic;
 	
 	@Column(name="from_date")
 	private Date from;

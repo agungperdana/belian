@@ -88,7 +88,7 @@ public class SupplierTab implements TabedDisplay
 		grid.getColumns().appendChild(new Column("Supplier",null,"200"));
 		grid.getColumns().appendChild(new Column("Note"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(4).setVisible(false);
+		grid.getColumns().getChildren().get(5).setVisible(false);
 		grid.setSpan("4");
 
 		final Iterator<ProductSupplier> iterator = this.product.getSuppliers().iterator();
@@ -113,7 +113,7 @@ public class SupplierTab implements TabedDisplay
 								
 								service.edit(product);
 								parent.refresh();
-								parent.setSelectedTab(0);
+								parent.setSelectedTab(3);
 							}
 						}
 					});

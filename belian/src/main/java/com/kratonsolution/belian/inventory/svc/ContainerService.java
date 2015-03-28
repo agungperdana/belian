@@ -44,6 +44,12 @@ public class ContainerService
 	}
 	
 	@Secured("ROLE_CONTAINER_READ")
+	public List<Container> findAllByFacility(String id)
+	{
+		return repository.findAllByFacilityId(id);
+	}
+	
+	@Secured("ROLE_CONTAINER_READ")
 	public List<Container> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();

@@ -85,25 +85,20 @@ public class CodeEditWindow extends AbstractWindow
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				for(ProductCode productCode:product.getCodes())
+				ProductCode on = service.findCode(product, codeId);
+				if(on != null)
 				{
-					if(productCode.getId().equals(codeId))
-					{
-						productCode.setCode(code.getText());
-						productCode.setNote(note.getText());
-						productCode.setType(ProductCode.Type.valueOf(types.getSelectedItem().getValue().toString()));
-						
-						service.edit(product);
-						
-						ProductEditContent parent = (ProductEditContent)getParent();
-						parent.refresh();
-						parent.setSelectedTab(0);
-						
-						onClose();
-						
-						break;
-					}
+					on.setCode(code.getText());
+					on.setNote(note.getText());
+					on.setType(ProductCode.Type.valueOf(types.getSelectedItem().getValue().toString()));
+				
+					service.editCode(on);
 				}
+			
+				ProductEditContent parent = (ProductEditContent)getParent();
+				parent.refresh();
+				parent.setSelectedTab(0);
+				onClose();
 			}
 		});
 		

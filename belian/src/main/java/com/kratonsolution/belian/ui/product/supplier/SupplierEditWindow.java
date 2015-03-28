@@ -91,26 +91,23 @@ public class SupplierEditWindow extends AbstractWindow
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				for(ProductSupplier supplier:product.getSuppliers())
+				ProductSupplier supplier = service.findSupplier(product, supplierId);
+				if(supplier != null)
 				{
-					if(supplier.getId().equals(supplierId))
-					{
-						supplier.setFrom(from.getValue());
-						supplier.setTo(to.getValue());
-						supplier.setNote(note.getText());
-						supplier.setSupplier(partyRepository.findOne(suppliers.getSelectedItem().getValue().toString()));
-						
-						service.edit(product);
-						
-						ProductEditContent parent = (ProductEditContent)getParent();
-						parent.refresh();
-						parent.setSelectedTab(2);
-						
-						onClose();
-						
-						break;
-					}
+					supplier.setFrom(from.getValue());
+					supplier.setTo(to.getValue());
+					supplier.setNote(note.getText());
+					supplier.setSupplier(partyRepository.findOne(suppliers.getSelectedItem().getValue().toString()));
+					
+					service.editSupplier(supplier);
 				}
+				
+				ProductEditContent parent = (ProductEditContent)getParent();
+				parent.refresh();
+				parent.setSelectedTab(3);
+				
+				onClose();
+				
 			}
 		});
 		

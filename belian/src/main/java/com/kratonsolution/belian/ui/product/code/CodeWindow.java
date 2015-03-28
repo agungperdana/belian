@@ -3,8 +3,6 @@
  */
 package com.kratonsolution.belian.ui.product.code;
 
-import java.util.UUID;
-
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -84,14 +82,11 @@ public class CodeWindow extends AbstractWindow
 			public void onEvent(Event event) throws Exception
 			{
 				ProductCode productCode = new ProductCode();
-				productCode.setId(UUID.randomUUID().toString());
 				productCode.setCode(code.getText());
 				productCode.setNote(note.getText());
 				productCode.setType(ProductCode.Type.valueOf(types.getSelectedItem().getValue().toString()));
 				
-				product.getCodes().add(productCode);
-				
-				service.edit(product);
+				service.addCode(product,productCode);
 				
 				ProductEditContent parent = (ProductEditContent)getParent();
 				parent.refresh();
@@ -122,7 +117,8 @@ public class CodeWindow extends AbstractWindow
 			types.appendChild(new Listitem(type.name(),type.name()));
 		
 		types.setMold("select");
-		types.setSelectedIndex(0);
+		if(!types.getChildren().isEmpty())
+			types.setSelectedIndex(0);
 		
 		content.getColumns().appendChild(new Column(null,null,"100px"));
 		content.getColumns().appendChild(new Column());

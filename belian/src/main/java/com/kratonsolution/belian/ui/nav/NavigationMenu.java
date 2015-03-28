@@ -130,16 +130,15 @@ public class NavigationMenu extends Window
 
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
-		list.setParent(panel);
-		
-		Listitem invItem = new Listitem("Inventory Item");
-		invItem.setImage("/icons/inventoryitem.png");
+
+		panel.appendChild(list);
+		panels.appendChild(panel);
 		
 		list.appendChild(new UOMItem());
 		list.appendChild(new FacilityItem());
 		list.appendChild(new ProductCategoryItem());
 		list.appendChild(new ProductItem());
-		list.appendChild(invItem);
+		list.appendChild(new InventoryItemItem());
 	}
 	
 	protected void initSales()

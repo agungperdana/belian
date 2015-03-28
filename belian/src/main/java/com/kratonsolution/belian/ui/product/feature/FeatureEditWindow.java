@@ -85,25 +85,21 @@ public class FeatureEditWindow extends AbstractWindow
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				for(ProductFeature feature:product.getFeatures())
+				ProductFeature feature = service.findFeature(product, featureId);
+				if(feature != null)
 				{
-					if(feature.getId().equals(featureId))
-					{
-						feature.setValue(value.getText());
-						feature.setNote(note.getText());
-						feature.setType(ProductFeature.Type.valueOf(types.getSelectedItem().getValue().toString()));
-						
-						service.edit(product);
-						
-						ProductEditContent parent = (ProductEditContent)getParent();
-						parent.refresh();
-						parent.setSelectedTab(1);
-						
-						onClose();
-						
-						break;
-					}
+					feature.setValue(value.getText());
+					feature.setNote(note.getText());
+					feature.setType(ProductFeature.Type.valueOf(types.getSelectedItem().getValue().toString()));
+					
+					service.editFeature(feature);
 				}
+				
+				ProductEditContent parent = (ProductEditContent)getParent();
+				parent.refresh();
+				parent.setSelectedTab(1);
+				
+				onClose();
 			}
 		});
 		

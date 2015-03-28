@@ -111,7 +111,7 @@ public class ComponentTab implements TabedDisplay
 								
 								service.edit(product);
 								parent.refresh();
-								parent.setSelectedTab(0);
+								parent.setSelectedTab(2);
 							}
 						}
 					});
@@ -120,7 +120,7 @@ public class ComponentTab implements TabedDisplay
 
 			Row row = new Row();
 			row.appendChild(remove);
-			row.appendChild(new Label(component.getProduct().getName()));
+			row.appendChild(new Label(component.getComponent().getName()));
 			row.appendChild(new Label(component.getQuantity().toPlainString()));
 			row.appendChild(new Label(component.getNote()));
 			row.appendChild(new Label(component.getId()));

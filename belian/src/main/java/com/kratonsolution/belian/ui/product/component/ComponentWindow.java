@@ -4,7 +4,6 @@
 package com.kratonsolution.belian.ui.product.component;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -86,14 +85,11 @@ public class ComponentWindow extends AbstractWindow
 			public void onEvent(Event event) throws Exception
 			{
 				ProductComponent component = new ProductComponent();
-				component.setId(UUID.randomUUID().toString());
+				component.setComponent(service.findOne(products.getSelectedItem().getValue().toString()));
 				component.setQuantity(BigDecimal.valueOf(quantity.doubleValue()));
 				component.setNote(note.getText());
-				component.setProduct(service.findOne(products.getSelectedItem().getValue().toString()));
 				
-				product.getComponents().add(component);
-				
-				service.edit(product);
+				service.addComponent(product, component);
 				
 				ProductEditContent parent = (ProductEditContent)getParent();
 				parent.refresh();

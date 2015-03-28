@@ -3,8 +3,6 @@
  */
 package com.kratonsolution.belian.ui.product.feature;
 
-import java.util.UUID;
-
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -84,14 +82,11 @@ public class FeatureWindow extends AbstractWindow
 			public void onEvent(Event event) throws Exception
 			{
 				ProductFeature feature = new ProductFeature();
-				feature.setId(UUID.randomUUID().toString());
 				feature.setValue(value.getText());
 				feature.setNote(note.getText());
 				feature.setType(ProductFeature.Type.valueOf(types.getSelectedItem().getValue().toString()));
 				
-				product.getFeatures().add(feature);
-				
-				service.edit(product);
+				service.addFeature(product,feature);
 				
 				ProductEditContent parent = (ProductEditContent)getParent();
 				parent.refresh();

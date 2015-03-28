@@ -88,25 +88,18 @@ public class ComponentEditWindow extends AbstractWindow
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				for(ProductComponent component:product.getComponents())
-				{
-					if(component.getId().equals(componentId))
-					{
-						component.setQuantity(BigDecimal.valueOf(quantity.doubleValue()));
-						component.setNote(note.getText());
-						component.setProduct(service.findOne(products.getSelectedItem().getValue().toString()));
-						
-						service.edit(product);
-						
-						ProductEditContent parent = (ProductEditContent)getParent();
-						parent.refresh();
-						parent.setSelectedTab(2);
-						
-						onClose();
-						
-						break;
-					}
-				}
+				ProductComponent component = service.findComponent(product, componentId);
+				component.setQuantity(BigDecimal.valueOf(quantity.doubleValue()));
+				component.setNote(note.getText());
+				component.setProduct(service.findOne(products.getSelectedItem().getValue().toString()));
+				
+				service.editComponent(component);
+				
+				ProductEditContent parent = (ProductEditContent)getParent();
+				parent.refresh();
+				parent.setSelectedTab(2);
+				
+				onClose();
 			}
 		});
 		
@@ -134,7 +127,7 @@ public class ComponentEditWindow extends AbstractWindow
 				note.setWidth("300px");
 				
 				products.setMold("select");
-				products.appendChild(new Listitem(component.getProduct().getName(),component.getProduct().getId()));
+				products.appendChild(new Listitem(component.getComponent().getName(),component.getComponent().getId()));
 				products.setSelectedIndex(0);
 				
 				content.getColumns().appendChild(new Column(null,null,"100px"));

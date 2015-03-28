@@ -1,8 +1,9 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.product.supplier;
+package com.kratonsolution.belian.ui.product.cost;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.zkoss.zk.ui.event.Event;
@@ -12,19 +13,21 @@ import org.zkoss.zul.Caption;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
-import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vlayout;
 
-import com.kratonsolution.belian.general.dm.Party;
-import com.kratonsolution.belian.general.dm.PartyRepository;
+import com.kratonsolution.belian.accounting.dm.Currency;
+import com.kratonsolution.belian.accounting.svc.CurrencyService;
+import com.kratonsolution.belian.general.dm.Geographic;
+import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductSupplier;
+import com.kratonsolution.belian.inventory.dm.ProductCost;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
@@ -35,7 +38,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author agungdodiperdana
  *
  */
-public class SupplierWindow extends AbstractWindow
+public class CostWindow extends AbstractWindow
 {
 	private Vlayout layout = new Vlayout();
 	
@@ -45,7 +48,9 @@ public class SupplierWindow extends AbstractWindow
 	
 	private ProductService service = Springs.get(ProductService.class);
 	
-	private PartyRepository partyRepository = Springs.get(PartyRepository.class);
+	private GeographicService geographicService = Springs.get(GeographicService.class);
+	
+	private CurrencyService currencyService = Springs.get(CurrencyService.class);
 	
 	private Product product;
 	
@@ -53,18 +58,22 @@ public class SupplierWindow extends AbstractWindow
 	
 	private Datebox to = new Datebox();
 	
-	private Textbox note = new Textbox();
+	private Doublebox cost = new Doublebox();
 	
-	private Listbox suppliers = new Listbox();
+	private Listbox currencys = new Listbox();
 	
-	public SupplierWindow(Product product)
+	private Listbox types = new Listbox();
+	
+	private Listbox geographics = new Listbox();
+	
+	public CostWindow(Product product)
 	{
 		super();
 		this.product = product;
 		
 		setMode(Mode.POPUP);
 		
-		Caption caption = new Caption("Product Supplier");
+		Caption caption = new Caption("Product Cost");
 		caption.setImage("/icons/product.png");
 		
 		appendChild(caption);
@@ -90,17 +99,21 @@ public class SupplierWindow extends AbstractWindow
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				ProductSupplier supplier = new ProductSupplier();
-				supplier.setFrom(from.getValue());
-				supplier.setTo(to.getValue());
-				supplier.setNote(note.getText());
-				supplier.setSupplier(partyRepository.findOne(suppliers.getSelectedItem().getValue().toString()));
-
-				service.addSupplier(product, supplier);
+				ProductCost productCost = new ProductCost();
+				productCost.setFrom(from.getValue());
+				productCost.setTo(to.getValue());
+				productCost.setEstimated(BigDecimal.valueOf(cost.getValue()));
+				productCost.setType(ProductCost.Type.valueOf(types.getSelectedItem().getValue().toString()));
+				productCost.setCurrency(currencyService.findOne(currencys.getSelectedItem().getValue().toString()));
+				
+				if(geographics.getSelectedCount() > 0)
+					productCost.setGeographic(geographicService.findOne(geographics.getSelectedItem().getValue().toString()));
+				
+				service.addCost(product,productCost);
 				
 				ProductEditContent parent = (ProductEditContent)getParent();
 				parent.refresh();
-				parent.setSelectedTab(3);
+				parent.setSelectedTab(5);
 				
 				onClose();
 			}
@@ -119,19 +132,24 @@ public class SupplierWindow extends AbstractWindow
 	protected void initContent()
 	{
 		from.setConstraint("no empty");
-		from.setWidth("150px");
+		cost.setConstraint("no empty");
 		
-		to.setWidth("150px");
-		
-		note.setWidth("300px");
-		
-		for(Party party:partyRepository.findAllByRolesTypeName("Supplier"))
-			suppliers.appendChild(new Listitem(party.getName(),party.getId()));
-		
-		suppliers.setMold("select");
+		for(ProductCost.Type type:ProductCost.Type.values())
+			types.appendChild(new Listitem(type.name(),type.name()));
 
-		if(!suppliers.getChildren().isEmpty())
-			suppliers.setSelectedIndex(0);
+		types.setSelectedIndex(0);
+		types.setMold("select");
+		geographics.setMold("select");
+		currencys.setMold("select");
+		
+		for(Geographic geographic:geographicService.findAll())
+			geographics.appendChild(new Listitem(geographic.getName(),geographic.getId()));
+		
+		for(Currency currency:currencyService.findAll())
+			currencys.appendChild(new Listitem(currency.getCode(),currency.getId()));
+		
+		if(!currencys.getChildren().isEmpty())
+			currencys.setSelectedIndex(0);
 		
 		content.getColumns().appendChild(new Column(null,null,"100px"));
 		content.getColumns().appendChild(new Column());
@@ -145,18 +163,28 @@ public class SupplierWindow extends AbstractWindow
 		row2.appendChild(to);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Supplier"));
-		row3.appendChild(suppliers);
+		row3.appendChild(new Label("Cost"));
+		row3.appendChild(cost);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Note"));
-		row4.appendChild(note);
+		row4.appendChild(new Label("Currency"));
+		row4.appendChild(currencys);
+
+		Row row5 = new Row();
+		row5.appendChild(new Label("Type"));
+		row5.appendChild(types);
+		
+		Row row6 = new Row();
+		row6.appendChild(new Label("For Area"));
+		row6.appendChild(geographics);
 		
 		content.setWidth("100%");
 		content.getRows().appendChild(row1);
 		content.getRows().appendChild(row2);
 		content.getRows().appendChild(row3);
 		content.getRows().appendChild(row4);
+		content.getRows().appendChild(row5);
+		content.getRows().appendChild(row6);
 	}
 	
 	@Override
@@ -182,8 +210,5 @@ public class SupplierWindow extends AbstractWindow
 	@Override
 	public void removeStatus()
 	{
-		// TODO Auto-generated method stub
-
 	}
-
 }
