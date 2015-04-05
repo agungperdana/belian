@@ -3,17 +3,22 @@
  */
 package com.kratonsolution.belian.sales.dm;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.kratonsolution.belian.global.EconomicAgent;
-import com.kratonsolution.belian.global.ExchangeProccess;
+import com.kratonsolution.belian.general.dm.Person;
+import com.kratonsolution.belian.global.Contract;
 
 /**
  * @author agungdodiperdana
@@ -21,37 +26,20 @@ import com.kratonsolution.belian.global.ExchangeProccess;
  */
 @Getter
 @Setter
-@Document(collection="cash_sales_order")
-public class CashSales extends Sales implements ExchangeProccess
+@Entity
+@Table(name="cash_sales")
+public class CashSales extends Contract<PaymentLine, CashLine>
 {
-	private CashPayment payment;
+	@ManyToOne
+	@JoinColumn(name="fk_person_sales")
+	private Person sales;
 	
-	private List<SalesLine> items = new ArrayList<SalesLine>();
+	@Version
+	private Long version;
 	
-	@Override
-	public EconomicAgent getProducer()
-	{		
-		return getSales();
-	}
-
-	@Override
-	public EconomicAgent getConsumer()
-	{
-		return getCustomer();
-	}
+	@OneToMany(mappedBy="cashSales",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<CashLine> decrements = new HashSet<CashLine>();
 	
-	@Override
-	public Collection<CashPayment> getIncrementEvents()
-	{
-		Collection<CashPayment> payments = new ArrayList<CashPayment>();
-		payments.add(getPayment());
-		
-		return payments;
-	}
-
-	@Override
-	public Collection<SalesLine> getDecrementEvents()
-	{
-		return getItems();
-	}
+	@OneToMany(mappedBy="cashSales",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<PaymentLine> increments = new HashSet<PaymentLine>();
 }
