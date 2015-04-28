@@ -6,7 +6,6 @@ package com.kratonsolution.belian.ui.nav;
 import org.zkoss.zk.ui.Page;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Tab;
 import org.zkoss.zul.Tabbox;
 import org.zkoss.zul.Tabpanel;
@@ -144,15 +143,12 @@ public class NavigationMenu extends Window
 	protected void initSales()
 	{
 		Tabpanel panel = new Tabpanel();
-		panel.setParent(panels);
 
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
-		list.setParent(panel);
-
-		Listitem cash = new Listitem("Cash Sales");
-		cash.setImage("/icons/cashsales.png");
+		list.appendChild(new CashSalesItem());
 		
-		cash.setParent(list);
+		panel.appendChild(list);
+		panels.appendChild(panel);
 	}
 }

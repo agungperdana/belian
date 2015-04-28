@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.global.dm.EconomicAgent;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -41,7 +43,7 @@ public class PartyRole
 	
 	@ManyToOne
 	@JoinColumn(name="fk_party")
-	private Party party;
+	private EconomicAgent party;
 	
 	@Version
 	private Long version;

@@ -12,13 +12,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.global.Contract;
+import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.global.dm.Contract;
 
 /**
  * @author agungdodiperdana
@@ -31,11 +30,8 @@ import com.kratonsolution.belian.global.Contract;
 public class CashSales extends Contract<PaymentLine, CashLine>
 {
 	@ManyToOne
-	@JoinColumn(name="fk_person_sales")
-	private Person sales;
-	
-	@Version
-	private Long version;
+	@JoinColumn(name="fk_organization")
+	private Organization organization;
 	
 	@OneToMany(mappedBy="cashSales",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<CashLine> decrements = new HashSet<CashLine>();

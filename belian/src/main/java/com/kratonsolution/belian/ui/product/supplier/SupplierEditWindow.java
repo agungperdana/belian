@@ -19,7 +19,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vlayout;
 
-import com.kratonsolution.belian.general.dm.PartyRepository;
+import com.kratonsolution.belian.global.dm.EconomicAgentRepository;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductSupplier;
 import com.kratonsolution.belian.inventory.svc.ProductService;
@@ -42,7 +42,7 @@ public class SupplierEditWindow extends AbstractWindow
 	
 	private ProductService service = Springs.get(ProductService.class);
 	
-	private PartyRepository partyRepository = Springs.get(PartyRepository.class);
+	private EconomicAgentRepository partyRepository = Springs.get(EconomicAgentRepository.class);
 	
 	private Product product;
 	

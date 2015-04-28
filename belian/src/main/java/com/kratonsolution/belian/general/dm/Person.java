@@ -9,6 +9,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
+import com.kratonsolution.belian.global.dm.EconomicAgent;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +22,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="person")
-public class Person extends Party
+public class Person extends EconomicAgent
 {
 	public enum MaritalStatus {MARIED,DEFORCE,SINGLE}
 	

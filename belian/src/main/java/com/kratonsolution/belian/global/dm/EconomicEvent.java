@@ -1,10 +1,10 @@
 /**
  * 
  */
-package com.kratonsolution.belian.global;
+package com.kratonsolution.belian.global.dm;
 
+import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -15,12 +15,10 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import com.kratonsolution.belian.general.dm.Party;
-
 
 /**
  * @author agungdodiperdana
@@ -29,32 +27,35 @@ import com.kratonsolution.belian.general.dm.Party;
 @Getter
 @Setter
 @Entity
-@Table(name="contract")
+@Table(name="economic_event")
 @Inheritance(strategy=InheritanceType.JOINED)
-@DiscriminatorColumn(name="contract_type")
-public abstract class Contract<I extends IncrementCommitment,D extends DecrementCommitment>
+@DiscriminatorColumn(name="event_type")
+public abstract class EconomicEvent<R extends EconomicResource>
 {
+	public enum Type{GET,GIVE}
+	
 	@Id
 	protected String id;
 	
-	@Column(name="number",unique=true,nullable=false)
-	protected String number;
-	
+	@Column(name="type")
+	protected Type type = Type.GIVE;
+
 	@Column(name="date")
 	protected Date date;
 	
-	@Column(name="credit_term")
-	protected int creditTerm;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_party_consumer")
-	protected Party consumer;
+	@Column(name="value")
+	protected BigDecimal value;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_party_producer")
-	protected Party producer;
+	protected EconomicAgent producer;
 	
-	public abstract Set<I> getIncrements();
+	@ManyToOne
+	@JoinColumn(name="fk_party_consumer")
+	protected EconomicAgent consumer;
 	
-	public abstract Set<D> getDecrements();
+	@Version
+	protected Long version;
+	
+	public abstract R getResource();
 }

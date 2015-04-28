@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.global;
+package com.kratonsolution.belian.global.infra;
 
 import java.util.Collection;
 import java.util.HashSet;

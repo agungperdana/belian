@@ -1,7 +1,9 @@
 /**
  * 
  */
-package com.kratonsolution.belian.global;
+package com.kratonsolution.belian.global.dm;
+
+import java.math.BigDecimal;
 
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
@@ -15,13 +17,17 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name="economic_event")
+@Table(name="economic_resource")
 @Inheritance(strategy=InheritanceType.JOINED)
-@DiscriminatorColumn(name="economic_event")
-public interface EconomicEvent
+@DiscriminatorColumn(name="resource_type")
+public interface EconomicResource
 {
 	@Id
 	public String getId();
 	
 	public void setId(String id);
+	
+	public void increment(BigDecimal value);
+	
+	public void decrement(BigDecimal value);
 }

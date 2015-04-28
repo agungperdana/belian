@@ -23,9 +23,9 @@ import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Geographic;
-import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.svc.GeographicService;
-import com.kratonsolution.belian.general.svc.PartyService;
+import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -56,13 +56,13 @@ public class AddressEditWindow extends Window
 	
 	private GeographicService geographicController = Springs.get(GeographicService.class);
 	
-	private PartyService service = Springs.get(PartyService.class);
+	private EconomicAgentService service = Springs.get(EconomicAgentService.class);
 	
-	private Party party;
+	private EconomicAgent party;
 	
 	private Address edited;
 	
-	public AddressEditWindow(Party party,Address edited)
+	public AddressEditWindow(EconomicAgent party,Address edited)
 	{
 		this.party = party;
 		this.edited = edited;

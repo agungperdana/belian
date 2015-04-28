@@ -3,8 +3,6 @@
  */
 package com.kratonsolution.belian.ui.party;
 
-import java.util.UUID;
-
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -20,11 +18,11 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Window;
 
-import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.dm.PartyRoleType;
 import com.kratonsolution.belian.general.svc.PartyRoleTypeService;
-import com.kratonsolution.belian.general.svc.PartyService;
+import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -45,7 +43,7 @@ public class RoleAddWindow extends Window
 
 	private Listbox roles = new Listbox();
 	
-	private PartyService service = Springs.get(PartyService.class);
+	private EconomicAgentService service = Springs.get(EconomicAgentService.class);
 	
 	private PartyRoleTypeService partyRoleTypeController = Springs.get(PartyRoleTypeService.class);
 	
@@ -89,18 +87,17 @@ public class RoleAddWindow extends Window
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Party party = service.findOne(partyId);
+				EconomicAgent party = service.findOne(partyId);
 				if(party != null)
 				{
 					PartyRole role = new PartyRole();
-					role.setId(UUID.randomUUID().toString());
 					role.setFrom(from.getValue());
 					role.setTo(to.getValue());
 					role.setParty(service.findOne(partyId));
 					role.setType(partyRoleTypeController.findOne(roles.getSelectedItem().getValue().toString()));
-				
-					party.getRoles().add(role);
-					service.edit(party);
+
+					service.addRole(role);
+					
 					((Refreshable)getParent()).refresh();
 				}
 				
@@ -134,7 +131,8 @@ public class RoleAddWindow extends Window
 		for(PartyRoleType type:partyRoleTypeController.findAll())
 			roles.appendChild(new Listitem(type.getName(),type.getId()));
 
-		roles.setSelectedIndex(0);
+		if(!roles.getChildren().isEmpty())
+			roles.setSelectedIndex(0);
 		
 		layout.getRows().appendChild(row1);
 		layout.getRows().appendChild(row3);

@@ -11,8 +11,8 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-import com.kratonsolution.belian.accounting.dm.CashAccount;
 import com.kratonsolution.belian.global.dm.EconomicEvent;
+import com.kratonsolution.belian.inventory.dm.InventoryItem;
 
 /**
  * @author agungdodiperdana
@@ -21,10 +21,10 @@ import com.kratonsolution.belian.global.dm.EconomicEvent;
 @Getter
 @Setter
 @Entity
-@Table(name="cash_receipt")
-public class CashReceipt extends EconomicEvent<CashAccount>
-{	
+@Table(name="cash_sale")
+public class CashSale extends EconomicEvent<InventoryItem>
+{
 	@ManyToOne
-	@JoinColumn(name="fk_cash_account")
-	private CashAccount resource;
+	@JoinColumn(name="fk_inventory_item")
+	protected InventoryItem resource;
 }

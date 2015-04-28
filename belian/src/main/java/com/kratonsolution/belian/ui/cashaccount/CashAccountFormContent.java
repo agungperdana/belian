@@ -23,8 +23,8 @@ import com.kratonsolution.belian.accounting.dm.CashAccount;
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.svc.CashAccountService;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
-import com.kratonsolution.belian.general.dm.Party;
-import com.kratonsolution.belian.general.dm.PartyRepository;
+import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.global.dm.EconomicAgentRepository;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -36,7 +36,7 @@ public class CashAccountFormContent extends FormContent
 {	
 	private final CashAccountService service = Springs.get(CashAccountService.class);
 	
-	private final PartyRepository partyRepository = Springs.get(PartyRepository.class);
+	private final EconomicAgentRepository partyRepository = Springs.get(EconomicAgentRepository.class);
 	
 	private final CurrencyService currencyService = Springs.get(CurrencyService.class);
 	
@@ -116,7 +116,7 @@ public class CashAccountFormContent extends FormContent
 		for(Currency ondb:currencyService.findAll())
 			currency.appendChild(new Listitem(ondb.getCode(),ondb.getId()));
 		
-		for(Party party:partyRepository.findAll())
+		for(EconomicAgent party:partyRepository.findAll())
 			owner.appendChild(new Listitem(party.getName(),party.getId()));
 		
 		if(!currency.getChildren().isEmpty())

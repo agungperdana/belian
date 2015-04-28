@@ -16,11 +16,11 @@ import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
 
 import com.kratonsolution.belian.general.dm.Organization;
-import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -34,14 +34,14 @@ public class RoleInformation extends Treeitem
 	
 	private SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 	
-	public RoleInformation(PartyRole role,Party party)
+	public RoleInformation(PartyRole role,EconomicAgent party)
 	{
 		addDescription(role, party);
 		addIcon(party, role);
 		appendChild(row);
 	}
 	
-	protected void addDescription(final PartyRole role,final Party party)
+	protected void addDescription(final PartyRole role,final EconomicAgent party)
 	{
 		Treecell cell = new Treecell("["+format.format(role.getFrom())+" - "+(role.getTo()!=null?format.format(role.getTo()):"")+"]"+" AS  "+role.getType().getName());
 		cell.addEventListener(Events.ON_CLICK,new EventListener<Event>()
@@ -56,7 +56,7 @@ public class RoleInformation extends Treeitem
 		row.appendChild(cell);
 	}
 	
-	protected void addIcon(final Party party,final PartyRole role)
+	protected void addIcon(final EconomicAgent party,final PartyRole role)
 	{
 		Image remove = new Image("/icons/deletesmall.png");
 		Treecell delcell = new Treecell();
@@ -81,7 +81,7 @@ public class RoleInformation extends Treeitem
 		row.appendChild(delcell);
 	}
 	
-	protected void remove(final Party party,final PartyRole role)
+	protected void remove(final EconomicAgent party,final PartyRole role)
 	{
 		Iterator<PartyRole> iterator = party.getRoles().iterator();
 		while (iterator.hasNext())

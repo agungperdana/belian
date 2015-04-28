@@ -20,13 +20,13 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Window;
 
-import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.PartyRelationship;
 import com.kratonsolution.belian.general.dm.PartyRelationshipType;
 import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.svc.PartyRelationshipTypeService;
 import com.kratonsolution.belian.general.svc.PartyRoleTypeService;
-import com.kratonsolution.belian.general.svc.PartyService;
+import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -51,7 +51,7 @@ public class RelationshipEditWindow extends Window
 	
 	private Listbox toParty = new Listbox();
 	
-	private PartyService service = Springs.get(PartyService.class);
+	private EconomicAgentService service = Springs.get(EconomicAgentService.class);
 
 	private PartyRelationshipTypeService relationshipTypeController = Springs.get(PartyRelationshipTypeService.class);
 	
@@ -97,7 +97,7 @@ public class RelationshipEditWindow extends Window
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Party party = service.findOne(edited.getParty().getId());
+				EconomicAgent party = service.findOne(edited.getParty().getId());
 				if(party != null)
 				{
 					Iterator<PartyRelationship> iterator = party.getRelationships().iterator();
@@ -171,7 +171,7 @@ public class RelationshipEditWindow extends Window
 				types.setSelectedItem(listitem);
 		}
 		
-		for(Party pty:service.findAll())
+		for(EconomicAgent pty:service.findAll())
 		{
 			Listitem listitem = new Listitem(pty.getName(),pty.getId());
 			toParty.appendChild(listitem);

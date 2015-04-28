@@ -26,50 +26,62 @@ public class OrganizationService
 {	
 	@Autowired
 	private OrganizationRepository repository;
-		
+
 	@Secured("ROLE_ORGANIZATION_READ")
 	public Organization findOne(String id)
 	{
 		return repository.findOne(id);
 	}
-	
+
 	@Secured("ROLE_ORGANIZATION_READ")
 	public List<Organization> findAll()
 	{
 		return repository.findAll();
 	}
-	
+
 	@Secured("ROLE_ORGANIZATION_READ")
 	public List<Organization> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
 	}
-	
+
 	@Secured("ROLE_ORGANIZATION_READ")
 	public List<Organization> findAllByIndustryType(IndustryType type)
 	{
 		return repository.findAllByType(type);
 	}
-	
+
+	@Secured("ROLE_ORGANIZATION_READ")
+	public List<Organization> findAllByRolesTypeName(String roleName)
+	{
+		return repository.findAllByRolesTypeName(roleName);
+	}
+
+	@Secured("ROLE_ORGANIZATION_READ")
+	public List<Organization> findAllByRelationshipsRelationshipTypeName(String name)
+	{
+		return repository.findAllByRelationshipsRelationshipTypeName(name);
+	}
+
 	@Secured("ROLE_ORGANIZATION_READ")
 	public int size()
 	{
 		return Long.valueOf(repository.count()).intValue();
 	}
-	
+
 	@Secured("ROLE_ORGANIZATION_CREATE")
 	public void add(Organization organization)
 	{
 		organization.setId(UUID.randomUUID().toString());
 		repository.save(organization);
 	}
-	
+
 	@Secured("ROLE_ORGANIZATION_UPDATE")
 	public void edit(Organization organization)
 	{
 		repository.saveAndFlush(organization);
 	}
-	
+
 	@Secured("ROLE_ORGANIZATION_DELETE")
 	public void delete(String id)
 	{

@@ -21,8 +21,8 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vlayout;
 
-import com.kratonsolution.belian.general.dm.Party;
-import com.kratonsolution.belian.general.dm.PartyRepository;
+import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.global.dm.EconomicAgentRepository;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductSupplier;
 import com.kratonsolution.belian.inventory.svc.ProductService;
@@ -45,7 +45,7 @@ public class SupplierWindow extends AbstractWindow
 	
 	private ProductService service = Springs.get(ProductService.class);
 	
-	private PartyRepository partyRepository = Springs.get(PartyRepository.class);
+	private EconomicAgentRepository partyRepository = Springs.get(EconomicAgentRepository.class);
 	
 	private Product product;
 	
@@ -125,7 +125,7 @@ public class SupplierWindow extends AbstractWindow
 		
 		note.setWidth("300px");
 		
-		for(Party party:partyRepository.findAllByRolesTypeName("Supplier"))
+		for(EconomicAgent party:partyRepository.findAllByRolesTypeName("Supplier"))
 			suppliers.appendChild(new Listitem(party.getName(),party.getId()));
 		
 		suppliers.setMold("select");

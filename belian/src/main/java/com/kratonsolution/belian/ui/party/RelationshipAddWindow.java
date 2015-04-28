@@ -20,13 +20,13 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Window;
 
-import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.PartyRelationship;
 import com.kratonsolution.belian.general.dm.PartyRelationshipType;
 import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.svc.PartyRelationshipTypeService;
 import com.kratonsolution.belian.general.svc.PartyRoleTypeService;
-import com.kratonsolution.belian.general.svc.PartyService;
+import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -51,7 +51,7 @@ public class RelationshipAddWindow extends Window
 	
 	private Listbox types = new Listbox();
 	
-	private PartyService service = Springs.get(PartyService.class);
+	private EconomicAgentService service = Springs.get(EconomicAgentService.class);
 	
 	private PartyRelationshipTypeService relationshipTypeController = Springs.get(PartyRelationshipTypeService.class);
 	
@@ -97,7 +97,7 @@ public class RelationshipAddWindow extends Window
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Party party = service.findOne(partyId);
+				EconomicAgent party = service.findOne(partyId);
 				if(party != null)
 				{
 					PartyRelationship relationship = new PartyRelationship();
@@ -152,7 +152,7 @@ public class RelationshipAddWindow extends Window
 		row5.appendChild(fromRole);
 		
 		Row row6 = new Row();
-		row6.appendChild(new Label("To Role"));
+		row6.appendChild(new Label("To Party"));
 		row6.appendChild(toParty);
 
 		for(PartyRelationshipType type:relationshipTypeController.findAll())
@@ -161,12 +161,17 @@ public class RelationshipAddWindow extends Window
 		for(PartyRole role:service.findOne(partyId).getRoles())
 			fromRole.appendChild(new Listitem(role.getType().getName(),role.getType().getId()));
 
-		for(Party party:service.findAll())
+		for(EconomicAgent party:service.findAll())
 			toParty.appendChild(new Listitem(party.getName(),party.getId()));
 		
-		types.setSelectedIndex(0);
-		fromRole.setSelectedIndex(0);
-		toParty.setSelectedIndex(0);
+		if(!types.getChildren().isEmpty())
+			types.setSelectedIndex(0);
+		
+		if(!fromRole.getChildren().isEmpty())
+			fromRole.setSelectedIndex(0);
+		
+		if(!toParty.getChildren().isEmpty())
+			toParty.setSelectedIndex(0);
 		
 		layout.getRows().appendChild(row1);
 		layout.getRows().appendChild(row3);

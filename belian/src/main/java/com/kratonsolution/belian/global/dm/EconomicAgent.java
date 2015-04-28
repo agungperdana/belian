@@ -1,24 +1,31 @@
 /**
  * 
  */
-package com.kratonsolution.belian.general.dm;
+package com.kratonsolution.belian.global.dm;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.general.dm.Address;
+import com.kratonsolution.belian.general.dm.Contact;
+import com.kratonsolution.belian.general.dm.PartyRelationship;
+import com.kratonsolution.belian.general.dm.PartyRole;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import com.kratonsolution.belian.global.EconomicAgent;
 
 /**
  * @author agungdodiperdana
@@ -28,7 +35,9 @@ import com.kratonsolution.belian.global.EconomicAgent;
 @Setter
 @Entity
 @Table(name="party")
-public class Party implements EconomicAgent
+@Inheritance(strategy=InheritanceType.JOINED)
+@DiscriminatorColumn(name="agent_type")
+public class EconomicAgent implements Serializable
 {
 	@Id
 	protected String id;
@@ -41,7 +50,7 @@ public class Party implements EconomicAgent
 
 	@Column(name="tax_code")
 	protected String taxCode;
-	
+
 	@Version
 	protected Long version;
 	

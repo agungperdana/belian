@@ -23,9 +23,9 @@ import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Geographic;
-import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.svc.GeographicService;
-import com.kratonsolution.belian.general.svc.PartyService;
+import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -56,7 +56,7 @@ public class AddressAddWindow extends Window
 	
 	private GeographicService geographicService = Springs.get(GeographicService.class);
 	
-	private PartyService service = Springs.get(PartyService.class);
+	private EconomicAgentService service = Springs.get(EconomicAgentService.class);
 	
 	private String partyId;;
 	
@@ -103,7 +103,7 @@ public class AddressAddWindow extends Window
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Party party = service.findOne(partyId);
+				EconomicAgent party = service.findOne(partyId);
 				if(party != null)
 				{
 					Address add = new Address();
@@ -183,10 +183,17 @@ public class AddressAddWindow extends Window
 				country.appendChild(new Listitem(geographic.getName(), geographic.getId()));
 		}
 		
-		type.setSelectedIndex(0);
-		city.setSelectedIndex(0);
-		province.setSelectedIndex(0);
-		country.setSelectedIndex(0);
+		if(!type.getChildren().isEmpty())
+			type.setSelectedIndex(0);
+		
+		if(!city.getChildren().isEmpty())
+			city.setSelectedIndex(0);
+		
+		if(!province.getChildren().isEmpty())
+			province.setSelectedIndex(0);
+		
+		if(!country.getChildren().isEmpty())
+			country.setSelectedIndex(0);
 		
 		layout.getRows().appendChild(row1);
 		layout.getRows().appendChild(row2);

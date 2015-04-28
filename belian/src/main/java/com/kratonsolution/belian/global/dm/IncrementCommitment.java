@@ -1,9 +1,10 @@
 /**
  * 
  */
-package com.kratonsolution.belian.global;
+package com.kratonsolution.belian.global.dm;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -12,16 +13,17 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * @author agungdodiperdana
  *
  */
 @Entity
-@Table(name="decrement_commitment")
+@Table(name="increment_commitment")
 @Inheritance(strategy=InheritanceType.JOINED)
-@DiscriminatorColumn(name="decrement_type")
-public abstract class DecrementCommitment<T extends EconomicResource,E extends EconomicEvent>
+@DiscriminatorColumn(name="commitment_type")
+public abstract class IncrementCommitment<R extends EconomicResource,E extends EconomicEvent>
 {
 	@Id
 	protected String id;
@@ -29,17 +31,9 @@ public abstract class DecrementCommitment<T extends EconomicResource,E extends E
 	@Column(name="value")
 	protected BigDecimal value;
 	
-	public abstract T getResource();
+	@Column(name="date")
+	protected Date date;
 	
-	public abstract E getEvent();
-
-	public BigDecimal getValue()
-	{
-		return value;
-	}
-
-	public void setValue(BigDecimal value)
-	{
-		this.value = value;
-	}
+	@Version
+	protected Long version;
 }

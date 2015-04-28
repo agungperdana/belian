@@ -20,11 +20,11 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Window;
 
-import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.dm.PartyRoleType;
 import com.kratonsolution.belian.general.svc.PartyRoleTypeService;
-import com.kratonsolution.belian.general.svc.PartyService;
+import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -45,7 +45,7 @@ public class RoleEditWindow extends Window
 	
 	private Listbox roles = new Listbox();
 	
-	private PartyService service = Springs.get(PartyService.class);
+	private EconomicAgentService service = Springs.get(EconomicAgentService.class);
 
 	private PartyRoleTypeService partyRoleTypeController = Springs.get(PartyRoleTypeService.class);
 	
@@ -89,7 +89,7 @@ public class RoleEditWindow extends Window
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Party party = service.findOne(edited.getParty().getId());
+				EconomicAgent party = service.findOne(edited.getParty().getId());
 				if(party != null)
 				{
 					Iterator<PartyRole> iterator = party.getRoles().iterator();

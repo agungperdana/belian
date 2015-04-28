@@ -16,8 +16,8 @@ import javax.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
-import com.kratonsolution.belian.general.dm.Party;
-import com.kratonsolution.belian.global.EconomicResource;
+import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.global.dm.EconomicResource;
 
 /**
  * @author agungdodiperdana
@@ -44,7 +44,7 @@ public class CashAccount implements EconomicResource
 
 	@ManyToOne
 	@JoinColumn(name="fk_party_owner")
-	private Party owner;
+	private EconomicAgent owner;
 	
 	@Column(name="status")
 	private boolean active;

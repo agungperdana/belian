@@ -21,8 +21,8 @@ import com.kratonsolution.belian.accounting.dm.CashAccount;
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.svc.CashAccountService;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
-import com.kratonsolution.belian.general.dm.Party;
-import com.kratonsolution.belian.general.dm.PartyRepository;
+import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.global.dm.EconomicAgentRepository;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -35,7 +35,7 @@ public class CashAccountEditContent extends FormContent
 {	
 	private final CashAccountService service = Springs.get(CashAccountService.class);
 
-	private final PartyRepository partyRepository = Springs.get(PartyRepository.class);
+	private final EconomicAgentRepository partyRepository = Springs.get(EconomicAgentRepository.class);
 
 	private final CurrencyService currencyService = Springs.get(CurrencyService.class);
 
@@ -124,7 +124,7 @@ public class CashAccountEditContent extends FormContent
 				currency.setSelectedItem(listitem);
 		}
 		
-		for(Party party:partyRepository.findAll())
+		for(EconomicAgent party:partyRepository.findAll())
 		{
 			Listitem listitem = new Listitem(party.getName(),party.getId());
 			owner.appendChild(listitem);

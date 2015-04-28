@@ -25,9 +25,9 @@ import org.zkoss.zul.Vlayout;
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.general.dm.Geographic;
-import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.svc.GeographicService;
-import com.kratonsolution.belian.general.svc.PartyService;
+import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
 import com.kratonsolution.belian.inventory.svc.ProductService;
@@ -52,7 +52,7 @@ public class PriceWindow extends AbstractWindow
 	
 	private GeographicService geographicService = Springs.get(GeographicService.class);
 	
-	private PartyService partyService = Springs.get(PartyService.class);
+	private EconomicAgentService partyService = Springs.get(EconomicAgentService.class);
 	
 	private CurrencyService currencyService = Springs.get(CurrencyService.class);
 	
@@ -155,7 +155,7 @@ public class PriceWindow extends AbstractWindow
 		for(Geographic geographic:geographicService.findAll())
 			geographics.appendChild(new Listitem(geographic.getName(),geographic.getId()));
 		
-		for(Party party:partyService.findAll())
+		for(EconomicAgent party:partyService.findAll())
 			partys.appendChild(new Listitem(party.getName(), party.getId()));
 		
 		for(Currency currency:currencyService.findAll())

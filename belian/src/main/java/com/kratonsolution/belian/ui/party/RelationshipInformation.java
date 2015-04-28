@@ -16,11 +16,11 @@ import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
 
 import com.kratonsolution.belian.general.dm.Organization;
-import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.PartyRelationship;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -34,14 +34,14 @@ public class RelationshipInformation extends Treeitem
 	
 	private SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 	
-	public RelationshipInformation(PartyRelationship relationship,Party party)
+	public RelationshipInformation(PartyRelationship relationship,EconomicAgent party)
 	{
 		addDescription(relationship, party);
 		addIcon(party, relationship);
 		appendChild(row);
 	}
 	
-	protected void addDescription(final PartyRelationship relationship,final Party party)
+	protected void addDescription(final PartyRelationship relationship,final EconomicAgent party)
 	{
 		StringBuilder builder = new StringBuilder();
 		builder.append("[");
@@ -67,7 +67,7 @@ public class RelationshipInformation extends Treeitem
 		row.appendChild(cell);
 	}
 	
-	protected void addIcon(final Party party,final PartyRelationship contact)
+	protected void addIcon(final EconomicAgent party,final PartyRelationship contact)
 	{
 		Image remove = new Image("/icons/deletesmall.png");
 		Treecell delcell = new Treecell();
@@ -92,7 +92,7 @@ public class RelationshipInformation extends Treeitem
 		row.appendChild(delcell);
 	}
 	
-	protected void remove(final Party party,final PartyRelationship relationship)
+	protected void remove(final EconomicAgent party,final PartyRelationship relationship)
 	{
 		Iterator<PartyRelationship> iterator = party.getRelationships().iterator();
 		while (iterator.hasNext())

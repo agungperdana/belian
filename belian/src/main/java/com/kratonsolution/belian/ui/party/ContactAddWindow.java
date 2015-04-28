@@ -22,8 +22,8 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.general.dm.Contact;
-import com.kratonsolution.belian.general.dm.Party;
-import com.kratonsolution.belian.general.svc.PartyService;
+import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -44,7 +44,7 @@ public class ContactAddWindow extends Window
 	
 	private Checkbox status = new Checkbox("Active");
 	
-	private PartyService service = Springs.get(PartyService.class);
+	private EconomicAgentService service = Springs.get(EconomicAgentService.class);
 	
 	private String partyId;
 	
@@ -88,7 +88,7 @@ public class ContactAddWindow extends Window
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Party party = service.findOne(partyId);
+				EconomicAgent party = service.findOne(partyId);
 				if(party != null)
 				{
 					Contact contact = new Contact();
@@ -135,7 +135,8 @@ public class ContactAddWindow extends Window
 		for(Contact.Type _type:Contact.Type.values())
 			type.appendChild(new Listitem(_type.name(),_type.name()));
 		
-		type.setSelectedIndex(0);
+		if(!type.getChildren().isEmpty())
+			type.setSelectedIndex(0);
 		
 		layout.getRows().appendChild(row1);
 		layout.getRows().appendChild(row3);

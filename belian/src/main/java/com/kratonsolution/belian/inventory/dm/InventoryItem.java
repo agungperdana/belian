@@ -16,7 +16,7 @@ import javax.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
-import com.kratonsolution.belian.global.EconomicResource;
+import com.kratonsolution.belian.global.dm.EconomicResource;
 
 /**
  * @author agungdodiperdana

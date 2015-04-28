@@ -21,7 +21,7 @@ import lombok.Setter;
 
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.general.dm.Geographic;
-import com.kratonsolution.belian.general.dm.Party;
+import com.kratonsolution.belian.global.dm.EconomicAgent;
 
 /**
  * @author agungdodiperdana
@@ -61,7 +61,7 @@ public class ProductPrice
 	
 	@ManyToOne
 	@JoinColumn(name="fk_party")
-	private Party party;
+	private EconomicAgent party;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_product")

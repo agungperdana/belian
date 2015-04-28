@@ -16,7 +16,7 @@ import javax.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
-import com.kratonsolution.belian.general.dm.Party;
+import com.kratonsolution.belian.global.dm.EconomicAgent;
 
 /**
  * @author agungdodiperdana
@@ -39,7 +39,7 @@ public class ProductSupplier
 	
 	@ManyToOne
 	@JoinColumn(name="fk_party_supplier")
-	private Party supplier;
+	private EconomicAgent supplier;
 
 	@Column(name="note")
 	private String note;
