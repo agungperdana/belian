@@ -112,7 +112,7 @@ public class CashSalesFormContent extends FormContent
 		number.setWidth("300px");
 		
 		term.setConstraint("no empty");
-		term.setWidth("300px");
+		term.setWidth("65px");
 		
 		producers.setMold("select");
 		consumers.setMold("select");
@@ -133,13 +133,19 @@ public class CashSalesFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-//				consumers.getChildren().clear();
-//				for(EconomicAgent agent:service.findByRoleAndParty("Customer", organization.getId()))
-//					consumers.appendChild(new Listitem(agent.getName(), agent.getId()));
-//			
-//				producers.getChildren().clear();
-//				for(EconomicAgent agent:service.findByRoleAndParty("Sales Person", organization.getId()))
-//					producers.appendChild(new Listitem(agent.getName(), agent.getId()));
+				producers.getChildren().clear();
+				for(EconomicAgent agent:service.findByRoleAndParty("Sales Person",organizations.getSelectedItem().getValue().toString()))
+					producers.appendChild(new Listitem(agent.getName(),agent.getId()));
+				
+				consumers.getChildren().clear();
+				for(EconomicAgent agent:service.findByRoleAndParty("Customer",organizations.getSelectedItem().getValue().toString()))
+					consumers.appendChild(new Listitem(agent.getName(),agent.getId()));
+			
+				if(!producers.getChildren().isEmpty())
+					producers.setSelectedIndex(0);
+				
+				if(!consumers.getChildren().isEmpty())
+					consumers.setSelectedIndex(0);
 			}
 		});
 		
@@ -168,7 +174,7 @@ public class CashSalesFormContent extends FormContent
 		row5.appendChild(currencys);
 		
 		Row row6 = new Row();
-		row6.appendChild(new Label("Sales"));
+		row6.appendChild(new Label("Sales Person"));
 		row6.appendChild(producers);
 		
 		Row row7 = new Row();

@@ -18,6 +18,6 @@ public interface EconomicAgentRepository extends JpaRepository<EconomicAgent,Str
 {	
 	public List<EconomicAgent> findAllByRolesTypeName(String name);
 	
-	@Query("SELECT DISTINCT(rel.party) FROM PartyRelationship rel WHERE rel.responsibleAs.name =:name AND rel.relationshipType.id =:id")
+	@Query("SELECT DISTINCT(rel.party) FROM PartyRelationship rel WHERE rel.responsibleAs.name =:name AND rel.responsibleTo.id =:id")
 	public List<EconomicAgent> findByRoleAndParty(@Param("name")String name,@Param("id")String responsibleTo);
 }

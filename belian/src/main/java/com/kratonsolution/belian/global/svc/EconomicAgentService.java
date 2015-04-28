@@ -54,6 +54,8 @@ public class EconomicAgentService
 	@Secured("ROLE_PARTY_READ")
 	public List<EconomicAgent> findByRoleAndParty(String name,String responsibleTo)
 	{
+		System.out.println(repository.findByRoleAndParty(name, responsibleTo).size());
+		
 		return repository.findByRoleAndParty(name, responsibleTo);
 	}
 	
