@@ -33,7 +33,6 @@ import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.accounting.dm.BankAccount;
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.common.Dates;
@@ -48,7 +47,12 @@ import com.kratonsolution.belian.inventory.dm.ProductPrice;
 import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.inventory.svc.UnitOfMeasureService;
+import com.kratonsolution.belian.sales.dm.CashLine;
+import com.kratonsolution.belian.sales.dm.CashSales;
+import com.kratonsolution.belian.sales.dm.PaymentType;
+import com.kratonsolution.belian.sales.srv.CashSalesService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -58,7 +62,9 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class CashSalesFormContent extends FormContent
 {	
-	private EconomicAgentService service = Springs.get(EconomicAgentService.class);
+	private CashSalesService service = Springs.get(CashSalesService.class);
+	
+	private EconomicAgentService agentService = Springs.get(EconomicAgentService.class);
 	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 	
@@ -90,12 +96,24 @@ public class CashSalesFormContent extends FormContent
 	
 	private Tabbox tabbox = new Tabbox();
 	
+	private Grid saleItems = new Grid();
+	
+	private Grid payments = new Grid();
+	
 	public CashSalesFormContent()
 	{
 		super();
 		initToolbar();
 		initForm();
+		
+		this.tabbox.setWidth("100%");
+		this.tabbox.appendChild(new Tabpanels());
+		this.tabbox.appendChild(new Tabs());
+
+		appendChild(tabbox);
+		
 		initItems();
+		initPayments();
 	}
 
 	@Override
@@ -123,12 +141,36 @@ public class CashSalesFormContent extends FormContent
 				if(Strings.isNullOrEmpty(term.getText()))
 					throw new WrongValueException(term,"Holder cannot be empty");
 				
-				BankAccount account = new BankAccount();
-				account.setId(UUID.randomUUID().toString());
-				account.setNumber(number.getText());
-				account.setBank(organizationService.findOne(producers.getSelectedItem().getValue().toString()));
-				account.setHolder(term.getText());
-				account.setCurrency(currencyService.findOne(currencys.getSelectedItem().getValue().toString()));
+				CashSales sales = new CashSales();
+				sales.setConsumer(agentService.findOne(Components.string(consumers)));
+				sales.setCreditTerm(term.getValue().intValue());
+				sales.setCurrency(currencyService.findOne(Components.string(currencys)));
+				sales.setDate(date.getValue());
+				sales.setNote(note.getText());
+				sales.setNumber(number.getText());
+				sales.setOrganization(organizationService.findOne(Components.string(organizations)));
+				sales.setProducer(agentService.findOne(Components.string(producers)));
+				sales.setLocation(geographicService.findOne(Components.string(locations)));
+				
+				for(Object object:saleItems.getRows().getChildren())
+				{
+					Row row = (Row)object;
+					Listbox products = (Listbox)row.getChildren().get(1);
+					Listbox prices = (Listbox)row.getChildren().get(2);
+					Listbox discs = (Listbox)row.getChildren().get(3);
+					Listbox charges = (Listbox)row.getChildren().get(4);
+					Doublebox quantity = (Doublebox)row.getChildren().get(5);
+					Listbox uom = (Listbox)row.getChildren().get(6);
+					Textbox note = (Textbox)row.getChildren().get(7);
+
+					CashLine line = new CashLine();
+					line.setId(UUID.randomUUID().toString());
+					line.setCashSales(sales);
+					line.setPrice(Components.decimal(prices));
+					line.setDiscount(Components.decimal(discs));
+					line.setCharge(Components.decimal(charges));
+					line.setAmounts();
+				}
 				
 				CashSalesWindow window = (CashSalesWindow)getParent();
 				window.removeCreateForm();
@@ -140,6 +182,8 @@ public class CashSalesFormContent extends FormContent
 	@Override
 	public void initForm()
 	{
+		date.setConstraint("no empty");
+		
 		number.setConstraint("no empty");
 		number.setWidth("300px");
 		
@@ -167,11 +211,11 @@ public class CashSalesFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				producers.getChildren().clear();
-				for(EconomicAgent agent:service.findByRoleAndParty("Sales Person",organizations.getSelectedItem().getValue().toString()))
+				for(EconomicAgent agent:agentService.findByRoleAndParty("Sales Person",organizations.getSelectedItem().getValue().toString()))
 					producers.appendChild(new Listitem(agent.getName(),agent.getId()));
 				
 				consumers.getChildren().clear();
-				for(EconomicAgent agent:service.findByRoleAndParty("Customer",organizations.getSelectedItem().getValue().toString()))
+				for(EconomicAgent agent:agentService.findByRoleAndParty("Customer",organizations.getSelectedItem().getValue().toString()))
 					consumers.appendChild(new Listitem(agent.getName(),agent.getId()));
 			
 				if(!producers.getChildren().isEmpty())
@@ -239,24 +283,20 @@ public class CashSalesFormContent extends FormContent
 	
 	private void initItems()
 	{
-		this.tabbox.setWidth("100%");
-		this.tabbox.appendChild(new Tabpanels());
-		this.tabbox.appendChild(new Tabs());
 		this.tabbox.getTabs().appendChild(new Tab("Sales Item(s)"));
 		this.tabbox.getTabpanels().appendChild(new Tabpanel());
 		
-		Grid grid = new Grid();
-		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Product",null,"225px"));
-		grid.getColumns().appendChild(new Column("Price",null,"95px"));
-		grid.getColumns().appendChild(new Column("Disc",null,"95px"));
-		grid.getColumns().appendChild(new Column("Charge",null,"95px"));
-		grid.getColumns().appendChild(new Column("Quantity",null,"85px"));
-		grid.getColumns().appendChild(new Column("UoM",null,"85px"));
-		grid.getColumns().appendChild(new Column("Note",null));
-		grid.appendChild(new Rows());
-		grid.setSpan("4");
+		saleItems.appendChild(new Columns());
+		saleItems.getColumns().appendChild(new Column(null,null,"25px"));
+		saleItems.getColumns().appendChild(new Column("Product",null,"225px"));
+		saleItems.getColumns().appendChild(new Column("Price",null,"95px"));
+		saleItems.getColumns().appendChild(new Column("Disc",null,"95px"));
+		saleItems.getColumns().appendChild(new Column("Charge",null,"95px"));
+		saleItems.getColumns().appendChild(new Column("Quantity",null,"85px"));
+		saleItems.getColumns().appendChild(new Column("UoM",null,"85px"));
+		saleItems.getColumns().appendChild(new Column("Note",null));
+		saleItems.appendChild(new Rows());
+		saleItems.setSpan("4");
 		
 		Toolbar toolbar = new Toolbar();
 		toolbar.setHeight("40px");
@@ -321,7 +361,7 @@ public class CashSalesFormContent extends FormContent
 				for(UnitOfMeasure uom:unitOfMeasureService.findAll())
 					uoms.appendChild(new Listitem(uom.getName(), uom.getId()));
 				
-				Textbox quantity = new Textbox();
+				Doublebox quantity = new Doublebox(0d);
 				quantity.setWidth("100%");
 				
 				Textbox note = new Textbox();
@@ -367,7 +407,82 @@ public class CashSalesFormContent extends FormContent
 		
 		this.tabbox.getTabpanels().getChildren().get(0).appendChild(toolbar);
 		this.tabbox.getTabpanels().getChildren().get(0).appendChild(grid);
+	}
+	
+	private void initPayments()
+	{
+		this.tabbox.getTabs().appendChild(new Tab("Payment(s)"));
+		this.tabbox.getTabpanels().appendChild(new Tabpanel());
 		
-		appendChild(tabbox);
+		payments.appendChild(new Columns());
+		payments.getColumns().appendChild(new Column(null,null,"25px"));
+		payments.getColumns().appendChild(new Column("Type",null,"125px"));
+		payments.getColumns().appendChild(new Column("Amount",null,"125px"));
+		payments.getColumns().appendChild(new Column("Note",null));
+		payments.appendChild(new Rows());
+		payments.setSpan("3");
+		
+		Toolbar toolbar = new Toolbar();
+		toolbar.setHeight("40px");
+		toolbar.appendChild(new Toolbarbutton("New","/icons/new.png"));
+		toolbar.appendChild(new Toolbarbutton("Remove","/icons/delete.png"));
+		toolbar.appendChild(new Toolbarbutton("Clear","/icons/refresh.png"));
+		toolbar.getChildren().get(0).addEventListener(Events.ON_CLICK, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				Row row = new Row();
+				row.appendChild(new Checkbox());
+				
+				Listbox types = new Listbox();
+				types.setMold("select");
+				types.setWidth("100%");
+				
+				for(PaymentType type:PaymentType.values())
+					types.appendChild(new Listitem(type.toString(), type.toString()));
+				
+				types.setSelectedIndex(0);
+				
+				Doublebox amount = new Doublebox(0d);
+				amount.setConstraint("no empty");
+				amount.setWidth("100%");
+				
+				Textbox note = new Textbox();
+				note.setWidth("100%");
+				
+				row.appendChild(types);
+				row.appendChild(amount);
+				row.appendChild(note);
+				
+				grid.getRows().appendChild(row);
+			}
+		});
+		toolbar.getChildren().get(1).addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				Iterator<Component> iterator = grid.getRows().getChildren().iterator();
+				while (iterator.hasNext())
+				{
+					Row row = (Row) iterator.next();
+					if(RowUtils.isChecked(row, 0))
+						iterator.remove();
+				}
+			}
+		});
+		
+		toolbar.getChildren().get(2).addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				grid.getRows().getChildren().clear();
+			}
+		});
+		
+		this.tabbox.getTabpanels().getChildren().get(1).appendChild(toolbar);
+		this.tabbox.getTabpanels().getChildren().get(1).appendChild(grid);
 	}
 }

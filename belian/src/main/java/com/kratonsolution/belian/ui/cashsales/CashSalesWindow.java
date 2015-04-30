@@ -39,7 +39,8 @@ public class CashSalesWindow extends AbstractWindow implements HasGrid,HasCreate
 	private CashSalesWindow()
 	{
 		super();
-		setWidth("800px");
+		setWidth("850px");
+		setHeight("600px");
 	}
 	
 	protected void init()
