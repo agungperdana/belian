@@ -24,9 +24,12 @@ import com.kratonsolution.belian.global.dm.IncrementCommitment;
 @Getter
 @Setter
 @Entity
-@Table(name="receipt_line")
-public class PaymentLine extends IncrementCommitment<CashAccount,CashReceipt>
+@Table(name="direct_sales_payment")
+public class DirectSalesPayment extends IncrementCommitment<CashAccount,DirectSalesPaymentEvent>
 {
+	@Column(name="card_number")
+	private String cardNumber;
+	
 	@Column(name="payment_type")
 	@Enumerated(EnumType.STRING)
 	private PaymentType type = PaymentType.CASH;
@@ -37,9 +40,9 @@ public class PaymentLine extends IncrementCommitment<CashAccount,CashReceipt>
 	
 	@ManyToOne
 	@JoinColumn(name="fk_cash_receipt")
-	private CashReceipt event;
+	private DirectSalesPaymentEvent event;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_cash_sales")
-	private CashSales cashSales;
+	private DirectSales cashSales;
 }

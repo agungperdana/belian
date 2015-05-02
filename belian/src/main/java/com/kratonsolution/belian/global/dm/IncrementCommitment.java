@@ -15,10 +15,15 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author agungdodiperdana
  *
  */
+@Getter
+@Setter
 @Entity
 @Table(name="increment_commitment")
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -33,6 +38,9 @@ public abstract class IncrementCommitment<R extends EconomicResource,E extends E
 	
 	@Column(name="date")
 	protected Date date;
+	
+	@Column(name="note")
+	protected String note;
 	
 	@Version
 	protected Long version;

@@ -22,7 +22,7 @@ import com.kratonsolution.belian.global.dm.EconomicEvent;
 @Setter
 @Entity
 @Table(name="cash_receipt")
-public class CashReceipt extends EconomicEvent<CashAccount>
+public class DirectSalesPaymentEvent extends EconomicEvent<CashAccount>
 {	
 	@ManyToOne
 	@JoinColumn(name="fk_cash_account")

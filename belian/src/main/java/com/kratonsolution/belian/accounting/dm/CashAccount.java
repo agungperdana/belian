@@ -54,15 +54,4 @@ public class CashAccount implements EconomicResource
 	
 	@Version
 	private Long version;
-
-	public void increment(BigDecimal value)
-	{
-		setAmount(getAmount().add(value));
-	}
-
-	@Override
-	public void decrement(BigDecimal value)
-	{
-		setAmount(getAmount().subtract(value));
-	}
 }

@@ -1,25 +1,25 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.cashsales;
+package com.kratonsolution.belian.ui.directsales;
 
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
-import com.kratonsolution.belian.sales.dm.CashSales;
+import com.kratonsolution.belian.sales.dm.DirectSales;
 import com.kratonsolution.belian.ui.util.Dates;
 
 /**
  * @author agungdodiperdana
  *
  */
-public class CashSalesRowRenderer implements RowRenderer<CashSales>
+public class DirectSalesRowRenderer implements RowRenderer<DirectSales>
 {
 
 	@Override
-	public void render(Row row, CashSales data, int index) throws Exception
+	public void render(Row row, DirectSales data, int index) throws Exception
 	{
 		if(data != null)
 		{

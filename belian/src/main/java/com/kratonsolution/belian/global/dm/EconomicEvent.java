@@ -9,6 +9,8 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -34,11 +36,18 @@ public abstract class EconomicEvent<R extends EconomicResource>
 {
 	public enum Type{GET,GIVE}
 	
+	public enum EconomicalType{ECONOMIC,NONECONOMIC}
+	
 	@Id
 	protected String id;
 	
 	@Column(name="type")
+	@Enumerated(EnumType.STRING)
 	protected Type type = Type.GIVE;
+	
+	@Column(name="economical_type")
+	@Enumerated(EnumType.STRING)
+	protected EconomicalType economicType = EconomicalType.ECONOMIC;
 
 	@Column(name="date")
 	protected Date date;

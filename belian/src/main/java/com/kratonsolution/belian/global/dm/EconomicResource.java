@@ -3,8 +3,6 @@
  */
 package com.kratonsolution.belian.global.dm;
 
-import java.math.BigDecimal;
-
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -26,8 +24,4 @@ public interface EconomicResource
 	public String getId();
 	
 	public void setId(String id);
-	
-	public void increment(BigDecimal value);
-	
-	public void decrement(BigDecimal value);
 }

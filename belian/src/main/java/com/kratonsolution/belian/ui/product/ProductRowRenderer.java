@@ -30,6 +30,7 @@ public class ProductRowRenderer implements RowRenderer<Product>
 			row.appendChild(new Label(data.getName()));
 			row.appendChild(new Label(data.getCategory().getName()));
 			row.appendChild(new Label(data.getType().name()));
+			row.appendChild(new Label(data.getUom().getCode()));
 			row.appendChild(new Label(data.getId()));
 		}
 	}

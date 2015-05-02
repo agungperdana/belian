@@ -51,6 +51,13 @@ public class CashAccountService
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
 	}
 	
+	@Secured("ROLE_CASHACCOUNT_READ")
+	public CashAccount findOneByOwner(String ownerId)
+	{
+		return repository.findOne(ownerId);
+	}
+	
+	
 	@Secured("ROLE_CASHACCOUNT_CREATE")
 	public void add(CashAccount cash)
 	{

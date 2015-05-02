@@ -37,11 +37,14 @@ public abstract class DecrementCommitment<R extends EconomicResource,E extends E
 	protected String id;
 	
 	@Column(name="value")
-	private BigDecimal value;
+	protected BigDecimal value;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_unit_of_measure")
-	private UnitOfMeasure uom;
+	protected UnitOfMeasure uom;
+	
+	@Column(name="note")
+	protected String note;
 	
 	@Version
 	protected Long version;

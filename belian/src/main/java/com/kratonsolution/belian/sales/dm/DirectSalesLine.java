@@ -16,7 +16,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import com.kratonsolution.belian.global.dm.DecrementCommitment;
-import com.kratonsolution.belian.inventory.dm.InventoryItem;
+import com.kratonsolution.belian.inventory.dm.Product;
 
 /**
  * @author Agung Dodi Perdana
@@ -25,8 +25,8 @@ import com.kratonsolution.belian.inventory.dm.InventoryItem;
 @Setter
 @Getter
 @Entity
-@Table(name="sales_line")
-public class CashLine extends DecrementCommitment<InventoryItem,CashSale>
+@Table(name="direct_sales_line")
+public class DirectSalesLine extends DecrementCommitment<Product,DirectSalesLineEvent>
 {	
 	@Column(name="price")
 	private BigDecimal price = BigDecimal.ZERO;
@@ -38,19 +38,14 @@ public class CashLine extends DecrementCommitment<InventoryItem,CashSale>
 	private BigDecimal charge = BigDecimal.ZERO;
 	
 	@ManyToOne(cascade=CascadeType.MERGE)
-	@JoinColumn(name="fk_inventory_item")
-	private InventoryItem resource;
+	@JoinColumn(name="fk_product_resource")
+	private Product resource;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_cash_sales")
-	private CashSales cashSales;
+	@JoinColumn(name="fk_direct_sales")
+	private DirectSales cashSales;
 	
 	@ManyToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="fk_cash_sales_event")
-	private CashSale event;
-	
-	public void setAmounts()
-	{
-		setValue(price.subtract(discount).add(charge));
-	}
+	@JoinColumn(name="fk_direct_sales_line_event")
+	private DirectSalesLineEvent event;
 }

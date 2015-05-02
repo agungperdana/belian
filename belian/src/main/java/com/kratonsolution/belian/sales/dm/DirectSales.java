@@ -27,8 +27,8 @@ import com.kratonsolution.belian.global.dm.Contract;
 @Getter
 @Setter
 @Entity
-@Table(name="cash_sales")
-public class CashSales extends Contract<PaymentLine, CashLine>
+@Table(name="direct_sales")
+public class DirectSales extends Contract<DirectSalesPayment, DirectSalesLine>
 {
 	@ManyToOne
 	@JoinColumn(name="fk_organization")
@@ -39,8 +39,8 @@ public class CashSales extends Contract<PaymentLine, CashLine>
 	private Geographic location;
 	
 	@OneToMany(mappedBy="cashSales",cascade=CascadeType.ALL,orphanRemoval=true)
-	private Set<CashLine> decrements = new HashSet<CashLine>();
+	private Set<DirectSalesLine> decrements = new HashSet<DirectSalesLine>();
 	
 	@OneToMany(mappedBy="cashSales",cascade=CascadeType.ALL,orphanRemoval=true)
-	private Set<PaymentLine> increments = new HashSet<PaymentLine>();
+	private Set<DirectSalesPayment> increments = new HashSet<DirectSalesPayment>();
 }

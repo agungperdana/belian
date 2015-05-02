@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.cashsales;
+package com.kratonsolution.belian.ui.directsales;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
-import com.kratonsolution.belian.sales.dm.CashSales;
+import com.kratonsolution.belian.sales.dm.DirectSales;
 import com.kratonsolution.belian.sales.srv.CashSalesService;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -17,19 +17,19 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author agungdodiperdana
  *
  */
-public class CashSalesModel implements ListModel<CashSales>
+public class DirectSalesModel implements ListModel<DirectSales>
 {
 	private final CashSalesService service = Springs.get(CashSalesService.class);
 	
-	private List<CashSales> data = new ArrayList<CashSales>();
+	private List<DirectSales> data = new ArrayList<DirectSales>();
 	
-	public CashSalesModel(int itemSize)
+	public DirectSalesModel(int itemSize)
 	{
 		next(0, itemSize);
 	}
 	
 	@Override
-	public CashSales getElementAt(int index)
+	public DirectSales getElementAt(int index)
 	{
 		if(index >= data.size())
 			return null;

@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import com.kratonsolution.belian.global.dm.EconomicEvent;
-import com.kratonsolution.belian.inventory.dm.InventoryItem;
+import com.kratonsolution.belian.inventory.dm.Product;
 
 /**
  * @author agungdodiperdana
@@ -21,10 +21,10 @@ import com.kratonsolution.belian.inventory.dm.InventoryItem;
 @Getter
 @Setter
 @Entity
-@Table(name="cash_sale")
-public class CashSale extends EconomicEvent<InventoryItem>
+@Table(name="direct_sales_line_event")
+public class DirectSalesLineEvent extends EconomicEvent<Product>
 {
 	@ManyToOne
-	@JoinColumn(name="fk_inventory_item")
-	protected InventoryItem resource;
+	@JoinColumn(name="fk_product_resource")
+	protected Product resource;
 }

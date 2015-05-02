@@ -16,8 +16,6 @@ import javax.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
-import com.kratonsolution.belian.global.dm.EconomicResource;
-
 /**
  * @author agungdodiperdana
  *
@@ -26,7 +24,7 @@ import com.kratonsolution.belian.global.dm.EconomicResource;
 @Setter
 @Entity
 @Table(name="inventory_item")
-public class InventoryItem implements EconomicResource
+public class InventoryItem
 {
 	@Id
 	private String id;
@@ -51,19 +49,4 @@ public class InventoryItem implements EconomicResource
 
 	@Version
 	private Long version;
-	
-	@Override
-	public void increment(BigDecimal value)
-	{
-		setOnhand(getOnhand().add(value));
-	}
-
-	@Override
-	public void decrement(BigDecimal value)
-	{
-		if((getOnhand().subtract(value)).compareTo(BigDecimal.ZERO) >= 0)
-			setOnhand(getOnhand().subtract(value));
-		else
-			setOnhand(BigDecimal.ZERO);
-	}
 }

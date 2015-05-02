@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.cashsales;
+package com.kratonsolution.belian.ui.directsales;
 
 import org.zkoss.zul.Toolbarbutton;
 
@@ -9,9 +9,9 @@ import org.zkoss.zul.Toolbarbutton;
  * @author agungdodiperdana
  *
  */
-public class CashSalesButton extends Toolbarbutton
+public class DirectSalesButton extends Toolbarbutton
 {
-	public CashSalesButton()
+	public DirectSalesButton()
 	{
 		setImage("/icons/cashsales.png");
 		setTooltip("Cash Sales Management");

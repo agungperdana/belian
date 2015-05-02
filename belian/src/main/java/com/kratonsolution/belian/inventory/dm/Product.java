@@ -22,6 +22,8 @@ import javax.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
+import com.kratonsolution.belian.global.dm.EconomicResource;
+
 /**
  * @author agungdodiperdana
  *
@@ -30,7 +32,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="product")
-public class Product
+public class Product implements EconomicResource
 {
 	public enum Type {SERVICE,FINISHGOOD,RAWMATERIAL,SUBASEMBLY}
 	
@@ -48,6 +50,10 @@ public class Product
 	
 	@Column(name="name",unique=true,nullable=false)
 	private String name;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_unit_of_measure")
+	private UnitOfMeasure uom;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_product_category")

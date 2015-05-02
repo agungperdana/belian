@@ -5,6 +5,8 @@ package com.kratonsolution.belian.ui.util;
 
 import java.math.BigDecimal;
 
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Listbox;
 
 /**
@@ -21,10 +23,18 @@ public class Components
 		return "";
 	}
 	
-	public static final BigDecimal decimal(Listbox listbox)
+	public static final BigDecimal decimal(Component component)
 	{
-		if(listbox != null && !listbox.getChildren().isEmpty())
-			return new BigDecimal(listbox.getSelectedItem().getValue());
+		if(component != null && (component instanceof Listbox) && !component.getChildren().isEmpty())
+		{
+			Listbox listbox = (Listbox)component;
+			return new BigDecimal(listbox.getSelectedItem().getValue().toString());
+		}
+		else if(component != null && (component instanceof Doublebox))
+		{
+			Doublebox doublebox = (Doublebox)component;
+			return BigDecimal.valueOf(doublebox.doubleValue());
+		}
 		
 		return BigDecimal.ZERO;
 	}

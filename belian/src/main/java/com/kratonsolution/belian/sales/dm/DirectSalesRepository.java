@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author agungdodiperdana
  *
  */
-public interface CashSalesRepository extends JpaRepository<CashSales,String>
+public interface DirectSalesRepository extends JpaRepository<DirectSales,String>
 {
 
 }

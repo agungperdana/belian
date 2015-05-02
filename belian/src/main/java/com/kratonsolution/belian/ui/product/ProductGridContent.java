@@ -157,7 +157,6 @@ public class ProductGridContent extends GridContent
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(8);
-		grid.setSpan("3");
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
 		grid.getColumns().appendChild(new Column("Start",null,"85px"));
@@ -165,9 +164,10 @@ public class ProductGridContent extends GridContent
 		grid.getColumns().appendChild(new Column("Code",null,"85px"));
 		grid.getColumns().appendChild(new Column("Name"));
 		grid.getColumns().appendChild(new Column("Category",null,"100px"));
-		grid.getColumns().appendChild(new Column("Type",null,"100px"));
+		grid.getColumns().appendChild(new Column("Type",null,"125px"));
+		grid.getColumns().appendChild(new Column("UoM",null,"75px"));
 		grid.getColumns().appendChild(new Column("",null,"1px"));
-		grid.getColumns().getChildren().get(7).setVisible(false);
+		grid.getColumns().getChildren().get(8).setVisible(false);
 		grid.setSpan("4");
 
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()

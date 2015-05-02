@@ -22,8 +22,10 @@ import org.zkoss.zul.Textbox;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductCategory;
+import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
 import com.kratonsolution.belian.inventory.svc.ProductCategoryService;
 import com.kratonsolution.belian.inventory.svc.ProductService;
+import com.kratonsolution.belian.inventory.svc.UnitOfMeasureService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.product.code.CodeTab;
@@ -32,6 +34,7 @@ import com.kratonsolution.belian.ui.product.cost.CostTab;
 import com.kratonsolution.belian.ui.product.feature.FeatureTab;
 import com.kratonsolution.belian.ui.product.price.PriceTab;
 import com.kratonsolution.belian.ui.product.supplier.SupplierTab;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -44,6 +47,8 @@ public class ProductEditContent extends FormContent implements Refreshable
 	private final ProductService service = Springs.get(ProductService.class);
 
 	private final ProductCategoryService categoryService = Springs.get(ProductCategoryService.class);
+	
+	private final UnitOfMeasureService unitOfMeasureService = Springs.get(UnitOfMeasureService.class);
 
 	private Datebox start = new Datebox();
 
@@ -56,6 +61,8 @@ public class ProductEditContent extends FormContent implements Refreshable
 	private Listbox categorys = new Listbox();
 
 	private Listbox types = new Listbox();
+	
+	private Listbox uoms = new Listbox();
 	
 	private Tabbox tabbox;
 
@@ -95,13 +102,14 @@ public class ProductEditContent extends FormContent implements Refreshable
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 
-				Product product = service.findOne(RowUtils.rowValue(row, 7));
+				Product product = service.findOne(RowUtils.rowValue(row, 8));
 				product.setStart(start.getValue());
 				product.setEnd(end.getValue());
 				product.setCode(code.getText());
 				product.setName(name.getText());
-				product.setType(Product.Type.valueOf(types.getSelectedItem().getValue().toString()));
-				product.setCategory(categoryService.findOne(categorys.getSelectedItem().getValue().toString()));
+				product.setType(Product.Type.valueOf(Components.string(types)));
+				product.setCategory(categoryService.findOne(Components.string(categorys)));
+				product.setUom(unitOfMeasureService.findOne(Components.string(uoms)));
 
 				service.edit(product);
 
@@ -115,11 +123,14 @@ public class ProductEditContent extends FormContent implements Refreshable
 	@Override
 	public void initForm()
 	{
-		Product product = service.findOne(RowUtils.rowValue(row, 7));
+		Product product = service.findOne(RowUtils.rowValue(row, 8));
 		
 		start.setConstraint("no empty");
-		start.setValue(product.getStart());
+
+		if(product.getStart() != null)
+			start.setValue(product.getStart());
 		
+		if(product.getEnd() != null)
 		end.setValue(product.getEnd());
 		
 		code.setConstraint("no empty");
@@ -132,6 +143,7 @@ public class ProductEditContent extends FormContent implements Refreshable
 		
 		types.setMold("select");
 		categorys.setMold("select");
+		uoms.setMold("select");
 		
 		for(Product.Type type:Product.Type.values())
 		{
@@ -149,8 +161,16 @@ public class ProductEditContent extends FormContent implements Refreshable
 				categorys.setSelectedItem(listitem);
 		}
 		
+		for(UnitOfMeasure measure:unitOfMeasureService.findAll())
+		{
+			Listitem listitem = new Listitem(measure.getName(),measure.getId());
+			uoms.appendChild(listitem);
+			if(product.getUom() != null && measure.getId().equals(product.getUom().getId()))
+				uoms.setSelectedItem(listitem);
+		}
+		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
+		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
@@ -177,17 +197,22 @@ public class ProductEditContent extends FormContent implements Refreshable
 		row6.appendChild(new Label("Category"));
 		row6.appendChild(categorys);
 		
+		Row row7 = new Row();
+		row7.appendChild(new Label("Unit of Measure"));
+		row7.appendChild(uoms);
+		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
 		rows.appendChild(row4);
 		rows.appendChild(row5);
 		rows.appendChild(row6);
+		rows.appendChild(row7);
 	}
 	
 	protected void initTab()
 	{
-		Product product = service.findOne(RowUtils.rowValue(row, 7));
+		Product product = service.findOne(RowUtils.rowValue(row, 8));
 	
 		tabbox = new Tabbox();
 		tabbox.appendChild(new Tabs());
