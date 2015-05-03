@@ -34,6 +34,7 @@ import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.accounting.dm.CashAccount;
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.svc.CashAccountService;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
@@ -93,15 +94,17 @@ public class DirectSalesFormContent extends FormContent
 	
 	private Textbox note = new Textbox();
 	
-	private Listbox producers = new Listbox();
+	private Listbox producers = Components.newSelect();
 	
-	private Listbox consumers = new Listbox();
+	private Listbox consumers = Components.newSelect();
 	
-	private Listbox currencys = new Listbox();
+	private Listbox currencys = Components.newSelect();
 	
-	private Listbox organizations = new Listbox();
+	private Listbox organizations = Components.newSelect();
 	
-	private Listbox locations = new Listbox();
+	private Listbox locations = Components.newSelect();
+	
+	private Listbox cashaccounts = Components.newSelect();
 	
 	private Tabbox tabbox = new Tabbox();
 	
@@ -221,7 +224,7 @@ public class DirectSalesFormContent extends FormContent
 					events.setDate(sales.getDate());
 					events.setEconomicType(EconomicalType.ECONOMIC);
 					events.setProducer(sales.getProducer());
-					events.setResource(cashAccountService.findOneByOwner(sales.getOrganization().getId()));
+					events.setResource(cashAccountService.findOne(Components.string(cashaccounts)));
 					events.setType(Type.GET);
 					events.setValue(line.getValue());
 					
@@ -250,39 +253,45 @@ public class DirectSalesFormContent extends FormContent
 		term.setConstraint("no empty");
 		term.setWidth("65px");
 		
-		producers.setMold("select");
-		consumers.setMold("select");
-		organizations.setMold("select");
-		currencys.setMold("select");
-		locations.setMold("select");
-		
 		for(Organization organization :organizationService.findAllByRolesTypeName("Internal Organization"))
 			organizations.appendChild(new Listitem(organization.getName(),organization.getId()));
 			
 		for(Currency currency:currencyService.findAll())
 			currencys.appendChild(new Listitem(currency.getCode(), currency.getId()));
-		
-		if(!currencys.getChildren().isEmpty())
-			currencys.setSelectedIndex(0);
 
+		currencys.addEventListener(Events.ON_SELECT, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				cashaccounts.getChildren().clear();
+				for(CashAccount account:cashAccountService.findAllByOwnerAndCurrency(Components.string(organizations), Components.string(currencys)))
+					cashaccounts.appendChild(new Listitem(account.getName(),account.getId()));
+				
+				Components.setDefault(cashaccounts);
+			}
+		});
+		
 		organizations.addEventListener(Events.ON_SELECT, new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
 				producers.getChildren().clear();
-				for(EconomicAgent agent:agentService.findByRoleAndParty("Sales Person",organizations.getSelectedItem().getValue().toString()))
+				for(EconomicAgent agent:agentService.findByRoleAndParty("Sales Person",Components.string(organizations)))
 					producers.appendChild(new Listitem(agent.getName(),agent.getId()));
 				
 				consumers.getChildren().clear();
-				for(EconomicAgent agent:agentService.findByRoleAndParty("Customer",organizations.getSelectedItem().getValue().toString()))
+				for(EconomicAgent agent:agentService.findByRoleAndParty("Customer",Components.string(organizations)))
 					consumers.appendChild(new Listitem(agent.getName(),agent.getId()));
 			
-				if(!producers.getChildren().isEmpty())
-					producers.setSelectedIndex(0);
+				cashaccounts.getChildren().clear();
+				for(CashAccount account:cashAccountService.findAllByOwnerAndCurrency(Components.string(organizations), Components.string(currencys)))
+					cashaccounts.appendChild(new Listitem(account.getName(),account.getId()));
 				
-				if(!consumers.getChildren().isEmpty())
-					consumers.setSelectedIndex(0);
+				Components.setDefault(producers);
+				Components.setDefault(consumers);
+				Components.setDefault(cashaccounts);
 			}
 		});
 		
@@ -291,9 +300,9 @@ public class DirectSalesFormContent extends FormContent
 			if(geographic.getType().equals(Geographic.Type.COUNTRY) || geographic.getType().equals(Geographic.Type.PROVINCE) || geographic.getType().equals(Geographic.Type.CITY))
 				locations.appendChild(new Listitem(geographic.getName(), geographic.getId()));
 		}
-		
-		if(!locations.getChildren().isEmpty())
-			locations.setSelectedIndex(0);
+
+		Components.setDefault(currencys);
+		Components.setDefault(locations);
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"135px"));
@@ -331,6 +340,10 @@ public class DirectSalesFormContent extends FormContent
 		row8.appendChild(new Label("Sales Location"));
 		row8.appendChild(locations);
 		
+		Row row9 = new Row();
+		row9.appendChild(new Label("Cash Account"));
+		row9.appendChild(cashaccounts);
+		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
@@ -339,6 +352,7 @@ public class DirectSalesFormContent extends FormContent
 		rows.appendChild(row6);
 		rows.appendChild(row7);
 		rows.appendChild(row8);
+		rows.appendChild(row9);
 	}
 	
 	private void initItems()

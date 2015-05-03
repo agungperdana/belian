@@ -15,17 +15,17 @@ import com.kratonsolution.belian.ui.directsales.DirectSalesWindow;
  * @author agungdodiperdana
  *
  */
-public class CashSalesItem extends Listitem
+public class DirectSalesItem extends Listitem
 {
-	public CashSalesItem()
+	public DirectSalesItem()
 	{
 		init();
 	}
 	
 	public void init()
 	{
-		setLabel("Cash Sales");
-		setImage("/icons/cashsales.png");
+		setLabel("Direct Sales");
+		setImage("/icons/directsales.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{

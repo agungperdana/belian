@@ -52,9 +52,9 @@ public class CashAccountService
 	}
 	
 	@Secured("ROLE_CASHACCOUNT_READ")
-	public CashAccount findOneByOwner(String ownerId)
+	public List<CashAccount> findAllByOwnerAndCurrency(String ownerId,String currency)
 	{
-		return repository.findOne(ownerId);
+		return repository.findAllByOwnerAndCurrency(ownerId, currency);
 	}
 	
 	

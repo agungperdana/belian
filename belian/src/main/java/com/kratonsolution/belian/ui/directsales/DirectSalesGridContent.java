@@ -161,12 +161,11 @@ public class DirectSalesGridContent extends GridContent
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
 		grid.getColumns().appendChild(new Column("Number",null,"100px"));
 		grid.getColumns().appendChild(new Column("Date",null,"85px"));
-		grid.getColumns().appendChild(new Column("Owner",null,"150px"));
-		grid.getColumns().appendChild(new Column("Sales",null,"150px"));
-		grid.getColumns().appendChild(new Column("Constomer",null,"150px"));
+		grid.getColumns().appendChild(new Column("Owner",null,"180px"));
+		grid.getColumns().appendChild(new Column("Sales",null,"180px"));
+		grid.getColumns().appendChild(new Column("Constomer",null,"180px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
 		grid.getColumns().getChildren().get(6).setVisible(false);
-		grid.setSpan("1");
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{

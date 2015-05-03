@@ -38,4 +38,18 @@ public class Components
 		
 		return BigDecimal.ZERO;
 	}
+	
+	public static final void setDefault(Listbox listbox)
+	{
+		if(!listbox.getChildren().isEmpty())
+			listbox.setSelectedIndex(0);
+	}
+	
+	public static final Listbox newSelect()
+	{
+		Listbox listbox = new Listbox();
+		listbox.setMold("select");
+		
+		return listbox;
+	}
 }

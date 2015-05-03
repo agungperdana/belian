@@ -146,7 +146,7 @@ public class NavigationMenu extends Window
 
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
-		list.appendChild(new CashSalesItem());
+		list.appendChild(new DirectSalesItem());
 		
 		panel.appendChild(list);
 		panels.appendChild(panel);

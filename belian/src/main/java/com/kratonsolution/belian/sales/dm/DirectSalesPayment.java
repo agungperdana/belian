@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.sales.dm;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -38,8 +39,8 @@ public class DirectSalesPayment extends IncrementCommitment<CashAccount,DirectSa
 	@JoinColumn(name="fk_cash_account_resource")
 	private CashAccount resource;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_cash_receipt")
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="fk_sales_payment_event")
 	private DirectSalesPaymentEvent event;
 	
 	@ManyToOne
