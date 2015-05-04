@@ -19,6 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.accounting.dm.Currency;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -51,6 +53,10 @@ public abstract class EconomicEvent<R extends EconomicResource>
 
 	@Column(name="date")
 	protected Date date;
+
+	@ManyToOne
+	@JoinColumn(name="fk_currency")
+	protected Currency currency;
 	
 	@Column(name="value")
 	protected BigDecimal value;

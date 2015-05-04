@@ -74,9 +74,7 @@ public class GeographicWindow extends AbstractWindow implements HasGrid,HasCreat
 		for(Component component:getPage().getRoots())
 		{
 			if(component instanceof NavigatorBar)
-			{
 				component.appendChild(status);
-			}
 		}
 	}
 
@@ -86,9 +84,7 @@ public class GeographicWindow extends AbstractWindow implements HasGrid,HasCreat
 		for(Component component:getPage().getRoots())
 		{
 			if(component instanceof NavigatorBar)
-			{
 				component.removeChild(status);
-			}
 		}
 	}
 

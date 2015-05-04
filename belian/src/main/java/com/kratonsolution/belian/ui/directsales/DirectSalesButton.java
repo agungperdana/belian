@@ -13,8 +13,8 @@ public class DirectSalesButton extends Toolbarbutton
 {
 	public DirectSalesButton()
 	{
-		setImage("/icons/cashsales.png");
-		setTooltip("Cash Sales Management");
+		setImage("/icons/directsales.png");
+		setTooltip("Direct Sales Management");
 		setHeight("38px");
 	}
 }

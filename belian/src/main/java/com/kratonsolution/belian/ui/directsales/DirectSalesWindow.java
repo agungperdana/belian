@@ -23,7 +23,7 @@ import com.kratonsolution.belian.ui.nav.NavigatorBar;
  */
 public class DirectSalesWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption("Cash Sales");
+	private final Caption caption = new Caption("Direct Sales");
 	
 	private DirectSalesButton status = new DirectSalesButton();
 	
@@ -45,7 +45,7 @@ public class DirectSalesWindow extends AbstractWindow implements HasGrid,HasCrea
 	
 	protected void init()
 	{
-		caption.setImage("/icons/cashsales.png");
+		caption.setImage("/icons/directsales.png");
 		appendChild(caption);
 		insertGrid();
 		insertStatus();

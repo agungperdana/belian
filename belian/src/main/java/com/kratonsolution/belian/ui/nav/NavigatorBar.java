@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.ui.nav;
 
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.event.Event;
@@ -12,6 +13,9 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Space;
 import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
+import org.zkoss.zul.Window;
+
+import com.kratonsolution.belian.ui.setting.SettingWindow;
 
 /**
  * @author agungdodiperdana
@@ -25,8 +29,8 @@ public class NavigatorBar extends Toolbar
 	
 	private Toolbarbutton setting = new Toolbarbutton();
 	
-	private Toolbarbutton geographic = new Toolbarbutton();
- 	
+	private Toolbarbutton menu = new Toolbarbutton();
+	
 	public static final void injectInto(Page page)
 	{
 		new NavigatorBar().setPage(page);
@@ -38,6 +42,7 @@ public class NavigatorBar extends Toolbar
 		initLogout();
 		initAbout();
 		initSetting();
+		initMenu();
 
 		Space space = new Space();
 		space.setBar(true);
@@ -89,7 +94,63 @@ public class NavigatorBar extends Toolbar
 	{
 		setting.setImage("/icons/setting.png");
 		setting.setHeight("38px");
+		setting.addEventListener(Events.ON_CLICK, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				Window window = null;
+				for(Component instance:getPage().getRoots())
+				{
+					if(instance instanceof SettingWindow)
+					{
+						window = (Window)instance;
+						break;
+					}
+				}
+				
+				if(window == null)
+				{
+					window = new SettingWindow();
+					window.setPage(getPage());
+					window.setVisible(true);
+					window.setTopmost();
+				}
+				else if(window.isVisible())
+					window.setVisible(false);
+				else
+				{
+					window.setVisible(true);
+					window.setTopmost();
+				}
+			}
+		});
 		
 		appendChild(setting);
+	}
+	
+	protected void initMenu()
+	{
+		menu.setImage("/icons/menu.png");
+		menu.setHeight("38px");
+		menu.addEventListener(Events.ON_CLICK, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				for(Component component:getPage().getRoots())
+				{
+					if(component instanceof NavigationMenu)
+					{
+						if(component.isVisible())
+							component.setVisible(false);
+						else
+							component.setVisible(true);
+					}
+				}
+			}
+		});
+
+		appendChild(menu);
 	}
 }
