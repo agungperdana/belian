@@ -71,12 +71,23 @@ public class SettingWindow extends AbstractWindow
 		grid.appendChild(new Rows());
 		
 		Listbox locations = Components.newSelect();
+		Listbox companys = Components.newSelect();
+		Listbox locatizations = Components.newSelect();
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Work Location"));
-		row1.appendChild(locations);
+		row1.appendChild(new Label("Company"));
+		row1.appendChild(companys);
+		
+		Row row2 = new Row();
+		row2.appendChild(new Label("Work Location"));
+		row2.appendChild(locations);
+		
+		Row row3 = new Row();
+		row3.appendChild(new Label("Language"));
+		row3.appendChild(locatizations);
 		
 		grid.getRows().appendChild(row1);
+		grid.getRows().appendChild(row2);
 		
 		tabpanel.appendChild(grid);
 	}
