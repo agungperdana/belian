@@ -31,7 +31,7 @@ import lombok.Setter;
 @Table(name="gl_account")
 public class GLAccount
 {
-	public enum Type{ASSETS,LIABILITIES,CAPITAL,DRAWINGS,REVENUE,EXPENSE}
+	public enum Type{ASSETS,LIABILITIES,EQUITY,REVENUE,COGS,EXPENSE}
 	
 	@Id
 	private String id;
@@ -47,7 +47,7 @@ public class GLAccount
 
 	@Column(name="type")
 	@Enumerated(EnumType.STRING)
-	private Type type = Type.CAPITAL;
+	private Type type = Type.ASSETS;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_gl_account_parent")
