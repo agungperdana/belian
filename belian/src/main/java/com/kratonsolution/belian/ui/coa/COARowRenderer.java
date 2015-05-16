@@ -23,7 +23,7 @@ public class COARowRenderer implements RowRenderer<GLAccount>
 		if(data != null)
 		{
 			row.appendChild(new Checkbox());
-			row.appendChild(new Label(data.getNumber()));
+			row.appendChild(new Label(data.getNumber().toString()));
 			row.appendChild(new Label(data.getName()));
 			row.appendChild(new Label(data.getNote()));
 			row.appendChild(new Label(data.getId()));

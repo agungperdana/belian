@@ -9,6 +9,7 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
+import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
@@ -27,7 +28,7 @@ public class COAFormContent extends FormContent
 {	
 	private final GLAccountService service = Springs.get(GLAccountService.class);
 	
-	private Textbox number = new Textbox();
+	private Doublebox number = new Doublebox();
 	
 	private Textbox name = new Textbox();
 	
@@ -66,7 +67,7 @@ public class COAFormContent extends FormContent
 					throw new WrongValueException(name,"Name cannot be empty");
 			
 				GLAccount coa = new GLAccount();
-				coa.setNumber(number.getText());
+				coa.setNumber(number.longValue());
 				coa.setName(name.getText());
 				coa.setNote(note.getText());
 				

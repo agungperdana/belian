@@ -10,6 +10,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
+import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
@@ -25,6 +26,7 @@ import com.kratonsolution.belian.accounting.svc.GLAccountService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.Refreshable;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -35,15 +37,15 @@ public class GLAEditContent extends AbstractWindow
 {	
 	private final GLAccountService service = Springs.get(GLAccountService.class);
 	
-	private Textbox number = new Textbox();
+	private Doublebox number = new Doublebox();
 	
 	private Textbox name = new Textbox();
 	
 	private Textbox note = new Textbox();
 	
-	private Listbox parents = new Listbox();
+	private Listbox parents = Components.newSelect();
 	
-	private Listbox types = new Listbox(); 
+	private Listbox types = Components.newSelect();
 	
 	private GLAccount edited;
 	
@@ -97,7 +99,7 @@ public class GLAEditContent extends AbstractWindow
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 			
-				edited.setNumber(number.getText());
+				edited.setNumber(number.longValue());
 				edited.setName(name.getText());
 				edited.setNote(note.getText());
 				edited.setType(GLAccount.Type.valueOf(types.getSelectedItem().getValue().toString()));
@@ -119,7 +121,7 @@ public class GLAEditContent extends AbstractWindow
 		
 		number.setConstraint("no empty");
 		number.setWidth("200px");
-		number.setText(edited.getNumber());
+		number.setValue(edited.getNumber());
 		
 		name.setConstraint("no empty");
 		name.setWidth("300px");
@@ -145,8 +147,6 @@ public class GLAEditContent extends AbstractWindow
 			if(type.equals(edited.getType()))
 				types.setSelectedItem(listitem);
 		}
-		
-		types.setSelectedIndex(0);
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));

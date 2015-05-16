@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -61,5 +62,6 @@ public class AccountingPeriod
 	private Long version;
 	
 	@OneToMany(mappedBy="parent",cascade=CascadeType.REMOVE,orphanRemoval=true)
+	@OrderBy("number ASC")
 	private List<AccountingPeriod> members = new ArrayList<AccountingPeriod>();
 }

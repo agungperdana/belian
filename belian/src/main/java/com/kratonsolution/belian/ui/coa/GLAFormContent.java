@@ -10,6 +10,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
+import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
@@ -25,6 +26,7 @@ import com.kratonsolution.belian.accounting.svc.GLAccountService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.Refreshable;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -35,15 +37,15 @@ public class GLAFormContent extends AbstractWindow
 {	
 	private final GLAccountService service = Springs.get(GLAccountService.class);
 	
-	private Textbox number = new Textbox();
+	private Doublebox number = new Doublebox();
 	
 	private Textbox name = new Textbox();
 	
 	private Textbox note = new Textbox();
 	
-	private Listbox parents = new Listbox();
+	private Listbox parents = Components.newSelect();
 	
-	private Listbox types = new Listbox(); 
+	private Listbox types = Components.newSelect();
 	
 	private GLAccount parent;
 	
@@ -101,7 +103,7 @@ public class GLAFormContent extends AbstractWindow
 						throw new WrongValueException(name,"Name cannot be empty");
 				
 					GLAccount coa = new GLAccount();
-					coa.setNumber(number.getText());
+					coa.setNumber(number.longValue());
 					coa.setName(name.getText());
 					coa.setNote(note.getText());
 					coa.setType(GLAccount.Type.valueOf(types.getSelectedItem().getValue().toString()));
@@ -135,19 +137,22 @@ public class GLAFormContent extends AbstractWindow
 		
 		note.setWidth("400px");
 		
-		types.setMold("select");
-		parents.setMold("select");
-		
 		if(parent != null)
 		{
 			parents.appendChild(new Listitem(parent.getName(),parent.getId()));
 			parents.setSelectedIndex(0);
+			
+			number.setValue(service.nextNumber(parent.getType()));
 		}
 		
 		for(GLAccount.Type type:GLAccount.Type.values())
-			types.appendChild(new Listitem(type.name(),type.name()));
-		
-		types.setSelectedIndex(0);
+		{
+			Listitem listitem = new Listitem(type.name(),type.name());
+			
+			types.appendChild(listitem);
+			if(parent != null && type.equals(parent.getType()))
+				types.setSelectedItem(listitem);
+		}
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));

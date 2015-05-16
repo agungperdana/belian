@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -37,7 +38,7 @@ public class GLAccount
 	private String id;
 	
 	@Column(name="number",nullable=false,unique=true)
-	private String number;
+	private Long number;
 	
 	@Column(name="name",nullable=false,unique=true)
 	private String name;
@@ -57,5 +58,6 @@ public class GLAccount
 	private Long version;
 	
 	@OneToMany(mappedBy="parent",cascade=CascadeType.REMOVE,orphanRemoval=true)
+	@OrderBy("number ASC")
 	private Set<GLAccount> members = new HashSet<GLAccount>();
 }

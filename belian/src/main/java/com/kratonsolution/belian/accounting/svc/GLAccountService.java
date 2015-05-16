@@ -73,6 +73,13 @@ public class GLAccountService
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
 	}
 	
+	@Secured("ROLE_COA_READ")
+	public long nextNumber(GLAccount.Type type)
+	{
+		Long out = repository.lastNumber(type);
+		return (out.longValue()+1);
+	}
+	
 	@Secured("ROLE_COA_CREATE")
 	public void add(GLAccount coa)
 	{

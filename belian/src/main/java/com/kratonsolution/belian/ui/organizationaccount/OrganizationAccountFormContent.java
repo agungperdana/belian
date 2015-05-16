@@ -3,8 +3,6 @@
  */
 package com.kratonsolution.belian.ui.organizationaccount;
 
-import java.util.UUID;
-
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -28,6 +26,7 @@ import com.kratonsolution.belian.accounting.svc.OrganizationAccountService;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -48,7 +47,7 @@ public class OrganizationAccountFormContent extends FormContent
 	
 	private Checkbox status = new Checkbox("Active");
 	
-	private Listbox organizations = new Listbox();
+	private Listbox organizations = Components.newSelect();
 	
 	private OAccountTree tree = new OAccountTree(null);
 		
@@ -83,12 +82,11 @@ public class OrganizationAccountFormContent extends FormContent
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 			
-				OrganizationAccount org = new OrganizationAccount();
-				org.setId(UUID.randomUUID().toString());
-				org.setName(name.getText());
-				org.setNote(note.getText());
-				org.setActive(status.isChecked());
-				org.setOrganization(organizationService.findOne(organizations.getSelectedItem().getValue().toString()));
+				OrganizationAccount organization = new OrganizationAccount();
+				organization.setName(name.getText());
+				organization.setNote(note.getText());
+				organization.setActive(status.isChecked());
+				organization.setOrganization(organizationService.findOne(organizations.getSelectedItem().getValue().toString()));
 				
 				for(Treeitem treeitem:tree.getTreechildren().getItems())
 				{
@@ -98,11 +96,12 @@ public class OrganizationAccountFormContent extends FormContent
 					oglAccount.setId(account.getId());
 					oglAccount.setAccount(account);
 					oglAccount.setSelected(treeitem.isSelected());
+					oglAccount.setParent(organization);
 					
-					org.getAccounts().add(oglAccount);
+					organization.getAccounts().add(oglAccount);
 				}
 				
-				service.add(org);
+				service.add(organization);
 				
 				OrganizationAccountWindow window = (OrganizationAccountWindow)getParent();
 				window.removeCreateForm();
@@ -120,7 +119,6 @@ public class OrganizationAccountFormContent extends FormContent
 		note.setWidth("400px");
 		
 		status.setChecked(true);
-		organizations.setMold("select");
 		
 		for(Organization organization:organizationService.findAll())
 			organizations.appendChild(new Listitem(organization.getName(),organization.getId()));
