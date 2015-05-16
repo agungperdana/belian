@@ -1,1 +1,0 @@
-{ "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "name" : "_id_", "ns" : "belian.unit_of_measure" }, { "v" : 1, "key" : { "name" : 1 }, "name" : "name", "ns" : "belian.unit_of_measure" } ] }

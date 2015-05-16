@@ -1,1 +1,0 @@
-{ "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "name" : "_id_", "ns" : "belian.user" }, { "v" : 1, "unique" : true, "key" : { "email" : 1 }, "name" : "email", "ns" : "belian.user" } ] }
