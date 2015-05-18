@@ -117,6 +117,7 @@ public class NavigationMenu extends Window
 		list.appendChild(new CoAItem());
 		list.appendChild(new AccountingPeriodItem());
 		list.appendChild(new OrganizationAccountItem());
+		list.appendChild(new JournalEntryItem());
 		
 		accounting.appendChild(list);
 		panels.appendChild(accounting);
