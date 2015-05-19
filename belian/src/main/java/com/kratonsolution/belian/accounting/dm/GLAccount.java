@@ -32,7 +32,7 @@ import lombok.Setter;
 @Table(name="gl_account")
 public class GLAccount
 {
-	public enum Type{ASSETS,LIABILITIES,EQUITY,REVENUE,COGS,EXPENSE}
+	public enum Type{ASSETS,LIABILITIES,EQUITY,REVENUE,DRAWING,COGS,EXPENSE}
 	
 	@Id
 	private String id;

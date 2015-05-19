@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.accounting.svc;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,6 +56,12 @@ public class AccountingPeriodService
 	public List<AccountingPeriod> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+	}
+	
+	@Secured("ROLE_ACCOUNTINGPERIOD_READ")
+	public AccountingPeriod findForDate(Date date)
+	{
+		return repository.findForDate(date);
 	}
 	
 	@Secured("ROLE_ACCOUNTINGPERIOD_CREATE")

@@ -39,6 +39,7 @@ public class JournalEntryWindow extends AbstractWindow implements HasCreateForm,
 	private JournalEntryWindow()
 	{
 		super();
+		setWidth("675px");
 	}
 	
 	protected void init()

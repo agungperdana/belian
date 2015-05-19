@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Textbox;
 
 /**
  * @author agungdodiperdana
@@ -51,5 +52,22 @@ public class Components
 		listbox.setMold("select");
 		
 		return listbox;
+	}
+	
+	public static final Textbox readOnlyTextBox()
+	{
+		Textbox textbox = new Textbox();
+		textbox.setWidth("100%");
+		textbox.setReadonly(true);
+		return textbox;
+	}
+	
+	public static final Doublebox readOnlyDoubleBox()
+	{
+		Doublebox box = new Doublebox(0d);
+		box.setWidth("100%");
+		box.setReadonly(true);
+		box.setStyle("text-align:right;");
+		return box;
 	}
 }

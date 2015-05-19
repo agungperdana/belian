@@ -51,6 +51,12 @@ public class OrganizationAccountService
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
 	}
 	
+	@Secured("ROLE_ORGANIZATIONACCOUNT_READ")
+	public List<OrganizationAccount> findAllByOrganization(String organization)
+	{
+		return repository.findAllByOrganization(organization);
+	}
+	
 	@Secured("ROLE_ORGANIZATIONACCOUNT_CREATE")
 	public void add(OrganizationAccount org)
 	{
