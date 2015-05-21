@@ -69,7 +69,7 @@ public class UOMEditContent extends FormContent
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 				
-				UnitOfMeasure uom = service.findOne(RowUtils.rowValue(row, 4));
+				UnitOfMeasure uom = service.findOne(RowUtils.string(row, 4));
 				if(uom != null)
 				{
 					uom.setCode(code.getText());
@@ -90,14 +90,14 @@ public class UOMEditContent extends FormContent
 	public void initForm()
 	{
 		code.setConstraint("no empty");
-		code.setText(RowUtils.rowValue(this.row,1));
+		code.setText(RowUtils.string(this.row,1));
 		code.setWidth("250px");
 		
 		name.setConstraint("no empty");
 		name.setWidth("300px");
-		name.setText(RowUtils.rowValue(row, 2));
+		name.setText(RowUtils.string(row, 2));
 		
-		note.setText(RowUtils.rowValue(row, 3));
+		note.setText(RowUtils.string(row, 3));
 		note.setWidth("350px");
 		
 		grid.appendChild(new Columns());

@@ -74,7 +74,7 @@ public class GeographicEditContent extends FormContent
 					throw new WrongValueException(name,"Name cannot be empty");
 			
 				Geographic geographic = new Geographic();
-				geographic.setId(RowUtils.rowValue(row, 4));
+				geographic.setId(RowUtils.string(row, 4));
 				geographic.setCode(code.getText());
 				geographic.setName(name.getText());
 				geographic.setType(Geographic.Type.valueOf(type.getSelectedItem().getValue().toString()));
@@ -93,20 +93,20 @@ public class GeographicEditContent extends FormContent
 	public void initForm()
 	{
 		code.setConstraint("no empty");
-		code.setText(RowUtils.rowValue(this.row,1));
+		code.setText(RowUtils.string(this.row,1));
 		code.setWidth("200px");
 		
 		name.setConstraint("no empty");
-		name.setText(RowUtils.rowValue(row, 2));
+		name.setText(RowUtils.string(row, 2));
 		name.setWidth("250px");
 		
 		note.setWidth("300px");
-		note.setText(RowUtils.rowValue(row, 4));
+		note.setText(RowUtils.string(row, 4));
 		
 		for(Geographic.Type geo :Geographic.Type.values())
 		{
 			Listitem listitem = new Listitem(geo.toString(),geo.toString());
-			if(geo.toString().equals(RowUtils.rowValue(row, 3)))
+			if(geo.toString().equals(RowUtils.string(row, 3)))
 				listitem.setSelected(true);
 				
 			type.appendChild(listitem);

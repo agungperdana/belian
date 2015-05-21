@@ -72,7 +72,7 @@ public class ProductCategoryEditContent extends FormContent
 				if(Strings.isNullOrEmpty(note.getText()))
 					throw new WrongValueException(note,"Value cannot be empty");
 			
-				ProductCategory category = service.findOne(RowUtils.rowValue(row, 4));
+				ProductCategory category = service.findOne(RowUtils.string(row, 4));
 				category.setCode(code.getText());
 				category.setName(name.getText());
 				category.setNote(note.getText());
@@ -91,14 +91,14 @@ public class ProductCategoryEditContent extends FormContent
 	{
 		code.setConstraint("no empty");
 		code.setWidth("200px");
-		code.setText(RowUtils.rowValue(this.row,1));
+		code.setText(RowUtils.string(this.row,1));
 		
 		name.setConstraint("no empty");
 		name.setWidth("300px");
-		name.setText(RowUtils.rowValue(row, 2));
+		name.setText(RowUtils.string(row, 2));
 		
 		note.setWidth("350px");
-		note.setText(RowUtils.rowValue(row, 3));
+		note.setText(RowUtils.string(row, 3));
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));

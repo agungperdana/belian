@@ -85,7 +85,7 @@ public class DirectSalesEditContent extends FormContent
 				if(Strings.isNullOrEmpty(holder.getText()))
 					throw new WrongValueException(holder,"Holder cannot be empty");
 		
-				BankAccount account = service.findOne(RowUtils.rowValue(row, 6));
+				BankAccount account = service.findOne(RowUtils.string(row, 6));
 				if(account != null)
 				{
 					account.setNumber(number.getText());
@@ -109,11 +109,11 @@ public class DirectSalesEditContent extends FormContent
 	{
 		number.setConstraint("no empty");
 		number.setWidth("300px");
-		number.setText(RowUtils.rowValue(row, 1));
+		number.setText(RowUtils.string(row, 1));
 		
 		holder.setConstraint("no empty");
 		holder.setWidth("300px");
-		holder.setText(RowUtils.rowValue(row, 3));
+		holder.setText(RowUtils.string(row, 3));
 		
 		status.setChecked(RowUtils.isChecked(row, 4));
 		
@@ -131,7 +131,7 @@ public class DirectSalesEditContent extends FormContent
 			Listitem item = new Listitem(organization.getName(),organization.getId());
 			
 			bank.appendChild(item);
-			if(organization.getName().equals(RowUtils.rowValue(row, 2)))
+			if(organization.getName().equals(RowUtils.string(row, 2)))
 				bank.setSelectedItem(item);
 		}
 

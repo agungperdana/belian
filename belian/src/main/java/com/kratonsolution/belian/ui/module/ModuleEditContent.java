@@ -69,7 +69,7 @@ public class ModuleEditContent extends FormContent
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 			
-				Module module = service.findOne(RowUtils.rowValue(row, 4));
+				Module module = service.findOne(RowUtils.string(row, 4));
 				if(module != null)
 				{
 					module.setCode(code.getText());
@@ -90,12 +90,12 @@ public class ModuleEditContent extends FormContent
 	public void initForm()
 	{
 		code.setConstraint("no empty");
-		code.setText(RowUtils.rowValue(this.row,1));
+		code.setText(RowUtils.string(this.row,1));
 		
 		name.setConstraint("no empty");
-		name.setText(RowUtils.rowValue(row, 2));
+		name.setText(RowUtils.string(row, 2));
 		
-		note.setText(RowUtils.rowValue(row,3));
+		note.setText(RowUtils.string(row,3));
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));

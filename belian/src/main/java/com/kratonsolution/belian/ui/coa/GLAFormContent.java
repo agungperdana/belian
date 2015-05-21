@@ -141,8 +141,6 @@ public class GLAFormContent extends AbstractWindow
 		{
 			parents.appendChild(new Listitem(parent.getName(),parent.getId()));
 			parents.setSelectedIndex(0);
-			
-			number.setValue(service.nextNumber(parent.getType()));
 		}
 		
 		for(GLAccount.Type type:GLAccount.Type.values())
@@ -151,7 +149,10 @@ public class GLAFormContent extends AbstractWindow
 			
 			types.appendChild(listitem);
 			if(parent != null && type.equals(parent.getType()))
+			{
 				types.setSelectedItem(listitem);
+				number.setValue(service.nextNumber(type));
+			}
 		}
 		
 		grid.appendChild(new Columns());

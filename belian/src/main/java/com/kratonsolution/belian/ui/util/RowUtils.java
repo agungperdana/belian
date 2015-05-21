@@ -3,8 +3,11 @@
  */
 package com.kratonsolution.belian.ui.util;
 
+import java.math.BigDecimal;
+
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 
@@ -14,13 +17,22 @@ import org.zkoss.zul.Row;
  */
 public class RowUtils
 {
-	public static String rowValue(Row row,int index)
+	public static String string(Row row,int index)
 	{
 		Object object = row.getChildren().get(index);
 		if(object != null && object instanceof Label)
 			return ((Label)object).getValue();
 		
 		return "";
+	}
+	
+	public static BigDecimal decimal(Row row,int index)
+	{
+		Object object = row.getChildren().get(index);
+		if(object != null && object instanceof Doublebox)
+			return BigDecimal.valueOf(((Doublebox)object).doubleValue());
+		
+		return BigDecimal.ZERO;
 	}
 
 	public static boolean isChecked(Row row,int idex)

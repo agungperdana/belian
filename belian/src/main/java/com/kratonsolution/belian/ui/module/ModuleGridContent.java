@@ -118,7 +118,7 @@ public class ModuleGridContent extends GridContent
 								Row row = (Row)object;
 
 								if(RowUtils.isChecked(row,0))
-									service.delete(RowUtils.rowValue(row, 4));
+									service.delete(RowUtils.string(row, 4));
 							}
 							
 							ModuleWindow window = (ModuleWindow)getParent();

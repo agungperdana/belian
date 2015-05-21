@@ -59,7 +59,7 @@ public class OrganizationAccountEditContent extends FormContent
 		initToolbar();
 		initForm();
 		
-		tree = new OAccountTree(service.findOne(RowUtils.rowValue(row, 5)));
+		tree = new OAccountTree(service.findOne(RowUtils.string(row, 5)));
 		appendChild(tree);
 	}
 
@@ -85,7 +85,7 @@ public class OrganizationAccountEditContent extends FormContent
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 
-				OrganizationAccount org = service.findOne(RowUtils.rowValue(row,5));
+				OrganizationAccount org = service.findOne(RowUtils.string(row,5));
 				org.setName(name.getText());
 				org.setActive(status.isChecked());
 				org.setNote(note.getText());
@@ -117,7 +117,7 @@ public class OrganizationAccountEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		OrganizationAccount account = service.findOne(RowUtils.rowValue(row, 5));
+		OrganizationAccount account = service.findOne(RowUtils.string(row, 5));
 		
 		name.setConstraint("no empty");
 		name.setWidth("350px");

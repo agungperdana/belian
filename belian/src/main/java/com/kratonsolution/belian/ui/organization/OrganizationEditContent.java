@@ -93,7 +93,7 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 
-				Organization org = service.findOne(RowUtils.rowValue(row, 5));
+				Organization org = service.findOne(RowUtils.string(row, 5));
 				org.setName(name.getText());
 				org.setBirthDate(date.getValue());
 				org.setTaxCode(tax.getText());
@@ -111,7 +111,7 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 	@Override
 	public void initForm()
 	{
-		Organization organization = service.findOne(RowUtils.rowValue(row, 5));
+		Organization organization = service.findOne(RowUtils.string(row, 5));
 		if(organization != null)
 		{
 			name.setConstraint("no empty");
@@ -131,7 +131,7 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 			{
 				Listitem listitem = new Listitem(type.name(),type.name());
 				types.appendChild(listitem);
-				if(type.name().equals(RowUtils.rowValue(row, 4)))
+				if(type.name().equals(RowUtils.string(row, 4)))
 					types.setSelectedItem(listitem);
 			}
 
@@ -171,7 +171,7 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				appendChild(new AddressAddWindow(RowUtils.rowValue(row,5)));
+				appendChild(new AddressAddWindow(RowUtils.string(row,5)));
 			}
 		});
 		
@@ -180,7 +180,7 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				appendChild(new ContactAddWindow(RowUtils.rowValue(row,5)));
+				appendChild(new ContactAddWindow(RowUtils.string(row,5)));
 			}
 		});
 		
@@ -189,7 +189,7 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				appendChild(new RoleAddWindow(RowUtils.rowValue(row,5)));
+				appendChild(new RoleAddWindow(RowUtils.string(row,5)));
 			}
 		});
 		
@@ -198,7 +198,7 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				appendChild(new RelationshipAddWindow(RowUtils.rowValue(row,5)));
+				appendChild(new RelationshipAddWindow(RowUtils.string(row,5)));
 			}
 		});
 	}
@@ -207,7 +207,7 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 	{
 		information = new PartyInformation("Organization Information");
 
-		final Organization organization = service.findOne(RowUtils.rowValue(row, 5));
+		final Organization organization = service.findOne(RowUtils.string(row, 5));
 		if(organization != null)
 		{
 			if(!organization.getAddresses().isEmpty())

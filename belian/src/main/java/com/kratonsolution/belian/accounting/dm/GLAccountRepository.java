@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 /**
  * @author agungdodiperdana
@@ -24,6 +25,8 @@ public interface GLAccountRepository extends JpaRepository<GLAccount, String>
 	
 	public GLAccount findOneByName(String name);
 	
-	@Query("SELECT MAX(account.number) FROM GLAccount account WHERE account.type = ?1 ORDER BY account.number DESC")
-	public Long lastNumber(GLAccount.Type type);
+	@Query("SELECT MAX(account.number) FROM GLAccount account WHERE account.type =:type ORDER BY account.number DESC")
+	public Long lastNumber(@Param("type")GLAccount.Type type);
+	
+	public List<GLAccount> findAllByType(GLAccount.Type type);
 }

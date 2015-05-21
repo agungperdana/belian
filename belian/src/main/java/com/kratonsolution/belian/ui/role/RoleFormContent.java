@@ -95,7 +95,7 @@ public class RoleFormContent extends FormContent
 				{
 					Row _row = (Row)object;
 					
-					Module module = moduleService.findOne(RowUtils.rowValue(_row, 6));
+					Module module = moduleService.findOne(RowUtils.string(_row, 6));
 					if(module != null)
 					{
 						AccessRole accessRole = new AccessRole();

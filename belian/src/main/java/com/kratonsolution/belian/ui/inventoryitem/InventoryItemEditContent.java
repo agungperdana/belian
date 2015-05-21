@@ -87,7 +87,7 @@ public class InventoryItemEditContent extends FormContent
 				if(Strings.isNullOrEmpty(onhand.getText()))
 					throw new WrongValueException(onhand,"On Hand cannot be empty");
 			
-				InventoryItem item = service.findOne(RowUtils.rowValue(row, 6));
+				InventoryItem item = service.findOne(RowUtils.string(row, 6));
 				item.setProduct(productService.findOne(products.getSelectedItem().getValue().toString()));
 				item.setFacility(facilityService.findOne(facilitys.getSelectedItem().getValue().toString()));
 				item.setOnhand(BigDecimal.valueOf(onhand.getValue()));
@@ -108,7 +108,7 @@ public class InventoryItemEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		final InventoryItem item = service.findOne(RowUtils.rowValue(row,6));
+		final InventoryItem item = service.findOne(RowUtils.string(row,6));
 		
 		products.setMold("select");
 		facilitys.setMold("select");

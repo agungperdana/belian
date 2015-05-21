@@ -69,7 +69,7 @@ public class ChangePassword extends FormContent
 					Messagebox.show("New Password not equal");
 				else
 				{
-					controller.changePassword(RowUtils.rowValue(row,4), newPassword.getText(), renewPassword.getText());
+					controller.changePassword(RowUtils.string(row,4), newPassword.getText(), renewPassword.getText());
 					
 					UserWindow window = (UserWindow)getParent();
 					window.removeChild(get());

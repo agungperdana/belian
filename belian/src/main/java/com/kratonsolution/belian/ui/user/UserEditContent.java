@@ -83,7 +83,7 @@ public class UserEditContent extends FormContent
 				if(Strings.isNullOrEmpty(email.getText()))
 					throw new WrongValueException(email,"Name cannot be empty");
 			
-				User user = controller.findOne(RowUtils.rowValue(row, 4));
+				User user = controller.findOne(RowUtils.string(row, 4));
 				if(user != null)
 				{
 					user.setName(name.getText());
@@ -98,7 +98,7 @@ public class UserEditContent extends FormContent
 						while (iterator.hasNext())
 						{
 							UserRole userRole = (UserRole) iterator.next();
-							if(userRole.getId().equals(RowUtils.rowValue(target, 2)))
+							if(userRole.getId().equals(RowUtils.string(target, 2)))
 								userRole.setEnabled(RowUtils.isChecked(target, 1));
 						}
 					}
@@ -128,14 +128,14 @@ public class UserEditContent extends FormContent
 		});
 		
 		name.setConstraint("no empty");
-		name.setText(RowUtils.rowValue(this.row,1));
+		name.setText(RowUtils.string(this.row,1));
 		name.setWidth("250px");
 		
 		email.setConstraint("no empty");
-		email.setText(RowUtils.rowValue(row, 2));
+		email.setText(RowUtils.string(row, 2));
 		email.setWidth("250px");
 		
-		if(RowUtils.rowValue(row, 3).equals("Active"))
+		if(RowUtils.string(row, 3).equals("Active"))
 			enabled.setChecked(true);
 		else
 			enabled.setChecked(false);
@@ -213,7 +213,7 @@ public class UserEditContent extends FormContent
 		roles.appendChild(head);
 		roles.appendChild(columns);
 		
-		User user = controller.findOne(RowUtils.rowValue(row, 4));
+		User user = controller.findOne(RowUtils.string(row, 4));
 		if(user != null)
 		{
 			Rows _rows = new Rows();

@@ -60,6 +60,7 @@ import com.kratonsolution.belian.sales.dm.DirectSalesPaymentEvent;
 import com.kratonsolution.belian.sales.dm.PaymentType;
 import com.kratonsolution.belian.sales.srv.CashSalesService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -496,11 +497,7 @@ public class DirectSalesFormContent extends FormContent
 		payments.appendChild(new Rows());
 		payments.setSpan("3");
 		
-		Toolbar toolbar = new Toolbar();
-		toolbar.setHeight("40px");
-		toolbar.appendChild(new Toolbarbutton("New","/icons/new.png"));
-		toolbar.appendChild(new Toolbarbutton("Remove","/icons/delete.png"));
-		toolbar.appendChild(new Toolbarbutton("Clear","/icons/refresh.png"));
+		NRCToolbar toolbar = new NRCToolbar();
 		toolbar.getChildren().get(0).addEventListener(Events.ON_CLICK, new EventListener<Event>()
 		{
 			@Override

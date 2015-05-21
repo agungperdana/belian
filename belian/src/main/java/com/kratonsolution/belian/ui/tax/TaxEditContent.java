@@ -75,7 +75,7 @@ public class TaxEditContent extends FormContent
 				if(Strings.isNullOrEmpty(value.getText()))
 					throw new WrongValueException(value,"Value cannot be empty");
 			
-				Tax tax = service.findOne(RowUtils.rowValue(row, 4));
+				Tax tax = service.findOne(RowUtils.string(row, 4));
 				tax.setCode(code.getText());
 				tax.setName(name.getText());
 				tax.setValue(BigDecimal.valueOf(value.doubleValue()));
@@ -93,14 +93,14 @@ public class TaxEditContent extends FormContent
 	public void initForm()
 	{
 		code.setConstraint("no empty");
-		code.setText(RowUtils.rowValue(this.row,1));
+		code.setText(RowUtils.string(this.row,1));
 		
 		name.setConstraint("no empty");
 		name.setWidth("300px");
-		name.setText(RowUtils.rowValue(row, 2));
+		name.setText(RowUtils.string(row, 2));
 		
 		value.setConstraint("no empty");
-		value.setText(RowUtils.rowValue(row, 3));
+		value.setText(RowUtils.string(row, 3));
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));

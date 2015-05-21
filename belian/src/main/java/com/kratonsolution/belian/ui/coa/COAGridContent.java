@@ -197,7 +197,7 @@ public class COAGridContent extends GridContent
 					COAWindow window = (COAWindow)getParent();
 					window.removeGrid();
 //					window.insertEditForm(row);
-					COAEditContent content = new COAEditContent(service.findOne(RowUtils.rowValue(row, 4)));
+					COAEditContent content = new COAEditContent(service.findOne(RowUtils.string(row, 4)));
 					window.appendChild(content);
 				}
 			});

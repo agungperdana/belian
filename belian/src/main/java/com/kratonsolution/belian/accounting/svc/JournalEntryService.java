@@ -52,16 +52,16 @@ public class JournalEntryService
 	}
 	
 	@Secured("ROLE_ACCOUNTINGPERIOD_CREATE")
-	public void add(JournalEntry period)
+	public void add(JournalEntry entry)
 	{
-		period.setId(UUID.randomUUID().toString());
-		repository.save(period);
+		entry.setId(UUID.randomUUID().toString());
+		repository.save(entry);
 	}
 	
 	@Secured("ROLE_ACCOUNTINGPERIOD_UPDATE")
-	public void edit(JournalEntry period)
+	public void edit(JournalEntry entry)
 	{
-		repository.saveAndFlush(period);
+		repository.saveAndFlush(entry);
 	}
 	
 	@Secured("ROLE_ACCOUNTINGPERIOD_DELETE")

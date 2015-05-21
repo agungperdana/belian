@@ -96,7 +96,7 @@ public class PersonEditContent extends FormContent implements Refreshable
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 
-				Person person = service.findOne(RowUtils.rowValue(row, 6));
+				Person person = service.findOne(RowUtils.string(row, 6));
 				person.setName(name.getText());
 				person.setBirthDate(date.getValue());
 				person.setTaxCode(tax.getText());
@@ -115,7 +115,7 @@ public class PersonEditContent extends FormContent implements Refreshable
 	@Override
 	public void initForm()
 	{
-		Person person = service.findOne(RowUtils.rowValue(row, 6));
+		Person person = service.findOne(RowUtils.string(row, 6));
 		if(person != null)
 		{
 			name.setConstraint("no empty");
@@ -191,7 +191,7 @@ public class PersonEditContent extends FormContent implements Refreshable
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				appendChild(new AddressAddWindow(RowUtils.rowValue(row,6)));
+				appendChild(new AddressAddWindow(RowUtils.string(row,6)));
 			}
 		});
 
@@ -200,7 +200,7 @@ public class PersonEditContent extends FormContent implements Refreshable
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				appendChild(new ContactAddWindow(RowUtils.rowValue(row,6)));
+				appendChild(new ContactAddWindow(RowUtils.string(row,6)));
 			}
 		});
 
@@ -209,7 +209,7 @@ public class PersonEditContent extends FormContent implements Refreshable
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				appendChild(new RoleAddWindow(RowUtils.rowValue(row,6)));
+				appendChild(new RoleAddWindow(RowUtils.string(row,6)));
 			}
 		});
 
@@ -218,7 +218,7 @@ public class PersonEditContent extends FormContent implements Refreshable
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				appendChild(new RelationshipAddWindow(RowUtils.rowValue(row,6)));
+				appendChild(new RelationshipAddWindow(RowUtils.string(row,6)));
 			}
 		});
 	}
@@ -227,7 +227,7 @@ public class PersonEditContent extends FormContent implements Refreshable
 	{
 		information = new PartyInformation("Person Information");
 
-		final Person person = service.findOne(RowUtils.rowValue(row, 6));
+		final Person person = service.findOne(RowUtils.string(row, 6));
 		if(person != null)
 		{
 			if(!person.getAddresses().isEmpty())

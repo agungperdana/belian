@@ -105,7 +105,7 @@ public class UserFormContent extends FormContent
 				{
 					Row row = (Row)object;
 					
-					Role role = roleService.findOne(RowUtils.rowValue(row, 2));
+					Role role = roleService.findOne(RowUtils.string(row, 2));
 					if(role != null)
 					{
 						UserRole userRole = new UserRole();

@@ -67,7 +67,7 @@ public class CurrencyEditContent extends FormContent
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 			
-				Currency currency = service.findOne(RowUtils.rowValue(row, 3));
+				Currency currency = service.findOne(RowUtils.string(row, 3));
 				currency.setCode(code.getText());
 				currency.setName(name.getText());
 				
@@ -84,11 +84,11 @@ public class CurrencyEditContent extends FormContent
 	public void initForm()
 	{
 		code.setConstraint("no empty");
-		code.setText(RowUtils.rowValue(this.row,1));
+		code.setText(RowUtils.string(this.row,1));
 		code.setWidth("200px");
 		
 		name.setConstraint("no empty");
-		name.setText(RowUtils.rowValue(row, 2));
+		name.setText(RowUtils.string(row, 2));
 		name.setWidth("300px");
 		
 		grid.appendChild(new Columns());

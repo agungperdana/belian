@@ -62,7 +62,7 @@ public class PartyRelationshipTypeEditContent extends FormContent
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 			
-				PartyRelationshipType type = service.findOne(RowUtils.rowValue(row,2));
+				PartyRelationshipType type = service.findOne(RowUtils.string(row,2));
 				type.setName(name.getText());
 				
 				service.edit(type);
@@ -78,7 +78,7 @@ public class PartyRelationshipTypeEditContent extends FormContent
 	public void initForm()
 	{
 		name.setConstraint("no empty");
-		name.setText(RowUtils.rowValue(row, 1));
+		name.setText(RowUtils.string(row, 1));
 		name.setWidth("300px");
 		
 		grid.appendChild(new Columns());

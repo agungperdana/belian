@@ -50,6 +50,7 @@ public class Components
 	{
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");
+		listbox.setWidth("100%");
 		
 		return listbox;
 	}
@@ -69,5 +70,19 @@ public class Components
 		box.setReadonly(true);
 		box.setStyle("text-align:right;");
 		return box;
+	}
+
+	public static final boolean isEmpty(Listbox listbox)
+	{
+		if(listbox == null)
+			return true;
+		
+		if(listbox.getChildren().isEmpty())
+			return true;
+		
+		if(listbox.getSelectedCount() == 0)
+			return true;
+		
+		return false;
 	}
 }

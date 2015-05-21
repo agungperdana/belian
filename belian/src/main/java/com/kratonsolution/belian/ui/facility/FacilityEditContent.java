@@ -95,7 +95,7 @@ public class FacilityEditContent extends FormContent implements Refreshable
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 				
-				Facility facility = service.findOne(RowUtils.rowValue(row, 4));
+				Facility facility = service.findOne(RowUtils.string(row, 4));
 				if(facility != null)
 				{
 					facility.setCode(code.getText());
@@ -116,14 +116,14 @@ public class FacilityEditContent extends FormContent implements Refreshable
 	public void initForm()
 	{
 		code.setConstraint("no empty");
-		code.setText(RowUtils.rowValue(this.row,1));
+		code.setText(RowUtils.string(this.row,1));
 		code.setWidth("250px");
 		
 		name.setConstraint("no empty");
 		name.setWidth("300px");
-		name.setText(RowUtils.rowValue(row, 2));
+		name.setText(RowUtils.string(row, 2));
 		
-		note.setText(RowUtils.rowValue(row, 4));
+		note.setText(RowUtils.string(row, 4));
 		note.setWidth("350px");
 		
 		types.setMold("select");
@@ -131,7 +131,7 @@ public class FacilityEditContent extends FormContent implements Refreshable
 		{
 			Listitem listitem = new Listitem(type.name(),type.name());
 			types.appendChild(listitem);
-			if(type.name().equals(RowUtils.rowValue(row,3)))
+			if(type.name().equals(RowUtils.string(row,3)))
 				types.setSelectedItem(listitem);
 		}
 		
@@ -174,9 +174,9 @@ public class FacilityEditContent extends FormContent implements Refreshable
 			public void onEvent(Event event) throws Exception
 			{
 				if(tree.getSelectedItem() == null)
-					appendChild(new ContainerForm(service.findOne(RowUtils.rowValue(row,5)), null));
+					appendChild(new ContainerForm(service.findOne(RowUtils.string(row,5)), null));
 				else
-					appendChild(new ContainerForm(service.findOne(RowUtils.rowValue(row,5)), containerService.findOne(tree.getSelectedItem().getId())));
+					appendChild(new ContainerForm(service.findOne(RowUtils.string(row,5)), containerService.findOne(tree.getSelectedItem().getId())));
 			}
 		});
 		
@@ -219,7 +219,7 @@ public class FacilityEditContent extends FormContent implements Refreshable
 		tree.appendChild(headers);
 		tree.appendChild(new Treechildren());
 		
-		final Facility facility = service.findOne(RowUtils.rowValue(row,5));
+		final Facility facility = service.findOne(RowUtils.string(row,5));
 		for(final Container container:facility.getContainers())
 		{
 			Treeitem treeitem = new Treeitem(container.getCode()+" - "+container.getName()+", "+container.getType());

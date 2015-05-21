@@ -87,7 +87,7 @@ public class RoleEditContent extends FormContent
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 				
-				Role role = service.findOne(RowUtils.rowValue(row, 4));
+				Role role = service.findOne(RowUtils.string(row, 4));
 				role.setCode(code.getText());
 				role.setName(name.getText());
 				role.setNote(note.getText());
@@ -101,7 +101,7 @@ public class RoleEditContent extends FormContent
 					while (iterator.hasNext())
 					{
 						AccessRole accessRole = (AccessRole) iterator.next();
-						if(accessRole.getId().equals(RowUtils.rowValue(_row, 7)))
+						if(accessRole.getId().equals(RowUtils.string(_row, 7)))
 						{
 							accessRole.setCanCreate(RowUtils.isChecked(_row, 1));
 							accessRole.setCanRead(RowUtils.isChecked(_row, 2));
@@ -126,13 +126,13 @@ public class RoleEditContent extends FormContent
 	{
 		code.setConstraint("no empty");
 		code.setWidth("250px");
-		code.setText(RowUtils.rowValue(this.row,1));
+		code.setText(RowUtils.string(this.row,1));
 		
 		name.setConstraint("no empty");
 		name.setWidth("250px");
-		name.setText(RowUtils.rowValue(row, 2));
+		name.setText(RowUtils.string(row, 2));
 		
-		note.setText(RowUtils.rowValue(row, 3));
+		note.setText(RowUtils.string(row, 3));
 		note.setWidth("300px");
 		
 		grid.appendChild(new Columns());
@@ -277,7 +277,7 @@ public class RoleEditContent extends FormContent
 		
 		List<Module> newModules = new ArrayList<Module>();
 		
-		Role role = service.findOne(RowUtils.rowValue(this.row, 4));
+		Role role = service.findOne(RowUtils.string(this.row, 4));
 		for(AccessRole accessRole:role.getAccesses())
 		{
 			if(accessRole.getModule() != null)

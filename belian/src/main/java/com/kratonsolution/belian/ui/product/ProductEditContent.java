@@ -102,7 +102,7 @@ public class ProductEditContent extends FormContent implements Refreshable
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 
-				Product product = service.findOne(RowUtils.rowValue(row, 8));
+				Product product = service.findOne(RowUtils.string(row, 8));
 				product.setStart(start.getValue());
 				product.setEnd(end.getValue());
 				product.setCode(code.getText());
@@ -123,7 +123,7 @@ public class ProductEditContent extends FormContent implements Refreshable
 	@Override
 	public void initForm()
 	{
-		Product product = service.findOne(RowUtils.rowValue(row, 8));
+		Product product = service.findOne(RowUtils.string(row, 8));
 		
 		start.setConstraint("no empty");
 
@@ -212,7 +212,7 @@ public class ProductEditContent extends FormContent implements Refreshable
 	
 	protected void initTab()
 	{
-		Product product = service.findOne(RowUtils.rowValue(row, 8));
+		Product product = service.findOne(RowUtils.string(row, 8));
 	
 		tabbox = new Tabbox();
 		tabbox.appendChild(new Tabs());

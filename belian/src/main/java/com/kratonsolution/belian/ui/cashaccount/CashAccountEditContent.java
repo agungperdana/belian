@@ -84,7 +84,7 @@ public class CashAccountEditContent extends FormContent
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 
-				CashAccount account = service.findOne(RowUtils.rowValue(row, 6));
+				CashAccount account = service.findOne(RowUtils.string(row, 6));
 				account.setNumber(number.getText());
 				account.setName(name.getText());
 				account.setActive(status.isChecked());
@@ -105,11 +105,11 @@ public class CashAccountEditContent extends FormContent
 	{
 		number.setConstraint("no empty");
 		number.setWidth("300px");
-		number.setText(RowUtils.rowValue(row, 1));
+		number.setText(RowUtils.string(row, 1));
 		
 		name.setConstraint("no empty");
 		name.setWidth("300px");
-		name.setText(RowUtils.rowValue(row, 2));
+		name.setText(RowUtils.string(row, 2));
 		
 		status.setChecked(RowUtils.isChecked(row, 5));
 		
@@ -120,7 +120,7 @@ public class CashAccountEditContent extends FormContent
 		{
 			Listitem listitem = new Listitem(ondb.getCode(),ondb.getId());
 			currency.appendChild(listitem);
-			if(ondb.getCode().equals(RowUtils.rowValue(row, 3)))
+			if(ondb.getCode().equals(RowUtils.string(row, 3)))
 				currency.setSelectedItem(listitem);
 		}
 		
@@ -128,7 +128,7 @@ public class CashAccountEditContent extends FormContent
 		{
 			Listitem listitem = new Listitem(party.getName(),party.getId());
 			owner.appendChild(listitem);
-			if(party.getName().equals(RowUtils.rowValue(row, 4)))
+			if(party.getName().equals(RowUtils.string(row, 4)))
 				owner.setSelectedItem(listitem);
 		}
 		
