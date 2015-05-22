@@ -9,6 +9,7 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Row;
 
 /**
@@ -20,8 +21,13 @@ public class RowUtils
 	public static String string(Row row,int index)
 	{
 		Object object = row.getChildren().get(index);
-		if(object != null && object instanceof Label)
-			return ((Label)object).getValue();
+		if(object != null)
+		{
+			if(object instanceof Label)
+				return ((Label)object).getValue();
+			else if(object instanceof Listbox)
+				return Components.string((Listbox)object);
+		}
 		
 		return "";
 	}

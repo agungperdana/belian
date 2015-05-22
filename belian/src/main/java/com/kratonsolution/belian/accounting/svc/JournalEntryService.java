@@ -27,44 +27,44 @@ public class JournalEntryService
 	@Autowired
 	private JournalEntryRepository repository;
 	
-	@Secured("ROLE_ACCOUNTINGPERIOD_READ")
+	@Secured("ROLE_JOURNALENTRY_READ")
 	public int size()
 	{
 		return Long.valueOf(repository.count()).intValue();
 	}
 	
-	@Secured("ROLE_ACCOUNTINGPERIOD_READ")
+	@Secured("ROLE_JOURNALENTRY_READ")
 	public JournalEntry findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 	
-	@Secured("ROLE_ACCOUNTINGPERIOD_READ")
+	@Secured("ROLE_JOURNALENTRY_READ")
 	public List<JournalEntry> findAll()
 	{
 		return repository.findAll();
 	}
 	
-	@Secured("ROLE_ACCOUNTINGPERIOD_READ")
+	@Secured("ROLE_JOURNALENTRY_READ")
 	public List<JournalEntry> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
 	}
 	
-	@Secured("ROLE_ACCOUNTINGPERIOD_CREATE")
+	@Secured("ROLE_JOURNALENTRY_CREATE")
 	public void add(JournalEntry entry)
 	{
 		entry.setId(UUID.randomUUID().toString());
 		repository.save(entry);
 	}
 	
-	@Secured("ROLE_ACCOUNTINGPERIOD_UPDATE")
+	@Secured("ROLE_JOURNALENTRY_UPDATE")
 	public void edit(JournalEntry entry)
 	{
 		repository.saveAndFlush(entry);
 	}
 	
-	@Secured("ROLE_ACCOUNTINGPERIOD_DELETE")
+	@Secured("ROLE_JOURNALENTRY_DELETE")
 	public void delete(@PathVariable String id)
 	{
 		repository.delete(id);

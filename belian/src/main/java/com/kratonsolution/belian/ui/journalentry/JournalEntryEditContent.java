@@ -3,33 +3,42 @@
  */
 package com.kratonsolution.belian.ui.journalentry;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
+import java.util.UUID;
 
-import org.zkoss.zk.ui.WrongValueException;
-import org.zkoss.zk.ui.event.CheckEvent;
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zul.Auxhead;
-import org.zkoss.zul.Auxheader;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
+import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
-import com.google.common.base.Strings;
-import com.kratonsolution.belian.security.dm.AccessRole;
-import com.kratonsolution.belian.security.dm.Module;
-import com.kratonsolution.belian.security.dm.Role;
-import com.kratonsolution.belian.security.svc.ModuleService;
-import com.kratonsolution.belian.security.svc.RoleService;
+import com.kratonsolution.belian.accounting.dm.JournalEntry;
+import com.kratonsolution.belian.accounting.dm.JournalEntryDetail;
+import com.kratonsolution.belian.accounting.dm.OGLAccount;
+import com.kratonsolution.belian.accounting.dm.OrganizationAccount;
+import com.kratonsolution.belian.accounting.svc.AccountingPeriodService;
+import com.kratonsolution.belian.accounting.svc.CurrencyService;
+import com.kratonsolution.belian.accounting.svc.GLAccountService;
+import com.kratonsolution.belian.accounting.svc.JournalEntryService;
+import com.kratonsolution.belian.accounting.svc.OrganizationAccountService;
+import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.NRCToolbar;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -39,19 +48,37 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class JournalEntryEditContent extends FormContent
 {	
-	private final RoleService service = Springs.get(RoleService.class);
+private JournalEntryService service = Springs.get(JournalEntryService.class);
 	
-	private final ModuleService moduleService = Springs.get(ModuleService.class);
+	private CurrencyService currencyService = Springs.get(CurrencyService.class);
 	
-	private Textbox code = new Textbox();
+	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 	
-	private Textbox name = new Textbox();
+	private OrganizationAccountService accountService = Springs.get(OrganizationAccountService.class);
+	
+	private AccountingPeriodService accountingPeriodService = Springs.get(AccountingPeriodService.class);
+	
+	private GLAccountService glAccountService = Springs.get(GLAccountService.class);
+	
+	private Datebox date = new Datebox(new Date());
+	
+	private Listbox owners = Components.newSelect();
+	
+	private Listbox coas = Components.newSelect();
+	
+	private Listbox periods = Components.newSelect();
+	
+	private Listbox currencys = Components.newSelect();
 	
 	private Textbox note = new Textbox();
 	
-	private Row row;
+	private Doublebox debet = Components.readOnlyDoubleBox();
 	
-	private Grid accessModules = new Grid();
+	private Doublebox credit = Components.readOnlyDoubleBox();
+	
+	private Grid transactions = new Grid();
+	
+	private Row row;
 	
 	public JournalEntryEditContent(Row row)
 	{
@@ -59,7 +86,7 @@ public class JournalEntryEditContent extends FormContent
 		this.row = row;
 		initToolbar();
 		initForm();
-		initModules();
+		initTransaction();
 	}
 
 	@Override
@@ -81,38 +108,38 @@ public class JournalEntryEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				if(Strings.isNullOrEmpty(code.getText()))
-					throw new WrongValueException(code,"Code cannot be empty");
-			
-				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
-				
-				Role role = service.findOne(RowUtils.string(row, 4));
-				role.setCode(code.getText());
-				role.setName(name.getText());
-				role.setNote(note.getText());
-				
-				Rows moduleRows = accessModules.getRows();
-				for(Object object:moduleRows.getChildren())
+				if(credit.doubleValue() <= 0 || debet.doubleValue() <= 0 || (debet.doubleValue() != credit.doubleValue()))
 				{
-					Row _row = (Row)object;
-					
-					Iterator<AccessRole> iterator = role.getAccesses().iterator();
-					while (iterator.hasNext())
-					{
-						AccessRole accessRole = (AccessRole) iterator.next();
-						if(accessRole.getId().equals(RowUtils.string(_row, 7)))
-						{
-							accessRole.setCanCreate(RowUtils.isChecked(_row, 1));
-							accessRole.setCanRead(RowUtils.isChecked(_row, 2));
-							accessRole.setCanUpdate(RowUtils.isChecked(_row, 3));
-							accessRole.setCanDelete(RowUtils.isChecked(_row, 4));
-							accessRole.setCanPrint(RowUtils.isChecked(_row, 5));
-						}
-					}
+					Clients.showNotification("debet & credit must be equals", true);
+					return;
 				}
 				
-				service.edit(role);
+				JournalEntry entry = service.findOne(RowUtils.string(row, 5));
+				if(entry != null)
+				{
+					entry.getJournals().clear();
+					service.edit(entry);
+					
+					entry.setCredit(BigDecimal.valueOf(credit.doubleValue()));
+					entry.setDebet(BigDecimal.valueOf(debet.doubleValue()));
+
+					for(Component component:transactions.getRows().getChildren())
+					{
+						Row row = (Row)component;
+						
+						JournalEntryDetail detail = new JournalEntryDetail();
+						detail.setId(UUID.randomUUID().toString());
+						detail.setAccount(glAccountService.findOne(RowUtils.string(row, 1)));
+						detail.setAmount(RowUtils.decimal(row, 3));
+						detail.setJournal(entry);
+						detail.setNote(RowUtils.string(row, 4));
+						detail.setType(JournalEntryDetail.Type.valueOf(RowUtils.string(row, 2)));
+						
+						entry.getJournals().add(detail);
+					}
+					
+					service.edit(entry);
+				}
 				
 				JournalEntryWindow window = (JournalEntryWindow)getParent();
 				window.removeEditForm();
@@ -124,231 +151,261 @@ public class JournalEntryEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		code.setConstraint("no empty");
-		code.setWidth("250px");
-		code.setText(RowUtils.string(this.row,1));
+		JournalEntry entry = service.findOne(RowUtils.string(row, 5));
+		if(entry == null)
+		{
+			Clients.showNotification("Internal System error!",true);
+			return;
+		}
 		
-		name.setConstraint("no empty");
-		name.setWidth("250px");
-		name.setText(RowUtils.string(row, 2));
+		date.setReadonly(true);
+		note.setWidth("250px");
 		
-		note.setText(RowUtils.string(row, 3));
-		note.setWidth("300px");
+		debet.setValue(entry.getDebet().doubleValue());
+		credit.setValue(entry.getCredit().doubleValue());
+		
+		owners.appendChild(new Listitem(entry.getOwner().getName(),entry.getOwner().getId()));
+		coas.appendChild(new Listitem(entry.getCoa().getName(),entry.getCoa().getId()));
+		periods.appendChild(new Listitem(entry.getPeriod().getName(),entry.getPeriod().getId()));
+		currencys.appendChild(new Listitem(entry.getCurrency().getCode(),entry.getCurrency().getId()));
+		
+		Components.setDefault(owners);
+		Components.setDefault(periods);
+		Components.setDefault(coas);
+		Components.setDefault(currencys);
 		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
-		grid.getColumns().appendChild(new Column());
+		grid.getColumns().appendChild(new Column(null,null,"125px"));
+		grid.getColumns().appendChild(new Column(null,null,"280px"));
+		grid.getColumns().appendChild(new Column(null,null,"125px"));
+		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Code"));
-		row1.appendChild(code);
+		row1.appendChild(new Label("Date"));
+		row1.appendChild(date);
+		row1.appendChild(new Label("Debet"));
+		row1.appendChild(new Label("Credit"));
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Name"));
-		row2.appendChild(name);
+		row2.appendChild(new Label("Owner"));
+		row2.appendChild(owners);
+		row2.appendChild(debet);
+		row2.appendChild(credit);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Note"));
-		row3.appendChild(note);
+		row3.appendChild(new Label("Chart of Account"));
+		row3.appendChild(coas);
+		
+		Row row4 = new Row();
+		row4.appendChild(new Label("Accounting Period"));
+		row4.appendChild(periods);
+		
+		Row row5 = new Row();
+		row5.appendChild(new Label("Currency"));
+		row5.appendChild(currencys);
+		
+		Row row6 = new Row();
+		row6.appendChild(new Label("Note"));
+		row6.appendChild(note);
 		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
+		rows.appendChild(row4);
+		rows.appendChild(row5);
+		rows.appendChild(row6);
 	}
-
-	protected void initModules()
-	{
-		Auxhead head = new Auxhead();
-		Auxheader header = new Auxheader("Module Access");
-		header.setColspan(8);
-		header.setRowspan(1);
-		
-		head.appendChild(header);
-		
-		Columns columns = new Columns();
-		columns.appendChild(new Column("Module",null,"175px"));
-		columns.appendChild(new Column());
-		columns.appendChild(new Column());
-		columns.appendChild(new Column());
-		columns.appendChild(new Column());
-		columns.appendChild(new Column());
-		columns.appendChild(new Column(null,null,"1px"));
-		columns.appendChild(new Column(null,null,"1px"));
-		columns.getChildren().get(6).setVisible(false);
-		columns.getChildren().get(7).setVisible(false);
-		
-		Checkbox check1 = new Checkbox("Create");
-		check1.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
-		{
-			@Override
-			public void onEvent(CheckEvent event) throws Exception
-			{
-				Rows rows = accessModules.getRows();
-				for(Object object:rows.getChildren())
-				{
-					Row _row = (Row)object;
-					if(event.isChecked())
-						RowUtils.checked(_row, 1);
-					else
-						RowUtils.unchecked(_row, 1);
-				}
-			}
-		});
-		
-		Checkbox check2 = new Checkbox("Read");
-		check2.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
-		{
-			@Override
-			public void onEvent(CheckEvent event) throws Exception
-			{
-				Rows rows = accessModules.getRows();
-				for(Object object:rows.getChildren())
-				{
-					Row _row = (Row)object;
-					if(event.isChecked())
-						RowUtils.checked(_row, 2);
-					else
-						RowUtils.unchecked(_row, 2);
-				}
-			}
-		});
-		
-		Checkbox check3 = new Checkbox("Update");
-		check3.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
-		{
-			@Override
-			public void onEvent(CheckEvent event) throws Exception
-			{
-				Rows rows = accessModules.getRows();
-				for(Object object:rows.getChildren())
-				{
-					Row _row = (Row)object;
-					if(event.isChecked())
-						RowUtils.checked(_row, 3);
-					else
-						RowUtils.unchecked(_row, 3);
-				}
-			}
-		});
-		
-		Checkbox check4 = new Checkbox("Delete");
-		check4.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
-		{
-			@Override
-			public void onEvent(CheckEvent event) throws Exception
-			{
-				Rows rows = accessModules.getRows();
-				for(Object object:rows.getChildren())
-				{
-					Row _row = (Row)object;
-					if(event.isChecked())
-						RowUtils.checked(_row, 4);
-					else
-						RowUtils.unchecked(_row, 4);
-				}
-			}
-		});
-		
-		Checkbox check5 = new Checkbox("Print");
-		check5.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
-		{
-			@Override
-			public void onEvent(CheckEvent event) throws Exception
-			{
-				Rows rows = accessModules.getRows();
-				for(Object object:rows.getChildren())
-				{
-					Row _row = (Row)object;
-					if(event.isChecked())
-						RowUtils.checked(_row, 5);
-					else
-						RowUtils.unchecked(_row, 5);
-				}
-			}
-		});
-		
-		columns.getChildren().get(1).appendChild(check1);
-		columns.getChildren().get(2).appendChild(check2);
-		columns.getChildren().get(3).appendChild(check3);
-		columns.getChildren().get(4).appendChild(check4);
-		columns.getChildren().get(5).appendChild(check5);
 	
-		Rows moduleRows = new Rows();
+	private void initTransaction()
+	{
+		NRCToolbar toolbar = new NRCToolbar();
+
+		appendChild(toolbar);
+		appendChild(transactions);
 		
-		List<Module> newModules = new ArrayList<Module>();
+		transactions.appendChild(new Columns());
+		transactions.appendChild(new Rows());
+		transactions.setWidth("100%");
 		
-		Role role = service.findOne(RowUtils.string(this.row, 4));
-		for(AccessRole accessRole:role.getAccesses())
+		transactions.getColumns().appendChild(new Column(null, null, "25px"));
+		transactions.getColumns().appendChild(new Column("Account", null, "225px"));
+		transactions.getColumns().appendChild(new Column("Type", null, "100px"));
+		transactions.getColumns().appendChild(new Column("Amount", null, "100px"));
+		transactions.getColumns().appendChild(new Column("Note", null, null));
+		transactions.setSpan("4");
+		
+		toolbar.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()
 		{
-			if(accessRole.getModule() != null)
+			@Override
+			public void onEvent(Event event) throws Exception
 			{
-				Module module = moduleService.findOne(accessRole.getModule().getId());
-				if(module != null)
+				if(Components.isEmpty(coas))
 				{
-					Checkbox create = new Checkbox();
-					create.setChecked(accessRole.isCanCreate());
-					
-					Checkbox read = new Checkbox();
-					read.setChecked(accessRole.isCanRead());
-					
-					Checkbox update = new Checkbox();
-					update.setChecked(accessRole.isCanUpdate());
-					
-					Checkbox delete = new Checkbox();
-					delete.setChecked(accessRole.isCanDelete());
-					
-					Checkbox print = new Checkbox();
-					print.setChecked(accessRole.isCanPrint());
-					
-					Row row = new Row();
-					row.appendChild(new Label(module.getName()));
-					row.appendChild(create);
-					row.appendChild(read);
-					row.appendChild(update);
-					row.appendChild(delete);
-					row.appendChild(print);
-					row.appendChild(new Label(module.getId()));
-					row.appendChild(new Label(accessRole.getId()));
-					
-					moduleRows.appendChild(row);
+					Clients.showNotification("Please select Chart of Account first!",true);
+					return;
+				}
+				
+				Row row = new Row();
+				row.appendChild(new Checkbox());
+				
+				Listbox accounts = Components.newSelect();
+				OrganizationAccount account = accountService.findOne(Components.string(coas));
+				if(account != null)
+				{
+					for(OGLAccount gl:account.getAccounts())
+						accounts.appendChild(new Listitem(gl.getAccount().getName(), gl.getAccount().getId()));
+				}
+				
+				row.appendChild(accounts);
+				
+				Listbox types = Components.newSelect();
+				types.appendChild(new Listitem("DEBET","DEBET"));
+				types.appendChild(new Listitem("CREDIT","CREDIT"));
+				Components.setDefault(types);
+				
+				final Doublebox amout = new Doublebox(0d);
+				amout.setWidth("100%");
+				amout.setStyle("text-align:right");
+				amout.addEventListener(Events.ON_CHANGE, new EventListener<Event>()
+				{
+					@Override
+					public void onEvent(Event event) throws Exception
+					{
+						resetDisplay();
+					}
+				});
+				
+				Textbox txnote = new Textbox();
+				txnote.setWidth("100%");
+				
+				row.appendChild(types);
+				row.appendChild(amout);
+				row.appendChild(txnote);
+				
+				transactions.getRows().appendChild(row);
+				
+				types.addEventListener(Events.ON_SELECT,new EventListener<Event>()
+				{
+					@Override
+					public void onEvent(Event event) throws Exception
+					{
+						resetDisplay();
+					}
+				});
+			}
+		});
+		
+		toolbar.getRemove().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				Iterator<Component> iterator = transactions.getRows().getChildren().iterator();
+				while (iterator.hasNext())
+				{
+					Row row = (Row) iterator.next();
+					if(RowUtils.isChecked(row, 0))
+						iterator.remove();
+
+					resetDisplay();
 				}
 			}
-		}
+		});
 		
-		for(Module module:moduleService.findAll())
+		toolbar.getClear().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
-			boolean exist = false;
-			for(AccessRole accessRole:role.getAccesses())
+			@Override
+			public void onEvent(Event event) throws Exception
 			{
-				if(accessRole.getModule() != null && accessRole.getModule().getId().equals(module.getId()))
-					exist = true;
+				transactions.getRows().getChildren().clear();
+				debet.setValue(0d);
+				credit.setValue(0d);
 			}
+		});
 		
-			if(!exist)
-				newModules.add(module);
-		}
-		
-		if(!newModules.isEmpty())
+		JournalEntry entry = service.findOne(RowUtils.string(row, 5));
+		if(entry != null)
 		{
-			for(Module module:newModules)
+			for(JournalEntryDetail detail:entry.getJournals())
 			{
 				Row row = new Row();
-				row.appendChild(new Label(module.getName()));
 				row.appendChild(new Checkbox());
-				row.appendChild(new Checkbox());
-				row.appendChild(new Checkbox());
-				row.appendChild(new Checkbox());
-				row.appendChild(new Checkbox());
-				row.appendChild(new Label(module.getId()));
 				
-				moduleRows.appendChild(row);
+				Listbox accounts = Components.newSelect();
+				OrganizationAccount account = accountService.findOne(Components.string(coas));
+				if(account != null)
+				{
+					for(OGLAccount gl:account.getAccounts())
+					{
+						Listitem listitem = new Listitem(gl.getAccount().getName(), gl.getAccount().getId());
+						accounts.appendChild(listitem);
+						if(gl.getId().equals(detail.getAccount().getId()))
+							accounts.setSelectedItem(listitem);
+					}
+				}
+				
+				row.appendChild(accounts);
+				
+				Listbox types = Components.newSelect();
+				for(JournalEntryDetail.Type type:JournalEntryDetail.Type.values())
+				{
+					Listitem listitem = new Listitem(type.toString(), type.toString());
+					types.appendChild(listitem);
+					if(type.equals(detail.getType()))
+						types.setSelectedItem(listitem);
+				}
+				
+				types.addEventListener(Events.ON_SELECT,new EventListener<Event>()
+				{
+					@Override
+					public void onEvent(Event event) throws Exception
+					{
+						resetDisplay();
+					}
+				});
+				
+				final Doublebox amout = new Doublebox(0d);
+				amout.setWidth("100%");
+				amout.setStyle("text-align:right");
+				amout.setValue(detail.getAmount().doubleValue());
+				amout.addEventListener(Events.ON_CHANGE, new EventListener<Event>()
+				{
+					@Override
+					public void onEvent(Event event) throws Exception
+					{
+						resetDisplay();
+					}
+				});
+				
+				Textbox txnote = new Textbox();
+				txnote.setWidth("100%");
+				txnote.setText(detail.getNote());
+				
+				row.appendChild(types);
+				row.appendChild(amout);
+				row.appendChild(txnote);
+				
+				transactions.getRows().appendChild(row);
 			}
 		}
+	}
+	
+	private void resetDisplay()
+	{
+		debet.setValue(0d);
+		credit.setValue(0d);
 		
-		accessModules.appendChild(head);
-		accessModules.appendChild(columns);
-		accessModules.appendChild(moduleRows);
+		for(Component component:transactions.getRows().getChildren())
+		{
+			Row row = (Row)component;
 		
-		appendChild(accessModules);
+			Listbox types = (Listbox)row.getChildren().get(2);
+			Doublebox amount = (Doublebox)row.getChildren().get(3);
+			
+			if(Components.string(types).equals("DEBET"))
+				debet.setValue(debet.getValue().doubleValue()+amount.doubleValue());
+			else
+				credit.setValue(credit.getValue().doubleValue()+amount.doubleValue());	
+		}
 	}
 }
