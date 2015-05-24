@@ -44,4 +44,7 @@ public class Role
 	
 	@OneToMany(mappedBy="role",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<AccessRole> accesses = new HashSet<AccessRole>();
+	
+	@OneToMany(mappedBy="role",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<AccessibleOrganization> organizations = new HashSet<AccessibleOrganization>();
 }

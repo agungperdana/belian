@@ -28,6 +28,9 @@ public class PartyRoleType
 	@Column(name="name",unique=true,nullable=false)
 	private String name;
 	
+	@Column(name="deleteable")
+	private boolean deleteable;
+	
 	@Version
 	private Long version;
 }

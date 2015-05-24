@@ -5,6 +5,7 @@ package com.kratonsolution.belian.ui.role;
 
 import java.util.UUID;
 
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.CheckEvent;
 import org.zkoss.zk.ui.event.Event;
@@ -19,10 +20,18 @@ import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
+import org.zkoss.zul.Tab;
+import org.zkoss.zul.Tabbox;
+import org.zkoss.zul.Tabpanel;
+import org.zkoss.zul.Tabpanels;
+import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.security.dm.AccessRole;
+import com.kratonsolution.belian.security.dm.AccessibleOrganization;
 import com.kratonsolution.belian.security.dm.Module;
 import com.kratonsolution.belian.security.dm.Role;
 import com.kratonsolution.belian.security.svc.ModuleService;
@@ -41,6 +50,8 @@ public class RoleFormContent extends FormContent
 	
 	private final ModuleService moduleService = Springs.get(ModuleService.class);
 	
+	private OrganizationService organizationService = Springs.get(OrganizationService.class);
+	
 	private Textbox code = new Textbox();
 	
 	private Textbox name = new Textbox();
@@ -49,12 +60,26 @@ public class RoleFormContent extends FormContent
 	
 	private Grid accessModules = new Grid();
 	
+	private Tabbox tabbox = new Tabbox();
+	
+	private Grid accessibleCompanys = new Grid();
+	
 	public RoleFormContent()
 	{
 		super();
+		
+		tabbox.appendChild(new Tabs());
+		tabbox.appendChild(new Tabpanels());
+		tabbox.getTabs().appendChild(new Tab("Accessible Module"));
+		tabbox.getTabs().appendChild(new Tab("Accessible Company"));
+		tabbox.getTabpanels().appendChild(new Tabpanel());
+		tabbox.getTabpanels().appendChild(new Tabpanel());
+		appendChild(tabbox);
+		
 		initToolbar();
 		initForm();
 		initModules();
+		initCompanys();
 	}
 
 	@Override
@@ -112,7 +137,20 @@ public class RoleFormContent extends FormContent
 					}
 				}
 				
-				service.edit(role);
+				for(Component component:accessibleCompanys.getRows().getChildren())
+				{
+					Row row = (Row)component;
+					
+					AccessibleOrganization organization = new AccessibleOrganization();
+					organization.setId(UUID.randomUUID().toString());
+					organization.setOrganization(organizationService.findOne(RowUtils.string(row, 2)));
+					organization.setRole(role);
+					organization.setSelected(RowUtils.isChecked(row, 1));
+					
+					role.getOrganizations().add(organization);
+				}
+				
+				service.add(role);
 				
 				RoleWindow window = (RoleWindow)getParent();
 				window.removeCreateForm();
@@ -299,6 +337,28 @@ public class RoleFormContent extends FormContent
 		accessModules.appendChild(columns);
 		accessModules.appendChild(moduleRows);
 		
-		appendChild(accessModules);
+		tabbox.getTabpanels().getChildren().get(0).appendChild(accessModules);
+	}
+	
+	private void initCompanys()
+	{
+		accessibleCompanys.appendChild(new Columns());
+		accessibleCompanys.appendChild(new Rows());
+		accessibleCompanys.getColumns().appendChild(new Column("Company",null, null));
+		accessibleCompanys.getColumns().appendChild(new Column("Status",null, "65px"));
+		accessibleCompanys.getColumns().appendChild(new Column("",null,null));
+		accessibleCompanys.getColumns().getChildren().get(2).setVisible(false);
+		
+		for(Organization organization:organizationService.findAllByRolesTypeName("Company Structure"))
+		{
+			Row row = new Row();
+			row.appendChild(new Label(organization.getName()));
+			row.appendChild(new Checkbox());
+			row.appendChild(new Label(organization.getId()));
+			
+			accessibleCompanys.getRows().appendChild(row);
+		}
+		
+		tabbox.getTabpanels().getChildren().get(1).appendChild(accessibleCompanys);
 	}
 }

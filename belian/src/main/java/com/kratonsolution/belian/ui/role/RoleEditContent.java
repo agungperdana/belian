@@ -21,15 +21,23 @@ import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
+import org.zkoss.zul.Tab;
+import org.zkoss.zul.Tabbox;
+import org.zkoss.zul.Tabpanel;
+import org.zkoss.zul.Tabpanels;
+import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.security.dm.AccessRole;
+import com.kratonsolution.belian.security.dm.AccessibleOrganization;
 import com.kratonsolution.belian.security.dm.Module;
 import com.kratonsolution.belian.security.dm.Role;
 import com.kratonsolution.belian.security.svc.ModuleService;
 import com.kratonsolution.belian.security.svc.RoleService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -40,33 +48,49 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class RoleEditContent extends FormContent
 {	
 	private final RoleService service = Springs.get(RoleService.class);
-	
+
 	private final ModuleService moduleService = Springs.get(ModuleService.class);
 	
+	private OrganizationService organizationService = Springs.get(OrganizationService.class);
+
 	private Textbox code = new Textbox();
-	
+
 	private Textbox name = new Textbox();
-	
+
 	private Textbox note = new Textbox();
-	
+
 	private Row row;
-	
+
 	private Grid accessModules = new Grid();
-	
+
+	private Tabbox tabbox = new Tabbox();
+
+	private Grid accessibleCompanys = new Grid();
+
 	public RoleEditContent(Row row)
 	{
 		super();
 		this.row = row;
+		
+		tabbox.appendChild(new Tabs());
+		tabbox.appendChild(new Tabpanels());
+		tabbox.getTabs().appendChild(new Tab("Accessible Module"));
+		tabbox.getTabs().appendChild(new Tab("Accessible Company"));
+		tabbox.getTabpanels().appendChild(new Tabpanel());
+		tabbox.getTabpanels().appendChild(new Tabpanel());
+		appendChild(tabbox);
+		
 		initToolbar();
 		initForm();
 		initModules();
+		initCompanys();
 	}
 
 	@Override
 	public void initToolbar()
 	{
 		toolbar.getCancel().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
+				{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
@@ -74,29 +98,29 @@ public class RoleEditContent extends FormContent
 				window.removeEditForm();
 				window.insertGrid();
 			}
-		});
-		
+				});
+
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
+				{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
 				if(Strings.isNullOrEmpty(code.getText()))
 					throw new WrongValueException(code,"Code cannot be empty");
-			
+
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
-				
+
 				Role role = service.findOne(RowUtils.string(row, 4));
 				role.setCode(code.getText());
 				role.setName(name.getText());
 				role.setNote(note.getText());
-				
+
 				Rows moduleRows = accessModules.getRows();
 				for(Object object:moduleRows.getChildren())
 				{
 					Row _row = (Row)object;
-					
+
 					Iterator<AccessRole> iterator = role.getAccesses().iterator();
 					while (iterator.hasNext())
 					{
@@ -111,14 +135,14 @@ public class RoleEditContent extends FormContent
 						}
 					}
 				}
-				
+
 				service.edit(role);
-				
+
 				RoleWindow window = (RoleWindow)getParent();
 				window.removeEditForm();
 				window.insertGrid();
 			}
-		});
+				});
 	}
 
 	@Override
@@ -127,30 +151,30 @@ public class RoleEditContent extends FormContent
 		code.setConstraint("no empty");
 		code.setWidth("250px");
 		code.setText(RowUtils.string(this.row,1));
-		
+
 		name.setConstraint("no empty");
 		name.setWidth("250px");
 		name.setText(RowUtils.string(row, 2));
-		
+
 		note.setText(RowUtils.string(row, 3));
 		note.setWidth("300px");
-		
+
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));
 		grid.getColumns().appendChild(new Column());
-		
+
 		Row row1 = new Row();
 		row1.appendChild(new Label("Code"));
 		row1.appendChild(code);
-		
+
 		Row row2 = new Row();
 		row2.appendChild(new Label("Name"));
 		row2.appendChild(name);
-		
+
 		Row row3 = new Row();
 		row3.appendChild(new Label("Note"));
 		row3.appendChild(note);
-		
+
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
@@ -162,9 +186,9 @@ public class RoleEditContent extends FormContent
 		Auxheader header = new Auxheader("Module Access");
 		header.setColspan(8);
 		header.setRowspan(1);
-		
+
 		head.appendChild(header);
-		
+
 		Columns columns = new Columns();
 		columns.appendChild(new Column("Module",null,"175px"));
 		columns.appendChild(new Column());
@@ -176,10 +200,10 @@ public class RoleEditContent extends FormContent
 		columns.appendChild(new Column(null,null,"1px"));
 		columns.getChildren().get(6).setVisible(false);
 		columns.getChildren().get(7).setVisible(false);
-		
+
 		Checkbox check1 = new Checkbox("Create");
 		check1.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
-		{
+				{
 			@Override
 			public void onEvent(CheckEvent event) throws Exception
 			{
@@ -193,11 +217,11 @@ public class RoleEditContent extends FormContent
 						RowUtils.unchecked(_row, 1);
 				}
 			}
-		});
-		
+				});
+
 		Checkbox check2 = new Checkbox("Read");
 		check2.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
-		{
+				{
 			@Override
 			public void onEvent(CheckEvent event) throws Exception
 			{
@@ -211,11 +235,11 @@ public class RoleEditContent extends FormContent
 						RowUtils.unchecked(_row, 2);
 				}
 			}
-		});
-		
+				});
+
 		Checkbox check3 = new Checkbox("Update");
 		check3.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
-		{
+				{
 			@Override
 			public void onEvent(CheckEvent event) throws Exception
 			{
@@ -229,11 +253,11 @@ public class RoleEditContent extends FormContent
 						RowUtils.unchecked(_row, 3);
 				}
 			}
-		});
-		
+				});
+
 		Checkbox check4 = new Checkbox("Delete");
 		check4.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
-		{
+				{
 			@Override
 			public void onEvent(CheckEvent event) throws Exception
 			{
@@ -247,11 +271,11 @@ public class RoleEditContent extends FormContent
 						RowUtils.unchecked(_row, 4);
 				}
 			}
-		});
-		
+				});
+
 		Checkbox check5 = new Checkbox("Print");
 		check5.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
-		{
+				{
 			@Override
 			public void onEvent(CheckEvent event) throws Exception
 			{
@@ -265,18 +289,18 @@ public class RoleEditContent extends FormContent
 						RowUtils.unchecked(_row, 5);
 				}
 			}
-		});
-		
+				});
+
 		columns.getChildren().get(1).appendChild(check1);
 		columns.getChildren().get(2).appendChild(check2);
 		columns.getChildren().get(3).appendChild(check3);
 		columns.getChildren().get(4).appendChild(check4);
 		columns.getChildren().get(5).appendChild(check5);
-	
+
 		Rows moduleRows = new Rows();
-		
+
 		List<Module> newModules = new ArrayList<Module>();
-		
+
 		Role role = service.findOne(RowUtils.string(this.row, 4));
 		for(AccessRole accessRole:role.getAccesses())
 		{
@@ -287,19 +311,19 @@ public class RoleEditContent extends FormContent
 				{
 					Checkbox create = new Checkbox();
 					create.setChecked(accessRole.isCanCreate());
-					
+
 					Checkbox read = new Checkbox();
 					read.setChecked(accessRole.isCanRead());
-					
+
 					Checkbox update = new Checkbox();
 					update.setChecked(accessRole.isCanUpdate());
-					
+
 					Checkbox delete = new Checkbox();
 					delete.setChecked(accessRole.isCanDelete());
-					
+
 					Checkbox print = new Checkbox();
 					print.setChecked(accessRole.isCanPrint());
-					
+
 					Row row = new Row();
 					row.appendChild(new Label(module.getName()));
 					row.appendChild(create);
@@ -309,12 +333,12 @@ public class RoleEditContent extends FormContent
 					row.appendChild(print);
 					row.appendChild(new Label(module.getId()));
 					row.appendChild(new Label(accessRole.getId()));
-					
+
 					moduleRows.appendChild(row);
 				}
 			}
 		}
-		
+
 		for(Module module:moduleService.findAll())
 		{
 			boolean exist = false;
@@ -323,11 +347,11 @@ public class RoleEditContent extends FormContent
 				if(accessRole.getModule() != null && accessRole.getModule().getId().equals(module.getId()))
 					exist = true;
 			}
-		
+
 			if(!exist)
 				newModules.add(module);
 		}
-		
+
 		if(!newModules.isEmpty())
 		{
 			for(Module module:newModules)
@@ -340,15 +364,42 @@ public class RoleEditContent extends FormContent
 				row.appendChild(new Checkbox());
 				row.appendChild(new Checkbox());
 				row.appendChild(new Label(module.getId()));
-				
+
 				moduleRows.appendChild(row);
 			}
 		}
-		
+
 		accessModules.appendChild(head);
 		accessModules.appendChild(columns);
 		accessModules.appendChild(moduleRows);
+
+		tabbox.getTabpanels().getChildren().get(0).appendChild(accessModules);
+	}
+	
+	private void initCompanys()
+	{
+		Role role = service.findOne(RowUtils.string(row, 4));
 		
-		appendChild(accessModules);
+		accessibleCompanys.appendChild(new Columns());
+		accessibleCompanys.appendChild(new Rows());
+		accessibleCompanys.getColumns().appendChild(new Column("Company",null, null));
+		accessibleCompanys.getColumns().appendChild(new Column("Status",null, "65px"));
+		accessibleCompanys.getColumns().appendChild(new Column("",null,null));
+		accessibleCompanys.getColumns().getChildren().get(2).setVisible(false);
+		
+		if(role != null)
+		{
+			for(AccessibleOrganization access:role.getOrganizations())
+			{
+				Row row = new Row();
+				row.appendChild(new Label(access.getOrganization().getName()));
+				row.appendChild(Components.checkbox(access.isSelected()));
+				row.appendChild(new Label(access.getId()));
+				
+				accessibleCompanys.getRows().appendChild(row);
+			}
+		}
+		
+		tabbox.getTabpanels().getChildren().get(1).appendChild(accessibleCompanys);
 	}
 }

@@ -6,6 +6,7 @@ package com.kratonsolution.belian.ui.util;
 import java.math.BigDecimal;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Textbox;
@@ -84,5 +85,21 @@ public class Components
 			return true;
 		
 		return false;
+	}
+	
+	public static final Checkbox readOnlyCheckbox()
+	{
+		Checkbox checkbox = new Checkbox();
+		checkbox.setDisabled(true);
+		
+		return checkbox;
+	}
+	
+	public static final Checkbox checkbox(boolean isChecked)
+	{
+		Checkbox checkbox = new Checkbox();
+		checkbox.setChecked(isChecked);
+		
+		return checkbox;
 	}
 }
