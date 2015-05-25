@@ -87,16 +87,15 @@ public class EconomicAgentService
 	}
 	
 	@Secured("ROLE_PARTY_UPDATE")
-	public void deleteRole(String agentId,String roleId)
+	public void deleteRole(EconomicAgent agent,PartyRole partyRole)
 	{
-		EconomicAgent agent = repository.findOne(agentId);
 		if(agent != null)
 		{
 			Iterator<PartyRole> iterator = agent.getRoles().iterator();
 			while (iterator.hasNext())
 			{
-				PartyRole partyRole = (PartyRole) iterator.next();
-				if(partyRole.getId().equals(roleId))
+				PartyRole ondb = (PartyRole) iterator.next();
+				if(ondb.getId().equals(partyRole.getId()))
 				{
 					iterator.remove();
 				

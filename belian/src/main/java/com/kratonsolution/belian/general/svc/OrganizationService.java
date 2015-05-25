@@ -15,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.OrganizationRepository;
 import com.kratonsolution.belian.general.dm.Organization.IndustryType;
+import com.kratonsolution.belian.general.dm.PartyRole;
+import com.kratonsolution.belian.global.dm.EconomicAgentRoleEventListener;
+import com.kratonsolution.belian.global.svc.EconomicAgentService;
 
 /**
  * @author agungdodiperdana
@@ -26,6 +29,12 @@ public class OrganizationService
 {	
 	@Autowired
 	private OrganizationRepository repository;
+	
+	@Autowired
+	private EconomicAgentService service;
+	
+	@Autowired
+	private List<EconomicAgentRoleEventListener> listeners;
 
 	@Secured("ROLE_ORGANIZATION_READ")
 	public Organization findOne(String id)
@@ -85,6 +94,10 @@ public class OrganizationService
 	@Secured("ROLE_ORGANIZATION_DELETE")
 	public void delete(String id)
 	{
-		repository.delete(id);
+		Organization target = repository.findOne(id);
+		for(PartyRole partyRole:target.getRoles())
+			service.deleteRole(target, partyRole);
+		
+		repository.delete(target);
 	}
 }

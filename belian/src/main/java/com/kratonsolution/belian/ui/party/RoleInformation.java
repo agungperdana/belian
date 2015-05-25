@@ -4,7 +4,6 @@
 package com.kratonsolution.belian.ui.party;
 
 import java.text.SimpleDateFormat;
-import java.util.Iterator;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -15,12 +14,9 @@ import org.zkoss.zul.Treecell;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
 
-import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.PartyRole;
-import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -33,6 +29,8 @@ public class RoleInformation extends Treeitem
 	private Treerow row = new Treerow();
 	
 	private SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+	
+	private EconomicAgentService service = Springs.get(EconomicAgentService.class);
 	
 	public RoleInformation(PartyRole role,EconomicAgent party)
 	{
@@ -81,20 +79,22 @@ public class RoleInformation extends Treeitem
 		row.appendChild(delcell);
 	}
 	
-	protected void remove(final EconomicAgent party,final PartyRole role)
+	protected void remove(final EconomicAgent agent,final PartyRole role)
 	{
-		Iterator<PartyRole> iterator = party.getRoles().iterator();
-		while (iterator.hasNext())
-		{
-			PartyRole role2 = (PartyRole) iterator.next();
-			if(role2.getId().equals(role.getId()))
-				iterator.remove();
-		}
+//		Iterator<PartyRole> iterator = party.getRoles().iterator();
+//		while (iterator.hasNext())
+//		{
+//			PartyRole ondb = (PartyRole) iterator.next();
+//			if(ondb.getId().equals(role.getId()))
+//				iterator.remove();
+//		}
 		
-		if(party instanceof Person)
-			Springs.get(PersonService.class).edit((Person)party);
-		else if(party instanceof Organization)
-			Springs.get(OrganizationService.class).edit((Organization)party);
+		service.deleteRole(agent, role);
+		
+//		if(agent instanceof Person)
+//			Springs.get(PersonService.class).edit((Person)agent);
+//		else if(agent instanceof Organization)
+//			Springs.get(OrganizationService.class).edit((Organization)agent);
 		
 		((Refreshable)getTree()).refresh();
 	}
