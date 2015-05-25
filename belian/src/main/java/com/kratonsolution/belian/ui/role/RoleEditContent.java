@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.CheckEvent;
 import org.zkoss.zk.ui.event.Event;
@@ -90,7 +91,7 @@ public class RoleEditContent extends FormContent
 	public void initToolbar()
 	{
 		toolbar.getCancel().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-				{
+		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
@@ -98,10 +99,10 @@ public class RoleEditContent extends FormContent
 				window.removeEditForm();
 				window.insertGrid();
 			}
-				});
+		});
 
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-				{
+		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
@@ -135,6 +136,19 @@ public class RoleEditContent extends FormContent
 						}
 					}
 				}
+				
+				for(Component component:accessibleCompanys.getRows().getChildren())
+				{
+					Row _row = (Row)component;
+					
+					Iterator<AccessibleOrganization> iterator = role.getOrganizations().iterator();
+					while (iterator.hasNext())
+					{
+						AccessibleOrganization org = (AccessibleOrganization) iterator.next();
+						if(org.getId().equals(RowUtils.string(_row, 2)))
+							org.setSelected(RowUtils.isChecked(_row, 1));
+					}
+				}
 
 				service.edit(role);
 
@@ -142,7 +156,7 @@ public class RoleEditContent extends FormContent
 				window.removeEditForm();
 				window.insertGrid();
 			}
-				});
+		});
 	}
 
 	@Override
@@ -203,7 +217,7 @@ public class RoleEditContent extends FormContent
 
 		Checkbox check1 = new Checkbox("Create");
 		check1.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
-				{
+		{
 			@Override
 			public void onEvent(CheckEvent event) throws Exception
 			{
@@ -217,11 +231,11 @@ public class RoleEditContent extends FormContent
 						RowUtils.unchecked(_row, 1);
 				}
 			}
-				});
+		});
 
 		Checkbox check2 = new Checkbox("Read");
 		check2.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
-				{
+		{
 			@Override
 			public void onEvent(CheckEvent event) throws Exception
 			{
@@ -235,11 +249,11 @@ public class RoleEditContent extends FormContent
 						RowUtils.unchecked(_row, 2);
 				}
 			}
-				});
+		});
 
 		Checkbox check3 = new Checkbox("Update");
 		check3.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
-				{
+		{
 			@Override
 			public void onEvent(CheckEvent event) throws Exception
 			{
@@ -253,11 +267,11 @@ public class RoleEditContent extends FormContent
 						RowUtils.unchecked(_row, 3);
 				}
 			}
-				});
+		});
 
 		Checkbox check4 = new Checkbox("Delete");
 		check4.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
-				{
+		{
 			@Override
 			public void onEvent(CheckEvent event) throws Exception
 			{
@@ -271,11 +285,11 @@ public class RoleEditContent extends FormContent
 						RowUtils.unchecked(_row, 4);
 				}
 			}
-				});
+		});
 
 		Checkbox check5 = new Checkbox("Print");
 		check5.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
-				{
+		{
 			@Override
 			public void onEvent(CheckEvent event) throws Exception
 			{
@@ -289,7 +303,7 @@ public class RoleEditContent extends FormContent
 						RowUtils.unchecked(_row, 5);
 				}
 			}
-				});
+		});
 
 		columns.getChildren().get(1).appendChild(check1);
 		columns.getChildren().get(2).appendChild(check2);
