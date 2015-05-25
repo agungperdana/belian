@@ -113,8 +113,6 @@ public class RoleFormContent extends FormContent
 				role.setName(name.getText());
 				role.setNote(note.getText());
 				
-				service.add(role);
-				
 				Rows moduleRows = accessModules.getRows();
 				for(Object object:moduleRows.getChildren())
 				{

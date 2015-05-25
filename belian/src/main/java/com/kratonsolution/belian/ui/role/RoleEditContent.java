@@ -4,8 +4,10 @@
 package com.kratonsolution.belian.ui.role;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
@@ -30,6 +32,7 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.security.dm.AccessRole;
 import com.kratonsolution.belian.security.dm.AccessibleOrganization;
@@ -403,17 +406,42 @@ public class RoleEditContent extends FormContent
 		
 		if(role != null)
 		{
-			for(AccessibleOrganization access:role.getOrganizations())
+			if(!role.getOrganizations().isEmpty())
+				populateCompanys(role.getOrganizations());
+			else
 			{
-				Row row = new Row();
-				row.appendChild(new Label(access.getOrganization().getName()));
-				row.appendChild(Components.checkbox(access.isSelected()));
-				row.appendChild(new Label(access.getId()));
+				List<AccessibleOrganization> orgs = new ArrayList<AccessibleOrganization>();
+				for(Organization organization:organizationService.findAllByRolesTypeName("Company Structure"))
+				{
+					AccessibleOrganization accessibleOrganization = new AccessibleOrganization();
+					accessibleOrganization.setId(UUID.randomUUID().toString());
+					accessibleOrganization.setRole(role);
+					accessibleOrganization.setOrganization(organization);
+					
+					role.getOrganizations().add(accessibleOrganization);
 				
-				accessibleCompanys.getRows().appendChild(row);
+					orgs.add(accessibleOrganization);
+				}
+				
+				service.edit(role);
+				
+				populateCompanys(orgs);
 			}
 		}
 		
 		tabbox.getTabpanels().getChildren().get(1).appendChild(accessibleCompanys);
+	}
+
+	private void populateCompanys(Collection<AccessibleOrganization> companys)
+	{
+		for(AccessibleOrganization access:companys)
+		{
+			Row row = new Row();
+			row.appendChild(new Label(access.getOrganization().getName()));
+			row.appendChild(Components.checkbox(access.isSelected()));
+			row.appendChild(new Label(access.getId()));
+			
+			accessibleCompanys.getRows().appendChild(row);
+		}
 	}
 }

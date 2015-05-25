@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.global.svc;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.global.dm.EconomicAgentRepository;
+import com.kratonsolution.belian.global.dm.EconomicAgentRoleEventListener;
 
 /**
  * @author agungdodiperdana
@@ -26,7 +28,10 @@ public class EconomicAgentService
 {
 	@Autowired
 	private EconomicAgentRepository repository;
-		
+	
+	@Autowired
+	private List<EconomicAgentRoleEventListener> listeners;
+	
 	@Secured("ROLE_PARTY_READ")
 	public EconomicAgent findOne(String id)
 	{
@@ -74,7 +79,34 @@ public class EconomicAgentService
 	{
 		role.setId(UUID.randomUUID().toString());
 		role.getParty().getRoles().add(role);
+		
 		repository.saveAndFlush(role.getParty());
+		
+		for(EconomicAgentRoleEventListener listener:listeners)
+			listener.fireRoleAdded(role);
+	}
+	
+	@Secured("ROLE_PARTY_UPDATE")
+	public void deleteRole(String agentId,String roleId)
+	{
+		EconomicAgent agent = repository.findOne(agentId);
+		if(agent != null)
+		{
+			Iterator<PartyRole> iterator = agent.getRoles().iterator();
+			while (iterator.hasNext())
+			{
+				PartyRole partyRole = (PartyRole) iterator.next();
+				if(partyRole.getId().equals(roleId))
+				{
+					iterator.remove();
+				
+					for(EconomicAgentRoleEventListener listener:listeners)
+						listener.fireRoleRemoved(partyRole);
+				}
+			}
+			
+			repository.save(agent);
+		}
 	}
 	
 	@Secured("ROLE_PARTY_DELETE")
