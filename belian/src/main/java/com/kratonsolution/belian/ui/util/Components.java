@@ -51,7 +51,6 @@ public class Components
 	{
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");
-		listbox.setWidth("100%");
 		
 		return listbox;
 	}
