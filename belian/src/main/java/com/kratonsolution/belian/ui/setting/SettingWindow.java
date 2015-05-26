@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.ui.setting;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
@@ -18,8 +19,11 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Vlayout;
 
+import com.kratonsolution.belian.security.app.SecurityInformation;
+import com.kratonsolution.belian.security.svc.UserService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * @author agungdodiperdana
@@ -27,10 +31,20 @@ import com.kratonsolution.belian.ui.util.Components;
  */
 public class SettingWindow extends AbstractWindow
 {
+	private UserService userService = Springs.get(UserService.class);
+	
+	private SecurityInformation information = (SecurityInformation)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	
 	private Vlayout layout = new Vlayout(); 
 	
 	private Tabbox tabbox = new Tabbox();
 
+	private Listbox organizations = Components.newSelect();
+	
+	private Listbox locations = Components.newSelect();
+	
+	private Listbox languanges = Components.newSelect();
+	
 	public SettingWindow()
 	{
 		super();
@@ -70,23 +84,20 @@ public class SettingWindow extends AbstractWindow
 		grid.setSpan("1");
 		grid.appendChild(new Rows());
 		
-		Listbox locations = Components.newSelect();
-		Listbox companys = Components.newSelect();
-		Listbox locatizations = Components.newSelect();
-		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Company"));
-		row1.appendChild(companys);
+		row1.appendChild(new Label("Default Company"));
+		row1.appendChild(organizations);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Work Location"));
+		row2.appendChild(new Label("Default Work Location"));
 		row2.appendChild(locations);
 		
 		Row row3 = new Row();
 		row3.appendChild(new Label("Language"));
-		row3.appendChild(locatizations);
+		row3.appendChild(languanges);
 		
 		grid.getRows().appendChild(row1);
+		grid.getRows().appendChild(row2);
 		grid.getRows().appendChild(row2);
 		
 		tabpanel.appendChild(grid);

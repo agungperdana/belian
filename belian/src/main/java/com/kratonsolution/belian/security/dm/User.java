@@ -10,9 +10,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
+import com.kratonsolution.belian.global.dm.UserSetting;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -41,6 +45,10 @@ public class User
 	
 	@Column(name="is_enabled")
 	private boolean enabled;
+	
+	@OneToOne(cascade=CascadeType.ALL,orphanRemoval=true)
+	@JoinColumn(name="fk_user_setting")
+	private UserSetting setting;
 	
 	@Version
 	private Long version;

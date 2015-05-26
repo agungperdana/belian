@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.global.dm.UserSetting;
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.security.dm.UserRepository;
 
@@ -34,7 +35,18 @@ public class UserService
 	@Secured("ROLE_USER_READ")
 	public User findOne(String id)
 	{
-		return repository.findOne(id);
+		User user = repository.findOne(id);
+		if(user != null && user.getSetting() == null)
+		{
+			UserSetting setting = new UserSetting();
+			setting.setId(UUID.randomUUID().toString());
+			
+			user.setSetting(setting);
+			
+			repository.save(user);
+		}
+		
+		return user;
 	}
 	
 	@Secured("ROLE_USER_READ")
@@ -60,6 +72,13 @@ public class UserService
 	{
 		user.setId(UUID.randomUUID().toString());
 		user.setPassword(encryptor.encryptPassword(user.getPassword()));
+		
+		if(user.getSetting() == null)
+		{
+			UserSetting setting = new UserSetting();
+			setting.setId(UUID.randomUUID().toString());
+			user.setSetting(setting);
+		}
 		
 		repository.save(user);
 	}
