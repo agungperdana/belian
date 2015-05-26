@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.ui.setting;
 
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -23,14 +22,12 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Vlayout;
 
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.security.app.SecurityInformation;
-import com.kratonsolution.belian.security.dm.AccessibleOrganization;
 import com.kratonsolution.belian.security.dm.User;
-import com.kratonsolution.belian.security.dm.UserRole;
 import com.kratonsolution.belian.security.svc.UserService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.util.Components;
@@ -48,7 +45,7 @@ public class SettingWindow extends AbstractWindow
 	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 	
-	private SecurityInformation information = (SecurityInformation)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	private SessionUtils sessionUtils = Springs.get(SessionUtils.class);
 	
 	private Vlayout layout = new Vlayout(); 
 	
@@ -85,17 +82,12 @@ public class SettingWindow extends AbstractWindow
 	
 	private void initMyAccount()
 	{
-		if(information != null)
+		for(Organization organization:sessionUtils.getOrganizations())
 		{
-			User user = userService.findOne(information.getUser().getId());
-			if(user != null)
-			{
-				for(UserRole role:user.getRoles())
-				{
-					for(AccessibleOrganization organization:role.getRole().getOrganizations())
-						organizations.appendChild(new Listitem(organization.getOrganization().getName(), organization.getOrganization().getId()));
-				}
-			}
+			Listitem listitem = new Listitem(organization.getName(), organization.getId());
+			organizations.appendChild(listitem);
+			if(organization.getId().equals(sessionUtils.getOrganization().getId()))
+				organizations.setSelectedItem(listitem);
 		}
 		
 		organizations.addEventListener(Events.ON_SELECT, new EventListener<Event>()
@@ -109,16 +101,28 @@ public class SettingWindow extends AbstractWindow
 				if(organization != null)
 				{
 					for(Address address:organization.getAddresses())
-						locations.appendChild(new Listitem(address.getCity().getName(),address.getCity().getId()));
+					{
+						Listitem listitem = new Listitem(address.getCity().getName(),address.getCity().getId());
+						locations.appendChild(listitem);
+						
+						if(address.getCity().getId().equals(sessionUtils.getLocation().getId()))
+							locations.setSelectedItem(listitem);
+					}
 				}
-				
-				Components.setDefault(locations);
 			}
 		});
+		
+		locations.appendChild(new Listitem(sessionUtils.getLocation().getName(), sessionUtils.getLocation().getId()));
+		locations.setSelectedIndex(0);
 		
 		languanges.appendChild(new Listitem("Bahasa Indonesia", "id-ID"));
 		languanges.appendChild(new Listitem("English", "en-US"));
 		Components.setDefault(languanges);
+		
+		if("id-ID".equals(sessionUtils.getLanguage()))
+			languanges.setSelectedIndex(0);
+		if("en-US".equals(sessionUtils.getLanguage()))
+			languanges.setSelectedIndex(1);
 		
 		Tabpanel tabpanel = new Tabpanel();
 		
@@ -174,17 +178,14 @@ public class SettingWindow extends AbstractWindow
 	@Override
 	public void onClose()
 	{
-		if(information != null)
+		User user = sessionUtils.getUser();
+		if(user != null)
 		{
-			User user = userService.findOne(information.getUser().getId());
-			if(user != null)
-			{
-				user.getSetting().setLanguage(Components.string(languanges));
-				user.getSetting().setLocation(geographicService.findOne(Components.string(locations)));
-				user.getSetting().setOrganization(organizationService.findOne(Components.string(organizations)));
-				
-				userService.edit(user);
-			}
+			user.getSetting().setLanguage(Components.string(languanges));
+			user.getSetting().setLocation(geographicService.findOne(Components.string(locations)));
+			user.getSetting().setOrganization(organizationService.findOne(Components.string(organizations)));
+			
+			userService.edit(user);
 		}
 		
 		super.onClose();

@@ -37,6 +37,7 @@ import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.accounting.svc.GLAccountService;
 import com.kratonsolution.belian.accounting.svc.JournalEntryService;
 import com.kratonsolution.belian.accounting.svc.OrganizationAccountService;
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.FormContent;
@@ -56,6 +57,8 @@ public class JournalEntryFormContent extends FormContent
 	private CurrencyService currencyService = Springs.get(CurrencyService.class);
 	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
+	
+	private SessionUtils sessionUtils = Springs.get(SessionUtils.class);
 	
 	private OrganizationAccountService accountService = Springs.get(OrganizationAccountService.class);
 	
@@ -153,21 +156,24 @@ public class JournalEntryFormContent extends FormContent
 		date.setConstraint("no empty");
 		note.setWidth("250px");
 		
-		for(Organization organization:organizationService.findAllByRolesTypeName("Internal Organization"))
-			owners.appendChild(new Listitem(organization.getName(), organization.getId()));
+		for(Organization organization:sessionUtils.getOrganizations())
+		{
+			Listitem listitem = new Listitem(organization.getName(), organization.getId());
+			owners.appendChild(listitem);
+			if(organization.getId().equals(sessionUtils.getOrganization().getId()))
+				owners.setSelectedItem(listitem);
+		}
 		
 		if(!owners.getChildren().isEmpty())
 		{
+			populateCOA();
+			
 			owners.addEventListener(Events.ON_SELECT, new EventListener<Event>()
 			{
 				@Override
 				public void onEvent(Event event) throws Exception
 				{
-					coas.getChildren().clear();
-					for(OrganizationAccount account:accountService.findAllByOrganization(Components.string(owners)))
-						coas.appendChild(new Listitem(account.getName(),account.getId()));
-				
-					Components.setDefault(coas);
+					populateCOA();
 				}
 			});
 		}
@@ -350,5 +356,14 @@ public class JournalEntryFormContent extends FormContent
 			else
 				credit.setValue(credit.getValue().doubleValue()+amount.doubleValue());	
 		}
+	}
+	
+	private void populateCOA()
+	{
+		coas.getChildren().clear();
+		for(OrganizationAccount account:accountService.findAllByOrganization(Components.string(owners)))
+			coas.appendChild(new Listitem(account.getName(),account.getId()));
+	
+		Components.setDefault(coas);
 	}
 }

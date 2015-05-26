@@ -19,7 +19,7 @@ public class Components
 {
 	public static final String string(Listbox listbox)
 	{
-		if(listbox != null && !listbox.getChildren().isEmpty())
+		if(listbox != null && !listbox.getChildren().isEmpty() && listbox.getSelectedCount() > 0)
 			return listbox.getSelectedItem().getValue().toString();
 		
 		return "";
