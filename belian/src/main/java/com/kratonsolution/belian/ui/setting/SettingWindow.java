@@ -4,12 +4,16 @@
 package com.kratonsolution.belian.ui.setting;
 
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Tab;
@@ -19,7 +23,14 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Vlayout;
 
+import com.kratonsolution.belian.general.dm.Address;
+import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.svc.GeographicService;
+import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.security.app.SecurityInformation;
+import com.kratonsolution.belian.security.dm.AccessibleOrganization;
+import com.kratonsolution.belian.security.dm.User;
+import com.kratonsolution.belian.security.dm.UserRole;
 import com.kratonsolution.belian.security.svc.UserService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.util.Components;
@@ -32,6 +43,10 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class SettingWindow extends AbstractWindow
 {
 	private UserService userService = Springs.get(UserService.class);
+	
+	private GeographicService geographicService = Springs.get(GeographicService.class);
+	
+	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 	
 	private SecurityInformation information = (SecurityInformation)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	
@@ -70,6 +85,41 @@ public class SettingWindow extends AbstractWindow
 	
 	private void initMyAccount()
 	{
+		if(information != null)
+		{
+			User user = userService.findOne(information.getUser().getId());
+			if(user != null)
+			{
+				for(UserRole role:user.getRoles())
+				{
+					for(AccessibleOrganization organization:role.getRole().getOrganizations())
+						organizations.appendChild(new Listitem(organization.getOrganization().getName(), organization.getOrganization().getId()));
+				}
+			}
+		}
+		
+		organizations.addEventListener(Events.ON_SELECT, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				locations.getChildren().clear();
+				
+				Organization organization = organizationService.findOne(Components.string(organizations));
+				if(organization != null)
+				{
+					for(Address address:organization.getAddresses())
+						locations.appendChild(new Listitem(address.getCity().getName(),address.getCity().getId()));
+				}
+				
+				Components.setDefault(locations);
+			}
+		});
+		
+		languanges.appendChild(new Listitem("Bahasa Indonesia", "id-ID"));
+		languanges.appendChild(new Listitem("English", "en-US"));
+		Components.setDefault(languanges);
+		
 		Tabpanel tabpanel = new Tabpanel();
 		
 		tabbox.getTabs().appendChild(new Tab("My Account"));
@@ -98,7 +148,7 @@ public class SettingWindow extends AbstractWindow
 		
 		grid.getRows().appendChild(row1);
 		grid.getRows().appendChild(row2);
-		grid.getRows().appendChild(row2);
+		grid.getRows().appendChild(row3);
 		
 		tabpanel.appendChild(grid);
 	}
@@ -124,6 +174,19 @@ public class SettingWindow extends AbstractWindow
 	@Override
 	public void onClose()
 	{
+		if(information != null)
+		{
+			User user = userService.findOne(information.getUser().getId());
+			if(user != null)
+			{
+				user.getSetting().setLanguage(Components.string(languanges));
+				user.getSetting().setLocation(geographicService.findOne(Components.string(locations)));
+				user.getSetting().setOrganization(organizationService.findOne(Components.string(organizations)));
+				
+				userService.edit(user);
+			}
+		}
 		
+		super.onClose();
 	}
 }
