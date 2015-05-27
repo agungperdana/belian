@@ -122,6 +122,7 @@ private JournalEntryService service = Springs.get(JournalEntryService.class);
 					
 					entry.setCredit(BigDecimal.valueOf(credit.doubleValue()));
 					entry.setDebet(BigDecimal.valueOf(debet.doubleValue()));
+					entry.setNote(note.getText());
 
 					for(Component component:transactions.getRows().getChildren())
 					{
@@ -160,6 +161,7 @@ private JournalEntryService service = Springs.get(JournalEntryService.class);
 		
 		date.setReadonly(true);
 		note.setWidth("250px");
+		note.setText(entry.getNote());
 		
 		debet.setValue(entry.getDebet().doubleValue());
 		credit.setValue(entry.getCredit().doubleValue());

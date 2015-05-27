@@ -125,6 +125,7 @@ public class JournalEntryFormContent extends FormContent
 				entry.setDebet(BigDecimal.valueOf(debet.doubleValue()));
 				entry.setOwner(organizationService.findOne(Components.string(owners)));
 				entry.setPeriod(accountingPeriodService.findOne(Components.string(periods)));
+				entry.setNote(note.getText());
 
 				for(Component component:transactions.getRows().getChildren())
 				{

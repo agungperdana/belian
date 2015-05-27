@@ -63,6 +63,9 @@ public class JournalEntry implements Serializable
 	@JoinColumn(name="fk_currency")
 	private Currency currency;
 	
+	@Column(name="note")
+	private String note;
+	
 	@Version
 	private Long version;
 	
