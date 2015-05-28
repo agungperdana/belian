@@ -164,10 +164,10 @@ public class JournalEntryGridContent extends GridContent
 		grid.getColumns().appendChild(new Column("Date",null,"100px"));
 		grid.getColumns().appendChild(new Column("Owner",null,"200px"));
 		grid.getColumns().appendChild(new Column("Period",null,"110px"));
-		grid.getColumns().appendChild(new Column("Amount",null,"125px"));
+		grid.getColumns().appendChild(new Column("Note",null,"125px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
 		grid.getColumns().getChildren().get(5).setVisible(false);
-		grid.setSpan("2");
+		grid.setSpan("4");
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{

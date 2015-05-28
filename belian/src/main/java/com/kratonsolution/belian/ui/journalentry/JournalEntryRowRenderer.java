@@ -26,7 +26,7 @@ public class JournalEntryRowRenderer implements RowRenderer<JournalEntry>
 		row.appendChild(new Label(Dates.format(data.getDate())));
 		row.appendChild(new Label(data.getOwner().getName()));
 		row.appendChild(new Label(data.getPeriod().getName()));
-		row.appendChild(new Label(data.getCurrency().getCode()+" "+Numbers.format(data.getDebet())));
+		row.appendChild(new Label(data.getNote()+" ["+data.getCurrency().getCode()+" "+Numbers.format(data.getDebet())+"]"));
 		row.appendChild(new Label(data.getId()));
 	}
 }
