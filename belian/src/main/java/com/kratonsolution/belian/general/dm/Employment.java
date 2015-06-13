@@ -9,5 +9,5 @@ package com.kratonsolution.belian.general.dm;
  */
 public class Employment extends PartyRelationship
 {
-
+	//todo
 }

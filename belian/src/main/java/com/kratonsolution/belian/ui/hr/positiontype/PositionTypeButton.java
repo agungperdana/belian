@@ -11,6 +11,7 @@ import org.zkoss.zul.Toolbarbutton;
  */
 public class PositionTypeButton extends Toolbarbutton
 {
+	//todo
 	public PositionTypeButton()
 	{
 		setImage("/icons/positiontype.png");

@@ -33,7 +33,7 @@ public class PositionTypeGridContent extends GridContent
 		initToolbar();
 		initGrid();
 	}
-	
+	//todo
 	protected void initToolbar()
 	{
 		gridToolbar.setParent(this);
