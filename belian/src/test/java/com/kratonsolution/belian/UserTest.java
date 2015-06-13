@@ -29,17 +29,17 @@ public class UserTest
 	@Test
 	public void cleanData()
 	{
-		for(User user:repository.findAll())
-		{
-			Iterator<UserRole> iterator = user.getRoles().iterator();
-			while (iterator.hasNext())
-			{
-				UserRole userRole = (UserRole) iterator.next();
-				if(userRole.getRole() == null)
-					iterator.remove();
-			}
-			
-			repository.save(user);
-		}
+//		for(User user:repository.findAll())
+//		{
+//			Iterator<UserRole> iterator = user.getRoles().iterator();
+//			while (iterator.hasNext())
+//			{
+//				UserRole userRole = (UserRole) iterator.next();
+//				if(userRole.getRole() == null)
+//					iterator.remove();
+//			}
+//			
+//			repository.save(user);
+//		}
 	}
 }

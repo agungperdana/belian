@@ -26,10 +26,10 @@ public class PersonTest
 	@Test
 	public void testQuery()
 	{
-		for(Person person:repository.findAllByNameNot("Umi"))
-		{
-			System.out.println("####### "+person.getId());
-			System.out.println("####### "+person.getName());
-		}
+//		for(Person person:repository.findAllByNameNot("Umi"))
+//		{
+//			System.out.println("####### "+person.getId());
+//			System.out.println("####### "+person.getName());
+//		}
 	}
 }

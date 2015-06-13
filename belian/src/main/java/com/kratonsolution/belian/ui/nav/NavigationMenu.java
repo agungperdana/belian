@@ -41,6 +41,7 @@ public class NavigationMenu extends Window
 		initAccounting();
 		initInventory();
 		initSales();
+		initHR();
 	}
 
 	protected void init()
@@ -69,6 +70,7 @@ public class NavigationMenu extends Window
 		tabs.appendChild(new Tab("Accounting"));
 		tabs.appendChild(new Tab("Inventory"));
 		tabs.appendChild(new Tab("Sales"));
+		tabs.appendChild(new Tab("Human Resource"));
 	}
 
 	protected void initGeneral()
@@ -139,6 +141,22 @@ public class NavigationMenu extends Window
 		list.appendChild(new ProductCategoryItem());
 		list.appendChild(new ProductItem());
 		list.appendChild(new InventoryItemItem());
+	}
+	
+	protected void initHR()
+	{
+		Tabpanel hr = new Tabpanel();
+		hr.setStyle("overflow:auto");
+
+		Listbox list = new Listbox();
+		list.setStyle("border:none");
+		
+		list.appendChild(new PositionTypeItem());
+		list.appendChild(new PositionItem());
+		list.appendChild(new EmploymentItem());
+		
+		hr.appendChild(list);
+		panels.appendChild(hr);	
 	}
 	
 	protected void initSales()

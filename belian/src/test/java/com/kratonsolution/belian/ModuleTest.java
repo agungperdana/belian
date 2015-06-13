@@ -28,17 +28,17 @@ public class ModuleTest
 	@Test
 	public void updateModule()
 	{
-		for(Module module:service.findAll())
-		{
-			Module one = new Module();
-			one.setId(UUID.randomUUID().toString());
-			one.setCode(module.getCode());
-			one.setEnabled(true);
-			one.setName(module.getName());
-			one.setNote(module.getNote());
-			
-			service.delete(module.getId());
-			service.add(one);
-		}
+//		for(Module module:service.findAll())
+//		{
+//			Module one = new Module();
+//			one.setId(UUID.randomUUID().toString());
+//			one.setCode(module.getCode());
+//			one.setEnabled(true);
+//			one.setName(module.getName());
+//			one.setNote(module.getNote());
+//			
+//			service.delete(module.getId());
+//			service.add(one);
+//		}
 	}
 }

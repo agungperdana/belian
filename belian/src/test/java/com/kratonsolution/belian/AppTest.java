@@ -60,11 +60,11 @@ public class AppTest
 	@Test
 	public void testRole()
 	{
-		for(Role role:roleRepository.findAll())
-		{
-			System.out.println(role.getName());
-			for(AccessRole accessRole:role.getAccesses())
-				System.out.println("module :"+accessRole.getModule());
-		}
+//		for(Role role:roleRepository.findAll())
+//		{
+//			System.out.println(role.getName());
+//			for(AccessRole accessRole:role.getAccesses())
+//				System.out.println("module :"+accessRole.getModule());
+//		}
 	}
 }
