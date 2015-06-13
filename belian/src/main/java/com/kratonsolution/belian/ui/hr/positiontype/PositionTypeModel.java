@@ -27,7 +27,7 @@ public class PositionTypeModel implements ListModel<PositionType>
 	{
 		next(0, itemSize);
 	}
-	//todo
+
 	@Override
 	public PositionType getElementAt(int index)
 	{

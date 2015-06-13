@@ -33,6 +33,4 @@ public class PositionType
 	
 	@Version
 	private Long version;
-	
-	//todo
 }

@@ -16,7 +16,6 @@ import com.kratonsolution.belian.hr.dm.PositionType;
  */
 public class PositionTypeRowRenderer implements RowRenderer<PositionType>
 {
-	//todo
 	@Override
 	public void render(Row row, PositionType data, int index) throws Exception
 	{

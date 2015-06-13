@@ -26,7 +26,7 @@ public class PositionTypeWindow extends AbstractWindow implements HasGrid,HasCre
 	private final Caption caption = new Caption("Position Type");
 	
 	private PositionTypeButton status = new PositionTypeButton();
-	//todo
+
 	public static PositionTypeWindow injectInto(Page page)
 	{
 		PositionTypeWindow window = new PositionTypeWindow();

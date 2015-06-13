@@ -22,8 +22,6 @@ import com.kratonsolution.belian.hr.dm.PositionTypeRepository;
 @Service
 public class PositionTypeService
 {
-	//todo
-	
 	@Autowired
 	private PositionTypeRepository repository;
 	

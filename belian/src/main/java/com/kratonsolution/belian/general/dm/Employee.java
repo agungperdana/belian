@@ -9,5 +9,4 @@ package com.kratonsolution.belian.general.dm;
  */
 public class Employee extends PartyRole
 {
-	//todo
 }

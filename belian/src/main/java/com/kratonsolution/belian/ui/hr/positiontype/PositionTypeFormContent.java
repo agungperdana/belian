@@ -40,7 +40,6 @@ public class PositionTypeFormContent extends FormContent
 		initForm();
 	}
 
-	//todo
 	@Override
 	public void initToolbar()
 	{
