@@ -6,8 +6,11 @@ package com.kratonsolution.belian.general.dm;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -26,33 +29,35 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="party_relationship")
+@Inheritance(strategy=InheritanceType.JOINED)
+@DiscriminatorColumn(name="relationship_type")
 public class PartyRelationship
 {
 	@Id
-	private String id;
+	protected String id;
 	
 	@Column(name="date_from",nullable=false)
-	private Date from;
+	protected Date from;
 	
 	@Column(name="date_to")
-	private Date to;
+	protected Date to;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_party")
-	private EconomicAgent party;
+	protected EconomicAgent party;
 
 	@ManyToOne
 	@JoinColumn(name="fk_party_responsible_to")
-	private EconomicAgent responsibleTo;
+	protected EconomicAgent responsibleTo;
 
 	@ManyToOne
 	@JoinColumn(name="fk_party_role_type")
-	private PartyRoleType responsibleAs;
+	protected PartyRoleType responsibleAs;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_party_relationhip_type")
-	private PartyRelationshipType relationshipType;
+	protected PartyRelationshipType relationshipType;
 	
 	@Version
-	private Long version;
+	protected Long version;
 }
