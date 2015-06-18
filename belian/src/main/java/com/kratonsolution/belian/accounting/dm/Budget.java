@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -50,6 +51,7 @@ public class Budget implements Serializable
 	@Version
 	private Long version;
 
-	@OneToMany(mappedBy="budget",cascade=CascadeType.REMOVE,orphanRemoval=true)
+	@OneToMany(mappedBy="budget",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OrderBy("sequence")
 	private Set<BudgetItem> items = new HashSet<BudgetItem>();
 }

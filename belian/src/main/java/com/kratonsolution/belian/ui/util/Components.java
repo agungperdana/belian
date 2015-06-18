@@ -71,7 +71,36 @@ public class Components
 		box.setStyle("text-align:right;");
 		return box;
 	}
-
+	
+	public static final Doublebox readOnlyDoubleBox(double value)
+	{
+		Doublebox box = new Doublebox(0d);
+		box.setWidth("100%");
+		box.setReadonly(true);
+		box.setStyle("text-align:right;");
+		box.setValue(value);
+		
+		return box;
+	}
+	
+	public static final Doublebox doubleBox()
+	{
+		Doublebox box = new Doublebox(0d);
+		box.setWidth("100%");
+		box.setStyle("text-align:right;");
+		return box;
+	}
+	
+	public static final Doublebox doubleBox(double value)
+	{
+		Doublebox box = new Doublebox(0d);
+		box.setWidth("100%");
+		box.setStyle("text-align:right;");
+		box.setValue(value);
+		
+		return box;
+	}
+	
 	public static final boolean isEmpty(Listbox listbox)
 	{
 		if(listbox == null)
@@ -100,5 +129,23 @@ public class Components
 		checkbox.setChecked(isChecked);
 		
 		return checkbox;
+	}
+	
+	public static final Textbox mandatoryTextBox()
+	{
+		Textbox textbox = new Textbox();
+		textbox.setWidth("100%");
+		textbox.setConstraint("no empty");
+		
+		return textbox;
+	}
+	
+	public static final Textbox mandatoryTextBox(String text)
+	{
+		Textbox textbox = new Textbox(text);
+		textbox.setWidth("100%");
+		textbox.setConstraint("no empty");
+		
+		return textbox;
 	}
 }

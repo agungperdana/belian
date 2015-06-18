@@ -5,6 +5,7 @@ package com.kratonsolution.belian.ui.budget;
 
 import java.util.Date;
 import java.util.Iterator;
+import java.util.UUID;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
@@ -26,7 +27,9 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.Budget;
+import com.kratonsolution.belian.accounting.dm.BudgetItem;
 import com.kratonsolution.belian.accounting.dm.BudgetType;
 import com.kratonsolution.belian.accounting.svc.BudgetService;
 import com.kratonsolution.belian.accounting.svc.BudgetTypeService;
@@ -72,7 +75,10 @@ public class BudgetEditContent extends FormContent
 		tabbox.appendChild(new Tabpanels());
 		tabbox.getTabs().appendChild(new Tab("Budget Items"));
 		tabbox.getTabpanels().appendChild(new Tabpanel());
+
 		appendChild(tabbox);
+	
+		initItems();
 	}
 
 	@Override
@@ -101,10 +107,33 @@ public class BudgetEditContent extends FormContent
 					budget.setEnd(end.getValue());
 					budget.setType(typeService.findOne(Components.string(types)));
 					budget.setDescription(description.getText());
-
+					budget.getItems().clear();
+					
 					service.edit(budget);
+					
+					Iterator<Component> iterator = budgetItems.getRows().getChildren().iterator();
+					while (iterator.hasNext())
+					{
+						Row comp = (Row) iterator.next();
+						
+						BudgetItem item = new BudgetItem();
+						item.setBudget(budget);
+						item.setSequence(RowUtils.integer(comp, 1));
+						item.setAmount(RowUtils.decimal(comp, 2));
+						item.setPurpose(RowUtils.string(comp, 3));
+						item.setJustification(RowUtils.string(comp, 4));
+						
+						if(Strings.isNullOrEmpty(RowUtils.string(comp, 5)))
+							item.setId(UUID.randomUUID().toString());
+						else
+							item.setId(RowUtils.string(comp, 5));
+						
+						budget.getItems().add(item);
+					}
 				}
 
+				service.edit(budget);
+				
 				BudgetWindow window = (BudgetWindow)getParent();
 				window.removeEditForm();
 				window.insertGrid();
@@ -179,13 +208,34 @@ public class BudgetEditContent extends FormContent
 		budgetItems.getColumns().getChildren().get(5).setVisible(false);
 		budgetItems.setSpan("4");
 		
+		Budget budget = service.findOne(RowUtils.string(row, 5));
+		for(BudgetItem item:budget.getItems())
+		{
+			Row row = new Row();
+			row.appendChild(Components.checkbox(false));
+			row.appendChild(Components.readOnlyDoubleBox(budgetItems.getRows().getChildren().size()+1));
+			row.appendChild(Components.doubleBox(item.getAmount().doubleValue()));
+			row.appendChild(Components.mandatoryTextBox(item.getPurpose()));
+			row.appendChild(Components.mandatoryTextBox(item.getJustification()));
+			row.appendChild(new Label(item.getId()));
+			
+			budgetItems.getRows().appendChild(row);
+		}
+		
 		toolbar.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				// TODO Auto-generated method stub
+				Row row = new Row();
+				row.appendChild(Components.checkbox(false));
+				row.appendChild(Components.readOnlyDoubleBox(budgetItems.getRows().getChildren().size()+1));
+				row.appendChild(Components.doubleBox());
+				row.appendChild(Components.mandatoryTextBox());
+				row.appendChild(Components.mandatoryTextBox());
+				row.appendChild(new Label());
 				
+				budgetItems.getRows().appendChild(row);
 			}
 		});
 		

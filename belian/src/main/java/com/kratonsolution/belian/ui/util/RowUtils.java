@@ -11,6 +11,7 @@ import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Row;
+import org.zkoss.zul.Textbox;
 
 /**
  * @author agungdodiperdana
@@ -27,6 +28,8 @@ public class RowUtils
 				return ((Label)object).getValue();
 			else if(object instanceof Listbox)
 				return Components.string((Listbox)object);
+			else if(object instanceof Textbox)
+				return ((Textbox)object).getText();
 		}
 		
 		return "";
@@ -39,6 +42,15 @@ public class RowUtils
 			return BigDecimal.valueOf(((Doublebox)object).doubleValue());
 		
 		return BigDecimal.ZERO;
+	}
+	
+	public static int integer(Row row,int index)
+	{
+		Object object = row.getChildren().get(index);
+		if(object != null && object instanceof Doublebox)
+			return ((Doublebox)object).getValue().intValue();
+		
+		return 0;
 	}
 
 	public static boolean isChecked(Row row,int idex)
