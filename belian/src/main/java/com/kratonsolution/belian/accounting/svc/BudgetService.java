@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.kratonsolution.belian.accounting.dm.BudgetType;
-import com.kratonsolution.belian.accounting.dm.BudgetTypeRepository;
+import com.kratonsolution.belian.accounting.dm.Budget;
+import com.kratonsolution.belian.accounting.dm.BudgetRepository;
 
 /**
  * @author agungdodiperdana
@@ -22,49 +22,49 @@ import com.kratonsolution.belian.accounting.dm.BudgetTypeRepository;
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
-public class BudgetTypeService
+public class BudgetService
 {
 	@Autowired
-	private BudgetTypeRepository repository;
+	private BudgetRepository repository;
 	
-	@Secured("ROLE_BUDGETTYPE_READ")
+	@Secured("ROLE_BUDGET_READ")
 	public int size()
 	{
 		return Long.valueOf(repository.count()).intValue();
 	}
 	
-	@Secured("ROLE_BUDGETTYPE_READ")
-	public BudgetType findOne(String id)
+	@Secured("ROLE_BUDGET_READ")
+	public Budget findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 	
-	@Secured("ROLE_BUDGETTYPE_READ")
-	public List<BudgetType> findAll()
+	@Secured("ROLE_BUDGET_READ")
+	public List<Budget> findAll()
 	{
 		return repository.findAll();
 	}
 	
-	@Secured("ROLE_BUDGETTYPE_READ")
-	public List<BudgetType> findAll(int pageIndex,int pageSize)
+	@Secured("ROLE_BUDGET_READ")
+	public List<Budget> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
 	}
 	
-	@Secured("ROLE_BUDGETTYPE_CREATE")
-	public void add(BudgetType type)
+	@Secured("ROLE_BUDGET_CREATE")
+	public void add(Budget budget)
 	{
-		type.setId(UUID.randomUUID().toString());
-		repository.save(type);
+		budget.setId(UUID.randomUUID().toString());
+		repository.save(budget);
 	}
 	
-	@Secured("ROLE_BUDGETTYPE_UPDATE")
-	public void edit(BudgetType type)
+	@Secured("ROLE_BUDGET_UPDATE")
+	public void edit(Budget budget)
 	{
-		repository.saveAndFlush(type);
+		repository.saveAndFlush(budget);
 	}
 	
-	@Secured("ROLE_BUDGETTYPE_DELETE")
+	@Secured("ROLE_BUDGET_DELETE")
 	public void delete(@PathVariable String id)
 	{
 		repository.delete(id);

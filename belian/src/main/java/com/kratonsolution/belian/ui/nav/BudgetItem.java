@@ -9,7 +9,7 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
-import com.kratonsolution.belian.ui.bankaccount.BankAccountWindow;
+import com.kratonsolution.belian.ui.budget.BudgetWindow;
 
 /**
  * @author agungdodiperdana
@@ -32,16 +32,16 @@ public class BudgetItem extends Listitem
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				BankAccountWindow window = null;
+				BudgetWindow window = null;
 				
 				for(Component component:getPage().getRoots())
 				{
-					if(component instanceof BankAccountWindow)
-						window = (BankAccountWindow)component;
+					if(component instanceof BudgetWindow)
+						window = (BudgetWindow)component;
 				}
 				
 				if(window == null)
-					window = BankAccountWindow.injectInto(getPage());
+					window = BudgetWindow.injectInto(getPage());
 				
 				else if(!window.isVisible())
 				{
