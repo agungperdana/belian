@@ -37,7 +37,7 @@ import lombok.Setter;
 @Table(name="party")
 @Inheritance(strategy=InheritanceType.JOINED)
 @DiscriminatorColumn(name="agent_type")
-public class EconomicAgent implements Serializable
+public class EconomicAgent implements Serializable, Listable
 {
 	@Id
 	protected String id;
@@ -65,4 +65,16 @@ public class EconomicAgent implements Serializable
 	
 	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true)
 	protected Set<PartyRelationship> relationships = new HashSet<PartyRelationship>();
+
+	@Override
+	public String getLabel()
+	{
+		return getName();
+	}
+
+	@Override
+	public String getValue()
+	{
+		return getId();
+	}
 }

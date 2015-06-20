@@ -4,9 +4,11 @@
 package com.kratonsolution.belian.ui.util;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
@@ -51,6 +53,15 @@ public class RowUtils
 			return ((Doublebox)object).getValue().intValue();
 		
 		return 0;
+	}
+	
+	public static Date date(Row row,int index)
+	{
+		Object object = row.getChildren().get(index);
+		if(object != null && object instanceof Datebox)
+			return ((Datebox)object).getValue();
+		
+		return null;
 	}
 
 	public static boolean isChecked(Row row,int idex)

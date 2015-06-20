@@ -68,4 +68,10 @@ public class PersonService
 	{
 		repository.delete(id);
 	}
+	
+	@Secured("ROLE_PERSON_READ")
+	public List<Person> findAllBudgetReviewer(String forOrganization)
+	{
+		return repository.findAllReviewer(forOrganization);
+	}
 }

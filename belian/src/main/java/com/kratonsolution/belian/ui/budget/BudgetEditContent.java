@@ -27,17 +27,21 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
-import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.Budget;
 import com.kratonsolution.belian.accounting.dm.BudgetItem;
+import com.kratonsolution.belian.accounting.dm.BudgetReview;
+import com.kratonsolution.belian.accounting.dm.BudgetReview.ReviewResult;
+import com.kratonsolution.belian.accounting.dm.BudgetStatus;
 import com.kratonsolution.belian.accounting.dm.BudgetType;
 import com.kratonsolution.belian.accounting.svc.BudgetService;
 import com.kratonsolution.belian.accounting.svc.BudgetTypeService;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -52,6 +56,8 @@ public class BudgetEditContent extends FormContent
 	private BudgetTypeService typeService = Springs.get(BudgetTypeService.class);
 	
 	private SessionUtils sessionUtils = Springs.get(SessionUtils.class);
+	
+	private PersonService personService = Springs.get(PersonService.class);
 
 	private Datebox start = new Datebox(new Date());
 
@@ -66,6 +72,10 @@ public class BudgetEditContent extends FormContent
 	private Tabbox tabbox = new Tabbox();
 	
 	private Grid budgetItems = new Grid();
+	
+	private Grid statuses = new Grid();
+	
+	private Grid reviews = new Grid();
 	
 	private Row row;
 
@@ -89,6 +99,8 @@ public class BudgetEditContent extends FormContent
 		appendChild(tabbox);
 	
 		initItems();
+		initStatus();
+		initReviews();
 	}
 
 	@Override
@@ -118,6 +130,8 @@ public class BudgetEditContent extends FormContent
 					budget.setType(typeService.findOne(Components.string(types)));
 					budget.setDescription(description.getText());
 					budget.getItems().clear();
+					budget.getStatuses().clear();
+					budget.getReviews().clear();
 					
 					service.edit(budget);
 					
@@ -132,13 +146,38 @@ public class BudgetEditContent extends FormContent
 						item.setAmount(RowUtils.decimal(comp, 2));
 						item.setPurpose(RowUtils.string(comp, 3));
 						item.setJustification(RowUtils.string(comp, 4));
-						
-						if(Strings.isNullOrEmpty(RowUtils.string(comp, 5)))
-							item.setId(UUID.randomUUID().toString());
-						else
-							item.setId(RowUtils.string(comp, 5));
+						item.setId(RowUtils.string(comp, 5));
 						
 						budget.getItems().add(item);
+					}
+					
+					for(Component component:statuses.getRows().getChildren())
+					{
+						Row row = (Row)component;
+						
+						BudgetStatus status = new BudgetStatus();
+						status.setBudget(budget);
+						status.setDate(RowUtils.date(row, 1));
+						status.setType(BudgetStatus.StatusType.valueOf(RowUtils.string(row, 2)));
+						status.setDescription(RowUtils.string(row, 3));
+						status.setId(RowUtils.string(row, 4));
+						
+						budget.getStatuses().add(status);
+					}
+					
+					for(Component component:reviews.getRows().getChildren())
+					{
+						Row row = (Row)component;
+						
+						BudgetReview review = new BudgetReview();
+						review.setBudget(budget);
+						review.setDate(RowUtils.date(row, 1));
+						review.setPerson(personService.findOne(RowUtils.string(row, 2)));
+						review.setResult(ReviewResult.valueOf(RowUtils.string(row, 3)));
+						review.setComment(RowUtils.string(row, 4));
+						review.setId(RowUtils.string(row, 5));
+						
+						budget.getReviews().add(review);
 					}
 				}
 
@@ -257,7 +296,7 @@ public class BudgetEditContent extends FormContent
 				row.appendChild(Components.doubleBox());
 				row.appendChild(Components.mandatoryTextBox());
 				row.appendChild(Components.mandatoryTextBox());
-				row.appendChild(new Label());
+				row.appendChild(new Label(UUID.randomUUID().toString()));
 				
 				budgetItems.getRows().appendChild(row);
 			}
@@ -289,5 +328,166 @@ public class BudgetEditContent extends FormContent
 		
 		tabbox.getTabpanels().getChildren().get(0).appendChild(toolbar);
 		tabbox.getTabpanels().getChildren().get(0).appendChild(budgetItems);
+	}
+	
+	private void initStatus()
+	{
+		NRCToolbar toolbar = new NRCToolbar();
+		
+		statuses.appendChild(new Rows());
+		statuses.appendChild(new Columns());
+		statuses.getColumns().appendChild(new Column(null,null,"25px"));
+		statuses.getColumns().appendChild(new Column("Date",null,"135px"));
+		statuses.getColumns().appendChild(new Column("Type",null,"150px"));
+		statuses.getColumns().appendChild(new Column("Description",null,"200px"));
+		statuses.getColumns().appendChild(new Column(null,null,"1px"));
+		statuses.getColumns().getChildren().get(4).setVisible(false);
+		statuses.setSpan("3");
+		
+		Budget budget = service.findOne(RowUtils.string(row, 5));
+		for(BudgetStatus item:budget.getStatuses())
+		{
+			Row row = new Row();
+			row.appendChild(Components.checkbox(false));
+			row.appendChild(Components.readOnlyTextBox(Dates.format(item.getDate())));
+			row.appendChild(Components.readOnlyTextBox(item.getType().name()));
+			row.appendChild(Components.readOnlyTextBox(item.getDescription()));
+			row.appendChild(new Label(item.getId()));
+			
+			statuses.getRows().appendChild(row);
+		}
+		
+		toolbar.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				Listbox types = Components.newSelect();
+				types.appendChild(new Listitem("SUBMITTED","SUBMITTED"));
+				types.appendChild(new Listitem("REVIEWED","REVIEWED"));
+				types.appendChild(new Listitem("APPROVED","APPROVED"));
+				types.appendChild(new Listitem("REJECTED","REJECTED"));
+				types.appendChild(new Listitem("NEEDMODIFICATION","NEEDMODIFICATION"));
+				types.setSelectedIndex(0);
+				types.setWidth("100%");
+				
+				Row row = new Row();
+				row.appendChild(Components.checkbox(false));
+				row.appendChild(Components.mandatoryDatebox());
+				row.appendChild(types);
+				row.appendChild(Components.mandatoryTextBox());
+				row.appendChild(new Label(UUID.randomUUID().toString()));
+				
+				statuses.getRows().appendChild(row);
+			}
+		});
+		
+		toolbar.getRemove().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				Iterator<Component> iterator = statuses.getRows().getChildren().iterator();
+				while (iterator.hasNext())
+				{
+					Row row = (Row) iterator.next();
+					if(RowUtils.isChecked(row, 0))
+						iterator.remove();
+				}
+			}
+		});
+		
+		toolbar.getClear().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				statuses.getRows().getChildren().clear();
+			}
+		});
+		
+		tabbox.getTabpanels().getChildren().get(1).appendChild(toolbar);
+		tabbox.getTabpanels().getChildren().get(1).appendChild(statuses);
+	}
+	
+	private void initReviews()
+	{
+		NRCToolbar toolbar = new NRCToolbar();
+		
+		reviews.appendChild(new Rows());
+		reviews.appendChild(new Columns());
+		reviews.getColumns().appendChild(new Column(null,null,"25px"));
+		reviews.getColumns().appendChild(new Column("Date",null,"135px"));
+		reviews.getColumns().appendChild(new Column("Reviewer",null,"175px"));
+		reviews.getColumns().appendChild(new Column("Status",null,"100px"));
+		reviews.getColumns().appendChild(new Column("Comment",null,"200px"));
+		reviews.getColumns().appendChild(new Column(null,null,"1px"));
+		reviews.getColumns().getChildren().get(5).setVisible(false);
+		reviews.setSpan("4");
+		
+		Budget budget = service.findOne(RowUtils.string(row, 5));
+		for(BudgetReview item:budget.getReviews())
+		{
+			Row row = new Row();
+			row.appendChild(Components.checkbox(false));
+			row.appendChild(Components.readOnlyTextBox(Dates.format(item.getDate())));
+			row.appendChild(Components.readOnlyTextBox(item.getPerson().getName()));
+			row.appendChild(Components.readOnlyTextBox(item.getResult().name()));
+			row.appendChild(Components.readOnlyTextBox(item.getComment()));
+			row.appendChild(new Label(item.getId()));
+			
+			reviews.getRows().appendChild(row);
+		}
+		
+		toolbar.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				Row row = new Row();
+				
+				Listbox results = Components.newSelect();
+				results.appendChild(new Listitem("ACCEPTED","ACCEPTED"));
+				results.appendChild(new Listitem("REJECTED","REJECTED"));
+				results.setSelectedIndex(0);
+				results.setWidth("100%");
+				
+				row.appendChild(Components.checkbox(false));
+				row.appendChild(Components.mandatoryDatebox());
+				row.appendChild(Components.newSelect(personService.findAllBudgetReviewer(Components.string(owners))));
+				row.appendChild(results);
+				row.appendChild(Components.mandatoryTextBox());
+				row.appendChild(new Label(UUID.randomUUID().toString()));
+				
+				reviews.getRows().appendChild(row);
+			}
+		});
+		
+		toolbar.getRemove().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				Iterator<Component> iterator = statuses.getRows().getChildren().iterator();
+				while (iterator.hasNext())
+				{
+					Row row = (Row) iterator.next();
+					if(RowUtils.isChecked(row, 0))
+						iterator.remove();
+				}
+			}
+		});
+		
+		toolbar.getClear().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				reviews.getRows().getChildren().clear();
+			}
+		});
+		
+		tabbox.getTabpanels().getChildren().get(2).appendChild(toolbar);
+		tabbox.getTabpanels().getChildren().get(2).appendChild(reviews);
 	}
 }

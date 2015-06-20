@@ -4,12 +4,18 @@
 package com.kratonsolution.belian.ui.util;
 
 import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.Date;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
+
+import com.kratonsolution.belian.global.dm.Listable;
 
 /**
  * @author agungdodiperdana
@@ -55,9 +61,30 @@ public class Components
 		return listbox;
 	}
 	
+	public static final Listbox newSelect(Collection<? extends Listable> collections)
+	{
+		Listbox listbox = new Listbox();
+		listbox.setMold("select");
+		
+		for(Listable object:collections)
+			listbox.appendChild(new Listitem(object.getLabel(), object.getValue()));
+		
+		setDefault(listbox);
+		
+		return listbox;
+	}
+	
 	public static final Textbox readOnlyTextBox()
 	{
 		Textbox textbox = new Textbox();
+		textbox.setWidth("100%");
+		textbox.setReadonly(true);
+		return textbox;
+	}
+	
+	public static final Textbox readOnlyTextBox(String text)
+	{
+		Textbox textbox = new Textbox(text);
 		textbox.setWidth("100%");
 		textbox.setReadonly(true);
 		return textbox;
@@ -147,5 +174,14 @@ public class Components
 		textbox.setConstraint("no empty");
 		
 		return textbox;
+	}
+	
+	public static final Datebox mandatoryDatebox()
+	{
+		Datebox datebox = new Datebox(new Date());
+		datebox.setWidth("100%");
+		datebox.setConstraint("no empty");
+		
+		return datebox;
 	}
 }
