@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.global.dm.Listable;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,7 +27,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="budget_item")
-public class BudgetItem implements Serializable
+public class BudgetItem implements Serializable, Listable
 {
 	@Id
 	private String id;
@@ -48,4 +50,16 @@ public class BudgetItem implements Serializable
 	
 	@Version
 	private Long version;
+
+	@Override
+	public String getLabel()
+	{
+		return getPurpose();
+	}
+
+	@Override
+	public String getValue()
+	{
+		return getId();
+	}
 }

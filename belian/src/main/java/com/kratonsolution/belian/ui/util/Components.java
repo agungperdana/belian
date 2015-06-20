@@ -184,4 +184,21 @@ public class Components
 		
 		return datebox;
 	}
+	
+	public static final Datebox currentDatebox()
+	{
+		Datebox datebox = new Datebox(new Date());
+		datebox.setWidth("150px");
+		datebox.setConstraint("no empty");
+		
+		return datebox;
+	}
+	
+	public static final Datebox datebox()
+	{
+		Datebox datebox = new Datebox();
+		datebox.setWidth("150px");
+		
+		return datebox;
+	}
 }

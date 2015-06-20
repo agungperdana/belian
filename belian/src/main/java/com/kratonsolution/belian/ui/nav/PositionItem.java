@@ -9,7 +9,7 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
-import com.kratonsolution.belian.ui.module.ModuleWindow;
+import com.kratonsolution.belian.ui.hr.position.PositionWindow;
 
 /**
  * @author agungdodiperdana
@@ -32,16 +32,16 @@ public class PositionItem extends Listitem
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				ModuleWindow window = null;
+				PositionWindow window = null;
 				
 				for(Component component:getPage().getRoots())
 				{
-					if(component instanceof ModuleWindow)
-						window = (ModuleWindow)component;
+					if(component instanceof PositionWindow)
+						window = (PositionWindow)component;
 				}
 				
 				if(window == null)
-					window = ModuleWindow.injectInto(getPage());
+					window = PositionWindow.injectInto(getPage());
 				
 				else if(!window.isVisible())
 				{

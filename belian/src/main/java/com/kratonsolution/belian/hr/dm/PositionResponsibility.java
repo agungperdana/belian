@@ -4,14 +4,15 @@
 package com.kratonsolution.belian.hr.dm;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
-import com.kratonsolution.belian.global.dm.Listable;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,30 +24,25 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="position_type")
-public class PositionType implements Serializable, Listable
+@Table(name="position_responsibility")
+public class PositionResponsibility implements Serializable
 {
 	@Id
 	private String id;
 	
-	@Column(name="title")
-	private String title;
+	@Column(name="start_date")
+	private Date start;
+	
+	@Column(name="end_date")
+	private Date end;
 	
 	@Column(name="description")
 	private String description;
+
+	@ManyToOne
+	@JoinColumn(name="fk_position")
+	private Position position;
 	
 	@Version
 	private Long version;
-
-	@Override
-	public String getLabel()
-	{
-		return getTitle();
-	}
-
-	@Override
-	public String getValue()
-	{
-		return getId();
-	}
 }
