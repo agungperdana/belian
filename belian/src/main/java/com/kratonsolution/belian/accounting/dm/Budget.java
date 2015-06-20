@@ -19,6 +19,8 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.general.dm.Organization;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -48,10 +50,22 @@ public class Budget implements Serializable
 	@Column(name="description")
 	private String description;
 
+	@ManyToOne
+	@JoinColumn(name="fk_organization_owner")
+	private Organization owner;
+	
 	@Version
 	private Long version;
 
 	@OneToMany(mappedBy="budget",cascade=CascadeType.ALL,orphanRemoval=true)
 	@OrderBy("sequence")
 	private Set<BudgetItem> items = new HashSet<BudgetItem>();
+	
+	@OneToMany(mappedBy="budget",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OrderBy("date")
+	private Set<BudgetStatus> statuses = new HashSet<BudgetStatus>();
+	
+	@OneToMany(mappedBy="budget",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OrderBy("date")
+	private Set<BudgetReview> reviews = new HashSet<BudgetReview>();
 }

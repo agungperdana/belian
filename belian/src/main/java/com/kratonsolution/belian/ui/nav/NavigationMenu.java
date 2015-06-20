@@ -47,9 +47,9 @@ public class NavigationMenu extends Window
 	protected void init()
 	{
 		setLeft("10px");
-		setTop("100px");
+		setTop("65px");
 		setWidth("200px");
-		setHeight("500px");
+		setHeight("600px");
 		setMode(Mode.OVERLAPPED);
 		
 		caption.setImage("/icons/menu.png");

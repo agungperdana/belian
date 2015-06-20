@@ -33,6 +33,8 @@ import com.kratonsolution.belian.accounting.dm.BudgetItem;
 import com.kratonsolution.belian.accounting.dm.BudgetType;
 import com.kratonsolution.belian.accounting.svc.BudgetService;
 import com.kratonsolution.belian.accounting.svc.BudgetTypeService;
+import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.util.Components;
@@ -48,6 +50,8 @@ public class BudgetEditContent extends FormContent
 	private BudgetService service = Springs.get(BudgetService.class);
 
 	private BudgetTypeService typeService = Springs.get(BudgetTypeService.class);
+	
+	private SessionUtils sessionUtils = Springs.get(SessionUtils.class);
 
 	private Datebox start = new Datebox(new Date());
 
@@ -57,6 +61,8 @@ public class BudgetEditContent extends FormContent
 
 	private Textbox description = new Textbox();
 
+	private Listbox owners = Components.newSelect();
+	
 	private Tabbox tabbox = new Tabbox();
 	
 	private Grid budgetItems = new Grid();
@@ -74,8 +80,12 @@ public class BudgetEditContent extends FormContent
 		tabbox.appendChild(new Tabs());
 		tabbox.appendChild(new Tabpanels());
 		tabbox.getTabs().appendChild(new Tab("Budget Items"));
+		tabbox.getTabs().appendChild(new Tab("Budget Status"));
+		tabbox.getTabs().appendChild(new Tab("Budget Review"));
 		tabbox.getTabpanels().appendChild(new Tabpanel());
-
+		tabbox.getTabpanels().appendChild(new Tabpanel());
+		tabbox.getTabpanels().appendChild(new Tabpanel());
+		
 		appendChild(tabbox);
 	
 		initItems();
@@ -167,6 +177,15 @@ public class BudgetEditContent extends FormContent
 				types.setSelectedItem(listitem);
 		}
 		
+		for(Organization organization:sessionUtils.getOrganizations())
+		{
+			Listitem listitem = new Listitem(organization.getName(),organization.getId());
+			owners.appendChild(listitem);
+			
+			if(organization.getId().equals(budget.getOwner().getId()))
+				owners.setSelectedItem(listitem);
+		}
+		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));
 		grid.getColumns().appendChild(new Column());
@@ -184,13 +203,18 @@ public class BudgetEditContent extends FormContent
 		row3.appendChild(types);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Description"));
-		row4.appendChild(description);
+		row4.appendChild(new Label("Owner"));
+		row4.appendChild(owners);
+		
+		Row row5 = new Row();
+		row5.appendChild(new Label("Description"));
+		row5.appendChild(description);
 		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
 		rows.appendChild(row4);
+		rows.appendChild(row5);
 	}
 	
 	private void initItems()

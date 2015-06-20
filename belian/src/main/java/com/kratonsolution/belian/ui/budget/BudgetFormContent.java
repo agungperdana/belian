@@ -21,6 +21,9 @@ import com.kratonsolution.belian.accounting.dm.Budget;
 import com.kratonsolution.belian.accounting.dm.BudgetType;
 import com.kratonsolution.belian.accounting.svc.BudgetService;
 import com.kratonsolution.belian.accounting.svc.BudgetTypeService;
+import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -35,6 +38,10 @@ public class BudgetFormContent extends FormContent
 	
 	private BudgetTypeService typeService = Springs.get(BudgetTypeService.class);
 	
+	private OrganizationService organizationService = Springs.get(OrganizationService.class);
+	
+	private SessionUtils sessionUtils = Springs.get(SessionUtils.class);
+	
 	private Datebox start = new Datebox(new Date());
 	
 	private Datebox end = new Datebox();
@@ -42,6 +49,8 @@ public class BudgetFormContent extends FormContent
 	private Listbox types = Components.newSelect();
 	
 	private Textbox description = new Textbox();
+	
+	private Listbox owners = Components.newSelect();
 	
 	public BudgetFormContent()
 	{
@@ -74,6 +83,7 @@ public class BudgetFormContent extends FormContent
 				budget.setEnd(end.getValue());
 				budget.setType(typeService.findOne(Components.string(types)));
 				budget.setDescription(description.getText());
+				budget.setOwner(organizationService.findOne(Components.string(owners)));
 				
 				service.add(budget);
 				
@@ -98,6 +108,11 @@ public class BudgetFormContent extends FormContent
 		
 		Components.setDefault(types);
 		
+		for(Organization organization:sessionUtils.getOrganizations())
+			owners.appendChild(new Listitem(organization.getName(),organization.getId()));
+		
+		Components.setDefault(owners);
+		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));
 		grid.getColumns().appendChild(new Column());
@@ -115,12 +130,17 @@ public class BudgetFormContent extends FormContent
 		row3.appendChild(types);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Description"));
-		row4.appendChild(description);
+		row4.appendChild(new Label("Owner"));
+		row4.appendChild(owners);
+		
+		Row row5 = new Row();
+		row5.appendChild(new Label("Description"));
+		row5.appendChild(description);
 		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
 		rows.appendChild(row4);
+		rows.appendChild(row5);
 	}
 }
