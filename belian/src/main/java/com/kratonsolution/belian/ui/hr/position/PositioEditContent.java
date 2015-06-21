@@ -3,20 +3,28 @@
  */
 package com.kratonsolution.belian.ui.hr.position;
 
-import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
+import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
-import org.zkoss.zul.Textbox;
 
-import com.google.common.base.Strings;
+import com.kratonsolution.belian.accounting.dm.BudgetItem;
+import com.kratonsolution.belian.accounting.svc.BudgetItemService;
+import com.kratonsolution.belian.hr.dm.Position;
+import com.kratonsolution.belian.hr.dm.Position.SalaryStatus;
+import com.kratonsolution.belian.hr.dm.Position.TemporaryStatus;
+import com.kratonsolution.belian.hr.dm.Position.WorktimeStatus;
 import com.kratonsolution.belian.hr.dm.PositionType;
+import com.kratonsolution.belian.hr.svc.PositionService;
 import com.kratonsolution.belian.hr.svc.PositionTypeService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -26,14 +34,32 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PositioEditContent extends FormContent
 {	
-	private final PositionTypeService service = Springs.get(PositionTypeService.class);
-	
-	private Textbox title = new Textbox();
-	
-	private Textbox description = new Textbox();
-	
+	private PositionService service = Springs.get(PositionService.class);
+
+	private BudgetItemService budgetItemService = Springs.get(BudgetItemService.class);
+
+	private PositionTypeService positionTypeService = Springs.get(PositionTypeService.class);
+
+	private Datebox start = Components.currentDatebox();
+
+	private Datebox end = Components.datebox();
+
+	private Datebox actualStart = Components.datebox();
+
+	private Datebox actualEnd = Components.datebox();
+
+	private Listbox worktimes = Components.newSelect();
+
+	private Listbox statuses = Components.newSelect();
+
+	private Listbox salarys = Components.newSelect();
+
+	private Listbox budgetItems = Components.newSelect();
+
+	private Listbox positionTypes = Components.newSelect();
+
 	private Row row;
-	
+
 	public PositioEditContent(Row row)
 	{
 		super();
@@ -55,23 +81,28 @@ public class PositioEditContent extends FormContent
 				window.insertGrid();
 			}
 		});
-		
+
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				if(Strings.isNullOrEmpty(title.getText()))
-					throw new WrongValueException(title,"Title cannot be empty");
-			
-				if(Strings.isNullOrEmpty(description.getText()))
-					throw new WrongValueException(description,"Description cannot be empty");
-				
-				PositionType type = service.findOne(RowUtils.string(row, 3));
-				type.setTitle(title.getText());
-				type.setDescription(description.getText());
-				
-				service.edit(type);
+
+				Position position = service.findOne(RowUtils.string(row, 9));
+				if(position != null)
+				{
+					position.setActualEnd(actualEnd.getValue());
+					position.setActualStart(actualStart.getValue());
+					position.setBudgetItem(budgetItemService.findOne(Components.string(budgetItems)));
+					position.setEnd(end.getValue());
+					position.setSalaryStatus(SalaryStatus.valueOf(Components.string(salarys)));
+					position.setStart(start.getValue());
+					position.setTemporaryStatus(TemporaryStatus.valueOf(Components.string(statuses)));
+					position.setType(positionTypeService.findOne(Components.string(positionTypes)));
+					position.setWorktimeStatus(WorktimeStatus.valueOf(Components.string(worktimes)));
+					
+					service.add(position);
+				}
 				
 				PositionWindow window = (PositionWindow)getParent();
 				window.removeEditForm();
@@ -83,27 +114,96 @@ public class PositioEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		title.setConstraint("no empty");
-		title.setText(RowUtils.string(this.row,1));
-		title.setWidth("300px");
+		Position position = service.findOne(RowUtils.string(row, 9));
 		
-		description.setConstraint("no empty");
-		description.setWidth("300px");
-		description.setText(RowUtils.string(row, 2));
+		for(WorktimeStatus status:WorktimeStatus.values())
+		{
+			Listitem listitem = new Listitem(status.name(), status.name());
+			worktimes.appendChild(listitem);
+			if(position.getWorktimeStatus().equals(status))
+				worktimes.setSelectedItem(listitem);
+		}
+		
+		for(TemporaryStatus status:TemporaryStatus.values())
+		{
+			Listitem listitem = new Listitem(status.name(), status.name());
+			statuses.appendChild(listitem);
+			if(position.getTemporaryStatus().equals(status))
+				statuses.setSelectedItem(listitem);
+		}
+		
+		for(SalaryStatus status:SalaryStatus.values())
+		{
+			Listitem listitem = new Listitem(status.name(), status.name());
+			salarys.appendChild(listitem);
+			if(position.getSalaryStatus().equals(status))
+				salarys.setSelectedItem(listitem);
+		}
 
+		for(PositionType type:positionTypeService.findAll())
+		{
+			Listitem listitem = new Listitem(type.getTitle(),type.getId());
+			positionTypes.appendChild(listitem);
+			if(type.getId().equals(position.getType().getId()))
+				positionTypes.setSelectedItem(listitem);
+		}
+		
+		for(BudgetItem item:budgetItemService.findAll())
+		{
+			Listitem listitem = new Listitem(item.getPurpose(),item.getId());
+			budgetItems.appendChild(listitem);
+			if(item.getId().equals(position.getBudgetItem().getId()))
+				budgetItems.setSelectedItem(listitem);
+		}
+		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
+		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Title"));
-		row1.appendChild(title);
+		row1.appendChild(new Label("Start Date"));
+		row1.appendChild(start);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Description"));
-		row2.appendChild(description);
+		row2.appendChild(new Label("End Date"));
+		row2.appendChild(end);
+		
+		Row row3 = new Row();
+		row3.appendChild(new Label("Actual Start Date"));
+		row3.appendChild(actualStart);
+		
+		Row row4 = new Row();
+		row4.appendChild(new Label("Actual End Date"));
+		row4.appendChild(actualEnd);
+		
+		Row row5 = new Row();
+		row5.appendChild(new Label("Work Time"));
+		row5.appendChild(worktimes);
+		
+		Row row6 = new Row();
+		row6.appendChild(new Label("Status"));
+		row6.appendChild(statuses);
+		
+		Row row7 = new Row();
+		row7.appendChild(new Label("Salary Type"));
+		row7.appendChild(salarys);
+		
+		Row row8 = new Row();
+		row8.appendChild(new Label("Budget Item"));
+		row8.appendChild(budgetItems);
+		
+		Row row9 = new Row();
+		row9.appendChild(new Label("Position Type"));
+		row9.appendChild(positionTypes);
 		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
+		rows.appendChild(row3);
+		rows.appendChild(row4);
+		rows.appendChild(row5);
+		rows.appendChild(row6);
+		rows.appendChild(row7);
+		rows.appendChild(row8);
+		rows.appendChild(row9);
 	}
 }
