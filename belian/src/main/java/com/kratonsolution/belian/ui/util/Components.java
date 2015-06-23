@@ -186,6 +186,15 @@ public class Components
 		return datebox;
 	}
 	
+	public static final Datebox mandatoryDatebox(Date date)
+	{
+		Datebox datebox = new Datebox(date);
+		datebox.setWidth("100%");
+		datebox.setConstraint("no empty");
+		
+		return datebox;
+	}
+	
 	public static final Datebox currentDatebox()
 	{
 		Datebox datebox = new Datebox(new Date());
@@ -199,6 +208,14 @@ public class Components
 	{
 		Datebox datebox = new Datebox();
 		datebox.setWidth("150px");
+		
+		return datebox;
+	}
+	
+	public static final Datebox fullSpanDatebox(Date date)
+	{
+		Datebox datebox = new Datebox(date);
+		datebox.setWidth("100%");
 		
 		return datebox;
 	}

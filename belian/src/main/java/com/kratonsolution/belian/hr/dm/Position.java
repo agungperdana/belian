@@ -86,7 +86,7 @@ public class Position implements Serializable
 	@Version
 	private Long version;
 	
-	@OneToMany(mappedBy="position",cascade=CascadeType.REMOVE,orphanRemoval=true)
+	@OneToMany(mappedBy="position",cascade=CascadeType.ALL,orphanRemoval=true)
 	@OrderBy("start ASC")
 	private Set<PositionResponsibility> responsibilitys = new HashSet<PositionResponsibility>();
 }

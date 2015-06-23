@@ -154,7 +154,7 @@ public class BudgetGridContent extends GridContent
 		grid.setPageSize(8);
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("From",null,"100px"));
+		grid.getColumns().appendChild(new Column("From",null,"90px"));
 		grid.getColumns().appendChild(new Column("To",null,"100px"));
 		grid.getColumns().appendChild(new Column("Type",null,"150px"));
 		grid.getColumns().appendChild(new Column("Description"));

@@ -40,6 +40,7 @@ public class PositionWindow extends AbstractWindow implements HasGrid,HasCreateF
 	{
 		super();
 		setWidth("700px");
+		setHeight("525px");
 	}
 	
 	protected void init()

@@ -3,28 +3,41 @@
  */
 package com.kratonsolution.belian.ui.hr.position;
 
+import java.util.Iterator;
+import java.util.UUID;
+
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
+import org.zkoss.zul.Rows;
+import org.zkoss.zul.Tab;
+import org.zkoss.zul.Tabbox;
+import org.zkoss.zul.Tabpanel;
+import org.zkoss.zul.Tabpanels;
+import org.zkoss.zul.Tabs;
 
 import com.kratonsolution.belian.accounting.dm.BudgetItem;
 import com.kratonsolution.belian.accounting.svc.BudgetItemService;
 import com.kratonsolution.belian.hr.dm.Position;
+import com.kratonsolution.belian.hr.dm.Position.EmploymentStatus;
 import com.kratonsolution.belian.hr.dm.Position.PositionStatusType;
 import com.kratonsolution.belian.hr.dm.Position.SalaryStatus;
-import com.kratonsolution.belian.hr.dm.Position.EmploymentStatus;
 import com.kratonsolution.belian.hr.dm.Position.WorktimeStatus;
+import com.kratonsolution.belian.hr.dm.PositionResponsibility;
 import com.kratonsolution.belian.hr.dm.PositionType;
 import com.kratonsolution.belian.hr.svc.PositionService;
 import com.kratonsolution.belian.hr.svc.PositionTypeService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -62,6 +75,10 @@ public class PositioEditContent extends FormContent
 	private Listbox positionStatusTypes = Components.newSelect();
 
 	private Row row;
+	
+	private Tabbox tabbox = new Tabbox();
+	
+	private Grid responsibilitys = new Grid();
 
 	public PositioEditContent(Row row)
 	{
@@ -69,6 +86,17 @@ public class PositioEditContent extends FormContent
 		this.row = row;
 		initToolbar();
 		initForm();
+		
+		appendChild(tabbox);
+		tabbox.appendChild(new Tabs());
+		tabbox.appendChild(new Tabpanels());
+		tabbox.getTabs().appendChild(new Tab("Responsibilitys"));
+		tabbox.getTabpanels().appendChild(new Tabpanel());
+		
+		responsibilitys.appendChild(new Rows());
+		responsibilitys.appendChild(new Columns());
+	
+		initResponsibilitys();
 	}
 
 	@Override
@@ -104,6 +132,24 @@ public class PositioEditContent extends FormContent
 					position.setType(positionTypeService.findOne(Components.string(positionTypes)));
 					position.setWorktimeStatus(WorktimeStatus.valueOf(Components.string(worktimes)));
 					position.setPositionStatusType(PositionStatusType.valueOf(Components.string(positionStatusTypes)));
+					position.getResponsibilitys().clear();
+					
+					service.edit(position);
+				
+					Iterator<Component> iterator = responsibilitys.getRows().getChildren().iterator();
+					while (iterator.hasNext())
+					{
+						Row row = (Row) iterator.next();
+						
+						PositionResponsibility responsibility = new PositionResponsibility();
+						responsibility.setDescription(RowUtils.string(row, 3));
+						responsibility.setEnd(RowUtils.date(row, 2));
+						responsibility.setStart(RowUtils.date(row, 1));
+						responsibility.setId(RowUtils.string(row, 4));
+						responsibility.setPosition(position);
+						
+						position.getResponsibilitys().add(responsibility);
+					}
 					
 					service.edit(position);
 				}
@@ -164,9 +210,16 @@ public class PositioEditContent extends FormContent
 		{
 			Listitem listitem = new Listitem(item.getPurpose(),item.getId());
 			budgetItems.appendChild(listitem);
-			if(item.getId().equals(position.getBudgetItem().getId()))
+			
+			
+			if(position.getBudgetItem() != null && item.getId().equals(position.getBudgetItem().getId()))
 				budgetItems.setSelectedItem(listitem);
 		}
+		
+		start.setValue(position.getStart());
+		end.setValue(position.getEnd());
+		actualStart.setValue(position.getActualStart());
+		actualEnd.setValue(position.getActualEnd());
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
@@ -222,5 +275,75 @@ public class PositioEditContent extends FormContent
 		rows.appendChild(row8);
 		rows.appendChild(row9);
 		rows.appendChild(row10);
+	}
+	
+	private void initResponsibilitys()
+	{
+		Position position = service.findOne(RowUtils.string(row, 9));
+		
+		NRCToolbar toolbar = new NRCToolbar();
+		
+		responsibilitys.getColumns().appendChild(new Column(null,null,"25px"));
+		responsibilitys.getColumns().appendChild(new Column("Start Date",null,"125px"));
+		responsibilitys.getColumns().appendChild(new Column("End Date",null,"125px"));
+		responsibilitys.getColumns().appendChild(new Column("Description",null,null));
+		responsibilitys.getColumns().appendChild(new Column(null,null,"1px"));
+		responsibilitys.getColumns().getChildren().get(4).setVisible(false);
+		responsibilitys.setSpan("3");
+		
+		for(PositionResponsibility responsibility:position.getResponsibilitys())
+		{
+			Row row = new Row();
+			row.appendChild(Components.checkbox(false));
+			row.appendChild(Components.mandatoryDatebox(responsibility.getStart()));
+			row.appendChild(Components.fullSpanDatebox(responsibility.getEnd()));
+			row.appendChild(Components.mandatoryTextBox(responsibility.getDescription()));
+			row.appendChild(new Label(responsibility.getId()));
+			
+			responsibilitys.getRows().appendChild(row);
+		}
+		
+		toolbar.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				Row row = new Row();
+				row.appendChild(Components.checkbox(false));
+				row.appendChild(Components.mandatoryDatebox());
+				row.appendChild(Components.fullSpanDatebox(null));
+				row.appendChild(Components.mandatoryTextBox());
+				row.appendChild(new Label(UUID.randomUUID().toString()));
+				
+				responsibilitys.getRows().appendChild(row);
+			}
+		});
+		
+		toolbar.getRemove().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				Iterator<Component> iterator = responsibilitys.getRows().getChildren().iterator();
+				while (iterator.hasNext())
+				{
+					Row row = (Row) iterator.next();
+					if(RowUtils.isChecked(row, 0))
+						iterator.remove();
+				}
+			}
+		});
+		
+		toolbar.getClear().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				responsibilitys.getRows().getChildren().clear();
+			}
+		});
+		
+		tabbox.getTabpanels().getChildren().get(0).appendChild(toolbar);
+		tabbox.getTabpanels().getChildren().get(0).appendChild(responsibilitys);
 	}
 }

@@ -160,14 +160,14 @@ public class PositionGridContent extends GridContent
 		grid.appendChild(new Columns());
 		
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Start",null,"100px"));
-		grid.getColumns().appendChild(new Column("End",null,"100px"));
-		grid.getColumns().appendChild(new Column("Act. Start",null,"100px"));
-		grid.getColumns().appendChild(new Column("Act. End",null,"100px"));
+		grid.getColumns().appendChild(new Column("Start",null,"85px"));
+		grid.getColumns().appendChild(new Column("End",null,"85px"));
+		grid.getColumns().appendChild(new Column("Act. Start",null,"85px"));
+		grid.getColumns().appendChild(new Column("Act. End",null,"85px"));
 		grid.getColumns().appendChild(new Column("Type",null,"150px"));
-		grid.getColumns().appendChild(new Column("Worktime",null,"125px"));
-		grid.getColumns().appendChild(new Column("Status",null,"125px"));
-		grid.getColumns().appendChild(new Column("Salary",null,"125px"));
+		grid.getColumns().appendChild(new Column("Worktime",null,"90px"));
+		grid.getColumns().appendChild(new Column("Status",null,"90px"));
+		grid.getColumns().appendChild(new Column("Salary",null,"90px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
 		grid.getColumns().getChildren().get(9).setVisible(false);
 		grid.setSpan("5");
