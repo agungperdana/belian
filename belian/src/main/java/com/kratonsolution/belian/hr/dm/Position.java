@@ -36,11 +36,13 @@ import lombok.Setter;
 @Table(name="position")
 public class Position implements Serializable
 {
-	public enum WorktimeStatus{FULLTIME,PARTTIME,FREELANCE}
+	public enum WorktimeStatus{Fulltime,Parttime,Freelance}
 	
-	public enum TemporaryStatus{PERMANENT,CONTRACT}
+	public enum EmploymentStatus{Permanent,Contract}
 	
-	public enum SalaryStatus{MONTHLY,WEEKLY,DAYLY,HOURLY}
+	public enum SalaryStatus{Monthly,Weekly,Daily,Hourly}
+	
+	public enum PositionStatusType{Planned,Open,Closed}
 	
 	@Id
 	private String id;
@@ -59,15 +61,19 @@ public class Position implements Serializable
 	
 	@Column(name="worktime_status")
 	@Enumerated(EnumType.STRING)
-	private WorktimeStatus worktimeStatus = WorktimeStatus.FULLTIME;
+	private WorktimeStatus worktimeStatus = WorktimeStatus.Fulltime;
 	
 	@Column(name="temporary_status")
 	@Enumerated(EnumType.STRING)
-	private TemporaryStatus temporaryStatus = TemporaryStatus.CONTRACT;
+	private EmploymentStatus employmentStatus = EmploymentStatus.Contract;
 	
 	@Column(name="salary_status")
 	@Enumerated(EnumType.STRING)
-	private SalaryStatus salaryStatus = SalaryStatus.MONTHLY;
+	private SalaryStatus salaryStatus = SalaryStatus.Monthly;
+	
+	@Column(name="position_status_type")
+	@Enumerated(EnumType.STRING)
+	private PositionStatusType positionStatusType = PositionStatusType.Planned;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_budget_item")

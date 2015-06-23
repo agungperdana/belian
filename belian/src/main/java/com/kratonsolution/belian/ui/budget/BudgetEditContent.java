@@ -454,7 +454,7 @@ public class BudgetEditContent extends FormContent
 				
 				row.appendChild(Components.checkbox(false));
 				row.appendChild(Components.mandatoryDatebox());
-				row.appendChild(Components.newSelect(personService.findAllBudgetReviewer(Components.string(owners))));
+				row.appendChild(Components.newSelect(personService.findAllBudgetReviewer(Components.string(owners)),true));
 				row.appendChild(results);
 				row.appendChild(Components.mandatoryTextBox());
 				row.appendChild(new Label(UUID.randomUUID().toString()));

@@ -17,8 +17,9 @@ import org.zkoss.zul.Row;
 import com.kratonsolution.belian.accounting.dm.BudgetItem;
 import com.kratonsolution.belian.accounting.svc.BudgetItemService;
 import com.kratonsolution.belian.hr.dm.Position;
+import com.kratonsolution.belian.hr.dm.Position.PositionStatusType;
 import com.kratonsolution.belian.hr.dm.Position.SalaryStatus;
-import com.kratonsolution.belian.hr.dm.Position.TemporaryStatus;
+import com.kratonsolution.belian.hr.dm.Position.EmploymentStatus;
 import com.kratonsolution.belian.hr.dm.Position.WorktimeStatus;
 import com.kratonsolution.belian.hr.dm.PositionType;
 import com.kratonsolution.belian.hr.svc.PositionService;
@@ -57,6 +58,8 @@ public class PositioEditContent extends FormContent
 	private Listbox budgetItems = Components.newSelect();
 
 	private Listbox positionTypes = Components.newSelect();
+	
+	private Listbox positionStatusTypes = Components.newSelect();
 
 	private Row row;
 
@@ -97,11 +100,12 @@ public class PositioEditContent extends FormContent
 					position.setEnd(end.getValue());
 					position.setSalaryStatus(SalaryStatus.valueOf(Components.string(salarys)));
 					position.setStart(start.getValue());
-					position.setTemporaryStatus(TemporaryStatus.valueOf(Components.string(statuses)));
+					position.setEmploymentStatus(EmploymentStatus.valueOf(Components.string(statuses)));
 					position.setType(positionTypeService.findOne(Components.string(positionTypes)));
 					position.setWorktimeStatus(WorktimeStatus.valueOf(Components.string(worktimes)));
+					position.setPositionStatusType(PositionStatusType.valueOf(Components.string(positionStatusTypes)));
 					
-					service.add(position);
+					service.edit(position);
 				}
 				
 				PositionWindow window = (PositionWindow)getParent();
@@ -124,11 +128,11 @@ public class PositioEditContent extends FormContent
 				worktimes.setSelectedItem(listitem);
 		}
 		
-		for(TemporaryStatus status:TemporaryStatus.values())
+		for(EmploymentStatus status:EmploymentStatus.values())
 		{
 			Listitem listitem = new Listitem(status.name(), status.name());
 			statuses.appendChild(listitem);
-			if(position.getTemporaryStatus().equals(status))
+			if(position.getEmploymentStatus().equals(status))
 				statuses.setSelectedItem(listitem);
 		}
 		
@@ -138,6 +142,14 @@ public class PositioEditContent extends FormContent
 			salarys.appendChild(listitem);
 			if(position.getSalaryStatus().equals(status))
 				salarys.setSelectedItem(listitem);
+		}
+		
+		for(PositionStatusType status:PositionStatusType.values())
+		{
+			Listitem listitem = new Listitem(status.name(), status.name());
+			positionStatusTypes.appendChild(listitem);
+			if(status.equals(position.getPositionStatusType()))
+				positionStatusTypes.setSelectedItem(listitem);
 		}
 
 		for(PositionType type:positionTypeService.findAll())
@@ -196,6 +208,10 @@ public class PositioEditContent extends FormContent
 		row9.appendChild(new Label("Position Type"));
 		row9.appendChild(positionTypes);
 		
+		Row row10 = new Row();
+		row10.appendChild(new Label("Position Status Type"));
+		row10.appendChild(positionStatusTypes);
+		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
@@ -205,5 +221,6 @@ public class PositioEditContent extends FormContent
 		rows.appendChild(row7);
 		rows.appendChild(row8);
 		rows.appendChild(row9);
+		rows.appendChild(row10);
 	}
 }

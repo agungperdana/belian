@@ -61,7 +61,7 @@ public class Components
 		return listbox;
 	}
 	
-	public static final Listbox newSelect(Collection<? extends Listable> collections)
+	public static final Listbox newSelect(Collection<? extends Listable> collections,boolean setDefault)
 	{
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");
@@ -69,7 +69,8 @@ public class Components
 		for(Listable object:collections)
 			listbox.appendChild(new Listitem(object.getLabel(), object.getValue()));
 		
-		setDefault(listbox);
+		if(setDefault)
+			setDefault(listbox);
 		
 		return listbox;
 	}

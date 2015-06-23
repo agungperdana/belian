@@ -16,8 +16,9 @@ import org.zkoss.zul.Row;
 
 import com.kratonsolution.belian.accounting.svc.BudgetItemService;
 import com.kratonsolution.belian.hr.dm.Position;
+import com.kratonsolution.belian.hr.dm.Position.EmploymentStatus;
+import com.kratonsolution.belian.hr.dm.Position.PositionStatusType;
 import com.kratonsolution.belian.hr.dm.Position.SalaryStatus;
-import com.kratonsolution.belian.hr.dm.Position.TemporaryStatus;
 import com.kratonsolution.belian.hr.dm.Position.WorktimeStatus;
 import com.kratonsolution.belian.hr.svc.PositionService;
 import com.kratonsolution.belian.hr.svc.PositionTypeService;
@@ -47,13 +48,15 @@ public class PositionFormContent extends FormContent
 	
 	private Listbox worktimes = Components.newSelect();
 	
-	private Listbox statuses = Components.newSelect();
+	private Listbox employmentstatuses = Components.newSelect();
 	
 	private Listbox salarys = Components.newSelect();
 	
-	private Listbox budgetItems = Components.newSelect(budgetItemService.findAll());
+	private Listbox positionStatusTypes = Components.newSelect();
 	
-	private Listbox positionTypes = Components.newSelect(positionTypeService.findAll());
+	private Listbox budgetItems = Components.newSelect(budgetItemService.findAll(),false);
+	
+	private Listbox positionTypes = Components.newSelect(positionTypeService.findAll(),true);
 	
 	public PositionFormContent()
 	{
@@ -89,9 +92,10 @@ public class PositionFormContent extends FormContent
 				position.setEnd(end.getValue());
 				position.setSalaryStatus(SalaryStatus.valueOf(Components.string(salarys)));
 				position.setStart(start.getValue());
-				position.setTemporaryStatus(TemporaryStatus.valueOf(Components.string(statuses)));
+				position.setEmploymentStatus(EmploymentStatus.valueOf(Components.string(employmentstatuses)));
 				position.setType(positionTypeService.findOne(Components.string(positionTypes)));
 				position.setWorktimeStatus(WorktimeStatus.valueOf(Components.string(worktimes)));
+				position.setPositionStatusType(PositionStatusType.valueOf(Components.string(positionStatusTypes)));
 				
 				service.add(position);
 				
@@ -108,14 +112,17 @@ public class PositionFormContent extends FormContent
 		for(WorktimeStatus status:WorktimeStatus.values())
 			worktimes.appendChild(new Listitem(status.name(), status.name()));
 		
-		for(TemporaryStatus status:TemporaryStatus.values())
-			statuses.appendChild(new Listitem(status.name(), status.name()));
+		for(EmploymentStatus status:EmploymentStatus.values())
+			employmentstatuses.appendChild(new Listitem(status.name(), status.name()));
 		
 		for(SalaryStatus status:SalaryStatus.values())
 			salarys.appendChild(new Listitem(status.name(), status.name()));
 		
+		for(PositionStatusType status:PositionStatusType.values())
+			positionStatusTypes.appendChild(new Listitem(status.name(), status.name()));
+		
 		Components.setDefault(worktimes);
-		Components.setDefault(statuses);
+		Components.setDefault(employmentstatuses);
 		Components.setDefault(salarys);
 		
 		grid.appendChild(new Columns());
@@ -139,12 +146,12 @@ public class PositionFormContent extends FormContent
 		row4.appendChild(actualEnd);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Work Time"));
+		row5.appendChild(new Label("Worktime Type"));
 		row5.appendChild(worktimes);
 		
 		Row row6 = new Row();
-		row6.appendChild(new Label("Status"));
-		row6.appendChild(statuses);
+		row6.appendChild(new Label("Employment Type"));
+		row6.appendChild(employmentstatuses);
 		
 		Row row7 = new Row();
 		row7.appendChild(new Label("Salary Type"));
@@ -158,6 +165,10 @@ public class PositionFormContent extends FormContent
 		row9.appendChild(new Label("Position Type"));
 		row9.appendChild(positionTypes);
 		
+		Row row10 = new Row();
+		row10.appendChild(new Label("Position Status Type"));
+		row10.appendChild(positionStatusTypes);
+		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
@@ -167,5 +178,6 @@ public class PositionFormContent extends FormContent
 		rows.appendChild(row7);
 		rows.appendChild(row8);
 		rows.appendChild(row9);
+		rows.appendChild(row10);
 	}
 }

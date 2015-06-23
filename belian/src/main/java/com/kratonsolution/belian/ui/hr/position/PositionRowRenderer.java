@@ -29,7 +29,7 @@ public class PositionRowRenderer implements RowRenderer<Position>
 			row.appendChild(new Label(Dates.format(data.getActualEnd())));
 			row.appendChild(new Label(data.getType().getTitle()));
 			row.appendChild(new Label(data.getWorktimeStatus().name()));
-			row.appendChild(new Label(data.getTemporaryStatus().name()));
+			row.appendChild(new Label(data.getEmploymentStatus().name()));
 			row.appendChild(new Label(data.getSalaryStatus().name()));
 			row.appendChild(new Label(data.getId()));
 		}
