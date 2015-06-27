@@ -75,6 +75,32 @@ public class Components
 		return listbox;
 	}
 	
+	public static final Listbox fullSpanSelect(Collection<? extends Listable> collections,boolean setDefault)
+	{
+		Listbox listbox = new Listbox();
+		listbox.setMold("select");
+		listbox.setWidth("100%");
+		
+		for(Listable object:collections)
+			listbox.appendChild(new Listitem(object.getLabel(), object.getValue()));
+		
+		if(setDefault)
+			setDefault(listbox);
+		
+		return listbox;
+	}
+	
+	public static final Listbox fullSpanSelect(Listable listable)
+	{
+		Listbox listbox = new Listbox();
+		listbox.setMold("select");
+		listbox.setWidth("100%");
+		listbox.appendChild(new Listitem(listable.getLabel(), listable.getValue()));
+		listbox.setSelectedIndex(0);
+		
+		return listbox;
+	}
+	
 	public static final Textbox readOnlyTextBox()
 	{
 		Textbox textbox = new Textbox();

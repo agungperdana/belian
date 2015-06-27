@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.ui.partyroletype;
 
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -25,7 +26,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PartyRoleTypeGridContent extends GridContent
 {
-	private final PartyRoleTypeService service = Springs.get(PartyRoleTypeService.class);
+	private PartyRoleTypeService service = Springs.get(PartyRoleTypeService.class);
 	
 	public PartyRoleTypeGridContent()
 	{
@@ -157,19 +158,14 @@ public class PartyRoleTypeGridContent extends GridContent
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(8);
+		grid.appendChild(new Columns());
+		grid.getColumns().appendChild(new Column(null,null,"25px"));
+		grid.getColumns().appendChild(new Column("Name",null,"150"));
+		grid.getColumns().appendChild(new Column("Description",null,"200px"));
+		grid.getColumns().appendChild(new Column(null,null,"1px"));
+		grid.getColumns().getChildren().get(3).setVisible(false);
+		grid.setSpan("2");
 		
-		Columns columns = new Columns();
-		
-		Column select = new Column(null,null,"25px");
-		Column name = new Column("Name");
-		Column id = new Column();
-		id.setVisible(false);
-		
-		columns.appendChild(select);
-		columns.appendChild(name);
-		columns.appendChild(id);
-		
-		grid.appendChild(columns);
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override
@@ -180,18 +176,16 @@ public class PartyRoleTypeGridContent extends GridContent
 			}
 		});
 		
-		Rows rows = grid.getRows();
-		for(Object object:rows.getChildren())
+		for(Component component:grid.getRows().getChildren())
 		{
-			final Row row = (Row)object;
-			row.addEventListener(Events.ON_CLICK,new EventListener<Event>()
+			component.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 			{
 				@Override
 				public void onEvent(Event event) throws Exception
 				{
 					PartyRoleTypeWindow window = (PartyRoleTypeWindow)getParent();
 					window.removeGrid();
-					window.insertEditForm(row);
+					window.insertEditForm((Row)component);
 				}
 			});
 		}

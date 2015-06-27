@@ -17,6 +17,7 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.PartyRoleType;
 import com.kratonsolution.belian.general.svc.PartyRoleTypeService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -26,9 +27,11 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PartyRoleEditContent extends FormContent
 {	
-	private final PartyRoleTypeService service = Springs.get(PartyRoleTypeService.class);
+	private PartyRoleTypeService service = Springs.get(PartyRoleTypeService.class);
 	
-	private Textbox name = new Textbox();
+	private Textbox name = Components.mandatoryTextBox();
+	
+	private Textbox description = Components.mandatoryTextBox();
 	
 	private Row row;
 	
@@ -62,8 +65,9 @@ public class PartyRoleEditContent extends FormContent
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 			
-				PartyRoleType type = service.findOne(RowUtils.string(row, 2));
+				PartyRoleType type = service.findOne(RowUtils.string(row, 3));
 				type.setName(name.getText());
+				type.setDescription(description.getText());
 				
 				service.edit(type);
 				
@@ -77,18 +81,28 @@ public class PartyRoleEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
+		PartyRoleType roleType = service.findOne(RowUtils.string(row, 3));
+		
 		name.setConstraint("no empty");
-		name.setText(RowUtils.string(row, 1));
 		name.setWidth("300px");
+		name.setText(roleType.getName());
+		
+		description.setWidth("300px");
+		description.setText(roleType.getDescription());
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));
 		grid.getColumns().appendChild(new Column());
 		
-		Row row2 = new Row();
-		row2.appendChild(new Label("Name"));
-		row2.appendChild(name);
+		Row row1 = new Row();
+		row1.appendChild(new Label("Name"));
+		row1.appendChild(name);
 		
-		rows.appendChild(row2);
+		Row row2 = new Row();
+		row2.appendChild(new Label("Description"));
+		row2.appendChild(description);
+		
+		grid.getRows().appendChild(row1);
+		grid.getRows().appendChild(row2);
 	}
 }

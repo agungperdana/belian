@@ -74,4 +74,10 @@ public class PersonService
 	{
 		return repository.findAllReviewer(forOrganization);
 	}
+	
+	@Secured("ROLE_PERSON_READ")
+	public List<Person> findAllByRolesTypeName(String name)
+	{
+		return repository.findAllByRolesTypeName(name);
+	}
 }

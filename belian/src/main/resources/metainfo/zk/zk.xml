@@ -1,4 +1,5 @@
 <zk>
+    <config-name>belian-config</config-name>
 	<richlet>
 	    <richlet-name>Home</richlet-name>
 	    <richlet-class>com.kratonsolution.belian.ui.Desktop</richlet-class>

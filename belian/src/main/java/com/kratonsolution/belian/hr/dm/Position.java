@@ -22,6 +22,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.kratonsolution.belian.accounting.dm.BudgetItem;
+import com.kratonsolution.belian.general.dm.Organization;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -83,10 +84,18 @@ public class Position implements Serializable
 	@JoinColumn(name="fk_position_type")
 	private PositionType type;
 	
+	@ManyToOne
+	@JoinColumn(name="fk_organization_owner")
+	private Organization owner;
+	
 	@Version
 	private Long version;
 	
 	@OneToMany(mappedBy="position",cascade=CascadeType.ALL,orphanRemoval=true)
 	@OrderBy("start ASC")
 	private Set<PositionResponsibility> responsibilitys = new HashSet<PositionResponsibility>();
+
+	@OneToMany(mappedBy="position",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OrderBy("start ASC")
+	private Set<PositionFulfillment> fulfillments = new HashSet<PositionFulfillment>();
 }

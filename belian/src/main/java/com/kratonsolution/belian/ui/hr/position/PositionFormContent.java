@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.ui.hr.position;
 
+import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -14,7 +15,9 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 
+import com.kratonsolution.belian.accounting.dm.BudgetItem;
 import com.kratonsolution.belian.accounting.svc.BudgetItemService;
+import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.hr.dm.Position;
 import com.kratonsolution.belian.hr.dm.Position.EmploymentStatus;
 import com.kratonsolution.belian.hr.dm.Position.PositionStatusType;
@@ -38,6 +41,8 @@ public class PositionFormContent extends FormContent
 	
 	private PositionTypeService positionTypeService = Springs.get(PositionTypeService.class);
 	
+	private OrganizationService organizationService = Springs.get(OrganizationService.class);
+	
 	private Datebox start = Components.currentDatebox();
 	
 	private Datebox end = Components.datebox();
@@ -54,9 +59,11 @@ public class PositionFormContent extends FormContent
 	
 	private Listbox positionStatusTypes = Components.newSelect();
 	
-	private Listbox budgetItems = Components.newSelect(budgetItemService.findAll(),false);
+	private Listbox budgetItems = Components.newSelect();
 	
 	private Listbox positionTypes = Components.newSelect(positionTypeService.findAll(),true);
+	
+	private Listbox owners = Components.newSelect(organizationService.findAllByRolesTypeName("Internal Organization"), false);
 	
 	public PositionFormContent()
 	{
@@ -84,11 +91,17 @@ public class PositionFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-			
+				if(owners.getSelectedIndex() < 0)
+					throw new WrongValueException(owners,"Document Owner cannot be empty");
+				
+				if(budgetItems.getSelectedIndex() < 0)
+					throw new WrongValueException(budgetItems,"Budget Item cannot be empty");
+				
 				Position position = new Position();
 				position.setActualEnd(actualEnd.getValue());
 				position.setActualStart(actualStart.getValue());
 				position.setBudgetItem(budgetItemService.findOne(Components.string(budgetItems)));
+				position.setOwner(organizationService.findOne(Components.string(owners)));
 				position.setEnd(end.getValue());
 				position.setSalaryStatus(SalaryStatus.valueOf(Components.string(salarys)));
 				position.setStart(start.getValue());
@@ -119,55 +132,71 @@ public class PositionFormContent extends FormContent
 			salarys.appendChild(new Listitem(status.name(), status.name()));
 		
 		for(PositionStatusType status:PositionStatusType.values())
-			positionStatusTypes.appendChild(new Listitem(status.name(), status.name()));
+		{
+			Listitem listitem = new Listitem(status.name(), status.name());
+			positionStatusTypes.appendChild(listitem);
+			
+			if(status.equals(PositionStatusType.Planned))
+				positionStatusTypes.setSelectedItem(listitem);
+		}
 		
 		Components.setDefault(worktimes);
 		Components.setDefault(employmentstatuses);
 		Components.setDefault(salarys);
 		
+		owners.addEventListener(Events.ON_CLICK, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				budgetItems.getChildren().clear();
+				
+				for(BudgetItem item:budgetItemService.findAllByOwner(Components.string(owners)))
+					budgetItems.appendChild(new Listitem(item.getLabel(), item.getValue()));
+			
+				Components.setDefault(budgetItems);
+			}
+		});
+		
 		grid.appendChild(new Columns());
+		grid.getColumns().appendChild(new Column(null,null,"125px"));
+		grid.getColumns().appendChild(new Column());
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
 		row1.appendChild(new Label("Start Date"));
 		row1.appendChild(start);
+		row1.appendChild(new Label("End Date"));
+		row1.appendChild(end);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("End Date"));
-		row2.appendChild(end);
+		row2.appendChild(new Label("Actual Start Date"));
+		row2.appendChild(actualStart);
+		row2.appendChild(new Label("Actual End Date"));
+		row2.appendChild(actualEnd);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Actual Start Date"));
-		row3.appendChild(actualStart);
+		row3.appendChild(new Label("Worktime Type"));
+		row3.appendChild(worktimes);
+		row3.appendChild(new Label("Employment Type"));
+		row3.appendChild(employmentstatuses);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Actual End Date"));
-		row4.appendChild(actualEnd);
+		row4.appendChild(new Label("Salary Type"));
+		row4.appendChild(salarys);
+		row4.appendChild(new Label("Document Owner"));
+		row4.appendChild(owners);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Worktime Type"));
-		row5.appendChild(worktimes);
+		row5.appendChild(new Label("Budget Item"));
+		row5.appendChild(budgetItems);
+		row5.appendChild(new Label("Position Type"));
+		row5.appendChild(positionTypes);
 		
 		Row row6 = new Row();
-		row6.appendChild(new Label("Employment Type"));
-		row6.appendChild(employmentstatuses);
-		
-		Row row7 = new Row();
-		row7.appendChild(new Label("Salary Type"));
-		row7.appendChild(salarys);
-		
-		Row row8 = new Row();
-		row8.appendChild(new Label("Budget Item"));
-		row8.appendChild(budgetItems);
-		
-		Row row9 = new Row();
-		row9.appendChild(new Label("Position Type"));
-		row9.appendChild(positionTypes);
-		
-		Row row10 = new Row();
-		row10.appendChild(new Label("Position Status Type"));
-		row10.appendChild(positionStatusTypes);
+		row6.appendChild(new Label("Position Status Type"));
+		row6.appendChild(positionStatusTypes);
 		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
@@ -175,9 +204,5 @@ public class PositionFormContent extends FormContent
 		rows.appendChild(row4);
 		rows.appendChild(row5);
 		rows.appendChild(row6);
-		rows.appendChild(row7);
-		rows.appendChild(row8);
-		rows.appendChild(row9);
-		rows.appendChild(row10);
 	}
 }

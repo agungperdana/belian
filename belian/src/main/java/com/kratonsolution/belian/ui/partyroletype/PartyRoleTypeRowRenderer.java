@@ -21,8 +21,9 @@ public class PartyRoleTypeRowRenderer implements RowRenderer<PartyRoleType>
 	{
 		if(data != null)
 		{
-			row.appendChild(Components.readOnlyCheckbox());
+			row.appendChild(data.isDeleteable()?Components.checkbox(false):Components.readOnlyCheckbox());
 			row.appendChild(new Label(data.getName()));
+			row.appendChild(new Label(data.getDescription()));
 			row.appendChild(new Label(data.getId()));
 		}
 	}

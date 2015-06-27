@@ -17,6 +17,7 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.PartyRoleType;
 import com.kratonsolution.belian.general.svc.PartyRoleTypeService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -25,9 +26,11 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PartyRoleTypeFormContent extends FormContent
 {	
-	private final PartyRoleTypeService service = Springs.get(PartyRoleTypeService.class);
+	private PartyRoleTypeService service = Springs.get(PartyRoleTypeService.class);
 		
-	private Textbox name = new Textbox();
+	private Textbox name = Components.mandatoryTextBox();
+	
+	private Textbox description = Components.mandatoryTextBox();
 	
 	public PartyRoleTypeFormContent()
 	{
@@ -60,6 +63,8 @@ public class PartyRoleTypeFormContent extends FormContent
 			
 				PartyRoleType type = new PartyRoleType();
 				type.setName(name.getText());
+				type.setDescription(description.getText());
+				type.setDeleteable(true);
 				
 				service.add(type);
 				
@@ -76,14 +81,22 @@ public class PartyRoleTypeFormContent extends FormContent
 		name.setConstraint("no empty");
 		name.setWidth("300px");
 		
+		description.setConstraint("no empty");
+		description.setWidth("300px");
+		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));
 		grid.getColumns().appendChild(new Column());
 		
-		Row row2 = new Row();
-		row2.appendChild(new Label("Name"));
-		row2.appendChild(name);
+		Row row1 = new Row();
+		row1.appendChild(new Label("Name"));
+		row1.appendChild(name);
 		
+		Row row2 = new Row();
+		row2.appendChild(new Label("Description"));
+		row2.appendChild(description);
+		
+		rows.appendChild(row1);
 		rows.appendChild(row2);
 	}
 }

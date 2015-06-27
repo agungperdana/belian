@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.UUID;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -27,11 +28,15 @@ import org.zkoss.zul.Tabs;
 
 import com.kratonsolution.belian.accounting.dm.BudgetItem;
 import com.kratonsolution.belian.accounting.svc.BudgetItemService;
+import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.hr.dm.Position;
 import com.kratonsolution.belian.hr.dm.Position.EmploymentStatus;
 import com.kratonsolution.belian.hr.dm.Position.PositionStatusType;
 import com.kratonsolution.belian.hr.dm.Position.SalaryStatus;
 import com.kratonsolution.belian.hr.dm.Position.WorktimeStatus;
+import com.kratonsolution.belian.hr.dm.PositionFulfillment;
 import com.kratonsolution.belian.hr.dm.PositionResponsibility;
 import com.kratonsolution.belian.hr.dm.PositionType;
 import com.kratonsolution.belian.hr.svc.PositionService;
@@ -53,6 +58,10 @@ public class PositioEditContent extends FormContent
 	private BudgetItemService budgetItemService = Springs.get(BudgetItemService.class);
 
 	private PositionTypeService positionTypeService = Springs.get(PositionTypeService.class);
+	
+	private OrganizationService organizationService = Springs.get(OrganizationService.class);
+	
+	private PersonService personService = Springs.get(PersonService.class);
 
 	private Datebox start = Components.currentDatebox();
 
@@ -64,21 +73,25 @@ public class PositioEditContent extends FormContent
 
 	private Listbox worktimes = Components.newSelect();
 
-	private Listbox statuses = Components.newSelect();
+	private Listbox employmentstatuses = Components.newSelect();
 
-	private Listbox salarys = Components.newSelect();
+	private Listbox salaryStatus = Components.newSelect();
 
 	private Listbox budgetItems = Components.newSelect();
 
 	private Listbox positionTypes = Components.newSelect();
 	
 	private Listbox positionStatusTypes = Components.newSelect();
+	
+	private Listbox owners = Components.newSelect();
 
 	private Row row;
 	
 	private Tabbox tabbox = new Tabbox();
 	
 	private Grid responsibilitys = new Grid();
+	
+	private Grid fulfillments = new Grid();
 
 	public PositioEditContent(Row row)
 	{
@@ -91,12 +104,17 @@ public class PositioEditContent extends FormContent
 		tabbox.appendChild(new Tabs());
 		tabbox.appendChild(new Tabpanels());
 		tabbox.getTabs().appendChild(new Tab("Responsibilitys"));
+		tabbox.getTabs().appendChild(new Tab("Fulfillment"));
+		tabbox.getTabpanels().appendChild(new Tabpanel());
 		tabbox.getTabpanels().appendChild(new Tabpanel());
 		
 		responsibilitys.appendChild(new Rows());
 		responsibilitys.appendChild(new Columns());
+		fulfillments.appendChild(new Rows());
+		fulfillments.appendChild(new Columns());
 	
 		initResponsibilitys();
+		initFulfillment();
 	}
 
 	@Override
@@ -122,17 +140,25 @@ public class PositioEditContent extends FormContent
 				Position position = service.findOne(RowUtils.string(row, 9));
 				if(position != null)
 				{
+					if(owners.getSelectedIndex() < 0)
+						throw new WrongValueException(owners,"Document Owner cannot be empty");
+					
+					if(budgetItems.getSelectedIndex() < 0)
+						throw new WrongValueException(budgetItems,"Budget Item cannot be empty");
+					
 					position.setActualEnd(actualEnd.getValue());
 					position.setActualStart(actualStart.getValue());
 					position.setBudgetItem(budgetItemService.findOne(Components.string(budgetItems)));
 					position.setEnd(end.getValue());
-					position.setSalaryStatus(SalaryStatus.valueOf(Components.string(salarys)));
+					position.setOwner(organizationService.findOne(Components.string(owners)));
+					position.setSalaryStatus(SalaryStatus.valueOf(Components.string(salaryStatus)));
 					position.setStart(start.getValue());
-					position.setEmploymentStatus(EmploymentStatus.valueOf(Components.string(statuses)));
+					position.setEmploymentStatus(EmploymentStatus.valueOf(Components.string(employmentstatuses)));
 					position.setType(positionTypeService.findOne(Components.string(positionTypes)));
 					position.setWorktimeStatus(WorktimeStatus.valueOf(Components.string(worktimes)));
 					position.setPositionStatusType(PositionStatusType.valueOf(Components.string(positionStatusTypes)));
 					position.getResponsibilitys().clear();
+					position.getFulfillments().clear();
 					
 					service.edit(position);
 				
@@ -149,6 +175,21 @@ public class PositioEditContent extends FormContent
 						responsibility.setPosition(position);
 						
 						position.getResponsibilitys().add(responsibility);
+					}
+					
+					for(Component component:fulfillments.getRows().getChildren())
+					{
+						Row row = (Row) component;
+						
+						PositionFulfillment fulfillment = new PositionFulfillment();
+						fulfillment.setDescription(RowUtils.string(row, 4));
+						fulfillment.setEmployee(personService.findOne(RowUtils.string(row, 3)));
+						fulfillment.setEnd(RowUtils.date(row, 2));
+						fulfillment.setPosition(position);
+						fulfillment.setStart(RowUtils.date(row, 1));
+						fulfillment.setId(RowUtils.string(row, 5));
+						
+						position.getFulfillments().add(fulfillment);
 					}
 					
 					service.edit(position);
@@ -177,17 +218,17 @@ public class PositioEditContent extends FormContent
 		for(EmploymentStatus status:EmploymentStatus.values())
 		{
 			Listitem listitem = new Listitem(status.name(), status.name());
-			statuses.appendChild(listitem);
+			employmentstatuses.appendChild(listitem);
 			if(position.getEmploymentStatus().equals(status))
-				statuses.setSelectedItem(listitem);
+				employmentstatuses.setSelectedItem(listitem);
 		}
 		
 		for(SalaryStatus status:SalaryStatus.values())
 		{
 			Listitem listitem = new Listitem(status.name(), status.name());
-			salarys.appendChild(listitem);
+			salaryStatus.appendChild(listitem);
 			if(position.getSalaryStatus().equals(status))
-				salarys.setSelectedItem(listitem);
+				salaryStatus.setSelectedItem(listitem);
 		}
 		
 		for(PositionStatusType status:PositionStatusType.values())
@@ -206,13 +247,33 @@ public class PositioEditContent extends FormContent
 				positionTypes.setSelectedItem(listitem);
 		}
 		
-		for(BudgetItem item:budgetItemService.findAll())
+		for(Organization organization:organizationService.findAllByRolesTypeName("Internal Organization"))
 		{
-			Listitem listitem = new Listitem(item.getPurpose(),item.getId());
+			Listitem listitem = new Listitem(position.getOwner().getName(), position.getOwner().getId());
+			owners.appendChild(listitem);
+			if(organization.getId().equals(position.getOwner().getId()))
+				owners.setSelectedItem(listitem);
+		}
+
+		owners.addEventListener(Events.ON_CLICK, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				budgetItems.getChildren().clear();
+				
+				for(BudgetItem item:budgetItemService.findAllByOwner(Components.string(owners)))
+					budgetItems.appendChild(new Listitem(item.getLabel(), item.getValue()));
+			
+				Components.setDefault(budgetItems);
+			}
+		});
+		
+		for(BudgetItem budgetItem:budgetItemService.findAllByOwner(Components.string(owners)))
+		{
+			Listitem listitem = new Listitem(position.getBudgetItem().getLabel(),position.getBudgetItem().getValue());
 			budgetItems.appendChild(listitem);
-			
-			
-			if(position.getBudgetItem() != null && item.getId().equals(position.getBudgetItem().getId()))
+			if(position.getBudgetItem() != null && budgetItem.getId().equals(position.getBudgetItem().getId()))
 				budgetItems.setSelectedItem(listitem);
 		}
 		
@@ -224,46 +285,42 @@ public class PositioEditContent extends FormContent
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.getColumns().appendChild(new Column());
+		grid.getColumns().appendChild(new Column(null,null,"125px"));
+		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
 		row1.appendChild(new Label("Start Date"));
 		row1.appendChild(start);
+		row1.appendChild(new Label("End Date"));
+		row1.appendChild(end);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("End Date"));
-		row2.appendChild(end);
+		row2.appendChild(new Label("Actual Start Date"));
+		row2.appendChild(actualStart);
+		row2.appendChild(new Label("Actual End Date"));
+		row2.appendChild(actualEnd);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Actual Start Date"));
-		row3.appendChild(actualStart);
+		row3.appendChild(new Label("Worktime Type"));
+		row3.appendChild(worktimes);
+		row3.appendChild(new Label("Employment Type"));
+		row3.appendChild(employmentstatuses);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Actual End Date"));
-		row4.appendChild(actualEnd);
+		row4.appendChild(new Label("Salary Type"));
+		row4.appendChild(salaryStatus);
+		row4.appendChild(new Label("Document Owner"));
+		row4.appendChild(owners);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Work Time"));
-		row5.appendChild(worktimes);
+		row5.appendChild(new Label("Budget Item"));
+		row5.appendChild(budgetItems);
+		row5.appendChild(new Label("Position Type"));
+		row5.appendChild(positionTypes);
 		
 		Row row6 = new Row();
-		row6.appendChild(new Label("Status"));
-		row6.appendChild(statuses);
-		
-		Row row7 = new Row();
-		row7.appendChild(new Label("Salary Type"));
-		row7.appendChild(salarys);
-		
-		Row row8 = new Row();
-		row8.appendChild(new Label("Budget Item"));
-		row8.appendChild(budgetItems);
-		
-		Row row9 = new Row();
-		row9.appendChild(new Label("Position Type"));
-		row9.appendChild(positionTypes);
-		
-		Row row10 = new Row();
-		row10.appendChild(new Label("Position Status Type"));
-		row10.appendChild(positionStatusTypes);
+		row6.appendChild(new Label("Position Status Type"));
+		row6.appendChild(positionStatusTypes);
 		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
@@ -271,10 +328,6 @@ public class PositioEditContent extends FormContent
 		rows.appendChild(row4);
 		rows.appendChild(row5);
 		rows.appendChild(row6);
-		rows.appendChild(row7);
-		rows.appendChild(row8);
-		rows.appendChild(row9);
-		rows.appendChild(row10);
 	}
 	
 	private void initResponsibilitys()
@@ -346,4 +399,78 @@ public class PositioEditContent extends FormContent
 		tabbox.getTabpanels().getChildren().get(0).appendChild(toolbar);
 		tabbox.getTabpanels().getChildren().get(0).appendChild(responsibilitys);
 	}
+	
+	private void initFulfillment()
+	{
+		Position position = service.findOne(RowUtils.string(row, 9));
+		
+		NRCToolbar toolbar = new NRCToolbar();
+		
+		fulfillments.getColumns().appendChild(new Column(null,null,"25px"));
+		fulfillments.getColumns().appendChild(new Column("Start Date",null,"125px"));
+		fulfillments.getColumns().appendChild(new Column("End Date",null,"125px"));
+		fulfillments.getColumns().appendChild(new Column("Person",null,"175px"));
+		fulfillments.getColumns().appendChild(new Column("Description",null,null));
+		fulfillments.getColumns().appendChild(new Column(null,null,"1px"));
+		fulfillments.getColumns().getChildren().get(5).setVisible(false);
+		fulfillments.setSpan("4");
+		
+		for(PositionFulfillment fulfillment:position.getFulfillments())
+		{
+			Row row = new Row();
+			row.appendChild(Components.checkbox(false));
+			row.appendChild(Components.mandatoryDatebox(fulfillment.getStart()));
+			row.appendChild(Components.fullSpanDatebox(fulfillment.getEnd()));
+			row.appendChild(Components.fullSpanSelect(fulfillment.getEmployee()));
+			row.appendChild(Components.mandatoryTextBox(fulfillment.getDescription()));
+			row.appendChild(new Label(fulfillment.getId()));
+			
+			fulfillments.getRows().appendChild(row);
+		}
+		
+		toolbar.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				Row row = new Row();
+				row.appendChild(Components.checkbox(false));
+				row.appendChild(Components.mandatoryDatebox());
+				row.appendChild(Components.fullSpanDatebox(null));
+				row.appendChild(Components.fullSpanSelect(personService.findAllByRolesTypeName("Employee Prospect"),true));
+				row.appendChild(Components.mandatoryTextBox());
+				row.appendChild(new Label(UUID.randomUUID().toString()));
+				
+				fulfillments.getRows().appendChild(row);
+			}
+		});
+		
+		toolbar.getRemove().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				Iterator<Component> iterator = fulfillments.getRows().getChildren().iterator();
+				while (iterator.hasNext())
+				{
+					Row row = (Row) iterator.next();
+					if(RowUtils.isChecked(row, 0))
+						iterator.remove();
+				}
+			}
+		});
+		
+		toolbar.getClear().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				fulfillments.getRows().getChildren().clear();
+			}
+		});
+		
+		tabbox.getTabpanels().getChildren().get(1).appendChild(toolbar);
+		tabbox.getTabpanels().getChildren().get(1).appendChild(fulfillments);
+	}
+	
 }

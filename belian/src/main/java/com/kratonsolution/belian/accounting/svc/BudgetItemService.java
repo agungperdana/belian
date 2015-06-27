@@ -69,4 +69,10 @@ public class BudgetItemService
 	{
 		repository.delete(id);
 	}
+	
+	@Secured("ROLE_BUDGETITEM_READ")
+	public List<BudgetItem> findAllByOwner(String owner)
+	{
+		return repository.findAllByOwner(owner);
+	}
 }
