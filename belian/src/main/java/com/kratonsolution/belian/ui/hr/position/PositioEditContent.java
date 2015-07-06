@@ -37,8 +37,10 @@ import com.kratonsolution.belian.hr.dm.Position.PositionStatusType;
 import com.kratonsolution.belian.hr.dm.Position.SalaryStatus;
 import com.kratonsolution.belian.hr.dm.Position.WorktimeStatus;
 import com.kratonsolution.belian.hr.dm.PositionFulfillment;
+import com.kratonsolution.belian.hr.dm.PositionReportingStructure;
 import com.kratonsolution.belian.hr.dm.PositionResponsibility;
 import com.kratonsolution.belian.hr.dm.PositionType;
+import com.kratonsolution.belian.hr.svc.PositionReportingStructureService;
 import com.kratonsolution.belian.hr.svc.PositionService;
 import com.kratonsolution.belian.hr.svc.PositionTypeService;
 import com.kratonsolution.belian.ui.FormContent;
@@ -62,6 +64,8 @@ public class PositioEditContent extends FormContent
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 	
 	private PersonService personService = Springs.get(PersonService.class);
+	
+	private PositionReportingStructureService reportingStructureService = Springs.get(PositionReportingStructureService.class);
 
 	private Datebox start = Components.currentDatebox();
 
@@ -92,6 +96,8 @@ public class PositioEditContent extends FormContent
 	private Grid responsibilitys = new Grid();
 	
 	private Grid fulfillments = new Grid();
+	
+	private Grid reportings = new Grid();
 
 	public PositioEditContent(Row row)
 	{
@@ -105,6 +111,8 @@ public class PositioEditContent extends FormContent
 		tabbox.appendChild(new Tabpanels());
 		tabbox.getTabs().appendChild(new Tab("Responsibilitys"));
 		tabbox.getTabs().appendChild(new Tab("Fulfillment"));
+		tabbox.getTabs().appendChild(new Tab("Reporting Structure"));
+		tabbox.getTabpanels().appendChild(new Tabpanel());
 		tabbox.getTabpanels().appendChild(new Tabpanel());
 		tabbox.getTabpanels().appendChild(new Tabpanel());
 		
@@ -159,6 +167,7 @@ public class PositioEditContent extends FormContent
 					position.setPositionStatusType(PositionStatusType.valueOf(Components.string(positionStatusTypes)));
 					position.getResponsibilitys().clear();
 					position.getFulfillments().clear();
+					position.getReportings().clear();
 					
 					service.edit(position);
 				
@@ -190,6 +199,22 @@ public class PositioEditContent extends FormContent
 						fulfillment.setId(RowUtils.string(row, 5));
 						
 						position.getFulfillments().add(fulfillment);
+					}
+					
+					for(Component component:reportings.getRows().getChildren())
+					{
+						Row row = (Row)component;
+						
+						PositionReportingStructure structure = new PositionReportingStructure();
+						structure.setId(RowUtils.string(row, 5));
+						structure.setDescription(RowUtils.string(row, 4));
+						structure.setEnd(RowUtils.date(row, 2));
+						structure.setPrimary(false);
+						structure.setReportTo(service.findOne(RowUtils.string(row, 3)));
+						structure.setStart(RowUtils.date(row, 1));
+						structure.setParent(position);
+						
+						position.getReportings().add(structure);
 					}
 					
 					service.edit(position);
@@ -471,6 +496,79 @@ public class PositioEditContent extends FormContent
 		
 		tabbox.getTabpanels().getChildren().get(1).appendChild(toolbar);
 		tabbox.getTabpanels().getChildren().get(1).appendChild(fulfillments);
+	}
+	
+	private void initReporting()
+	{
+		Position position = service.findOne(RowUtils.string(row, 9));
+		
+		NRCToolbar toolbar = new NRCToolbar();
+		
+		fulfillments.getColumns().appendChild(new Column(null,null,"25px"));
+		fulfillments.getColumns().appendChild(new Column("Start Date",null,"125px"));
+		fulfillments.getColumns().appendChild(new Column("End Date",null,"125px"));
+		fulfillments.getColumns().appendChild(new Column("Position",null,"175px"));
+		fulfillments.getColumns().appendChild(new Column("Description",null,null));
+		fulfillments.getColumns().appendChild(new Column(null,null,"1px"));
+		fulfillments.getColumns().getChildren().get(5).setVisible(false);
+		fulfillments.setSpan("4");
+		
+		for(PositionReportingStructure report:position.getReportings())
+		{
+			Row row = new Row();
+			row.appendChild(Components.checkbox(false));
+			row.appendChild(Components.mandatoryDatebox(report.getStart()));
+			row.appendChild(Components.fullSpanDatebox(report.getEnd()));
+			row.appendChild(Components.fullSpanSelect(report.getReportTo()));
+			row.appendChild(Components.mandatoryTextBox(report.getDescription()));
+			row.appendChild(new Label(report.getId()));
+			
+			reportings.getRows().appendChild(row);
+		}
+		
+		toolbar.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				Row row = new Row();
+				row.appendChild(Components.checkbox(false));
+				row.appendChild(Components.mandatoryDatebox());
+				row.appendChild(Components.fullSpanDatebox(null));
+				row.appendChild(Components.fullSpanSelect(service.findAllNotEqual(position.getId()),true));
+				row.appendChild(Components.mandatoryTextBox());
+				row.appendChild(new Label(UUID.randomUUID().toString()));
+				
+				reportings.getRows().appendChild(row);
+			}
+		});
+		
+		toolbar.getRemove().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				Iterator<Component> iterator = reportings.getRows().getChildren().iterator();
+				while (iterator.hasNext())
+				{
+					Row row = (Row) iterator.next();
+					if(RowUtils.isChecked(row, 0))
+						iterator.remove();
+				}
+			}
+		});
+		
+		toolbar.getClear().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				reportings.getRows().getChildren().clear();
+			}
+		});
+		
+		tabbox.getTabpanels().getChildren().get(2).appendChild(toolbar);
+		tabbox.getTabpanels().getChildren().get(2).appendChild(reportings);
 	}
 	
 }

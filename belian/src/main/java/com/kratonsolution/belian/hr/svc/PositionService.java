@@ -67,4 +67,10 @@ public class PositionService
 	{
 		repository.delete(id);
 	}
+	
+	@Secured("ROLE_POSITION_READ")
+	public List<Position> findAllNotEqual(String positionId)
+	{
+		return repository.findAllNotEqual(positionId);
+	}
 }

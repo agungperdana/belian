@@ -23,6 +23,7 @@ import javax.persistence.Version;
 
 import com.kratonsolution.belian.accounting.dm.BudgetItem;
 import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.global.dm.Listable;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -35,7 +36,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="position")
-public class Position implements Serializable
+public class Position implements Serializable,Listable
 {
 	public enum WorktimeStatus{Fulltime,Parttime,Freelance}
 	
@@ -98,4 +99,20 @@ public class Position implements Serializable
 	@OneToMany(mappedBy="position",cascade=CascadeType.ALL,orphanRemoval=true)
 	@OrderBy("start ASC")
 	private Set<PositionFulfillment> fulfillments = new HashSet<PositionFulfillment>();
+	
+	@OneToMany(mappedBy="parent",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OrderBy("start ASC")
+	private Set<PositionReportingStructure> reportings = new HashSet<PositionReportingStructure>();
+
+	@Override
+	public String getLabel()
+	{
+		return getType().getTitle();
+	}
+
+	@Override
+	public String getValue()
+	{
+		return getId();
+	}
 }
