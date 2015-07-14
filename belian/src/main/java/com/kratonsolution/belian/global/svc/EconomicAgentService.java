@@ -45,6 +45,12 @@ public class EconomicAgentService
 	}
 	
 	@Secured("ROLE_PARTY_READ")
+	public List<EconomicAgent> findAllExcept(String id)
+	{
+		return repository.findAllExcept(id);
+	}
+	
+	@Secured("ROLE_PARTY_READ")
 	public List<EconomicAgent> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();

@@ -171,7 +171,7 @@ public class RelationshipEditWindow extends Window
 				types.setSelectedItem(listitem);
 		}
 		
-		for(EconomicAgent pty:service.findAll())
+		for(EconomicAgent pty:service.findAllExcept(edited.getParty().getId()))
 		{
 			Listitem listitem = new Listitem(pty.getName(),pty.getId());
 			toParty.appendChild(listitem);

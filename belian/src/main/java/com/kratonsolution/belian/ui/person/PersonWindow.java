@@ -39,6 +39,7 @@ public class PersonWindow extends AbstractWindow implements HasGrid,HasCreateFor
 	private PersonWindow()
 	{
 		super();
+		setWidth("600px");
 	}
 	
 	protected void init()

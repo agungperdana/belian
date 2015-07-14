@@ -161,7 +161,7 @@ public class RelationshipAddWindow extends Window
 		for(PartyRole role:service.findOne(partyId).getRoles())
 			fromRole.appendChild(new Listitem(role.getType().getName(),role.getType().getId()));
 
-		for(EconomicAgent party:service.findAll())
+		for(EconomicAgent party:service.findAllExcept(partyId))
 			toParty.appendChild(new Listitem(party.getName(),party.getId()));
 		
 		if(!types.getChildren().isEmpty())

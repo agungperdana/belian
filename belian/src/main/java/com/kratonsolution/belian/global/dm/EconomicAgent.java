@@ -19,13 +19,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Contact;
 import com.kratonsolution.belian.general.dm.PartyRelationship;
 import com.kratonsolution.belian.general.dm.PartyRole;
-
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author agungdodiperdana
@@ -38,7 +38,7 @@ import lombok.Setter;
 @Inheritance(strategy=InheritanceType.JOINED)
 @DiscriminatorColumn(name="agent_type")
 public class EconomicAgent implements Serializable, Listable
-{
+{	
 	@Id
 	protected String id;
 
@@ -50,7 +50,7 @@ public class EconomicAgent implements Serializable, Listable
 
 	@Column(name="tax_code")
 	protected String taxCode;
-
+	
 	@Version
 	protected Long version;
 	

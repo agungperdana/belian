@@ -120,9 +120,12 @@ public class PositioEditContent extends FormContent
 		responsibilitys.appendChild(new Columns());
 		fulfillments.appendChild(new Rows());
 		fulfillments.appendChild(new Columns());
+		reportings.appendChild(new Rows());
+		reportings.appendChild(new Columns());
 	
 		initResponsibilitys();
 		initFulfillment();
+		initReporting();
 	}
 
 	@Override
@@ -205,16 +208,16 @@ public class PositioEditContent extends FormContent
 					{
 						Row row = (Row)component;
 						
-						PositionReportingStructure structure = new PositionReportingStructure();
-						structure.setId(RowUtils.string(row, 5));
-						structure.setDescription(RowUtils.string(row, 4));
-						structure.setEnd(RowUtils.date(row, 2));
-						structure.setPrimary(false);
-						structure.setReportTo(service.findOne(RowUtils.string(row, 3)));
-						structure.setStart(RowUtils.date(row, 1));
-						structure.setParent(position);
+						PositionReportingStructure report = new PositionReportingStructure();
+						report.setId(RowUtils.string(row, 5));
+						report.setDescription(RowUtils.string(row, 4));
+						report.setEnd(RowUtils.date(row, 2));
+						report.setPrimary(false);
+						report.setReportTo(service.findOne(RowUtils.string(row, 3)));
+						report.setStart(RowUtils.date(row, 1));
+						report.setParent(position);
 						
-						position.getReportings().add(structure);
+						position.getReportings().add(report);
 					}
 					
 					service.edit(position);
@@ -504,14 +507,14 @@ public class PositioEditContent extends FormContent
 		
 		NRCToolbar toolbar = new NRCToolbar();
 		
-		fulfillments.getColumns().appendChild(new Column(null,null,"25px"));
-		fulfillments.getColumns().appendChild(new Column("Start Date",null,"125px"));
-		fulfillments.getColumns().appendChild(new Column("End Date",null,"125px"));
-		fulfillments.getColumns().appendChild(new Column("Position",null,"175px"));
-		fulfillments.getColumns().appendChild(new Column("Description",null,null));
-		fulfillments.getColumns().appendChild(new Column(null,null,"1px"));
-		fulfillments.getColumns().getChildren().get(5).setVisible(false);
-		fulfillments.setSpan("4");
+		reportings.getColumns().appendChild(new Column(null,null,"25px"));
+		reportings.getColumns().appendChild(new Column("Start Date",null,"125px"));
+		reportings.getColumns().appendChild(new Column("End Date",null,"125px"));
+		reportings.getColumns().appendChild(new Column("Position",null,"175px"));
+		reportings.getColumns().appendChild(new Column("Description",null,null));
+		reportings.getColumns().appendChild(new Column(null,null,"1px"));
+		reportings.getColumns().getChildren().get(5).setVisible(false);
+		reportings.setSpan("4");
 		
 		for(PositionReportingStructure report:position.getReportings())
 		{
