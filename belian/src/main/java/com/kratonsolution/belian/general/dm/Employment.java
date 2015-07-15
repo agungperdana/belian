@@ -19,5 +19,13 @@ import lombok.Setter;
 @Table(name="employment")
 public class Employment extends PartyRelationship
 {
-
+	public String getEmployee()
+	{
+		return getParty().getName();
+	}
+	
+	public String getEmployer()
+	{
+		return getResponsibleTo().getName();
+	}
 }

@@ -9,39 +9,39 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
-import com.kratonsolution.belian.ui.hr.employment.EmploymentWindow;
+import com.kratonsolution.belian.ui.hr.application.EmploymentApplicationWindow;
 
 /**
  * @author agungdodiperdana
  *
  */
-public class EmploymentItem extends Listitem
+public class EmploymentApplicationItem extends Listitem
 {
-	public EmploymentItem()
+	public EmploymentApplicationItem()
 	{
 		init();
 	}
 	
 	public void init()
 	{
-		setLabel("Employment");
-		setImage("/icons/employee.png");
+		setLabel("Application");
+		setImage("/icons/employment_application.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				EmploymentWindow window = null;
+				EmploymentApplicationWindow window = null;
 				
 				for(Component component:getPage().getRoots())
 				{
-					if(component instanceof EmploymentWindow)
-						window = (EmploymentWindow)component;
+					if(component instanceof EmploymentApplicationWindow)
+						window = (EmploymentApplicationWindow)component;
 				}
 				
 				if(window == null)
-					window = EmploymentWindow.injectInto(getPage());
+					window = EmploymentApplicationWindow.injectInto(getPage());
 				
 				else if(!window.isVisible())
 				{

@@ -80,4 +80,10 @@ public class PersonService
 	{
 		return repository.findAllByRolesTypeName(name);
 	}
+	
+	@Secured("ROLE_PERSON_READ")
+	public List<Person> findAllProspect(String company)
+	{
+		return repository.findAllProspect(company);
+	}
 }
