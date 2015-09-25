@@ -33,7 +33,8 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.Organization;
-import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.general.dm.OrganizationUnit;
+import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.security.dm.AccessRole;
 import com.kratonsolution.belian.security.dm.AccessibleOrganization;
 import com.kratonsolution.belian.security.dm.Module;
@@ -55,7 +56,7 @@ public class RoleEditContent extends FormContent
 
 	private final ModuleService moduleService = Springs.get(ModuleService.class);
 	
-	private OrganizationService organizationService = Springs.get(OrganizationService.class);
+	private OrganizationUnitService organizationService = Springs.get(OrganizationUnitService.class);
 
 	private Textbox code = new Textbox();
 
@@ -411,12 +412,12 @@ public class RoleEditContent extends FormContent
 			else
 			{
 				List<AccessibleOrganization> orgs = new ArrayList<AccessibleOrganization>();
-				for(Organization organization:organizationService.findAllByRolesTypeName("Company Structure"))
+				for(OrganizationUnit organization:organizationService.findAll())
 				{
 					AccessibleOrganization accessibleOrganization = new AccessibleOrganization();
 					accessibleOrganization.setId(UUID.randomUUID().toString());
 					accessibleOrganization.setRole(role);
-					accessibleOrganization.setOrganization(organization);
+					accessibleOrganization.setOrganization((Organization)organization.getParty());
 					
 					role.getOrganizations().add(accessibleOrganization);
 				

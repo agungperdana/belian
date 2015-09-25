@@ -3,9 +3,13 @@
  */
 package com.kratonsolution.belian.general.dm;
 
+import java.util.UUID;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -20,20 +24,21 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="party_role_type")
+@Inheritance(strategy=InheritanceType.JOINED)
 public class PartyRoleType
 {
 	@Id
-	private String id;
+	protected String id = UUID.randomUUID().toString();
 	
-	@Column(name="name",unique=true,nullable=false)
-	private String name;
+	@Column(name="name")
+	protected String name;
 	
 	@Column(name="description")
-	private String description;
+	protected String description;
 	
 	@Column(name="deleteable")
-	private boolean deleteable;
+	protected boolean deleteable = false;
 	
 	@Version
-	private Long version;
+	protected Long version;
 }

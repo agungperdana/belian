@@ -3,6 +3,9 @@
  */
 package com.kratonsolution.belian.ui.party;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -20,11 +23,13 @@ import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.dm.PartyRoleType;
-import com.kratonsolution.belian.general.svc.PartyRoleTypeService;
+import com.kratonsolution.belian.general.svc.OrganizationRoleTypeService;
+import com.kratonsolution.belian.general.svc.PartyRoleService;
 import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.Refreshable;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -45,13 +50,15 @@ public class RoleAddWindow extends Window
 	
 	private EconomicAgentService service = Springs.get(EconomicAgentService.class);
 	
-	private PartyRoleTypeService partyRoleTypeController = Springs.get(PartyRoleTypeService.class);
+	private PartyRoleService partyRoleTypeController = Springs.get(PartyRoleService.class);
 	
-	private String partyId;
+	private OrganizationRoleTypeService organizationRoleTypeService = Springs.get(OrganizationRoleTypeService.class);
+	
+	private EconomicAgent target;
 	
 	public RoleAddWindow(String partyId)
 	{
-		this.partyId = partyId;
+		target = service.findOne(partyId);
 		
 		setMode(Mode.POPUP);
 		setWidth("450px");
@@ -87,14 +94,13 @@ public class RoleAddWindow extends Window
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				EconomicAgent party = service.findOne(partyId);
-				if(party != null)
+				if(target != null)
 				{
 					PartyRole role = new PartyRole();
 					role.setFrom(from.getValue());
 					role.setTo(to.getValue());
-					role.setParty(service.findOne(partyId));
-					role.setType(partyRoleTypeController.findOne(roles.getSelectedItem().getValue().toString()));
+					role.setParty(target);
+					role.setType(PartyRole.Type.valueOf(Components.string(roles)));
 
 					service.addRole(role);
 					
@@ -128,7 +134,13 @@ public class RoleAddWindow extends Window
 		row4.appendChild(new Label("Type"));
 		row4.appendChild(roles);
 
-		for(PartyRoleType type:partyRoleTypeController.findAll())
+		List<PartyRoleType> types = new ArrayList<PartyRoleType>();
+//		if(target instanceof Organization)
+//			types.addAll(organizationRoleTypeService.findAll());
+//		else
+//			types.addAll(partyRoleTypeController.findAll());
+			
+		for(PartyRoleType type:types)
 			roles.appendChild(new Listitem(type.getName(),type.getId()));
 
 		if(!roles.getChildren().isEmpty())

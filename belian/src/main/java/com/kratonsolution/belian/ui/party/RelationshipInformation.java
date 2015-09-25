@@ -50,9 +50,9 @@ public class RelationshipInformation extends Treeitem
 		builder.append(relationship.getTo()!=null?format.format(relationship.getTo()):"");
 		builder.append("] - ");
 		builder.append("AS ");
-		builder.append(relationship.getRelationshipType().getName());
-		builder.append(" to ");
-		builder.append(relationship.getResponsibleTo().getName());
+		builder.append(relationship.getType().toString());
+//		builder.append(" to ");
+//		builder.append(relationship.getResponsibleTo().getName());
 		
 		Treecell cell = new Treecell(builder.toString());
 		cell.addEventListener(Events.ON_CLICK,new EventListener<Event>()

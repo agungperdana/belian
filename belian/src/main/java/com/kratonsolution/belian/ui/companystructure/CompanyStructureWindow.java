@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.partyrelationshiptype;
+package com.kratonsolution.belian.ui.companystructure;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Page;
@@ -21,29 +21,30 @@ import com.kratonsolution.belian.ui.nav.NavigatorBar;
  * @author agungdodiperdana
  *
  */
-public class PartyRelationshipTypeWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
+public class CompanyStructureWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption("Party Relationship Type");
+	private final Caption caption = new Caption("Company Structure");
 	
-	private PartyRelationshipTypeButton status = new PartyRelationshipTypeButton();
+	private CompanyStructureButton status = new CompanyStructureButton();
 	
-	public static PartyRelationshipTypeWindow injectInto(Page page)
+	public static CompanyStructureWindow injectInto(Page page)
 	{
-		PartyRelationshipTypeWindow window = new PartyRelationshipTypeWindow();
+		CompanyStructureWindow window = new CompanyStructureWindow();
 		window.setPage(page);
 		window.init();
 		
 		return window;
 	}
 	
-	private PartyRelationshipTypeWindow()
+	private CompanyStructureWindow()
 	{
 		super();
+		setWidth("750px");
 	}
 	
 	protected void init()
 	{
-		caption.setImage("/icons/relationship.png");
+		caption.setImage("/icons/companystructure.png");
 		appendChild(caption);
 		insertGrid();
 		insertStatus();
@@ -91,7 +92,7 @@ public class PartyRelationshipTypeWindow extends AbstractWindow implements HasGr
 	@Override
 	public void insertEditForm(Row row)
 	{
-		appendChild(new PartyRelationshipTypeEditContent(row));
+		appendChild(new CompanyStructureEditContent(row));
 	}
 
 	@Override
@@ -99,7 +100,7 @@ public class PartyRelationshipTypeWindow extends AbstractWindow implements HasGr
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof PartyRelationshipTypeEditContent)
+			if(component instanceof CompanyStructureEditContent)
 			{
 				removeChild(component);
 				break;
@@ -110,7 +111,7 @@ public class PartyRelationshipTypeWindow extends AbstractWindow implements HasGr
 	@Override
 	public void insertCreateForm()
 	{
-		appendChild(new PartyRelationshipTypeFormContent());
+		appendChild(new CompanyStructureFormContent());
 	}
 
 	@Override
@@ -118,7 +119,7 @@ public class PartyRelationshipTypeWindow extends AbstractWindow implements HasGr
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof PartyRelationshipTypeFormContent)
+			if(component instanceof CompanyStructureFormContent)
 			{
 				removeChild(component);
 				break;
@@ -129,7 +130,7 @@ public class PartyRelationshipTypeWindow extends AbstractWindow implements HasGr
 	@Override
 	public void insertGrid()
 	{
-		appendChild(new PartyRelationshipTypeGridContent());
+		appendChild(new CompanyStructureGridContent());
 	}
 
 	@Override
@@ -137,7 +138,7 @@ public class PartyRelationshipTypeWindow extends AbstractWindow implements HasGr
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof PartyRelationshipTypeGridContent)
+			if(component instanceof CompanyStructureGridContent)
 			{
 				removeChild(component);
 				break;

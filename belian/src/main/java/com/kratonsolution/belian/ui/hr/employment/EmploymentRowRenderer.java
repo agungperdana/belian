@@ -25,8 +25,8 @@ public class EmploymentRowRenderer implements RowRenderer<Employment>
 			row.appendChild(new Checkbox());
 			row.appendChild(new Label(Dates.format(data.getFrom())));
 			row.appendChild(new Label(Dates.format(data.getTo())));
-			row.appendChild(new Label(data.getEmployee()));
-			row.appendChild(new Label(data.getEmployer()));
+//			row.appendChild(new Label(data.getEmployee()));
+//			row.appendChild(new Label(data.getEmployer()));
 			row.appendChild(new Label(data.getId()));
 		}
 	}

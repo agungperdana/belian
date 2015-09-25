@@ -151,10 +151,10 @@ public class ModuleGridContent extends GridContent
 		grid.setRowRenderer(new ModuleRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
-		grid.setPageSize(8);
+		grid.setPageSize(25);
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Code",null,"125px"));
+		grid.getColumns().appendChild(new Column("Code",null,"155px"));
 		grid.getColumns().appendChild(new Column("Name",null,"150px"));
 		grid.getColumns().appendChild(new Column("Note"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
@@ -165,7 +165,7 @@ public class ModuleGridContent extends GridContent
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), 8);
+				model.next(event.getActivePage(), 25);
 				grid.setModel(model);
 			}
 		});

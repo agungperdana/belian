@@ -15,18 +15,17 @@ import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.general.dm.PartyRole;
-import com.kratonsolution.belian.general.dm.PartyRoleType;
-import com.kratonsolution.belian.general.svc.PartyRoleTypeService;
+import com.kratonsolution.belian.general.svc.PartyRoleService;
 import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.Refreshable;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -47,7 +46,7 @@ public class RoleEditWindow extends Window
 	
 	private EconomicAgentService service = Springs.get(EconomicAgentService.class);
 
-	private PartyRoleTypeService partyRoleTypeController = Springs.get(PartyRoleTypeService.class);
+	private PartyRoleService partyRoleTypeController = Springs.get(PartyRoleService.class);
 	
 	private PartyRole edited;
 	
@@ -100,7 +99,7 @@ public class RoleEditWindow extends Window
 						{
 							role.setFrom(from.getValue());
 							role.setTo(to.getValue());
-							role.setType(partyRoleTypeController.findOne(roles.getSelectedItem().getValue().toString()));
+							role.setType(PartyRole.Type.valueOf(Components.string(roles)));
 							break;
 						}
 					}
@@ -138,14 +137,14 @@ public class RoleEditWindow extends Window
 		row4.appendChild(new Label("Type"));
 		row4.appendChild(roles);
 		
-		for(PartyRoleType type:partyRoleTypeController.findAll())
-		{
-			Listitem listitem = new Listitem(type.getName(),type.getId());
-			roles.appendChild(listitem);
-			
-			if(type.getId().equals(edited.getType().getId()))
-				roles.setSelectedItem(listitem);
-		}
+//		for(PartyRoleType type:partyRoleTypeController.findAll())
+//		{
+//			Listitem listitem = new Listitem(type.getName(),type.getId());
+//			roles.appendChild(listitem);
+//			
+//			if(type.getId().equals(edited.getType().getId()))
+//				roles.setSelectedItem(listitem);
+//		}
 		
 		layout.getRows().appendChild(row1);
 		layout.getRows().appendChild(row3);

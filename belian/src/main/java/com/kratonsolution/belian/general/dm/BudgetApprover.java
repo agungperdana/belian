@@ -17,7 +17,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="approver")
-public class Approver extends PartyRelationship
+public class BudgetApprover extends PartyRole
 {
 
 }

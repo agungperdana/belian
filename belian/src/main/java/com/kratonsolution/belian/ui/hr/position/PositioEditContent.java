@@ -465,7 +465,7 @@ public class PositioEditContent extends FormContent
 				row.appendChild(Components.checkbox(false));
 				row.appendChild(Components.mandatoryDatebox());
 				row.appendChild(Components.fullSpanDatebox(null));
-				row.appendChild(Components.fullSpanSelect(personService.findAllByRolesTypeName("Employee Prospect"),true));
+				row.appendChild(Components.fullSpanSelect(personService.findAllByRolesType("Employee Prospect"),true));
 				row.appendChild(Components.mandatoryTextBox());
 				row.appendChild(new Label(UUID.randomUUID().toString()));
 				

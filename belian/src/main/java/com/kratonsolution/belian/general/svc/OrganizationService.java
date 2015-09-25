@@ -63,13 +63,14 @@ public class OrganizationService
 	@Secured("ROLE_ORGANIZATION_READ")
 	public List<Organization> findAllByRolesTypeName(String roleName)
 	{
-		return repository.findAllByRolesTypeName(roleName);
+		return repository.findAllByRolesType(roleName);
 	}
 
 	@Secured("ROLE_ORGANIZATION_READ")
 	public List<Organization> findAllByRelationshipsRelationshipTypeName(String name)
 	{
-		return repository.findAllByRelationshipsRelationshipTypeName(name);
+		return null;
+//		return repository.findAllByRelationshipsRelationshipTypeName(name);
 	}
 
 	@Secured("ROLE_ORGANIZATION_READ")

@@ -3,8 +3,6 @@
  */
 package com.kratonsolution.belian.ui.party;
 
-import java.util.Iterator;
-
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -22,13 +20,10 @@ import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.general.dm.PartyRelationship;
 import com.kratonsolution.belian.general.dm.PartyRelationshipType;
-import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.svc.PartyRelationshipTypeService;
-import com.kratonsolution.belian.general.svc.PartyRoleTypeService;
-import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.general.svc.PartyRoleService;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.ui.FormToolbar;
-import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -55,7 +50,7 @@ public class RelationshipEditWindow extends Window
 
 	private PartyRelationshipTypeService relationshipTypeController = Springs.get(PartyRelationshipTypeService.class);
 	
-	private PartyRoleTypeService roleTypeController = Springs.get(PartyRoleTypeService.class);
+	private PartyRoleService roleTypeController = Springs.get(PartyRoleService.class);
 	
 	private PartyRelationship edited;
 	
@@ -97,28 +92,28 @@ public class RelationshipEditWindow extends Window
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				EconomicAgent party = service.findOne(edited.getParty().getId());
-				if(party != null)
-				{
-					Iterator<PartyRelationship> iterator = party.getRelationships().iterator();
-					while (iterator.hasNext())
-					{
-						PartyRelationship rel = (PartyRelationship) iterator.next();
-						if(rel.getId().equals(edited.getId()))
-						{
-							rel.setFrom(from.getValue());
-							rel.setTo(to.getValue());
-							rel.setRelationshipType(relationshipTypeController.findOne(types.getSelectedItem().getValue().toString()));
-							rel.setResponsibleTo(service.findOne(toParty.getSelectedItem().getValue().toString()));
-							rel.setResponsibleAs(roleTypeController.findOne(fromRole.getSelectedItem().getValue().toString()));
-							
-							break;
-						}
-					}
-						
-					service.edit(party);
-					((Refreshable)getParent()).refresh();
-				}
+//				EconomicAgent party = service.findOne(edited.getParty().getId());
+//				if(party != null)
+//				{
+//					Iterator<PartyRelationship> iterator = party.getRelationships().iterator();
+//					while (iterator.hasNext())
+//					{
+//						PartyRelationship rel = (PartyRelationship) iterator.next();
+//						if(rel.getId().equals(edited.getId()))
+//						{
+//							rel.setFrom(from.getValue());
+//							rel.setTo(to.getValue());
+//							rel.setRelationshipType(relationshipTypeController.findOne(types.getSelectedItem().getValue().toString()));
+//							rel.setResponsibleTo(service.findOne(toParty.getSelectedItem().getValue().toString()));
+//							rel.setResponsibleAs(roleTypeController.findOne(fromRole.getSelectedItem().getValue().toString()));
+//							
+//							break;
+//						}
+//					}
+//						
+//					service.edit(party);
+//					((Refreshable)getParent()).refresh();
+//				}
 				
 				detach();
 			}
@@ -167,27 +162,24 @@ public class RelationshipEditWindow extends Window
 			Listitem listitem = new Listitem(type.getName(),type.getId());
 			types.appendChild(listitem);
 			
-			if(type.getId().equals(edited.getRelationshipType().getId()))
-				types.setSelectedItem(listitem);
+//			if(type.getId().equals(edited.getRelationshipType().getId()))
+//				types.setSelectedItem(listitem);
 		}
 		
-		for(EconomicAgent pty:service.findAllExcept(edited.getParty().getId()))
-		{
-			Listitem listitem = new Listitem(pty.getName(),pty.getId());
-			toParty.appendChild(listitem);
-			
-			if(pty.getId().equals(edited.getResponsibleTo().getId()))
-				toParty.setSelectedItem(listitem);
-		}
+//		for(EconomicAgent pty:service.findAllExcept(edited.getParty().getId()))
+//		{
+//			Listitem listitem = new Listitem(pty.getName(),pty.getId());
+//			toParty.appendChild(listitem);
+//			
+//			if(pty.getId().equals(edited.getResponsibleTo().getId()))
+//				toParty.setSelectedItem(listitem);
+//		}
 		
-		for(PartyRole role:service.findOne(edited.getParty().getId()).getRoles())
-		{
-			Listitem listitem = new Listitem(role.getType().getName(),role.getType().getId());
-			fromRole.appendChild(listitem);
-			
-			if(role.getType().getId().equals(edited.getResponsibleAs().getId()))
-				fromRole.setSelectedItem(listitem);
-		}
+//		for(PartyRole role:service.findOne(edited.getParty().getId()).getRoles())
+//		{
+//			Listitem listitem = new Listitem(role.getType().toString(),role.getType().toString());
+//			fromRole.appendChild(listitem);
+//		}
 		
 		layout.getRows().appendChild(row1);
 		layout.getRows().appendChild(row3);

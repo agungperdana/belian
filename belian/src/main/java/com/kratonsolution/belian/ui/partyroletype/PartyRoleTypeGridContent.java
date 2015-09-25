@@ -16,7 +16,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.general.svc.PartyRoleTypeService;
+import com.kratonsolution.belian.general.svc.PartyRoleService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -26,7 +26,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PartyRoleTypeGridContent extends GridContent
 {
-	private PartyRoleTypeService service = Springs.get(PartyRoleTypeService.class);
+	private PartyRoleService service = Springs.get(PartyRoleService.class);
 	
 	public PartyRoleTypeGridContent()
 	{

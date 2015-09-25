@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.dm.OrganizationUnit;
 import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.global.dm.EconomicAgentRoleEventListener;
@@ -42,7 +42,7 @@ public class EconomicAgentRoleEventListenerImpl implements EconomicAgentRoleEven
 	@Override
 	public void fireRoleAdded(PartyRole role)
 	{
-		if(role.getType().getName().equals("Company Structure") && (role.getParty() instanceof Organization))
+		if(role instanceof OrganizationUnit)
 		{
 			for(Role role2:roleService.findAll())
 			{
@@ -64,7 +64,7 @@ public class EconomicAgentRoleEventListenerImpl implements EconomicAgentRoleEven
 	@Override
 	public void fireRoleRemoved(PartyRole role)
 	{
-		if(role.getType().getName().equals("Company Structure") && (role.getParty() instanceof Organization))
+		if(role instanceof OrganizationUnit)
 		{
 			for(Role db:roleService.findAll())
 			{

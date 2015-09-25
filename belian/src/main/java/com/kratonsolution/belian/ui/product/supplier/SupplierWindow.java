@@ -125,7 +125,7 @@ public class SupplierWindow extends AbstractWindow
 		
 		note.setWidth("300px");
 		
-		for(EconomicAgent party:partyRepository.findAllByRolesTypeName("Supplier"))
+		for(EconomicAgent party:partyRepository.findAllByRolesType("Supplier"))
 			suppliers.appendChild(new Listitem(party.getName(),party.getId()));
 		
 		suppliers.setMold("select");

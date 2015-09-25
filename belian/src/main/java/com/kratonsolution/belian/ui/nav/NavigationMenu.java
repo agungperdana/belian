@@ -81,10 +81,9 @@ public class NavigationMenu extends Window
 		list.setStyle("border:none");
 		
 		list.appendChild(new GeographicItem());
-		list.appendChild(new PartyRoleTypeItem());
-		list.appendChild(new PartyRelationshipTypeItem());
 		list.appendChild(new OrganizationItem());
 		list.appendChild(new PersonItem());
+		list.appendChild(new CompanyStructureItem());
 
 		general.appendChild(list);
 		panels.appendChild(general);

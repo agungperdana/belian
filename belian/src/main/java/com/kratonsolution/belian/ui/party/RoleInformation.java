@@ -41,7 +41,7 @@ public class RoleInformation extends Treeitem
 	
 	protected void addDescription(final PartyRole role,final EconomicAgent party)
 	{
-		Treecell cell = new Treecell("["+format.format(role.getFrom())+" - "+(role.getTo()!=null?format.format(role.getTo()):"")+"]"+" AS  "+role.getType().getName());
+		Treecell cell = new Treecell("["+format.format(role.getFrom())+" - "+(role.getTo()!=null?format.format(role.getTo()):"")+"]"+" AS  "+role.getType().toString());
 		cell.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override

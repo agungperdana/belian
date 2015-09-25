@@ -59,13 +59,14 @@ public class EconomicAgentService
 	@Secured("ROLE_PARTY_READ")
 	public List<EconomicAgent> findAllByRolesTypeName(String name)
 	{
-		return repository.findAllByRolesTypeName(name);
+		return repository.findAllByRolesType(name);
 	}
 	
 	@Secured("ROLE_PARTY_READ")
 	public List<EconomicAgent> findByRoleAndParty(String name,String responsibleTo)
 	{
-		return repository.findByRoleAndParty(name, responsibleTo);
+//		return repository.findByRoleAndParty(name, responsibleTo);
+		return null;
 	}
 	
 	@Secured("ROLE_PARTY_READ")

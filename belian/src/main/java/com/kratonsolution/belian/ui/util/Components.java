@@ -61,6 +61,26 @@ public class Components
 		return listbox;
 	}
 	
+	public static final Listbox newSelect(Listable listable)
+	{
+		Listbox listbox = new Listbox();
+		listbox.setMold("select");
+		listbox.appendChild(new Listitem(listable.getLabel(),listable.getValue()));
+		listbox.setSelectedIndex(0);
+		
+		return listbox;
+	}
+	
+	public static final Listbox newSelect(String label,String value)
+	{
+		Listbox listbox = new Listbox();
+		listbox.setMold("select");
+		listbox.appendChild(new Listitem(label,value));
+		listbox.setSelectedIndex(0);
+		
+		return listbox;
+	}
+	
 	public static final Listbox newSelect(Collection<? extends Listable> collections,boolean setDefault)
 	{
 		Listbox listbox = new Listbox();

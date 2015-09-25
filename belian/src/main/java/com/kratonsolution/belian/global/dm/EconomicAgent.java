@@ -63,7 +63,7 @@ public class EconomicAgent implements Serializable, Listable
 	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true)
 	protected Set<PartyRole> roles = new HashSet<PartyRole>();
 	
-	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(mappedBy="child",cascade=CascadeType.ALL,orphanRemoval=true)
 	protected Set<PartyRelationship> relationships = new HashSet<PartyRelationship>();
 
 	@Override

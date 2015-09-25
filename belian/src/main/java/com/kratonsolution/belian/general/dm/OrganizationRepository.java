@@ -15,9 +15,9 @@ import com.kratonsolution.belian.general.dm.Organization.IndustryType;
  */
 public interface OrganizationRepository extends JpaRepository<Organization, String>
 {
-	public List<Organization> findAllByRolesTypeName(String roleName);
+	public List<Organization> findAllByRolesType(String roleName);
 	
-	public List<Organization> findAllByRelationshipsRelationshipTypeName(String name);
+//	public List<Organization> findAllByRelationshipsRelationshipTypeName(String name);
 
 	public List<Organization> findAllByType(IndustryType type);
 }

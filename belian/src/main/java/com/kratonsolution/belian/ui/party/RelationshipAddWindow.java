@@ -3,8 +3,6 @@
  */
 package com.kratonsolution.belian.ui.party;
 
-import java.util.UUID;
-
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -20,11 +18,10 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Window;
 
-import com.kratonsolution.belian.general.dm.PartyRelationship;
 import com.kratonsolution.belian.general.dm.PartyRelationshipType;
 import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.svc.PartyRelationshipTypeService;
-import com.kratonsolution.belian.general.svc.PartyRoleTypeService;
+import com.kratonsolution.belian.general.svc.PartyRoleService;
 import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.ui.FormToolbar;
@@ -55,7 +52,7 @@ public class RelationshipAddWindow extends Window
 	
 	private PartyRelationshipTypeService relationshipTypeController = Springs.get(PartyRelationshipTypeService.class);
 	
-	private PartyRoleTypeService roleTypeController = Springs.get(PartyRoleTypeService.class);
+	private PartyRoleService roleTypeController = Springs.get(PartyRoleService.class);
 	
 	private String partyId;
 	
@@ -100,16 +97,13 @@ public class RelationshipAddWindow extends Window
 				EconomicAgent party = service.findOne(partyId);
 				if(party != null)
 				{
-					PartyRelationship relationship = new PartyRelationship();
-					relationship.setId(UUID.randomUUID().toString());
-					relationship.setFrom(from.getValue());
-					relationship.setTo(to.getValue());
-					relationship.setRelationshipType(relationshipTypeController.findOne(types.getSelectedItem().getValue().toString()));
-					relationship.setResponsibleTo(service.findOne(toParty.getSelectedItem().getValue().toString()));
-					relationship.setResponsibleAs(roleTypeController.findOne(fromRole.getSelectedItem().getValue().toString()));
-					relationship.setParty(party);
+//					PartyRelationship relationship = new PartyRelationship();
+//					relationship.setId(UUID.randomUUID().toString());
+//					relationship.setFrom(from.getValue());
+//					relationship.setTo(to.getValue());
+//					relationship.setParty(party);
 					
-					party.getRelationships().add(relationship);
+//					party.getRelationships().add(relationship);
 					
 					service.edit(party);
 
@@ -159,7 +153,7 @@ public class RelationshipAddWindow extends Window
 			types.appendChild(new Listitem(type.getName(),type.getId()));
 		
 		for(PartyRole role:service.findOne(partyId).getRoles())
-			fromRole.appendChild(new Listitem(role.getType().getName(),role.getType().getId()));
+			fromRole.appendChild(new Listitem(role.getType().toString(),role.getType().toString()));
 
 		for(EconomicAgent party:service.findAllExcept(partyId))
 			toParty.appendChild(new Listitem(party.getName(),party.getId()));

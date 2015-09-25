@@ -9,39 +9,39 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
-import com.kratonsolution.belian.ui.partyrelationshiptype.PartyRelationshipTypeWindow;
+import com.kratonsolution.belian.ui.companystructure.CompanyStructureWindow;
 
 /**
  * @author agungdodiperdana
  *
  */
-public class PartyRelationshipTypeItem extends Listitem
+public class CompanyStructureItem extends Listitem
 {
-	public PartyRelationshipTypeItem()
+	public CompanyStructureItem()
 	{
 		init();
 	}
 	
 	public void init()
 	{
-		setLabel("Party Relationship Type");
-		setImage("/icons/relationship.png");
+		setLabel("Company Structure");
+		setImage("/icons/companystructure.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PartyRelationshipTypeWindow window = null;
+				CompanyStructureWindow window = null;
 				
 				for(Component component:getPage().getRoots())
 				{
-					if(component instanceof PartyRelationshipTypeWindow)
-						window = (PartyRelationshipTypeWindow)component;
+					if(component instanceof CompanyStructureWindow)
+						window = (CompanyStructureWindow)component;
 				}
 				
 				if(window == null)
-					window = PartyRelationshipTypeWindow.injectInto(getPage());
+					window = CompanyStructureWindow.injectInto(getPage());
 				
 				else if(!window.isVisible())
 				{

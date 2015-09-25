@@ -12,6 +12,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.dm.PersonRepository;
 
@@ -72,18 +73,20 @@ public class PersonService
 	@Secured("ROLE_PERSON_READ")
 	public List<Person> findAllBudgetReviewer(String forOrganization)
 	{
-		return repository.findAllReviewer(forOrganization);
+//		return repository.findAllReviewer(forOrganization);
+		return null;
 	}
 	
 	@Secured("ROLE_PERSON_READ")
-	public List<Person> findAllByRolesTypeName(String name)
+	public List<Person> findAllByRolesType(String name)
 	{
-		return repository.findAllByRolesTypeName(name);
+		return repository.findAllByRolesType(PartyRole.Type.valueOf(name));
 	}
 	
 	@Secured("ROLE_PERSON_READ")
 	public List<Person> findAllProspect(String company)
 	{
-		return repository.findAllProspect(company);
+//		return repository.findAllProspect(company);
+		return null;
 	}
 }

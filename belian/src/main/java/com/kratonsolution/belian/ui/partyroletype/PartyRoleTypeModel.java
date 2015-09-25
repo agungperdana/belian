@@ -10,7 +10,7 @@ import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
 import com.kratonsolution.belian.general.dm.PartyRoleType;
-import com.kratonsolution.belian.general.svc.PartyRoleTypeService;
+import com.kratonsolution.belian.general.svc.PartyRoleService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -19,7 +19,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PartyRoleTypeModel implements ListModel<PartyRoleType>
 {
-	private final PartyRoleTypeService controller = Springs.get(PartyRoleTypeService.class);
+	private final PartyRoleService controller = Springs.get(PartyRoleService.class);
 	
 	private List<PartyRoleType> data = new ArrayList<PartyRoleType>();
 	
@@ -60,6 +60,6 @@ public class PartyRoleTypeModel implements ListModel<PartyRoleType>
 	public void next(int pageIndex,int itemSize)
 	{
 		data.clear();
-		data.addAll(controller.findAll(0, (itemSize*pageIndex)+itemSize));
+//		data.addAll(controller.findAll(0, (itemSize*pageIndex)+itemSize));
 	}
 }

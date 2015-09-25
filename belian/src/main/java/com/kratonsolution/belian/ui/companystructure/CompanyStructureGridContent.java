@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.partyrelationshiptype;
+package com.kratonsolution.belian.ui.companystructure;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -15,7 +15,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.general.svc.PartyRelationshipTypeService;
+import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -23,11 +23,11 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author agungdodiperdana
  *
  */
-public class PartyRelationshipTypeGridContent extends GridContent
+public class CompanyStructureGridContent extends GridContent
 {
-	private final PartyRelationshipTypeService controller = Springs.get(PartyRelationshipTypeService.class);
+	private final CompanyStructureService controller = Springs.get(CompanyStructureService.class);
 	
-	public PartyRelationshipTypeGridContent()
+	public CompanyStructureGridContent()
 	{
 		super();
 		initToolbar();
@@ -43,7 +43,7 @@ public class PartyRelationshipTypeGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new PartyRelationshipTypeModel(8));
+				grid.setModel(new CompanyStructureModel(8));
 			}
 		});
 		
@@ -52,7 +52,7 @@ public class PartyRelationshipTypeGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PartyRelationshipTypeWindow window = (PartyRelationshipTypeWindow)getParent();
+				CompanyStructureWindow window = (CompanyStructureWindow)getParent();
 				window.removeGrid();
 				window.insertCreateForm();
 			}
@@ -129,7 +129,7 @@ public class PartyRelationshipTypeGridContent extends GridContent
 										}
 									}
 									
-									PartyRelationshipTypeWindow window = (PartyRelationshipTypeWindow)getParent();
+									CompanyStructureWindow window = (CompanyStructureWindow)getParent();
 									window.removeGrid();
 									window.insertGrid();
 								}
@@ -150,29 +150,29 @@ public class PartyRelationshipTypeGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final PartyRelationshipTypeModel model = new PartyRelationshipTypeModel(8);
+		final CompanyStructureModel model = new CompanyStructureModel(8);
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No party relationship type data exist.");
+		grid.setEmptyMessage("No Company Structure data exist.");
 		grid.setModel(model);
-		grid.setRowRenderer(new PartyRelationshipTypeRowRenderer());
+		grid.setRowRenderer(new CompanyStructureRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(8);
+		grid.appendChild(new Columns());
 		
-		Columns columns = new Columns();
+		grid.getColumns().appendChild(new Column(null,null,"25px"));
+		grid.getColumns().appendChild(new Column("Start",null,"80px"));
+		grid.getColumns().appendChild(new Column("End",null,"80px"));
+		grid.getColumns().appendChild(new Column("Parent",null,"175px"));
+		grid.getColumns().appendChild(new Column("As",null,"90px"));
+		grid.getColumns().appendChild(new Column("Chid",null,"175px"));
+		grid.getColumns().appendChild(new Column("As",null,"90px"));
+		grid.getColumns().appendChild(new Column(null,null,"1px"));
+		grid.getColumns().getChildren().get(7).setVisible(false);
+		grid.setSpan("3");
 		
-		Column select = new Column(null,null,"25px");
-		Column name = new Column("Name");
-		Column id = new Column();
-		id.setVisible(false);
-		
-		columns.appendChild(select);
-		columns.appendChild(name);
-		columns.appendChild(id);
-		
-		grid.appendChild(columns);
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override
@@ -192,7 +192,7 @@ public class PartyRelationshipTypeGridContent extends GridContent
 				@Override
 				public void onEvent(Event event) throws Exception
 				{
-					PartyRelationshipTypeWindow window = (PartyRelationshipTypeWindow)getParent();
+					CompanyStructureWindow window = (CompanyStructureWindow)getParent();
 					window.removeGrid();
 					window.insertEditForm(row);
 				}

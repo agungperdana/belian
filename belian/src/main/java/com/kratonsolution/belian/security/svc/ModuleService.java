@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -48,7 +49,7 @@ public class ModuleService
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<Module> findAll()
 	{
-		return repository.findAll();
+		return repository.findAll(new Sort(Sort.Direction.ASC,"code"));
 	}
 	
 	@Secured("ROLE_MODULE_READ")

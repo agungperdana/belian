@@ -15,7 +15,7 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.PartyRoleType;
-import com.kratonsolution.belian.general.svc.PartyRoleTypeService;
+import com.kratonsolution.belian.general.svc.PartyRoleService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -26,7 +26,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PartyRoleTypeFormContent extends FormContent
 {	
-	private PartyRoleTypeService service = Springs.get(PartyRoleTypeService.class);
+	private PartyRoleService service = Springs.get(PartyRoleService.class);
 		
 	private Textbox name = Components.mandatoryTextBox();
 	
@@ -66,7 +66,7 @@ public class PartyRoleTypeFormContent extends FormContent
 				type.setDescription(description.getText());
 				type.setDeleteable(true);
 				
-				service.add(type);
+//				service.add(type);
 				
 				PartyRoleTypeWindow window = (PartyRoleTypeWindow)getParent();
 				window.removeCreateForm();

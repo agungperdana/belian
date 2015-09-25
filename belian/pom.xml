@@ -25,7 +25,7 @@
    	<parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.2.4.RELEASE</version>
+        <version>1.2.5.RELEASE</version>
     </parent>
 	
 	<build>
@@ -155,6 +155,11 @@
    		<dependency>
    			<groupId>org.springframework.boot</groupId>
    			<artifactId>spring-boot-starter-jetty</artifactId>
+   		</dependency>
+   		<dependency>
+   			<groupId>org.opensaml</groupId>
+   			<artifactId>opensaml</artifactId>
+   			<version>2.5.1-1</version>
    		</dependency>
   </dependencies>
   
