@@ -3,9 +3,6 @@
  */
 package com.kratonsolution.belian.ui.companystructure;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -18,10 +15,7 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 
 import com.kratonsolution.belian.general.dm.CompanyStructure;
-import com.kratonsolution.belian.general.dm.OrganizationUnit;
 import com.kratonsolution.belian.general.dm.PartyRelationship;
-import com.kratonsolution.belian.general.dm.PartyRole;
-import com.kratonsolution.belian.general.dm.PartyRole.Type;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.OrganizationUnitService;
@@ -53,11 +47,11 @@ public class CompanyStructureEditContent extends FormContent
 
 	private Listbox toroles = Components.newSelect();
 
-	private Listbox parents = Components.newSelect(organizationService.findAll(), false);
+	private Listbox parents = Components.newSelect();
 
-	private Listbox childs = Components.newSelect(organizationService.findAll(), false);
+	private Listbox childs = Components.newSelect();
 
-	private Listbox types = Components.newSelect(PartyRelationship.Type.COMPANYSTRUCTURE.toString(),PartyRelationship.Type.COMPANYSTRUCTURE.toString());
+	private Listbox types = Components.newSelect(PartyRelationship.Type.COMPANYSTRUCTURE.name(),PartyRelationship.Type.COMPANYSTRUCTURE.name());
 
 	private Row row;
 
@@ -88,35 +82,19 @@ public class CompanyStructureEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				OrganizationUnit fromRole = unitService.findOneByPartyIdAndType(Components.string(parents), Type.valueOf(Components.string(fromroles)));
-				if(fromRole == null)
-				{
-					fromRole = OrganizationUnit.newInstance(Type.valueOf(Components.string(fromroles)));
-					fromRole.setFrom(from.getValue());
-					fromRole.setTo(to.getValue());
-					fromRole.setParty(organizationService.findOne(Components.string(parents)));
-				}
-				
-				OrganizationUnit toRole = unitService.findOneByPartyIdAndType(Components.string(childs), Type.valueOf(Components.string(toroles)));
-				if(toRole == null)
-				{
-					toRole = OrganizationUnit.newInstance(Type.valueOf(Components.string(toroles)));
-					toRole.setFrom(from.getValue());
-					toRole.setTo(to.getValue());
-					toRole.setParty(organizationService.findOne(Components.string(childs)));
-				}
-				
-				CompanyStructure structure = new CompanyStructure();
+				CompanyStructure structure = service.findOne(RowUtils.string(row, 7));
 				structure.setFrom(from.getValue());
 				structure.setTo(to.getValue());
 				structure.setType(PartyRelationship.Type.COMPANYSTRUCTURE);
-				structure.setParent(fromRole);
-				structure.setChild(toRole);
+				structure.getParent().setFrom(from.getValue());
+				structure.getParent().setTo(to.getValue());
+				structure.getChild().setFrom(from.getValue());
+				structure.getChild().setTo(to.getValue());
 				
-				service.add(structure);
+				service.edit(structure);
 				
 				CompanyStructureWindow window = (CompanyStructureWindow)getParent();
-				window.removeCreateForm();
+				window.removeEditForm();
 				window.insertGrid();
 			}
 		});
@@ -128,17 +106,18 @@ public class CompanyStructureEditContent extends FormContent
 		CompanyStructure companyStructure = service.findOne(RowUtils.string(row, 7));
 		if(companyStructure != null)
 		{
-			List<PartyRole.Type> types = new ArrayList<PartyRole.Type>();
-			types.add(PartyRole.Type.DEPARTMENT);
-			types.add(PartyRole.Type.DIVISION);
-			types.add(PartyRole.Type.HOLDING);
-			types.add(PartyRole.Type.SUBSIDIARY);
+			parents.appendChild(new Listitem(companyStructure.getParent().getParty().getLabel(),companyStructure.getParent().getParty().getValue()));
+			childs.appendChild(new Listitem(companyStructure.getChild().getParty().getLabel(),companyStructure.getChild().getParty().getValue()));
+			fromroles.appendChild(new Listitem(companyStructure.getParent().getType().name(),companyStructure.getParent().getType().name()));
+			toroles.appendChild(new Listitem(companyStructure.getChild().getType().name(),companyStructure.getChild().getType().name()));
 			
-			for(PartyRole.Type type:types)
-			{
-				fromroles.appendChild(new Listitem(type.name(), type.name()));
-				toroles.appendChild(new Listitem(type.name(), type.name()));
-			}
+			Components.setDefault(parents);
+			Components.setDefault(childs);
+			Components.setDefault(fromroles);
+			Components.setDefault(toroles);
+			
+			from.setValue(companyStructure.getFrom());
+			to.setValue(companyStructure.getTo());
 			
 			grid.appendChild(new Columns());
 			grid.getColumns().appendChild(new Column(null,null,"75px"));

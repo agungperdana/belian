@@ -49,11 +49,11 @@ public class PartyRelationship implements Serializable
 	@Column(name="relationhip_type")
 	protected Type type = Type.COMPANYSTRUCTURE;
 	
-	@ManyToOne(cascade=CascadeType.PERSIST)
+	@ManyToOne(cascade={CascadeType.PERSIST,CascadeType.MERGE})
 	@JoinColumn(name="fk_parent")
 	protected PartyRole parent;
 	
-	@ManyToOne(cascade=CascadeType.PERSIST)
+	@ManyToOne(cascade={CascadeType.PERSIST,CascadeType.MERGE})
 	@JoinColumn(name="fk_child")
 	protected PartyRole child;
 	
