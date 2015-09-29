@@ -15,6 +15,6 @@ import org.springframework.data.repository.query.Param;
  */
 public interface BudgetItemRepository extends JpaRepository<BudgetItem, String>
 {
-	@Query("FROM BudgetItem item WHERE item.budget.owner.id =:owner ORDER BY item.sequence ASC")
-	public List<BudgetItem> findAllByOwner(@Param("owner")String owner);
+	@Query("FROM BudgetItem item WHERE item.budget.partyRequested.id =:partyRequested ORDER BY item.sequence ASC")
+	public List<BudgetItem> findAllByOwner(@Param("partyRequested")String partyRequested);
 }

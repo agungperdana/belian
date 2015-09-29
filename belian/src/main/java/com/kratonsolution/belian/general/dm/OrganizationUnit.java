@@ -6,15 +6,13 @@ package com.kratonsolution.belian.general.dm;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.kratonsolution.belian.global.dm.Listable;
-
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
 @Entity
 @Table(name="organization_unit")
-public class OrganizationUnit extends OrganizationRole implements Listable
+public class OrganizationUnit extends OrganizationRole
 {
 	public static OrganizationUnit newInstance(Type type)
 	{
@@ -31,17 +29,5 @@ public class OrganizationUnit extends OrganizationRole implements Listable
 			default:
 				return null;
 		}
-	}
-	
-	@Override
-	public String getLabel()
-	{
-		return getParty().getName();
-	}
-
-	@Override
-	public String getValue()
-	{
-		return getParty().getId();
 	}
 }

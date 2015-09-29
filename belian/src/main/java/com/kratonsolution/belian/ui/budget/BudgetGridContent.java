@@ -154,13 +154,14 @@ public class BudgetGridContent extends GridContent
 		grid.setPageSize(8);
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("From",null,"90px"));
-		grid.getColumns().appendChild(new Column("To",null,"100px"));
-		grid.getColumns().appendChild(new Column("Type",null,"150px"));
-		grid.getColumns().appendChild(new Column("Description"));
+		grid.getColumns().appendChild(new Column("Type",null,"85px"));
+		grid.getColumns().appendChild(new Column("Target",null,"150px"));
+		grid.getColumns().appendChild(new Column("Start",null,"85px"));
+		grid.getColumns().appendChild(new Column("End",null,"85px"));
+		grid.getColumns().appendChild(new Column("Comment"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(5).setVisible(false);
-		grid.setSpan("4");
+		grid.getColumns().getChildren().get(6).setVisible(false);
+		grid.setSpan("2");
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{

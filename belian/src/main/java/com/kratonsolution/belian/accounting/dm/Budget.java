@@ -11,6 +11,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -19,10 +21,10 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.general.dm.Organization;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import com.kratonsolution.belian.general.dm.Organization;
 
 /**
  * @author agungdodiperdana
@@ -34,25 +36,27 @@ import lombok.Setter;
 @Table(name="budget")
 public class Budget implements Serializable
 {
+	public enum Type{Operating,Capital}
+	
 	@Id
 	private String id;
 	
-	@Column(name="date_start")
+	@Column(name="start")
 	private Date start;
 	
-	@Column(name="date_end")
+	@Column(name="end")
 	private Date end;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_budget_type")
-	private BudgetType type;
-	
 	@Column(name="description")
-	private String description;
+	private String comment;
 
 	@ManyToOne
-	@JoinColumn(name="fk_organization_owner")
-	private Organization owner;
+	@JoinColumn(name="fk_organization_requested")
+	private Organization partyRequested;
+	
+	@Column(name="type")
+	@Enumerated(EnumType.STRING)
+	private Type type = Type.Operating;
 	
 	@Version
 	private Long version;

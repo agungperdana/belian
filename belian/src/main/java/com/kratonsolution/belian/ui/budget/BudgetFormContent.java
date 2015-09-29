@@ -3,8 +3,6 @@
  */
 package com.kratonsolution.belian.ui.budget;
 
-import java.util.Date;
-
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -18,12 +16,12 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.accounting.dm.Budget;
-import com.kratonsolution.belian.accounting.dm.BudgetType;
+import com.kratonsolution.belian.accounting.dm.Budget.Type;
 import com.kratonsolution.belian.accounting.svc.BudgetService;
-import com.kratonsolution.belian.accounting.svc.BudgetTypeService;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.dm.OrganizationUnit;
 import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -36,21 +34,21 @@ public class BudgetFormContent extends FormContent
 {	
 	private BudgetService service = Springs.get(BudgetService.class);
 	
-	private BudgetTypeService typeService = Springs.get(BudgetTypeService.class);
+	private OrganizationUnitService unitService = Springs.get(OrganizationUnitService.class);
 	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 	
 	private SessionUtils sessionUtils = Springs.get(SessionUtils.class);
 	
-	private Datebox start = new Datebox(new Date());
+	private Datebox start = Components.currentDatebox();
 	
-	private Datebox end = new Datebox();
+	private Datebox end = Components.datebox();
 	
 	private Listbox types = Components.newSelect();
 	
-	private Textbox description = new Textbox();
+	private Textbox comment = new Textbox();
 	
-	private Listbox owners = Components.newSelect();
+	private Listbox targets = Components.newSelect();
 	
 	public BudgetFormContent()
 	{
@@ -79,11 +77,11 @@ public class BudgetFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				Budget budget = new Budget();
+				budget.setType(Type.valueOf(Components.string(types)));
+				budget.setPartyRequested(organizationService.findOne(Components.string(targets)));
 				budget.setStart(start.getValue());
 				budget.setEnd(end.getValue());
-				budget.setType(typeService.findOne(Components.string(types)));
-				budget.setDescription(description.getText());
-				budget.setOwner(organizationService.findOne(Components.string(owners)));
+				budget.setComment(comment.getText());
 				
 				service.add(budget);
 				
@@ -97,45 +95,41 @@ public class BudgetFormContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		start.setWidth("150px");
-		start.setConstraint("no empty");
-		end.setWidth("150px");
-		types.setWidth("250px");
-		description.setWidth("300px");
+		comment.setWidth("300px");
 		
-		for(BudgetType type:typeService.findAll())
-			types.appendChild(new Listitem(type.getName(), type.getId()));
+		for(Type type:Type.values())
+			types.appendChild(new Listitem(type.name(), type.name()));
 		
 		Components.setDefault(types);
 		
-		for(Organization organization:sessionUtils.getOrganizations())
-			owners.appendChild(new Listitem(organization.getName(),organization.getId()));
+		for(OrganizationUnit unit:unitService.findAll())
+			targets.appendChild(new Listitem(unit.getParty().getName(),unit.getParty().getId()));
 		
-		Components.setDefault(owners);
+		Components.setDefault(targets);
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("From"));
-		row1.appendChild(start);
+		row1.appendChild(new Label("Type"));
+		row1.appendChild(types);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("To"));
-		row2.appendChild(end);
+		row2.appendChild(new Label("Party"));
+		row2.appendChild(targets);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Type"));
-		row3.appendChild(types);
+		row3.appendChild(new Label("Start"));
+		row3.appendChild(start);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Owner"));
-		row4.appendChild(owners);
+		row4.appendChild(new Label("End"));
+		row4.appendChild(end);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Description"));
-		row5.appendChild(description);
+		row5.appendChild(new Label("Comment"));
+		row5.appendChild(comment);
 		
 		rows.appendChild(row1);
 		rows.appendChild(row2);

@@ -25,6 +25,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.global.dm.Listable;
 
 /**
  * @author agungdodiperdana
@@ -35,7 +36,7 @@ import com.kratonsolution.belian.global.dm.EconomicAgent;
 @Entity
 @Table(name="party_role")
 @Inheritance(strategy=InheritanceType.JOINED)
-public class PartyRole implements Serializable
+public class PartyRole implements Serializable, Listable
 {
 	public enum Type{HOLDING,SUBSIDIARY,DEPARTMENT,DIVISION,CUSTOMER,SUPPLIER,EMPLOYEE,EMPLOYER,CONTACT}
 	
@@ -87,5 +88,17 @@ public class PartyRole implements Serializable
 		map.put("party",getParty().getClass().getName());
 		
 		return map.toString();
+	}
+
+	@Override
+	public String getLabel()
+	{
+		return type.name();
+	}
+
+	@Override
+	public String getValue()
+	{
+		return type.name();
 	}
 }
