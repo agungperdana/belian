@@ -17,6 +17,7 @@ import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.accounting.dm.Budget;
 import com.kratonsolution.belian.accounting.dm.Budget.Type;
+import com.kratonsolution.belian.accounting.dm.BudgetStatus;
 import com.kratonsolution.belian.accounting.svc.BudgetService;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.OrganizationUnit;
@@ -82,6 +83,14 @@ public class BudgetFormContent extends FormContent
 				budget.setStart(start.getValue());
 				budget.setEnd(end.getValue());
 				budget.setComment(comment.getText());
+				
+				BudgetStatus status = new BudgetStatus();
+				status.setBudget(budget);
+				status.setDate(budget.getStart());
+				status.setDescription("Submitted for review.");
+				status.setType(BudgetStatus.StatusType.SUBMITTED);
+				
+				budget.getStatuses().add(status);
 				
 				service.add(budget);
 				

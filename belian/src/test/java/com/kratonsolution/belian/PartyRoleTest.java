@@ -17,7 +17,7 @@ import com.kratonsolution.belian.general.dm.PartyRoleRepository;
 @SpringApplicationConfiguration(classes=EntryPoint.class)
 @WebAppConfiguration
 @IntegrationTest
-public class PartyRoleTypeTest
+public class PartyRoleTest
 {
 	@Autowired
 	private PartyRoleRepository repository;

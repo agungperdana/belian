@@ -332,7 +332,7 @@ public class BudgetEditContent extends FormContent
 
 	private void initStatus()
 	{
-		NRCToolbar toolbar = new NRCToolbar();
+//		NRCToolbar toolbar = new NRCToolbar();
 
 		statuses.appendChild(new Rows());
 		statuses.appendChild(new Columns());
@@ -357,56 +357,56 @@ public class BudgetEditContent extends FormContent
 			statuses.getRows().appendChild(row);
 		}
 
-		toolbar.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()
-				{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				Listbox types = Components.newSelect();
-				types.appendChild(new Listitem("SUBMITTED","SUBMITTED"));
-				types.appendChild(new Listitem("REVIEWED","REVIEWED"));
-				types.appendChild(new Listitem("APPROVED","APPROVED"));
-				types.appendChild(new Listitem("REJECTED","REJECTED"));
-				types.appendChild(new Listitem("NEEDMODIFICATION","NEEDMODIFICATION"));
-				types.setSelectedIndex(0);
-				types.setWidth("100%");
-
-				Row row = new Row();
-				row.appendChild(Components.checkbox(false));
-				row.appendChild(Components.mandatoryDatebox());
-				row.appendChild(types);
-				row.appendChild(Components.mandatoryTextBox());
-				row.appendChild(new Label(UUID.randomUUID().toString()));
-
-				statuses.getRows().appendChild(row);
-			}
-				});
-
-		toolbar.getRemove().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-				{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				Iterator<Component> iterator = statuses.getRows().getChildren().iterator();
-				while (iterator.hasNext())
-				{
-					Row row = (Row) iterator.next();
-					if(RowUtils.isChecked(row, 0))
-						iterator.remove();
-				}
-			}
-				});
-
-		toolbar.getClear().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-				{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				statuses.getRows().getChildren().clear();
-			}
-				});
-
-		tabbox.getTabpanels().getChildren().get(1).appendChild(toolbar);
+//		toolbar.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()
+//				{
+//			@Override
+//			public void onEvent(Event event) throws Exception
+//			{
+//				Listbox types = Components.newSelect();
+//				types.appendChild(new Listitem("SUBMITTED","SUBMITTED"));
+//				types.appendChild(new Listitem("REVIEWED","REVIEWED"));
+//				types.appendChild(new Listitem("APPROVED","APPROVED"));
+//				types.appendChild(new Listitem("REJECTED","REJECTED"));
+//				types.appendChild(new Listitem("NEEDMODIFICATION","NEEDMODIFICATION"));
+//				types.setSelectedIndex(0);
+//				types.setWidth("100%");
+//
+//				Row row = new Row();
+//				row.appendChild(Components.checkbox(false));
+//				row.appendChild(Components.mandatoryDatebox());
+//				row.appendChild(types);
+//				row.appendChild(Components.mandatoryTextBox());
+//				row.appendChild(new Label(UUID.randomUUID().toString()));
+//
+//				statuses.getRows().appendChild(row);
+//			}
+//				});
+//
+//		toolbar.getRemove().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+//				{
+//			@Override
+//			public void onEvent(Event event) throws Exception
+//			{
+//				Iterator<Component> iterator = statuses.getRows().getChildren().iterator();
+//				while (iterator.hasNext())
+//				{
+//					Row row = (Row) iterator.next();
+//					if(RowUtils.isChecked(row, 0))
+//						iterator.remove();
+//				}
+//			}
+//				});
+//
+//		toolbar.getClear().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+//				{
+//			@Override
+//			public void onEvent(Event event) throws Exception
+//			{
+//				statuses.getRows().getChildren().clear();
+//			}
+//				});
+//
+////		tabbox.getTabpanels().getChildren().get(1).appendChild(toolbar);
 		tabbox.getTabpanels().getChildren().get(1).appendChild(statuses);
 	}
 

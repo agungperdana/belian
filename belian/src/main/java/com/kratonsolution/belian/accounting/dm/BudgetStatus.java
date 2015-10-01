@@ -5,6 +5,7 @@ package com.kratonsolution.belian.accounting.dm;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,7 +33,7 @@ public class BudgetStatus implements Serializable
 	public enum StatusType{REVIEWED,SUBMITTED,APPROVED,REJECTED,NEEDMODIFICATION}
 	
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="date")
 	private Date date;

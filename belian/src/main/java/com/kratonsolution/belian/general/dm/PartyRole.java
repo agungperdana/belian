@@ -38,7 +38,10 @@ import com.kratonsolution.belian.global.dm.Listable;
 @Inheritance(strategy=InheritanceType.JOINED)
 public class PartyRole implements Serializable, Listable
 {
-	public enum Type{HOLDING,SUBSIDIARY,DEPARTMENT,DIVISION,CUSTOMER,SUPPLIER,EMPLOYEE,EMPLOYER,CONTACT}
+	public enum Type{
+		HOLDING,SUBSIDIARY,DEPARTMENT,DIVISION,CUSTOMER,SUPPLIER,EMPLOYEE,EMPLOYER,CONTACT,
+		BUDGETREVIEWER
+	}
 	
 	@Id
 	protected String id = UUID.randomUUID().toString();
@@ -72,6 +75,7 @@ public class PartyRole implements Serializable, Listable
 			case SUPPLIER:return new Supplier();
 			case EMPLOYEE:return new Employee();
 			case EMPLOYER:return new Employer();
+			case BUDGETREVIEWER:return new BudgetReviewer();
 			default:
 				return new PartyRole();
 		}
