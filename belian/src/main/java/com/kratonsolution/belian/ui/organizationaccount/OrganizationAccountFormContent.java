@@ -23,8 +23,9 @@ import com.kratonsolution.belian.accounting.dm.OGLAccount;
 import com.kratonsolution.belian.accounting.dm.OrganizationAccount;
 import com.kratonsolution.belian.accounting.svc.GLAccountService;
 import com.kratonsolution.belian.accounting.svc.OrganizationAccountService;
-import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.dm.OrganizationUnit;
 import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -38,6 +39,8 @@ public class OrganizationAccountFormContent extends FormContent
 	private final OrganizationAccountService service = Springs.get(OrganizationAccountService.class);
 	
 	private final OrganizationService organizationService = Springs.get(OrganizationService.class);
+	
+	private final OrganizationUnitService unitService = Springs.get(OrganizationUnitService.class);
 	
 	private final GLAccountService accountService = Springs.get(GLAccountService.class);
 	
@@ -120,10 +123,10 @@ public class OrganizationAccountFormContent extends FormContent
 		
 		status.setChecked(true);
 		
-		for(Organization organization:organizationService.findAll())
-			organizations.appendChild(new Listitem(organization.getName(),organization.getId()));
+		for(OrganizationUnit organization:unitService.findAll())
+			organizations.appendChild(new Listitem(organization.getParty().getLabel(),organization.getParty().getValue()));
 		
-		organizations.setSelectedIndex(0);
+		Components.setDefault(organizations);
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));

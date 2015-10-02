@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.general.svc;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -74,7 +75,7 @@ public class PersonService
 	public List<Person> findAllBudgetReviewer(String forOrganization)
 	{
 //		return repository.findAllReviewer(forOrganization);
-		return null;
+		return new ArrayList<Person>();
 	}
 	
 	@Secured("ROLE_PERSON_READ")

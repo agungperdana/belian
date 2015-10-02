@@ -37,7 +37,7 @@ public class OrganizationAccountEditContent extends FormContent
 	private final OrganizationAccountService service = Springs.get(OrganizationAccountService.class);
 
 	private final OrganizationService organizationService = Springs.get(OrganizationService.class);
-
+	
 	private final GLAccountService accountService = Springs.get(GLAccountService.class);
 
 	private Textbox name = new Textbox();

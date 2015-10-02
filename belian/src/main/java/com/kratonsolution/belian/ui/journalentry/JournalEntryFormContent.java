@@ -4,7 +4,6 @@
 package com.kratonsolution.belian.ui.journalentry;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.UUID;
 
@@ -38,8 +37,9 @@ import com.kratonsolution.belian.accounting.svc.GLAccountService;
 import com.kratonsolution.belian.accounting.svc.JournalEntryService;
 import com.kratonsolution.belian.accounting.svc.OrganizationAccountService;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.dm.OrganizationUnit;
 import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.util.Components;
@@ -66,7 +66,9 @@ public class JournalEntryFormContent extends FormContent
 	
 	private GLAccountService glAccountService = Springs.get(GLAccountService.class);
 	
-	private Datebox date = new Datebox(new Date());
+	private OrganizationUnitService unitService = Springs.get(OrganizationUnitService.class);
+	
+	private Datebox date = Components.currentDatebox();
 	
 	private Listbox owners = Components.newSelect();
 	
@@ -157,12 +159,11 @@ public class JournalEntryFormContent extends FormContent
 		date.setConstraint("no empty");
 		note.setWidth("250px");
 		
-		for(Organization organization:sessionUtils.getOrganizations())
+		for(OrganizationUnit organization:unitService.findAll())
 		{
-			Listitem listitem = new Listitem(organization.getName(), organization.getId());
+			Listitem listitem = new Listitem(organization.getParty().getLabel(), organization.getParty().getValue());
 			owners.appendChild(listitem);
-			if(organization.getId().equals(sessionUtils.getOrganization().getId()))
-				owners.setSelectedItem(listitem);
+			owners.setSelectedItem(listitem);
 		}
 		
 		if(!owners.getChildren().isEmpty())
@@ -269,7 +270,10 @@ public class JournalEntryFormContent extends FormContent
 				if(account != null)
 				{
 					for(OGLAccount gl:account.getAccounts())
-						accounts.appendChild(new Listitem(gl.getAccount().getName(), gl.getAccount().getId()));
+					{
+						if(gl.isSelected())
+							accounts.appendChild(new Listitem(gl.getAccount().getName(), gl.getAccount().getId()));
+					}
 				}
 				
 				row.appendChild(accounts);
