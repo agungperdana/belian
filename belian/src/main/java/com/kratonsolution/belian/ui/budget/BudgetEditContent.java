@@ -10,6 +10,7 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
@@ -29,8 +30,6 @@ import org.zkoss.zul.Textbox;
 import com.kratonsolution.belian.accounting.dm.Budget;
 import com.kratonsolution.belian.accounting.dm.Budget.Type;
 import com.kratonsolution.belian.accounting.dm.BudgetItem;
-import com.kratonsolution.belian.accounting.dm.BudgetReview;
-import com.kratonsolution.belian.accounting.dm.BudgetReview.ReviewResult;
 import com.kratonsolution.belian.accounting.dm.BudgetStatus;
 import com.kratonsolution.belian.accounting.svc.BudgetService;
 import com.kratonsolution.belian.common.SessionUtils;
@@ -38,6 +37,7 @@ import com.kratonsolution.belian.general.dm.OrganizationUnit;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.global.dm.ReviewResult;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.util.Components;
@@ -173,11 +173,11 @@ public class BudgetEditContent extends FormContent
 					{
 						Row row = (Row)component;
 
-						BudgetReview review = new BudgetReview();
-						review.setBudget(budget);
+						ReviewResult review = new ReviewResult();
+						review.setReviewable(budget);
 						review.setDate(RowUtils.date(row, 1));
-						review.setPerson(personService.findOne(RowUtils.string(row, 2)));
-						review.setResult(ReviewResult.valueOf(RowUtils.string(row, 3)));
+						review.setReviewer(personService.findOne(RowUtils.string(row, 2)));
+						review.setType(ReviewResult.Type.valueOf(RowUtils.string(row, 3)));
 						review.setComment(RowUtils.string(row, 4));
 						review.setId(RowUtils.string(row, 5));
 
@@ -339,7 +339,7 @@ public class BudgetEditContent extends FormContent
 		statuses.getColumns().appendChild(new Column(null,null,"25px"));
 		statuses.getColumns().appendChild(new Column("Date",null,"135px"));
 		statuses.getColumns().appendChild(new Column("Type",null,"150px"));
-		statuses.getColumns().appendChild(new Column("Description",null,"200px"));
+		statuses.getColumns().appendChild(new Column("Comment",null,"200px"));
 		statuses.getColumns().appendChild(new Column(null,null,"1px"));
 		statuses.getColumns().getChildren().get(4).setVisible(false);
 		statuses.setSpan("3");
@@ -426,31 +426,34 @@ public class BudgetEditContent extends FormContent
 		reviews.setSpan("4");
 
 		Budget budget = service.findOne(RowUtils.string(row, 6));
-		for(BudgetReview item:budget.getReviews())
+		for(ReviewResult item:budget.getReviews())
 		{
+			Checkbox checkbox = Components.checkbox(false);
+			
 			Row row = new Row();
-			row.appendChild(Components.checkbox(false));
+			row.appendChild(checkbox);
 			row.appendChild(Components.readOnlyTextBox(Dates.format(item.getDate())));
-			row.appendChild(Components.readOnlyTextBox(item.getPerson().getName()));
-			row.appendChild(Components.readOnlyTextBox(item.getResult().name()));
+			row.appendChild(Components.readOnlyTextBox(item.getReviewer().getName()));
+			row.appendChild(Components.readOnlyTextBox(item.getType().name()));
 			row.appendChild(Components.readOnlyTextBox(item.getComment()));
 			row.appendChild(new Label(item.getId()));
 
+			if(!item.getType().equals(ReviewResult.Type.WAITING))
+				checkbox.setDisabled(true);
+			
 			reviews.getRows().appendChild(row);
 		}
 
 		toolbar.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()
-				{
+		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
 				Row row = new Row();
 
-				Listbox results = Components.newSelect();
-				results.appendChild(new Listitem("ACCEPTED","ACCEPTED"));
-				results.appendChild(new Listitem("REJECTED","REJECTED"));
+				Listbox results = Components.fullSpanSelect();
+				results.appendChild(new Listitem(ReviewResult.Type.WAITING.display(),ReviewResult.Type.WAITING.name()));
 				results.setSelectedIndex(0);
-				results.setWidth("100%");
 
 				row.appendChild(Components.checkbox(false));
 				row.appendChild(Components.mandatoryDatebox());
@@ -461,10 +464,10 @@ public class BudgetEditContent extends FormContent
 
 				reviews.getRows().appendChild(row);
 			}
-				});
+		});
 
 		toolbar.getRemove().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-				{
+		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
@@ -476,16 +479,16 @@ public class BudgetEditContent extends FormContent
 						iterator.remove();
 				}
 			}
-				});
+		});
 
 		toolbar.getClear().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-				{
+		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
 				reviews.getRows().getChildren().clear();
 			}
-				});
+		});
 
 		tabbox.getTabpanels().getChildren().get(2).appendChild(toolbar);
 		tabbox.getTabpanels().getChildren().get(2).appendChild(reviews);

@@ -121,6 +121,15 @@ public class Components
 		return listbox;
 	}
 	
+	public static final Listbox fullSpanSelect()
+	{
+		Listbox listbox = new Listbox();
+		listbox.setMold("select");
+		listbox.setWidth("100%");
+		
+		return listbox;
+	}
+	
 	public static final Textbox readOnlyTextBox()
 	{
 		Textbox textbox = new Textbox();

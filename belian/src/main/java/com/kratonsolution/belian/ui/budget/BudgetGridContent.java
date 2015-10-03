@@ -9,6 +9,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
@@ -16,7 +17,6 @@ import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.accounting.svc.BudgetService;
 import com.kratonsolution.belian.ui.GridContent;
-import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -117,8 +117,15 @@ public class BudgetGridContent extends GridContent
 							{
 								Row row = (Row)object;
 
-								if(RowUtils.isChecked(row,0))
-									service.delete(RowUtils.string(row, 5));
+								if(row.getFirstChild() instanceof Checkbox)
+								{
+									Checkbox check = (Checkbox)row.getFirstChild();
+									if(check.isChecked())
+									{
+										Label label = (Label)row.getLastChild();
+										service.delete(label.getValue());
+									}
+								}
 							}
 							
 							BudgetWindow window = (BudgetWindow)getParent();

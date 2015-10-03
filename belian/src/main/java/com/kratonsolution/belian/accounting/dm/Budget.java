@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.accounting.dm;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,18 +12,17 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.global.dm.Reviewable;
 
 /**
  * @author agungdodiperdana
@@ -34,12 +32,9 @@ import com.kratonsolution.belian.general.dm.Organization;
 @Setter
 @Entity
 @Table(name="budget")
-public class Budget implements Serializable
+public class Budget extends Reviewable
 {
 	public enum Type{Operating,Capital}
-	
-	@Id
-	private String id;
 	
 	@Column(name="start")
 	private Date start;
@@ -57,9 +52,6 @@ public class Budget implements Serializable
 	@Column(name="type")
 	@Enumerated(EnumType.STRING)
 	private Type type = Type.Operating;
-	
-	@Version
-	private Long version;
 
 	@OneToMany(mappedBy="budget",cascade=CascadeType.ALL,orphanRemoval=true)
 	@OrderBy("sequence")
@@ -68,8 +60,4 @@ public class Budget implements Serializable
 	@OneToMany(mappedBy="budget",cascade=CascadeType.ALL,orphanRemoval=true)
 	@OrderBy("date")
 	private Set<BudgetStatus> statuses = new HashSet<BudgetStatus>();
-	
-	@OneToMany(mappedBy="budget",cascade=CascadeType.ALL,orphanRemoval=true)
-	@OrderBy("date")
-	private Set<BudgetReview> reviews = new HashSet<BudgetReview>();
 }
