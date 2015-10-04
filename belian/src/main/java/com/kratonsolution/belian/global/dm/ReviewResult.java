@@ -3,23 +3,18 @@
  */
 package com.kratonsolution.belian.global.dm;
 
-import java.util.Date;
-import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import com.kratonsolution.belian.general.dm.Person;
+import com.kratonsolution.belian.tools.dm.Inbox;
 
 /**
  * @author Agung Dodi Perdana
@@ -29,7 +24,7 @@ import com.kratonsolution.belian.general.dm.Person;
 @Setter
 @Entity
 @Table(name="review_result")
-public class ReviewResult
+public abstract class ReviewResult extends Inbox
 {
 	public enum Type{
 		WAITING("Waiting for Review"),
@@ -51,27 +46,14 @@ public class ReviewResult
 		}
 	}
 	
-	@Id
-	private String id = UUID.randomUUID().toString();
-
-	@Column(name="date")
-	private Date date;
-	
 	@Enumerated(EnumType.STRING)
 	@Column(name="type")
-	private Type type = Type.WAITING;
+	protected Type type = Type.WAITING;
 	
 	@Column(name="comment")
-	private String comment;
+	protected String comment;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_reviewable")
-	private Reviewable reviewable;
-
-	@ManyToOne
-	@JoinColumn(name="fk_person_reviewer")
-	private Person reviewer;
-
-	@Version
-	private Long version;
+	protected Reviewable reviewable;
 }

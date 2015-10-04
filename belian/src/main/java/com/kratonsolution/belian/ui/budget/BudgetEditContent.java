@@ -30,6 +30,7 @@ import org.zkoss.zul.Textbox;
 import com.kratonsolution.belian.accounting.dm.Budget;
 import com.kratonsolution.belian.accounting.dm.Budget.Type;
 import com.kratonsolution.belian.accounting.dm.BudgetItem;
+import com.kratonsolution.belian.accounting.dm.BudgetReviewResult;
 import com.kratonsolution.belian.accounting.dm.BudgetStatus;
 import com.kratonsolution.belian.accounting.svc.BudgetService;
 import com.kratonsolution.belian.common.SessionUtils;
@@ -173,10 +174,11 @@ public class BudgetEditContent extends FormContent
 					{
 						Row row = (Row)component;
 
-						ReviewResult review = new ReviewResult();
+						ReviewResult review = new BudgetReviewResult();
 						review.setReviewable(budget);
+						review.setContent("Need Review for Budget "+budget.getComment());
 						review.setDate(RowUtils.date(row, 1));
-						review.setReviewer(personService.findOne(RowUtils.string(row, 2)));
+						review.setOwner(personService.findOne(RowUtils.string(row, 2)));
 						review.setType(ReviewResult.Type.valueOf(RowUtils.string(row, 3)));
 						review.setComment(RowUtils.string(row, 4));
 						review.setId(RowUtils.string(row, 5));
@@ -381,7 +383,7 @@ public class BudgetEditContent extends FormContent
 			Row row = new Row();
 			row.appendChild(checkbox);
 			row.appendChild(Components.readOnlyTextBox(Dates.format(item.getDate())));
-			row.appendChild(Components.readOnlyTextBox(item.getReviewer().getName()));
+			row.appendChild(Components.readOnlyTextBox(item.getOwner().getName()));
 			row.appendChild(Components.readOnlyTextBox(item.getType().name()));
 			row.appendChild(Components.readOnlyTextBox(item.getComment()));
 			row.appendChild(new Label(item.getId()));
