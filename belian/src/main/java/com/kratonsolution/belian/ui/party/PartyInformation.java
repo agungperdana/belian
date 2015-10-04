@@ -27,24 +27,17 @@ public class PartyInformation extends Tree implements Refreshable
 	
 	private Treeitem addressRoot = new Treeitem();
 	private Treeitem contactRoot = new Treeitem();
-	private Treeitem roleRoot = new Treeitem();
-	private Treeitem relationRoot = new Treeitem();
 	
 	private Treecell address = new Treecell("Address");
 	private Treecell contact = new Treecell("Contacts");
-	private Treecell role = new Treecell("Role");
-	private Treecell relation = new Treecell("Relationship");
 	
 	private Treerow addressContent = new Treerow();
 	private Treerow contactContent = new Treerow();
-	private Treerow roleContent = new Treerow();
-	private Treerow relationContent = new Treerow();
 	
 	private Treechildren root = new Treechildren();
 	private Treechildren addresses = new Treechildren();
 	private Treechildren contacts = new Treechildren();
-	private Treechildren roles = new Treechildren();
-	private Treechildren relationships = new Treechildren();
+
 	
 	public PartyInformation(String label)
 	{
@@ -55,28 +48,18 @@ public class PartyInformation extends Tree implements Refreshable
 		
 		address.setImage("/icons/address.png");
 		contact.setImage("/icons/contact.png");
-		role.setImage("/icons/roletypesmall.png");
-		relation.setImage("/icons/relationshiptype.png");
 		
 		addressContent.appendChild(address);
 		contactContent.appendChild(contact);
-		roleContent.appendChild(role);
-		relationContent.appendChild(relation);
 		
 		addressRoot.appendChild(addressContent);
 		contactRoot.appendChild(contactContent);
-		roleRoot.appendChild(roleContent);
-		relationRoot.appendChild(relationContent);
 		
 		root.appendChild(addressRoot);
 		root.appendChild(contactRoot);
-		root.appendChild(roleRoot);
-		root.appendChild(relationRoot);
 		
 		addressRoot.appendChild(addresses);
 		contactRoot.appendChild(contacts);
-		roleRoot.appendChild(roles);
-		relationRoot.appendChild(relationships);
 		
 		appendChild(treecols);
 		appendChild(root);
@@ -90,16 +73,6 @@ public class PartyInformation extends Tree implements Refreshable
 	public void addContact(ContactInformation information)
 	{
 		this.contacts.appendChild(information);
-	}
-	
-	public void addRole(RoleInformation information)
-	{
-		this.roles.appendChild(information);
-	}
-	
-	public void addRelationship(RelationshipInformation information)
-	{
-		this.relationships.appendChild(information);
 	}
 	
 	public void refresh()

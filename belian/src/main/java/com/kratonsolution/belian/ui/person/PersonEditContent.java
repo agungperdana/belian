@@ -19,8 +19,6 @@ import org.zkoss.zul.Textbox;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Contact;
-import com.kratonsolution.belian.general.dm.PartyRelationship;
-import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.dm.Person.Gender;
 import com.kratonsolution.belian.general.dm.Person.MaritalStatus;
@@ -33,10 +31,6 @@ import com.kratonsolution.belian.ui.party.ContactAddWindow;
 import com.kratonsolution.belian.ui.party.ContactInformation;
 import com.kratonsolution.belian.ui.party.PartyInformation;
 import com.kratonsolution.belian.ui.party.PartyToolbar;
-import com.kratonsolution.belian.ui.party.RelationshipAddWindow;
-import com.kratonsolution.belian.ui.party.RelationshipInformation;
-import com.kratonsolution.belian.ui.party.RoleAddWindow;
-import com.kratonsolution.belian.ui.party.RoleInformation;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -203,24 +197,6 @@ public class PersonEditContent extends FormContent implements Refreshable
 				appendChild(new ContactAddWindow(RowUtils.string(row,6)));
 			}
 		});
-
-		partyToolbar.getRole().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				appendChild(new RoleAddWindow(RowUtils.string(row,6)));
-			}
-		});
-
-		partyToolbar.getRelationship().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				appendChild(new RelationshipAddWindow(RowUtils.string(row,6)));
-			}
-		});
 	}
 
 	protected void initTree()
@@ -240,18 +216,6 @@ public class PersonEditContent extends FormContent implements Refreshable
 			{
 				for(final Contact contact:person.getContacts())
 					information.addContact(new ContactInformation(contact, person));
-			}
-
-			if(!person.getRoles().isEmpty())
-			{
-				for(final PartyRole role:person.getRoles())
-					information.addRole(new RoleInformation(role, person));
-			}
-
-			if(!person.getRelationships().isEmpty())
-			{
-				for(final PartyRelationship partyRelationship:person.getRelationships())
-					information.addRelationship(new RelationshipInformation(partyRelationship, person));
 			}
 		}
 
