@@ -109,7 +109,7 @@ public class BudgetEditContent extends FormContent
 	public void initToolbar()
 	{
 		toolbar.getCancel().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-				{
+		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
@@ -117,10 +117,10 @@ public class BudgetEditContent extends FormContent
 				window.removeEditForm();
 				window.insertGrid();
 			}
-				});
+		});
 
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-				{
+		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
@@ -191,7 +191,7 @@ public class BudgetEditContent extends FormContent
 				window.removeEditForm();
 				window.insertGrid();
 			}
-				});
+		});
 	}
 
 	@Override
@@ -286,7 +286,7 @@ public class BudgetEditContent extends FormContent
 		}
 
 		toolbar.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()
-				{
+		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
@@ -300,10 +300,10 @@ public class BudgetEditContent extends FormContent
 
 				budgetItems.getRows().appendChild(row);
 			}
-				});
+		});
 
 		toolbar.getRemove().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-				{
+		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
@@ -315,16 +315,16 @@ public class BudgetEditContent extends FormContent
 						iterator.remove();
 				}
 			}
-				});
+		});
 
 		toolbar.getClear().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-				{
+		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
 				budgetItems.getRows().getChildren().clear();
 			}
-				});
+		});
 
 		tabbox.getTabpanels().getChildren().get(0).appendChild(toolbar);
 		tabbox.getTabpanels().getChildren().get(0).appendChild(budgetItems);
@@ -332,8 +332,6 @@ public class BudgetEditContent extends FormContent
 
 	private void initStatus()
 	{
-//		NRCToolbar toolbar = new NRCToolbar();
-
 		statuses.appendChild(new Rows());
 		statuses.appendChild(new Columns());
 		statuses.getColumns().appendChild(new Column(null,null,"25px"));
@@ -357,56 +355,6 @@ public class BudgetEditContent extends FormContent
 			statuses.getRows().appendChild(row);
 		}
 
-//		toolbar.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()
-//				{
-//			@Override
-//			public void onEvent(Event event) throws Exception
-//			{
-//				Listbox types = Components.newSelect();
-//				types.appendChild(new Listitem("SUBMITTED","SUBMITTED"));
-//				types.appendChild(new Listitem("REVIEWED","REVIEWED"));
-//				types.appendChild(new Listitem("APPROVED","APPROVED"));
-//				types.appendChild(new Listitem("REJECTED","REJECTED"));
-//				types.appendChild(new Listitem("NEEDMODIFICATION","NEEDMODIFICATION"));
-//				types.setSelectedIndex(0);
-//				types.setWidth("100%");
-//
-//				Row row = new Row();
-//				row.appendChild(Components.checkbox(false));
-//				row.appendChild(Components.mandatoryDatebox());
-//				row.appendChild(types);
-//				row.appendChild(Components.mandatoryTextBox());
-//				row.appendChild(new Label(UUID.randomUUID().toString()));
-//
-//				statuses.getRows().appendChild(row);
-//			}
-//				});
-//
-//		toolbar.getRemove().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-//				{
-//			@Override
-//			public void onEvent(Event event) throws Exception
-//			{
-//				Iterator<Component> iterator = statuses.getRows().getChildren().iterator();
-//				while (iterator.hasNext())
-//				{
-//					Row row = (Row) iterator.next();
-//					if(RowUtils.isChecked(row, 0))
-//						iterator.remove();
-//				}
-//			}
-//				});
-//
-//		toolbar.getClear().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-//				{
-//			@Override
-//			public void onEvent(Event event) throws Exception
-//			{
-//				statuses.getRows().getChildren().clear();
-//			}
-//				});
-//
-////		tabbox.getTabpanels().getChildren().get(1).appendChild(toolbar);
 		tabbox.getTabpanels().getChildren().get(1).appendChild(statuses);
 	}
 
@@ -457,7 +405,7 @@ public class BudgetEditContent extends FormContent
 
 				row.appendChild(Components.checkbox(false));
 				row.appendChild(Components.mandatoryDatebox());
-				row.appendChild(Components.newSelect(personService.findAllBudgetReviewer(Components.string(targets)),true));
+				row.appendChild(Components.newSelect(personService.findAll(),true));
 				row.appendChild(results);
 				row.appendChild(Components.mandatoryTextBox());
 				row.appendChild(new Label(UUID.randomUUID().toString()));
