@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.role.inbox;
+package com.kratonsolution.belian.ui.inbox;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Caption;

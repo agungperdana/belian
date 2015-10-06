@@ -15,7 +15,7 @@ import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
-import com.kratonsolution.belian.ui.role.inbox.InboxWindow;
+import com.kratonsolution.belian.ui.inbox.InboxWindow;
 import com.kratonsolution.belian.ui.setting.SettingWindow;
 
 /**
