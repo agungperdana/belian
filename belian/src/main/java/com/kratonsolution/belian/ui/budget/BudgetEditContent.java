@@ -47,8 +47,8 @@ import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class BudgetEditContent extends FormContent
 {	
@@ -348,8 +348,8 @@ public class BudgetEditContent extends FormContent
 		for(BudgetStatus item:budget.getStatuses())
 		{
 			Row row = new Row();
-			row.appendChild(Components.checkbox(false));
-			row.appendChild(Components.readOnlyTextBox(Dates.format(item.getDate())));
+			row.appendChild(Components.readOnlyCheckbox());
+			row.appendChild(Components.fullSpanReadOnlyDatebox(item.getDate()));
 			row.appendChild(Components.readOnlyTextBox(item.getType().name()));
 			row.appendChild(Components.readOnlyTextBox(item.getDescription()));
 			row.appendChild(new Label(item.getId()));
@@ -421,7 +421,7 @@ public class BudgetEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Iterator<Component> iterator = statuses.getRows().getChildren().iterator();
+				Iterator<Component> iterator = reviews.getRows().getChildren().iterator();
 				while (iterator.hasNext())
 				{
 					Row row = (Row) iterator.next();

@@ -274,4 +274,17 @@ public class Components
 		
 		return datebox;
 	}
+	
+	public static final Datebox fullSpanReadOnlyDatebox(Date date)
+	{
+		Datebox datebox = new Datebox(date);
+		datebox.setWidth("100%");
+		datebox.setReadonly(true);
+		datebox.setDisabled(true);
+
+		if(date != null)
+			datebox.setValue(date);
+		
+		return datebox;
+	}
 }

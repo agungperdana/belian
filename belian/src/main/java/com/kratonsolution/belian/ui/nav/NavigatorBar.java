@@ -31,6 +31,8 @@ public class NavigatorBar extends Toolbar
 	
 	private Toolbarbutton menu = new Toolbarbutton();
 	
+	private Toolbarbutton inbox = new Toolbarbutton();
+	
 	public static final void injectInto(Page page)
 	{
 		new NavigatorBar().setPage(page);
@@ -152,5 +154,30 @@ public class NavigatorBar extends Toolbar
 		});
 
 		appendChild(menu);
+	}
+	
+	protected void initInbox()
+	{
+		inbox.setImage("/icons/inbox.png");
+		inbox.setHeight("38px");
+		inbox.addEventListener(Events.ON_CLICK, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				for(Component component:getPage().getRoots())
+				{
+					if(component instanceof NavigationMenu)
+					{
+						if(component.isVisible())
+							component.setVisible(false);
+						else
+							component.setVisible(true);
+					}
+				}
+			}
+		});
+
+		appendChild(inbox);
 	}
 }
