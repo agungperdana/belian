@@ -15,7 +15,7 @@ import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.HasCreateForm;
 import com.kratonsolution.belian.ui.HasEditForm;
 import com.kratonsolution.belian.ui.HasGrid;
-import com.kratonsolution.belian.ui.nav.NavigatorBar;
+import com.kratonsolution.belian.ui.nav.IconBar;
 
 /**
  * @author agungdodiperdana
@@ -92,7 +92,7 @@ public class RoleWindow extends AbstractWindow implements HasCreateForm,HasEditF
 	{
 		for(Component component:getPage().getRoots())
 		{
-			if(component instanceof NavigatorBar)
+			if(component instanceof IconBar)
 				component.appendChild(status);
 		}
 	}
@@ -102,7 +102,7 @@ public class RoleWindow extends AbstractWindow implements HasCreateForm,HasEditF
 	{
 		for(Component component:getPage().getRoots())
 		{
-			if(component instanceof NavigatorBar)
+			if(component instanceof IconBar)
 				component.removeChild(status);
 		}
 	}

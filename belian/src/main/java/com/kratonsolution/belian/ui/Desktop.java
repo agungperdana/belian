@@ -7,7 +7,7 @@ import org.zkoss.zk.ui.GenericRichlet;
 import org.zkoss.zk.ui.Page;
 
 import com.kratonsolution.belian.ui.nav.NavigationMenu;
-import com.kratonsolution.belian.ui.nav.NavigatorBar;
+import com.kratonsolution.belian.ui.nav.IconBar;
 
 /**
  * @author agungdodiperdana
@@ -21,7 +21,7 @@ public class Desktop extends GenericRichlet
 	@Override
 	public void service(Page page) throws Exception
 	{
-		NavigatorBar.injectInto(page);
+		IconBar.injectInto(page);
 		NavigationMenu.injectInto(page);
 	}
 }

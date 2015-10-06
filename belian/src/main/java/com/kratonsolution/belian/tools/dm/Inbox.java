@@ -44,7 +44,7 @@ public abstract class Inbox implements Serializable
 	protected boolean isNew = true;
 
 	@Column(name="opened")
-	protected boolean opened;
+	protected boolean opened = false;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_person_owner")

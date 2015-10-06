@@ -15,13 +15,14 @@ import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
+import com.kratonsolution.belian.ui.role.inbox.InboxWindow;
 import com.kratonsolution.belian.ui.setting.SettingWindow;
 
 /**
  * @author agungdodiperdana
  *
  */
-public class NavigatorBar extends Toolbar
+public class IconBar extends Toolbar
 {
 	private Toolbarbutton logout = new Toolbarbutton();
 	
@@ -35,16 +36,17 @@ public class NavigatorBar extends Toolbar
 	
 	public static final void injectInto(Page page)
 	{
-		new NavigatorBar().setPage(page);
+		new IconBar().setPage(page);
 	}
 	
-	private NavigatorBar()
+	private IconBar()
 	{
 		init();
 		initLogout();
 		initAbout();
 		initSetting();
 		initMenu();
+		initInbox();
 
 		Space space = new Space();
 		space.setBar(true);
@@ -165,15 +167,30 @@ public class NavigatorBar extends Toolbar
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
+				InboxWindow window = null;
+				
 				for(Component component:getPage().getRoots())
 				{
-					if(component instanceof NavigationMenu)
+					if(component instanceof InboxWindow)
 					{
-						if(component.isVisible())
-							component.setVisible(false);
-						else
-							component.setVisible(true);
+						window = (InboxWindow)component;
+						break;
 					}
+				}
+				
+				if(window == null)
+				{
+					window = new InboxWindow();
+					window.setPage(getPage());
+					window.setVisible(true);
+					window.setTopmost();
+				}
+				else if(window.isVisible())
+					window.setVisible(false);
+				else
+				{
+					window.setVisible(true);
+					window.setTopmost();
 				}
 			}
 		});
