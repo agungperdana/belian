@@ -70,11 +70,11 @@ public class JournalEntryFormContent extends FormContent
 	
 	private Datebox date = Components.currentDatebox();
 	
-	private Listbox owners = Components.newSelect();
+	private Listbox owners = Components.fullSpanSelect();
 	
-	private Listbox coas = Components.newSelect();
+	private Listbox coas = Components.fullSpanSelect();
 	
-	private Listbox periods = Components.newSelect();
+	private Listbox periods = Components.fullSpanSelect();
 	
 	private Listbox currencys = Components.newSelect();
 	
@@ -163,7 +163,6 @@ public class JournalEntryFormContent extends FormContent
 		{
 			Listitem listitem = new Listitem(organization.getParty().getLabel(), organization.getParty().getValue());
 			owners.appendChild(listitem);
-			owners.setSelectedItem(listitem);
 		}
 		
 		if(!owners.getChildren().isEmpty())
@@ -264,7 +263,7 @@ public class JournalEntryFormContent extends FormContent
 				Row row = new Row();
 				row.appendChild(new Checkbox());
 				
-				Listbox accounts = Components.newSelect();
+				Listbox accounts = Components.fullSpanSelect();
 				
 				OrganizationAccount account = accountService.findOne(Components.string(coas));
 				if(account != null)
@@ -278,7 +277,7 @@ public class JournalEntryFormContent extends FormContent
 				
 				row.appendChild(accounts);
 				
-				Listbox types = Components.newSelect();
+				Listbox types = Components.fullSpanSelect();
 				types.appendChild(new Listitem("DEBET","DEBET"));
 				types.appendChild(new Listitem("CREDIT","CREDIT"));
 				Components.setDefault(types);

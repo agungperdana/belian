@@ -15,7 +15,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import lombok.Getter;
@@ -55,7 +54,4 @@ public abstract class Inbox implements Serializable
 	
 	@Version
 	protected Long version;
-	
-	@Transient
-	protected String linkToSource;
 }

@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -34,6 +35,9 @@ public class Reviewable implements Serializable
 {
 	@Id
 	protected String id = UUID.randomUUID().toString();
+	
+	@Column(name="is_approved")
+	protected boolean approved;
 	
 	@Version
 	protected Long version;

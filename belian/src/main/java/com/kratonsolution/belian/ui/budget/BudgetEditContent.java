@@ -58,6 +58,8 @@ public class BudgetEditContent extends FormContent
 
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 
+	private SessionUtils utils = Springs.get(SessionUtils.class);
+	
 	private PersonService personService = Springs.get(PersonService.class);
 	
 	private SessionUtils sessionUtils = Springs.get(SessionUtils.class);
@@ -176,7 +178,7 @@ public class BudgetEditContent extends FormContent
 
 						ReviewResult review = new BudgetReviewResult();
 						review.setReviewable(budget);
-						review.setContent("Need Review for Budget "+budget.getComment());
+						review.setContent("[Budget Review] "+budget.getComment());
 						review.setDate(RowUtils.date(row, 1));
 						review.setOwner(personService.findOne(RowUtils.string(row, 2)));
 						review.setType(ReviewResult.Type.valueOf(RowUtils.string(row, 3)));
@@ -388,7 +390,7 @@ public class BudgetEditContent extends FormContent
 			row.appendChild(Components.readOnlyTextBox(item.getComment()));
 			row.appendChild(new Label(item.getId()));
 
-			if(!item.getType().equals(ReviewResult.Type.WAITING))
+			if(utils.getUser().getPerson() == null || !utils.getUser().getPerson().getId().equals(item.getOwner().getId()))
 				checkbox.setDisabled(true);
 			
 			reviews.getRows().appendChild(row);

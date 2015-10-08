@@ -15,8 +15,10 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.security.svc.RoleService;
+import com.kratonsolution.belian.global.dm.ReviewResult;
+import com.kratonsolution.belian.tools.svc.InboxService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -25,7 +27,9 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class InboxGridContent extends GridContent
 {
-	private final RoleService service = Springs.get(RoleService.class);
+	private final InboxService service = Springs.get(InboxService.class);
+	
+	private final InboxViewFacade facade = new InboxViewFacade();
 	
 	public InboxGridContent()
 	{
@@ -175,8 +179,7 @@ public class InboxGridContent extends GridContent
 				@Override
 				public void onEvent(Event event) throws Exception
 				{
-					InboxWindow window = (InboxWindow)getParent();
-					window.removeGrid();
+					facade.open(getPage(), (ReviewResult)service.findOne(RowUtils.string(row, 3)));
 				}
 			});
 		}

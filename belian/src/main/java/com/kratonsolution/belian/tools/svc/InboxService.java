@@ -49,6 +49,13 @@ public class InboxService
 	}
 	
 	@Secured("ROLE_INBOX_READ")
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
+	public List<Inbox> findAllByOwnerId(String owner,int pageindex,int itemSize)
+	{
+		return repository.findAllByOwnerId(owner,new PageRequest(pageindex, itemSize));
+	}
+	
+	@Secured("ROLE_INBOX_READ")
 	public int size()
 	{
 		return Long.valueOf(repository.count()).intValue();
