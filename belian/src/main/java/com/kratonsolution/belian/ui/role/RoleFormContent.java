@@ -28,8 +28,9 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.dm.OrganizationUnit;
 import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.security.dm.AccessRole;
 import com.kratonsolution.belian.security.dm.AccessibleOrganization;
 import com.kratonsolution.belian.security.dm.Module;
@@ -51,6 +52,8 @@ public class RoleFormContent extends FormContent
 	private final ModuleService moduleService = Springs.get(ModuleService.class);
 	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
+	
+	private OrganizationUnitService unitService = Springs.get(OrganizationUnitService.class);
 	
 	private Textbox code = new Textbox();
 	
@@ -347,12 +350,12 @@ public class RoleFormContent extends FormContent
 		accessibleCompanys.getColumns().appendChild(new Column("",null,null));
 		accessibleCompanys.getColumns().getChildren().get(2).setVisible(false);
 		
-		for(Organization organization:organizationService.findAllByRolesTypeName("Company Structure"))
+		for(OrganizationUnit unit:unitService.findAll())
 		{
 			Row row = new Row();
-			row.appendChild(new Label(organization.getName()));
+			row.appendChild(new Label(unit.getParty().getName()));
 			row.appendChild(new Checkbox());
-			row.appendChild(new Label(organization.getId()));
+			row.appendChild(new Label(unit.getParty().getId()));
 			
 			accessibleCompanys.getRows().appendChild(row);
 		}
