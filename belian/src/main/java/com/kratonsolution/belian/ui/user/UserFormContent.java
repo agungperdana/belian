@@ -16,17 +16,20 @@ import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.security.dm.Role;
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.security.dm.UserRole;
 import com.kratonsolution.belian.security.svc.RoleService;
 import com.kratonsolution.belian.security.svc.UserService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -40,6 +43,8 @@ public class UserFormContent extends FormContent
 	
 	private final RoleService roleService = Springs.get(RoleService.class);
 	
+	private PersonService personService = Springs.get(PersonService.class);
+	
 	private Textbox name = new Textbox();
 	
 	private Textbox email = new Textbox();
@@ -49,6 +54,8 @@ public class UserFormContent extends FormContent
 	private Textbox repassword = new Textbox();
 	
 	private Checkbox enabled = new Checkbox("Active");
+	
+	private Listbox employees = Components.newSelect();
 	
 	private Grid roles = new Grid();
 	
@@ -171,11 +178,16 @@ public class UserFormContent extends FormContent
 		row5.appendChild(new Label("Status"));
 		row5.appendChild(enabled);
 		
+		Row row6 = new Row();
+		row6.appendChild(new Label("Employee"));
+		row6.appendChild(employees);
+		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
 		rows.appendChild(row4);
 		rows.appendChild(row5);
+		rows.appendChild(row6);
 	}
 	
 	protected void initRoles()

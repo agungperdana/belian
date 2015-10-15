@@ -42,11 +42,11 @@ public class EmploymentApplicationFormContent extends FormContent
 
 	private Listbox sources = Components.newSelect();
 
-	private Listbox positions = Components.newSelect();
+	private Listbox positions = Components.newSelect(positionService.findAll(),true);
 
-	private Listbox applicants = Components.newSelect();
+	private Listbox applicants = Components.newSelect(personService.findAll(),true);
 	
-	private Listbox referals = Components.newSelect();
+	private Listbox referals = Components.newSelect(personService.findAll(),false);
 
 	public EmploymentApplicationFormContent()
 	{

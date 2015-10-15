@@ -11,17 +11,16 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.global.dm.UserSetting;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import com.kratonsolution.belian.general.dm.Person;
+import com.kratonsolution.belian.global.dm.UserSetting;
 
 /**
  * @author Agung Dodi Perdana
@@ -52,8 +51,7 @@ public class User
 	@JoinColumn(name="fk_user_setting")
 	private UserSetting setting;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_person")
+	@OneToOne(mappedBy="user")
 	private Person person;
 	
 	@Version

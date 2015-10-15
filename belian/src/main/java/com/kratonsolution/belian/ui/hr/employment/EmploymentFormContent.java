@@ -3,23 +3,29 @@
  */
 package com.kratonsolution.belian.ui.hr.employment;
 
-import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Row;
 
-import com.kratonsolution.belian.accounting.dm.BudgetItem;
-import com.kratonsolution.belian.accounting.svc.BudgetItemService;
+import com.kratonsolution.belian.general.dm.Employee;
+import com.kratonsolution.belian.general.dm.Employer;
+import com.kratonsolution.belian.general.dm.Employment;
+import com.kratonsolution.belian.general.dm.OrganizationUnit;
+import com.kratonsolution.belian.general.dm.PartyRelationship;
+import com.kratonsolution.belian.general.dm.PartyRole;
+import com.kratonsolution.belian.general.svc.EmploymentService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.hr.dm.Position;
-import com.kratonsolution.belian.hr.dm.Position.PositionStatusType;
-import com.kratonsolution.belian.hr.svc.PositionService;
-import com.kratonsolution.belian.hr.svc.PositionTypeService;
+import com.kratonsolution.belian.general.svc.OrganizationUnitService;
+import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.hr.dm.EmploymentApplication;
+import com.kratonsolution.belian.hr.svc.EmploymentApplicationService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -30,25 +36,25 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class EmploymentFormContent extends FormContent
 {	
-	private PositionService service = Springs.get(PositionService.class);
+	private EmploymentService service = Springs.get(EmploymentService.class);
 	
-	private BudgetItemService budgetItemService = Springs.get(BudgetItemService.class);
-	
-	private PositionTypeService positionTypeService = Springs.get(PositionTypeService.class);
+	private PersonService personService = Springs.get(PersonService.class);
 	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
+	
+	private EmploymentApplicationService applicationService = Springs.get(EmploymentApplicationService.class);
+	
+	private OrganizationUnitService unitService = Springs.get(OrganizationUnitService.class);
 	
 	private Datebox start = Components.currentDatebox();
 	
 	private Datebox end = Components.datebox();
-		
-	private Listbox positionStatusTypes = Components.newSelect();
 	
-	private Listbox budgetItems = Components.newSelect();
+	private Listbox applications = Components.newSelect();
 	
-	private Listbox positionTypes = Components.newSelect(positionTypeService.findAll(),true);
+	private Listbox employee = Components.newSelect();
 	
-	private Listbox owners = Components.newSelect(organizationService.findAllByRolesTypeName("Internal Organization"), false);
+	private Listbox employer = Components.newSelect();
 	
 	public EmploymentFormContent()
 	{
@@ -76,21 +82,27 @@ public class EmploymentFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				if(owners.getSelectedIndex() < 0)
-					throw new WrongValueException(owners,"Document Owner cannot be empty");
+				Employment employment = new Employment();
+				employment.setFrom(start.getValue());
+				employment.setTo(end.getValue());
+				employment.setType(PartyRelationship.Type.EMPLOYMENT);
 				
-				if(budgetItems.getSelectedIndex() < 0)
-					throw new WrongValueException(budgetItems,"Budget Item cannot be empty");
+				Employee person = new Employee();
+				person.setFrom(start.getValue());
+				person.setTo(end.getValue());
+				person.setParty(personService.findOne(Components.string(employee)));
+				person.setType(PartyRole.Type.EMPLOYEE);
 				
-				Position position = new Position();
-				position.setBudgetItem(budgetItemService.findOne(Components.string(budgetItems)));
-				position.setOwner(organizationService.findOne(Components.string(owners)));
-				position.setEnd(end.getValue());
-				position.setStart(start.getValue());
-				position.setType(positionTypeService.findOne(Components.string(positionTypes)));
-				position.setPositionStatusType(PositionStatusType.valueOf(Components.string(positionStatusTypes)));
+				Employer org = new Employer();
+				org.setFrom(start.getValue());
+				org.setTo(end.getValue());
+				org.setParty(organizationService.findOne(Components.string(employer)));
+				org.setType(PartyRole.Type.EMPLOYER);
 				
-				service.add(position);
+				employment.setParent(org);
+				employment.setChild(person);
+				
+				service.add(employment);
 				
 				EmploymentWindow window = (EmploymentWindow)getParent();
 				window.removeCreateForm();
@@ -101,67 +113,59 @@ public class EmploymentFormContent extends FormContent
 
 	@Override
 	public void initForm()
-	{
-
-		owners.addEventListener(Events.ON_CLICK, new EventListener<Event>()
+	{		
+		grid.appendChild(new Columns());
+		grid.getColumns().appendChild(new Column(null,null,"125px"));
+		grid.getColumns().appendChild(new Column());
+		
+		for(OrganizationUnit unit:unitService.findAll())
+			employer.appendChild(new Listitem(unit.getParty().getLabel(),unit.getParty().getValue()));
+		
+		for(EmploymentApplication application:applicationService.findAllByStatusType(EmploymentApplication.StatusType.ACCEPTED))
+		{
+			applications.appendChild(
+					new Listitem(application.getApplicant().getLabel()+" - "+application.getPosition().getType().getLabel(),
+							application.getId()));
+		}
+		
+		applications.addEventListener(Events.ON_SELECT, new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				budgetItems.getChildren().clear();
-				
-				for(BudgetItem item:budgetItemService.findAllByOwner(Components.string(owners)))
-					budgetItems.appendChild(new Listitem(item.getLabel(), item.getValue()));
-			
-				Components.setDefault(budgetItems);
+				EmploymentApplication application = applicationService.findOne(Components.string(applications));
+				if(application != null)
+				{
+					employee.appendChild(new Listitem(application.getApplicant().getLabel(), application.getApplicant().getValue()));
+					employee.setSelectedIndex(0);
+				}
 			}
 		});
+			
+		Row row1 = new Row();
+		row1.appendChild(new Label("Start Date"));
+		row1.appendChild(start);
 		
-		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"125px"));
-		grid.getColumns().appendChild(new Column());
-		grid.getColumns().appendChild(new Column(null,null,"125px"));
-		grid.getColumns().appendChild(new Column());
+		Row row2 = new Row();
+		row2.appendChild(new Label("End Date"));
+		row2.appendChild(end);
 		
-//		Row row1 = new Row();
-//		row1.appendChild(new Label("Start Date"));
-//		row1.appendChild(start);
-//		row1.appendChild(new Label("End Date"));
-//		row1.appendChild(end);
-//		
-//		Row row2 = new Row();
-//		row2.appendChild(new Label("Actual Start Date"));
-//		row2.appendChild(actualStart);
-//		row2.appendChild(new Label("Actual End Date"));
-//		row2.appendChild(actualEnd);
-//		
-//		Row row3 = new Row();
-//		row3.appendChild(new Label("Worktime Type"));
-//		row3.appendChild(worktimes);
-//		row3.appendChild(new Label("Employment Type"));
-//		row3.appendChild(employmentstatuses);
-//		
-//		Row row4 = new Row();
-//		row4.appendChild(new Label("Salary Type"));
-//		row4.appendChild(salarys);
-//		row4.appendChild(new Label("Document Owner"));
-//		row4.appendChild(owners);
-//		
-//		Row row5 = new Row();
-//		row5.appendChild(new Label("Budget Item"));
-//		row5.appendChild(budgetItems);
-//		row5.appendChild(new Label("Position Type"));
-//		row5.appendChild(positionTypes);
-//		
-//		Row row6 = new Row();
-//		row6.appendChild(new Label("Position Status Type"));
-//		row6.appendChild(positionStatusTypes);
-//		
-//		rows.appendChild(row1);
-//		rows.appendChild(row2);
-//		rows.appendChild(row3);
-//		rows.appendChild(row4);
-//		rows.appendChild(row5);
-//		rows.appendChild(row6);
+		Row row3 = new Row();
+		row3.appendChild(new Label("Employer"));
+		row3.appendChild(employer);
+		
+		Row row4 = new Row();
+		row4.appendChild(new Label("Application"));
+		row4.appendChild(applications);
+		
+		Row row5 = new Row();
+		row5.appendChild(new Label("Employee"));
+		row5.appendChild(employee);
+
+		rows.appendChild(row1);
+		rows.appendChild(row2);
+		rows.appendChild(row3);
+		rows.appendChild(row4);
+		rows.appendChild(row5);
 	}
 }

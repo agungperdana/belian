@@ -70,4 +70,11 @@ public class EmploymentApplicationService
 	{
 		repository.delete(id);
 	}
+	
+	@Secured("ROLE_EMPYAPP_READ")
+	public List<EmploymentApplication> findAllByStatusType(EmploymentApplication.StatusType statusType)
+	{
+		return repository.findAllByStatusType(statusType);
+	}
+	
 }

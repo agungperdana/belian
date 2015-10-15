@@ -151,12 +151,13 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 
-		list.appendChild(new EmploymentApplicationItem());
-		list.appendChild(new EmploymentItem());
 		list.appendChild(new PositionTypeItem());
 		list.appendChild(new PositionItem());
+		list.appendChild(new EmploymentApplicationItem());
+		list.appendChild(new EmploymentItem());
 		
 		hr.appendChild(list);
+
 		panels.appendChild(hr);	
 	}
 	

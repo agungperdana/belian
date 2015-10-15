@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kratonsolution.belian.general.dm.PartyRole;
@@ -28,18 +29,21 @@ public class PersonService
 	@Autowired
 	private PersonRepository repository;
 		
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PERSON_READ")
 	public Person findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PERSON_READ")
 	public List<Person> findAll()
 	{
 		return repository.findAll();
 	}
 	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PERSON_READ")
 	public List<Person> findAll(int pageIndex,int pageSize)
 	{
@@ -71,6 +75,7 @@ public class PersonService
 		repository.delete(id);
 	}
 	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PERSON_READ")
 	public List<Person> findAllBudgetReviewer(String forOrganization)
 	{
@@ -78,16 +83,25 @@ public class PersonService
 		return new ArrayList<Person>();
 	}
 	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PERSON_READ")
 	public List<Person> findAllByRolesType(String name)
 	{
 		return repository.findAllByRolesType(PartyRole.Type.valueOf(name));
 	}
 	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PERSON_READ")
 	public List<Person> findAllProspect(String company)
 	{
 //		return repository.findAllProspect(company);
 		return null;
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_PERSON_READ")
+	public List<Person> findAllByUserIsNull()
+	{
+		return repository.findAllByUserIsNull();
 	}
 }

@@ -31,7 +31,7 @@ import lombok.Setter;
 @Table(name="employment_application")
 public class EmploymentApplication implements Serializable
 {
-	public enum StatusType{RECEIVED,REVIEWED,REJECTED}
+	public enum StatusType{RECEIVED,REVIEWED,REJECTED,ACCEPTED}
 	
 	public enum SourceType{NEWSPAPER,INTERNET,REFERENCE}
 	

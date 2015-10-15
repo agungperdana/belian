@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.ui.hr.position;
 
-import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -15,7 +14,6 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 
-import com.kratonsolution.belian.accounting.dm.BudgetItem;
 import com.kratonsolution.belian.accounting.svc.BudgetItemService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.hr.dm.Position;
@@ -51,19 +49,17 @@ public class PositionFormContent extends FormContent
 	
 	private Datebox actualEnd = Components.datebox();
 	
-	private Listbox worktimes = Components.newSelect();
+	private Listbox worktimes = Components.fullSpanSelect();
 	
-	private Listbox employmentstatuses = Components.newSelect();
+	private Listbox employmentstatuses = Components.fullSpanSelect();
 	
-	private Listbox salarys = Components.newSelect();
+	private Listbox salarys = Components.fullSpanSelect();
 	
-	private Listbox positionStatusTypes = Components.newSelect();
+	private Listbox positionStatusTypes = Components.fullSpanSelect();
 	
-	private Listbox budgetItems = Components.newSelect();
-	
-	private Listbox positionTypes = Components.newSelect(positionTypeService.findAll(),true);
-	
-	private Listbox owners = Components.newSelect(organizationService.findAllByRolesTypeName("Internal Organization"), false);
+	private Listbox budgetItems = Components.fullSpanSelect();
+		
+	private Listbox positionTypes = Components.fullSpanSelect(positionTypeService.findAll(),true);
 	
 	public PositionFormContent()
 	{
@@ -90,18 +86,11 @@ public class PositionFormContent extends FormContent
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
-			{
-				if(owners.getSelectedIndex() < 0)
-					throw new WrongValueException(owners,"Document Owner cannot be empty");
-				
-				if(budgetItems.getSelectedIndex() < 0)
-					throw new WrongValueException(budgetItems,"Budget Item cannot be empty");
-				
+			{				
 				Position position = new Position();
 				position.setActualEnd(actualEnd.getValue());
 				position.setActualStart(actualStart.getValue());
 				position.setBudgetItem(budgetItemService.findOne(Components.string(budgetItems)));
-				position.setOwner(organizationService.findOne(Components.string(owners)));
 				position.setEnd(end.getValue());
 				position.setSalaryStatus(SalaryStatus.valueOf(Components.string(salarys)));
 				position.setStart(start.getValue());
@@ -144,20 +133,6 @@ public class PositionFormContent extends FormContent
 		Components.setDefault(employmentstatuses);
 		Components.setDefault(salarys);
 		
-		owners.addEventListener(Events.ON_CLICK, new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				budgetItems.getChildren().clear();
-				
-				for(BudgetItem item:budgetItemService.findAllByOwner(Components.string(owners)))
-					budgetItems.appendChild(new Listitem(item.getLabel(), item.getValue()));
-			
-				Components.setDefault(budgetItems);
-			}
-		});
-		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.getColumns().appendChild(new Column());
@@ -182,12 +157,6 @@ public class PositionFormContent extends FormContent
 		row3.appendChild(new Label("Employment Type"));
 		row3.appendChild(employmentstatuses);
 		
-		Row row4 = new Row();
-		row4.appendChild(new Label("Salary Type"));
-		row4.appendChild(salarys);
-		row4.appendChild(new Label("Document Owner"));
-		row4.appendChild(owners);
-		
 		Row row5 = new Row();
 		row5.appendChild(new Label("Budget Item"));
 		row5.appendChild(budgetItems);
@@ -201,7 +170,6 @@ public class PositionFormContent extends FormContent
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
-		rows.appendChild(row4);
 		rows.appendChild(row5);
 		rows.appendChild(row6);
 	}

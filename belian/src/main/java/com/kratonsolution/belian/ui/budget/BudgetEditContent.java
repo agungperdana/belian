@@ -409,7 +409,7 @@ public class BudgetEditContent extends FormContent
 
 				row.appendChild(Components.checkbox(false));
 				row.appendChild(Components.mandatoryDatebox());
-				row.appendChild(Components.newSelect(personService.findAll(),true));
+				row.appendChild(Components.fullSpanSelect(personService.findAll(),true));
 				row.appendChild(results);
 				row.appendChild(Components.mandatoryTextBox());
 				row.appendChild(new Label(UUID.randomUUID().toString()));
