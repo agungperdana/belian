@@ -87,7 +87,7 @@ public class Position implements Serializable,Listable
 	
 	@ManyToOne
 	@JoinColumn(name="fk_organization_owner")
-	private Organization owner;
+	private Organization hiringOrganization;
 	
 	@Version
 	private Long version;

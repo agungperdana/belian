@@ -15,7 +15,9 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 
 import com.kratonsolution.belian.accounting.svc.BudgetItemService;
+import com.kratonsolution.belian.general.dm.OrganizationUnit;
 import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.hr.dm.Position;
 import com.kratonsolution.belian.hr.dm.Position.EmploymentStatus;
 import com.kratonsolution.belian.hr.dm.Position.PositionStatusType;
@@ -41,6 +43,8 @@ public class PositionFormContent extends FormContent
 	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 	
+	private OrganizationUnitService unitService = Springs.get(OrganizationUnitService.class);
+	
 	private Datebox start = Components.currentDatebox();
 	
 	private Datebox end = Components.datebox();
@@ -60,6 +64,8 @@ public class PositionFormContent extends FormContent
 	private Listbox budgetItems = Components.fullSpanSelect();
 		
 	private Listbox positionTypes = Components.fullSpanSelect(positionTypeService.findAll(),true);
+	
+	private Listbox hirings = Components.fullSpanSelect();
 	
 	public PositionFormContent()
 	{
@@ -94,6 +100,7 @@ public class PositionFormContent extends FormContent
 				position.setEnd(end.getValue());
 				position.setSalaryStatus(SalaryStatus.valueOf(Components.string(salarys)));
 				position.setStart(start.getValue());
+				position.setHiringOrganization(organizationService.findOne(Components.string(hirings)));
 				position.setEmploymentStatus(EmploymentStatus.valueOf(Components.string(employmentstatuses)));
 				position.setType(positionTypeService.findOne(Components.string(positionTypes)));
 				position.setWorktimeStatus(WorktimeStatus.valueOf(Components.string(worktimes)));
@@ -129,6 +136,10 @@ public class PositionFormContent extends FormContent
 				positionStatusTypes.setSelectedItem(listitem);
 		}
 		
+		for(OrganizationUnit unit:unitService.findAll())
+			hirings.appendChild(new Listitem(unit.getParty().getLabel(), unit.getParty().getValue()));
+		
+		Components.setDefault(hirings);
 		Components.setDefault(worktimes);
 		Components.setDefault(employmentstatuses);
 		Components.setDefault(salarys);
@@ -164,6 +175,8 @@ public class PositionFormContent extends FormContent
 		row5.appendChild(positionTypes);
 		
 		Row row6 = new Row();
+		row6.appendChild(new Label("Hiring Organization"));
+		row6.appendChild(hirings);
 		row6.appendChild(new Label("Position Status Type"));
 		row6.appendChild(positionStatusTypes);
 		

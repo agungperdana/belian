@@ -25,8 +25,9 @@ import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class EmploymentApplicationFormContent extends FormContent
 {	
@@ -103,7 +104,7 @@ public class EmploymentApplicationFormContent extends FormContent
 			sources.appendChild(new Listitem(sourceType.name(), sourceType.name()));
 		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
+		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.getColumns().appendChild(new Column());
 
 		Row row1 = new Row();

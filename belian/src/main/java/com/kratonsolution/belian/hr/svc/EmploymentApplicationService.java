@@ -53,16 +53,16 @@ public class EmploymentApplicationService
 	}
 	
 	@Secured("ROLE_EMPYAPP_CREATE")
-	public void add(EmploymentApplication container)
+	public void add(EmploymentApplication application)
 	{
-		container.setId(UUID.randomUUID().toString());
-		repository.save(container);
+		application.setId(UUID.randomUUID().toString());
+		repository.save(application);
 	}
 	
 	@Secured("ROLE_EMPYAPP_UPDATE")
-	public void edit(EmploymentApplication container)
+	public void edit(EmploymentApplication application)
 	{
-		repository.saveAndFlush(container);
+		repository.saveAndFlush(application);
 	}
 	
 	@Secured("ROLE_EMPYAPP_DELETE")

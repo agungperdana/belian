@@ -50,8 +50,9 @@ import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class EmploymentEditContent extends FormContent
 {	
@@ -161,7 +162,7 @@ public class EmploymentEditContent extends FormContent
 					position.setActualStart(actualStart.getValue());
 					position.setBudgetItem(budgetItemService.findOne(Components.string(budgetItems)));
 					position.setEnd(end.getValue());
-					position.setOwner(organizationService.findOne(Components.string(owners)));
+					position.setHiringOrganization(organizationService.findOne(Components.string(owners)));
 					position.setSalaryStatus(SalaryStatus.valueOf(Components.string(salaryStatus)));
 					position.setStart(start.getValue());
 					position.setEmploymentStatus(EmploymentStatus.valueOf(Components.string(employmentstatuses)));
@@ -277,9 +278,9 @@ public class EmploymentEditContent extends FormContent
 		
 		for(Organization organization:organizationService.findAllByRolesTypeName("Internal Organization"))
 		{
-			Listitem listitem = new Listitem(position.getOwner().getName(), position.getOwner().getId());
+			Listitem listitem = new Listitem(position.getHiringOrganization().getName(), position.getHiringOrganization().getId());
 			owners.appendChild(listitem);
-			if(organization.getId().equals(position.getOwner().getId()))
+			if(organization.getId().equals(position.getHiringOrganization().getId()))
 				owners.setSelectedItem(listitem);
 		}
 
