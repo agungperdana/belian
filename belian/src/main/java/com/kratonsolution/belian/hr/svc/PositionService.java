@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kratonsolution.belian.hr.dm.Position;
@@ -20,6 +21,7 @@ import com.kratonsolution.belian.hr.dm.PositionRepository;
  *
  */
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class PositionService
 {
 	@Autowired

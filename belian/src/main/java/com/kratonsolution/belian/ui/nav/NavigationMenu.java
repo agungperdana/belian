@@ -152,6 +152,7 @@ public class NavigationMenu extends Window
 		list.setStyle("border:none");
 
 		list.appendChild(new PositionTypeItem());
+		list.appendChild(new PositionTypeRateItem());
 		list.appendChild(new PositionItem());
 		list.appendChild(new EmploymentApplicationItem());
 		list.appendChild(new EmploymentItem());

@@ -18,8 +18,9 @@ import com.kratonsolution.belian.hr.dm.EmploymentApplication;
 import com.kratonsolution.belian.hr.dm.EmploymentApplicationRepository;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
 @Transactional(rollbackOn=Exception.class)

@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.kratonsolution.belian.hr.dm.PositionType;
-import com.kratonsolution.belian.hr.dm.PositionTypeRepository;
+import com.kratonsolution.belian.hr.dm.PositionTypeRate;
+import com.kratonsolution.belian.hr.dm.PositionTypeRateRepository;
 
 /**
  * 
@@ -23,49 +23,49 @@ import com.kratonsolution.belian.hr.dm.PositionTypeRepository;
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
-public class PositionTypeService
+public class PositionTypeRateService
 {
 	@Autowired
-	private PositionTypeRepository repository;
+	private PositionTypeRateRepository repository;
 	
-	@Secured("ROLE_POSITIONTYPE_READ")
+	@Secured("ROLE_POSITIONTYPERATE_READ")
 	public int size()
 	{
 		return Long.valueOf(repository.count()).intValue();
 	}
 	
-	@Secured("ROLE_POSITIONTYPE_READ")
-	public PositionType findOne(String id)
+	@Secured("ROLE_POSITIONTYPERATE_READ")
+	public PositionTypeRate findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 	
-	@Secured("ROLE_POSITIONTYPE_READ")
-	public List<PositionType> findAll()
+	@Secured("ROLE_POSITIONTYPERATE_READ")
+	public List<PositionTypeRate> findAll()
 	{
 		return repository.findAll();
 	}
 		
-	@Secured("ROLE_POSITIONTYPE_READ")
-	public List<PositionType> findAll(int pageIndex,int pageSize)
+	@Secured("ROLE_POSITIONTYPERATE_READ")
+	public List<PositionTypeRate> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
 	}
 	
-	@Secured("ROLE_POSITIONTYPE_CREATE")
-	public void add(PositionType container)
+	@Secured("ROLE_POSITIONTYPERATE_CREATE")
+	public void add(PositionTypeRate rate)
 	{
-		container.setId(UUID.randomUUID().toString());
-		repository.save(container);
+		rate.setId(UUID.randomUUID().toString());
+		repository.save(rate);
 	}
 	
-	@Secured("ROLE_POSITIONTYPE_UPDATE")
-	public void edit(PositionType container)
+	@Secured("ROLE_POSITIONTYPERATE_UPDATE")
+	public void edit(PositionTypeRate rate)
 	{
-		repository.saveAndFlush(container);
+		repository.saveAndFlush(rate);
 	}
 	
-	@Secured("ROLE_POSITIONTYPE_DELETE")
+	@Secured("ROLE_POSITIONTYPERATE_DELETE")
 	public void delete(@PathVariable String id)
 	{
 		repository.delete(id);
