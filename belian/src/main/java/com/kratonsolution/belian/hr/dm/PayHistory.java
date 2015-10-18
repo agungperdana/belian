@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -53,11 +54,11 @@ public class PayHistory implements Serializable
 	private PeriodType periodType;
 	
 	@ManyToOne
-	@Column(name="fk_salary_step")
+	@JoinColumn(name="fk_salary_step")
 	private SalaryStep salaryStep;
 	
 	@ManyToOne
-	@Column(name="fk_employment")
+	@JoinColumn(name="fk_employment")
 	private Employment employment;
 	
 	@Version

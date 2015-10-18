@@ -153,6 +153,7 @@ public class NavigationMenu extends Window
 
 		list.appendChild(new PositionTypeItem());
 		list.appendChild(new PositionTypeRateItem());
+		list.appendChild(new PayGradeItem());
 		list.appendChild(new PositionItem());
 		list.appendChild(new EmploymentApplicationItem());
 		list.appendChild(new EmploymentItem());
