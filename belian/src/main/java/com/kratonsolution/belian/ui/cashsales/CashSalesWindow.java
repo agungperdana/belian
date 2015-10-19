@@ -18,12 +18,13 @@ import com.kratonsolution.belian.ui.HasGrid;
 import com.kratonsolution.belian.ui.nav.IconBar;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class CashSalesWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption("Direct Sales");
+	private final Caption caption = new Caption("Cash Sales");
 	
 	private CashSalesButton status = new CashSalesButton();
 	
@@ -39,8 +40,8 @@ public class CashSalesWindow extends AbstractWindow implements HasGrid,HasCreate
 	private CashSalesWindow()
 	{
 		super();
-		setWidth("850px");
-		setHeight("600px");
+		setWidth("750px");
+		setHeight("520px");
 	}
 	
 	protected void init()

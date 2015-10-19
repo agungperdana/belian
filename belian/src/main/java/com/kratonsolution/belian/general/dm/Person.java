@@ -3,24 +3,23 @@
  */
 package com.kratonsolution.belian.general.dm;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import com.kratonsolution.belian.global.dm.EconomicAgent;
-import com.kratonsolution.belian.security.dm.User;
 
 import lombok.Getter;
 import lombok.Setter;
 
+import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.security.dm.User;
+
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
@@ -40,7 +39,6 @@ public class Person extends EconomicAgent
 	@Enumerated(EnumType.STRING)
 	private MaritalStatus maritalStatus = MaritalStatus.SINGLE;
 	
-	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="fk_user")
+	@OneToOne(mappedBy="person")
 	private User user;
 }

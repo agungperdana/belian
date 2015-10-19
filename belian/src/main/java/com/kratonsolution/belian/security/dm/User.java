@@ -23,8 +23,9 @@ import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.global.dm.UserSetting;
 
 /**
+ * 
  * @author Agung Dodi Perdana
- *
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
@@ -51,7 +52,8 @@ public class User
 	@JoinColumn(name="fk_user_setting")
 	private UserSetting setting;
 	
-	@OneToOne(mappedBy="user")
+	@OneToOne
+	@JoinColumn(name="fk_person")
 	private Person person;
 	
 	@Version

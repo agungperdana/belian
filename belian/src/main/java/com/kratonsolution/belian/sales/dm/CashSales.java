@@ -9,6 +9,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -32,8 +34,14 @@ import com.kratonsolution.belian.global.dm.Contract;
 @Table(name="cash_sales")
 public class CashSales extends Contract<CashSalesPayment, CashSalesLine>
 {
+	public enum Status {PAID,UNPAID}
+	
 	@Column(name="table_number")
 	private int table = 1;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="status")
+	private Status status = Status.UNPAID;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_organization")

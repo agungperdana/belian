@@ -17,11 +17,13 @@ import org.zkoss.zul.Columns;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.security.dm.Role;
 import com.kratonsolution.belian.security.dm.User;
@@ -34,8 +36,9 @@ import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class UserFormContent extends FormContent
 {	
@@ -86,6 +89,9 @@ public class UserFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
+				if(employees.getChildren().size() <= 0)
+					throw new WrongValueException(employees,"Employee cannot be empty");
+				
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Code cannot be empty");
 			
@@ -106,6 +112,7 @@ public class UserFormContent extends FormContent
 				user.setEmail(email.getText());
 				user.setPassword(password.getText());
 				user.setEnabled(enabled.isChecked());
+				user.setPerson(personService.findOne(Components.string(employees)));
 				
 				Rows _rows = roles.getRows();
 				for(Object object:_rows.getChildren())
@@ -137,6 +144,11 @@ public class UserFormContent extends FormContent
 	@Override
 	public void initForm()
 	{
+		for(Person person:personService.findAllByUserIsNull())
+			employees.appendChild(new Listitem(person.getLabel(),person.getValue()));
+
+		Components.setDefault(employees);
+		
 		name.setConstraint("no empty");
 		name.setWidth("250px");
 		
@@ -167,20 +179,24 @@ public class UserFormContent extends FormContent
 		row2.appendChild(email);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Password"));
-		row3.appendChild(password);
+		row3.appendChild(new Label("Employee"));
+		row3.appendChild(employees);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Re - Password"));
-		row4.appendChild(repassword);
+		row4.appendChild(new Label("Password"));
+		row4.appendChild(password);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Status"));
-		row5.appendChild(enabled);
+		row5.appendChild(new Label("Re - Password"));
+		row5.appendChild(repassword);
 		
 		Row row6 = new Row();
-		row6.appendChild(new Label("Employee"));
-		row6.appendChild(employees);
+		row6.appendChild(new Label("Status"));
+		row6.appendChild(enabled);
+		
+		Row row7 = new Row();
+		row7.appendChild(new Label("Employee"));
+		row7.appendChild(employees);
 		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
@@ -188,6 +204,7 @@ public class UserFormContent extends FormContent
 		rows.appendChild(row4);
 		rows.appendChild(row5);
 		rows.appendChild(row6);
+		rows.appendChild(row7);
 	}
 	
 	protected void initRoles()
