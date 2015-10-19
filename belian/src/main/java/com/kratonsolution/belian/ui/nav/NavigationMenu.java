@@ -169,7 +169,7 @@ public class NavigationMenu extends Window
 
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
-		list.appendChild(new DirectSalesItem());
+		list.appendChild(new CashSalesItem());
 		
 		panel.appendChild(list);
 		panels.appendChild(panel);

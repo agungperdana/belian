@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.directsales;
+package com.kratonsolution.belian.ui.cashsales;
 
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
@@ -32,7 +32,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author agungdodiperdana
  *
  */
-public class DirectSalesEditContent extends FormContent
+public class CashSalesEditContent extends FormContent
 {	
 	private final BankAccountService service = Springs.get(BankAccountService.class);
 
@@ -52,7 +52,7 @@ public class DirectSalesEditContent extends FormContent
 
 	private Row row;
 
-	public DirectSalesEditContent(Row row)
+	public CashSalesEditContent(Row row)
 	{
 		super();
 		this.row = row;
@@ -68,7 +68,7 @@ public class DirectSalesEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				DirectSalesWindow window = (DirectSalesWindow)getParent();
+				CashSalesWindow window = (CashSalesWindow)getParent();
 				window.removeEditForm();
 				window.insertGrid();
 			}
@@ -97,7 +97,7 @@ public class DirectSalesEditContent extends FormContent
 					service.edit(account);
 				}
 		
-				DirectSalesWindow window = (DirectSalesWindow)getParent();
+				CashSalesWindow window = (CashSalesWindow)getParent();
 				window.removeEditForm();
 				window.insertGrid();
 			}

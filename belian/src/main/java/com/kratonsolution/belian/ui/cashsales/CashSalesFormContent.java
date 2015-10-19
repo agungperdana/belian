@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.directsales;
+package com.kratonsolution.belian.ui.cashsales;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -34,15 +34,15 @@ import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.accounting.dm.CashAccount;
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.svc.CashAccountService;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.common.Dates;
 import com.kratonsolution.belian.general.dm.Geographic;
-import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.dm.OrganizationUnit;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.global.dm.EconomicEvent;
 import com.kratonsolution.belian.global.dm.EconomicEvent.EconomicalType;
@@ -52,11 +52,11 @@ import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.inventory.svc.UnitOfMeasureService;
-import com.kratonsolution.belian.sales.dm.DirectSales;
-import com.kratonsolution.belian.sales.dm.DirectSalesLine;
-import com.kratonsolution.belian.sales.dm.DirectSalesLineEvent;
-import com.kratonsolution.belian.sales.dm.DirectSalesPayment;
-import com.kratonsolution.belian.sales.dm.DirectSalesPaymentEvent;
+import com.kratonsolution.belian.sales.dm.CashSales;
+import com.kratonsolution.belian.sales.dm.CashSalesLine;
+import com.kratonsolution.belian.sales.dm.CashSalesLineEvent;
+import com.kratonsolution.belian.sales.dm.CashSalesPayment;
+import com.kratonsolution.belian.sales.dm.CashSalesPaymentEvent;
 import com.kratonsolution.belian.sales.dm.PaymentType;
 import com.kratonsolution.belian.sales.srv.CashSalesService;
 import com.kratonsolution.belian.ui.FormContent;
@@ -66,14 +66,17 @@ import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
-public class DirectSalesFormContent extends FormContent
+public class CashSalesFormContent extends FormContent
 {	
 	private CashSalesService service = Springs.get(CashSalesService.class);
 	
 	private EconomicAgentService agentService = Springs.get(EconomicAgentService.class);
+	
+	private OrganizationUnitService unitService = Springs.get(OrganizationUnitService.class);
 	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 	
@@ -95,6 +98,8 @@ public class DirectSalesFormContent extends FormContent
 	
 	private Textbox note = new Textbox();
 	
+	private Doublebox tableNumber = new Doublebox(1);
+	
 	private Listbox producers = Components.newSelect();
 	
 	private Listbox consumers = Components.newSelect();
@@ -105,15 +110,13 @@ public class DirectSalesFormContent extends FormContent
 	
 	private Listbox locations = Components.newSelect();
 	
-	private Listbox cashaccounts = Components.newSelect();
-	
 	private Tabbox tabbox = new Tabbox();
 	
 	private Grid saleItems = new Grid();
 	
 	private Grid payments = new Grid();
 	
-	public DirectSalesFormContent()
+	public CashSalesFormContent()
 	{
 		super();
 		initToolbar();
@@ -137,7 +140,7 @@ public class DirectSalesFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				DirectSalesWindow window = (DirectSalesWindow)getParent();
+				CashSalesWindow window = (CashSalesWindow)getParent();
 				window.removeCreateForm();
 				window.insertGrid();
 			}
@@ -154,7 +157,8 @@ public class DirectSalesFormContent extends FormContent
 				if(Strings.isNullOrEmpty(term.getText()))
 					throw new WrongValueException(term,"Holder cannot be empty");
 				
-				DirectSales sales = new DirectSales();
+				CashSales sales = new CashSales();
+				sales.setTable(tableNumber.intValue());
 				sales.setConsumer(agentService.findOne(Components.string(consumers)));
 				sales.setCreditTerm(term.getValue().intValue());
 				sales.setCurrency(currencyService.findOne(Components.string(currencys)));
@@ -176,7 +180,7 @@ public class DirectSalesFormContent extends FormContent
 					Doublebox quantity = (Doublebox)row.getChildren().get(5);
 					Textbox note = (Textbox)row.getChildren().get(7);
 
-					DirectSalesLine line = new DirectSalesLine();
+					CashSalesLine line = new CashSalesLine();
 					line.setId(UUID.randomUUID().toString());
 					line.setCashSales(sales);
 					line.setPrice(Components.decimal(prices));
@@ -187,7 +191,7 @@ public class DirectSalesFormContent extends FormContent
 					line.setUom(line.getResource().getUom());
 					line.setNote(note.getText());
 					
-					DirectSalesLineEvent events = new DirectSalesLineEvent();
+					CashSalesLineEvent events = new CashSalesLineEvent();
 					events.setId(UUID.randomUUID().toString());
 					events.setConsumer(sales.getConsumer());
 					events.setDate(sales.getDate());
@@ -210,7 +214,7 @@ public class DirectSalesFormContent extends FormContent
 					Doublebox amount = (Doublebox)row.getChildren().get(3);
 					Textbox note = (Textbox)row.getChildren().get(4);
 				
-					DirectSalesPayment line = new DirectSalesPayment();
+					CashSalesPayment line = new CashSalesPayment();
 					line.setId(UUID.randomUUID().toString());
 					line.setDate(sales.getDate());
 					line.setCashSales(sales);
@@ -219,13 +223,12 @@ public class DirectSalesFormContent extends FormContent
 					line.setCardNumber(cardno.getText());
 					line.setNote(note.getText());
 					
-					DirectSalesPaymentEvent events = new DirectSalesPaymentEvent();
+					CashSalesPaymentEvent events = new CashSalesPaymentEvent();
 					events.setId(UUID.randomUUID().toString());
 					events.setConsumer(sales.getConsumer());
 					events.setDate(sales.getDate());
 					events.setEconomicType(EconomicalType.ECONOMIC);
 					events.setProducer(sales.getProducer());
-					events.setResource(cashAccountService.findOne(Components.string(cashaccounts)));
 					events.setType(Type.GET);
 					events.setValue(line.getValue());
 					
@@ -236,7 +239,7 @@ public class DirectSalesFormContent extends FormContent
 				
 				service.add(sales);
 				
-				DirectSalesWindow window = (DirectSalesWindow)getParent();
+				CashSalesWindow window = (CashSalesWindow)getParent();
 				window.removeCreateForm();
 				window.insertGrid();
 			}
@@ -254,24 +257,11 @@ public class DirectSalesFormContent extends FormContent
 		term.setConstraint("no empty");
 		term.setWidth("65px");
 		
-		for(Organization organization :organizationService.findAllByRolesTypeName("Internal Organization"))
-			organizations.appendChild(new Listitem(organization.getName(),organization.getId()));
+		for(OrganizationUnit unit:unitService.findAll())
+			organizations.appendChild(new Listitem(unit.getParty().getName(),unit.getParty().getId()));
 			
 		for(Currency currency:currencyService.findAll())
 			currencys.appendChild(new Listitem(currency.getCode(), currency.getId()));
-
-		currencys.addEventListener(Events.ON_SELECT, new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				cashaccounts.getChildren().clear();
-				for(CashAccount account:cashAccountService.findAllByOwnerAndCurrency(Components.string(organizations), Components.string(currencys)))
-					cashaccounts.appendChild(new Listitem(account.getName(),account.getId()));
-				
-				Components.setDefault(cashaccounts);
-			}
-		});
 		
 		organizations.addEventListener(Events.ON_SELECT, new EventListener<Event>()
 		{
@@ -285,14 +275,9 @@ public class DirectSalesFormContent extends FormContent
 				consumers.getChildren().clear();
 				for(EconomicAgent agent:agentService.findByRoleAndParty("Customer",Components.string(organizations)))
 					consumers.appendChild(new Listitem(agent.getName(),agent.getId()));
-			
-				cashaccounts.getChildren().clear();
-				for(CashAccount account:cashAccountService.findAllByOwnerAndCurrency(Components.string(organizations), Components.string(currencys)))
-					cashaccounts.appendChild(new Listitem(account.getName(),account.getId()));
 				
 				Components.setDefault(producers);
 				Components.setDefault(consumers);
-				Components.setDefault(cashaccounts);
 			}
 		});
 		
@@ -341,10 +326,6 @@ public class DirectSalesFormContent extends FormContent
 		row8.appendChild(new Label("Sales Location"));
 		row8.appendChild(locations);
 		
-		Row row9 = new Row();
-		row9.appendChild(new Label("Cash Account"));
-		row9.appendChild(cashaccounts);
-		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
@@ -353,7 +334,6 @@ public class DirectSalesFormContent extends FormContent
 		rows.appendChild(row6);
 		rows.appendChild(row7);
 		rows.appendChild(row8);
-		rows.appendChild(row9);
 	}
 	
 	private void initItems()

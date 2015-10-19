@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.kratonsolution.belian.sales.dm.DirectSales;
+import com.kratonsolution.belian.sales.dm.CashSales;
 import com.kratonsolution.belian.sales.dm.DirectSalesRepository;
 
 /**
@@ -34,32 +34,32 @@ public class CashSalesService
 	}
 	
 	@Secured("ROLE_CASHSALES_READ")
-	public DirectSales findOne(String id)
+	public CashSales findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 	
 	@Secured("ROLE_CASHSALES_READ")
-	public List<DirectSales> findAll()
+	public List<CashSales> findAll()
 	{
 		return repository.findAll();
 	}
 	
 	@Secured("ROLE_CASHSALES_READ")
-	public List<DirectSales> findAll(int pageIndex,int pageSize)
+	public List<CashSales> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
 	}
 	
 	@Secured("ROLE_CASHSALES_CREATE")
-	public void add(DirectSales sales)
+	public void add(CashSales sales)
 	{
 		sales.setId(UUID.randomUUID().toString());
 		repository.save(sales);
 	}
 	
 	@Secured("ROLE_CASHSALES_UPDATE")
-	public void edit(DirectSales sales)
+	public void edit(CashSales sales)
 	{
 		repository.saveAndFlush(sales);
 	}

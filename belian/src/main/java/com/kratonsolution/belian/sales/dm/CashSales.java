@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -21,15 +22,19 @@ import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.global.dm.Contract;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
-@Table(name="direct_sales")
-public class DirectSales extends Contract<DirectSalesPayment, DirectSalesLine>
+@Table(name="cash_sales")
+public class CashSales extends Contract<CashSalesPayment, CashSalesLine>
 {
+	@Column(name="table_number")
+	private int table = 1;
+	
 	@ManyToOne
 	@JoinColumn(name="fk_organization")
 	private Organization organization;
@@ -39,8 +44,8 @@ public class DirectSales extends Contract<DirectSalesPayment, DirectSalesLine>
 	private Geographic location;
 	
 	@OneToMany(mappedBy="cashSales",cascade=CascadeType.ALL,orphanRemoval=true)
-	private Set<DirectSalesLine> decrements = new HashSet<DirectSalesLine>();
+	private Set<CashSalesLine> decrements = new HashSet<CashSalesLine>();
 	
 	@OneToMany(mappedBy="cashSales",cascade=CascadeType.ALL,orphanRemoval=true)
-	private Set<DirectSalesPayment> increments = new HashSet<DirectSalesPayment>();
+	private Set<CashSalesPayment> increments = new HashSet<CashSalesPayment>();
 }

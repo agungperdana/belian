@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.directsales;
+package com.kratonsolution.belian.ui.cashsales;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Page;
@@ -21,22 +21,22 @@ import com.kratonsolution.belian.ui.nav.IconBar;
  * @author agungdodiperdana
  *
  */
-public class DirectSalesWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
+public class CashSalesWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
 	private final Caption caption = new Caption("Direct Sales");
 	
-	private DirectSalesButton status = new DirectSalesButton();
+	private CashSalesButton status = new CashSalesButton();
 	
-	public static DirectSalesWindow injectInto(Page page)
+	public static CashSalesWindow injectInto(Page page)
 	{
-		DirectSalesWindow window = new DirectSalesWindow();
+		CashSalesWindow window = new CashSalesWindow();
 		window.setPage(page);
 		window.init();
 		
 		return window;
 	}
 	
-	private DirectSalesWindow()
+	private CashSalesWindow()
 	{
 		super();
 		setWidth("850px");
@@ -93,7 +93,7 @@ public class DirectSalesWindow extends AbstractWindow implements HasGrid,HasCrea
 	@Override
 	public void insertEditForm(Row row)
 	{
-		appendChild(new DirectSalesEditContent(row));
+		appendChild(new CashSalesEditContent(row));
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class DirectSalesWindow extends AbstractWindow implements HasGrid,HasCrea
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof DirectSalesEditContent)
+			if(component instanceof CashSalesEditContent)
 			{
 				removeChild(component);
 				break;
@@ -112,7 +112,7 @@ public class DirectSalesWindow extends AbstractWindow implements HasGrid,HasCrea
 	@Override
 	public void insertCreateForm()
 	{
-		appendChild(new DirectSalesFormContent());
+		appendChild(new CashSalesFormContent());
 	}
 
 	@Override
@@ -120,7 +120,7 @@ public class DirectSalesWindow extends AbstractWindow implements HasGrid,HasCrea
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof DirectSalesFormContent)
+			if(component instanceof CashSalesFormContent)
 			{
 				removeChild(component);
 				break;
@@ -131,7 +131,7 @@ public class DirectSalesWindow extends AbstractWindow implements HasGrid,HasCrea
 	@Override
 	public void insertGrid()
 	{
-		appendChild(new DirectSalesGridContent());
+		appendChild(new CashSalesGridContent());
 	}
 
 	@Override
@@ -139,7 +139,7 @@ public class DirectSalesWindow extends AbstractWindow implements HasGrid,HasCrea
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof DirectSalesGridContent)
+			if(component instanceof CashSalesGridContent)
 			{
 				removeChild(component);
 				break;

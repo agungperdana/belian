@@ -11,20 +11,21 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-import com.kratonsolution.belian.accounting.dm.CashAccount;
 import com.kratonsolution.belian.global.dm.EconomicEvent;
+import com.kratonsolution.belian.inventory.dm.Product;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
-@Table(name="direct_sales_payment_event")
-public class DirectSalesPaymentEvent extends EconomicEvent<CashAccount>
-{	
+@Table(name="cash_sales_line_event")
+public class CashSalesLineEvent extends EconomicEvent<Product>
+{
 	@ManyToOne
-	@JoinColumn(name="fk_cash_account")
-	private CashAccount resource;
+	@JoinColumn(name="fk_product_resource")
+	protected Product resource;
 }

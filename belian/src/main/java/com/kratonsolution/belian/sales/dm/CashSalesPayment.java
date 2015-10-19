@@ -25,8 +25,8 @@ import com.kratonsolution.belian.global.dm.IncrementCommitment;
 @Getter
 @Setter
 @Entity
-@Table(name="direct_sales_payment")
-public class DirectSalesPayment extends IncrementCommitment<CashAccount,DirectSalesPaymentEvent>
+@Table(name="cash_sales_payment")
+public class CashSalesPayment extends IncrementCommitment<CashAccount,CashSalesPaymentEvent>
 {
 	@Column(name="card_number")
 	private String cardNumber;
@@ -41,9 +41,9 @@ public class DirectSalesPayment extends IncrementCommitment<CashAccount,DirectSa
 	
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="fk_sales_payment_event")
-	private DirectSalesPaymentEvent event;
+	private CashSalesPaymentEvent event;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_cash_sales")
-	private DirectSales cashSales;
+	private CashSales cashSales;
 }

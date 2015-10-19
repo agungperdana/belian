@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.directsales;
+package com.kratonsolution.belian.ui.cashsales;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -23,11 +23,11 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author agungdodiperdana
  *
  */
-public class DirectSalesGridContent extends GridContent
+public class CashSalesGridContent extends GridContent
 {
 	private final CashSalesService service = Springs.get(CashSalesService.class);
 	
-	public DirectSalesGridContent()
+	public CashSalesGridContent()
 	{
 		super();
 		initToolbar();
@@ -43,7 +43,7 @@ public class DirectSalesGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new DirectSalesModel(8));
+				grid.setModel(new CashSalesModel(8));
 			}
 		});
 		
@@ -52,7 +52,7 @@ public class DirectSalesGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				DirectSalesWindow window = (DirectSalesWindow)getParent();
+				CashSalesWindow window = (CashSalesWindow)getParent();
 				window.removeGrid();
 				window.insertCreateForm();
 			}
@@ -128,7 +128,7 @@ public class DirectSalesGridContent extends GridContent
 								}
 							}
 							
-							grid.setModel(new DirectSalesModel(8));
+							grid.setModel(new CashSalesModel(8));
 						}
 					}
 				});
@@ -147,13 +147,13 @@ public class DirectSalesGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final DirectSalesModel model = new DirectSalesModel(8);
+		final CashSalesModel model = new CashSalesModel(8);
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
 		grid.setEmptyMessage("No Cash Sales data exist.");
 		grid.setModel(model);
-		grid.setRowRenderer(new DirectSalesRowRenderer());
+		grid.setRowRenderer(new CashSalesRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(8);
@@ -186,7 +186,7 @@ public class DirectSalesGridContent extends GridContent
 				@Override
 				public void onEvent(Event event) throws Exception
 				{
-					DirectSalesWindow window = (DirectSalesWindow)getParent();
+					CashSalesWindow window = (CashSalesWindow)getParent();
 					window.removeGrid();
 					window.insertEditForm(row);
 				}

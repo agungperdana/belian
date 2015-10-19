@@ -9,22 +9,22 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
-import com.kratonsolution.belian.ui.directsales.DirectSalesWindow;
+import com.kratonsolution.belian.ui.cashsales.CashSalesWindow;
 
 /**
  * @author agungdodiperdana
  *
  */
-public class DirectSalesItem extends Listitem
+public class CashSalesItem extends Listitem
 {
-	public DirectSalesItem()
+	public CashSalesItem()
 	{
 		init();
 	}
 	
 	public void init()
 	{
-		setLabel("Direct Sales");
+		setLabel("Cash Sales");
 		setImage("/icons/directsales.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()
@@ -32,16 +32,16 @@ public class DirectSalesItem extends Listitem
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				DirectSalesWindow window = null;
+				CashSalesWindow window = null;
 				
 				for(Component component:getPage().getRoots())
 				{
-					if(component instanceof DirectSalesWindow)
-						window = (DirectSalesWindow)component;
+					if(component instanceof CashSalesWindow)
+						window = (CashSalesWindow)component;
 				}
 				
 				if(window == null)
-					window = DirectSalesWindow.injectInto(getPage());
+					window = CashSalesWindow.injectInto(getPage());
 				
 				else if(!window.isVisible())
 				{

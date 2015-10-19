@@ -38,7 +38,7 @@ public abstract class Contract<I extends IncrementCommitment,D extends Decrement
 	@Id
 	protected String id;
 	
-	@Column(name="number",unique=true,nullable=false)
+	@Column(name="number")
 	protected String number;
 	
 	@Column(name="date")
