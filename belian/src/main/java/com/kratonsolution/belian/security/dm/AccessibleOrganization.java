@@ -20,8 +20,9 @@ import lombok.Setter;
 import com.kratonsolution.belian.general.dm.Organization;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter

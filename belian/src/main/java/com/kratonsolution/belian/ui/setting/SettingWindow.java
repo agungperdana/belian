@@ -22,10 +22,12 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Vlayout;
 
+import com.kratonsolution.belian.accounting.dm.Currency;
+import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Address;
+import com.kratonsolution.belian.general.dm.AddressRepository;
 import com.kratonsolution.belian.general.dm.Organization;
-import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.security.svc.UserService;
@@ -34,16 +36,19 @@ import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class SettingWindow extends AbstractWindow
 {
 	private UserService userService = Springs.get(UserService.class);
 	
-	private GeographicService geographicService = Springs.get(GeographicService.class);
+	private AddressRepository geographicService = Springs.get(AddressRepository.class);
 	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
+	
+	private CurrencyService currencyService = Springs.get(CurrencyService.class);
 	
 	private SessionUtils sessionUtils = Springs.get(SessionUtils.class);
 	
@@ -56,6 +61,8 @@ public class SettingWindow extends AbstractWindow
 	private Listbox locations = Components.newSelect();
 	
 	private Listbox languanges = Components.newSelect();
+	
+	private Listbox currencys = Components.newSelect();
 	
 	public SettingWindow()
 	{
@@ -86,8 +93,17 @@ public class SettingWindow extends AbstractWindow
 		{
 			Listitem listitem = new Listitem(organization.getName(), organization.getId());
 			organizations.appendChild(listitem);
-			if(organization.getId().equals(sessionUtils.getOrganization().getId()))
+			if(sessionUtils.getOrganization() != null && organization.getId().equals(sessionUtils.getOrganization().getId()))
+			{
 				organizations.setSelectedItem(listitem);
+				for(Address address:organization.getAddresses())
+				{
+					Listitem listitem2 = new Listitem(address.getLabel(),address.getValue());
+					locations.appendChild(listitem2);
+					if(sessionUtils.getLocation() != null && sessionUtils.getLocation().getId().equals(address.getId()))
+						locations.setSelectedItem(listitem2);
+				}
+			}
 		}
 		
 		organizations.addEventListener(Events.ON_SELECT, new EventListener<Event>()
@@ -105,15 +121,26 @@ public class SettingWindow extends AbstractWindow
 						Listitem listitem = new Listitem(address.getCity().getName(),address.getCity().getId());
 						locations.appendChild(listitem);
 						
-						if(address.getCity().getId().equals(sessionUtils.getLocation().getId()))
+						if(sessionUtils.getLocation() != null && address.getCity().getId().equals(sessionUtils.getLocation().getId()))
 							locations.setSelectedItem(listitem);
 					}
 				}
 			}
 		});
 		
-		locations.appendChild(new Listitem(sessionUtils.getLocation().getName(), sessionUtils.getLocation().getId()));
-		locations.setSelectedIndex(0);
+		for(Currency currency:currencyService.findAll())
+		{
+			Listitem listitem = new Listitem(currency.getLabel(), currency.getValue());
+			currencys.appendChild(listitem);
+			if(sessionUtils.getCurrency() != null && currency.getId().equals(sessionUtils.getCurrency().getId()))
+				currencys.setSelectedItem(listitem);
+		}
+		
+		if(sessionUtils.getLocation() != null)
+		{
+			locations.appendChild(new Listitem(sessionUtils.getLocation().getLabel(), sessionUtils.getLocation().getValue()));
+			locations.setSelectedIndex(0);
+		}
 		
 		languanges.appendChild(new Listitem("Bahasa Indonesia", "id-ID"));
 		languanges.appendChild(new Listitem("English", "en-US"));
@@ -150,9 +177,14 @@ public class SettingWindow extends AbstractWindow
 		row3.appendChild(new Label("Language"));
 		row3.appendChild(languanges);
 		
+		Row row4 = new Row();
+		row4.appendChild(new Label("Currency"));
+		row4.appendChild(currencys);
+		
 		grid.getRows().appendChild(row1);
 		grid.getRows().appendChild(row2);
 		grid.getRows().appendChild(row3);
+		grid.getRows().appendChild(row4);
 		
 		tabpanel.appendChild(grid);
 	}
@@ -184,6 +216,7 @@ public class SettingWindow extends AbstractWindow
 			user.getSetting().setLanguage(Components.string(languanges));
 			user.getSetting().setLocation(geographicService.findOne(Components.string(locations)));
 			user.getSetting().setOrganization(organizationService.findOne(Components.string(organizations)));
+			user.getSetting().setCurrency(currencyService.findOne(Components.string(currencys)));
 			
 			userService.edit(user);
 		}

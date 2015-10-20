@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.global.dm;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -34,7 +35,7 @@ import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
 public abstract class DecrementCommitment<R extends EconomicResource,E extends EconomicEvent>
 {
 	@Id
-	protected String id;
+	protected String id = UUID.randomUUID().toString();
 	
 	@Column(name="value")
 	protected BigDecimal value;

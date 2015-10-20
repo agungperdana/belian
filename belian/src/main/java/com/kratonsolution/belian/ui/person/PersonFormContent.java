@@ -95,6 +95,7 @@ public class PersonFormContent extends FormContent
 	{
 		name.setConstraint("no empty");
 		name.setWidth("300px");
+		name.setText(Person.ANONYMOUS);
 		
 		date.setConstraint("no empty");
 		date.setWidth("250px");

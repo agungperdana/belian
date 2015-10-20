@@ -42,9 +42,9 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class UserFormContent extends FormContent
 {	
-	private final UserService service = Springs.get(UserService.class);
+	private UserService service = Springs.get(UserService.class);
 	
-	private final RoleService roleService = Springs.get(RoleService.class);
+	private RoleService roleService = Springs.get(RoleService.class);
 	
 	private PersonService personService = Springs.get(PersonService.class);
 	
@@ -133,6 +133,7 @@ public class UserFormContent extends FormContent
 				}
 				
 				service.add(user);
+				personService.edit(user.getPerson());
 				
 				UserWindow window = (UserWindow)getParent();
 				window.removeCreateForm();

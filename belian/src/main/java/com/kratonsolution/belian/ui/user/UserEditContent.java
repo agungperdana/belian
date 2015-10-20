@@ -118,6 +118,7 @@ public class UserEditContent extends FormContent
 					}
 
 					service.edit(user);
+					personService.edit(user.getPerson());
 				}
 
 				UserWindow window = (UserWindow)getParent();

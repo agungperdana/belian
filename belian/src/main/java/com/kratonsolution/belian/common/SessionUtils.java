@@ -9,7 +9,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.Organization;
@@ -21,10 +24,12 @@ import com.kratonsolution.belian.security.svc.UserService;
 
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
+@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 public class SessionUtils
 {
 	@Autowired
@@ -43,8 +48,14 @@ public class SessionUtils
 		
 		for(UserRole role:getUser().getRoles())
 		{
-			for(AccessibleOrganization organization:role.getRole().getOrganizations())
-				list.add(organization.getOrganization());
+			if(role.isEnabled())
+			{
+				for(AccessibleOrganization organization:role.getRole().getOrganizations())
+				{
+					if(organization.isSelected())
+						list.add(organization.getOrganization());
+				}
+			}
 		}
 			
 		return list;
@@ -68,7 +79,12 @@ public class SessionUtils
 		return locations;
 	}
 	
-	public Geographic getLocation()
+	public Currency getCurrency()
+	{
+		return getUser().getSetting().getCurrency();
+	}
+	
+	public Address getLocation()
 	{
 		return getUser().getSetting().getLocation();
 	}

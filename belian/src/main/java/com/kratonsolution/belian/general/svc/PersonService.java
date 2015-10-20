@@ -102,6 +102,13 @@ public class PersonService
 	@Secured("ROLE_PERSON_READ")
 	public List<Person> findAllByUserIsNull()
 	{
-		return repository.findAllByUserIsNull();
+		return repository.findAllWhereUserIsNull();
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_PERSON_READ")
+	public Person anonymous()
+	{
+		return repository.findOneByName(Person.ANONYMOUS);
 	}
 }

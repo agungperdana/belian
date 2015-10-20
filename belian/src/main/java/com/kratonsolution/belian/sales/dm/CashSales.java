@@ -19,7 +19,7 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-import com.kratonsolution.belian.general.dm.Geographic;
+import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.global.dm.Contract;
 
@@ -36,6 +36,9 @@ public class CashSales extends Contract<CashSalesPayment, CashSalesLine>
 {
 	public enum Status {PAID,UNPAID}
 	
+	@Column(name="is_finished")
+	private boolean finished;
+	
 	@Column(name="table_number")
 	private int table = 1;
 	
@@ -49,7 +52,7 @@ public class CashSales extends Contract<CashSalesPayment, CashSalesLine>
 	
 	@ManyToOne
 	@JoinColumn(name="fk_geographic_location")
-	private Geographic location;
+	private Address location;
 	
 	@OneToMany(mappedBy="cashSales",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<CashSalesLine> decrements = new HashSet<CashSalesLine>();

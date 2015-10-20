@@ -16,12 +16,14 @@ import javax.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
-import com.kratonsolution.belian.general.dm.Geographic;
+import com.kratonsolution.belian.accounting.dm.Currency;
+import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Organization;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
@@ -38,10 +40,14 @@ public class UserSetting implements Serializable
 	
 	@ManyToOne
 	@JoinColumn(name="fk_location")
-	private Geographic location;
+	private Address location;
 	
 	@Column(name="language")
 	private String language;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_currency")
+	private Currency currency;
 	
 	@Version
 	private Long version;

@@ -9,11 +9,13 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
 import com.kratonsolution.belian.general.dm.Person;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Dates;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class PersonRowRenderer implements RowRenderer<Person>
 {
@@ -23,7 +25,10 @@ public class PersonRowRenderer implements RowRenderer<Person>
 	{
 		if(data != null)
 		{
-			row.appendChild(new Checkbox());
+			if(data.getName().equals(Person.ANONYMOUS))
+				row.appendChild(Components.readOnlyCheckbox());
+			else
+				row.appendChild(new Checkbox());
 			row.appendChild(new Label(data.getName()));
 			row.appendChild(new Label(Dates.format(data.getBirthDate())));
 			row.appendChild(new Label(data.getGender().toString()));

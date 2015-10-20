@@ -4,7 +4,6 @@
 package com.kratonsolution.belian.ui.cashsales;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.UUID;
 
@@ -38,12 +37,14 @@ import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.svc.CashAccountService;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.common.Dates;
-import com.kratonsolution.belian.general.dm.Geographic;
+import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.Address;
+import com.kratonsolution.belian.general.dm.AddressRepository;
+import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.OrganizationUnit;
-import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.OrganizationUnitService;
-import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.global.dm.EconomicEvent;
 import com.kratonsolution.belian.global.dm.EconomicEvent.EconomicalType;
 import com.kratonsolution.belian.global.dm.EconomicEvent.Type;
@@ -60,7 +61,6 @@ import com.kratonsolution.belian.sales.dm.CashSalesPaymentEvent;
 import com.kratonsolution.belian.sales.dm.PaymentType;
 import com.kratonsolution.belian.sales.srv.CashSalesService;
 import com.kratonsolution.belian.ui.FormContent;
-import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -72,6 +72,8 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class CashSalesFormContent extends FormContent
 {	
+	private SessionUtils sessionUtils = Springs.get(SessionUtils.class);
+	
 	private CashSalesService service = Springs.get(CashSalesService.class);
 	
 	private EconomicAgentService agentService = Springs.get(EconomicAgentService.class);
@@ -86,29 +88,33 @@ public class CashSalesFormContent extends FormContent
 	
 	private UnitOfMeasureService unitOfMeasureService = Springs.get(UnitOfMeasureService.class);
 	
-	private GeographicService geographicService = Springs.get(GeographicService.class);
+	private AddressRepository addressService = Springs.get(AddressRepository.class);
 	
 	private CashAccountService cashAccountService = Springs.get(CashAccountService.class);
 	
-	private Textbox number = new Textbox();
+	private PersonService personService = Springs.get(PersonService.class);
 	
-	private Datebox date = new Datebox(new Date());
+	private Listbox tableNumber = Components.newSelect();
 	
-	private Doublebox term = new Doublebox();
+	private Textbox number = Components.readOnlyTextBox("BLN"+System.currentTimeMillis());
+	
+	private Datebox date = Components.mandatoryDatebox();
+	
+	private Doublebox term = Components.readOnlyDoubleBox(0);
+	
+	private Doublebox bill = Components.doubleBox(0);
 	
 	private Textbox note = new Textbox();
 	
-	private Doublebox tableNumber = new Doublebox(1);
+	private Listbox producers = Components.fullSpanSelect();
 	
-	private Listbox producers = Components.newSelect();
+	private Listbox consumers = Components.fullSpanSelect();
 	
-	private Listbox consumers = Components.newSelect();
+	private Listbox currencys = Components.fullSpanSelect();
 	
-	private Listbox currencys = Components.newSelect();
+	private Listbox organizations = Components.fullSpanSelect();
 	
-	private Listbox organizations = Components.newSelect();
-	
-	private Listbox locations = Components.newSelect();
+	private Listbox locations = Components.fullSpanSelect();
 	
 	private Tabbox tabbox = new Tabbox();
 	
@@ -158,7 +164,7 @@ public class CashSalesFormContent extends FormContent
 					throw new WrongValueException(term,"Holder cannot be empty");
 				
 				CashSales sales = new CashSales();
-				sales.setTable(tableNumber.intValue());
+				sales.setTable(Integer.parseInt(Components.string(tableNumber)));
 				sales.setConsumer(agentService.findOne(Components.string(consumers)));
 				sales.setCreditTerm(term.getValue().intValue());
 				sales.setCurrency(currencyService.findOne(Components.string(currencys)));
@@ -167,7 +173,7 @@ public class CashSalesFormContent extends FormContent
 				sales.setNumber(number.getText());
 				sales.setOrganization(organizationService.findOne(Components.string(organizations)));
 				sales.setProducer(agentService.findOne(Components.string(producers)));
-				sales.setLocation(geographicService.findOne(Components.string(locations)));
+				sales.setLocation(addressService.findOne(Components.string(locations)));
 				
 				for(Object object:saleItems.getRows().getChildren())
 				{
@@ -181,7 +187,6 @@ public class CashSalesFormContent extends FormContent
 					Textbox note = (Textbox)row.getChildren().get(7);
 
 					CashSalesLine line = new CashSalesLine();
-					line.setId(UUID.randomUUID().toString());
 					line.setCashSales(sales);
 					line.setPrice(Components.decimal(prices));
 					line.setDiscount(Components.decimal(discs));
@@ -192,7 +197,6 @@ public class CashSalesFormContent extends FormContent
 					line.setNote(note.getText());
 					
 					CashSalesLineEvent events = new CashSalesLineEvent();
-					events.setId(UUID.randomUUID().toString());
 					events.setConsumer(sales.getConsumer());
 					events.setDate(sales.getDate());
 					events.setProducer(sales.getProducer());
@@ -250,89 +254,117 @@ public class CashSalesFormContent extends FormContent
 	public void initForm()
 	{
 		date.setConstraint("no empty");
-		
-		number.setConstraint("no empty");
-		number.setWidth("300px");
-		
+				
 		term.setConstraint("no empty");
 		term.setWidth("65px");
 		
+		note.setWidth("100%");
+		
+		for(int idx=1;idx<=20;idx++)
+			tableNumber.appendChild(new Listitem(idx+"", idx));
+		
+		Components.setDefault(tableNumber);
+		
 		for(OrganizationUnit unit:unitService.findAll())
-			organizations.appendChild(new Listitem(unit.getParty().getName(),unit.getParty().getId()));
+		{
+			Listitem listitem = new Listitem(unit.getParty().getName(),unit.getParty().getId());
+			organizations.appendChild(listitem);
+			if(sessionUtils.getOrganization() != null && sessionUtils.getOrganization().getId().equals(unit.getParty().getId()))
+			{
+				organizations.setSelectedItem(listitem);
+				for(Address address:unit.getParty().getAddresses())
+				{
+					Listitem listitem2 = new Listitem(address.getLabel(), address.getValue());
+					locations.appendChild(listitem2);
+					if(sessionUtils.getLocation() != null && sessionUtils.getLocation().getId().equals(address.getValue()))
+						locations.setSelectedItem(listitem2);
+				}
+			
+				if(locations.getSelectedCount() == 0)
+					Components.setDefault(locations);
+			}
+		}
 			
 		for(Currency currency:currencyService.findAll())
-			currencys.appendChild(new Listitem(currency.getCode(), currency.getId()));
+		{
+			Listitem listitem = new Listitem(currency.getCode(), currency.getId());
+			currencys.appendChild(listitem);
+			if(sessionUtils.getCurrency() != null && currency.getId().equals(sessionUtils.getCurrency().getId()))
+				currencys.setSelectedItem(listitem);
+		}
 		
 		organizations.addEventListener(Events.ON_SELECT, new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				producers.getChildren().clear();
-				for(EconomicAgent agent:agentService.findByRoleAndParty("Sales Person",Components.string(organizations)))
-					producers.appendChild(new Listitem(agent.getName(),agent.getId()));
-				
-				consumers.getChildren().clear();
-				for(EconomicAgent agent:agentService.findByRoleAndParty("Customer",Components.string(organizations)))
-					consumers.appendChild(new Listitem(agent.getName(),agent.getId()));
-				
-				Components.setDefault(producers);
+				Organization organization = organizationService.findOne(Components.string(organizations));
+				if(organization != null)
+				{
+					for(Address address:organization.getAddresses())
+					{
+						Listitem listitem = new Listitem(address.getLabel(), address.getValue());
+						locations.appendChild(listitem);
+						if(sessionUtils.getLocation() != null && sessionUtils.getLocation().getId().equals(address.getValue()))
+							locations.setSelectedItem(listitem);
+					}
+				}
+
+				if(locations.getSelectedCount() == 0)
+					Components.setDefault(locations);
 				Components.setDefault(consumers);
 			}
 		});
 		
-		for(Geographic geographic:geographicService.findAll())
+		if(sessionUtils.getUser().getPerson() != null)
 		{
-			if(geographic.getType().equals(Geographic.Type.COUNTRY) || geographic.getType().equals(Geographic.Type.PROVINCE) || geographic.getType().equals(Geographic.Type.CITY))
-				locations.appendChild(new Listitem(geographic.getName(), geographic.getId()));
+			producers.appendChild(new Listitem(sessionUtils.getUser().getPerson().getLabel(), sessionUtils.getUser().getPerson().getValue()));
+			producers.setSelectedIndex(0);
 		}
-
-		Components.setDefault(currencys);
-		Components.setDefault(locations);
+		
+		consumers.appendChild(new Listitem(personService.anonymous().getLabel(), personService.anonymous().getValue()));
+		consumers.setSelectedIndex(0);
 		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"135px"));
+		grid.getColumns().appendChild(new Column(null,null,"125px"));
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
+		row1.appendChild(new Label("Table Number"));
+		row1.appendChild(tableNumber);
 		row1.appendChild(new Label("Document Owner"));
 		row1.appendChild(organizations);
 		
 		Row row2 = new Row();
 		row2.appendChild(new Label("Document Number"));
 		row2.appendChild(number);
-		
-		Row row3 = new Row();
-		row3.appendChild(new Label("Date"));
-		row3.appendChild(date);
+		row2.appendChild(new Label("Date"));
+		row2.appendChild(date);
 		
 		Row row4 = new Row();
 		row4.appendChild(new Label("Credit Term"));
 		row4.appendChild(term);
-		
-		Row row5 = new Row();
-		row5.appendChild(new Label("Currency"));
-		row5.appendChild(currencys);
+		row4.appendChild(new Label("Currency"));
+		row4.appendChild(currencys);
 		
 		Row row6 = new Row();
 		row6.appendChild(new Label("Sales Person"));
 		row6.appendChild(producers);
-		
-		Row row7 = new Row();
-		row7.appendChild(new Label("Customer"));
-		row7.appendChild(consumers);
+		row6.appendChild(new Label("Customer"));
+		row6.appendChild(consumers);
 		
 		Row row8 = new Row();
 		row8.appendChild(new Label("Sales Location"));
 		row8.appendChild(locations);
+		row8.appendChild(new Label("Note"));
+		row8.appendChild(note);
 		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
-		rows.appendChild(row3);
 		rows.appendChild(row4);
-		rows.appendChild(row5);
 		rows.appendChild(row6);
-		rows.appendChild(row7);
 		rows.appendChild(row8);
 	}
 	
@@ -455,7 +487,7 @@ public class CashSalesFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getRows().getChildren().clear();
+				saleItems.getRows().getChildren().clear();
 			}
 		});
 		
@@ -469,7 +501,6 @@ public class CashSalesFormContent extends FormContent
 		this.tabbox.getTabpanels().appendChild(new Tabpanel());
 		
 		payments.appendChild(new Columns());
-		payments.getColumns().appendChild(new Column(null,null,"25px"));
 		payments.getColumns().appendChild(new Column("Type",null,"125px"));
 		payments.getColumns().appendChild(new Column("Card Number",null,"200px"));
 		payments.getColumns().appendChild(new Column("Amount",null,"125px"));
@@ -477,99 +508,21 @@ public class CashSalesFormContent extends FormContent
 		payments.appendChild(new Rows());
 		payments.setSpan("3");
 		
-		NRCToolbar toolbar = new NRCToolbar();
-		toolbar.getChildren().get(0).addEventListener(Events.ON_CLICK, new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{	
-				BigDecimal bills = BigDecimal.ZERO;
-				
-				for(Object object:saleItems.getRows().getChildren())
-				{
-					Row out = (Row)object;
-					
-					BigDecimal lines = BigDecimal.ZERO;
-					
-					lines = lines.add(Components.decimal(out.getChildren().get(2)));
-					lines = lines.subtract(Components.decimal(out.getChildren().get(3)));
-					lines = lines.add(Components.decimal(out.getChildren().get(4)));
-					
-					bills = bills.add(lines.multiply(Components.decimal(out.getChildren().get(5))));
-				}
-				
-				Row row = new Row();
-				row.appendChild(new Checkbox());
-				
-				Listbox types = new Listbox();
-				types.setMold("select");
-				types.setWidth("100%");
-				
-				for(PaymentType type:PaymentType.values())
-					types.appendChild(new Listitem(type.toString(), type.toString()));
-				
-				types.setSelectedIndex(0);
-				
-				Textbox cardno = new Textbox();
-				cardno.setWidth("100%");
-				cardno.setDisabled(true);
-				
-				Doublebox amount = new Doublebox(0d);
-				amount.setConstraint("no empty");
-				amount.setWidth("100%");
-				amount.setValue(bills.doubleValue());
-				
-				Textbox note = new Textbox();
-				note.setWidth("100%");
-				
-				types.addEventListener(Events.ON_SELECT, new EventListener<Event>()
-				{
-					@Override
-					public void onEvent(Event event) throws Exception
-					{
-						if(Components.string(types).equals(PaymentType.CASH))
-						{
-							cardno.setText(null);
-							cardno.setDisabled(true);
-						}
-						else
-							cardno.setDisabled(false);
-					}
-				});
-				
-				row.appendChild(types);
-				row.appendChild(cardno);
-				row.appendChild(amount);
-				row.appendChild(note);
-				
-				payments.getRows().appendChild(row);
-			}
-		});
-		toolbar.getChildren().get(1).addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				Iterator<Component> iterator = grid.getRows().getChildren().iterator();
-				while (iterator.hasNext())
-				{
-					Row row = (Row) iterator.next();
-					if(RowUtils.isChecked(row, 0))
-						iterator.remove();
-				}
-			}
-		});
+		Listbox types = Components.fullSpanSelect();
+		types.appendChild(new Listitem(PaymentType.CASH.name(), PaymentType.CASH.name()));
+		types.setSelectedIndex(0);
 		
-		toolbar.getChildren().get(2).addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				grid.getRows().getChildren().clear();
-			}
-		});
+		Textbox note = new Textbox();
+		note.setWidth("100%");
+
+		Row row = new Row();
+		row.appendChild(types);
+		row.appendChild(Components.readOnlyTextBox());
+		row.appendChild(bill);
+		row.appendChild(note);
 		
-		this.tabbox.getTabpanels().getChildren().get(1).appendChild(toolbar);
+		payments.getRows().appendChild(row);
+		
 		this.tabbox.getTabpanels().getChildren().get(1).appendChild(payments);
 	}
 }

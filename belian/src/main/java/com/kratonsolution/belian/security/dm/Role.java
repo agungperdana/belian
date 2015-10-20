@@ -18,8 +18,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * 
  * @author Agung Dodi Perdana
- *
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter

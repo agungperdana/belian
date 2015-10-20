@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.general.dm;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,19 +16,21 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.global.dm.Listable;
 
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
 @Table(name="address")
-public class Address
+public class Address implements Serializable,Listable
 {
 	public enum Type{HOME,OFFICE,WAREHOUSE}
 	
@@ -64,4 +68,16 @@ public class Address
 	
 	@Version
 	private Long version;
+
+	@Override
+	public String getLabel()
+	{
+		return getAddress()+","+getCity().getName()+","+getProvince().getName()+","+getCountry().getName();
+	}
+
+	@Override
+	public String getValue()
+	{
+		return getId();
+	}
 }

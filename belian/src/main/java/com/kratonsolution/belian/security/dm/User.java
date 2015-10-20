@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -52,7 +53,7 @@ public class User
 	@JoinColumn(name="fk_user_setting")
 	private UserSetting setting;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name="fk_person")
 	private Person person;
 	
@@ -61,4 +62,10 @@ public class User
 	
 	@OneToMany(mappedBy="user",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<UserRole> roles = new HashSet<UserRole>();
+
+	public void setPerson(Person person)
+	{
+		this.person = person;
+		person.setUser(this);
+	}
 }
