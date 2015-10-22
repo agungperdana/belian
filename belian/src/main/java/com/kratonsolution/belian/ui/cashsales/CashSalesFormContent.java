@@ -171,7 +171,7 @@ public class CashSalesFormContent extends FormContent
 				sales.setNumber(number.getText());
 				sales.setOrganization(organizationService.findOne(Components.string(organizations)));
 				sales.setProducer(agentService.findOne(Components.string(producers)));
-				sales.setLocation(addressService.findOne(Components.string(locations)));
+				sales.setLocation(geographicService.findOne(Components.string(locations)));
 				
 				for(Object object:saleItems.getRows().getChildren())
 				{
@@ -424,15 +424,28 @@ public class CashSalesFormContent extends FormContent
 						Product product = productService.findOne(products.getSelectedItem().getValue().toString());
 						if(product != null)
 						{
-							for(ProductPrice price:priceRepository.load(date.getValue(), Components.string(currencys), Components.string(locations), Components.string(consumers), product.getId()))
+							for(ProductPrice price:priceRepository.load(date.getValue(), Components.string(currencys), Components.string(locations), Components.string(consumers), product.getId(),ProductPrice.Type.BASE))
 								prices.appendChild(new Listitem(Numbers.format(price.getPrice()), price.getPrice()));
+							
+							for(ProductPrice price:priceRepository.load(date.getValue(), Components.string(currencys), Components.string(locations), Components.string(consumers), product.getId(),ProductPrice.Type.DISCOUNT))
+								discs.appendChild(new Listitem(Numbers.format(price.getPrice()), price.getPrice()));
+							
+							for(ProductPrice price:priceRepository.load(date.getValue(), Components.string(currencys), Components.string(locations), Components.string(consumers), product.getId(),ProductPrice.Type.CHARGE))
+								charges.appendChild(new Listitem(Numbers.format(price.getPrice()), price.getPrice()));
 							
 							uoms.appendChild(new Listitem(product.getUom().getCode(),product.getUom().getId()));
 							
 							Components.setDefault(prices);
+							Components.setDefault(discs);
+							Components.setDefault(charges);
+							Components.setDefault(uoms);
 						}
 					}
 				});
+				
+				prices.addEventListener(Events.ON_SELECT,new BillEventListener());
+				discs.addEventListener(Events.ON_SELECT,new BillEventListener());
+				charges.addEventListener(Events.ON_SELECT,new BillEventListener());
 				
 				Row row = new Row();
 				row.appendChild(new Checkbox());
@@ -491,5 +504,14 @@ public class CashSalesFormContent extends FormContent
 		}
 
 		bill.setText(Numbers.format(tBill));
+	}
+	
+	private class BillEventListener implements EventListener<Event>
+	{
+		@Override
+		public void onEvent(Event event) throws Exception
+		{
+			setBill();
+		}
 	}
 }

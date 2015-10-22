@@ -27,8 +27,10 @@ public interface ProductPriceRepository extends JpaRepository<ProductPrice, Stri
 			+ " AND "
 			+ "(prd.party IS NULL OR prd.party.id =:party)"
 			+ " AND "
-			+ "prd.product.id =:product")
+			+ "prd.product.id =:product"
+			+ " AND "
+			+ "prd.type =:type")
 	public List<ProductPrice> load(@Param("date")Date date,@Param("currency")String currency,
 								   @Param("geo")String geo,@Param("party")String party,
-								   @Param("product")String product);
+								   @Param("product")String product,@Param("type")ProductPrice.Type type);
 }
