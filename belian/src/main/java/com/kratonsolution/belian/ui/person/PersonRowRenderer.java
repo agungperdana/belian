@@ -25,7 +25,7 @@ public class PersonRowRenderer implements RowRenderer<Person>
 	{
 		if(data != null)
 		{
-			if(data.getName().equals(Person.ANONYMOUS))
+			if(!data.isDeleteadble())
 				row.appendChild(Components.readOnlyCheckbox());
 			else
 				row.appendChild(new Checkbox());

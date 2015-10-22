@@ -24,12 +24,10 @@ import lombok.Setter;
 
 import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Contact;
-import com.kratonsolution.belian.general.dm.PartyRelationship;
-import com.kratonsolution.belian.general.dm.PartyRole;
 
 /**
- * @author agungdodiperdana
- *
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
@@ -59,13 +57,10 @@ public class EconomicAgent implements Serializable, Listable
 	
 	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true)
 	protected Set<Contact> contacts = new HashSet<Contact>();
-	
-	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true)
-	protected Set<PartyRole> roles = new HashSet<PartyRole>();
-	
-	@OneToMany(mappedBy="child",cascade=CascadeType.ALL,orphanRemoval=true)
-	protected Set<PartyRelationship> relationships = new HashSet<PartyRelationship>();
 
+	@Column(name="is_deleteable")
+	protected boolean deleteadble = true;
+	
 	@Override
 	public String getLabel()
 	{

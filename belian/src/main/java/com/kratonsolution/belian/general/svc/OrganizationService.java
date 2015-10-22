@@ -13,15 +13,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kratonsolution.belian.general.dm.Organization;
-import com.kratonsolution.belian.general.dm.OrganizationRepository;
 import com.kratonsolution.belian.general.dm.Organization.IndustryType;
-import com.kratonsolution.belian.general.dm.PartyRole;
+import com.kratonsolution.belian.general.dm.OrganizationRepository;
 import com.kratonsolution.belian.global.dm.EconomicAgentRoleEventListener;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -63,14 +63,13 @@ public class OrganizationService
 	@Secured("ROLE_ORGANIZATION_READ")
 	public List<Organization> findAllByRolesTypeName(String roleName)
 	{
-		return repository.findAllByRolesType(roleName);
+		return null;
 	}
 
 	@Secured("ROLE_ORGANIZATION_READ")
 	public List<Organization> findAllByRelationshipsRelationshipTypeName(String name)
 	{
 		return null;
-//		return repository.findAllByRelationshipsRelationshipTypeName(name);
 	}
 
 	@Secured("ROLE_ORGANIZATION_READ")
@@ -95,10 +94,6 @@ public class OrganizationService
 	@Secured("ROLE_ORGANIZATION_DELETE")
 	public void delete(String id)
 	{
-		Organization target = repository.findOne(id);
-		for(PartyRole partyRole:target.getRoles())
-			service.deleteRole(target, partyRole);
-		
-		repository.delete(target);
+		repository.delete(id);
 	}
 }

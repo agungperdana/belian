@@ -25,7 +25,7 @@ public class PositionTypeRateItem extends Listitem
 	
 	public void init()
 	{
-		setLabel("PositionTypeRate");
+		setLabel("Position Type Rate");
 		setImage("/icons/positiontyperate.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()

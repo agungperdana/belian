@@ -5,7 +5,6 @@ package com.kratonsolution.belian.ui.cashsales;
 
 import java.math.BigDecimal;
 import java.util.Iterator;
-import java.util.UUID;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
@@ -47,7 +46,6 @@ import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.global.dm.EconomicEvent;
 import com.kratonsolution.belian.global.dm.EconomicEvent.EconomicalType;
-import com.kratonsolution.belian.global.dm.EconomicEvent.Type;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
@@ -56,9 +54,6 @@ import com.kratonsolution.belian.inventory.svc.UnitOfMeasureService;
 import com.kratonsolution.belian.sales.dm.CashSales;
 import com.kratonsolution.belian.sales.dm.CashSalesLine;
 import com.kratonsolution.belian.sales.dm.CashSalesLineEvent;
-import com.kratonsolution.belian.sales.dm.CashSalesPayment;
-import com.kratonsolution.belian.sales.dm.CashSalesPaymentEvent;
-import com.kratonsolution.belian.sales.dm.PaymentType;
 import com.kratonsolution.belian.sales.srv.CashSalesService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
@@ -96,7 +91,7 @@ public class CashSalesFormContent extends FormContent
 	
 	private Listbox tableNumber = Components.newSelect();
 	
-	private Textbox number = Components.readOnlyTextBox("BLN"+System.currentTimeMillis());
+	private Textbox number = Components.readOnlyTextBox("BLG"+System.currentTimeMillis());
 	
 	private Datebox date = Components.mandatoryDatebox();
 	
@@ -120,8 +115,6 @@ public class CashSalesFormContent extends FormContent
 	
 	private Grid saleItems = new Grid();
 	
-	private Grid payments = new Grid();
-	
 	public CashSalesFormContent()
 	{
 		super();
@@ -135,7 +128,6 @@ public class CashSalesFormContent extends FormContent
 		appendChild(tabbox);
 		
 		initItems();
-		initPayments();
 	}
 
 	@Override
@@ -207,38 +199,6 @@ public class CashSalesFormContent extends FormContent
 
 					line.setEvent(events);
 					sales.getDecrements().add(line);
-				}
-				
-				for(Object object:payments.getRows().getChildren())
-				{
-					Row row = (Row)object;
-					
-					Listbox types = (Listbox)row.getChildren().get(1);
-					Textbox cardno = (Textbox)row.getChildren().get(2);
-					Doublebox amount = (Doublebox)row.getChildren().get(3);
-					Textbox note = (Textbox)row.getChildren().get(4);
-				
-					CashSalesPayment line = new CashSalesPayment();
-					line.setId(UUID.randomUUID().toString());
-					line.setDate(sales.getDate());
-					line.setCashSales(sales);
-					line.setType(PaymentType.valueOf(Components.string(types)));
-					line.setValue(Components.decimal(amount));
-					line.setCardNumber(cardno.getText());
-					line.setNote(note.getText());
-					
-					CashSalesPaymentEvent events = new CashSalesPaymentEvent();
-					events.setId(UUID.randomUUID().toString());
-					events.setConsumer(sales.getConsumer());
-					events.setDate(sales.getDate());
-					events.setEconomicType(EconomicalType.ECONOMIC);
-					events.setProducer(sales.getProducer());
-					events.setType(Type.GET);
-					events.setValue(line.getValue());
-					
-					line.setEvent(events);
-					
-					sales.getIncrements().add(line);
 				}
 				
 				service.add(sales);
@@ -331,40 +291,56 @@ public class CashSalesFormContent extends FormContent
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.getColumns().appendChild(new Column());
 		
+		Row row0 = new Row();
+		row0.appendChild(new Label("Table Number"));
+		row0.appendChild(tableNumber);
+		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Table Number"));
-		row1.appendChild(tableNumber);
 		row1.appendChild(new Label("Document Owner"));
 		row1.appendChild(organizations);
+		row1.appendChild(new Label("Total Billing"));
+		row1.appendChild(bill);
 		
 		Row row2 = new Row();
 		row2.appendChild(new Label("Document Number"));
 		row2.appendChild(number);
-		row2.appendChild(new Label("Date"));
-		row2.appendChild(date);
+		
+		Row row3 = new Row();
+		row3.appendChild(new Label("Date"));
+		row3.appendChild(date);
 		
 		Row row4 = new Row();
 		row4.appendChild(new Label("Credit Term"));
 		row4.appendChild(term);
-		row4.appendChild(new Label("Currency"));
-		row4.appendChild(currencys);
+		
+		Row row5 = new Row();
+		row5.appendChild(new Label("Currency"));
+		row5.appendChild(currencys);
 		
 		Row row6 = new Row();
 		row6.appendChild(new Label("Sales Person"));
 		row6.appendChild(producers);
-		row6.appendChild(new Label("Customer"));
-		row6.appendChild(consumers);
+		
+		Row row7 = new Row();
+		row7.appendChild(new Label("Customer"));
+		row7.appendChild(consumers);
 		
 		Row row8 = new Row();
 		row8.appendChild(new Label("Sales Location"));
 		row8.appendChild(locations);
-		row8.appendChild(new Label("Note"));
-		row8.appendChild(note);
 		
+		Row row9 = new Row();
+		row9.appendChild(new Label("Note"));
+		row9.appendChild(note);
+		
+		rows.appendChild(row0);
 		rows.appendChild(row1);
 		rows.appendChild(row2);
+		rows.appendChild(row3);
 		rows.appendChild(row4);
+		rows.appendChild(row5);
 		rows.appendChild(row6);
+		rows.appendChild(row7);
 		rows.appendChild(row8);
 	}
 	
@@ -493,36 +469,5 @@ public class CashSalesFormContent extends FormContent
 		
 		this.tabbox.getTabpanels().getChildren().get(0).appendChild(toolbar);
 		this.tabbox.getTabpanels().getChildren().get(0).appendChild(saleItems);
-	}
-	
-	private void initPayments()
-	{
-		this.tabbox.getTabs().appendChild(new Tab("Payment(s)"));
-		this.tabbox.getTabpanels().appendChild(new Tabpanel());
-		
-		payments.appendChild(new Columns());
-		payments.getColumns().appendChild(new Column("Type",null,"125px"));
-		payments.getColumns().appendChild(new Column("Card Number",null,"200px"));
-		payments.getColumns().appendChild(new Column("Amount",null,"125px"));
-		payments.getColumns().appendChild(new Column("Note",null));
-		payments.appendChild(new Rows());
-		payments.setSpan("3");
-		
-		Listbox types = Components.fullSpanSelect();
-		types.appendChild(new Listitem(PaymentType.CASH.name(), PaymentType.CASH.name()));
-		types.setSelectedIndex(0);
-		
-		Textbox note = new Textbox();
-		note.setWidth("100%");
-
-		Row row = new Row();
-		row.appendChild(types);
-		row.appendChild(Components.readOnlyTextBox());
-		row.appendChild(bill);
-		row.appendChild(note);
-		
-		payments.getRows().appendChild(row);
-		
-		this.tabbox.getTabpanels().getChildren().get(1).appendChild(payments);
 	}
 }

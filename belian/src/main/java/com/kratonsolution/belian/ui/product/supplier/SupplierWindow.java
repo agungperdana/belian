@@ -15,13 +15,11 @@ import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vlayout;
 
-import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.global.dm.EconomicAgentRepository;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductSupplier;
@@ -125,8 +123,8 @@ public class SupplierWindow extends AbstractWindow
 		
 		note.setWidth("300px");
 		
-		for(EconomicAgent party:partyRepository.findAllByRolesType("Supplier"))
-			suppliers.appendChild(new Listitem(party.getName(),party.getId()));
+//		for(EconomicAgent party:partyRepository.findAllByRolesType("Supplier"))
+//			suppliers.appendChild(new Listitem(party.getName(),party.getId()));
 		
 		suppliers.setMold("select");
 

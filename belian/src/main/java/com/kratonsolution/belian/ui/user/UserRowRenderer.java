@@ -9,10 +9,12 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
 import com.kratonsolution.belian.security.dm.User;
+import com.kratonsolution.belian.ui.util.Components;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class UserRowRenderer implements RowRenderer<User>
 {
@@ -22,7 +24,11 @@ public class UserRowRenderer implements RowRenderer<User>
 	{
 		if(data != null)
 		{
-			row.appendChild(new Checkbox());
+			if(!data.isDeleteable())
+				row.appendChild(Components.readOnlyCheckbox());
+			else
+				row.appendChild(new Checkbox());
+			
 			row.appendChild(new Label(data.getName()));
 			row.appendChild(new Label(data.getEmail()));
 			

@@ -18,8 +18,6 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Window;
 
-import com.kratonsolution.belian.general.dm.PartyRelationshipType;
-import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.svc.PartyRelationshipTypeService;
 import com.kratonsolution.belian.general.svc.PartyRoleService;
 import com.kratonsolution.belian.global.dm.EconomicAgent;
@@ -29,8 +27,9 @@ import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class RelationshipAddWindow extends Window
 {
@@ -97,13 +96,6 @@ public class RelationshipAddWindow extends Window
 				EconomicAgent party = service.findOne(partyId);
 				if(party != null)
 				{
-//					PartyRelationship relationship = new PartyRelationship();
-//					relationship.setId(UUID.randomUUID().toString());
-//					relationship.setFrom(from.getValue());
-//					relationship.setTo(to.getValue());
-//					relationship.setParty(party);
-					
-//					party.getRelationships().add(relationship);
 					
 					service.edit(party);
 
@@ -148,12 +140,6 @@ public class RelationshipAddWindow extends Window
 		Row row6 = new Row();
 		row6.appendChild(new Label("To Party"));
 		row6.appendChild(toParty);
-
-		for(PartyRelationshipType type:relationshipTypeController.findAll())
-			types.appendChild(new Listitem(type.getName(),type.getId()));
-		
-		for(PartyRole role:service.findOne(partyId).getRoles())
-			fromRole.appendChild(new Listitem(role.getType().toString(),role.getType().toString()));
 
 		for(EconomicAgent party:service.findAllExcept(partyId))
 			toParty.appendChild(new Listitem(party.getName(),party.getId()));

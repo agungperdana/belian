@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.security.dm;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,7 +33,7 @@ import com.kratonsolution.belian.global.dm.UserSetting;
 @Setter
 @Entity
 @Table(name="user")
-public class User
+public class User implements Serializable
 {
 	@Id
 	private String id;
@@ -56,6 +57,9 @@ public class User
 	@ManyToOne
 	@JoinColumn(name="fk_person")
 	private Person person;
+	
+	@Column(name="is_deleteable")
+	private boolean deleteable;
 	
 	@Version
 	private Long version;

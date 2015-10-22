@@ -3,8 +3,6 @@
  */
 package com.kratonsolution.belian.ui.party;
 
-import java.util.Iterator;
-
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -21,11 +19,8 @@ import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.svc.PartyRoleService;
-import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.ui.FormToolbar;
-import com.kratonsolution.belian.ui.Refreshable;
-import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -88,27 +83,7 @@ public class RoleEditWindow extends Window
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				EconomicAgent party = service.findOne(edited.getParty().getId());
-				if(party != null)
-				{
-					Iterator<PartyRole> iterator = party.getRoles().iterator();
-					while (iterator.hasNext())
-					{
-						PartyRole role = (PartyRole) iterator.next();
-						if(role.getId().equals(edited.getId()))
-						{
-							role.setFrom(from.getValue());
-							role.setTo(to.getValue());
-							role.setType(PartyRole.Type.valueOf(Components.string(roles)));
-							break;
-						}
-					}
-					
-					service.edit(party);
-					((Refreshable)getParent()).refresh();
-				}
-				
-				detach();
+
 			}
 		});
 	}

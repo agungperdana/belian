@@ -10,14 +10,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.kratonsolution.belian.general.dm.Organization.IndustryType;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public interface OrganizationRepository extends JpaRepository<Organization, String>
 {
-	public List<Organization> findAllByRolesType(String roleName);
-	
-//	public List<Organization> findAllByRelationshipsRelationshipTypeName(String name);
-
 	public List<Organization> findAllByType(IndustryType type);
 }

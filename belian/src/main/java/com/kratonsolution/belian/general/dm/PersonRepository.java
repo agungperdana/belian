@@ -16,9 +16,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface PersonRepository extends JpaRepository<Person, String>
 {
 	public Person findOneByName(String name);
-	
-	public List<Person> findAllByRolesType(PartyRole.Type type);
-	
+		
 	public List<Person> findAllByNameNot(String name);
 	
 	@Query("FROM Person p WHERE p.user IS NULL ORDER BY p.name ASC")

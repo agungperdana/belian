@@ -4,7 +4,6 @@
 package com.kratonsolution.belian.ui.party;
 
 import java.text.SimpleDateFormat;
-import java.util.Iterator;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -15,14 +14,8 @@ import org.zkoss.zul.Treecell;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
 
-import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.PartyRelationship;
-import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.global.dm.EconomicAgent;
-import com.kratonsolution.belian.ui.Refreshable;
-import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * @author agungdodiperdana
@@ -51,8 +44,6 @@ public class RelationshipInformation extends Treeitem
 		builder.append("] - ");
 		builder.append("AS ");
 		builder.append(relationship.getType().toString());
-//		builder.append(" to ");
-//		builder.append(relationship.getResponsibleTo().getName());
 		
 		Treecell cell = new Treecell(builder.toString());
 		cell.addEventListener(Events.ON_CLICK,new EventListener<Event>()
@@ -94,19 +85,5 @@ public class RelationshipInformation extends Treeitem
 	
 	protected void remove(final EconomicAgent party,final PartyRelationship relationship)
 	{
-		Iterator<PartyRelationship> iterator = party.getRelationships().iterator();
-		while (iterator.hasNext())
-		{
-			PartyRelationship relation = (PartyRelationship) iterator.next();
-			if(relation.getId().equals(relationship.getId()))
-				iterator.remove();
-		}
-		
-		if(party instanceof Person)
-			Springs.get(PersonService.class).edit((Person)party);
-		else if(party instanceof Organization)
-			Springs.get(OrganizationService.class).edit((Organization)party);
-		
-		((Refreshable)getTree()).refresh();
 	}
 }

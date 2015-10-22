@@ -14,13 +14,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.dm.PersonRepository;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -79,7 +79,6 @@ public class PersonService
 	@Secured("ROLE_PERSON_READ")
 	public List<Person> findAllBudgetReviewer(String forOrganization)
 	{
-//		return repository.findAllReviewer(forOrganization);
 		return new ArrayList<Person>();
 	}
 	
@@ -87,14 +86,13 @@ public class PersonService
 	@Secured("ROLE_PERSON_READ")
 	public List<Person> findAllByRolesType(String name)
 	{
-		return repository.findAllByRolesType(PartyRole.Type.valueOf(name));
+		return new ArrayList<Person>();
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PERSON_READ")
 	public List<Person> findAllProspect(String company)
 	{
-//		return repository.findAllProspect(company);
 		return null;
 	}
 	

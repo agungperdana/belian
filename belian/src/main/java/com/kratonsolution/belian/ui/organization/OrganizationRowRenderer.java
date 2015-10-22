@@ -13,8 +13,9 @@ import org.zkoss.zul.RowRenderer;
 import com.kratonsolution.belian.general.dm.Organization;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class OrganizationRowRenderer implements RowRenderer<Organization>
 {
@@ -32,6 +33,8 @@ public class OrganizationRowRenderer implements RowRenderer<Organization>
 			row.appendChild(new Label(data.getTaxCode()));
 			row.appendChild(new Label(data.getType() != null?data.getType().name():""));
 			row.appendChild(new Label(data.getId()));
+			
+			System.out.println(data.getName()+"["+data.getId()+"]");
 		}
 	}
 }
