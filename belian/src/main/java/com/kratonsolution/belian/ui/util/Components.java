@@ -18,8 +18,9 @@ import org.zkoss.zul.Textbox;
 import com.kratonsolution.belian.global.dm.Listable;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class Components
 {
@@ -223,11 +224,22 @@ public class Components
 		return textbox;
 	}
 	
+	public static final Textbox moneyBox()
+	{
+		Textbox textbox = new Textbox();
+		textbox.setWidth("100%");
+		textbox.setReadonly(true);
+		textbox.setStyle("text-align:right");
+		
+		return textbox;
+	}
+	
 	public static final Textbox mandatoryTextBox(String text)
 	{
 		Textbox textbox = new Textbox(text);
 		textbox.setWidth("100%");
 		textbox.setConstraint("no empty");
+		textbox.setText("0");
 		
 		return textbox;
 	}

@@ -16,8 +16,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class RowUtils
 {
@@ -40,8 +41,13 @@ public class RowUtils
 	public static BigDecimal decimal(Row row,int index)
 	{
 		Object object = row.getChildren().get(index);
-		if(object != null && object instanceof Doublebox)
-			return BigDecimal.valueOf(((Doublebox)object).doubleValue());
+		if(object != null)
+		{
+			if(object instanceof Doublebox)
+				return BigDecimal.valueOf(((Doublebox)object).doubleValue());
+			if(object instanceof Listbox)
+				return Components.decimal((Listbox)object);
+		}
 		
 		return BigDecimal.ZERO;
 	}

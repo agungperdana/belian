@@ -35,12 +35,12 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.svc.CashAccountService;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
-import com.kratonsolution.belian.common.Dates;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.AddressRepository;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.OrganizationUnit;
+import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.general.svc.PersonService;
@@ -49,6 +49,7 @@ import com.kratonsolution.belian.global.dm.EconomicEvent.EconomicalType;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
+import com.kratonsolution.belian.inventory.dm.ProductPriceRepository;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.inventory.svc.UnitOfMeasureService;
 import com.kratonsolution.belian.sales.dm.CashSales;
@@ -57,6 +58,7 @@ import com.kratonsolution.belian.sales.dm.CashSalesLineEvent;
 import com.kratonsolution.belian.sales.srv.CashSalesService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Numbers;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -70,6 +72,10 @@ public class CashSalesFormContent extends FormContent
 	private SessionUtils sessionUtils = Springs.get(SessionUtils.class);
 	
 	private CashSalesService service = Springs.get(CashSalesService.class);
+	
+	private GeographicService geographicService = Springs.get(GeographicService.class);
+	
+	private ProductPriceRepository priceRepository = Springs.get(ProductPriceRepository.class);
 	
 	private EconomicAgentService agentService = Springs.get(EconomicAgentService.class);
 	
@@ -97,7 +103,7 @@ public class CashSalesFormContent extends FormContent
 	
 	private Doublebox term = Components.readOnlyDoubleBox(0);
 	
-	private Doublebox bill = Components.doubleBox(0);
+	private Textbox bill = Components.moneyBox();
 	
 	private Textbox note = new Textbox();
 	
@@ -109,7 +115,7 @@ public class CashSalesFormContent extends FormContent
 	
 	private Listbox organizations = Components.fullSpanSelect();
 	
-	private Listbox locations = Components.fullSpanSelect();
+	private Listbox locations = Components.fullSpanSelect(geographicService.findAll(),true);
 	
 	private Tabbox tabbox = new Tabbox();
 	
@@ -217,6 +223,8 @@ public class CashSalesFormContent extends FormContent
 				
 		term.setConstraint("no empty");
 		term.setWidth("65px");
+		
+		bill.setStyle("text-align:right;");
 		
 		note.setWidth("100%");
 		
@@ -396,6 +404,14 @@ public class CashSalesFormContent extends FormContent
 				
 				Doublebox quantity = new Doublebox(0d);
 				quantity.setWidth("100%");
+				quantity.addEventListener(Events.ON_CHANGE, new EventListener<Event>()
+				{
+					@Override
+					public void onEvent(Event event) throws Exception
+					{
+						setBill();
+					}
+				});
 				
 				Textbox note = new Textbox();
 				note.setWidth("100%");
@@ -408,23 +424,12 @@ public class CashSalesFormContent extends FormContent
 						Product product = productService.findOne(products.getSelectedItem().getValue().toString());
 						if(product != null)
 						{
-							for(ProductPrice price:product.getPrices())
-							{
-								if(Dates.inRange(date.getValue(), price.getFrom(), price.getTo()) && 
-								   price.getCurrency().getId().equals(currencys.getSelectedItem().getValue()) &&
-								   (price.getGeographic() == null || price.getGeographic().getId().equals(locations.getSelectedItem().getValue())) &&
-								   (price.getParty() == null || price.getParty().getId().equals(consumers.getSelectedItem().getValue())))
-								{
-									if(price.getType().equals(ProductPrice.Type.BASE))
-										prices.appendChild(new Listitem(price.getPrice().toEngineeringString(), price.getPrice().toEngineeringString()));
-									else if(price.getType().equals(ProductPrice.Type.DISCOUNT))
-										discs.appendChild(new Listitem(price.getPrice().toEngineeringString(), price.getPrice().toEngineeringString()));
-									else if(price.getType().equals(ProductPrice.Type.CHARGE))
-										charges.appendChild(new Listitem(price.getPrice().toEngineeringString(), price.getPrice().toEngineeringString()));
-								}
-							}
+							for(ProductPrice price:priceRepository.load(date.getValue(), Components.string(currencys), Components.string(locations), Components.string(consumers), product.getId()))
+								prices.appendChild(new Listitem(Numbers.format(price.getPrice()), price.getPrice()));
 							
 							uoms.appendChild(new Listitem(product.getUom().getCode(),product.getUom().getId()));
+							
+							Components.setDefault(prices);
 						}
 					}
 				});
@@ -469,5 +474,22 @@ public class CashSalesFormContent extends FormContent
 		
 		this.tabbox.getTabpanels().getChildren().get(0).appendChild(toolbar);
 		this.tabbox.getTabpanels().getChildren().get(0).appendChild(saleItems);
+	}
+	
+	private void setBill()
+	{
+		BigDecimal tBill = BigDecimal.ZERO;
+		
+		for(Object object:saleItems.getRows().getChildren())
+		{
+			Row row = (Row)object;
+			
+			BigDecimal price = RowUtils.decimal(row, 2).multiply(RowUtils.decimal(row, 5));
+			price = price.add(RowUtils.decimal(row, 4)).subtract(RowUtils.decimal(row, 3));
+		
+			tBill = tBill.add(price);
+		}
+
+		bill.setText(Numbers.format(tBill));
 	}
 }

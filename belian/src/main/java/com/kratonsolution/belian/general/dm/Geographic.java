@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.general.dm;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,18 +13,21 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.global.dm.Listable;
+
 import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * 
  * @author Agung Dodi Perdana
- *
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
 @Table(name="geographic")
-public class Geographic 
+public class Geographic implements Serializable,Listable
 {
 	public enum Type{COUNTRY,CITY,PROVINCE,KECAMATAN,KELURAHAN,RW,RT}
 
@@ -44,4 +49,16 @@ public class Geographic
 	
 	@Version
 	private Long version;
+
+	@Override
+	public String getLabel()
+	{
+		return getName();
+	}
+
+	@Override
+	public String getValue()
+	{
+		return getId();
+	}
 }
