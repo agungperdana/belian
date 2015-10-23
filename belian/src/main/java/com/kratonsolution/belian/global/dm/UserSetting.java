@@ -17,7 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import com.kratonsolution.belian.accounting.dm.Currency;
-import com.kratonsolution.belian.general.dm.Address;
+import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.Organization;
 
 /**
@@ -40,7 +40,7 @@ public class UserSetting implements Serializable
 	
 	@ManyToOne
 	@JoinColumn(name="fk_location")
-	private Address location;
+	private Geographic location;
 	
 	@Column(name="language")
 	private String language;

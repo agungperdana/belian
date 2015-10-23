@@ -131,6 +131,17 @@ public class Components
 		return listbox;
 	}
 	
+	public static final Listbox fullSpanSelect(BigDecimal decimal)
+	{
+		Listbox listbox = new Listbox();
+		listbox.setMold("select");
+		listbox.setWidth("100%");
+		listbox.appendChild(newListitem(decimal));
+		listbox.setSelectedIndex(0);
+		
+		return listbox;
+	}
+	
 	public static final Textbox readOnlyTextBox()
 	{
 		Textbox textbox = new Textbox();
@@ -244,6 +255,14 @@ public class Components
 		return textbox;
 	}
 	
+	public static final Textbox textBox(String text)
+	{
+		Textbox textbox = new Textbox(text);
+		textbox.setWidth("100%");
+		
+		return textbox;
+	}
+	
 	public static final Datebox mandatoryDatebox()
 	{
 		Datebox datebox = new Datebox(new Date());
@@ -298,5 +317,15 @@ public class Components
 			datebox.setValue(date);
 		
 		return datebox;
+	}
+
+	public static final Listitem newListitem(BigDecimal decimal)
+	{
+		return new Listitem(Numbers.format(decimal), decimal);
+	}
+	
+	public static final Listitem newListitem(Listable listable)
+	{
+		return new Listitem(listable.getLabel(),listable.getValue());
 	}
 }

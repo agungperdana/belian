@@ -3,9 +3,6 @@
  */
 package com.kratonsolution.belian.ui.setting;
 
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
@@ -25,9 +22,8 @@ import org.zkoss.zul.Vlayout;
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.Address;
-import com.kratonsolution.belian.general.dm.AddressRepository;
 import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.security.svc.UserService;
@@ -44,7 +40,7 @@ public class SettingWindow extends AbstractWindow
 {
 	private UserService userService = Springs.get(UserService.class);
 	
-	private AddressRepository geographicService = Springs.get(AddressRepository.class);
+	private GeographicService geographicService = Springs.get(GeographicService.class);
 	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 	
@@ -58,7 +54,7 @@ public class SettingWindow extends AbstractWindow
 
 	private Listbox organizations = Components.newSelect();
 	
-	private Listbox locations = Components.newSelect();
+	private Listbox locations = Components.newSelect(geographicService.findAll(),true);
 	
 	private Listbox languanges = Components.newSelect();
 	
@@ -94,39 +90,8 @@ public class SettingWindow extends AbstractWindow
 			Listitem listitem = new Listitem(organization.getName(), organization.getId());
 			organizations.appendChild(listitem);
 			if(sessionUtils.getOrganization() != null && organization.getId().equals(sessionUtils.getOrganization().getId()))
-			{
 				organizations.setSelectedItem(listitem);
-				for(Address address:organization.getAddresses())
-				{
-					Listitem listitem2 = new Listitem(address.getLabel(),address.getValue());
-					locations.appendChild(listitem2);
-					if(sessionUtils.getLocation() != null && sessionUtils.getLocation().getId().equals(address.getId()))
-						locations.setSelectedItem(listitem2);
-				}
-			}
 		}
-		
-		organizations.addEventListener(Events.ON_SELECT, new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				locations.getChildren().clear();
-				
-				Organization organization = organizationService.findOne(Components.string(organizations));
-				if(organization != null)
-				{
-					for(Address address:organization.getAddresses())
-					{
-						Listitem listitem = new Listitem(address.getCity().getName(),address.getCity().getId());
-						locations.appendChild(listitem);
-						
-						if(sessionUtils.getLocation() != null && address.getCity().getId().equals(sessionUtils.getLocation().getId()))
-							locations.setSelectedItem(listitem);
-					}
-				}
-			}
-		});
 		
 		for(Currency currency:currencyService.findAll())
 		{

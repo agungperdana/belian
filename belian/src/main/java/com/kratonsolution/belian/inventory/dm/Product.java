@@ -23,16 +23,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 import com.kratonsolution.belian.global.dm.EconomicResource;
+import com.kratonsolution.belian.global.dm.Listable;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
 @Table(name="product")
-public class Product implements EconomicResource
+public class Product implements EconomicResource, Listable
 {
 	public enum Type {SERVICE,FINISHGOOD,RAWMATERIAL,SUBASEMBLY}
 	
@@ -83,4 +85,16 @@ public class Product implements EconomicResource
 	
 	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<ProductCost> costs = new HashSet<ProductCost>();
+
+	@Override
+	public String getLabel()
+	{
+		return getName();
+	}
+
+	@Override
+	public String getValue()
+	{
+		return getId();
+	}
 }

@@ -36,9 +36,7 @@ import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.svc.CashAccountService;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.AddressRepository;
-import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.OrganizationUnit;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
@@ -238,19 +236,7 @@ public class CashSalesFormContent extends FormContent
 			Listitem listitem = new Listitem(unit.getParty().getName(),unit.getParty().getId());
 			organizations.appendChild(listitem);
 			if(sessionUtils.getOrganization() != null && sessionUtils.getOrganization().getId().equals(unit.getParty().getId()))
-			{
 				organizations.setSelectedItem(listitem);
-				for(Address address:unit.getParty().getAddresses())
-				{
-					Listitem listitem2 = new Listitem(address.getLabel(), address.getValue());
-					locations.appendChild(listitem2);
-					if(sessionUtils.getLocation() != null && sessionUtils.getLocation().getId().equals(address.getValue()))
-						locations.setSelectedItem(listitem2);
-				}
-			
-				if(locations.getSelectedCount() == 0)
-					Components.setDefault(locations);
-			}
 		}
 			
 		for(Currency currency:currencyService.findAll())
@@ -261,28 +247,15 @@ public class CashSalesFormContent extends FormContent
 				currencys.setSelectedItem(listitem);
 		}
 		
-		organizations.addEventListener(Events.ON_SELECT, new EventListener<Event>()
+		for(Object object:locations.getChildren())
 		{
-			@Override
-			public void onEvent(Event event) throws Exception
+			Listitem listitem = (Listitem)object;
+			if(sessionUtils.getLocation() != null && listitem.getValue().equals(sessionUtils.getLocation().getValue()))
 			{
-				Organization organization = organizationService.findOne(Components.string(organizations));
-				if(organization != null)
-				{
-					for(Address address:organization.getAddresses())
-					{
-						Listitem listitem = new Listitem(address.getLabel(), address.getValue());
-						locations.appendChild(listitem);
-						if(sessionUtils.getLocation() != null && sessionUtils.getLocation().getId().equals(address.getValue()))
-							locations.setSelectedItem(listitem);
-					}
-				}
-
-				if(locations.getSelectedCount() == 0)
-					Components.setDefault(locations);
-				Components.setDefault(consumers);
+				locations.setSelectedItem(listitem);
+				break;
 			}
-		});
+		}
 		
 		if(sessionUtils.getUser().getPerson() != null)
 		{

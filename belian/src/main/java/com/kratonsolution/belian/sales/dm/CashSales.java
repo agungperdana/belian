@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.sales.dm;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,7 +38,7 @@ public class CashSales extends Contract<CashSalesPayment, CashSalesLine>
 	public enum Status {PAID,UNPAID}
 	
 	@Column(name="is_finished")
-	private boolean finished;
+	private boolean paid = false;
 	
 	@Column(name="table_number")
 	private int table = 1;
@@ -59,4 +60,16 @@ public class CashSales extends Contract<CashSalesPayment, CashSalesLine>
 	
 	@OneToMany(mappedBy="cashSales",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<CashSalesPayment> increments = new HashSet<CashSalesPayment>();
+	
+	public CashSales(){}
+	
+	public BigDecimal getBill()
+	{
+		BigDecimal bill = BigDecimal.ZERO;
+		
+		for(CashSalesLine line:decrements)
+			bill = bill.add(line.getPrice().multiply(line.getValue())).subtract(line.getDiscount()).add(line.getCharge());
+		
+		return bill;
+	}
 }

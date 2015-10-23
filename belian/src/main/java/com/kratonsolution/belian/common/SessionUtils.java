@@ -84,7 +84,7 @@ public class SessionUtils
 		return getUser().getSetting().getCurrency();
 	}
 	
-	public Address getLocation()
+	public Geographic getLocation()
 	{
 		return getUser().getSetting().getLocation();
 	}

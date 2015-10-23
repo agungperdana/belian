@@ -44,7 +44,7 @@ public class CashSalesGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new CashSalesModel(8));
+				grid.setModel(new CashSalesModel(20));
 			}
 		});
 		
@@ -129,7 +129,7 @@ public class CashSalesGridContent extends GridContent
 								}
 							}
 							
-							grid.setModel(new CashSalesModel(8));
+							grid.setModel(new CashSalesModel(20));
 						}
 					}
 				});
@@ -148,7 +148,7 @@ public class CashSalesGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final CashSalesModel model = new CashSalesModel(8);
+		final CashSalesModel model = new CashSalesModel(20);
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
@@ -157,23 +157,23 @@ public class CashSalesGridContent extends GridContent
 		grid.setRowRenderer(new CashSalesRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
-		grid.setPageSize(8);
+		grid.setPageSize(20);
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Number",null,"100px"));
+		grid.getColumns().appendChild(new Column("Number",null,"150px"));
 		grid.getColumns().appendChild(new Column("Date",null,"85px"));
-		grid.getColumns().appendChild(new Column("Owner",null,"180px"));
-		grid.getColumns().appendChild(new Column("Sales",null,"180px"));
-		grid.getColumns().appendChild(new Column("Constomer",null,"180px"));
+		grid.getColumns().appendChild(new Column("Table",null,"55px"));
+		grid.getColumns().appendChild(new Column("Amount",null,"100px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(6).setVisible(false);
+		grid.getColumns().getChildren().get(5).setVisible(false);
+		grid.setSpan("4");
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), 8);
+				model.next(event.getActivePage(), 20);
 				grid.setModel(model);
 			}
 		});

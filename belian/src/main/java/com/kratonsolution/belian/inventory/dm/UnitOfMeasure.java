@@ -3,24 +3,29 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.global.dm.Listable;
+
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
 @Table(name="unit_of_measure")
-public class UnitOfMeasure
+public class UnitOfMeasure implements Serializable,Listable
 {
 	@Id
 	private String id;
@@ -36,4 +41,16 @@ public class UnitOfMeasure
 	
 	@Version
 	private Long version;
+
+	@Override
+	public String getLabel()
+	{
+		return getCode();
+	}
+
+	@Override
+	public String getValue()
+	{
+		return getId();
+	}
 }

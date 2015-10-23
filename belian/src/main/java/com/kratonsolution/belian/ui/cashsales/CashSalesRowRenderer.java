@@ -10,6 +10,7 @@ import org.zkoss.zul.RowRenderer;
 
 import com.kratonsolution.belian.sales.dm.CashSales;
 import com.kratonsolution.belian.ui.util.Dates;
+import com.kratonsolution.belian.ui.util.Numbers;
 
 /**
  * 
@@ -27,9 +28,8 @@ public class CashSalesRowRenderer implements RowRenderer<CashSales>
 			row.appendChild(new Checkbox());
 			row.appendChild(new Label(data.getNumber()));
 			row.appendChild(new Label(Dates.format(data.getDate())));
-			row.appendChild(new Label(data.getOrganization().getName()));
-			row.appendChild(new Label(data.getProducer().getName()));
-			row.appendChild(new Label(data.getConsumer().getName()));
+			row.appendChild(new Label(data.getTable()+""));
+			row.appendChild(new Label(Numbers.format(data.getBill())));
 			row.appendChild(new Label(data.getId()));
 		}
 	}

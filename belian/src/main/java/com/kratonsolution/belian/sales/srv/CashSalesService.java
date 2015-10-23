@@ -17,8 +17,9 @@ import com.kratonsolution.belian.sales.dm.CashSales;
 import com.kratonsolution.belian.sales.dm.DirectSalesRepository;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
 @Transactional(rollbackFor=Exception.class)

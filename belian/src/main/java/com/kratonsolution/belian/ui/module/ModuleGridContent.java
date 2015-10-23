@@ -20,8 +20,9 @@ import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class ModuleGridContent extends GridContent
 {
@@ -43,7 +44,7 @@ public class ModuleGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new ModuleModel(8));
+				grid.setModel(new ModuleModel(25));
 			}
 		});
 		
@@ -142,7 +143,7 @@ public class ModuleGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final ModuleModel model = new ModuleModel(8);
+		final ModuleModel model = new ModuleModel(25);
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
