@@ -9,10 +9,12 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
 import com.kratonsolution.belian.accounting.dm.Tax;
+import com.kratonsolution.belian.ui.util.Numbers;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class TaxRowRenderer implements RowRenderer<Tax>
 {
@@ -25,7 +27,7 @@ public class TaxRowRenderer implements RowRenderer<Tax>
 			row.appendChild(new Checkbox());
 			row.appendChild(new Label(data.getCode()));
 			row.appendChild(new Label(data.getName()));
-			row.appendChild(new Label(data.getValue().toEngineeringString()));
+			row.appendChild(new Label(Numbers.format(data.getAmount())));
 			row.appendChild(new Label(data.getId()));
 		}
 	}

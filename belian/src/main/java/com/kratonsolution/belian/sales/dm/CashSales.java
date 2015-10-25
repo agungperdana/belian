@@ -37,9 +37,6 @@ public class CashSales extends Contract<CashSalesPayment, CashSalesLine>
 {
 	public enum Status {PAID,UNPAID}
 	
-	@Column(name="is_finished")
-	private boolean paid = false;
-	
 	@Column(name="table_number")
 	private int table = 1;
 	
@@ -71,5 +68,10 @@ public class CashSales extends Contract<CashSalesPayment, CashSalesLine>
 			bill = bill.add(line.getPrice().multiply(line.getValue())).subtract(line.getDiscount()).add(line.getCharge());
 		
 		return bill;
+	}
+	
+	public BigDecimal getTaxAmount()
+	{
+		return getBill().multiply(this.tax.getAmount().divide(BigDecimal.valueOf(100)));
 	}
 }

@@ -33,8 +33,10 @@ import org.zkoss.zul.Toolbarbutton;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.Currency;
+import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.accounting.svc.CashAccountService;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
+import com.kratonsolution.belian.accounting.svc.TaxService;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.AddressRepository;
 import com.kratonsolution.belian.general.dm.OrganizationUnit;
@@ -93,6 +95,8 @@ public class CashSalesFormContent extends FormContent
 	
 	private PersonService personService = Springs.get(PersonService.class);
 	
+	private TaxService taxService = Springs.get(TaxService.class);
+	
 	private Listbox tableNumber = Components.newSelect();
 	
 	private Textbox number = Components.readOnlyTextBox("BLG"+System.currentTimeMillis());
@@ -102,6 +106,10 @@ public class CashSalesFormContent extends FormContent
 	private Doublebox term = Components.readOnlyDoubleBox(0);
 	
 	private Textbox bill = Components.moneyBox();
+	
+	private Textbox tax = Components.moneyBox();
+	
+	private Textbox totalBill = Components.moneyBox();
 	
 	private Textbox note = new Textbox();
 	
@@ -114,6 +122,8 @@ public class CashSalesFormContent extends FormContent
 	private Listbox organizations = Components.fullSpanSelect();
 	
 	private Listbox locations = Components.fullSpanSelect(geographicService.findAll(),true);
+	
+	private Listbox taxes = Components.fullSpanSelect(taxService.findAll(),true);
 	
 	private Tabbox tabbox = new Tabbox();
 	
@@ -167,6 +177,7 @@ public class CashSalesFormContent extends FormContent
 				sales.setDate(date.getValue());
 				sales.setNote(note.getText());
 				sales.setNumber(number.getText());
+				sales.setTax(taxService.findOne(Components.string(taxes)));
 				sales.setOrganization(organizationService.findOne(Components.string(organizations)));
 				sales.setProducer(agentService.findOne(Components.string(producers)));
 				sales.setLocation(geographicService.findOne(Components.string(locations)));
@@ -229,6 +240,13 @@ public class CashSalesFormContent extends FormContent
 		for(int idx=1;idx<=20;idx++)
 			tableNumber.appendChild(new Listitem(idx+"", idx));
 		
+		for(Object object:taxes.getChildren())
+		{
+			Listitem listitem = (Listitem)object;
+			if(listitem.getLabel().equals("None"))
+				taxes.setSelectedItem(listitem);
+		}
+		
 		Components.setDefault(tableNumber);
 		
 		for(OrganizationUnit unit:unitService.findAll())
@@ -279,40 +297,42 @@ public class CashSalesFormContent extends FormContent
 		Row row1 = new Row();
 		row1.appendChild(new Label("Document Owner"));
 		row1.appendChild(organizations);
-		row1.appendChild(new Label("Total Billing"));
+		row1.appendChild(new Label("Billing"));
 		row1.appendChild(bill);
 		
 		Row row2 = new Row();
 		row2.appendChild(new Label("Document Number"));
 		row2.appendChild(number);
+		row2.appendChild(new Label("Tax"));
+		row2.appendChild(tax);
 		
 		Row row3 = new Row();
 		row3.appendChild(new Label("Date"));
 		row3.appendChild(date);
+		row3.appendChild(new Label("Total Billing"));
+		row3.appendChild(totalBill);
 		
 		Row row4 = new Row();
 		row4.appendChild(new Label("Credit Term"));
 		row4.appendChild(term);
 		
 		Row row5 = new Row();
+		row5.appendChild(new Label("Tax"));
+		row5.appendChild(taxes);
 		row5.appendChild(new Label("Currency"));
 		row5.appendChild(currencys);
 		
 		Row row6 = new Row();
 		row6.appendChild(new Label("Sales Person"));
 		row6.appendChild(producers);
-		
-		Row row7 = new Row();
-		row7.appendChild(new Label("Customer"));
-		row7.appendChild(consumers);
+		row6.appendChild(new Label("Customer"));
+		row6.appendChild(consumers);
 		
 		Row row8 = new Row();
 		row8.appendChild(new Label("Sales Location"));
 		row8.appendChild(locations);
-		
-		Row row9 = new Row();
-		row9.appendChild(new Label("Note"));
-		row9.appendChild(note);
+		row8.appendChild(new Label("Note"));
+		row8.appendChild(note);
 		
 		rows.appendChild(row0);
 		rows.appendChild(row1);
@@ -321,7 +341,6 @@ public class CashSalesFormContent extends FormContent
 		rows.appendChild(row4);
 		rows.appendChild(row5);
 		rows.appendChild(row6);
-		rows.appendChild(row7);
 		rows.appendChild(row8);
 	}
 	
@@ -439,7 +458,7 @@ public class CashSalesFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Iterator<Component> iterator = grid.getRows().getChildren().iterator();
+				Iterator<Component> iterator = saleItems.getRows().getChildren().iterator();
 				while (iterator.hasNext())
 				{
 					Row row = (Row) iterator.next();
@@ -465,6 +484,7 @@ public class CashSalesFormContent extends FormContent
 	private void setBill()
 	{
 		BigDecimal tBill = BigDecimal.ZERO;
+		BigDecimal taxAmt = BigDecimal.ZERO;
 		
 		for(Object object:saleItems.getRows().getChildren())
 		{
@@ -476,7 +496,16 @@ public class CashSalesFormContent extends FormContent
 			tBill = tBill.add(price);
 		}
 
+
+		
+		Tax out = taxService.findOne(Components.string(taxes));
+		if(out != null)
+			taxAmt = tBill.multiply(out.getAmount().divide(BigDecimal.valueOf(100)));
+
+
 		bill.setText(Numbers.format(tBill));
+		tax.setText(Numbers.format(taxAmt));
+		totalBill.setText(Numbers.format(tBill.add(taxAmt)));
 	}
 	
 	private class BillEventListener implements EventListener<Event>

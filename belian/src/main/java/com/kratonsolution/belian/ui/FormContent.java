@@ -8,8 +8,9 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Vlayout;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public abstract class FormContent extends Vlayout
 {

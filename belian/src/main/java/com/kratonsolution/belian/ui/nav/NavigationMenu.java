@@ -14,8 +14,8 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Window;
 
 /**
- * @author agungdodiperdana
- *
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class NavigationMenu extends Window
 {	

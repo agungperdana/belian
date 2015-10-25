@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kratonsolution.belian.sales.dm.CashSales;
-import com.kratonsolution.belian.sales.dm.DirectSalesRepository;
+import com.kratonsolution.belian.sales.dm.CashSalesRepository;
 
 /**
  * 
@@ -26,7 +26,7 @@ import com.kratonsolution.belian.sales.dm.DirectSalesRepository;
 public class CashSalesService
 {
 	@Autowired
-	private DirectSalesRepository repository;
+	private CashSalesRepository repository;
 	
 	@Secured("ROLE_CASHSALES_READ")
 	public int size()
@@ -50,6 +50,12 @@ public class CashSalesService
 	public List<CashSales> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+	}
+	
+	@Secured("ROLE_CASHSALES_READ")
+	public List<CashSales> loadAllUnpaid(int pageIndex,int pageSize)
+	{
+		return repository.loadAllUnpaid(new PageRequest(pageIndex, pageSize));
 	}
 	
 	@Secured("ROLE_CASHSALES_CREATE")

@@ -61,6 +61,6 @@ public class CashSalesModel implements ListModel<CashSales>
 	public void next(int pageIndex,int itemSize)
 	{
 		data.clear();
-		data.addAll(service.findAll(0, (itemSize*pageIndex)+itemSize));
+		data.addAll(service.loadAllUnpaid(0, (itemSize*pageIndex)+itemSize));
 	}
 }

@@ -14,8 +14,9 @@ import com.kratonsolution.belian.accounting.svc.TaxService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class TaxModel implements ListModel<Tax>
 {

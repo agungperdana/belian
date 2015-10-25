@@ -24,8 +24,9 @@ import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class TaxEditContent extends FormContent
 {	
@@ -78,7 +79,7 @@ public class TaxEditContent extends FormContent
 				Tax tax = service.findOne(RowUtils.string(row, 4));
 				tax.setCode(code.getText());
 				tax.setName(name.getText());
-				tax.setValue(BigDecimal.valueOf(value.doubleValue()));
+				tax.setAmount(BigDecimal.valueOf(value.doubleValue()));
 				
 				service.edit(tax);
 				

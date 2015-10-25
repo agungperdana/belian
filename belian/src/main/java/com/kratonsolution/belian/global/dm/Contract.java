@@ -18,14 +18,16 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.kratonsolution.belian.accounting.dm.Currency;
+import com.kratonsolution.belian.accounting.dm.Tax;
 
 import lombok.Getter;
 import lombok.Setter;
 
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
@@ -49,6 +51,10 @@ public abstract class Contract<I extends IncrementCommitment,D extends Decrement
 	
 	@Column(name="note")
 	protected String note;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_tax")
+	protected Tax tax;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_party_consumer")

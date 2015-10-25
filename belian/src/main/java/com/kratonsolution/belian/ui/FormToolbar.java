@@ -3,18 +3,24 @@
  */
 package com.kratonsolution.belian.ui;
 
+import lombok.Getter;
+
 import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
+@Getter
 public class FormToolbar extends Toolbar
 {
 	private Toolbarbutton cancel = new Toolbarbutton("Cancel");
 	
 	private Toolbarbutton save = new Toolbarbutton("Save");
+	
+	private Toolbarbutton print = new Toolbarbutton("Print");
 	
 	public FormToolbar()
 	{
@@ -23,19 +29,11 @@ public class FormToolbar extends Toolbar
 		setHeight("20%");
 		
 		cancel.setImage("/icons/cancel.png");
-		cancel.setParent(this);
-		
 		save.setImage("/icons/save.png");
-		save.setParent(this);
-	}
+		print.setImage("/icons/print.png");
 	
-	public Toolbarbutton getCancel()
-	{
-		return this.cancel;
-	}
-	
-	public Toolbarbutton getSave()
-	{
-		return this.save;
+		appendChild(cancel);
+		appendChild(save);
+		appendChild(print);
 	}
 }

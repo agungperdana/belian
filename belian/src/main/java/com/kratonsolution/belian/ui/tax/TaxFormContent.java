@@ -24,8 +24,9 @@ import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class TaxFormContent extends FormContent
 {	
@@ -76,7 +77,7 @@ public class TaxFormContent extends FormContent
 				tax.setId(UUID.randomUUID().toString());
 				tax.setCode(code.getText());
 				tax.setName(name.getText());
-				tax.setValue(BigDecimal.valueOf(value.doubleValue()));
+				tax.setAmount(BigDecimal.valueOf(value.doubleValue()));
 				
 				service.add(tax);
 				
