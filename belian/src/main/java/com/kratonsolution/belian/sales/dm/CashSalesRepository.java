@@ -18,4 +18,7 @@ public interface CashSalesRepository extends JpaRepository<CashSales,String>
 {
 	@Query("FROM CashSales cash WHERE cash.status = 'UNPAID' ORDER BY cash.table ASC")
 	public List<CashSales> loadAllUnpaid(Pageable pageable);
+	
+	@Query("FROM CashSales cash ORDER BY cash.table ASC,cash.status DESC")
+	public List<CashSales> loadAllOrderByStatus(Pageable pageable);
 }

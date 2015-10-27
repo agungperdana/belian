@@ -13,8 +13,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.kratonsolution.belian.global.dm.EconomicEvent;
+import com.kratonsolution.belian.global.dm.EconomicType;
 import com.kratonsolution.belian.sales.dm.CashSales;
+import com.kratonsolution.belian.sales.dm.CashSalesPayment;
+import com.kratonsolution.belian.sales.dm.CashSalesPaymentEvent;
 import com.kratonsolution.belian.sales.dm.CashSalesRepository;
+import com.kratonsolution.belian.sales.dm.CashSales.Status;
 
 /**
  * 
@@ -58,6 +63,12 @@ public class CashSalesService
 		return repository.loadAllUnpaid(new PageRequest(pageIndex, pageSize));
 	}
 	
+	@Secured("ROLE_CASHSALES_READ")
+	public List<CashSales> loadAllOrderByStatus(int pageIndex,int pageSize)
+	{
+		return repository.loadAllOrderByStatus(new PageRequest(pageIndex, pageSize));
+	}
+	
 	@Secured("ROLE_CASHSALES_CREATE")
 	public void add(CashSales sales)
 	{
@@ -69,6 +80,36 @@ public class CashSalesService
 	public void edit(CashSales sales)
 	{
 		repository.saveAndFlush(sales);
+	}
+	
+	@Secured("ROLE_CASHSALES_UPDATE")
+	public void addPayment(CashSales out)
+	{
+		out.setStatus(Status.PAID);
+		
+		repository.save(out);
+		
+		CashSalesPayment payment = new CashSalesPayment();
+		payment.setCashSales(out);
+		payment.setDate(out.getDate());
+//		payment.setResource(resource);
+		payment.setValue(out.getBill().add(out.getTaxAmount()));
+		
+		CashSalesPaymentEvent paymentEvent = new CashSalesPaymentEvent();
+		paymentEvent.setConsumer(out.getConsumer());
+		paymentEvent.setCurrency(out.getCurrency());
+		paymentEvent.setDate(out.getDate());
+		paymentEvent.setEconomicType(EconomicType.FINANCIAL);
+		paymentEvent.setProducer(out.getProducer());
+//		paymentEvent.setResource(payment.getResource());
+		paymentEvent.setType(EconomicEvent.Type.GET);
+		paymentEvent.setValue(payment.getValue());
+		
+		payment.setEvent(paymentEvent);
+		
+		out.getIncrements().add(payment);
+		
+		repository.save(out);
 	}
 	
 	@Secured("ROLE_CASHSALES_DELETE")

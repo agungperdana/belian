@@ -20,8 +20,6 @@ public class FormToolbar extends Toolbar
 	
 	private Toolbarbutton save = new Toolbarbutton("Save");
 	
-	private Toolbarbutton print = new Toolbarbutton("Print");
-	
 	public FormToolbar()
 	{
 		setWidth("100%");
@@ -30,10 +28,8 @@ public class FormToolbar extends Toolbar
 		
 		cancel.setImage("/icons/cancel.png");
 		save.setImage("/icons/save.png");
-		print.setImage("/icons/print.png");
 	
 		appendChild(cancel);
 		appendChild(save);
-		appendChild(print);
 	}
 }

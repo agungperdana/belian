@@ -164,8 +164,8 @@ public class CashSalesGridContent extends GridContent
 		grid.getColumns().appendChild(new Column("Date",null,"85px"));
 		grid.getColumns().appendChild(new Column("Table",null,"55px"));
 		grid.getColumns().appendChild(new Column("Amount",null,"100px"));
-		grid.getColumns().appendChild(new Column("Status",null,"100px"));
-		grid.getColumns().appendChild(new Column("",null,"45px"));
+		grid.getColumns().appendChild(new Column("Status",null,"75px"));
+		grid.getColumns().appendChild(new Column("",null,"65px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
 		grid.getColumns().getChildren().get(7).setVisible(false);
 		grid.setSpan("4");
