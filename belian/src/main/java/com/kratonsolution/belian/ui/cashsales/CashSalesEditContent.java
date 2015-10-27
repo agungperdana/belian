@@ -3,29 +3,21 @@
  */
 package com.kratonsolution.belian.ui.cashsales;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.Reader;
 import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.UUID;
 
-import org.zkoss.util.media.AMedia;
-import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Grid;
-import org.zkoss.zul.Iframe;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
@@ -41,10 +33,6 @@ import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 
 import com.google.common.base.Strings;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.accounting.svc.CashAccountService;
@@ -70,6 +58,7 @@ import com.kratonsolution.belian.sales.dm.CashSalesLine;
 import com.kratonsolution.belian.sales.dm.CashSalesLineEvent;
 import com.kratonsolution.belian.sales.srv.CashSalesService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.PrintWindow;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Numbers;
 import com.kratonsolution.belian.ui.util.RowUtils;
@@ -187,7 +176,7 @@ public class CashSalesEditContent extends FormContent
 				if(Strings.isNullOrEmpty(term.getText()))
 					throw new WrongValueException(term,"Holder cannot be empty");
 
-				CashSales sales = service.findOne(RowUtils.string(row, 6));
+				CashSales sales = service.findOne(RowUtils.string(row, 7));
 				if(sales != null)
 				{
 					sales.setTable(Integer.parseInt(Components.string(tableNumber)));
@@ -254,38 +243,10 @@ public class CashSalesEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				CashSales cash = service.findOne(RowUtils.string(row, 6));
-				if(cash != null)
-				{
-					ByteArrayOutputStream pdf = new ByteArrayOutputStream();
-					
-					Document document = new Document(PageSize.A4_LANDSCAPE);
-					PdfWriter.getInstance(document,pdf);
-					document.open();
-					document.add(new Paragraph("Dar Der Dor"));
-					document.close();
-//					
-					Page page = getPage();
-					
-					for(Component component:getPage().getRoots())
-						component.setPage(null);
-					
-					Iframe iframe = new Iframe();
-					iframe.setHeight("100%");
-					iframe.setWidth("100%");
-					iframe.setContent(new AMedia(null,null, "application/pdf",pdf.toByteArray()));
-					iframe.setPage(page);
-					iframe.setVisible(true);
-					iframe.focus();
-					iframe.addEventListener(Events.ON_FOCUS,new EventListener<Event>()
-					{
-						@Override
-						public void onEvent(Event event) throws Exception
-						{
-							Clients.print();
-						}
-					});
-				}
+				PrintWindow print = new PrintWindow("/cashsalesprint.htm?id="+RowUtils.string(row, 7));
+				print.setPage(getPage());
+				print.setVisible(true);
+				
 			}
 		});
 	}
@@ -293,7 +254,7 @@ public class CashSalesEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		CashSales cash = service.findOne(RowUtils.string(row, 6));
+		CashSales cash = service.findOne(RowUtils.string(row, 7));
 		if(cash != null)
 		{
 			date.setConstraint("no empty");
@@ -420,7 +381,7 @@ public class CashSalesEditContent extends FormContent
 
 	private void initItems()
 	{
-		CashSales cash = service.findOne(RowUtils.string(row, 6));
+		CashSales cash = service.findOne(RowUtils.string(row, 7));
 		if(cash != null)
 		{
 			this.tabbox.getTabs().appendChild(new Tab("Sales Item(s)"));
@@ -618,81 +579,5 @@ public class CashSalesEditContent extends FormContent
 		{
 			setBill();
 		}
-	}
-	
-	private class PDFMedia implements Media
-	{
-		ByteArrayOutputStream stream;
-		
-		public PDFMedia(ByteArrayOutputStream stream)
-		{
-			this.stream = stream;
-		}
-		
-		@Override
-		public boolean isBinary()
-		{
-			return true;
-		}
-
-		@Override
-		public boolean inMemory()
-		{
-			return true;
-		}
-
-		@Override
-		public byte[] getByteData()
-		{
-			return stream.toByteArray();
-		}
-
-		@Override
-		public String getStringData()
-		{
-			return null;
-		}
-
-		@Override
-		public InputStream getStreamData()
-		{
-			return null;
-		}
-
-		@Override
-		public Reader getReaderData()
-		{
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public String getName()
-		{
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public String getFormat()
-		{
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public String getContentType()
-		{
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public boolean isContentDisposition()
-		{
-			// TODO Auto-generated method stub
-			return false;
-		}
-		
 	}
 }

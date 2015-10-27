@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+	<meta charset="UTF-8"/>
+    <script type="text/javascript">
+    	function onprint()
+    	{
+    		window.print();
+    	}
+    </script>
+	<style type="text/css">
+		body{
+			font-family:serif;
+			font-size:8px
+			margin: 0;
+			padding: 0;
+		}
+		
+		.tclass{
+			border:0px;
+			width: 100%;
+			margin: 0;
+			padding: 0;
+		}
+		
+		.tdheadclass{
+			border-top: solid black 1px;
+			border-bottom: solid black 1px;
+			font-weight: bold;
+		}
+		
+		.printspan{
+			cursor: pointer;
+		}
+	</style>
+	<style type="text/css" media="print">
+		.printspan{
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<table class="tclass">
+	<thead>
+	<tr>
+		<td colspan="4" align="center" th:text="${sales.organization.name}"/>
+	</tr>
+	<tr th:each="address:${sales.organization.addresses}">
+		<td colspan="4" align="center" th:text="${address.address}+', '+${address.city.name}+', '+${address.province.name}+', '+${address.country.name}"/>
+	</tr>
+	<tr th:each="contact:${sales.organization.contacts}">
+		<td colspan="4" align="center" th:text="${contact.contact}"/>
+	</tr>
+	<tr><td colspan="4">&nbsp;</td></tr>
+	</thead>
+	<tbody>
+	<tr>
+		<td class="tdheadclass" align="left">Product</td>
+		<td class="tdheadclass" align="right">Quantity</td>
+		<td class="tdheadclass" align="right">Unit Price</td>
+		<td class="tdheadclass" align="right">Total Price</td>
+	</tr>
+	<tr th:each="line : ${lines}">
+		 <td th:text="${line.resource.name}"/>
+		 <td align="right" th:text="${#numbers.formatDecimal(line.value,1,'COMMA',0,'POINT')}"/>
+		 <td align="right" th:text="${#numbers.formatDecimal(line.price,1,'COMMA',0,'POINT')}"/>
+		 <td align="right" th:text="${#numbers.formatDecimal(line.price*line.value,1,'COMMA',0,'POINT')}"/>
+	</tr>
+	<tr>
+		<td colspan="3" style="border-top: solid black 1px;border-bottom: solid black 1px;">&nbsp;</td>
+		<td align="right" style="border-top: solid black 1px;border-bottom: solid black 1px;font-weight: bold;" th:text="${#numbers.formatDecimal(sales.bill,1,'COMMA',0,'POINT')}"/>
+	</tr>
+	</tbody>
+	<tfoot>
+	<tr><td colspan="4">&nbsp;</td></tr>
+	<tr>
+		<td colspan="3">&nbsp;</td>
+		<td align="center" th:text="${sales.location.name}+', '+${#dates.format(sales.date,'dd-MM-yyyy')}"/>
+	</tr>
+	<tr>
+		<td colspan="4">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3">&nbsp;</td>
+		<td align="center" th:text="${sales.producer.name}"/>
+	</tr>
+	<tr>
+		<td colspan="4" align="center">
+			<img class="printspan" th:src="@{/icons/print.png}" alt="" onclick="onprint()"/>
+		</td>
+	</tr>
+	</tfoot>
+	</table>
+</body>
+</html>
