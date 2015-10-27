@@ -46,7 +46,7 @@ import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.global.dm.EconomicEvent;
-import com.kratonsolution.belian.global.dm.EconomicEvent.EconomicalType;
+import com.kratonsolution.belian.global.dm.EconomicType;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
@@ -56,6 +56,8 @@ import com.kratonsolution.belian.inventory.svc.UnitOfMeasureService;
 import com.kratonsolution.belian.sales.dm.CashSales;
 import com.kratonsolution.belian.sales.dm.CashSalesLine;
 import com.kratonsolution.belian.sales.dm.CashSalesLineEvent;
+import com.kratonsolution.belian.sales.dm.CashSalesPayment;
+import com.kratonsolution.belian.sales.dm.CashSalesPaymentEvent;
 import com.kratonsolution.belian.sales.srv.CashSalesService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.PrintWindow;
@@ -221,12 +223,34 @@ public class CashSalesEditContent extends FormContent
 						events.setDate(sales.getDate());
 						events.setProducer(sales.getProducer());
 						events.setResource(line.getResource());
+						events.setEconomicType(EconomicType.NONFINANCIAL);
 						events.setType(EconomicEvent.Type.GIVE);
 						events.setValue(line.getValue());
-						events.setEconomicType(EconomicalType.NONECONOMIC);
 
 						line.setEvent(events);
+						
 						sales.getDecrements().add(line);
+					
+					
+						CashSalesPayment payment = new CashSalesPayment();
+						payment.setCashSales(sales);
+						payment.setDate(sales.getDate());
+//						payment.setResource(resource);
+						payment.setValue(sales.getBill().add(sales.getTaxAmount()));
+						
+						CashSalesPaymentEvent paymentEvent = new CashSalesPaymentEvent();
+						paymentEvent.setConsumer(sales.getConsumer());
+						paymentEvent.setCurrency(sales.getCurrency());
+						paymentEvent.setDate(sales.getDate());
+						paymentEvent.setEconomicType(EconomicType.FINANCIAL);
+						paymentEvent.setProducer(sales.getProducer());
+//						paymentEvent.setResource(payment.getResource());
+						paymentEvent.setType(EconomicEvent.Type.GET);
+						paymentEvent.setValue(payment.getValue());
+						
+						payment.setEvent(paymentEvent);
+						
+						sales.getIncrements().add(payment);
 					}
 
 					service.edit(sales);

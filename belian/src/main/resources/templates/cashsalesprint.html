@@ -68,8 +68,16 @@
 		 <td align="right" th:text="${#numbers.formatDecimal(line.price*line.value,1,'COMMA',0,'POINT')}"/>
 	</tr>
 	<tr>
-		<td colspan="3" style="border-top: solid black 1px;border-bottom: solid black 1px;">&nbsp;</td>
-		<td align="right" style="border-top: solid black 1px;border-bottom: solid black 1px;font-weight: bold;" th:text="${#numbers.formatDecimal(sales.bill,1,'COMMA',0,'POINT')}"/>
+		<td colspan="3" style="border-top: solid black 1px;">&nbsp;</td>
+		<td align="right" style="border-top: solid black 1px;font-weight: bold;" th:text="${#numbers.formatDecimal(sales.bill,1,'COMMA',0,'POINT')}"/>
+	</tr>
+	<tr>
+		<td colspan="3" th:text="${sales.tax.name}"/>
+		<td align="right" style="font-weight: bold;" th:text="${#numbers.formatDecimal(sales.taxAmount,1,'COMMA',0,'POINT')}"/>
+	</tr>
+	<tr>
+		<td colspan="3" style="border-bottom: solid black 1px;">&nbsp;</td>
+		<td align="right" style="border-bottom: solid black 1px;font-weight: bold;" th:text="${#numbers.formatDecimal(sales.totalBill,1,'COMMA',0,'POINT')}"/>
 	</tr>
 	</tbody>
 	<tfoot>

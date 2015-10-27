@@ -74,4 +74,9 @@ public class CashSales extends Contract<CashSalesPayment, CashSalesLine>
 	{
 		return getBill().multiply(this.tax.getAmount().divide(BigDecimal.valueOf(100)));
 	}
+	
+	public BigDecimal getTotalBill()
+	{
+		return getBill().add(getTaxAmount());
+	}
 }

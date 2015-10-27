@@ -16,11 +16,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import com.kratonsolution.belian.accounting.dm.CashAccount;
+import com.kratonsolution.belian.accounting.dm.GLAccount;
 import com.kratonsolution.belian.global.dm.IncrementCommitment;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
@@ -36,8 +38,8 @@ public class CashSalesPayment extends IncrementCommitment<CashAccount,CashSalesP
 	private PaymentType type = PaymentType.CASH;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_cash_account_resource")
-	private CashAccount resource;
+	@JoinColumn(name="fk_gl_account_resource")
+	private GLAccount resource;
 	
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="fk_sales_payment_event")

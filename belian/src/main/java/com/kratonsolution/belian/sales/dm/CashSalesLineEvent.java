@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import com.kratonsolution.belian.global.dm.EconomicEvent;
+import com.kratonsolution.belian.global.dm.EconomicType;
 import com.kratonsolution.belian.inventory.dm.Product;
 
 /**
@@ -28,4 +29,9 @@ public class CashSalesLineEvent extends EconomicEvent<Product>
 	@ManyToOne
 	@JoinColumn(name="fk_product_resource")
 	protected Product resource;
+	
+	public CashSalesLineEvent()
+	{
+		setEconomicType(EconomicType.NONFINANCIAL);
+	}
 }

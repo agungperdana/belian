@@ -20,10 +20,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.accounting.dm.Currency;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import com.kratonsolution.belian.accounting.dm.Currency;
 
 /**
  * @author agungdodiperdana
@@ -39,8 +39,6 @@ public abstract class EconomicEvent<R extends EconomicResource>
 {
 	public enum Type{GET,GIVE}
 	
-	public enum EconomicalType{ECONOMIC,NONECONOMIC}
-	
 	@Id
 	protected String id = UUID.randomUUID().toString();
 	
@@ -50,7 +48,7 @@ public abstract class EconomicEvent<R extends EconomicResource>
 	
 	@Column(name="economical_type")
 	@Enumerated(EnumType.STRING)
-	protected EconomicalType economicType = EconomicalType.ECONOMIC;
+	protected EconomicType economicType = EconomicType.FINANCIAL;
 
 	@Column(name="date")
 	protected Date date;

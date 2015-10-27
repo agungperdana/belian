@@ -45,7 +45,6 @@ import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.global.dm.EconomicEvent;
-import com.kratonsolution.belian.global.dm.EconomicEvent.EconomicalType;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
@@ -210,7 +209,6 @@ public class CashSalesFormContent extends FormContent
 					events.setResource(line.getResource());
 					events.setType(EconomicEvent.Type.GIVE);
 					events.setValue(line.getValue());
-					events.setEconomicType(EconomicalType.NONECONOMIC);
 
 					line.setEvent(events);
 					sales.getDecrements().add(line);

@@ -13,6 +13,7 @@ import lombok.Setter;
 
 import com.kratonsolution.belian.accounting.dm.CashAccount;
 import com.kratonsolution.belian.global.dm.EconomicEvent;
+import com.kratonsolution.belian.global.dm.EconomicType;
 
 /**
  * 
@@ -28,4 +29,9 @@ public class CashSalesPaymentEvent extends EconomicEvent<CashAccount>
 	@ManyToOne
 	@JoinColumn(name="fk_cash_account")
 	private CashAccount resource;
+	
+	public CashSalesPaymentEvent()
+	{
+		setEconomicType(EconomicType.FINANCIAL);
+	}
 }

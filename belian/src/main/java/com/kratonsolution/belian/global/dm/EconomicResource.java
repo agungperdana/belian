@@ -11,8 +11,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 /**
- * @author agungdodiperdana
- *
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Entity
 @Table(name="economic_resource")
