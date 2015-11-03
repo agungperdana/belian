@@ -35,7 +35,7 @@ import org.zkoss.zul.Toolbarbutton;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.dm.Tax;
-import com.kratonsolution.belian.accounting.svc.CashAccountService;
+import com.kratonsolution.belian.accounting.svc.AccountingSettingAccountService;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.accounting.svc.TaxService;
 import com.kratonsolution.belian.common.SessionUtils;
@@ -93,7 +93,7 @@ public class CashSalesEditContent extends FormContent
 
 	private AddressRepository addressService = Springs.get(AddressRepository.class);
 
-	private CashAccountService cashAccountService = Springs.get(CashAccountService.class);
+	private AccountingSettingAccountService cashAccountService = Springs.get(AccountingSettingAccountService.class);
 
 	private PersonService personService = Springs.get(PersonService.class);
 

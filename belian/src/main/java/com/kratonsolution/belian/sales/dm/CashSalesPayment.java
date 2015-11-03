@@ -15,7 +15,6 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-import com.kratonsolution.belian.accounting.dm.CashAccount;
 import com.kratonsolution.belian.accounting.dm.GLAccount;
 import com.kratonsolution.belian.global.dm.IncrementCommitment;
 
@@ -28,7 +27,7 @@ import com.kratonsolution.belian.global.dm.IncrementCommitment;
 @Setter
 @Entity
 @Table(name="cash_sales_payment")
-public class CashSalesPayment extends IncrementCommitment<CashAccount,CashSalesPaymentEvent>
+public class CashSalesPayment extends IncrementCommitment<GLAccount,CashSalesPaymentEvent>
 {
 	@Column(name="card_number")
 	private String cardNumber;

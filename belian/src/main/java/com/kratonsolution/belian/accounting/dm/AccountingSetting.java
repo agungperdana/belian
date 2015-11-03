@@ -3,12 +3,14 @@
  */
 package com.kratonsolution.belian.accounting.dm;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -28,12 +30,11 @@ public class AccountingSetting
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@ManyToOne
-	@JoinColumn(name="fk_cash_sales_account")
-	private GLAccount cashSales;
-	
 	@Version
 	private Long version;
+	
+	@OneToMany(mappedBy="setting",cascade=CascadeType.ALL)
+	private Set<AccountingSettingAccount> cashSales = new HashSet<AccountingSettingAccount>();
 	
 	public AccountingSetting(){}
 }

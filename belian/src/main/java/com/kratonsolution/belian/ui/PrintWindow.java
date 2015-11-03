@@ -21,11 +21,11 @@ public class PrintWindow extends Window
 	{
 		setMode(Mode.HIGHLIGHTED);
 		setClosable(true);
-		setWidth("750px");
-		setHeight("450px");
+		setWidth("250px");
+		setHeight("500px");
 		
-		iframe.setWidth("100%");
-		iframe.setHeight("100%");
+		iframe.setWidth("250px");
+		iframe.setHeight("500px");
 		iframe.setSrc(printsource);
 		
 		appendChild(caption);
