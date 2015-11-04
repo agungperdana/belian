@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.accounting.dm;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -11,18 +13,21 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.global.dm.Listable;
+
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
 @Table(name="organization_gl_account")
-public class OGLAccount
+public class OGLAccount implements Serializable,Listable
 {
 	@Id
 	private String id;
@@ -40,4 +45,18 @@ public class OGLAccount
 	
 	@Version
 	private Long version;
+	
+	public OGLAccount(){}
+
+	@Override
+	public String getLabel()
+	{
+		return this.account.getName();
+	}
+
+	@Override
+	public String getValue()
+	{
+		return this.account.getId();
+	}
 }

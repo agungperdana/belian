@@ -6,8 +6,9 @@ package com.kratonsolution.belian.ui.product;
 import org.zkoss.zul.Toolbarbutton;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class ProductButton extends Toolbarbutton
 {

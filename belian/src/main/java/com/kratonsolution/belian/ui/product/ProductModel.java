@@ -14,8 +14,9 @@ import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class ProductModel implements ListModel<Product>
 {

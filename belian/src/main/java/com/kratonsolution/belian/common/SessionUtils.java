@@ -63,7 +63,11 @@ public class SessionUtils
 	
 	public Organization getOrganization()
 	{
-		return getUser().getSetting().getOrganization();
+		Organization organization = new Organization();
+		organization.setId(getUser().getSetting().getOrganizationId());
+		organization.setName(getUser().getSetting().getOrganizationName());
+		
+		return organization;
 	}
 	
 	public List<Geographic> getLocations()
@@ -81,12 +85,28 @@ public class SessionUtils
 	
 	public Currency getCurrency()
 	{
-		return getUser().getSetting().getCurrency();
+		Currency currency = new Currency();
+		currency.setId(getUser().getSetting().getCurrencyId());
+		currency.setName(getUser().getSetting().getCurrencyName());
+		
+		return currency;
 	}
 	
 	public Geographic getLocation()
 	{
-		return getUser().getSetting().getLocation();
+		Geographic geographic = new Geographic();
+		geographic.setId(getUser().getSetting().getLocationId());
+		geographic.setName(getUser().getSetting().getLocationName());
+		
+		return geographic;
+	}
+	
+	public int getRowPerPage()
+	{
+		if(getUser() == null || getUser().getSetting() == null)
+			return 25;
+		
+		return getUser().getSetting().getRowPerPage();
 	}
 	
 	public String getLanguage()

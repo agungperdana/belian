@@ -14,8 +14,9 @@ import com.kratonsolution.belian.security.svc.ModuleService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class ModuleModel implements ListModel<Module>
 {

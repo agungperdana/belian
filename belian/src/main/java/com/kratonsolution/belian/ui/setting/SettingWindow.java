@@ -6,6 +6,7 @@ package com.kratonsolution.belian.ui.setting;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
+import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
@@ -22,6 +23,7 @@ import org.zkoss.zul.Vlayout;
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
@@ -59,6 +61,8 @@ public class SettingWindow extends AbstractWindow
 	private Listbox languanges = Components.newSelect();
 	
 	private Listbox currencys = Components.newSelect();
+	
+	private Doublebox rowPerPage = new Doublebox(25);
 	
 	public SettingWindow()
 	{
@@ -116,6 +120,8 @@ public class SettingWindow extends AbstractWindow
 		if("en-US".equals(sessionUtils.getLanguage()))
 			languanges.setSelectedIndex(1);
 		
+		rowPerPage.setValue(sessionUtils.getRowPerPage());
+		
 		Tabpanel tabpanel = new Tabpanel();
 		
 		tabbox.getTabs().appendChild(new Tab("My Account"));
@@ -146,10 +152,15 @@ public class SettingWindow extends AbstractWindow
 		row4.appendChild(new Label("Currency"));
 		row4.appendChild(currencys);
 		
+		Row row5 = new Row();
+		row5.appendChild(new Label("Row per page"));
+		row5.appendChild(rowPerPage);
+		
 		grid.getRows().appendChild(row1);
 		grid.getRows().appendChild(row2);
 		grid.getRows().appendChild(row3);
 		grid.getRows().appendChild(row4);
+		grid.getRows().appendChild(row5);
 		
 		tabpanel.appendChild(grid);
 	}
@@ -179,9 +190,28 @@ public class SettingWindow extends AbstractWindow
 		if(user != null)
 		{
 			user.getSetting().setLanguage(Components.string(languanges));
-			user.getSetting().setLocation(geographicService.findOne(Components.string(locations)));
-			user.getSetting().setOrganization(organizationService.findOne(Components.string(organizations)));
-			user.getSetting().setCurrency(currencyService.findOne(Components.string(currencys)));
+			user.getSetting().setRowPerPage(rowPerPage.intValue());
+
+			Geographic location = geographicService.findOne(Components.string(locations));
+			if(location != null)
+			{
+				user.getSetting().setLocationId(location.getId());
+				user.getSetting().setLocationName(location.getName());
+			}
+
+			Organization organization = organizationService.findOne(Components.string(organizations));
+			if(organization != null)
+			{
+				user.getSetting().setOrganizationId(organization.getId());
+				user.getSetting().setOrganizationName(organization.getName());
+			}
+
+			Currency currency = currencyService.findOne(Components.string(currencys));
+			if(currency != null)
+			{
+				user.getSetting().setCurrencyId(currency.getId());
+				user.getSetting().setCurrencyName(currency.getName());
+			}
 			
 			userService.edit(user);
 		}

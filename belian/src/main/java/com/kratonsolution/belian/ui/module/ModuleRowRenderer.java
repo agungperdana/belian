@@ -11,12 +11,12 @@ import org.zkoss.zul.RowRenderer;
 import com.kratonsolution.belian.security.dm.Module;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class ModuleRowRenderer implements RowRenderer<Module>
-{
-
+{	
 	@Override
 	public void render(Row row, Module data, int index) throws Exception
 	{

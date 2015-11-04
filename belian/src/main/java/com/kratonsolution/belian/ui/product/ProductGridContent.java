@@ -20,8 +20,9 @@ import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class ProductGridContent extends GridContent
 {
@@ -43,7 +44,7 @@ public class ProductGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new ProductModel(8));
+				grid.setModel(new ProductModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -147,7 +148,7 @@ public class ProductGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final ProductModel model = new ProductModel(8);
+		final ProductModel model = new ProductModel(utils.getRowPerPage());
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
@@ -156,7 +157,7 @@ public class ProductGridContent extends GridContent
 		grid.setRowRenderer(new ProductRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
-		grid.setPageSize(8);
+		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
 		grid.getColumns().appendChild(new Column("Start",null,"85px"));
@@ -175,11 +176,18 @@ public class ProductGridContent extends GridContent
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), 8);
+				model.next(event.getActivePage(), utils.getRowPerPage());
 				grid.setModel(model);
+				
+				reattachEvent();
 			}
 		});
 		
+		reattachEvent();
+	}
+	
+	protected void reattachEvent()
+	{
 		Rows rows = grid.getRows();
 		for(Object object:rows.getChildren())
 		{

@@ -14,6 +14,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.security.svc.ModuleService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.RowUtils;
@@ -27,6 +28,8 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class ModuleGridContent extends GridContent
 {
 	private final ModuleService service = Springs.get(ModuleService.class);
+	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public ModuleGridContent()
 	{
@@ -44,7 +47,7 @@ public class ModuleGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new ModuleModel(25));
+				grid.setModel(new ModuleModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -143,7 +146,7 @@ public class ModuleGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final ModuleModel model = new ModuleModel(25);
+		final ModuleModel model = new ModuleModel(utils.getRowPerPage());
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
@@ -152,7 +155,7 @@ public class ModuleGridContent extends GridContent
 		grid.setRowRenderer(new ModuleRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
-		grid.setPageSize(25);
+		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
 		grid.getColumns().appendChild(new Column("Code",null,"155px"));
@@ -166,11 +169,17 @@ public class ModuleGridContent extends GridContent
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), 25);
+				model.next(event.getActivePage(), utils.getRowPerPage());
 				grid.setModel(model);
+				reattachEvent();
 			}
 		});
 		
+		reattachEvent();
+	}
+	
+	protected void reattachEvent()
+	{
 		Rows rows = grid.getRows();
 		for(Object object:rows.getChildren())
 		{

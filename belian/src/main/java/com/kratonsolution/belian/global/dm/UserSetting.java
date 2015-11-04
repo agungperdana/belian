@@ -8,17 +8,11 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import com.kratonsolution.belian.accounting.dm.Currency;
-import com.kratonsolution.belian.general.dm.Geographic;
-import com.kratonsolution.belian.general.dm.Organization;
 
 /**
  * 
@@ -33,21 +27,30 @@ public class UserSetting implements Serializable
 {
 	@Id
 	private String id;
+
+	@Column(name="organization_id")
+	private String organizationId;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_organization")
-	private Organization organization;
+	@Column(name="organization_name")
+	private String organizationName;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_location")
-	private Geographic location;
+	@Column(name="location_id")
+	private String locationId;
+	
+	@Column(name="location_name")
+	private String locationName;
+	
+	@Column(name="currency_id")
+	private String currencyId;
+
+	@Column(name="currency_name")
+	private String currencyName;
 	
 	@Column(name="language")
 	private String language;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_currency")
-	private Currency currency;
+	@Column(name="row_per_page")
+	private int rowPerPage = 25;
 	
 	@Version
 	private Long version;

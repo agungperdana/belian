@@ -40,6 +40,12 @@ public class OrganizationAccountService
 	}
 	
 	@Secured("ROLE_ORGANIZATIONACCOUNT_READ")
+	public OrganizationAccount findOneByOrganization(String id)
+	{
+		return repository.findOneByOrganizationId(id);
+	}
+	
+	@Secured("ROLE_ORGANIZATIONACCOUNT_READ")
 	public List<OrganizationAccount> findAll()
 	{
 		return repository.findAll();

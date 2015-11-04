@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.accounting.dm;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,14 +23,15 @@ import lombok.Setter;
 import com.kratonsolution.belian.general.dm.Organization;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
 @Table(name="organization_account")
-public class OrganizationAccount
+public class OrganizationAccount implements Serializable
 {
 	@Id
 	private String id;
