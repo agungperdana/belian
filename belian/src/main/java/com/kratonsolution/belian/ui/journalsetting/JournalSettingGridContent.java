@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.cashsales;
+package com.kratonsolution.belian.ui.journalsetting;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -15,7 +15,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.sales.srv.CashSalesService;
+import com.kratonsolution.belian.accounting.svc.BudgetService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -24,11 +24,11 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class CashSalesGridContent extends GridContent
+public class JournalSettingGridContent extends GridContent
 {
-	private final CashSalesService service = Springs.get(CashSalesService.class);
+	private final BudgetService service = Springs.get(BudgetService.class);
 	
-	public CashSalesGridContent()
+	public JournalSettingGridContent()
 	{
 		super();
 		initToolbar();
@@ -44,7 +44,7 @@ public class CashSalesGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new CashSalesModel(utils.getRowPerPage()));
+				grid.setModel(new JournalSettingModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -53,7 +53,7 @@ public class CashSalesGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				CashSalesWindow window = (CashSalesWindow)getParent();
+				JournalSettingWindow window = (JournalSettingWindow)getParent();
 				window.removeGrid();
 				window.insertCreateForm();
 			}
@@ -117,7 +117,7 @@ public class CashSalesGridContent extends GridContent
 							for(Object object:grid.getRows().getChildren())
 							{
 								Row row = (Row)object;
-								
+
 								if(row.getFirstChild() instanceof Checkbox)
 								{
 									Checkbox check = (Checkbox)row.getFirstChild();
@@ -129,7 +129,9 @@ public class CashSalesGridContent extends GridContent
 								}
 							}
 							
-							grid.setModel(new CashSalesModel(utils.getRowPerPage()));
+							JournalSettingWindow window = (JournalSettingWindow)getParent();
+							window.removeGrid();
+							window.insertGrid();
 						}
 					}
 				});
@@ -148,44 +150,38 @@ public class CashSalesGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final CashSalesModel model = new CashSalesModel(utils.getRowPerPage());
+		final JournalSettingModel model = new JournalSettingModel(utils.getRowPerPage());
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No Cash Sales data exist.");
+		grid.setEmptyMessage("No Budget data exist.");
 		grid.setModel(model);
-		grid.setRowRenderer(new CashSalesRowRenderer());
+		grid.setRowRenderer(new JournalSettingRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Number",null,"150px"));
-		grid.getColumns().appendChild(new Column("Date",null,"85px"));
-		grid.getColumns().appendChild(new Column("Table",null,"55px"));
-		grid.getColumns().appendChild(new Column("Amount",null,"100px"));
-		grid.getColumns().appendChild(new Column("Status",null,"75px"));
-		grid.getColumns().appendChild(new Column("",null,"65px"));
+		grid.getColumns().appendChild(new Column("Organization",null,"85px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(7).setVisible(false);
-		grid.setSpan("4");
+		grid.getColumns().getChildren().get(2).setVisible(false);
+		grid.setSpan("1");
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), utils.getRowPerPage());
+				model.next(event.getActivePage(),utils.getRowPerPage());
 				grid.setModel(model);
-				
-				attachEvent();
+				reattachEvent();
 			}
 		});
 		
-		attachEvent();
+		reattachEvent();
 	}
 	
-	private void attachEvent()
+	private void reattachEvent()
 	{
 		Rows rows = grid.getRows();
 		for(Object object:rows.getChildren())
@@ -196,7 +192,7 @@ public class CashSalesGridContent extends GridContent
 				@Override
 				public void onEvent(Event event) throws Exception
 				{
-					CashSalesWindow window = (CashSalesWindow)getParent();
+					JournalSettingWindow window = (JournalSettingWindow)getParent();
 					window.removeGrid();
 					window.insertEditForm(row);
 				}

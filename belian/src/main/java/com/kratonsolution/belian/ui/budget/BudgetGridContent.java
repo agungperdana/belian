@@ -20,8 +20,9 @@ import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class BudgetGridContent extends GridContent
 {
@@ -43,7 +44,7 @@ public class BudgetGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new BudgetModel(8));
+				grid.setModel(new BudgetModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -149,7 +150,7 @@ public class BudgetGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final BudgetModel model = new BudgetModel(8);
+		final BudgetModel model = new BudgetModel(utils.getRowPerPage());
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
@@ -158,7 +159,7 @@ public class BudgetGridContent extends GridContent
 		grid.setRowRenderer(new BudgetRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
-		grid.setPageSize(8);
+		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
 		grid.getColumns().appendChild(new Column("Type",null,"85px"));
@@ -175,11 +176,17 @@ public class BudgetGridContent extends GridContent
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), 8);
+				model.next(event.getActivePage(),utils.getRowPerPage());
 				grid.setModel(model);
+				reattachEvent();
 			}
 		});
 		
+		reattachEvent();
+	}
+	
+	private void reattachEvent()
+	{
 		Rows rows = grid.getRows();
 		for(Object object:rows.getChildren())
 		{

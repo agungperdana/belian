@@ -113,11 +113,10 @@ public class NavigationMenu extends Window
 		
 		list.appendChild(new CurrencyItem());
 		list.appendChild(new TaxItem());
-//		list.appendChild(new BankAccountItem());
-//		list.appendChild(new CashAccountItem());
 		list.appendChild(new CoAItem());
 		list.appendChild(new AccountingPeriodItem());
 		list.appendChild(new OrganizationAccountItem());
+		list.appendChild(new JournalSettingItem());
 		list.appendChild(new JournalEntryItem());
 		list.appendChild(new BudgetItem());
 		

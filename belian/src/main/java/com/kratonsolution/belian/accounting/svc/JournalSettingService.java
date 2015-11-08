@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.kratonsolution.belian.accounting.dm.AccountingSetting;
-import com.kratonsolution.belian.accounting.dm.AccountingSettingRepository;
+import com.kratonsolution.belian.accounting.dm.JournalSetting;
+import com.kratonsolution.belian.accounting.dm.JournalSettingRepository;
 
 /**
  * 
@@ -23,49 +23,49 @@ import com.kratonsolution.belian.accounting.dm.AccountingSettingRepository;
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
-public class AccountingSettingService
+public class JournalSettingService
 {
 	@Autowired
-	private AccountingSettingRepository repository;
+	private JournalSettingRepository repository;
 
-	@Secured("ROLE_ACCOUNTING_SETTING_READ")
+	@Secured("ROLE_JOURNALSETTING_READ")
 	public int size()
 	{
 		return Long.valueOf(repository.count()).intValue();
 	}
 
-	@Secured("ROLE_ACCOUNTING_SETTING_READ")
-	public AccountingSetting findOne(String id)
+	@Secured("ROLE_JOURNALSETTING_READ")
+	public JournalSetting findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 
-	@Secured("ROLE_ACCOUNTING_SETTING_READ")
-	public List<AccountingSetting> findAll()
+	@Secured("ROLE_JOURNALSETTING_READ")
+	public List<JournalSetting> findAll()
 	{
 		return repository.findAll();
 	}
 
-	@Secured("ROLE_ACCOUNTING_SETTING_READ")
-	public List<AccountingSetting> findAll(int pageIndex,int pageSize)
+	@Secured("ROLE_JOURNALSETTING_READ")
+	public List<JournalSetting> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
 	}
 
-	@Secured("ROLE_ACCOUNTING_SETTING_CREATE")
-	public void add(AccountingSetting setting)
+	@Secured("ROLE_JOURNALSETTING_CREATE")
+	public void add(JournalSetting setting)
 	{
 		setting.setId(UUID.randomUUID().toString());
 		repository.save(setting);
 	}
 
-	@Secured("ROLE_ACCOUNTING_SETTING_UPDATE")
-	public void edit(AccountingSetting setting)
+	@Secured("ROLE_JOURNALSETTING_UPDATE")
+	public void edit(JournalSetting setting)
 	{
 		repository.saveAndFlush(setting);
 	}
 
-	@Secured("ROLE_ACCOUNTING_SETTING_DELETE")
+	@Secured("ROLE_JOURNALSETTING_DELETE")
 	public void delete(@PathVariable String id)
 	{
 		repository.delete(id);

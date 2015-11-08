@@ -12,8 +12,9 @@ import com.kratonsolution.belian.accounting.dm.Budget;
 import com.kratonsolution.belian.ui.util.Dates;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class BudgetRowRenderer implements RowRenderer<Budget>
 {

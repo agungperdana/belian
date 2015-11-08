@@ -6,10 +6,7 @@ package com.kratonsolution.belian.accounting.dm;
 import java.io.Serializable;
 import java.util.UUID;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -28,8 +25,8 @@ import com.kratonsolution.belian.general.dm.Organization;
 @Getter
 @Setter
 @Entity
-@Table(name="accounting_setting_account")
-public class AccountingSettingAccount implements Serializable
+@Table(name="journal_setting")
+public class JournalSetting implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -39,17 +36,15 @@ public class AccountingSettingAccount implements Serializable
 	private Organization organization;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_gl_account")
-	private GLAccount resource;
-	
-	@Enumerated(EnumType.STRING)
-	@Column(name="type")
-	private AccountingSettingType type;
+	@JoinColumn(name="fk_gl_account_cash_sales")
+	private GLAccount cashSales;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_accounting_setting")
-	private AccountingSetting setting;
+	@JoinColumn(name="fk_gl_account_cogs")
+	private GLAccount cogs;
 	
 	@Version
 	private Long version;
+	
+	public JournalSetting(){}
 }

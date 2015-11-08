@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.budget;
+package com.kratonsolution.belian.ui.journalsetting;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Page;
@@ -22,30 +22,29 @@ import com.kratonsolution.belian.ui.nav.IconBar;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class BudgetWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
+public class JournalSettingWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption("Budget");
+	private final Caption caption = new Caption("Journal Setting");
 	
-	private Budgetbutton status = new Budgetbutton();
+	private JournalSettingButton status = new JournalSettingButton();
 	
-	public static BudgetWindow injectInto(Page page)
+	public static JournalSettingWindow injectInto(Page page)
 	{
-		BudgetWindow window = new BudgetWindow();
+		JournalSettingWindow window = new JournalSettingWindow();
 		window.setPage(page);
 		window.init();
 		
 		return window;
 	}
 	
-	private BudgetWindow()
+	private JournalSettingWindow()
 	{
 		super();
-		setWidth("600px");
 	}
 	
 	protected void init()
 	{
-		caption.setImage("/icons/budget.png");
+		caption.setImage("/icons/accountingsetting.png");
 		appendChild(caption);
 		insertGrid();
 		insertStatus();
@@ -93,7 +92,7 @@ public class BudgetWindow extends AbstractWindow implements HasGrid,HasCreateFor
 	@Override
 	public void insertEditForm(Row row)
 	{
-		appendChild(new BudgetEditContent(row));
+		appendChild(new JournalSettingEditContent(row));
 	}
 
 	@Override
@@ -101,7 +100,7 @@ public class BudgetWindow extends AbstractWindow implements HasGrid,HasCreateFor
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof BudgetEditContent)
+			if(component instanceof JournalSettingEditContent)
 			{
 				removeChild(component);
 				break;
@@ -112,7 +111,7 @@ public class BudgetWindow extends AbstractWindow implements HasGrid,HasCreateFor
 	@Override
 	public void insertCreateForm()
 	{
-		appendChild(new BudgetFormContent());
+		appendChild(new JournalSettingFormContent());
 	}
 
 	@Override
@@ -120,7 +119,7 @@ public class BudgetWindow extends AbstractWindow implements HasGrid,HasCreateFor
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof BudgetFormContent)
+			if(component instanceof JournalSettingFormContent)
 			{
 				removeChild(component);
 				break;
@@ -131,7 +130,7 @@ public class BudgetWindow extends AbstractWindow implements HasGrid,HasCreateFor
 	@Override
 	public void insertGrid()
 	{
-		appendChild(new BudgetGridContent());
+		appendChild(new JournalSettingGridContent());
 	}
 
 	@Override
@@ -139,7 +138,7 @@ public class BudgetWindow extends AbstractWindow implements HasGrid,HasCreateFor
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof BudgetGridContent)
+			if(component instanceof JournalSettingGridContent)
 			{
 				removeChild(component);
 				break;

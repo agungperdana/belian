@@ -56,7 +56,7 @@ public class SettingWindow extends AbstractWindow
 
 	private Listbox organizations = Components.newSelect();
 	
-	private Listbox locations = Components.newSelect(geographicService.findAll(),true);
+	private Listbox locations = Components.newSelect();
 	
 	private Listbox languanges = Components.newSelect();
 	
@@ -104,11 +104,13 @@ public class SettingWindow extends AbstractWindow
 			if(sessionUtils.getCurrency() != null && currency.getId().equals(sessionUtils.getCurrency().getId()))
 				currencys.setSelectedItem(listitem);
 		}
-		
-		if(sessionUtils.getLocation() != null)
+
+		for(Geographic geographic:geographicService.findAll())
 		{
-			locations.appendChild(new Listitem(sessionUtils.getLocation().getLabel(), sessionUtils.getLocation().getValue()));
-			locations.setSelectedIndex(0);
+			Listitem listitem = new Listitem(geographic.getLabel(),geographic.getValue());
+			locations.appendChild(listitem);
+			if(sessionUtils.getLocation() != null && sessionUtils.getLocation().getId().equals(geographic.getId()))
+				locations.setSelectedItem(listitem);
 		}
 		
 		languanges.appendChild(new Listitem("Bahasa Indonesia", "id-ID"));

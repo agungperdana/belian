@@ -9,23 +9,23 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
-import com.kratonsolution.belian.ui.accountingsetting.AccountingSettingWindow;
+import com.kratonsolution.belian.ui.journalsetting.JournalSettingWindow;
 
 /**
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class AccountingSettingItem extends Listitem
+public class JournalSettingItem extends Listitem
 {
-	public AccountingSettingItem()
+	public JournalSettingItem()
 	{
 		init();
 	}
 	
 	public void init()
 	{
-		setLabel("Accounting Setting");
+		setLabel("Journal Setting");
 		setImage("/icons/accountingsetting.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()
@@ -33,16 +33,16 @@ public class AccountingSettingItem extends Listitem
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				AccountingSettingWindow window = null;
+				JournalSettingWindow window = null;
 				
 				for(Component component:getPage().getRoots())
 				{
-					if(component instanceof AccountingSettingWindow)
-						window = (AccountingSettingWindow)component;
+					if(component instanceof JournalSettingWindow)
+						window = (JournalSettingWindow)component;
 				}
 				
 				if(window == null)
-					window = new AccountingSettingWindow();
+					window = JournalSettingWindow.injectInto(getPage());
 				
 				else if(!window.isVisible())
 				{
