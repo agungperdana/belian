@@ -67,6 +67,7 @@ public class COAFormContent extends FormContent
 					throw new WrongValueException(name,"Name cannot be empty");
 			
 				GLAccount coa = new GLAccount();
+				coa.setCode(number.longValue()+"");
 				coa.setNumber(number.longValue());
 				coa.setName(name.getText());
 				coa.setNote(note.getText());

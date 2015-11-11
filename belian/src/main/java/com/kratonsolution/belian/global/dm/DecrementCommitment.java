@@ -3,10 +3,9 @@
  */
 package com.kratonsolution.belian.global.dm;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -20,11 +19,10 @@ import javax.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
-import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
-
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
@@ -32,25 +30,15 @@ import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
 @Table(name="decrement_commitment")
 @Inheritance(strategy=InheritanceType.JOINED)
 @DiscriminatorColumn(name="commitment_type")
-public abstract class DecrementCommitment<R extends EconomicResource,E extends EconomicEvent>
+public abstract class DecrementCommitment
 {
 	@Id
 	protected String id = UUID.randomUUID().toString();
-	
-	@Column(name="value")
-	protected BigDecimal value;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_unit_of_measure")
-	protected UnitOfMeasure uom;
-	
-	@Column(name="note")
-	protected String note;
+
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="event")
+	protected EconomicEvent event;
 	
 	@Version
 	protected Long version;
-	
-	public abstract R getResource();
-
-	public abstract E getEvent();
 }

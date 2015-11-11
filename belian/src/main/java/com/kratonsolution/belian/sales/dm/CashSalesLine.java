@@ -5,7 +5,6 @@ package com.kratonsolution.belian.sales.dm;
 
 import java.math.BigDecimal;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -17,6 +16,7 @@ import lombok.Setter;
 
 import com.kratonsolution.belian.global.dm.DecrementCommitment;
 import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
 
 /**
  * 
@@ -27,7 +27,7 @@ import com.kratonsolution.belian.inventory.dm.Product;
 @Getter
 @Entity
 @Table(name="cash_sales_line")
-public class CashSalesLine extends DecrementCommitment<Product,CashSalesLineEvent>
+public class CashSalesLine extends DecrementCommitment
 {	
 	@Column(name="price")
 	private BigDecimal price = BigDecimal.ZERO;
@@ -38,15 +38,21 @@ public class CashSalesLine extends DecrementCommitment<Product,CashSalesLineEven
 	@Column(name="charge")
 	private BigDecimal charge = BigDecimal.ZERO;
 	
-	@ManyToOne(cascade=CascadeType.MERGE)
+	@Column(name="quantity")
+	private BigDecimal quantity = BigDecimal.ZERO;
+	
+	@Column(name="note")
+	private String note;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_unit_of_measure")
+	private UnitOfMeasure uom;
+	
+	@ManyToOne
 	@JoinColumn(name="fk_product_resource")
-	private Product resource;
+	private Product product;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_direct_sales")
 	private CashSales cashSales;
-	
-	@ManyToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="fk_direct_sales_line_event")
-	private CashSalesLineEvent event;
 }

@@ -43,7 +43,6 @@ import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.general.svc.PersonService;
-import com.kratonsolution.belian.global.dm.EconomicEvent;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
@@ -52,7 +51,6 @@ import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.inventory.svc.UnitOfMeasureService;
 import com.kratonsolution.belian.sales.dm.CashSales;
 import com.kratonsolution.belian.sales.dm.CashSalesLine;
-import com.kratonsolution.belian.sales.dm.CashSalesLineEvent;
 import com.kratonsolution.belian.sales.srv.CashSalesService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
@@ -194,20 +192,11 @@ public class CashSalesFormContent extends FormContent
 					line.setPrice(Components.decimal(prices));
 					line.setDiscount(Components.decimal(discs));
 					line.setCharge(Components.decimal(charges));
-					line.setValue(BigDecimal.valueOf(quantity.doubleValue()));
-					line.setResource(productService.findOne(Components.string(products)));
-					line.setUom(line.getResource().getUom());
+					line.setQuantity(BigDecimal.valueOf(quantity.doubleValue()));
+					line.setProduct(productService.findOne(Components.string(products)));
+					line.setUom(line.getProduct().getUom());
 					line.setNote(note.getText());
 					
-					CashSalesLineEvent events = new CashSalesLineEvent();
-					events.setConsumer(sales.getConsumer());
-					events.setDate(sales.getDate());
-					events.setProducer(sales.getProducer());
-					events.setResource(line.getResource());
-					events.setType(EconomicEvent.Type.GIVE);
-					events.setValue(line.getValue());
-
-					line.setEvent(events);
 					sales.getDecrements().add(line);
 				}
 				

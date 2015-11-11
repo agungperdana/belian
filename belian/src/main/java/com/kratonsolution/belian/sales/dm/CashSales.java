@@ -12,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -52,10 +53,10 @@ public class CashSales extends Contract<CashSalesPayment, CashSalesLine>
 	@JoinColumn(name="fk_geographic_location")
 	private Geographic location;
 	
-	@OneToMany(mappedBy="cashSales",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(mappedBy="cashSales",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
 	private Set<CashSalesLine> decrements = new HashSet<CashSalesLine>();
 	
-	@OneToMany(mappedBy="cashSales",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(mappedBy="cashSales",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
 	private Set<CashSalesPayment> increments = new HashSet<CashSalesPayment>();
 	
 	public CashSales(){}
@@ -65,7 +66,7 @@ public class CashSales extends Contract<CashSalesPayment, CashSalesLine>
 		BigDecimal bill = BigDecimal.ZERO;
 		
 		for(CashSalesLine line:decrements)
-			bill = bill.add(line.getPrice().multiply(line.getValue())).subtract(line.getDiscount()).add(line.getCharge());
+			bill = bill.add(line.getPrice().multiply(line.getQuantity())).subtract(line.getDiscount()).add(line.getCharge());
 		
 		return bill;
 	}

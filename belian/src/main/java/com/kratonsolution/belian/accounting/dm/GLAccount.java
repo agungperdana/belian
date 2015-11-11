@@ -11,18 +11,16 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.persistence.Version;
-
-import com.kratonsolution.belian.global.dm.EconomicResource;
 
 import lombok.Getter;
 import lombok.Setter;
+
+import com.kratonsolution.belian.global.dm.EconomicResource;
 
 /**
  * 
@@ -33,18 +31,12 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="gl_account")
-public class GLAccount implements EconomicResource
+public class GLAccount extends EconomicResource
 {
 	public enum Type{ASSETS,LIABILITIES,EQUITY,REVENUE,DRAWING,COGS,EXPENSE}
 	
-	@Id
-	private String id;
-	
 	@Column(name="number",nullable=false,unique=true)
 	private Long number;
-	
-	@Column(name="name",nullable=false,unique=true)
-	private String name;
 	
 	@Column(name="note")
 	private String note;
@@ -56,9 +48,6 @@ public class GLAccount implements EconomicResource
 	@ManyToOne
 	@JoinColumn(name="fk_gl_account_parent")
 	private GLAccount parent;
-	
-	@Version
-	private Long version;
 	
 	@OneToMany(mappedBy="parent",cascade=CascadeType.REMOVE,orphanRemoval=true)
 	@OrderBy("number ASC")

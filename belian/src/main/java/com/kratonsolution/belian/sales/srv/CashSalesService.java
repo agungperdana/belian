@@ -3,8 +3,8 @@
  */
 package com.kratonsolution.belian.sales.srv;
 
+import java.sql.Date;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -13,13 +13,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.kratonsolution.belian.global.dm.EconomicEvent;
-import com.kratonsolution.belian.global.dm.EconomicType;
+import com.kratonsolution.belian.accounting.dm.JournalSetting;
+import com.kratonsolution.belian.accounting.dm.JournalSettingRepository;
+import com.kratonsolution.belian.inventory.dm.InventoryItemRepository;
+import com.kratonsolution.belian.sales.dm.CashEvent;
 import com.kratonsolution.belian.sales.dm.CashSales;
-import com.kratonsolution.belian.sales.dm.CashSalesPayment;
-import com.kratonsolution.belian.sales.dm.CashSalesPaymentEvent;
-import com.kratonsolution.belian.sales.dm.CashSalesRepository;
 import com.kratonsolution.belian.sales.dm.CashSales.Status;
+import com.kratonsolution.belian.sales.dm.CashSalesLine;
+import com.kratonsolution.belian.sales.dm.CashSalesPayment;
+import com.kratonsolution.belian.sales.dm.CashSalesRepository;
+import com.kratonsolution.belian.sales.dm.PaymentType;
+import com.kratonsolution.belian.sales.dm.Sale;
+import com.kratonsolution.belian.sales.dm.TaxEvent;
 
 /**
  * 
@@ -32,6 +37,12 @@ public class CashSalesService
 {
 	@Autowired
 	private CashSalesRepository repository;
+	
+	@Autowired
+	private JournalSettingRepository journalRepository;
+	
+	@Autowired
+	private InventoryItemRepository inventoryRepository;
 	
 	@Secured("ROLE_CASHSALES_READ")
 	public int size()
@@ -72,7 +83,18 @@ public class CashSalesService
 	@Secured("ROLE_CASHSALES_CREATE")
 	public void add(CashSales sales)
 	{
-		sales.setId(UUID.randomUUID().toString());
+		for(CashSalesLine line:sales.getDecrements())
+		{
+			Sale sale = new Sale();
+			sale.setAmount(line.getQuantity());
+			sale.setCustomer(line.getCashSales().getConsumer());
+			sale.setDate(new Date(line.getCashSales().getDate().getTime()));
+			sale.setProduct(line.getProduct());
+			sale.setSalesPerson(line.getCashSales().getProducer());
+
+			line.setEvent(sale);
+		}
+		
 		repository.save(sales);
 	}
 	
@@ -90,22 +112,30 @@ public class CashSalesService
 		repository.save(out);
 		
 		CashSalesPayment payment = new CashSalesPayment();
+		payment.setAmount(out.getTotalBill());
 		payment.setCashSales(out);
-		payment.setDate(out.getDate());
-//		payment.setResource(resource);
-		payment.setValue(out.getBill().add(out.getTaxAmount()));
+		payment.setType(PaymentType.CASH);
 		
-		CashSalesPaymentEvent paymentEvent = new CashSalesPaymentEvent();
-		paymentEvent.setConsumer(out.getConsumer());
-		paymentEvent.setCurrency(out.getCurrency());
-		paymentEvent.setDate(out.getDate());
-		paymentEvent.setEconomicType(EconomicType.FINANCIAL);
-		paymentEvent.setProducer(out.getProducer());
-//		paymentEvent.setResource(payment.getResource());
-		paymentEvent.setType(EconomicEvent.Type.GET);
-		paymentEvent.setValue(payment.getValue());
-		
-		payment.setEvent(paymentEvent);
+		JournalSetting journalSetting = journalRepository.findOneByOrganizationId(out.getOrganization().getId());
+		if(journalSetting != null && journalSetting.getCashSales() != null && journalSetting.getTax() != null)
+		{
+			CashEvent cashEvent = new CashEvent();
+			cashEvent.setAmount(out.getBill());
+			cashEvent.setCashAccount(journalSetting.getCashSales());
+			cashEvent.setCashier(out.getProducer());
+			cashEvent.setCustomer(out.getConsumer());
+			cashEvent.setDate(new Date(out.getDate().getTime()));
+			
+			TaxEvent taxEvent = new TaxEvent();
+			taxEvent.setAmount(out.getTaxAmount());
+			taxEvent.setTaxAccount(journalSetting.getCashSales());
+			taxEvent.setCashier(out.getProducer());
+			taxEvent.setCustomer(out.getConsumer());
+			taxEvent.setDate(new Date(out.getDate().getTime()));
+			
+			payment.setCashEvent(cashEvent);
+			payment.setTaxEvent(taxEvent);
+		}
 		
 		out.getIncrements().add(payment);
 		

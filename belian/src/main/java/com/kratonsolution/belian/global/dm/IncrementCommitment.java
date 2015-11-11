@@ -3,11 +3,8 @@
  */
 package com.kratonsolution.belian.global.dm;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.UUID;
 
-import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -30,19 +27,10 @@ import lombok.Setter;
 @Table(name="increment_commitment")
 @Inheritance(strategy=InheritanceType.JOINED)
 @DiscriminatorColumn(name="commitment_type")
-public abstract class IncrementCommitment<R extends EconomicResource,E extends EconomicEvent>
+public abstract class IncrementCommitment
 {
 	@Id
 	protected String id = UUID.randomUUID().toString();
-	
-	@Column(name="value")
-	protected BigDecimal value;
-	
-	@Column(name="date")
-	protected Date date;
-	
-	@Column(name="note")
-	protected String note;
 	
 	@Version
 	protected Long version;

@@ -7,28 +7,26 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
 import lombok.Getter;
 import lombok.Setter;
 
+import com.kratonsolution.belian.global.dm.EconomicResource;
+
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
 @Table(name="inventory_item")
-public class InventoryItem
+public class InventoryItem extends EconomicResource
 {
-	@Id
-	private String id;
-	
 	@ManyToOne
 	@JoinColumn(name="fk_product")
 	private Product product;
@@ -46,7 +44,6 @@ public class InventoryItem
 	
 	@Column(name="onhand")
 	private BigDecimal onhand = BigDecimal.ZERO;
-
-	@Version
-	private Long version;
+	
+	public InventoryItem(){}
 }

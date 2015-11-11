@@ -28,8 +28,9 @@ import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.global.dm.Listable;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter

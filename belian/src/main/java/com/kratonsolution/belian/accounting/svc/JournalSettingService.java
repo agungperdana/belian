@@ -4,7 +4,6 @@
 package com.kratonsolution.belian.accounting.svc;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -55,7 +54,6 @@ public class JournalSettingService
 	@Secured("ROLE_JOURNALSETTING_CREATE")
 	public void add(JournalSetting setting)
 	{
-		setting.setId(UUID.randomUUID().toString());
 		repository.save(setting);
 	}
 

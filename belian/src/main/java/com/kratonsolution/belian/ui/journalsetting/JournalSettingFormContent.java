@@ -49,6 +49,8 @@ public class JournalSettingFormContent extends FormContent
 	
 	private Listbox cogses = Components.newSelect();
 	
+	private Listbox taxes = Components.newSelect();
+	
 	public JournalSettingFormContent()
 	{
 		super();
@@ -79,6 +81,7 @@ public class JournalSettingFormContent extends FormContent
 				setting.setOrganization(organizationService.findOne(Components.string(organizations)));
 				setting.setCashSales(accountService.findOne(Components.string(cashsaleses)));
 				setting.setCogs(accountService.findOne(Components.string(cogses)));
+				setting.setTax(accountService.findOne(Components.string(taxes)));
 
 				service.add(setting);
 				
@@ -94,18 +97,24 @@ public class JournalSettingFormContent extends FormContent
 	{
 		for(OrganizationUnit unit:unitService.findAll())
 			organizations.appendChild(new Listitem(unit.getParty().getName(),unit.getParty().getId()));
-		
-		Components.setDefault(organizations);
-		
-		OrganizationAccount accounts = organizationAccountService.findOneByOrganization(Components.string(organizations));
-		if(accounts != null)
+
+		organizations.addEventListener(Events.ON_SELECT, new EventListener()
 		{
-			for(OGLAccount account:accounts.getAccounts())
+			@Override
+			public void onEvent(Event event) throws Exception
 			{
-				cashsaleses.appendChild(new Listitem(account.getLabel(),account.getValue()));
-				cogses.appendChild(new Listitem(account.getLabel(),account.getValue()));
+				OrganizationAccount accounts = organizationAccountService.findOneByOrganization(Components.string(organizations));
+				if(accounts != null)
+				{
+					for(OGLAccount account:accounts.getAccounts())
+					{
+						cashsaleses.appendChild(new Listitem(account.getLabel(),account.getValue()));
+						cogses.appendChild(new Listitem(account.getLabel(),account.getValue()));
+						taxes.appendChild(new Listitem(account.getLabel(),account.getValue()));
+					}
+				}
 			}
-		}
+		});
 		
 		Components.setDefault(cashsaleses);
 		Components.setDefault(cogses);
@@ -119,15 +128,20 @@ public class JournalSettingFormContent extends FormContent
 		row1.appendChild(organizations);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Cash Sales Account"));
+		row2.appendChild(new Label("Cash Account"));
 		row2.appendChild(cashsaleses);
 		
 		Row row3 = new Row();
 		row3.appendChild(new Label("COGS Account"));
 		row3.appendChild(cogses);
 		
+		Row row4 = new Row();
+		row4.appendChild(new Label("Tax Account"));
+		row4.appendChild(taxes);
+		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
+		rows.appendChild(row4);
 	}
 }

@@ -5,6 +5,7 @@ package com.kratonsolution.belian.global.dm;
 
 import java.util.Date;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -38,7 +39,7 @@ import lombok.Setter;
 public abstract class Contract<I extends IncrementCommitment,D extends DecrementCommitment>
 {
 	@Id
-	protected String id;
+	protected String id = UUID.randomUUID().toString();
 	
 	@Column(name="number")
 	protected String number;
@@ -47,7 +48,7 @@ public abstract class Contract<I extends IncrementCommitment,D extends Decrement
 	protected Date date;
 	
 	@Column(name="credit_term")
-	protected int creditTerm = 1;
+	protected int creditTerm = 0;
 	
 	@Column(name="note")
 	protected String note;

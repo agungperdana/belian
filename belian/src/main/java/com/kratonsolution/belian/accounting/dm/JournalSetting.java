@@ -32,7 +32,7 @@ public class JournalSetting implements Serializable
 	private String id = UUID.randomUUID().toString();
 	
 	@ManyToOne
-	@JoinColumn(name="fk_organization")
+	@JoinColumn(name="fk_organization",unique=true)
 	private Organization organization;
 	
 	@ManyToOne
@@ -42,6 +42,10 @@ public class JournalSetting implements Serializable
 	@ManyToOne
 	@JoinColumn(name="fk_gl_account_cogs")
 	private GLAccount cogs;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_gl_account_tax")
+	private GLAccount tax;
 	
 	@Version
 	private Long version;

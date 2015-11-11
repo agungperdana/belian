@@ -61,7 +61,6 @@ public class ProductService
 	@Secured("ROLE_PRODUCT_CREATE")
 	public void add(Product product)
 	{
-		product.setId(UUID.randomUUID().toString());
 		repository.save(product);
 	}
 	

@@ -11,5 +11,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface JournalSettingRepository extends JpaRepository<JournalSetting, String>
 {
-
+	public JournalSetting findOneByOrganizationId(String id);
 }

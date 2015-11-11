@@ -48,6 +48,8 @@ private JournalSettingService service = Springs.get(JournalSettingService.class)
 	private Listbox cashsaleses = Components.newSelect();
 	
 	private Listbox cogses = Components.newSelect();
+	
+	private Listbox taxes = Components.newSelect();
 
 	private Row row;
 
@@ -85,8 +87,9 @@ private JournalSettingService service = Springs.get(JournalSettingService.class)
 					setting.setOrganization(organizationService.findOne(Components.string(organizations)));
 					setting.setCashSales(accountService.findOne(Components.string(cashsaleses)));
 					setting.setCogs(accountService.findOne(Components.string(cogses)));
+					setting.setTax(accountService.findOne(Components.string(taxes)));
 
-					service.add(setting);
+					service.edit(setting);
 				}
 
 				JournalSettingWindow window = (JournalSettingWindow)getParent();
@@ -115,15 +118,30 @@ private JournalSettingService service = Springs.get(JournalSettingService.class)
 			{
 				Listitem cash = new Listitem(account.getLabel(),account.getValue());
 				Listitem cogs = new Listitem(account.getLabel(),account.getValue());
+				Listitem taxs = new Listitem(account.getLabel(),account.getValue());
 				
 				cashsaleses.appendChild(cash);
 				cogses.appendChild(cogs);
+				taxes.appendChild(taxs);
 				
-				if(account.getId().equals(setting.getCashSales().getId()))
-					cashsaleses.setSelectedItem(cash);
+				if(setting.getCashSales() != null)
+				{
+					if(account.getId().equals(setting.getCashSales().getId()))
+						cashsaleses.setSelectedItem(cash);
+				}
+
+				if(setting.getCogs() != null)
+				{
+					if(account.getId().equals(setting.getCogs().getId()))
+						cogses.setSelectedItem(cogs);
+				}
 				
-				if(account.getId().equals(setting.getCogs().getId()))
-					cogses.setSelectedItem(cogs);
+				if(setting.getTax() != null)
+				{
+					if(account.getId().equals(setting.getTax().getId()))
+						taxes.setSelectedItem(taxs);
+				}
+
 			}
 			
 			grid.appendChild(new Columns());
@@ -142,9 +160,14 @@ private JournalSettingService service = Springs.get(JournalSettingService.class)
 			row3.appendChild(new Label("COGS Account"));
 			row3.appendChild(cogses);
 			
+			Row row4 = new Row();
+			row4.appendChild(new Label("Tax Account"));
+			row4.appendChild(taxes);
+			
 			rows.appendChild(row1);
 			rows.appendChild(row2);
 			rows.appendChild(row3);
+			rows.appendChild(row4);
 		}
 	}
 }

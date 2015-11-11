@@ -44,8 +44,6 @@ import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.general.svc.PersonService;
-import com.kratonsolution.belian.global.dm.EconomicEvent;
-import com.kratonsolution.belian.global.dm.EconomicType;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
@@ -54,7 +52,6 @@ import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.inventory.svc.UnitOfMeasureService;
 import com.kratonsolution.belian.sales.dm.CashSales;
 import com.kratonsolution.belian.sales.dm.CashSalesLine;
-import com.kratonsolution.belian.sales.dm.CashSalesLineEvent;
 import com.kratonsolution.belian.sales.srv.CashSalesService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.PrintWindow;
@@ -208,21 +205,10 @@ public class CashSalesEditContent extends FormContent
 						line.setPrice(Components.decimal(prices));
 						line.setDiscount(Components.decimal(discs));
 						line.setCharge(Components.decimal(charges));
-						line.setValue(BigDecimal.valueOf(quantity.doubleValue()));
-						line.setResource(productService.findOne(Components.string(products)));
-						line.setUom(line.getResource().getUom());
+						line.setQuantity(BigDecimal.valueOf(quantity.doubleValue()));
+						line.setProduct(productService.findOne(Components.string(products)));
+						line.setUom(line.getProduct().getUom());
 						line.setNote(note.getText());
-
-						CashSalesLineEvent events = new CashSalesLineEvent();
-						events.setConsumer(sales.getConsumer());
-						events.setDate(sales.getDate());
-						events.setProducer(sales.getProducer());
-						events.setResource(line.getResource());
-						events.setEconomicType(EconomicType.NONFINANCIAL);
-						events.setType(EconomicEvent.Type.GIVE);
-						events.setValue(line.getValue());
-
-						line.setEvent(events);
 						
 						sales.getDecrements().add(line);
 					}
@@ -427,12 +413,12 @@ public class CashSalesEditContent extends FormContent
 
 			for(CashSalesLine line:cash.getDecrements())
 			{
-				Doublebox box = Components.doubleBox(line.getValue().doubleValue());
+				Doublebox box = Components.doubleBox(line.getQuantity().doubleValue());
 				box.addEventListener(Events.ON_CHANGE, new BillEventListener());
 
 				Row row = new Row();
 				row.appendChild(new Checkbox());
-				row.appendChild(Components.fullSpanSelect(line.getResource()));
+				row.appendChild(Components.fullSpanSelect(line.getProduct()));
 				row.appendChild(Components.fullSpanSelect(line.getPrice()));
 				row.appendChild(Components.fullSpanSelect(line.getDiscount()));
 				row.appendChild(Components.fullSpanSelect(line.getCharge()));
