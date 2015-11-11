@@ -5,6 +5,7 @@ package com.kratonsolution.belian.sales.dm;
 
 import java.math.BigDecimal;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -43,11 +44,13 @@ public class CashSalesPayment extends IncrementCommitment
 	@JoinColumn(name="fk_cash_sales")
 	private CashSales cashSales;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="cash_event")
 	private CashEvent cashEvent;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="tax_event")
 	private TaxEvent taxEvent;
+	
+	public CashSalesPayment(){}
 }

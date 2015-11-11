@@ -12,8 +12,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import com.kratonsolution.belian.global.dm.EconomicAgent;
-import com.kratonsolution.belian.global.dm.EconomicEvent;
 import com.kratonsolution.belian.global.dm.EconomicResource;
+import com.kratonsolution.belian.global.dm.NonFinancialEvent;
 import com.kratonsolution.belian.inventory.dm.Product;
 
 /**
@@ -24,7 +24,7 @@ import com.kratonsolution.belian.inventory.dm.Product;
 @Setter
 @Entity
 @Table(name="sale_event")
-public class Sale extends EconomicEvent
+public class Sale extends NonFinancialEvent
 {
 	@ManyToOne
 	@JoinColumn(name="sales_person")

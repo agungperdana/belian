@@ -86,6 +86,7 @@ public class CashSalesService
 		for(CashSalesLine line:sales.getDecrements())
 		{
 			Sale sale = new Sale();
+			sale.setName("Stok out from sale event.");
 			sale.setAmount(line.getQuantity());
 			sale.setCustomer(line.getCashSales().getConsumer());
 			sale.setDate(new Date(line.getCashSales().getDate().getTime()));
@@ -120,6 +121,7 @@ public class CashSalesService
 		if(journalSetting != null && journalSetting.getCashSales() != null && journalSetting.getTax() != null)
 		{
 			CashEvent cashEvent = new CashEvent();
+			cashEvent.setName(journalSetting.getCashSales().getName());
 			cashEvent.setAmount(out.getBill());
 			cashEvent.setCashAccount(journalSetting.getCashSales());
 			cashEvent.setCashier(out.getProducer());
@@ -127,8 +129,9 @@ public class CashSalesService
 			cashEvent.setDate(new Date(out.getDate().getTime()));
 			
 			TaxEvent taxEvent = new TaxEvent();
+			taxEvent.setName(journalSetting.getTax().getName());
 			taxEvent.setAmount(out.getTaxAmount());
-			taxEvent.setTaxAccount(journalSetting.getCashSales());
+			taxEvent.setTaxAccount(journalSetting.getTax());
 			taxEvent.setCashier(out.getProducer());
 			taxEvent.setCustomer(out.getConsumer());
 			taxEvent.setDate(new Date(out.getDate().getTime()));

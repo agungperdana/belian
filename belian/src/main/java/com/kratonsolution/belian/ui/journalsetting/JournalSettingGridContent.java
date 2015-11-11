@@ -15,7 +15,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.accounting.svc.BudgetService;
+import com.kratonsolution.belian.accounting.svc.JournalSettingService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -26,7 +26,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class JournalSettingGridContent extends GridContent
 {
-	private final BudgetService service = Springs.get(BudgetService.class);
+	private final JournalSettingService service = Springs.get(JournalSettingService.class);
 	
 	public JournalSettingGridContent()
 	{
