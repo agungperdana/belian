@@ -11,8 +11,9 @@ import org.zkoss.zul.RowRenderer;
 import com.kratonsolution.belian.accounting.dm.OrganizationAccount;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class OrganizationAccountRowRenderer implements RowRenderer<OrganizationAccount>
 {
@@ -20,11 +21,14 @@ public class OrganizationAccountRowRenderer implements RowRenderer<OrganizationA
 	@Override
 	public void render(Row row, OrganizationAccount data, int index) throws Exception
 	{
-		row.appendChild(new Checkbox());
-		row.appendChild(new Label(data.getName()));
-		row.appendChild(new Label(data.getOrganization().getName()));
-		row.appendChild(new Label(data.isActive()?"Active":"Inactive"));
-		row.appendChild(new Label(data.getNote()));
-		row.appendChild(new Label(data.getId()));
+		if(data != null)
+		{
+			row.appendChild(new Checkbox());
+			row.appendChild(new Label(data.getName()));
+			row.appendChild(new Label(data.getOrganization().getName()));
+			row.appendChild(new Label(data.isActive()?"Active":"Inactive"));
+			row.appendChild(new Label(data.getNote()));
+			row.appendChild(new Label(data.getId()));
+		}
 	}
 }

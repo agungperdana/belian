@@ -40,7 +40,7 @@ public class PersonModel implements ListModel<Person>
 	@Override
 	public int getSize()
 	{
-		return controller.size();
+		return data.size();
 	}
 
 	@Override

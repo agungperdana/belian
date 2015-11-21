@@ -6,8 +6,9 @@ package com.kratonsolution.belian.ui.organizationaccount;
 import org.zkoss.zul.Toolbarbutton;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class OrganizationAccountButton extends Toolbarbutton
 {

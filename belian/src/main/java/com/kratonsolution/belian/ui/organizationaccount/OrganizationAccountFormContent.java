@@ -12,7 +12,6 @@ import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Treeitem;
@@ -23,26 +22,29 @@ import com.kratonsolution.belian.accounting.dm.OGLAccount;
 import com.kratonsolution.belian.accounting.dm.OrganizationAccount;
 import com.kratonsolution.belian.accounting.svc.GLAccountService;
 import com.kratonsolution.belian.accounting.svc.OrganizationAccountService;
-import com.kratonsolution.belian.general.dm.OrganizationUnit;
+import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class OrganizationAccountFormContent extends FormContent
 {	
-	private final OrganizationAccountService service = Springs.get(OrganizationAccountService.class);
+	private OrganizationAccountService service = Springs.get(OrganizationAccountService.class);
 	
-	private final OrganizationService organizationService = Springs.get(OrganizationService.class);
+	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 	
-	private final OrganizationUnitService unitService = Springs.get(OrganizationUnitService.class);
+	private CompanyStructureService unitService = Springs.get(CompanyStructureService.class);
 	
-	private final GLAccountService accountService = Springs.get(GLAccountService.class);
+	private GLAccountService accountService = Springs.get(GLAccountService.class);
+	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	private Textbox name = new Textbox();
 	
@@ -50,7 +52,7 @@ public class OrganizationAccountFormContent extends FormContent
 	
 	private Checkbox status = new Checkbox("Active");
 	
-	private Listbox organizations = Components.newSelect();
+	private Listbox organizations = Components.newSelect(utils.getOrganizations(),true);
 	
 	private OAccountTree tree = new OAccountTree(null);
 		
@@ -96,7 +98,6 @@ public class OrganizationAccountFormContent extends FormContent
 					GLAccount account = accountService.findOne(treeitem.getId());
 					
 					OGLAccount oglAccount = new OGLAccount();
-					oglAccount.setId(account.getId());
 					oglAccount.setAccount(account);
 					oglAccount.setSelected(treeitem.isSelected());
 					oglAccount.setParent(organization);
@@ -122,11 +123,6 @@ public class OrganizationAccountFormContent extends FormContent
 		note.setWidth("400px");
 		
 		status.setChecked(true);
-		
-		for(OrganizationUnit organization:unitService.findAll())
-			organizations.appendChild(new Listitem(organization.getParty().getLabel(),organization.getParty().getValue()));
-		
-		Components.setDefault(organizations);
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));

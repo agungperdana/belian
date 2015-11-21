@@ -6,6 +6,7 @@ package com.kratonsolution.belian.accounting.dm;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,7 +35,7 @@ import com.kratonsolution.belian.general.dm.Organization;
 public class OrganizationAccount implements Serializable
 {
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="name",nullable=false,unique=true)
 	private String name;

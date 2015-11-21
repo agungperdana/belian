@@ -40,7 +40,7 @@ public class PartyRoleTypeModel implements ListModel<PartyRoleType>
 	@Override
 	public int getSize()
 	{
-		return controller.size();
+		return data.size();
 	}
 
 	@Override

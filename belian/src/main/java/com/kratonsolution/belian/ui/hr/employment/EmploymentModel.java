@@ -14,8 +14,9 @@ import com.kratonsolution.belian.general.svc.EmploymentService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class EmploymentModel implements ListModel<Employment>
 {
@@ -40,7 +41,7 @@ public class EmploymentModel implements ListModel<Employment>
 	@Override
 	public int getSize()
 	{
-		return service.getSize();
+		return data.size();
 	}
 
 	@Override

@@ -44,21 +44,17 @@ public class OrganizationAccountModel implements ListModel<OrganizationAccount>
 	@Override
 	public int getSize()
 	{
-		return controller.size();
+		return data.size();
 	}
 
 	@Override
 	public void addListDataListener(ListDataListener l)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void removeListDataListener(ListDataListener l)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void next(int pageIndex,int itemSize)

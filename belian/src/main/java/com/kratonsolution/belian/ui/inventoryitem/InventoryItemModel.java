@@ -14,8 +14,9 @@ import com.kratonsolution.belian.inventory.svc.InventoryItemService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class InventoryItemModel implements ListModel<InventoryItem>
 {
@@ -40,7 +41,7 @@ public class InventoryItemModel implements ListModel<InventoryItem>
 	@Override
 	public int getSize()
 	{
-		return service.size();
+		return data.size();
 	}
 
 	@Override

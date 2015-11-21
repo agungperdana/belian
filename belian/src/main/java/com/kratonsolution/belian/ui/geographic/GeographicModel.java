@@ -14,8 +14,9 @@ import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class GeographicModel implements ListModel<Geographic>
 {
@@ -42,7 +43,7 @@ public class GeographicModel implements ListModel<Geographic>
 	@Override
 	public int getSize()
 	{
-		return controller.getSize();
+		return data.size();
 	}
 	
 	public void next(int pageIndex,int itemSize)

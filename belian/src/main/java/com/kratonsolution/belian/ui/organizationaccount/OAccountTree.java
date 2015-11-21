@@ -18,8 +18,9 @@ import com.kratonsolution.belian.accounting.svc.GLAccountService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class OAccountTree extends Tree
 {
@@ -62,7 +63,7 @@ public class OAccountTree extends Tree
 			{
 				for(OGLAccount ondb:edited.getAccounts())
 				{
-					if(account.getId().equals(ondb.getId()))
+					if(account.getId().equals(ondb.getAccount().getId()))
 					{
 						item.setSelected(ondb.isSelected());
 						break;
@@ -96,7 +97,7 @@ public class OAccountTree extends Tree
 				{
 					for(OGLAccount ondb:edited.getAccounts())
 					{
-						if(member.getId().equals(ondb.getId()))
+						if(member.getId().equals(ondb.getAccount().getId()))
 						{
 							item.setSelected(ondb.isSelected());
 							break;

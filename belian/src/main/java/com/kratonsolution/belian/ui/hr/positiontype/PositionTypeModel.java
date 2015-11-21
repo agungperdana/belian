@@ -14,8 +14,9 @@ import com.kratonsolution.belian.hr.svc.PositionTypeService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class PositionTypeModel implements ListModel<PositionType>
 {
@@ -40,7 +41,7 @@ public class PositionTypeModel implements ListModel<PositionType>
 	@Override
 	public int getSize()
 	{
-		return service.size();
+		return data.size();
 	}
 
 	@Override

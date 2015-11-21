@@ -40,7 +40,7 @@ public class UserModel implements ListModel<User>
 	@Override
 	public int getSize()
 	{
-		return controller.size();
+		return data.size();
 	}
 
 	@Override

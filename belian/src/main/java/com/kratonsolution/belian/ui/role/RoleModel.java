@@ -41,7 +41,7 @@ public class RoleModel implements ListModel<Role>
 	@Override
 	public int getSize()
 	{
-		return service.size();
+		return data.size();
 	}
 
 	@Override

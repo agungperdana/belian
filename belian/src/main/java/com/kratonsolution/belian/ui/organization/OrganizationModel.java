@@ -41,21 +41,17 @@ public class OrganizationModel implements ListModel<Organization>
 	@Override
 	public int getSize()
 	{
-		return controller.size();
+		return data.size();
 	}
 
 	@Override
 	public void addListDataListener(ListDataListener l)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void removeListDataListener(ListDataListener l)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void next(int pageIndex,int itemSize)

@@ -4,7 +4,6 @@
 package com.kratonsolution.belian.accounting.svc;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -67,7 +66,6 @@ public class OrganizationAccountService
 	@Secured("ROLE_ORGANIZATIONACCOUNT_CREATE")
 	public void add(OrganizationAccount org)
 	{
-		org.setId(UUID.randomUUID().toString());
 		repository.save(org);
 	}
 	

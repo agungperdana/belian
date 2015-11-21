@@ -41,7 +41,7 @@ public class TaxModel implements ListModel<Tax>
 	@Override
 	public int getSize()
 	{
-		return service.size();
+		return data.size();
 	}
 
 	@Override

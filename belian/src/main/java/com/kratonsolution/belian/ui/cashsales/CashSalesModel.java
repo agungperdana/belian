@@ -44,7 +44,7 @@ public class CashSalesModel implements ListModel<CashSales>
 	@Override
 	public int getSize()
 	{
-		return service.size();
+		return data.size();
 	}
 
 	@Override

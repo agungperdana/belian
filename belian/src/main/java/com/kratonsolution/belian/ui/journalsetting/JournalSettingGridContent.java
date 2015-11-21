@@ -154,7 +154,7 @@ public class JournalSettingGridContent extends GridContent
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No Budget data exist.");
+		grid.setEmptyMessage("No journal setting data exist.");
 		grid.setModel(model);
 		grid.setRowRenderer(new JournalSettingRowRenderer());
 		grid.setPagingPosition("both");

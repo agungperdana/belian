@@ -14,8 +14,9 @@ import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class CompanyStructureModel implements ListModel<CompanyStructure>
 {
@@ -40,7 +41,7 @@ public class CompanyStructureModel implements ListModel<CompanyStructure>
 	@Override
 	public int getSize()
 	{
-		return controller.size();
+		return data.size();
 	}
 
 	@Override

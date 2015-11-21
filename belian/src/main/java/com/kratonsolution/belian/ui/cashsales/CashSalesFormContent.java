@@ -113,7 +113,7 @@ public class CashSalesFormContent extends FormContent
 	
 	private Listbox currencys = Components.fullSpanSelect();
 	
-	private Listbox organizations = Components.fullSpanSelect();
+	private Listbox organizations = Components.fullSpanSelect(sessionUtils.getOrganizations(),true);
 	
 	private Listbox locations = Components.fullSpanSelect(geographicService.findAll(),true);
 	

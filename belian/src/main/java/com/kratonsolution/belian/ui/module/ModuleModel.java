@@ -41,7 +41,7 @@ public class ModuleModel implements ListModel<Module>
 	@Override
 	public int getSize()
 	{
-		return controller.size();
+		return data.size();
 	}
 
 	@Override

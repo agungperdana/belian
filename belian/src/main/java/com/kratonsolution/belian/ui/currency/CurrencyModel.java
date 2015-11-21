@@ -14,8 +14,9 @@ import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class CurrencyModel implements ListModel<Currency>
 {
@@ -40,7 +41,7 @@ public class CurrencyModel implements ListModel<Currency>
 	@Override
 	public int getSize()
 	{
-		return service.size();
+		return data.size();
 	}
 
 	@Override

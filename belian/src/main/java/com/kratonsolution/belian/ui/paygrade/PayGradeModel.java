@@ -41,7 +41,7 @@ public class PayGradeModel implements ListModel<PayGrade>
 	@Override
 	public int getSize()
 	{
-		return controller.size();
+		return data.size();
 	}
 
 	@Override

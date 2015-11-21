@@ -40,9 +40,6 @@ public class AccessRole implements Serializable
 	@JoinColumn(name="fk_role")
 	private Role role;
 	
-	@Column(name="is_show_in_menu")
-	private boolean showInMenu;
-	
 	@Column(name="is_can_read")
 	private boolean canRead;
 

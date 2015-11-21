@@ -40,7 +40,7 @@ public class UOMModel implements ListModel<UnitOfMeasure>
 	@Override
 	public int getSize()
 	{
-		return service.size();
+		return data.size();
 	}
 
 	@Override

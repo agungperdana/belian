@@ -41,7 +41,7 @@ public class PositionTypeRateModel implements ListModel<PositionTypeRate>
 	@Override
 	public int getSize()
 	{
-		return controller.size();
+		return data.size();
 	}
 
 	@Override

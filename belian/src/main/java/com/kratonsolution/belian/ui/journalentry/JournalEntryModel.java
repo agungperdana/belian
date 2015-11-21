@@ -44,7 +44,7 @@ public class JournalEntryModel implements ListModel<JournalEntry>
 	@Override
 	public int getSize()
 	{
-		return service.size();
+		return data.size();
 	}
 
 	@Override

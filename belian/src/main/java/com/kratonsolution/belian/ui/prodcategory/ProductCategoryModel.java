@@ -40,7 +40,7 @@ public class ProductCategoryModel implements ListModel<ProductCategory>
 	@Override
 	public int getSize()
 	{
-		return service.size();
+		return data.size();
 	}
 
 	@Override
