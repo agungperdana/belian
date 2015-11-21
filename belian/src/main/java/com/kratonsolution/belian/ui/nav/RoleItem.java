@@ -9,14 +9,19 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.role.RoleWindow;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class RoleItem extends Listitem
 {
+	private Language language = Springs.get(Language.class);
+	
 	public RoleItem()
 	{
 		init();
@@ -24,7 +29,7 @@ public class RoleItem extends Listitem
 	
 	public void init()
 	{
-		setLabel("Role");
+		setLabel(language.get("navbar.menu.security.role"));
 		setImage("/icons/role.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()

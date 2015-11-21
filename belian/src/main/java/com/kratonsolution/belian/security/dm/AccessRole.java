@@ -3,6 +3,9 @@
  */
 package com.kratonsolution.belian.security.dm;
 
+import java.io.Serializable;
+import java.util.UUID;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,17 +19,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
 @Table(name="access_role")
-public class AccessRole
+public class AccessRole implements Serializable
 {
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="fk_module")
@@ -35,6 +39,9 @@ public class AccessRole
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="fk_role")
 	private Role role;
+	
+	@Column(name="is_show_in_menu")
+	private boolean showInMenu;
 	
 	@Column(name="is_can_read")
 	private boolean canRead;

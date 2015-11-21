@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.global.dm;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import javax.persistence.DiscriminatorColumn;
@@ -27,7 +28,7 @@ import lombok.Setter;
 @Table(name="increment_commitment")
 @Inheritance(strategy=InheritanceType.JOINED)
 @DiscriminatorColumn(name="commitment_type")
-public abstract class IncrementCommitment
+public abstract class IncrementCommitment implements Serializable
 {
 	@Id
 	protected String id = UUID.randomUUID().toString();

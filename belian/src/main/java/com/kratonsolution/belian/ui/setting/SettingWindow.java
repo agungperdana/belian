@@ -3,6 +3,13 @@
  */
 package com.kratonsolution.belian.ui.setting;
 
+import java.util.Locale;
+
+import org.zkoss.util.Locales;
+import org.zkoss.web.Attributes;
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
@@ -27,8 +34,8 @@ import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.global.svc.UserSettingService;
 import com.kratonsolution.belian.security.dm.User;
-import com.kratonsolution.belian.security.svc.UserService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -40,7 +47,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class SettingWindow extends AbstractWindow
 {
-	private UserService userService = Springs.get(UserService.class);
+	private UserSettingService userService = Springs.get(UserSettingService.class);
 	
 	private GeographicService geographicService = Springs.get(GeographicService.class);
 	
@@ -109,12 +116,13 @@ public class SettingWindow extends AbstractWindow
 		{
 			Listitem listitem = new Listitem(geographic.getLabel(),geographic.getValue());
 			locations.appendChild(listitem);
-			if(sessionUtils.getLocation() != null && sessionUtils.getLocation().getId().equals(geographic.getId()))
+			if(sessionUtils.getLocation() != null && 
+					sessionUtils.getLocation().getId() != null && sessionUtils.getLocation().getId().equals(geographic.getId()))
 				locations.setSelectedItem(listitem);
 		}
 		
-		languanges.appendChild(new Listitem("Bahasa Indonesia", "id-ID"));
-		languanges.appendChild(new Listitem("English", "en-US"));
+		languanges.appendChild(new Listitem("Bahasa Indonesia", "in_ID"));
+		languanges.appendChild(new Listitem("English", "en_US"));
 		Components.setDefault(languanges);
 		
 		if("id-ID".equals(sessionUtils.getLanguage()))
@@ -216,6 +224,18 @@ public class SettingWindow extends AbstractWindow
 			}
 			
 			userService.edit(user);
+			
+			try
+			{
+				Locale locale = Locales.getLocale(new Locale(user.getSetting().getLanguage()));
+				Sessions.getCurrent().setAttribute(Attributes.PREFERRED_LOCALE,locale);
+				Clients.reloadMessages(locale);
+				Locales.setThreadLocal(locale);
+				Executions.sendRedirect("/home");
+			} 
+			catch (Exception e)
+			{
+			}
 		}
 		
 		super.onClose();

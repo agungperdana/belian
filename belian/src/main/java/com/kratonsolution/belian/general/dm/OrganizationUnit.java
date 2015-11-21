@@ -26,6 +26,8 @@ public class OrganizationUnit extends OrganizationRole
 				return new Department();
 			case DIVISION:
 				return new Division();
+			case BRANCH:
+				return new Branch();
 			default:
 				return null;
 		}

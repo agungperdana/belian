@@ -9,14 +9,19 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.uom.UOMWindow;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class UOMItem extends Listitem
 {
+	private Language language = Springs.get(Language.class);
+	
 	public UOMItem()
 	{
 		init();
@@ -24,7 +29,7 @@ public class UOMItem extends Listitem
 	
 	public void init()
 	{
-		setLabel("Unit of Measure");
+		setLabel(language.get("navbar.menu.inventory.uom"));
 		setImage("/icons/measure.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()

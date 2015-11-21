@@ -4,7 +4,9 @@
 package com.kratonsolution.belian.common;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +19,7 @@ import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.security.app.SecurityInformation;
+import com.kratonsolution.belian.security.dm.AccessRole;
 import com.kratonsolution.belian.security.dm.AccessibleOrganization;
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.security.dm.UserRole;
@@ -54,6 +57,25 @@ public class SessionUtils
 				{
 					if(organization.isSelected())
 						list.add(organization.getOrganization());
+				}
+			}
+		}
+			
+		return list;
+	}
+	
+	public List<String> getOrganizationIds()
+	{
+		List<String> list = new ArrayList<String>();
+		
+		for(UserRole role:getUser().getRoles())
+		{
+			if(role.isEnabled())
+			{
+				for(AccessibleOrganization organization:role.getRole().getOrganizations())
+				{
+					if(organization.isSelected())
+						list.add(organization.getOrganization().getId());
 				}
 			}
 		}
@@ -99,6 +121,25 @@ public class SessionUtils
 		geographic.setName(getUser().getSetting().getLocationName());
 		
 		return geographic;
+	}
+	
+	public Map<String,Boolean> getAccessibleModules()
+	{
+		Map<String,Boolean> modules = new HashMap<String,Boolean>();
+		
+		for(UserRole role:getUser().getRoles())
+		{
+			if(role.isEnabled())
+			{
+				for(AccessRole accessRole:role.getRole().getAccesses())
+				{
+					if(!modules.containsKey(accessRole.getModule().getCode()))
+						modules.put(accessRole.getModule().getCode(),accessRole.isCanRead());
+				}
+			}
+		}
+		
+		return modules;
 	}
 	
 	public int getRowPerPage()

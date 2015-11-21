@@ -11,8 +11,8 @@
     </script>
 	<style type="text/css" media="screen">
 		body{
-			font-family:serif;
-			font-size:6px
+			font-family:monospaced sans serif;
+			font-size:12px;
 			margin: 0;
 			padding: 0;
 		}
@@ -21,7 +21,7 @@
 			border:0px;
 			width: 100%;
 			margin: 0;
-			padding: 0;
+			padding: 2px;
 		}
 		
 		.tdheadclass{
@@ -36,8 +36,8 @@
 	</style>
 	<style type="text/css" media="print">
 		body{
-			font-family:serif;
-			font-size:6px
+			font-family:monospaced sans serif;
+			font-size:12px;
 			margin: 0;
 			padding: 0;
 		}
@@ -51,7 +51,13 @@
 	<table class="tclass">
 	<thead>
 	<tr>
+		<td align="center" colspan="2"><img th:src="@{/icons/seafoodjuara.png}"/></td>
+	</tr>
+	<tr>
 		<td align="center" colspan="2" th:text="${sales.organization.name}"/>
+	</tr>
+	<tr th:each="contact : ${sales.organization.contacts}">
+		<td align="center" colspan="2"><img th:src="@{/icons/phone.png}"/>&nbsp;[[${contact.contact}]]</td>
 	</tr>
 	</thead>
 	<tbody>
@@ -59,37 +65,42 @@
 		 <td colspan="2">
 		 	<table style="width: 100%">
 		 	<tr>
-		 		<td colspan="2" align="left">[[${line.resource.name}]]</td>
+		 		<td colspan="2" align="left">[[${line.product.name}]]</td>
 		 	</tr>
 		 	<tr>
 		 		<td align="left" style="width: 80%">
-		 		[[${#numbers.formatDecimal(line.value,1,'COMMA',0,'POINT')}]]
+		 		[[${#numbers.formatDecimal(line.quantity,1,'COMMA',0,'POINT')}]]
 		 		x
 		 		[[${#numbers.formatDecimal(line.price,1,'COMMA',0,'POINT')}]]
 		 		</td>
-		 		<td align="right" style="width: 20%">[[${#numbers.formatDecimal(line.price*line.value,1,'COMMA',0,'POINT')}]]</td>
+		 		<td align="right" style="width: 20%">[[${#numbers.formatDecimal(line.price*line.quantity,1,'COMMA',0,'POINT')}]]</td>
 		 	</tr>
 		 	</table>
 		 </td>
 	</tr>
 	<tr>
-		<td align="right" colspan="2" style="border-top: solid black 1px;font-weight: bold;" th:text="${#numbers.formatDecimal(sales.bill,1,'COMMA',0,'POINT')}"/>
+		<td align="left" style="font-weight: bold;">Sub total</td>
+		<td align="right" style="border-top: solid black 1px;font-weight: bold;padding: 2px;" th:text="${#numbers.formatDecimal(sales.bill,1,'COMMA',0,'POINT')}"/>
 	</tr>
 	<tr>
 		<td align="left" style="font-weight: bold;">[[${sales.tax.name}]]</td>
-		<td align="right" style="font-weight: bold;" th:text="${#numbers.formatDecimal(sales.taxAmount,1,'COMMA',0,'POINT')}"/>
+		<td align="right" style="font-weight: bold;padding: 2px;" th:text="${#numbers.formatDecimal(sales.taxAmount,1,'COMMA',0,'POINT')}"/>
 	</tr>
 	<tr>
-		<td align="right" colspan="2" style="border-bottom: solid black 1px;font-weight: bold;" th:text="${#numbers.formatDecimal(sales.totalBill,1,'COMMA',0,'POINT')}"/>
+		<td align="left" style="font-weight: bold;">Total</td>
+		<td align="right" style="border-bottom: solid black 1px;font-weight: bold;padding: 2px;'" th:text="${#numbers.formatDecimal(sales.totalBill,1,'COMMA',0,'POINT')}"/>
 	</tr>
-	</tbody>
-	<tfoot>
+	<tr><td>&nbsp;</td></tr>
+	<tr><td colspan="2" align="center">MELAYANI CATERING &#38; PESAN ANTAR.</td></tr>
 	<tr>
 		<td align="center" colspan="2">
 			<img class="printspan" th:src="@{/icons/print.png}" alt="" onclick="onprint()"/>
 		</td>
 	</tr>
-	</tfoot>
+	<tr><td>&nbsp;</td></tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr><td>&nbsp;</td></tr>
+	</tbody>
 	</table>
 </body>
 </html>

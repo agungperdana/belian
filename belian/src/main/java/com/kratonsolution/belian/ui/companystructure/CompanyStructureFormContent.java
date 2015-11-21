@@ -3,9 +3,6 @@
  */
 package com.kratonsolution.belian.ui.companystructure;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -122,13 +119,7 @@ public class CompanyStructureFormContent extends FormContent
 	public void initForm()
 	{
 		
-		List<PartyRole.Type> types = new ArrayList<PartyRole.Type>();
-		types.add(PartyRole.Type.DEPARTMENT);
-		types.add(PartyRole.Type.DIVISION);
-		types.add(PartyRole.Type.HOLDING);
-		types.add(PartyRole.Type.SUBSIDIARY);
-		
-		for(PartyRole.Type type:types)
+		for(PartyRole.Type type:PartyRole.Type.values())
 		{
 			fromroles.appendChild(new Listitem(type.name(), type.name()));
 			toroles.appendChild(new Listitem(type.name(), type.name()));

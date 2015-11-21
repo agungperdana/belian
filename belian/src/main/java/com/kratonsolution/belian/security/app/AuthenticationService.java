@@ -22,8 +22,9 @@ import com.kratonsolution.belian.security.dm.UserRepository;
 import com.kratonsolution.belian.security.dm.UserRole;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
 @Transactional

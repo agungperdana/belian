@@ -20,8 +20,9 @@ import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.security.dm.UserRepository;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -70,13 +71,11 @@ public class UserService
 	@Secured("ROLE_USER_CREATE")
 	public void add(User user)
 	{
-		user.setId(UUID.randomUUID().toString());
 		user.setPassword(encryptor.encryptPassword(user.getPassword()));
-		
 		if(user.getSetting() == null)
 		{
 			UserSetting setting = new UserSetting();
-			setting.setId(UUID.randomUUID().toString());
+			setting.setLanguage("en_US");
 			user.setSetting(setting);
 		}
 		

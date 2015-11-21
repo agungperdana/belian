@@ -114,6 +114,9 @@ public class UserFormContent extends FormContent
 				user.setEnabled(enabled.isChecked());
 				user.setPerson(personService.findOne(Components.string(employees)));
 				
+				service.add(user);
+				personService.edit(user.getPerson());
+				
 				Rows _rows = roles.getRows();
 				for(Object object:_rows.getChildren())
 				{
@@ -132,8 +135,7 @@ public class UserFormContent extends FormContent
 					}
 				}
 				
-				service.add(user);
-				personService.edit(user.getPerson());
+				service.edit(user);
 				
 				UserWindow window = (UserWindow)getParent();
 				window.removeCreateForm();

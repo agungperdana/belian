@@ -9,14 +9,19 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.coa.COAWindow;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class CoAItem extends Listitem
 {
+	private Language language = Springs.get(Language.class);
+	
 	public CoAItem()
 	{
 		init();
@@ -24,7 +29,7 @@ public class CoAItem extends Listitem
 	
 	public void init()
 	{
-		setLabel("Chart of Account");
+		setLabel(language.get("navbar.menu.accounting.coa"));
 		setImage("/icons/coa.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()

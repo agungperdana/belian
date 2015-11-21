@@ -10,11 +10,17 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
+import com.kratonsolution.belian.accounting.dm.Currency;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -39,9 +45,17 @@ public abstract class EconomicEvent implements Serializable
 	
 	@Column(name="amount")
 	protected BigDecimal amount = BigDecimal.ONE;
+
+	@ManyToOne
+	@JoinColumn(name="fk_currency")
+	protected Currency currency;
 	
 	@Column(name="date")
 	protected Date date;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="type")
+	protected EconomicEventType type = EconomicEventType.GET;
 	
 	@Version
 	protected Long version;

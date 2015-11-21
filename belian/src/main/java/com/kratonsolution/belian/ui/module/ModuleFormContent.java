@@ -26,7 +26,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class ModuleFormContent extends FormContent
 {	
-	private final ModuleService moduleService = Springs.get(ModuleService.class);
+	private ModuleService moduleService = Springs.get(ModuleService.class);
 	
 	private Textbox code = new Textbox();
 	

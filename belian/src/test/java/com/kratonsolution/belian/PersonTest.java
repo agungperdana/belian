@@ -8,7 +8,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.kratonsolution.belian.general.dm.PersonRepository;
+import com.kratonsolution.belian.inventory.dm.ProductRepository;
 
 /**
  * Unit test for simple App.
@@ -20,15 +20,10 @@ import com.kratonsolution.belian.general.dm.PersonRepository;
 public class PersonTest
 {
 	@Autowired
-	private PersonRepository repository;
+	private ProductRepository repository;
 	
 	@Test
 	public void testQuery()
 	{
-//		for(Person person:repository.findAllByNameNot("Umi"))
-//		{
-//			System.out.println("####### "+person.getId());
-//			System.out.println("####### "+person.getName());
-//		}
 	}
 }

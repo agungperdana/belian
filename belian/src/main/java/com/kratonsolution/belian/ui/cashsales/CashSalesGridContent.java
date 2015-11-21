@@ -45,6 +45,7 @@ public class CashSalesGridContent extends GridContent
 			{
 				grid.getPagingChild().setActivePage(0);
 				grid.setModel(new CashSalesModel(utils.getRowPerPage()));
+				refresh(new CashSalesModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -129,7 +130,7 @@ public class CashSalesGridContent extends GridContent
 								}
 							}
 							
-							grid.setModel(new CashSalesModel(utils.getRowPerPage()));
+							refresh(new CashSalesModel(utils.getRowPerPage()));
 						}
 					}
 				});
@@ -176,31 +177,10 @@ public class CashSalesGridContent extends GridContent
 			public void onEvent(PagingEvent event) throws Exception
 			{
 				model.next(event.getActivePage(), utils.getRowPerPage());
-				grid.setModel(model);
-				
-				attachEvent();
+				refresh(model);
 			}
 		});
 		
-		attachEvent();
-	}
-	
-	private void attachEvent()
-	{
-		Rows rows = grid.getRows();
-		for(Object object:rows.getChildren())
-		{
-			final Row row = (Row)object;
-			row.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-			{
-				@Override
-				public void onEvent(Event event) throws Exception
-				{
-					CashSalesWindow window = (CashSalesWindow)getParent();
-					window.removeGrid();
-					window.insertEditForm(row);
-				}
-			});
-		}
+		refresh(new CashSalesModel(utils.getRowPerPage()));
 	}
 }

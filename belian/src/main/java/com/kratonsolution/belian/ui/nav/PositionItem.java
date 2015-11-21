@@ -9,14 +9,19 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.hr.position.PositionWindow;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class PositionItem extends Listitem
 {
+	private Language language = Springs.get(Language.class);
+	
 	public PositionItem()
 	{
 		init();
@@ -24,7 +29,7 @@ public class PositionItem extends Listitem
 	
 	public void init()
 	{
-		setLabel("Position");
+		setLabel(language.get("navbar.menu.hr.position"));
 		setImage("/icons/position.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()

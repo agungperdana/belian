@@ -11,15 +11,19 @@ import org.zkoss.zul.event.ListDataListener;
 
 import com.kratonsolution.belian.accounting.dm.JournalEntry;
 import com.kratonsolution.belian.accounting.svc.JournalEntryService;
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class JournalEntryModel implements ListModel<JournalEntry>
 {
 	private final JournalEntryService service = Springs.get(JournalEntryService.class);
+	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	private List<JournalEntry> data = new ArrayList<JournalEntry>();
 	
@@ -60,6 +64,6 @@ public class JournalEntryModel implements ListModel<JournalEntry>
 	public void next(int pageIndex,int itemSize)
 	{
 		data.clear();
-		data.addAll(service.findAll(0, (itemSize*pageIndex)+itemSize));
+		data.addAll(service.findAll(0, (itemSize*pageIndex)+itemSize,utils.getOrganizationIds()));
 	}
 }

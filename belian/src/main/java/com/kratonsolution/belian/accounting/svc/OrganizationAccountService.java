@@ -17,8 +17,9 @@ import com.kratonsolution.belian.accounting.dm.OrganizationAccount;
 import com.kratonsolution.belian.accounting.dm.OrganizationAccountRepository;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -52,9 +53,9 @@ public class OrganizationAccountService
 	}
 	
 	@Secured("ROLE_ORGANIZATIONACCOUNT_READ")
-	public List<OrganizationAccount> findAll(int pageIndex,int pageSize)
+	public List<OrganizationAccount> findAll(int pageIndex,int pageSize,List<String> companys)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		return repository.findAll(new PageRequest(pageIndex, pageSize),companys);
 	}
 	
 	@Secured("ROLE_ORGANIZATIONACCOUNT_READ")

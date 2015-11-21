@@ -33,8 +33,8 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.Organization;
-import com.kratonsolution.belian.general.dm.OrganizationUnit;
-import com.kratonsolution.belian.general.svc.OrganizationUnitService;
+import com.kratonsolution.belian.general.svc.CompanyStructureService;
+import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.security.dm.AccessRole;
 import com.kratonsolution.belian.security.dm.AccessibleOrganization;
 import com.kratonsolution.belian.security.dm.Module;
@@ -47,16 +47,17 @@ import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class RoleEditContent extends FormContent
 {	
-	private final RoleService service = Springs.get(RoleService.class);
+	private RoleService service = Springs.get(RoleService.class);
 
-	private final ModuleService moduleService = Springs.get(ModuleService.class);
+	private ModuleService moduleService = Springs.get(ModuleService.class);
 	
-	private OrganizationUnitService organizationService = Springs.get(OrganizationUnitService.class);
+	private CompanyStructureService structureService = Springs.get(CompanyStructureService.class);
 
 	private Textbox code = new Textbox();
 
@@ -412,12 +413,12 @@ public class RoleEditContent extends FormContent
 			else
 			{
 				List<AccessibleOrganization> orgs = new ArrayList<AccessibleOrganization>();
-				for(OrganizationUnit organization:organizationService.findAll())
+				for(EconomicAgent organization:structureService.findAllCompanyMembers())
 				{
 					AccessibleOrganization accessibleOrganization = new AccessibleOrganization();
 					accessibleOrganization.setId(UUID.randomUUID().toString());
 					accessibleOrganization.setRole(role);
-					accessibleOrganization.setOrganization((Organization)organization.getParty());
+					accessibleOrganization.setOrganization((Organization)organization);
 					
 					role.getOrganizations().add(accessibleOrganization);
 				

@@ -38,10 +38,10 @@ import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.accounting.svc.TaxService;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.AddressRepository;
-import com.kratonsolution.belian.general.dm.OrganizationUnit;
+import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.inventory.dm.Product;
@@ -75,7 +75,7 @@ public class CashSalesFormContent extends FormContent
 	
 	private EconomicAgentService agentService = Springs.get(EconomicAgentService.class);
 	
-	private OrganizationUnitService unitService = Springs.get(OrganizationUnitService.class);
+	private CompanyStructureService unitService = Springs.get(CompanyStructureService.class);
 	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 	
@@ -233,11 +233,11 @@ public class CashSalesFormContent extends FormContent
 		
 		Components.setDefault(tableNumber);
 		
-		for(OrganizationUnit unit:unitService.findAll())
+		for(Organization organization:sessionUtils.getOrganizations())
 		{
-			Listitem listitem = new Listitem(unit.getParty().getName(),unit.getParty().getId());
+			Listitem listitem = new Listitem(organization.getName(),organization.getId());
 			organizations.appendChild(listitem);
-			if(sessionUtils.getOrganization() != null && sessionUtils.getOrganization().getId().equals(unit.getParty().getId()))
+			if(sessionUtils.getOrganization() != null && sessionUtils.getOrganization().getId().equals(organization.getId()))
 				organizations.setSelectedItem(listitem);
 		}
 			

@@ -9,14 +9,19 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.inventoryitem.InventoryItemWindow;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class InventoryItemItem extends Listitem
 {
+	private Language language = Springs.get(Language.class);
+	
 	public InventoryItemItem()
 	{
 		init();
@@ -24,7 +29,7 @@ public class InventoryItemItem extends Listitem
 	
 	public void init()
 	{
-		setLabel("Inventory Item");
+		setLabel(language.get("navbar.menu.inventory.invitem"));
 		setImage("/icons/inventoryitem.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()

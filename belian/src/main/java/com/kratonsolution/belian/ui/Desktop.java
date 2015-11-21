@@ -6,8 +6,8 @@ package com.kratonsolution.belian.ui;
 import org.zkoss.zk.ui.GenericRichlet;
 import org.zkoss.zk.ui.Page;
 
-import com.kratonsolution.belian.ui.nav.NavigationMenu;
 import com.kratonsolution.belian.ui.nav.IconBar;
+import com.kratonsolution.belian.ui.nav.NavigationMenu;
 
 /**
  * 

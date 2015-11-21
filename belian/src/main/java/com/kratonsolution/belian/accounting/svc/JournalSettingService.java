@@ -46,9 +46,9 @@ public class JournalSettingService
 	}
 
 	@Secured("ROLE_JOURNALSETTING_READ")
-	public List<JournalSetting> findAll(int pageIndex,int pageSize)
+	public List<JournalSetting> findAll(int pageIndex,int pageSize,List<String> companys)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		return repository.findAll(new PageRequest(pageIndex, pageSize),companys);
 	}
 
 	@Secured("ROLE_JOURNALSETTING_CREATE")

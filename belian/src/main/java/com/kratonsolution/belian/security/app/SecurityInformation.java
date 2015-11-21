@@ -13,8 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.kratonsolution.belian.security.dm.User;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter

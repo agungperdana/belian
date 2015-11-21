@@ -9,14 +9,19 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.user.UserWindow;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class UserItem extends Listitem
 {
+	private Language language = Springs.get(Language.class);
+	
 	public UserItem()
 	{
 		init();
@@ -24,7 +29,7 @@ public class UserItem extends Listitem
 	
 	public void init()
 	{
-		setLabel("User");
+		setLabel(language.get("navbar.menu.security.user"));
 		setImage("/icons/user.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()

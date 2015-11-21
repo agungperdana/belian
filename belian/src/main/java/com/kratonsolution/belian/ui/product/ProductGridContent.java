@@ -44,7 +44,7 @@ public class ProductGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new ProductModel(utils.getRowPerPage()));
+				refresh(new ProductModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -129,7 +129,7 @@ public class ProductGridContent extends GridContent
 								}
 							}
 							
-							grid.setModel(new ProductModel(8));
+							refresh(new ProductModel(utils.getRowPerPage()));
 						}
 					}
 				});
@@ -179,29 +179,10 @@ public class ProductGridContent extends GridContent
 				model.next(event.getActivePage(), utils.getRowPerPage());
 				grid.setModel(model);
 				
-				reattachEvent();
+				refresh(new ProductModel(utils.getRowPerPage()));
 			}
 		});
 		
-		reattachEvent();
-	}
-	
-	protected void reattachEvent()
-	{
-		Rows rows = grid.getRows();
-		for(Object object:rows.getChildren())
-		{
-			final Row row = (Row)object;
-			row.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-			{
-				@Override
-				public void onEvent(Event event) throws Exception
-				{
-					ProductWindow window = (ProductWindow)getParent();
-					window.removeGrid();
-					window.insertEditForm(row);
-				}
-			});
-		}
+		refresh(new ProductModel(utils.getRowPerPage()));
 	}
 }

@@ -11,8 +11,9 @@ import org.zkoss.zul.RowRenderer;
 import com.kratonsolution.belian.security.dm.Role;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class RoleRowRenderer implements RowRenderer<Role>
 {

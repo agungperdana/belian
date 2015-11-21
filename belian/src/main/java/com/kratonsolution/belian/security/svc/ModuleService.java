@@ -12,7 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,11 +21,12 @@ import com.kratonsolution.belian.security.dm.ModuleRepository;
 import com.kratonsolution.belian.security.dm.RoleRepository;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
-@Transactional(rollbackFor=Exception.class,isolation=Isolation.DEFAULT,propagation=Propagation.REQUIRED)
+@Transactional(rollbackFor=Exception.class)
 public class ModuleService
 {
 	@Autowired

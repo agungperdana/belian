@@ -9,14 +9,19 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.cashsales.CashSalesWindow;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class CashSalesItem extends Listitem
 {
+	private Language language = Springs.get(Language.class);
+	
 	public CashSalesItem()
 	{
 		init();
@@ -24,7 +29,7 @@ public class CashSalesItem extends Listitem
 	
 	public void init()
 	{
-		setLabel("Cash Sales");
+		setLabel(language.get("navbar.menu.sales.cashsales"));
 		setImage("/icons/directsales.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()

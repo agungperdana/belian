@@ -15,10 +15,12 @@ import com.kratonsolution.belian.general.dm.CompanyStructure;
 import com.kratonsolution.belian.general.dm.CompanyStructureRepository;
 import com.kratonsolution.belian.general.dm.OrganizationUnitRepository;
 import com.kratonsolution.belian.general.dm.PartyRoleRepository;
+import com.kratonsolution.belian.global.dm.EconomicAgent;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -73,5 +75,11 @@ public class CompanyStructureService
 	public void delete(String id)
 	{
 		repository.delete(id);
+	}
+	
+	@Secured("ROLE_COMPANY_STRUCTURE_READ")
+	public List<EconomicAgent> findAllCompanyMembers()
+	{
+		return repository.findAllCompanyMembers();
 	}
 }

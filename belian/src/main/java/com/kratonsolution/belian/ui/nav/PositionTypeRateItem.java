@@ -9,7 +9,9 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.positiontyperate.PositionTypeRateWindow;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * 
@@ -18,6 +20,8 @@ import com.kratonsolution.belian.ui.positiontyperate.PositionTypeRateWindow;
  */
 public class PositionTypeRateItem extends Listitem
 {
+	private Language language = Springs.get(Language.class);
+	
 	public PositionTypeRateItem()
 	{
 		init();
@@ -25,7 +29,7 @@ public class PositionTypeRateItem extends Listitem
 	
 	public void init()
 	{
-		setLabel("Position Type Rate");
+		setLabel(language.get("navbar.menu.hr.positiontyperate"));
 		setImage("/icons/positiontyperate.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()

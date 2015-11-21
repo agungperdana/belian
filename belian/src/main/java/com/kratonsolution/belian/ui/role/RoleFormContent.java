@@ -28,9 +28,9 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.general.dm.OrganizationUnit;
+import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.general.svc.OrganizationUnitService;
+import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.security.dm.AccessRole;
 import com.kratonsolution.belian.security.dm.AccessibleOrganization;
 import com.kratonsolution.belian.security.dm.Module;
@@ -42,18 +42,19 @@ import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class RoleFormContent extends FormContent
 {	
-	private final RoleService service = Springs.get(RoleService.class);
+	private RoleService service = Springs.get(RoleService.class);
 	
-	private final ModuleService moduleService = Springs.get(ModuleService.class);
+	private ModuleService moduleService = Springs.get(ModuleService.class);
 	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 	
-	private OrganizationUnitService unitService = Springs.get(OrganizationUnitService.class);
+	private CompanyStructureService structure = Springs.get(CompanyStructureService.class);
 	
 	private Textbox code = new Textbox();
 	
@@ -350,12 +351,12 @@ public class RoleFormContent extends FormContent
 		accessibleCompanys.getColumns().appendChild(new Column("",null,null));
 		accessibleCompanys.getColumns().getChildren().get(2).setVisible(false);
 		
-		for(OrganizationUnit unit:unitService.findAll())
+		for(EconomicAgent unit:structure.findAllCompanyMembers())
 		{
 			Row row = new Row();
-			row.appendChild(new Label(unit.getParty().getName()));
+			row.appendChild(new Label(unit.getName()));
 			row.appendChild(new Checkbox());
-			row.appendChild(new Label(unit.getParty().getId()));
+			row.appendChild(new Label(unit.getId()));
 			
 			accessibleCompanys.getRows().appendChild(row);
 		}

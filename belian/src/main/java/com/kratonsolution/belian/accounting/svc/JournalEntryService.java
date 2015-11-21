@@ -18,8 +18,9 @@ import com.kratonsolution.belian.accounting.dm.JournalEntry;
 import com.kratonsolution.belian.accounting.dm.JournalEntryRepository;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -47,9 +48,9 @@ public class JournalEntryService
 	}
 	
 	@Secured("ROLE_JOURNALENTRY_READ")
-	public List<JournalEntry> findAll(int pageIndex,int pageSize)
+	public List<JournalEntry> findAll(int pageIndex,int pageSize,List<String> companys)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize,new Sort(Sort.Direction.DESC,"date"))).getContent();
+		return repository.findAll(new PageRequest(pageIndex, pageSize,new Sort(Sort.Direction.DESC,"date")),companys);
 	}
 	
 	@Secured("ROLE_JOURNALENTRY_CREATE")

@@ -9,7 +9,9 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.paygrade.PayGradeWindow;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * 
@@ -18,6 +20,8 @@ import com.kratonsolution.belian.ui.paygrade.PayGradeWindow;
  */
 public class PayGradeItem extends Listitem
 {
+	private Language language = Springs.get(Language.class);
+	
 	public PayGradeItem()
 	{
 		init();
@@ -25,7 +29,7 @@ public class PayGradeItem extends Listitem
 	
 	public void init()
 	{
-		setLabel("Pay Grade");
+		setLabel(language.get("navbar.menu.hr.paygrade"));
 		setImage("/icons/paygrade.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()

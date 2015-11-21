@@ -47,7 +47,7 @@ public class ModuleGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new ModuleModel(utils.getRowPerPage()));
+				refresh(new ModuleModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -125,9 +125,7 @@ public class ModuleGridContent extends GridContent
 									service.delete(RowUtils.string(row, 4));
 							}
 							
-							ModuleWindow window = (ModuleWindow)getParent();
-							window.removeGrid();
-							window.insertGrid();
+							refresh(new ModuleModel(utils.getRowPerPage()));
 						}
 					}
 				});
@@ -171,29 +169,10 @@ public class ModuleGridContent extends GridContent
 			{
 				model.next(event.getActivePage(), utils.getRowPerPage());
 				grid.setModel(model);
-				reattachEvent();
+				refresh(model);
 			}
 		});
 		
-		reattachEvent();
-	}
-	
-	protected void reattachEvent()
-	{
-		Rows rows = grid.getRows();
-		for(Object object:rows.getChildren())
-		{
-			final Row row = (Row)object;
-			row.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-			{
-				@Override
-				public void onEvent(Event event) throws Exception
-				{
-					ModuleWindow window = (ModuleWindow)getParent();
-					window.removeGrid();
-					window.insertEditForm(row);
-				}
-			});
-		}
+		refresh(new ModuleModel(utils.getRowPerPage()));
 	}
 }
