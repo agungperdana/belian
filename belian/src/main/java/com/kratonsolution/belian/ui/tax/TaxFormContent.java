@@ -30,7 +30,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class TaxFormContent extends FormContent
 {	
-	private final TaxService service = Springs.get(TaxService.class);
+	private TaxService service = Springs.get(TaxService.class);
 	
 	private Textbox code = new Textbox();
 	

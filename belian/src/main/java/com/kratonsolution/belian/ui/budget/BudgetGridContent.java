@@ -16,6 +16,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.accounting.svc.BudgetService;
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -26,7 +27,9 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class BudgetGridContent extends GridContent
 {
-	private final BudgetService service = Springs.get(BudgetService.class);
+	private BudgetService service = Springs.get(BudgetService.class);
+	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public BudgetGridContent()
 	{
@@ -44,7 +47,7 @@ public class BudgetGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new BudgetModel(utils.getRowPerPage()));
+				refresh(new BudgetModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -178,29 +181,10 @@ public class BudgetGridContent extends GridContent
 			{
 				model.next(event.getActivePage(),utils.getRowPerPage());
 				grid.setModel(model);
-				reattachEvent();
+				refresh(model);
 			}
 		});
 		
-		reattachEvent();
-	}
-	
-	private void reattachEvent()
-	{
-		Rows rows = grid.getRows();
-		for(Object object:rows.getChildren())
-		{
-			final Row row = (Row)object;
-			row.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-			{
-				@Override
-				public void onEvent(Event event) throws Exception
-				{
-					BudgetWindow window = (BudgetWindow)getParent();
-					window.removeGrid();
-					window.insertEditForm(row);
-				}
-			});
-		}
+		refresh(new BudgetModel(utils.getRowPerPage()));
 	}
 }

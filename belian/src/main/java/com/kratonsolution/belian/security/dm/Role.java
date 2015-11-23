@@ -6,6 +6,7 @@ package com.kratonsolution.belian.security.dm;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,7 +31,7 @@ import lombok.Setter;
 public class Role implements Serializable
 {
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="code",unique=true,nullable=false)
 	private String code;

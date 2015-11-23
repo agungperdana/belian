@@ -41,7 +41,7 @@ public class InventoryItemModel implements ListModel<InventoryItem>
 	@Override
 	public int getSize()
 	{
-		return data.size();
+		return service.size();
 	}
 
 	@Override

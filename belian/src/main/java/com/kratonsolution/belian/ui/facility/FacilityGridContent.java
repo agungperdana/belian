@@ -15,17 +15,21 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.inventory.svc.FacilityService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class FacilityGridContent extends GridContent
 {
-	private final FacilityService service = Springs.get(FacilityService.class);
+	private FacilityService service = Springs.get(FacilityService.class);
+	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public FacilityGridContent()
 	{
@@ -43,7 +47,7 @@ public class FacilityGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new FacilityModel(8));
+				refresh(new FacilityModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -128,7 +132,7 @@ public class FacilityGridContent extends GridContent
 								}
 							}
 							
-							grid.setModel(new FacilityModel(8));
+							refresh(new FacilityModel(utils.getRowPerPage()));
 						}
 					}
 				});
@@ -147,15 +151,15 @@ public class FacilityGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final FacilityModel model = new FacilityModel(8);
+		final FacilityModel model = new FacilityModel(utils.getRowPerPage());
 		
 		grid.setHeight("80%");
 		grid.setEmptyMessage("No facility data exist.");
-		grid.setModel(new FacilityModel(8));
+		grid.setModel(model);
 		grid.setRowRenderer(new FacilityRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
-		grid.setPageSize(8);
+		grid.setPageSize(utils.getRowPerPage());
 		
 		appendChild(grid);
 		
@@ -182,25 +186,12 @@ public class FacilityGridContent extends GridContent
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), 8);
+				model.next(event.getActivePage(), utils.getRowPerPage());
 				grid.setModel(model);
+				refresh(model);
 			}
 		});
-		
-		Rows rows = grid.getRows();
-		for(Object object:rows.getChildren())
-		{
-			final Row row = (Row)object;
-			row.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-			{
-				@Override
-				public void onEvent(Event event) throws Exception
-				{
-					FacilityWindow window = (FacilityWindow)getParent();
-					window.removeGrid();
-					window.insertEditForm(row);
-				}
-			});
-		}
+
+		refresh(new FacilityModel(utils.getRowPerPage()));
 	}
 }

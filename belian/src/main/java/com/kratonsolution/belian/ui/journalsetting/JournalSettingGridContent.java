@@ -16,6 +16,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.accounting.svc.JournalSettingService;
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -26,7 +27,9 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class JournalSettingGridContent extends GridContent
 {
-	private final JournalSettingService service = Springs.get(JournalSettingService.class);
+	private JournalSettingService service = Springs.get(JournalSettingService.class);
+	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public JournalSettingGridContent()
 	{
@@ -44,7 +47,7 @@ public class JournalSettingGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new JournalSettingModel(utils.getRowPerPage()));
+				refresh(new JournalSettingModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -174,29 +177,10 @@ public class JournalSettingGridContent extends GridContent
 			{
 				model.next(event.getActivePage(),utils.getRowPerPage());
 				grid.setModel(model);
-				reattachEvent();
+				refresh(model);
 			}
 		});
 		
-		reattachEvent();
-	}
-	
-	private void reattachEvent()
-	{
-		Rows rows = grid.getRows();
-		for(Object object:rows.getChildren())
-		{
-			final Row row = (Row)object;
-			row.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-			{
-				@Override
-				public void onEvent(Event event) throws Exception
-				{
-					JournalSettingWindow window = (JournalSettingWindow)getParent();
-					window.removeGrid();
-					window.insertEditForm(row);
-				}
-			});
-		}
+		refresh(new JournalSettingModel(utils.getRowPerPage()));
 	}
 }

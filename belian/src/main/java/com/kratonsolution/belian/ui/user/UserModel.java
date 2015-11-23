@@ -14,8 +14,9 @@ import com.kratonsolution.belian.security.svc.UserService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class UserModel implements ListModel<User>
 {
@@ -40,7 +41,7 @@ public class UserModel implements ListModel<User>
 	@Override
 	public int getSize()
 	{
-		return data.size();
+		return controller.size();
 	}
 
 	@Override

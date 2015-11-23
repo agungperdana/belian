@@ -19,4 +19,7 @@ public interface JournalEntryRepository extends JpaRepository<JournalEntry, Stri
 {
 	@Query("FROM JournalEntry entry WHERE entry.owner.id IN :companys")
 	public List<JournalEntry> findAll(Pageable pageable,@Param("companys")List<String> companys);
+	
+	@Query("SELECT COUNT(journal) FROM JournalEntry journal WHERE journal.owner.id IN :companys")
+	public int count(@Param("companys")List<String> companys);
 }

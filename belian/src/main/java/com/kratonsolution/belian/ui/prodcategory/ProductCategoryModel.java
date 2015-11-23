@@ -14,8 +14,9 @@ import com.kratonsolution.belian.inventory.svc.ProductCategoryService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class ProductCategoryModel implements ListModel<ProductCategory>
 {
@@ -40,7 +41,7 @@ public class ProductCategoryModel implements ListModel<ProductCategory>
 	@Override
 	public int getSize()
 	{
-		return data.size();
+		return service.size();
 	}
 
 	@Override

@@ -41,7 +41,7 @@ public class CurrencyModel implements ListModel<Currency>
 	@Override
 	public int getSize()
 	{
-		return data.size();
+		return service.size();
 	}
 
 	@Override

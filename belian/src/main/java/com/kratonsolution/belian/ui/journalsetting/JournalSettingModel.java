@@ -44,7 +44,7 @@ public class JournalSettingModel implements ListModel<JournalSetting>
 	@Override
 	public int getSize()
 	{
-		return data.size();
+		return controller.count(utils.getOrganizationIds());
 	}
 
 	@Override

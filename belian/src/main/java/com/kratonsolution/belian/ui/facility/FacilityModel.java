@@ -41,7 +41,7 @@ public class FacilityModel implements ListModel<Facility>
 	@Override
 	public int getSize()
 	{
-		return data.size();
+		return service.size();
 	}
 
 	@Override

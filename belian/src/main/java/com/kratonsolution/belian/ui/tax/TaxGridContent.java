@@ -16,6 +16,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.accounting.svc.TaxService;
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -26,7 +27,9 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class TaxGridContent extends GridContent
 {
-	private final TaxService service = Springs.get(TaxService.class);
+	private TaxService service = Springs.get(TaxService.class);
+	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public TaxGridContent()
 	{
@@ -44,7 +47,7 @@ public class TaxGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new TaxModel(8));
+				refresh(new TaxModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -129,7 +132,7 @@ public class TaxGridContent extends GridContent
 								}
 							}
 							
-							grid.setModel(new TaxModel(8));
+							refresh(new TaxModel(utils.getRowPerPage()));
 						}
 					}
 				});
@@ -148,7 +151,7 @@ public class TaxGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final TaxModel model = new TaxModel(8);
+		final TaxModel model = new TaxModel(utils.getRowPerPage());
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
@@ -157,7 +160,7 @@ public class TaxGridContent extends GridContent
 		grid.setRowRenderer(new TaxRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
-		grid.setPageSize(8);
+		grid.setPageSize(utils.getRowPerPage());
 		
 		Columns columns = new Columns();
 		
@@ -180,25 +183,12 @@ public class TaxGridContent extends GridContent
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), 8);
+				model.next(event.getActivePage(), utils.getRowPerPage());
 				grid.setModel(model);
+				refresh(model);
 			}
 		});
 		
-		Rows rows = grid.getRows();
-		for(Object object:rows.getChildren())
-		{
-			final Row row = (Row)object;
-			row.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-			{
-				@Override
-				public void onEvent(Event event) throws Exception
-				{
-					TaxWindow window = (TaxWindow)getParent();
-					window.removeGrid();
-					window.insertEditForm(row);
-				}
-			});
-		}
+		refresh(new TaxModel(utils.getRowPerPage()));
 	}
 }

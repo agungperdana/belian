@@ -41,7 +41,7 @@ public class ProductModel implements ListModel<Product>
 	@Override
 	public int getSize()
 	{
-		return data.size();
+		return service.size();
 	}
 
 	@Override

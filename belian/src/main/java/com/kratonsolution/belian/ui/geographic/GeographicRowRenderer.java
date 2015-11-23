@@ -11,8 +11,9 @@ import org.zkoss.zul.RowRenderer;
 import com.kratonsolution.belian.general.dm.Geographic;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class GeographicRowRenderer implements RowRenderer<Geographic>
 {

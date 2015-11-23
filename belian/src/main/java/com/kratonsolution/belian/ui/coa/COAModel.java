@@ -20,7 +20,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class COAModel implements ListModel<GLAccount>
 {
-	private final GLAccountService service = Springs.get(GLAccountService.class);
+	private GLAccountService service = Springs.get(GLAccountService.class);
 	
 	private List<GLAccount> data = new ArrayList<GLAccount>();
 	
@@ -41,7 +41,7 @@ public class COAModel implements ListModel<GLAccount>
 	@Override
 	public int getSize()
 	{
-		return data.size();
+		return service.countRoot();
 	}
 
 	@Override

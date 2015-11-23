@@ -15,17 +15,21 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.inventory.svc.ProductCategoryService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class ProductCategoryGridContent extends GridContent
 {
-	private final ProductCategoryService service = Springs.get(ProductCategoryService.class);
+	private ProductCategoryService service = Springs.get(ProductCategoryService.class);
+	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public ProductCategoryGridContent()
 	{
@@ -43,7 +47,7 @@ public class ProductCategoryGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new ProductCategoryModel(8));
+				refresh(new ProductCategoryModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -128,7 +132,7 @@ public class ProductCategoryGridContent extends GridContent
 								}
 							}
 							
-							grid.setModel(new ProductCategoryModel(8));
+							refresh(new ProductCategoryModel(utils.getRowPerPage()));
 						}
 					}
 				});
@@ -147,7 +151,7 @@ public class ProductCategoryGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final ProductCategoryModel model = new ProductCategoryModel(8);
+		final ProductCategoryModel model = new ProductCategoryModel(utils.getRowPerPage());
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
@@ -156,7 +160,7 @@ public class ProductCategoryGridContent extends GridContent
 		grid.setRowRenderer(new ProductCategoryRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
-		grid.setPageSize(8);
+		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
@@ -171,25 +175,12 @@ public class ProductCategoryGridContent extends GridContent
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), 8);
+				model.next(event.getActivePage(), utils.getRowPerPage());
 				grid.setModel(model);
+				refresh(model);
 			}
 		});
 		
-		Rows rows = grid.getRows();
-		for(Object object:rows.getChildren())
-		{
-			final Row row = (Row)object;
-			row.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-			{
-				@Override
-				public void onEvent(Event event) throws Exception
-				{
-					ProductCategoryWindow window = (ProductCategoryWindow)getParent();
-					window.removeGrid();
-					window.insertEditForm(row);
-				}
-			});
-		}
+		refresh(new ProductCategoryModel(utils.getRowPerPage()));
 	}
 }

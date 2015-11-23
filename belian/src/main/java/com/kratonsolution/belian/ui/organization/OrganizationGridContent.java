@@ -15,6 +15,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -27,6 +28,8 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class OrganizationGridContent extends GridContent
 {
 	private OrganizationService controller = Springs.get(OrganizationService.class);
+	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public OrganizationGridContent()
 	{
@@ -44,7 +47,7 @@ public class OrganizationGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new OrganizationModel(8));
+				grid.setModel(new OrganizationModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -150,7 +153,7 @@ public class OrganizationGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final OrganizationModel model = new OrganizationModel(8);
+		final OrganizationModel model = new OrganizationModel(utils.getRowPerPage());
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
@@ -159,7 +162,7 @@ public class OrganizationGridContent extends GridContent
 		grid.setRowRenderer(new OrganizationRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
-		grid.setPageSize(8);
+		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
 		grid.getColumns().appendChild(new Column("Name"));
@@ -174,25 +177,12 @@ public class OrganizationGridContent extends GridContent
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), 8);
+				model.next(event.getActivePage(), utils.getRowPerPage());
 				grid.setModel(model);
+				refresh(model);
 			}
 		});
-		
-		Rows rows = grid.getRows();
-		for(Object object:rows.getChildren())
-		{
-			final Row row = (Row)object;
-			row.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-			{
-				@Override
-				public void onEvent(Event event) throws Exception
-				{
-					OrganizationWindow window = (OrganizationWindow)getParent();
-					window.removeGrid();
-					window.insertEditForm(row);
-				}
-			});
-		}
+
+		refresh(new OrganizationModel(utils.getRowPerPage()));
 	}
 }

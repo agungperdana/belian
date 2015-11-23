@@ -6,8 +6,9 @@ package com.kratonsolution.belian.ui.uom;
 import org.zkoss.zul.Toolbarbutton;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class UOMButton extends Toolbarbutton
 {

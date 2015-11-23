@@ -15,6 +15,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -26,7 +27,9 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class ProductGridContent extends GridContent
 {
-	private final ProductService service = Springs.get(ProductService.class);
+	private ProductService service = Springs.get(ProductService.class);
+	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public ProductGridContent()
 	{
@@ -178,8 +181,7 @@ public class ProductGridContent extends GridContent
 			{
 				model.next(event.getActivePage(), utils.getRowPerPage());
 				grid.setModel(model);
-				
-				refresh(new ProductModel(utils.getRowPerPage()));
+				refresh(model);
 			}
 		});
 		

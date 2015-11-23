@@ -18,6 +18,9 @@ public interface JournalSettingRepository extends JpaRepository<JournalSetting, 
 {
 	public JournalSetting findOneByOrganizationId(String id);
 	
+	@Query("SELECT COUNT(setting) FROM JournalSetting setting WHERE setting.organization.id IN :companys")
+	public int count(@Param("companys")List<String> companys);
+	
 	@Query("FROM JournalSetting setting WHERE setting.organization.id IN :companys")
 	public List<JournalSetting> findAll(Pageable pageable,@Param("companys")List<String> companys);
 }

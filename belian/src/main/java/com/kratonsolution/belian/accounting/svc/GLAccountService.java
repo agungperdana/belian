@@ -18,8 +18,9 @@ import com.kratonsolution.belian.accounting.dm.GLAccountChangeEventListener;
 import com.kratonsolution.belian.accounting.dm.GLAccountRepository;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -103,5 +104,11 @@ public class GLAccountService
 		
 		for(GLAccountChangeEventListener listener:listeners)
 			listener.fireObjectDeleted(id);
+	}
+	
+	@Secured("ROLE_COA_READ")
+	public int countRoot()
+	{
+		return repository.countRoot();
 	}
 }

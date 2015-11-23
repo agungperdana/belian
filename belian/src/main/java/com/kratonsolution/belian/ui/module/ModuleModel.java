@@ -41,21 +41,17 @@ public class ModuleModel implements ListModel<Module>
 	@Override
 	public int getSize()
 	{
-		return data.size();
+		return controller.size();
 	}
 
 	@Override
 	public void addListDataListener(ListDataListener l)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void removeListDataListener(ListDataListener l)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void next(int pageIndex,int itemSize)

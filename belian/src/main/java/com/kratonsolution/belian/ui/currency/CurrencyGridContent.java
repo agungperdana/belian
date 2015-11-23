@@ -16,16 +16,20 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class CurrencyGridContent extends GridContent
 {
-	private final CurrencyService service = Springs.get(CurrencyService.class);
+	private CurrencyService service = Springs.get(CurrencyService.class);
+	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public CurrencyGridContent()
 	{
@@ -43,7 +47,7 @@ public class CurrencyGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new CurrencyModel(8));
+				refresh(new CurrencyModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -129,7 +133,7 @@ public class CurrencyGridContent extends GridContent
 										}
 									}
 									
-									grid.setModel(new CurrencyModel(8));
+									refresh(new CurrencyModel(utils.getRowPerPage()));
 								}
 							}
 						});
@@ -148,7 +152,7 @@ public class CurrencyGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final CurrencyModel model = new CurrencyModel(8);
+		final CurrencyModel model = new CurrencyModel(utils.getRowPerPage());
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
@@ -157,7 +161,7 @@ public class CurrencyGridContent extends GridContent
 		grid.setRowRenderer(new CurrencyRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
-		grid.setPageSize(8);
+		grid.setPageSize(utils.getRowPerPage());
 		
 		Columns columns = new Columns();
 		
@@ -178,25 +182,12 @@ public class CurrencyGridContent extends GridContent
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), 8);
+				model.next(event.getActivePage(), utils.getRowPerPage());
 				grid.setModel(model);
+				refresh(model);
 			}
 		});
-		
-		Rows rows = grid.getRows();
-		for(Object object:rows.getChildren())
-		{
-			final Row row = (Row)object;
-			row.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-			{
-				@Override
-				public void onEvent(Event event) throws Exception
-				{
-					CurrencyWindow window = (CurrencyWindow)getParent();
-					window.removeGrid();
-					window.insertEditForm(row);
-				}
-			});
-		}
+
+		refresh(new CurrencyModel(utils.getRowPerPage()));
 	}
 }

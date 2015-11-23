@@ -15,6 +15,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.security.svc.RoleService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -26,7 +27,9 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class RoleGridContent extends GridContent
 {
-	private final RoleService service = Springs.get(RoleService.class);
+	private RoleService service = Springs.get(RoleService.class);
+	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public RoleGridContent()
 	{
@@ -44,7 +47,7 @@ public class RoleGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new RoleModel(8));
+				refresh(new RoleModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -130,7 +133,7 @@ public class RoleGridContent extends GridContent
 										}
 									}
 									
-									grid.setModel(new RoleModel(8));
+									refresh(new RoleModel(utils.getRowPerPage()));
 								}
 							}
 						});
@@ -149,7 +152,7 @@ public class RoleGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final RoleModel model = new RoleModel(8);
+		final RoleModel model = new RoleModel(utils.getRowPerPage());
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
@@ -158,7 +161,7 @@ public class RoleGridContent extends GridContent
 		grid.setRowRenderer(new RoleRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
-		grid.setPageSize(8);
+		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
@@ -174,25 +177,12 @@ public class RoleGridContent extends GridContent
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), 8);
+				model.next(event.getActivePage(), utils.getRowPerPage());
 				grid.setModel(model);
+				refresh(model);
 			}
 		});
 		
-		Rows rows = grid.getRows();
-		for(Object object:rows.getChildren())
-		{
-			final Row row = (Row)object;
-			row.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-			{
-				@Override
-				public void onEvent(Event event) throws Exception
-				{
-					RoleWindow window = (RoleWindow)getParent();
-					window.removeGrid();
-					window.insertEditForm(row);
-				}
-			});
-		}
+		refresh(new RoleModel(utils.getRowPerPage()));
 	}
 }

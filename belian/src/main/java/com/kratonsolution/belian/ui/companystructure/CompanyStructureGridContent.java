@@ -15,17 +15,21 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class CompanyStructureGridContent extends GridContent
 {
 	private final CompanyStructureService controller = Springs.get(CompanyStructureService.class);
+	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public CompanyStructureGridContent()
 	{
@@ -43,7 +47,7 @@ public class CompanyStructureGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new CompanyStructureModel(8));
+				refresh(new CompanyStructureModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -150,7 +154,7 @@ public class CompanyStructureGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final CompanyStructureModel model = new CompanyStructureModel(8);
+		final CompanyStructureModel model = new CompanyStructureModel(utils.getRowPerPage());
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
@@ -159,7 +163,7 @@ public class CompanyStructureGridContent extends GridContent
 		grid.setRowRenderer(new CompanyStructureRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
-		grid.setPageSize(8);
+		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
@@ -180,23 +184,10 @@ public class CompanyStructureGridContent extends GridContent
 			{
 				model.next(event.getActivePage(), 8);
 				grid.setModel(model);
+				refresh(model);
 			}
 		});
 		
-		Rows rows = grid.getRows();
-		for(Object object:rows.getChildren())
-		{
-			final Row row = (Row)object;
-			row.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-			{
-				@Override
-				public void onEvent(Event event) throws Exception
-				{
-					CompanyStructureWindow window = (CompanyStructureWindow)getParent();
-					window.removeGrid();
-					window.insertEditForm(row);
-				}
-			});
-		}
+		refresh(new CompanyStructureModel(utils.getRowPerPage()));
 	}
 }

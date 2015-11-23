@@ -15,17 +15,21 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.security.svc.UserService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class UserGridContent extends GridContent
 {
-	private final UserService controller = Springs.get(UserService.class);
+	private UserService controller = Springs.get(UserService.class);
+	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public UserGridContent()
 	{
@@ -43,7 +47,7 @@ public class UserGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new UserModel(8));
+				refresh(new UserModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -129,7 +133,7 @@ public class UserGridContent extends GridContent
 										}
 									}
 									
-									grid.setModel(new UserModel(8));
+									refresh(new UserModel(utils.getRowPerPage()));
 								}
 							}
 						});
@@ -148,7 +152,7 @@ public class UserGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final UserModel model = new UserModel(8);
+		final UserModel model = new UserModel(utils.getRowPerPage());
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
@@ -157,7 +161,7 @@ public class UserGridContent extends GridContent
 		grid.setRowRenderer(new UserRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
-		grid.setPageSize(8);
+		grid.setPageSize(utils.getRowPerPage());
 		
 		Columns columns = new Columns();
 		
@@ -180,25 +184,12 @@ public class UserGridContent extends GridContent
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), 8);
+				model.next(event.getActivePage(), utils.getRowPerPage());
 				grid.setModel(model);
+				refresh(model);
 			}
 		});
 		
-		Rows rows = grid.getRows();
-		for(Object object:rows.getChildren())
-		{
-			final Row row = (Row)object;
-			row.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-			{
-				@Override
-				public void onEvent(Event event) throws Exception
-				{
-					UserWindow window = (UserWindow)getParent();
-					window.removeGrid();
-					window.insertEditForm(row);
-				}
-			});
-		}
+		refresh(new UserModel(utils.getRowPerPage()));
 	}
 }

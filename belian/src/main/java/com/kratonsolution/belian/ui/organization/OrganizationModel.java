@@ -41,7 +41,7 @@ public class OrganizationModel implements ListModel<Organization>
 	@Override
 	public int getSize()
 	{
-		return data.size();
+		return controller.size();
 	}
 
 	@Override

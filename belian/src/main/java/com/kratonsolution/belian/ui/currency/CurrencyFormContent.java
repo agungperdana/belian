@@ -20,12 +20,13 @@ import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class CurrencyFormContent extends FormContent
 {	
-	private final CurrencyService controller = Springs.get(CurrencyService.class);
+	private CurrencyService controller = Springs.get(CurrencyService.class);
 	
 	private Textbox code = new Textbox();
 	

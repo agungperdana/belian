@@ -15,17 +15,21 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.inventory.svc.UnitOfMeasureService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class UOMGridContent extends GridContent
 {
-	private final UnitOfMeasureService service = Springs.get(UnitOfMeasureService.class);
+	private UnitOfMeasureService service = Springs.get(UnitOfMeasureService.class);
+	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public UOMGridContent()
 	{
@@ -43,7 +47,7 @@ public class UOMGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new UOMModel(8));
+				refresh(new UOMModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -128,7 +132,7 @@ public class UOMGridContent extends GridContent
 								}
 							}
 							
-							grid.setModel(new UOMModel(8));
+							refresh(new UOMModel(utils.getRowPerPage()));
 						}
 					}
 				});
@@ -147,15 +151,15 @@ public class UOMGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final UOMModel model = new UOMModel(8);
+		final UOMModel model = new UOMModel(utils.getRowPerPage());
 		
 		grid.setHeight("80%");
 		grid.setEmptyMessage("No tax data exist.");
-		grid.setModel(new UOMModel(8));
+		grid.setModel(model);
 		grid.setRowRenderer(new UOMRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
-		grid.setPageSize(8);
+		grid.setPageSize(utils.getRowPerPage());
 		
 		appendChild(grid);
 		
@@ -180,25 +184,12 @@ public class UOMGridContent extends GridContent
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), 8);
+				model.next(event.getActivePage(), utils.getRowPerPage());
 				grid.setModel(model);
+				refresh(model);
 			}
 		});
 		
-		Rows rows = grid.getRows();
-		for(Object object:rows.getChildren())
-		{
-			final Row row = (Row)object;
-			row.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-			{
-				@Override
-				public void onEvent(Event event) throws Exception
-				{
-					UOMWindow window = (UOMWindow)getParent();
-					window.removeGrid();
-					window.insertEditForm(row);
-				}
-			});
-		}
+		refresh(new UOMModel(utils.getRowPerPage()));
 	}
 }

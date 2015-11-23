@@ -41,7 +41,7 @@ public class BudgetModel implements ListModel<Budget>
 	@Override
 	public int getSize()
 	{
-		return data.size();
+		return controller.size();
 	}
 
 	@Override

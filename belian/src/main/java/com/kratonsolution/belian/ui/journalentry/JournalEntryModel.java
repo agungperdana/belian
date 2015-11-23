@@ -21,7 +21,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class JournalEntryModel implements ListModel<JournalEntry>
 {
-	private final JournalEntryService service = Springs.get(JournalEntryService.class);
+	private JournalEntryService service = Springs.get(JournalEntryService.class);
 	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
@@ -44,7 +44,7 @@ public class JournalEntryModel implements ListModel<JournalEntry>
 	@Override
 	public int getSize()
 	{
-		return data.size();
+		return service.count(utils.getOrganizationIds());
 	}
 
 	@Override

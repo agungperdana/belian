@@ -17,14 +17,16 @@ import com.kratonsolution.belian.security.dm.Role;
  */
 public class RoleRowRenderer implements RowRenderer<Role>
 {
-
 	@Override
 	public void render(Row row, Role data, int index) throws Exception
 	{
-		row.appendChild(new Checkbox());
-		row.appendChild(new Label(data.getCode()));
-		row.appendChild(new Label(data.getName()));
-		row.appendChild(new Label(data.getNote()));
-		row.appendChild(new Label(data.getId()));
+		if(data != null)
+		{
+			row.appendChild(new Checkbox());
+			row.appendChild(new Label(data.getCode()));
+			row.appendChild(new Label(data.getName()));
+			row.appendChild(new Label(data.getNote()));
+			row.appendChild(new Label(data.getId()));
+		}
 	}
 }

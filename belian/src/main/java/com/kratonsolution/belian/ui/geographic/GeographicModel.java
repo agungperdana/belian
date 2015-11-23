@@ -43,7 +43,7 @@ public class GeographicModel implements ListModel<Geographic>
 	@Override
 	public int getSize()
 	{
-		return data.size();
+		return controller.getSize();
 	}
 	
 	public void next(int pageIndex,int itemSize)

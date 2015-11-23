@@ -4,7 +4,6 @@
 package com.kratonsolution.belian.security.svc;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -62,7 +61,6 @@ public class RoleService
 	@Secured("ROLE_RLE_CREATE")
 	public void add(Role role)
 	{
-		role.setId(UUID.randomUUID().toString());
 		repository.save(role);
 	
 		for(RoleEventListener listener:listeners)

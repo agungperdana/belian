@@ -41,7 +41,7 @@ public class CompanyStructureModel implements ListModel<CompanyStructure>
 	@Override
 	public int getSize()
 	{
-		return data.size();
+		return controller.size();
 	}
 
 	@Override

@@ -14,8 +14,9 @@ import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class PersonModel implements ListModel<Person>
 {
@@ -40,7 +41,7 @@ public class PersonModel implements ListModel<Person>
 	@Override
 	public int getSize()
 	{
-		return data.size();
+		return controller.size();
 	}
 
 	@Override

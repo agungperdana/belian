@@ -11,13 +11,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public interface GLAccountRepository extends JpaRepository<GLAccount, String>
 {
 	@Query("FROM GLAccount account WHERE account.parent IS NULL ORDER BY account.number ASC")
 	public List<GLAccount> findAllByParentIsNull();
+	
+	@Query("SELECT COUNT(account) FROM GLAccount account WHERE account.parent IS NULL")
+	public int countRoot();
 	
 	public List<GLAccount> findAllByParentIsNull(Pageable pageable);
 	

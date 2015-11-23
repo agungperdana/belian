@@ -22,12 +22,13 @@ import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class FacilityFormContent extends FormContent
 {	
-	private final FacilityService service = Springs.get(FacilityService.class);
+	private FacilityService service = Springs.get(FacilityService.class);
 	
 	private Textbox code = new Textbox();
 	
