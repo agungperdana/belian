@@ -34,7 +34,7 @@ import com.kratonsolution.belian.accounting.dm.BudgetReviewResult;
 import com.kratonsolution.belian.accounting.dm.BudgetStatus;
 import com.kratonsolution.belian.accounting.svc.BudgetService;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.OrganizationUnit;
+import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.general.svc.PersonService;
@@ -219,12 +219,12 @@ public class BudgetEditContent extends FormContent
 					types.setSelectedItem((Listitem)types.getLastChild());
 			}
 
-			for(OrganizationUnit unit:unitService.findAll())
+			for(Organization unit:sessionUtils.getOrganizations())
 			{
-				Listitem listitem = new Listitem(unit.getParty().getLabel(),unit.getParty().getValue());
+				Listitem listitem = new Listitem(unit.getLabel(),unit.getValue());
 				targets.appendChild(listitem);
 
-				if(budget.getPartyRequested().getId().equals(unit.getParty().getId()))
+				if(budget.getPartyRequested().getId().equals(unit.getId()))
 					targets.setSelectedItem(listitem);
 			}
 

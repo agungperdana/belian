@@ -17,8 +17,9 @@ import com.kratonsolution.belian.accounting.dm.Budget;
 import com.kratonsolution.belian.accounting.dm.BudgetRepository;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -34,6 +35,12 @@ public class BudgetService
 	}
 	
 	@Secured("ROLE_BUDGET_READ")
+	public int count(List<String> companys)
+	{
+		return repository.count(companys);
+	}
+	
+	@Secured("ROLE_BUDGET_READ")
 	public Budget findOne(String id)
 	{
 		return repository.findOne(id);
@@ -46,9 +53,9 @@ public class BudgetService
 	}
 	
 	@Secured("ROLE_BUDGET_READ")
-	public List<Budget> findAll(int pageIndex,int pageSize)
+	public List<Budget> findAll(int pageIndex,int pageSize,List<String> companys)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		return repository.findAll(new PageRequest(pageIndex, pageSize),companys);
 	}
 	
 	@Secured("ROLE_BUDGET_CREATE")

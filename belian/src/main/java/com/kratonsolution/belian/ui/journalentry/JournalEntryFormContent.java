@@ -37,7 +37,7 @@ import com.kratonsolution.belian.accounting.svc.GLAccountService;
 import com.kratonsolution.belian.accounting.svc.JournalEntryService;
 import com.kratonsolution.belian.accounting.svc.OrganizationAccountService;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.OrganizationUnit;
+import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.ui.FormContent;
@@ -160,9 +160,9 @@ public class JournalEntryFormContent extends FormContent
 		date.setConstraint("no empty");
 		note.setWidth("250px");
 		
-		for(OrganizationUnit organization:unitService.findAll())
+		for(Organization organization:sessionUtils.getOrganizations())
 		{
-			Listitem listitem = new Listitem(organization.getParty().getLabel(), organization.getParty().getValue());
+			Listitem listitem = new Listitem(organization.getLabel(), organization.getValue());
 			owners.appendChild(listitem);
 		}
 		

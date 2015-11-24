@@ -20,7 +20,7 @@ import com.kratonsolution.belian.accounting.dm.Budget.Type;
 import com.kratonsolution.belian.accounting.dm.BudgetStatus;
 import com.kratonsolution.belian.accounting.svc.BudgetService;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.OrganizationUnit;
+import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.ui.FormContent;
@@ -112,8 +112,8 @@ public class BudgetFormContent extends FormContent
 		
 		Components.setDefault(types);
 		
-		for(OrganizationUnit unit:unitService.findAll())
-			targets.appendChild(new Listitem(unit.getParty().getName(),unit.getParty().getId()));
+		for(Organization unit:sessionUtils.getOrganizations())
+			targets.appendChild(new Listitem(unit.getName(),unit.getId()));
 		
 		Components.setDefault(targets);
 		
