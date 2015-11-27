@@ -26,7 +26,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class CashSalesGridContent extends GridContent
 {
-	private final CashSalesService service = Springs.get(CashSalesService.class);
+	private CashSalesService service = Springs.get(CashSalesService.class);
 	
 	public CashSalesGridContent()
 	{

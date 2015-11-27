@@ -41,7 +41,7 @@ public abstract class GridContent extends Vlayout
 	
 	protected abstract void initGrid();
 
-	protected void refresh(ListModel model)
+	public void refresh(ListModel model)
 	{
 		grid.setModel(model);
 		Rows rows = grid.getRows();

@@ -12,6 +12,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="non_financial_event")
-public abstract class NonFinancialEvent extends EconomicEvent
+public abstract class NonMonetaryEvent extends EconomicEvent
 {
 }

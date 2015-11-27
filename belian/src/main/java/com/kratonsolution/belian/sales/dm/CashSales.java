@@ -80,4 +80,6 @@ public class CashSales extends Contract<CashSalesPayment, CashSalesLine>
 	{
 		return getBill().add(getTaxAmount());
 	}
+	
+	
 }

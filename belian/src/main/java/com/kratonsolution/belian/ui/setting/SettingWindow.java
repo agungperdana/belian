@@ -125,9 +125,9 @@ public class SettingWindow extends AbstractWindow
 		languanges.appendChild(new Listitem("English", "en_US"));
 		Components.setDefault(languanges);
 		
-		if("id-ID".equals(sessionUtils.getLanguage()))
+		if("in_ID".equals(sessionUtils.getLanguage()))
 			languanges.setSelectedIndex(0);
-		if("en-US".equals(sessionUtils.getLanguage()))
+		if("en_US".equals(sessionUtils.getLanguage()))
 			languanges.setSelectedIndex(1);
 		
 		rowPerPage.setValue(sessionUtils.getRowPerPage());

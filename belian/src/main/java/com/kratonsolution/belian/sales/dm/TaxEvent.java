@@ -14,7 +14,7 @@ import lombok.Setter;
 import com.kratonsolution.belian.accounting.dm.GLAccount;
 import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.global.dm.EconomicResource;
-import com.kratonsolution.belian.global.dm.FinancialEvent;
+import com.kratonsolution.belian.global.dm.MonetaryEvent;
 
 /**
  * @author Agung Dodi Perdana
@@ -24,7 +24,7 @@ import com.kratonsolution.belian.global.dm.FinancialEvent;
 @Setter
 @Entity
 @Table(name="tax_event")
-public class TaxEvent extends FinancialEvent
+public class TaxEvent extends MonetaryEvent
 {
 	@ManyToOne
 	@JoinColumn(name="tax_account")

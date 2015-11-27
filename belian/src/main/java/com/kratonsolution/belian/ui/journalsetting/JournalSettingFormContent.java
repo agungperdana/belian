@@ -19,7 +19,8 @@ import com.kratonsolution.belian.accounting.dm.OrganizationAccount;
 import com.kratonsolution.belian.accounting.svc.GLAccountService;
 import com.kratonsolution.belian.accounting.svc.JournalSettingService;
 import com.kratonsolution.belian.accounting.svc.OrganizationAccountService;
-import com.kratonsolution.belian.general.dm.OrganizationUnit;
+import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.ui.FormContent;
@@ -42,6 +43,8 @@ public class JournalSettingFormContent extends FormContent
 	private OrganizationAccountService organizationAccountService = Springs.get(OrganizationAccountService.class);
 	
 	private GLAccountService accountService = Springs.get(GLAccountService.class);
+	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	private Listbox organizations = Components.newSelect();
 	
@@ -95,8 +98,8 @@ public class JournalSettingFormContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		for(OrganizationUnit unit:unitService.findAll())
-			organizations.appendChild(new Listitem(unit.getParty().getName(),unit.getParty().getId()));
+		for(Organization unit:utils.getOrganizations())
+			organizations.appendChild(new Listitem(unit.getName(),unit.getId()));
 
 		organizations.addEventListener(Events.ON_SELECT, new EventListener()
 		{

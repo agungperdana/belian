@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +25,7 @@ import com.kratonsolution.belian.sales.dm.CashSalesLine;
 import com.kratonsolution.belian.sales.dm.CashSalesPayment;
 import com.kratonsolution.belian.sales.dm.CashSalesRepository;
 import com.kratonsolution.belian.sales.dm.PaymentType;
-import com.kratonsolution.belian.sales.dm.Sale;
+import com.kratonsolution.belian.sales.dm.SaleEvent;
 import com.kratonsolution.belian.sales.dm.TaxEvent;
 
 /**
@@ -49,6 +50,12 @@ public class CashSalesService
 	public int size()
 	{
 		return Long.valueOf(repository.count()).intValue();
+	}
+	
+	@Secured("ROLE_CASHSALES_READ")
+	public int count(@Param("companys")List<String> companys)
+	{
+		return repository.count(companys);
 	}
 	
 	@Secured("ROLE_CASHSALES_READ")
@@ -81,12 +88,24 @@ public class CashSalesService
 		return repository.loadAllOrderByStatus(new PageRequest(pageIndex, pageSize),companys);
 	}
 	
+	@Secured("ROLE_CASHSALES_READ")
+	public List<CashSales> findAllByDate(Date date,List<String> companys)
+	{
+		return repository.findAllByDate(date,companys);
+	}
+	
+	@Secured("ROLE_CASHSALES_READ")
+	public List<CashSales> findAllByDateBetween(Date start,Date end,List<String> companys)
+	{
+		return repository.findAllByDateBetween(start,end,companys);
+	}
+	
 	@Secured("ROLE_CASHSALES_CREATE")
 	public void add(CashSales sales)
 	{
 		for(CashSalesLine line:sales.getDecrements())
 		{
-			Sale sale = new Sale();
+			SaleEvent sale = new SaleEvent();
 			sale.setName("Stok out from sale event.");
 			sale.setAmount(line.getQuantity());
 			sale.setCustomer(line.getCashSales().getConsumer());

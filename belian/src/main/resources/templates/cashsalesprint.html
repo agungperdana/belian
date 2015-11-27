@@ -19,7 +19,7 @@
 		
 		.tclass{
 			border:0px;
-			width: 100%;
+			width: 98%;
 			margin: 0;
 			padding: 2px;
 		}
@@ -33,11 +33,30 @@
 		.printspan{
 			cursor: pointer;
 		}
+		
+		table{
+			border:none;
+			padding:0;
+			margin:0;
+		}
+		
+		td{
+			height:8px;
+			margin:0;
+			padding:0;
+		}
+		
+		tr{
+			height:8px;
+			margin:0;
+			padding:0;
+		}
 	</style>
 	<style type="text/css" media="print">
 		body{
 			font-family:monospaced sans serif;
-			font-size:12px;
+			font-size:7pt;
+			background:white;
 			margin: 0;
 			padding: 0;
 		}
@@ -45,29 +64,49 @@
 		.printspan{
 			display: none;
 		}
+		
+		table{
+			border:none;
+			padding:0;
+			margin:0;
+		}
+		
+		td{
+			height:8px;
+			margin:0;
+			padding:0;
+			cellspacing:0;
+			cellpadding:0;
+		}
+		
+		tr{
+			height:8px;
+			margin:0;
+			padding:0;
+			cellspacing:0;
+			cellpadding:0;
+		}
 	</style>
 </head>
 <body th:inline="text">
-	<table class="tclass">
-	<thead>
-	<tr>
-		<td align="center" colspan="2"><img th:src="@{/icons/seafoodjuara.png}"/></td>
-	</tr>
-	<tr>
+	<table class="tclass" cellpadding="0" cellspacing="0">
+	<tbody>
+    <tr>
 		<td align="center" colspan="2" th:text="${sales.organization.name}"/>
 	</tr>
-	<tr th:each="contact : ${sales.organization.contacts}">
-		<td align="center" colspan="2"><img th:src="@{/icons/phone.png}"/>&nbsp;[[${contact.contact}]]</td>
+	<tr th:each="address : ${sales.organization.addresses}">
+		<td align="center" colspan="2">[[${address.address}]]&nbsp;[[${address.city.name}]]&nbsp;[[${address.postal}]]</td>
 	</tr>
-	</thead>
-	<tbody>
+    <tr th:each="contact : ${sales.organization.contacts}">
+		<td align="center" colspan="2">[[${contact.contact}]]</td>
+	</tr>
 	<tr th:each="line : ${lines}">
 		 <td colspan="2">
-		 	<table style="width: 100%">
-		 	<tr>
+		 	<table style="width:99%;" cellspacing="0" cellpadding="0">
+		 	<tr style="padding:0;margin:0;height:8px;">
 		 		<td colspan="2" align="left">[[${line.product.name}]]</td>
 		 	</tr>
-		 	<tr>
+		 	<tr style="padding:0;margin:0;height:8px;">
 		 		<td align="left" style="width: 80%">
 		 		[[${#numbers.formatDecimal(line.quantity,1,'COMMA',0,'POINT')}]]
 		 		x
@@ -90,16 +129,13 @@
 		<td align="left" style="font-weight: bold;">Total</td>
 		<td align="right" style="border-bottom: solid black 1px;font-weight: bold;padding: 2px;'" th:text="${#numbers.formatDecimal(sales.totalBill,1,'COMMA',0,'POINT')}"/>
 	</tr>
-	<tr><td>&nbsp;</td></tr>
 	<tr><td colspan="2" align="center">MELAYANI CATERING &#38; PESAN ANTAR.</td></tr>
 	<tr>
 		<td align="center" colspan="2">
 			<img class="printspan" th:src="@{/icons/print.png}" alt="" onclick="onprint()"/>
 		</td>
 	</tr>
-	<tr><td>&nbsp;</td></tr>
-	<tr><td>&nbsp;</td></tr>
-	<tr><td>&nbsp;</td></tr>
+	<tr><td colspan="2">&nbsp;</td></tr>
 	</tbody>
 	</table>
 </body>

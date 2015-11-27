@@ -188,6 +188,8 @@ public class NavigationMenu extends Window
 		
 		if(modules.get("CASHSALES"))
 			list.appendChild(new CashSalesItem());
+		if(modules.get("SALES_REPORT"))
+			list.appendChild(new SalesReportItem());
 		
 		if(!list.getChildren().isEmpty())
 		{
