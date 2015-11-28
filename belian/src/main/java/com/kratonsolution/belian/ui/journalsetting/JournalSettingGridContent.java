@@ -169,6 +169,7 @@ public class JournalSettingGridContent extends GridContent
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
 		grid.getColumns().getChildren().get(2).setVisible(false);
 		grid.setSpan("1");
+		grid.appendChild(getFoot(3));
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{

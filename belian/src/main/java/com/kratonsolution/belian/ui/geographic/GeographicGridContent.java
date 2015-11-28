@@ -171,6 +171,7 @@ public class GeographicGridContent extends GridContent
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
 		grid.getColumns().getChildren().get(5).setVisible(false);
 		grid.setSpan("4");
+		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
 
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{

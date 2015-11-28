@@ -171,6 +171,7 @@ public class OrganizationGridContent extends GridContent
 		grid.getColumns().appendChild(new Column("Industry",null,"100px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
 		grid.getColumns().getChildren().get(5).setVisible(false);
+		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
 
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{

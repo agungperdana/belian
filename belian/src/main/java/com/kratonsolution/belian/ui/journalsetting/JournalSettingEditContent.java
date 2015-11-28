@@ -19,7 +19,8 @@ import com.kratonsolution.belian.accounting.dm.OrganizationAccount;
 import com.kratonsolution.belian.accounting.svc.GLAccountService;
 import com.kratonsolution.belian.accounting.svc.JournalSettingService;
 import com.kratonsolution.belian.accounting.svc.OrganizationAccountService;
-import com.kratonsolution.belian.general.dm.OrganizationUnit;
+import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.ui.FormContent;
@@ -42,6 +43,8 @@ private JournalSettingService service = Springs.get(JournalSettingService.class)
 	private OrganizationAccountService organizationAccountService = Springs.get(OrganizationAccountService.class);
 	
 	private GLAccountService accountService = Springs.get(GLAccountService.class);
+	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	private Listbox organizations = Components.newSelect();
 	
@@ -105,11 +108,11 @@ private JournalSettingService service = Springs.get(JournalSettingService.class)
 		JournalSetting setting = service.findOne(RowUtils.string(row, 2));
 		if(setting != null)
 		{
-			for(OrganizationUnit unit:unitService.findAll())
+			for(Organization unit:utils.getOrganizations())
 			{
-				Listitem listitem = new Listitem(unit.getParty().getName(),unit.getParty().getId());
+				Listitem listitem = new Listitem(unit.getName(),unit.getId());
 				organizations.appendChild(listitem);
-				if(unit.getParty().getId().equals(setting.getOrganization().getId()))
+				if(unit.getId().equals(setting.getOrganization().getId()))
 					organizations.setSelectedItem(listitem);
 			}
 			

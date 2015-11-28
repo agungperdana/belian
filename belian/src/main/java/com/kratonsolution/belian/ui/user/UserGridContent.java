@@ -156,29 +156,21 @@ public class UserGridContent extends GridContent
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No geographic data exist.");
+		grid.setEmptyMessage("No User data exist.");
 		grid.setModel(model);
 		grid.setRowRenderer(new UserRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(utils.getRowPerPage());
+		grid.appendChild(new Columns());
+		grid.getColumns().appendChild(new Column(null,null,"25px"));
+		grid.getColumns().appendChild(new Column("Name"));
+		grid.getColumns().appendChild(new Column("Email"));
+		grid.getColumns().appendChild(new Column("Status"));
+		grid.getColumns().appendChild(new Column(null,null,"1px"));
+		grid.getColumns().getChildren().get(4).setVisible(false);
+		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
 		
-		Columns columns = new Columns();
-		
-		Column select = new Column(null,null,"25px");
-		Column code = new Column("Name");
-		Column name = new Column("Email");
-		Column status = new Column("Status");
-		Column id = new Column();
-		id.setVisible(false);
-		
-		columns.appendChild(select);
-		columns.appendChild(code);
-		columns.appendChild(name);
-		columns.appendChild(status);
-		columns.appendChild(id);
-		
-		grid.appendChild(columns);
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override

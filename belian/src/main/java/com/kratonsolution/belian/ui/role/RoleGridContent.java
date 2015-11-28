@@ -156,7 +156,7 @@ public class RoleGridContent extends GridContent
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No geographic data exist.");
+		grid.setEmptyMessage("No Role data exist.");
 		grid.setModel(model);
 		grid.setRowRenderer(new RoleRowRenderer());
 		grid.setPagingPosition("both");
@@ -171,6 +171,7 @@ public class RoleGridContent extends GridContent
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
 		grid.getColumns().getChildren().get(4).setVisible(false);
 		grid.setSpan("3");
+		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{

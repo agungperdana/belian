@@ -173,6 +173,7 @@ public class PersonGridContent extends GridContent
 		grid.getColumns().appendChild(new Column("Tax",null,"100px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
 		grid.getColumns().getChildren().get(6).setVisible(false);
+		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{

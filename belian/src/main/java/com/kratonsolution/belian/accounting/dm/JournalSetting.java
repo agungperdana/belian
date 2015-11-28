@@ -13,6 +13,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,18 +36,22 @@ public class JournalSetting implements Serializable
 	
 	@ManyToOne
 	@JoinColumn(name="fk_organization",unique=true)
+	@NotFound(action=NotFoundAction.IGNORE)
 	private Organization organization;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_gl_account_cash_sales")
+	@NotFound(action=NotFoundAction.IGNORE)
 	private GLAccount cashSales;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_gl_account_cogs")
+	@NotFound(action=NotFoundAction.IGNORE)
 	private GLAccount cogs;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_gl_account_tax")
+	@NotFound(action=NotFoundAction.IGNORE)
 	private GLAccount tax;
 	
 	@Version

@@ -161,23 +161,15 @@ public class TaxGridContent extends GridContent
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(utils.getRowPerPage());
-		
-		Columns columns = new Columns();
-		
-		Column select = new Column(null,null,"25px");
-		Column code = new Column("Code",null,"75px");
-		Column name = new Column("Name");
-		Column value = new Column("Value (%)",null,"75px");
-		Column id = new Column();
-		id.setVisible(false);
-		
-		columns.appendChild(select);
-		columns.appendChild(code);
-		columns.appendChild(name);
-		columns.appendChild(value);
-		columns.appendChild(id);
-		
-		grid.appendChild(columns);
+		grid.appendChild(new Columns());
+		grid.getColumns().appendChild(new Column(null,null,"25px"));
+		grid.getColumns().appendChild(new Column("Code",null,"75px"));
+		grid.getColumns().appendChild(new Column("Name"));
+		grid.getColumns().appendChild(new Column("Value (%)",null,"75px"));
+		grid.getColumns().appendChild(new Column(null,null,"1px"));
+		grid.getColumns().getChildren().get(4).setVisible(false);
+		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
+
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override

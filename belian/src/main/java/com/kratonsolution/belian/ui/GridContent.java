@@ -7,6 +7,8 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Foot;
+import org.zkoss.zul.Footer;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.Row;
@@ -65,5 +67,16 @@ public abstract class GridContent extends Vlayout
 				}
 			});
 		}
+	}
+	
+	protected Foot getFoot(int span)
+	{
+		Foot foot = new Foot();
+		Footer footer = new Footer();
+		footer.setSpan(span);
+		footer.setHeight("30px");
+		foot.appendChild(footer);
+		
+		return foot;
 	}
 }
