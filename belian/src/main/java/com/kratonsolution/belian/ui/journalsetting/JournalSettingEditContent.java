@@ -48,11 +48,11 @@ private JournalSettingService service = Springs.get(JournalSettingService.class)
 	
 	private Listbox organizations = Components.newSelect();
 	
-	private Listbox cashsaleses = Components.newSelect();
+	private Listbox cashses = Components.newSelect();
 	
-	private Listbox cogses = Components.newSelect();
+	private Listbox saleses = Components.newSelect();
 	
-	private Listbox taxes = Components.newSelect();
+	private Listbox ppnpayables = Components.newSelect();
 
 	private Row row;
 
@@ -88,9 +88,9 @@ private JournalSettingService service = Springs.get(JournalSettingService.class)
 				if(setting != null)
 				{
 					setting.setOrganization(organizationService.findOne(Components.string(organizations)));
-					setting.setCashSales(accountService.findOne(Components.string(cashsaleses)));
-					setting.setCogs(accountService.findOne(Components.string(cogses)));
-					setting.setTax(accountService.findOne(Components.string(taxes)));
+					setting.setCash(accountService.findOne(Components.string(cashses)));
+					setting.setSales(accountService.findOne(Components.string(saleses)));
+					setting.setPpnPayable(accountService.findOne(Components.string(ppnpayables)));
 
 					service.edit(setting);
 				}
@@ -123,26 +123,26 @@ private JournalSettingService service = Springs.get(JournalSettingService.class)
 				Listitem cogs = new Listitem(account.getLabel(),account.getValue());
 				Listitem taxs = new Listitem(account.getLabel(),account.getValue());
 				
-				cashsaleses.appendChild(cash);
-				cogses.appendChild(cogs);
-				taxes.appendChild(taxs);
+				cashses.appendChild(cash);
+				saleses.appendChild(cogs);
+				ppnpayables.appendChild(taxs);
 				
-				if(setting.getCashSales() != null)
+				if(setting.getCash() != null)
 				{
-					if(account.getId().equals(setting.getCashSales().getId()))
-						cashsaleses.setSelectedItem(cash);
+					if(account.getId().equals(setting.getCash().getId()))
+						cashses.setSelectedItem(cash);
 				}
 
-				if(setting.getCogs() != null)
+				if(setting.getSales() != null)
 				{
-					if(account.getId().equals(setting.getCogs().getId()))
-						cogses.setSelectedItem(cogs);
+					if(account.getId().equals(setting.getSales().getId()))
+						saleses.setSelectedItem(cogs);
 				}
 				
-				if(setting.getTax() != null)
+				if(setting.getPpnPayable() != null)
 				{
-					if(account.getId().equals(setting.getTax().getId()))
-						taxes.setSelectedItem(taxs);
+					if(account.getId().equals(setting.getPpnPayable().getId()))
+						ppnpayables.setSelectedItem(taxs);
 				}
 
 			}
@@ -156,16 +156,16 @@ private JournalSettingService service = Springs.get(JournalSettingService.class)
 			row1.appendChild(organizations);
 			
 			Row row2 = new Row();
-			row2.appendChild(new Label("Cash Sales Account"));
-			row2.appendChild(cashsaleses);
+			row2.appendChild(new Label("Cash Account"));
+			row2.appendChild(cashses);
 			
 			Row row3 = new Row();
-			row3.appendChild(new Label("COGS Account"));
-			row3.appendChild(cogses);
+			row3.appendChild(new Label("Sales Account"));
+			row3.appendChild(saleses);
 			
 			Row row4 = new Row();
-			row4.appendChild(new Label("Tax Account"));
-			row4.appendChild(taxes);
+			row4.appendChild(new Label("PPN Payable Account"));
+			row4.appendChild(ppnpayables);
 			
 			rows.appendChild(row1);
 			rows.appendChild(row2);

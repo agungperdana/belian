@@ -20,6 +20,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -52,10 +55,12 @@ public class PartyRelationship implements Serializable
 	
 	@ManyToOne(cascade={CascadeType.ALL})
 	@JoinColumn(name="fk_parent")
+	@NotFound(action=NotFoundAction.IGNORE)
 	protected PartyRole parent;
 	
 	@ManyToOne(cascade={CascadeType.ALL})
 	@JoinColumn(name="fk_child")
+	@NotFound(action=NotFoundAction.IGNORE)
 	protected PartyRole child;
 	
 	@Version

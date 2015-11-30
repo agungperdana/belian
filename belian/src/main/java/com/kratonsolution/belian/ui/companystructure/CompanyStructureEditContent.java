@@ -14,8 +14,11 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.CompanyStructure;
+import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.PartyRelationship;
+import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.OrganizationUnitService;
@@ -32,13 +35,15 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class CompanyStructureEditContent extends FormContent
 {	
-	private final CompanyStructureService service = Springs.get(CompanyStructureService.class);
+	private CompanyStructureService service = Springs.get(CompanyStructureService.class);
 
-	private final OrganizationUnitService unitService = Springs.get(OrganizationUnitService.class);
+	private OrganizationUnitService unitService = Springs.get(OrganizationUnitService.class);
 
-	private final OrganizationService organizationService = Springs.get(OrganizationService.class);
+	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 
-	private final PartyRoleService partyRoleService = Springs.get(PartyRoleService.class);
+	private PartyRoleService partyRoleService = Springs.get(PartyRoleService.class);
+	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 
 	private Datebox from = Components.currentDatebox();
 
@@ -107,10 +112,33 @@ public class CompanyStructureEditContent extends FormContent
 		CompanyStructure companyStructure = service.findOne(RowUtils.string(row, 7));
 		if(companyStructure != null)
 		{
-			parents.appendChild(new Listitem(companyStructure.getParent().getParty().getLabel(),companyStructure.getParent().getParty().getValue()));
-			childs.appendChild(new Listitem(companyStructure.getChild().getParty().getLabel(),companyStructure.getChild().getParty().getValue()));
-			fromroles.appendChild(new Listitem(companyStructure.getParent().getType().name(),companyStructure.getParent().getType().name()));
-			toroles.appendChild(new Listitem(companyStructure.getChild().getType().name(),companyStructure.getChild().getType().name()));
+			for(Organization organization:utils.getOrganizations())
+			{
+				Listitem item = new Listitem(organization.getLabel(),organization.getValue());
+				
+				parents.appendChild(item);
+				childs.appendChild(item);
+				
+				if(companyStructure.getParent() != null && organization.getId().equals(companyStructure.getParent().getParty().getId()))
+					parents.setSelectedItem(item);
+				
+				if(companyStructure.getChild() != null && organization.getId().equals(companyStructure.getChild().getParty().getId()))
+					childs.setSelectedItem(item);
+			}
+
+			for(PartyRole.Type type:PartyRole.Type.values())
+			{
+				Listitem item = new Listitem(type.name(),type.name());
+
+				fromroles.appendChild(item);
+				toroles.appendChild(item);
+			
+				if(companyStructure.getParent() != null && type.equals(companyStructure.getParent().getType()))
+					fromroles.setSelectedItem(item);
+				
+				if(companyStructure.getChild() != null && type.equals(companyStructure.getChild().getType()))
+					toroles.setSelectedItem(item);
+			}
 			
 			Components.setDefault(parents);
 			Components.setDefault(childs);

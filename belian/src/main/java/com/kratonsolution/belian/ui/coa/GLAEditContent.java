@@ -10,7 +10,6 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
-import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
@@ -36,9 +35,9 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class GLAEditContent extends AbstractWindow
 {	
-	private final GLAccountService service = Springs.get(GLAccountService.class);
+	private GLAccountService service = Springs.get(GLAccountService.class);
 	
-	private Doublebox number = new Doublebox();
+	private Textbox number = new Textbox();
 	
 	private Textbox name = new Textbox();
 	
@@ -100,7 +99,7 @@ public class GLAEditContent extends AbstractWindow
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 			
-				edited.setNumber(number.longValue());
+				edited.setNumber(number.getValue());
 				edited.setName(name.getText());
 				edited.setNote(note.getText());
 				edited.setType(GLAccount.Type.valueOf(types.getSelectedItem().getValue().toString()));

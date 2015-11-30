@@ -11,6 +11,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
+import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Vlayout;
 
 import com.kratonsolution.belian.accounting.dm.GLAccount;
@@ -92,7 +93,10 @@ public class COAEditContent extends Vlayout implements Refreshable
 						if(event.getName().equals("onOK"))
 						{
 							if(tree.getSelectedItem() != null)
-								remove(service.findOne(tree.getSelectedItem().getId()));
+							{
+								removeTreeitem(tree.getSelectedItem());
+//								remove(service.findOne(tree.getSelectedItem().getId()));
+							}
 							
 							refresh();
 						}
@@ -122,6 +126,26 @@ public class COAEditContent extends Vlayout implements Refreshable
 	{
 		removeChild(tree);
 		initTree();
+	}
+	
+	protected void removeTreeitem(Treeitem treeitem)
+	{
+		if(treeitem.getTreechildren() != null && treeitem.getTreechildren().getItemCount() > 0)
+		{
+			//treeitem contains children
+			for(Treeitem item:treeitem.getTreechildren().getItems())
+				removeTreeitem(item);
+		}
+		else
+		{
+			//does not have children,remove it
+			GLAccount account = service.findOne(treeitem.getId());
+			if(account != null)
+			{
+				service.delete(account);
+				treeitem.getParent().removeChild(treeitem);
+			}
+		}
 	}
 	
 	protected void remove(GLAccount account)
@@ -155,6 +179,6 @@ public class COAEditContent extends Vlayout implements Refreshable
 			service.edit(parent);
 		}
 		
-		service.delete(account.getId());
+//		service.delete(account.getId());
 	}
 }

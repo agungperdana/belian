@@ -4,7 +4,6 @@
 package com.kratonsolution.belian.accounting.svc;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -84,7 +83,6 @@ public class GLAccountService
 	@Secured("ROLE_COA_CREATE")
 	public void add(GLAccount coa)
 	{
-		coa.setId(UUID.randomUUID().toString());
 		repository.save(coa);
 		
 		for(GLAccountChangeEventListener listener:listeners)
@@ -104,6 +102,17 @@ public class GLAccountService
 		
 		for(GLAccountChangeEventListener listener:listeners)
 			listener.fireObjectDeleted(id);
+	}
+	
+	@Secured("ROLE_COA_DELETE")
+	public void delete(GLAccount account)
+	{
+		repository.delete(account);
+		
+		for(GLAccountChangeEventListener listener:listeners)
+			listener.fireObjectDeleted(account.getId());
+		
+		System.out.println("delete done");
 	}
 	
 	@Secured("ROLE_COA_READ")

@@ -48,11 +48,11 @@ public class JournalSettingFormContent extends FormContent
 	
 	private Listbox organizations = Components.newSelect();
 	
-	private Listbox cashsaleses = Components.newSelect();
+	private Listbox cashes = Components.newSelect();
 	
-	private Listbox cogses = Components.newSelect();
+	private Listbox saleses = Components.newSelect();
 	
-	private Listbox taxes = Components.newSelect();
+	private Listbox ppnPayables = Components.newSelect();
 	
 	public JournalSettingFormContent()
 	{
@@ -82,9 +82,9 @@ public class JournalSettingFormContent extends FormContent
 			{
 				JournalSetting setting = new JournalSetting();
 				setting.setOrganization(organizationService.findOne(Components.string(organizations)));
-				setting.setCashSales(accountService.findOne(Components.string(cashsaleses)));
-				setting.setCogs(accountService.findOne(Components.string(cogses)));
-				setting.setTax(accountService.findOne(Components.string(taxes)));
+				setting.setCash(accountService.findOne(Components.string(cashes)));
+				setting.setSales(accountService.findOne(Components.string(saleses)));
+				setting.setPpnPayable(accountService.findOne(Components.string(ppnPayables)));
 
 				service.add(setting);
 				
@@ -111,16 +111,16 @@ public class JournalSettingFormContent extends FormContent
 				{
 					for(OGLAccount account:accounts.getAccounts())
 					{
-						cashsaleses.appendChild(new Listitem(account.getLabel(),account.getValue()));
-						cogses.appendChild(new Listitem(account.getLabel(),account.getValue()));
-						taxes.appendChild(new Listitem(account.getLabel(),account.getValue()));
+						cashes.appendChild(new Listitem(account.getLabel(),account.getValue()));
+						saleses.appendChild(new Listitem(account.getLabel(),account.getValue()));
+						ppnPayables.appendChild(new Listitem(account.getLabel(),account.getValue()));
 					}
 				}
 			}
 		});
 		
-		Components.setDefault(cashsaleses);
-		Components.setDefault(cogses);
+		Components.setDefault(cashes);
+		Components.setDefault(saleses);
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"150px"));
@@ -132,15 +132,15 @@ public class JournalSettingFormContent extends FormContent
 		
 		Row row2 = new Row();
 		row2.appendChild(new Label("Cash Account"));
-		row2.appendChild(cashsaleses);
+		row2.appendChild(cashes);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("COGS Account"));
-		row3.appendChild(cogses);
+		row3.appendChild(new Label("Sales Account"));
+		row3.appendChild(saleses);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Tax Account"));
-		row4.appendChild(taxes);
+		row4.appendChild(new Label("PPN Payable Account"));
+		row4.appendChild(ppnPayables);
 		
 		rows.appendChild(row1);
 		rows.appendChild(row2);

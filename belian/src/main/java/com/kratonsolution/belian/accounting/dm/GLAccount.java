@@ -36,7 +36,7 @@ public class GLAccount extends EconomicResource
 	public enum Type{ASSETS,LIABILITIES,EQUITY,REVENUE,DRAWING,COGS,EXPENSE}
 	
 	@Column(name="number",nullable=false,unique=true)
-	private Long number;
+	private String number;
 	
 	@Column(name="note")
 	private String note;

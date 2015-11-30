@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.sales.srv;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.List;
 
@@ -14,11 +15,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.kratonsolution.belian.accounting.dm.AccountingPeriodRepository;
+import com.kratonsolution.belian.accounting.dm.JournalEntry;
+import com.kratonsolution.belian.accounting.dm.JournalEntryDetail;
 import com.kratonsolution.belian.accounting.dm.JournalSetting;
 import com.kratonsolution.belian.accounting.dm.JournalSettingRepository;
+import com.kratonsolution.belian.accounting.dm.OrganizationAccountRepository;
 import com.kratonsolution.belian.global.dm.EconomicEventType;
 import com.kratonsolution.belian.inventory.dm.InventoryItemRepository;
-import com.kratonsolution.belian.sales.dm.CashEvent;
 import com.kratonsolution.belian.sales.dm.CashSales;
 import com.kratonsolution.belian.sales.dm.CashSales.Status;
 import com.kratonsolution.belian.sales.dm.CashSalesLine;
@@ -26,7 +30,6 @@ import com.kratonsolution.belian.sales.dm.CashSalesPayment;
 import com.kratonsolution.belian.sales.dm.CashSalesRepository;
 import com.kratonsolution.belian.sales.dm.PaymentType;
 import com.kratonsolution.belian.sales.dm.SaleEvent;
-import com.kratonsolution.belian.sales.dm.TaxEvent;
 
 /**
  * 
@@ -45,6 +48,12 @@ public class CashSalesService
 	
 	@Autowired
 	private InventoryItemRepository inventoryRepository;
+	
+	@Autowired
+	private OrganizationAccountRepository accountRepository;
+
+	@Autowired
+	private AccountingPeriodRepository periodRepository;
 	
 	@Secured("ROLE_CASHSALES_READ")
 	public int size()
@@ -138,6 +147,30 @@ public class CashSalesService
 		payment.setCashSales(out);
 		payment.setType(PaymentType.CASH);
 		
+		JournalSetting setting = journalRepository.findOneByOrganizationId(out.getOrganization().getId());
+		if(setting != null && setting.getCash() != null && setting.getSales() != null && setting.getPpnPayable() != null)
+		{
+			JournalEntry journal = new JournalEntry();
+			journal.setCoa(accountRepository.findOneByOrganizationId(out.getOrganization().getId()));
+			journal.setAuto(true);
+			journal.setCurrency(out.getCurrency());
+			journal.setDate(out.getDate());
+			journal.setNote("Auto Posting CashSales["+out.getNumber()+"]");
+			journal.setOwner(out.getOrganization());
+			journal.setPeriod(periodRepository.findForDate(out.getDate()));
+			journal.setCredit(out.getTotalBill());
+			journal.setDebet(out.getTotalBill());
+			journal.addDetail(JournalEntryDetail.DEBET(setting.getCash(), out.getTotalBill(), "Cash Account"));
+			journal.addDetail(JournalEntryDetail.CREDIT(setting.getSales(), out.getBill(), "Sales Account"));
+			
+			if(out.getTaxAmount().compareTo(BigDecimal.ZERO) > 0)
+				journal.addDetail(JournalEntryDetail.CREDIT(setting.getPpnPayable(), out.getTaxAmount(), "PPN Payable Account"));
+	
+			payment.setJournal(journal);
+		}
+		
+		/**
+		 * REA (Resource Event Agent) Event
 		JournalSetting journalSetting = journalRepository.findOneByOrganizationId(out.getOrganization().getId());
 		if(journalSetting != null && journalSetting.getCashSales() != null && journalSetting.getTax() != null)
 		{
@@ -164,7 +197,7 @@ public class CashSalesService
 			payment.setCashEvent(cashEvent);
 			payment.setTaxEvent(taxEvent);
 		}
-		
+		*/
 		out.getIncrements().add(payment);
 		
 		repository.save(out);

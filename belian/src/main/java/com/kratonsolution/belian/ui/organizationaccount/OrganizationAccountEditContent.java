@@ -90,15 +90,14 @@ public class OrganizationAccountEditContent extends FormContent
 				org.setName(name.getText());
 				org.setActive(status.isChecked());
 				org.setNote(note.getText());
-
 				org.getAccounts().clear();
+				service.edit(org);
 				
-				for(Treeitem treeitem:tree.getTreechildren().getItems())
+				for(Treeitem treeitem:tree.getItems())
 				{
 					GLAccount account = accountService.findOne(treeitem.getId());
 					
 					OGLAccount oglAccount = new OGLAccount();
-					oglAccount.setId(account.getId());
 					oglAccount.setAccount(account);
 					oglAccount.setSelected(treeitem.isSelected());
 					oglAccount.setParent(org);

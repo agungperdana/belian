@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -37,7 +38,7 @@ import lombok.Setter;
 public class JournalEntry implements Serializable
 {
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 
 	@Column(name="date")
 	private Date date;
@@ -67,10 +68,22 @@ public class JournalEntry implements Serializable
 	@Column(name="note")
 	private String note;
 	
+	@Column(name="is_posted")
+	private boolean posted;
+	
+	@Column(name="is_auto")
+	private boolean auto;
+	
 	@Version
 	private Long version;
 	
 	@OneToMany(mappedBy="journal",cascade=CascadeType.ALL,orphanRemoval=true)
 	@OrderBy("type DESC")
 	private Set<JournalEntryDetail> journals = new HashSet<JournalEntryDetail>();
+	
+	public void addDetail(JournalEntryDetail detail)
+	{
+		detail.setJournal(this);
+		journals.add(detail);
+	}
 }

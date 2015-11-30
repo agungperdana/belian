@@ -25,7 +25,11 @@ public class JournalEntryRowRenderer implements RowRenderer<JournalEntry>
 	{
 		if(data != null)
 		{
-			row.appendChild(new Checkbox());
+			Checkbox checkbox = new Checkbox();
+			if(data.isAuto())
+				checkbox.setDisabled(true);
+			
+			row.appendChild(checkbox);
 			row.appendChild(new Label(Dates.format(data.getDate())));
 			row.appendChild(new Label(data.getOwner().getName()));
 			row.appendChild(new Label(data.getPeriod().getName()));

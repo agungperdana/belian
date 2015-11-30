@@ -40,19 +40,19 @@ public class JournalSetting implements Serializable
 	private Organization organization;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_gl_account_cash_sales")
+	@JoinColumn(name="fk_gl_account_cash")
 	@NotFound(action=NotFoundAction.IGNORE)
-	private GLAccount cashSales;
+	private GLAccount cash;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_gl_account_cogs")
+	@JoinColumn(name="fk_gl_account_sales")
 	@NotFound(action=NotFoundAction.IGNORE)
-	private GLAccount cogs;
+	private GLAccount sales;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_gl_account_tax")
+	@JoinColumn(name="fk_gl_account_ppn_payable")
 	@NotFound(action=NotFoundAction.IGNORE)
-	private GLAccount tax;
+	private GLAccount ppnPayable;
 	
 	@Version
 	private Long version;

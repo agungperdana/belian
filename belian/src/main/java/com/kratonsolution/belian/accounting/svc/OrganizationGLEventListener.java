@@ -15,8 +15,9 @@ import com.kratonsolution.belian.accounting.dm.OGLAccount;
 import com.kratonsolution.belian.accounting.dm.OrganizationAccount;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -25,13 +26,15 @@ public class OrganizationGLEventListener implements GLAccountChangeEventListener
 	@Autowired
 	private OrganizationAccountService service;
 	
+	@Autowired
+	private GLAccountService accountService;
+	
 	@Override
 	public void fireObjectCreated(GLAccount account)
 	{
 		for(OrganizationAccount organizationAccount:service.findAll())
 		{
 			OGLAccount oglAccount = new OGLAccount();
-			oglAccount.setId(account.getId());
 			oglAccount.setAccount(account);
 			oglAccount.setParent(organizationAccount);
 			oglAccount.setSelected(false);
@@ -51,7 +54,7 @@ public class OrganizationGLEventListener implements GLAccountChangeEventListener
 			while (iterator.hasNext())
 			{
 				OGLAccount oglAccount = (OGLAccount) iterator.next();
-				if(oglAccount.getAccount().getId().equals(id))
+				if(oglAccount.getAccount() == null || accountService.findOne(oglAccount.getAccount().getId()) == null || oglAccount.getAccount().getId().equals(id))
 				{
 					oglAccount.setParent(null);
 					organizationAccount.getAccounts().remove(oglAccount);

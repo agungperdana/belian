@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.accounting.dm;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,12 +16,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
@@ -31,10 +36,11 @@ public class JournalEntryDetail
 	public enum Type{DEBET,CREDIT}
 	
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 	
 	@ManyToOne
 	@JoinColumn(name="fk_gl_account")
+	@NotFound(action=NotFoundAction.IGNORE)
 	private GLAccount account;
 
 	@Column(name="type")
@@ -53,4 +59,26 @@ public class JournalEntryDetail
 	
 	@Version
 	private Long version;
+	
+	public static JournalEntryDetail DEBET(GLAccount account,BigDecimal amount,String note)
+	{
+		JournalEntryDetail detail = new JournalEntryDetail();
+		detail.setAccount(account);
+		detail.setAmount(amount);
+		detail.setNote(note);
+		detail.setType(Type.DEBET);
+		
+		return detail;
+	}
+	
+	public static JournalEntryDetail CREDIT(GLAccount account,BigDecimal amount,String note)
+	{
+		JournalEntryDetail detail = new JournalEntryDetail();
+		detail.setAccount(account);
+		detail.setAmount(amount);
+		detail.setNote(note);
+		detail.setType(Type.CREDIT);
+		
+		return detail;
+	}
 }

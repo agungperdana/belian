@@ -14,10 +14,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.global.dm.Listable;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
+import com.kratonsolution.belian.global.dm.Listable;
 
 /**
  * 
@@ -38,10 +41,12 @@ public class OGLAccount implements Serializable,Listable
 		
 	@ManyToOne
 	@JoinColumn(name="fk_account")
+	@NotFound(action=NotFoundAction.IGNORE)
 	private GLAccount account;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_organization_account")
+	@NotFound(action=NotFoundAction.IGNORE)
 	private OrganizationAccount parent;
 	
 	@Version

@@ -14,9 +14,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import lombok.Getter;
 import lombok.Setter;
 
+import com.kratonsolution.belian.accounting.dm.JournalEntry;
 import com.kratonsolution.belian.global.dm.IncrementCommitment;
 
 /**
@@ -51,6 +55,11 @@ public class CashSalesPayment extends IncrementCommitment
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="tax_event")
 	private TaxEvent taxEvent;
+	
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="fk_journal_entry")
+	@NotFound(action=NotFoundAction.IGNORE)
+	private JournalEntry journal;
 	
 	public CashSalesPayment(){}
 }

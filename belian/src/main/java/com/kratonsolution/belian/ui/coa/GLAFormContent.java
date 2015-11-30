@@ -10,7 +10,6 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
-import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
@@ -38,7 +37,7 @@ public class GLAFormContent extends AbstractWindow
 {	
 	private final GLAccountService service = Springs.get(GLAccountService.class);
 	
-	private Doublebox number = new Doublebox();
+	private Textbox number = new Textbox();
 	
 	private Textbox name = new Textbox();
 	
@@ -104,7 +103,7 @@ public class GLAFormContent extends AbstractWindow
 						throw new WrongValueException(name,"Name cannot be empty");
 				
 					GLAccount coa = new GLAccount();
-					coa.setNumber(number.longValue());
+					coa.setNumber(number.getValue());
 					coa.setName(name.getText());
 					coa.setNote(note.getText());
 					coa.setType(GLAccount.Type.valueOf(types.getSelectedItem().getValue().toString()));
@@ -152,7 +151,7 @@ public class GLAFormContent extends AbstractWindow
 			if(parent != null && type.equals(parent.getType()))
 			{
 				types.setSelectedItem(listitem);
-				number.setValue(service.nextNumber(type));
+//				number.setValue(service.nextNumber(type));
 			}
 		}
 		

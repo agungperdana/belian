@@ -27,10 +27,10 @@ public class CompanyStructureRowRenderer implements RowRenderer<CompanyStructure
 			row.appendChild(new Checkbox());
 			row.appendChild(new Label(Dates.format(data.getFrom())));
 			row.appendChild(new Label(Dates.format(data.getTo())));
-			row.appendChild(new Label(data.getParent().getParty().getName()));
-			row.appendChild(new Label(data.getParent().getType().toString()));
-			row.appendChild(new Label(data.getChild().getParty().getName()));
-			row.appendChild(new Label(data.getChild().getType().name()));
+			row.appendChild(new Label(data.getParent()!=null?data.getParent().getParty().getName():""));
+			row.appendChild(new Label(data.getParent()!=null?data.getParent().getType().toString():""));
+			row.appendChild(new Label(data.getChild()!=null?data.getChild().getParty().getName():""));
+			row.appendChild(new Label(data.getChild()!=null?data.getChild().getType().name():""));
 			row.appendChild(new Label(data.getId()));
 		}
 	}
