@@ -109,8 +109,8 @@ public class AccountingPeriodEditContent extends AbstractWindow
 			
 				edited.setNumber(number.getText());
 				edited.setName(name.getText());
-				edited.setFrom(new java.sql.Date(from.getValue().getTime()));
-				edited.setTo(new java.sql.Date(to.getValue().getTime()));
+				edited.setFrom(from.getValue());
+				edited.setTo(to.getValue());
 				edited.setMonth(AccountingPeriod.Month.valueOf(months.getSelectedItem().getValue().toString()));
 				
 				service.edit(edited);

@@ -3,7 +3,7 @@
  */
 package com.kratonsolution.belian.global.dm;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 

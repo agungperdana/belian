@@ -11,16 +11,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 /**
- * 
- * @author Agung Dodi Perdana
- * @email agung.dodi.perdana@gmail.com
+ * @author agungdodiperdana
+ *
  */
 public interface AccountingPeriodRepository extends JpaRepository<AccountingPeriod, String>
 {
 	@Query("FROM AccountingPeriod period WHERE period.parent IS NULL ORDER BY period.number ASC")
 	public List<AccountingPeriod> findAllByParentIsNull();
 
-	@Query("FROM AccountingPeriod period WHERE period.parent IS NOT NULL AND (:date BETWEEN period.from AND period.to)")
+	@Query("FROM AccountingPeriod period WHERE period.parent IS NOT NULL AND (period.from <= :date AND period.to >= :date)")
 	public AccountingPeriod findForDate(@Param("date") Date date);
 	
 }

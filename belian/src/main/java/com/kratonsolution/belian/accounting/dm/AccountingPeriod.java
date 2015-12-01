@@ -4,7 +4,7 @@
 package com.kratonsolution.belian.accounting.dm;
 
 import java.util.ArrayList;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -24,9 +24,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 
- * @author Agung Dodi Perdana
- * @email agung.dodi.perdana@gmail.com
+ * @author agungdodiperdana
+ *
  */
 @Getter
 @Setter
