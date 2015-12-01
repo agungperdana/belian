@@ -57,6 +57,11 @@ public class JournalEntryDetail
 	@JoinColumn(name="fk_journal_entry")
 	private JournalEntry journal;
 	
+	@ManyToOne
+	@JoinColumn(name="fk_journal_posting")
+	@NotFound(action=NotFoundAction.IGNORE)
+	private JournalPosting posting;
+	
 	@Version
 	private Long version;
 	
