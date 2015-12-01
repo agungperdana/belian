@@ -5,7 +5,7 @@ package com.kratonsolution.belian.accounting.dm;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;

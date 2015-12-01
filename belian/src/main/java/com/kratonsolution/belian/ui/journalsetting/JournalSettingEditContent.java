@@ -119,32 +119,34 @@ private JournalSettingService service = Springs.get(JournalSettingService.class)
 			OrganizationAccount accounts = organizationAccountService.findOneByOrganization(Components.string(organizations));
 			for(OGLAccount account:accounts.getAccounts())
 			{
-				Listitem cash = new Listitem(account.getLabel(),account.getValue());
-				Listitem cogs = new Listitem(account.getLabel(),account.getValue());
-				Listitem taxs = new Listitem(account.getLabel(),account.getValue());
-				
-				cashses.appendChild(cash);
-				saleses.appendChild(cogs);
-				ppnpayables.appendChild(taxs);
-				
-				if(setting.getCash() != null)
+				if(account.isSelected())
 				{
-					if(account.getId().equals(setting.getCash().getId()))
-						cashses.setSelectedItem(cash);
-				}
+					Listitem cash = new Listitem(account.getLabel(),account.getValue());
+					Listitem cogs = new Listitem(account.getLabel(),account.getValue());
+					Listitem taxs = new Listitem(account.getLabel(),account.getValue());
 
-				if(setting.getSales() != null)
-				{
-					if(account.getId().equals(setting.getSales().getId()))
-						saleses.setSelectedItem(cogs);
-				}
-				
-				if(setting.getPpnPayable() != null)
-				{
-					if(account.getId().equals(setting.getPpnPayable().getId()))
-						ppnpayables.setSelectedItem(taxs);
-				}
+					cashses.appendChild(cash);
+					saleses.appendChild(cogs);
+					ppnpayables.appendChild(taxs);
+					
+					if(setting.getCash() != null)
+					{
+						if(account.getAccount().getId().equals(setting.getCash().getId()))
+							cashses.setSelectedItem(cash);
+					}
 
+					if(setting.getSales() != null)
+					{
+						if(account.getAccount().getId().equals(setting.getSales().getId()))
+							saleses.setSelectedItem(cogs);
+					}
+					
+					if(setting.getPpnPayable() != null)
+					{
+						if(account.getAccount().getId().equals(setting.getPpnPayable().getId()))
+							ppnpayables.setSelectedItem(taxs);
+					}
+				}
 			}
 			
 			grid.appendChild(new Columns());

@@ -160,6 +160,9 @@ public class JournalEntryEditContent extends FormContent
 			return;
 		}
 
+		if(entry.isAuto() || entry.isPosted())
+			toolbar.getSave().setDisabled(true);
+		
 		date.setReadonly(true);
 		note.setWidth("250px");
 		note.setText(entry.getNote());
@@ -270,13 +273,13 @@ public class JournalEntryEditContent extends FormContent
 				amout.setWidth("100%");
 				amout.setStyle("text-align:right");
 				amout.addEventListener(Events.ON_CHANGE, new EventListener<Event>()
-						{
+				{
 					@Override
 					public void onEvent(Event event) throws Exception
 					{
 						resetDisplay();
 					}
-						});
+				});
 
 				Textbox txnote = new Textbox();
 				txnote.setWidth("100%");
@@ -288,15 +291,15 @@ public class JournalEntryEditContent extends FormContent
 				transactions.getRows().appendChild(row);
 
 				types.addEventListener(Events.ON_SELECT,new EventListener<Event>()
-						{
+				{
 					@Override
 					public void onEvent(Event event) throws Exception
 					{
 						resetDisplay();
 					}
-						});
-			}
 				});
+			}
+		});
 
 		toolbar.getRemove().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 				{
@@ -342,7 +345,7 @@ public class JournalEntryEditContent extends FormContent
 					{
 						Listitem listitem = new Listitem(gl.getAccount().getName(), gl.getAccount().getId());
 						accounts.appendChild(listitem);
-						if(gl.getId().equals(detail.getAccount().getId()))
+						if(gl.getAccount().getId().equals(detail.getAccount().getId()))
 							accounts.setSelectedItem(listitem);
 					}
 				}

@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.ui.cashsales;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.Iterator;
 
 import org.zkoss.zk.ui.Component;
@@ -168,7 +169,7 @@ public class CashSalesFormContent extends FormContent
 				sales.setConsumer(agentService.findOne(Components.string(consumers)));
 				sales.setCreditTerm(term.getValue().intValue());
 				sales.setCurrency(currencyService.findOne(Components.string(currencys)));
-				sales.setDate(date.getValue());
+				sales.setDate(new Date(date.getValue().getTime()));
 				sales.setNote(note.getText());
 				sales.setNumber(number.getText());
 				sales.setTax(taxService.findOne(Components.string(taxes)));

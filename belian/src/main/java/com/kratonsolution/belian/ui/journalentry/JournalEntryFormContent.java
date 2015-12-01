@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.ui.journalentry;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.Iterator;
 import java.util.UUID;
 
@@ -124,7 +125,7 @@ public class JournalEntryFormContent extends FormContent
 				entry.setCoa(accountService.findOne(Components.string(coas)));
 				entry.setCredit(BigDecimal.valueOf(credit.doubleValue()));
 				entry.setCurrency(currencyService.findOne(Components.string(currencys)));
-				entry.setDate(date.getValue());
+				entry.setDate(new Date(date.getValue().getTime()));
 				entry.setDebet(BigDecimal.valueOf(debet.doubleValue()));
 				entry.setOwner(organizationService.findOne(Components.string(owners)));
 				entry.setPeriod(accountingPeriodService.findOne(Components.string(periods)));

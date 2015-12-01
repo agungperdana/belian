@@ -155,7 +155,7 @@ public class CashSalesService
 			journal.setAuto(true);
 			journal.setCurrency(out.getCurrency());
 			journal.setDate(out.getDate());
-			journal.setNote("Auto Posting CashSales["+out.getNumber()+"]");
+			journal.setNote("Auto Posting CashSales");
 			journal.setOwner(out.getOrganization());
 			journal.setPeriod(periodRepository.findForDate(out.getDate()));
 			journal.setCredit(out.getTotalBill());
@@ -167,6 +167,8 @@ public class CashSalesService
 				journal.addDetail(JournalEntryDetail.CREDIT(setting.getPpnPayable(), out.getTaxAmount(), "PPN Payable Account"));
 	
 			payment.setJournal(journal);
+		
+			System.out.println(out.getDate().toString()+journal.getPeriod());
 		}
 		
 		/**

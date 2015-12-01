@@ -114,8 +114,8 @@ public class AccountingPeriodFormContent extends AbstractWindow
 				period.setId(UUID.randomUUID().toString());
 				period.setNumber(number.getText());
 				period.setName(name.getText());
-				period.setFrom(from.getValue());
-				period.setTo(to.getValue());
+				period.setFrom(new java.sql.Date(from.getValue().getTime()));
+				period.setTo(new java.sql.Date(to.getValue().getTime()));
 				period.setMonth(AccountingPeriod.Month.valueOf(months.getSelectedItem().getValue().toString()));
 				period.setParent(parent);
 				
