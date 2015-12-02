@@ -21,9 +21,6 @@ import javax.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-
 import com.kratonsolution.belian.accounting.dm.JournalEntryDetail.Type;
 
 /**
@@ -48,10 +45,9 @@ public class JournalPosting implements Serializable
 	
 	@Column(name="amount")
 	private BigDecimal amount = BigDecimal.ZERO;
-	
+
 	@ManyToOne
-	@JoinColumn(name="fk_gl_account")
-	@NotFound(action=NotFoundAction.IGNORE)
+	@JoinColumn(name="fk_gl_account_balance")
 	private GLAccountBalance account;
 	
 	@Version

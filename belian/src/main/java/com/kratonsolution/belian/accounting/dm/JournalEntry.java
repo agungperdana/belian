@@ -86,4 +86,10 @@ public class JournalEntry implements Serializable
 		detail.setJournal(this);
 		journals.add(detail);
 	}
+	
+	public void clearPost()
+	{
+		for(JournalEntryDetail detail:journals)
+			detail.setPosting(null);
+	}
 }

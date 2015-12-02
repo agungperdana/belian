@@ -26,7 +26,7 @@ public class JournalEntryRowRenderer implements RowRenderer<JournalEntry>
 		if(data != null)
 		{
 			Checkbox checkbox = new Checkbox();
-			if(data.isAuto())
+			if(data.isAuto() || data.isPosted())
 				checkbox.setDisabled(true);
 			
 			row.appendChild(checkbox);

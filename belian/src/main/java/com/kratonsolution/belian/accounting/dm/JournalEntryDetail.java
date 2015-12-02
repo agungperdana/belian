@@ -16,11 +16,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  * 
@@ -48,7 +48,7 @@ public class JournalEntryDetail
 	private Type type = Type.DEBET;
 	
 	@Column(name="amount")
-	private BigDecimal amount;
+	private BigDecimal amount = BigDecimal.ZERO;
 	
 	@Column(name="note")
 	private String note;

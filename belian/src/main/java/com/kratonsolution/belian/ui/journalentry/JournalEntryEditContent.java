@@ -25,6 +25,7 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Toolbarbutton;
 
 import com.kratonsolution.belian.accounting.dm.JournalEntry;
 import com.kratonsolution.belian.accounting.dm.JournalEntryDetail;
@@ -160,6 +161,39 @@ public class JournalEntryEditContent extends FormContent
 			return;
 		}
 
+		Toolbarbutton posting = new Toolbarbutton("Posting", "/icons/locked.png");
+		Toolbarbutton unposting = new Toolbarbutton("Unposting", "/icons/unlocked.png");
+		
+		if(entry.isPosted())
+			toolbar.appendChild(unposting);
+		else
+			toolbar.appendChild(posting);
+		
+		posting.addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				service.post(entry);
+				toolbar.removeChild(posting);
+				toolbar.appendChild(unposting);
+				toolbar.getSave().setDisabled(true);
+			}
+		});
+		
+		unposting.addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				service.unpost(entry);
+				toolbar.removeChild(unposting);
+				toolbar.appendChild(posting);
+				toolbar.getSave().setDisabled(false);
+			}
+		});
+		
+		
 		date.setReadonly(true);
 		note.setWidth("250px");
 		note.setText(entry.getNote());
@@ -342,7 +376,7 @@ public class JournalEntryEditContent extends FormContent
 					{
 						Listitem listitem = new Listitem(gl.getAccount().getName(), gl.getAccount().getId());
 						accounts.appendChild(listitem);
-						if(gl.getId().equals(detail.getAccount().getId()))
+						if(gl.getAccount().getId().equals(detail.getAccount().getId()))
 							accounts.setSelectedItem(listitem);
 					}
 				}
