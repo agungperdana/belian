@@ -51,7 +51,7 @@ public class IconBar extends Toolbar
 
 		Space space = new Space();
 		space.setBar(true);
-		space.setHeight("25px");
+//		space.setHeight("40px");
 		
 		appendChild(space);
 	}
@@ -59,14 +59,15 @@ public class IconBar extends Toolbar
 	protected void init()
 	{
 		setTop("0px");
+//		setStyle("valign:middle;");
 		setWidth("100%");
-		setHeight("45px");
+		setHeight("7%");
 	}
 	
 	protected void initLogout()
 	{
 		logout.setImage("/icons/logout.png");
-		logout.setHeight("38px");
+//		logout.setHeight("38px");
 		logout.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
@@ -82,7 +83,7 @@ public class IconBar extends Toolbar
 	protected void initAbout()
 	{
 		about.setImage("/icons/about.png");
-		about.setHeight("38px");
+//		about.setHeight("38px");
 		about.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
@@ -98,7 +99,7 @@ public class IconBar extends Toolbar
 	protected void initSetting()
 	{
 		setting.setImage("/icons/setting.png");
-		setting.setHeight("38px");
+//		setting.setHeight("38px");
 		setting.addEventListener(Events.ON_CLICK, new EventListener<Event>()
 		{
 			@Override
@@ -137,7 +138,7 @@ public class IconBar extends Toolbar
 	protected void initMenu()
 	{
 		menu.setImage("/icons/menu.png");
-		menu.setHeight("38px");
+//		menu.setHeight("38px");
 		menu.addEventListener(Events.ON_CLICK, new EventListener<Event>()
 		{
 			@Override
@@ -162,7 +163,7 @@ public class IconBar extends Toolbar
 	protected void initInbox()
 	{
 		inbox.setImage("/icons/inbox.png");
-		inbox.setHeight("38px");
+//		inbox.setHeight("38px");
 		inbox.addEventListener(Events.ON_CLICK, new EventListener<Event>()
 		{
 			@Override

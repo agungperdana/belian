@@ -63,6 +63,9 @@ public class PartyRole implements Serializable, Listable
 	@JoinColumn(name="fk_economic_agent")
 	protected EconomicAgent party;
 	
+	@Column(name="is_deleted")
+	protected boolean deleted = false;
+	
 	@Version
 	private Long version;
 

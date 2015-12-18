@@ -224,6 +224,10 @@ public class NavigationMenu extends Window
 
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
+		
+		if(modules.get("DOCTORTYPE"))
+			list.appendChild(new DoctorTypeItem());
+		
 		list.appendChild(new DoctorItem());
 		list.appendChild(new PatientItem());
 		list.appendChild(new MedicalRecordItem());

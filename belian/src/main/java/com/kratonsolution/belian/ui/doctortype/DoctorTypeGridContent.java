@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.hr.application;
+package com.kratonsolution.belian.ui.doctortype;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -15,7 +15,8 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.hr.svc.EmploymentApplicationService;
+import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.healtcare.svc.DoctorTypeService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -24,17 +25,19 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class EmploymentApplicationGridContent extends GridContent
+public class DoctorTypeGridContent extends GridContent
 {
-	private EmploymentApplicationService service = Springs.get(EmploymentApplicationService.class);
+	private DoctorTypeService service = Springs.get(DoctorTypeService.class);
 	
-	public EmploymentApplicationGridContent()
+	private SessionUtils utils = Springs.get(SessionUtils.class);
+	
+	public DoctorTypeGridContent()
 	{
 		super();
 		initToolbar();
 		initGrid();
 	}
-
+	
 	protected void initToolbar()
 	{
 		gridToolbar.setParent(this);
@@ -44,7 +47,7 @@ public class EmploymentApplicationGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new EmploymentApplicationModel(8));
+				refresh(new DoctorTypeModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -53,7 +56,7 @@ public class EmploymentApplicationGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				EmploymentApplicationWindow window = (EmploymentApplicationWindow)getParent();
+				DoctorTypeWindow window = (DoctorTypeWindow)getParent();
 				window.removeGrid();
 				window.insertCreateForm();
 			}
@@ -129,7 +132,7 @@ public class EmploymentApplicationGridContent extends GridContent
 								}
 							}
 							
-							grid.setModel(new EmploymentApplicationModel(8));
+							refresh(new DoctorTypeModel(utils.getRowPerPage()));
 						}
 					}
 				});
@@ -148,52 +151,36 @@ public class EmploymentApplicationGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final EmploymentApplicationModel model = new EmploymentApplicationModel(8);
+		final DoctorTypeModel model = new DoctorTypeModel(utils.getRowPerPage());
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No Employment Application data exist.");
+		grid.setEmptyMessage("No doctor type data exist.");
 		grid.setModel(model);
-		grid.setRowRenderer(new EmploymentApplicationRowRenderer());
+		grid.setRowRenderer(new DoctorTypeRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
-		grid.setPageSize(8);
+		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
-		
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Date",null,"85px"));
-		grid.getColumns().appendChild(new Column("Applicant",null,"150px"));
-		grid.getColumns().appendChild(new Column("Position",null,"125px"));
-		grid.getColumns().appendChild(new Column("Status",null,"100px"));
-		grid.getColumns().appendChild(new Column("Source",null,"100px"));
+		grid.getColumns().appendChild(new Column("Code",null,"75px"));
+		grid.getColumns().appendChild(new Column("Name"));
+		grid.getColumns().appendChild(new Column("Description",null,"135px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(6).setVisible(false);
-		grid.setSpan("2");
-		
+		grid.getColumns().getChildren().get(4).setVisible(false);
+		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
+
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), 8);
+				model.next(event.getActivePage(), utils.getRowPerPage());
 				grid.setModel(model);
+				refresh(model);
 			}
 		});
 		
-		Rows rows = grid.getRows();
-		for(Object object:rows.getChildren())
-		{
-			final Row row = (Row)object;
-			row.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-			{
-				@Override
-				public void onEvent(Event event) throws Exception
-				{
-					EmploymentApplicationWindow window = (EmploymentApplicationWindow)getParent();
-					window.removeGrid();
-					window.insertEditForm(row);
-				}
-			});
-		}
+		refresh(new DoctorTypeModel(utils.getRowPerPage()));
 	}
 }
