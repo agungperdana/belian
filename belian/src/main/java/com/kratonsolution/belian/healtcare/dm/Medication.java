@@ -3,20 +3,22 @@
  */
 package com.kratonsolution.belian.healtcare.dm;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
 import lombok.Getter;
 import lombok.Setter;
+
+import com.kratonsolution.belian.inventory.dm.Product;
 
 /**
  * @author Agung Dodi Perdana
@@ -25,23 +27,28 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="family_folder")
-public class FamiliFolder
+@Table(name="medication")
+public class Medication implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@Column(name="name")
-	private String name;
+	@ManyToOne
+	@JoinColumn(name="fk_product_medicine")
+	private Product medicine;
+	
+	@Column(name="quantity")
+	private BigDecimal quantity;
 	
 	@Column(name="description")
 	private String description;
-
+	
+	@ManyToOne
+	@JoinColumn(name="fk_medical_record")
+	private MedicalRecord medical;
+	
 	@Version
 	private Long version;
 	
-	@OneToMany(mappedBy="folder",cascade=CascadeType.ALL)
-	private Set<FamilyMember> members = new HashSet<FamilyMember>();
-	
-	public FamiliFolder(){}
+	public Medication(){}
 }
