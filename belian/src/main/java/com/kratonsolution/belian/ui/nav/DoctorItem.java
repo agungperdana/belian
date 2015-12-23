@@ -10,7 +10,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.Language;
-import com.kratonsolution.belian.ui.budget.BudgetWindow;
+import com.kratonsolution.belian.ui.doctor.DoctorWindow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -37,16 +37,16 @@ public class DoctorItem extends Listitem
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				BudgetWindow window = null;
+				DoctorWindow window = null;
 				
 				for(Component component:getPage().getRoots())
 				{
-					if(component instanceof BudgetWindow)
-						window = (BudgetWindow)component;
+					if(component instanceof DoctorWindow)
+						window = (DoctorWindow)component;
 				}
 				
 				if(window == null)
-					window = BudgetWindow.injectInto(getPage());
+					window = DoctorWindow.injectInto(getPage());
 				
 				else if(!window.isVisible())
 				{

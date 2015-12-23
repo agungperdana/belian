@@ -25,10 +25,15 @@ public class PersonRowRenderer implements RowRenderer<Person>
 	{
 		if(data != null)
 		{
+			Checkbox box = null;
+			
 			if(!data.isDeleteadble())
-				row.appendChild(Components.readOnlyCheckbox());
+				box = Components.readOnlyCheckbox();
 			else
-				row.appendChild(new Checkbox());
+				box = new Checkbox();
+			
+			row.appendChild(box);
+			row.appendChild(new Label(data.getIdentity()));
 			row.appendChild(new Label(data.getName()));
 			row.appendChild(new Label(Dates.format(data.getBirthDate())));
 			row.appendChild(new Label(data.getGender().toString()));

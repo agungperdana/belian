@@ -22,6 +22,7 @@ import com.kratonsolution.belian.general.dm.Person.Gender;
 import com.kratonsolution.belian.general.dm.Person.MaritalStatus;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -32,10 +33,12 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class PersonFormContent extends FormContent
 {	
 	private final PersonService controller = Springs.get(PersonService.class);
-		
-	private Textbox name = new Textbox();
 	
-	private Datebox date = new Datebox();
+	private Textbox identity = Components.mandatoryTextBox();
+	
+	private Textbox name = Components.mandatoryTextBox();
+	
+	private Datebox date = Components.currentDatebox();
 	
 	private Textbox tax = new Textbox();
 	
@@ -76,6 +79,7 @@ public class PersonFormContent extends FormContent
 					throw new WrongValueException(date,"Date cannot be empty");
 			
 				Person person = new Person();
+				person.setIdentity(identity.getText());
 				person.setName(name.getText());
 				person.setBirthDate(date.getValue());
 				person.setTaxCode(tax.getText());
@@ -118,6 +122,10 @@ public class PersonFormContent extends FormContent
 		grid.getColumns().appendChild(new Column(null,null,"75px"));
 		grid.getColumns().appendChild(new Column());
 		
+		Row row0 = new Row();
+		row0.appendChild(new Label("Identity"));
+		row0.appendChild(identity);
+		
 		Row row1 = new Row();
 		row1.appendChild(new Label("Name"));
 		row1.appendChild(name);
@@ -138,6 +146,7 @@ public class PersonFormContent extends FormContent
 		row5.appendChild(new Label("Status"));
 		row5.appendChild(maritals);
 		
+		rows.appendChild(row0);
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);

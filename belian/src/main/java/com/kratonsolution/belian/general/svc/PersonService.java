@@ -5,7 +5,6 @@ package com.kratonsolution.belian.general.svc;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -38,6 +37,13 @@ public class PersonService
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PERSON_READ")
+	public Person findOneByName(String name)
+	{
+		return repository.findOneByName(name);
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_PERSON_READ")
 	public List<Person> findAll()
 	{
 		return repository.findAll();
@@ -59,7 +65,6 @@ public class PersonService
 	@Secured("ROLE_PERSON_CREATE")
 	public void add(Person person)
 	{
-		person.setId(UUID.randomUUID().toString());
 		repository.save(person);
 	}
 	
@@ -109,4 +114,26 @@ public class PersonService
 	{
 		return repository.findOneByName(Person.ANONYMOUS);
 	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_PERSON_READ")
+	public Person findOneByIdentity(String identity)
+	{
+		return repository.findOneByIdentity(identity);
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_PERSON_READ")
+	public List<Person> findAllByIdentity(String identity)
+	{
+		return repository.findAllByIdentity(identity);
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_PERSON_READ")
+	public List<Person> findAllByName(String name)
+	{
+		return repository.findAllByName(name);
+	}
+	
 }

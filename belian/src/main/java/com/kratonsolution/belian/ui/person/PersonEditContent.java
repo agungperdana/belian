@@ -31,6 +31,7 @@ import com.kratonsolution.belian.ui.party.ContactAddWindow;
 import com.kratonsolution.belian.ui.party.ContactInformation;
 import com.kratonsolution.belian.ui.party.PartyInformation;
 import com.kratonsolution.belian.ui.party.PartyToolbar;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -43,9 +44,11 @@ public class PersonEditContent extends FormContent implements Refreshable
 {	
 	private final PersonService service = Springs.get(PersonService.class);
 
-	private Textbox name = new Textbox();
+	private Textbox identity = Components.mandatoryTextBox();
+	
+	private Textbox name = Components.mandatoryTextBox();
 
-	private Datebox date = new Datebox();
+	private Datebox date = Components.currentDatebox();
 
 	private Textbox tax = new Textbox();
 
@@ -91,7 +94,8 @@ public class PersonEditContent extends FormContent implements Refreshable
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 
-				Person person = service.findOne(RowUtils.string(row, 6));
+				Person person = service.findOne(RowUtils.string(row, 7));
+				person.setIdentity(identity.getText());
 				person.setName(name.getText());
 				person.setBirthDate(date.getValue());
 				person.setTaxCode(tax.getText());
@@ -110,9 +114,11 @@ public class PersonEditContent extends FormContent implements Refreshable
 	@Override
 	public void initForm()
 	{
-		Person person = service.findOne(RowUtils.string(row, 6));
+		Person person = service.findOne(RowUtils.string(row, 7));
 		if(person != null)
 		{
+			identity.setText(person.getIdentity());
+			
 			name.setConstraint("no empty");
 			name.setText(person.getName());
 			name.setWidth("300px");
@@ -149,6 +155,10 @@ public class PersonEditContent extends FormContent implements Refreshable
 			grid.getColumns().appendChild(new Column(null,null,"75px"));
 			grid.getColumns().appendChild(new Column());
 
+			Row row0 = new Row();
+			row0.appendChild(new Label("Identity"));
+			row0.appendChild(identity);
+			
 			Row row1 = new Row();
 			row1.appendChild(new Label("Name"));
 			row1.appendChild(name);
@@ -169,6 +179,7 @@ public class PersonEditContent extends FormContent implements Refreshable
 			row5.appendChild(new Label("Status"));
 			row5.appendChild(maritals);
 			
+			rows.appendChild(row0);
 			rows.appendChild(row1);
 			rows.appendChild(row2);
 			rows.appendChild(row3);
@@ -204,7 +215,7 @@ public class PersonEditContent extends FormContent implements Refreshable
 	{
 		information = new PartyInformation("Person Information");
 
-		final Person person = service.findOne(RowUtils.string(row, 6));
+		final Person person = service.findOne(RowUtils.string(row, 7));
 		if(person != null)
 		{
 			if(!person.getAddresses().isEmpty())

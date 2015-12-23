@@ -43,7 +43,7 @@ public class PartyRole implements Serializable, Listable
 		HOLDING,SUBSIDIARY,DEPARTMENT,DIVISION,
 		CUSTOMER,SUPPLIER,EMPLOYEE,EMPLOYER,CONTACT,
 		INTERNALORGANIZATION,BUDGETREVIEWER,
-		BRANCH
+		BRANCH,DOCTOR
 	}
 	
 	@Id
@@ -68,7 +68,7 @@ public class PartyRole implements Serializable, Listable
 	
 	@Version
 	private Long version;
-
+	
 	public static PartyRole newInstance(Type type)
 	{
 		switch(type)

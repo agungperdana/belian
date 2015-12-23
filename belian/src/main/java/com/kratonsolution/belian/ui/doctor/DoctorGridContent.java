@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.person;
+package com.kratonsolution.belian.ui.doctor;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -16,7 +16,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.healtcare.svc.DoctorService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -25,13 +25,13 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class PersonGridContent extends GridContent
+public class DoctorGridContent extends GridContent
 {
-	private final PersonService service = Springs.get(PersonService.class);
+	private DoctorService service = Springs.get(DoctorService.class);
 	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
-	public PersonGridContent()
+	public DoctorGridContent()
 	{
 		super();
 		initToolbar();
@@ -47,7 +47,7 @@ public class PersonGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				refresh(new PersonModel(utils.getRowPerPage()));
+				refresh(new DoctorModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -56,7 +56,7 @@ public class PersonGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PersonWindow window = (PersonWindow)getParent();
+				DoctorWindow window = (DoctorWindow)getParent();
 				window.removeGrid();
 				window.insertCreateForm();
 			}
@@ -132,9 +132,7 @@ public class PersonGridContent extends GridContent
 								}
 							}
 							
-							PersonWindow window = (PersonWindow)getParent();
-							window.removeGrid();
-							window.insertGrid();
+							refresh(new DoctorModel(utils.getRowPerPage()));
 						}
 					}
 				});
@@ -153,40 +151,37 @@ public class PersonGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final PersonModel model = new PersonModel(utils.getRowPerPage());
+		final DoctorModel model = new DoctorModel(utils.getRowPerPage());
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No person data exist.");
+		grid.setEmptyMessage("No doctor data exist.");
 		grid.setModel(model);
-		grid.setRowRenderer(new PersonRowRenderer());
+		grid.setRowRenderer(new DoctorRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
-		
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Identity",null,"85px"));
-		grid.getColumns().appendChild(new Column("Name",null,"125px"));
-		grid.getColumns().appendChild(new Column("Birth Date",null,"75px"));
-		grid.getColumns().appendChild(new Column("Gender",null,"75px"));
-		grid.getColumns().appendChild(new Column("Status",null,"75px"));
-		grid.getColumns().appendChild(new Column("Tax",null,"100px"));
-		grid.getColumns().appendChild(new Column(null,null,"0px"));
-		grid.getColumns().getChildren().get(7).setVisible(false);
-		grid.appendChild(getFoot(8));
-		
+		grid.getColumns().appendChild(new Column("Start",null,"75px"));
+		grid.getColumns().appendChild(new Column("ID",null,"115px"));
+		grid.getColumns().appendChild(new Column("Classification",null,"115px"));
+		grid.getColumns().appendChild(new Column("Name"));
+		grid.getColumns().appendChild(new Column(null,null,"1px"));
+		grid.getColumns().getChildren().get(5).setVisible(false);
+		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
+
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), 8);
+				model.next(event.getActivePage(), utils.getRowPerPage());
 				grid.setModel(model);
 				refresh(model);
 			}
 		});
 		
-		refresh(new PersonModel(utils.getRowPerPage()));
+		refresh(new DoctorModel(utils.getRowPerPage()));
 	}
 }

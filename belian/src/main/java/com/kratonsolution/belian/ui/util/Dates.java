@@ -7,8 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class Dates
 {

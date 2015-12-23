@@ -39,6 +39,9 @@ public class Person extends EconomicAgent
 	@Transient
 	public static final String SYSADMIN = "SYSADMIN";
 	
+	@Column(name="identity",unique=true)
+	private String identity;
+	
 	@Column(name="gender")
 	@Enumerated(EnumType.STRING)
 	private Gender gender = Gender.MALE;

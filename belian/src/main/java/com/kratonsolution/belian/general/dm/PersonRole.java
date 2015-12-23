@@ -14,5 +14,8 @@ import javax.persistence.Table;
 @Table(name="person_role")
 public class PersonRole extends PartyRole
 {
-
+	public Person getPerson()
+	{
+		return (Person)getParty();
+	}
 }

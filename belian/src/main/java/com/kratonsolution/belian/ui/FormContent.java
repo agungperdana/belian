@@ -27,6 +27,7 @@ public abstract class FormContent extends Vlayout
 		setHeight("97%");
 		setStyle("overflow:auto");
 		
+		grid.setWidth("100%");
 		grid.appendChild(rows);
 		
 		appendChild(toolbar);

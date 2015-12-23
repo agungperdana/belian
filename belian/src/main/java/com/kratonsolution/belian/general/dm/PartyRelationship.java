@@ -20,11 +20,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  * 
@@ -38,7 +38,7 @@ import lombok.Setter;
 @Inheritance(strategy=InheritanceType.JOINED)
 public class PartyRelationship implements Serializable
 {
-	public enum Type{COMPANYSTRUCTURE,CUSTOMER,SUPPLIER,EMPLOYMENT}
+	public enum Type{COMPANYSTRUCTURE,CUSTOMER,SUPPLIER,EMPLOYMENT,DOCTORPARTNERSHIP}
 	
 	@Id
 	protected String id = UUID.randomUUID().toString();
@@ -53,12 +53,12 @@ public class PartyRelationship implements Serializable
 	@Column(name="relationhip_type")
 	protected Type type = Type.COMPANYSTRUCTURE;
 	
-	@ManyToOne(cascade={CascadeType.ALL})
+	@ManyToOne(cascade={CascadeType.PERSIST,CascadeType.MERGE})
 	@JoinColumn(name="fk_parent")
 	@NotFound(action=NotFoundAction.IGNORE)
 	protected PartyRole parent;
 	
-	@ManyToOne(cascade={CascadeType.ALL})
+	@ManyToOne(cascade={CascadeType.PERSIST,CascadeType.MERGE})
 	@JoinColumn(name="fk_child")
 	@NotFound(action=NotFoundAction.IGNORE)
 	protected PartyRole child;

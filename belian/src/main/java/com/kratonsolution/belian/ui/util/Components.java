@@ -9,6 +9,7 @@ import java.util.Date;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Listbox;
@@ -317,6 +318,16 @@ public class Components
 			datebox.setValue(date);
 		
 		return datebox;
+	}
+	
+	public static Combobox autoComplete()
+	{
+		Combobox combobox = new Combobox();
+		combobox.setAutodrop(true);
+		combobox.setButtonVisible(false);
+		combobox.setWidth("250px");
+		
+		return combobox;
 	}
 
 	public static final Listitem newListitem(BigDecimal decimal)
