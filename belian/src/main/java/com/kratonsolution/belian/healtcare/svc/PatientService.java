@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.healtcare.svc;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,9 +14,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.kratonsolution.belian.general.dm.PartyRole.Type;
-import com.kratonsolution.belian.healtcare.dm.Doctor;
-import com.kratonsolution.belian.healtcare.dm.DoctorRepository;
+import com.kratonsolution.belian.healtcare.dm.Patient;
+import com.kratonsolution.belian.healtcare.dm.PatientRepository;
 
 /**
  * 
@@ -26,76 +24,69 @@ import com.kratonsolution.belian.healtcare.dm.DoctorRepository;
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
-public class DoctorService
+public class PatientService
 {
 	@Autowired
-	private DoctorRepository repository;
+	private PatientRepository repository;
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_DOCTOR_READ")
+	@Secured("ROLE_PATIENT_READ")
 	public int size()
 	{
 		return Long.valueOf(repository.count()).intValue();
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_DOCTOR_READ")
-	public Doctor findOne(String id)
+	@Secured("ROLE_PATIENT_READ")
+	public Patient findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_DOCTOR_READ")
-	public List<Doctor> findAll()
+	@Secured("ROLE_PATIENT_READ")
+	public List<Patient> findAll()
 	{
 		return repository.findAll();
 	}
 		
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_DOCTOR_READ")
-	public List<Doctor> findAll(int pageIndex,int pageSize)
+	@Secured("ROLE_PATIENT_READ")
+	public List<Patient> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
 	}
 	
-	@Secured("ROLE_DOCTOR_CREATE")
-	public void add(Doctor type)
+	@Secured("ROLE_PATIENT_CREATE")
+	public void add(Patient type)
 	{
 		type.setId(UUID.randomUUID().toString());
 		repository.save(type);
 	}
 	
-	@Secured("ROLE_DOCTOR_UPDATE")
-	public void edit(Doctor type)
+	@Secured("ROLE_PATIENT_UPDATE")
+	public void edit(Patient type)
 	{
 		repository.saveAndFlush(type);
 	}
 	
-	@Secured("ROLE_DOCTOR_DELETE")
+	@Secured("ROLE_PATIENT_DELETE")
 	public void delete(@PathVariable String id)
 	{
 		repository.delete(id);
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_DOCTOR_READ")
-	public Doctor findOneByPartyIdAndType(String id,Type type)
+	@Secured("ROLE_PATIENT_READ")
+	public Patient findOneByBPJS(String number)
 	{
-		return repository.findOneByPartyIdAndType(id, type);
+		return repository.findOneByBpjsCard(number);
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_DOCTOR_READ")
-	public List<Doctor> findAllByCompanys(Collection<String> companys)
+	@Secured("ROLE_PATIENT_READ")
+	public Patient findOneByPartyId(String id)
 	{
-		return repository.findAllForCompanys(companys);
-	}
-	
-	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_DOCTOR_READ")
-	public List<Doctor> findAllPartner(String id)
-	{
-		return repository.findAllPartners(id);
+		return repository.findOneByPartyId(id);
 	}
 }

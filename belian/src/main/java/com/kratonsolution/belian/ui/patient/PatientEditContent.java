@@ -1,11 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.doctor;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Vector;
+package com.kratonsolution.belian.ui.patient;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
@@ -23,22 +19,14 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.Branch;
-import com.kratonsolution.belian.general.dm.BranchRepository;
-import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.dm.Person.Gender;
 import com.kratonsolution.belian.general.dm.Person.MaritalStatus;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.general.svc.PersonService;
-import com.kratonsolution.belian.healtcare.dm.Doctor;
-import com.kratonsolution.belian.healtcare.dm.DoctorPartnership;
-import com.kratonsolution.belian.healtcare.dm.DoctorPartnershipRepository;
-import com.kratonsolution.belian.healtcare.svc.DoctorService;
-import com.kratonsolution.belian.healtcare.svc.DoctorTypeService;
-import com.kratonsolution.belian.ui.CheckboxItem;
+import com.kratonsolution.belian.healtcare.dm.Patient;
+import com.kratonsolution.belian.healtcare.svc.PatientService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.RowUtils;
@@ -49,18 +37,10 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class DoctorEditContent extends FormContent
+public class PatientEditContent extends FormContent
 {	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
-
-	private DoctorService service = Springs.get(DoctorService.class);
-
-	private BranchRepository branchRepository = Springs.get(BranchRepository.class);
-
-	private DoctorTypeService doctorTypeService = Springs.get(DoctorTypeService.class);
-
-	private DoctorPartnershipRepository partnershipRepository = Springs.get(DoctorPartnershipRepository.class);
-
+	private PatientService service = Springs.get(PatientService.class);
+	
 	private GeographicService geographicService = Springs.get(GeographicService.class);
 
 	private PersonService personService = Springs.get(PersonService.class);
@@ -77,19 +57,17 @@ public class DoctorEditContent extends FormContent
 
 	private Listbox statuses = Components.newSelect();
 
-	private Listbox classifications = Components.newSelect(doctorTypeService.findAll(), true);
-
 	private Listbox birthPlace = Components.newSelect(geographicService.findAll(),true);
 
 	private Datebox start = Components.currentDatebox();
 
 	private Datebox birthDate = Components.currentDatebox();
 
-	private Listbox orgs = new Listbox();
-
+	private Textbox bpjsNumber = new Textbox();
+	
 	private Row row;
 
-	public DoctorEditContent(Row row)
+	public PatientEditContent(Row row)
 	{
 		super();
 		this.row = row;
@@ -105,14 +83,14 @@ public class DoctorEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				DoctorWindow window = (DoctorWindow)getParent();
+				PatientWindow window = (PatientWindow)getParent();
 				window.removeEditForm();
 				window.insertGrid();
 			}
 				});
 
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-				{
+		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
@@ -122,10 +100,10 @@ public class DoctorEditContent extends FormContent
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 
-				Doctor doctor = service.findOne(RowUtils.string(row, 5));
-				if(doctor != null)
+				Patient patient = service.findOne(RowUtils.string(row, 5));
+				if(patient != null)
 				{
-					Person person = doctor.getPerson();
+					Person person = patient.getPerson();
 					person.setBirthDate(birthDate.getValue());
 					person.setBirthPlace(geographicService.findOne(Components.string(birthPlace)));
 					person.setGender(Gender.valueOf(Components.string(genders)));
@@ -133,59 +111,45 @@ public class DoctorEditContent extends FormContent
 					person.setMaritalStatus(MaritalStatus.valueOf(Components.string(statuses)));
 					person.setName(name.getText());
 					person.setTaxCode(taxNumber.getText());
-
+					
 					personService.edit(person);
 					
-					for(Component component:orgs.getChildren())
-					{
-						CheckboxItem item = (CheckboxItem)component;
-
-						Branch branch = branchRepository.findOneByPartyId(item.getId());
-						if(branch != null)
-						{
-							DoctorPartnership partnership = partnershipRepository.findOneByParentIdAndChildId(branch.getId(), doctor.getId());
-							if(partnership != null && !item.isSelected())
-							{
-								partnershipRepository.delete(partnership);
-							}
-							else if(partnership == null && item.isSelected())
-							{
-								partnership = new DoctorPartnership();
-								partnership.setFrom(new Date());
-								partnership.setChild(doctor);
-								partnership.setParent(branch);
-
-								partnershipRepository.save(partnership);
-							}
-						}
-					}
+					patient.getBpjs().setCard(bpjsNumber.getText());
+					service.edit(patient);
 				}
 
-				DoctorWindow window = (DoctorWindow)getParent();
+				PatientWindow window = (PatientWindow)getParent();
 				window.removeEditForm();
 				window.insertGrid();
 			}
-				});
+		});
 	}
 
 	@Override
 	public void initForm()
 	{
-		Doctor doctor = service.findOne(RowUtils.string(row, 5));
-		if(doctor != null)
+		Patient patient = service.findOne(RowUtils.string(row, 5));
+		if(patient != null)
 		{
-			identity.setText(doctor.getPerson().getIdentity());
-			name.setText(doctor.getPerson().getName());
-			birthDate.setValue(doctor.getPerson().getBirthDate());
-			taxNumber.setText(doctor.getPerson().getTaxCode());
-			start.setValue(doctor.getFrom());
+			identity.setText(patient.getPerson().getIdentity());
+			identity.setWidth("300px");
+			
+			name.setText(patient.getPerson().getName());
+			name.setWidth("300px");
+			
+			birthDate.setValue(patient.getPerson().getBirthDate());
+			taxNumber.setText(patient.getPerson().getTaxCode());
+			start.setValue(patient.getFrom());
+			
+			bpjsNumber.setWidth("225px");
+			bpjsNumber.setText(patient.getBpjs().getCard());
 
 			for(Gender gender:Gender.values())
 			{
 				Listitem listitem = new Listitem(gender.name(), gender.name());
 				genders.appendChild(listitem);
 
-				if(gender.equals(doctor.getPerson().getGender()))
+				if(gender.equals(patient.getPerson().getGender()))
 					genders.setSelectedItem(listitem);
 			}
 
@@ -193,70 +157,24 @@ public class DoctorEditContent extends FormContent
 			{
 				Listitem listitem = new Listitem(status.name(), status.name());
 				statuses.appendChild(listitem);
-				if(status.equals(doctor.getPerson().getMaritalStatus()))
+				if(status.equals(patient.getPerson().getMaritalStatus()))
 					statuses.setSelectedItem(listitem);
 			}
 
 			for(Component component:birthPlace.getChildren())
 			{
 				Listitem listitem = (Listitem)component;
-				if(listitem.getValue().equals(doctor.getParty().getBirthPlace().getId()))
+				if(listitem.getValue().equals(patient.getParty().getBirthPlace().getId()))
 					birthPlace.setSelectedItem(listitem);
 			}
 
-			for(Component component:classifications.getChildren())
-			{
-				Listitem listitem = (Listitem)component;
-				if(listitem.getValue().equals(doctor.getCategory().getId()))
-					classifications.setSelectedItem(listitem);
-			}
-
-			Vector<Organization> vOrgs = new Vector<Organization>();
-
-			List<Branch> branchs = branchRepository.findAll();
-			for(Branch branch:branchs)
-			{
-				for(Organization organization:utils.getOrganizations())
-				{
-					if(organization.getId().equals(branch.getParty().getId()))
-					{
-						vOrgs.add(organization);
-						break;
-					}
-				}
-			}
-
-			for(Organization organization:vOrgs)
-			{
-				CheckboxItem checkboxItem = new CheckboxItem(organization.getId(), organization.getName());
-				orgs.appendChild(checkboxItem);
-				Branch branch = branchRepository.findOneByPartyId(checkboxItem.getId());
-				if(branch != null)
-				{
-					DoctorPartnership partnership = partnershipRepository.findOneByParentIdAndChildId(branch.getId(), doctor.getId());
-					if(partnership != null)
-						checkboxItem.selected();
-				}
-			}
-
 			grid.appendChild(new Columns());
-			grid.getColumns().appendChild(new Column(null,null,"15%"));
-			grid.getColumns().appendChild(new Column(null,null,"40%"));
-			grid.getColumns().appendChild(new Column(null,null,"45%"));
-
-			Cell cell = new Cell();
-			cell.setRowspan(10);
-			cell.appendChild(orgs);
-			cell.setValign("top");
+			grid.getColumns().appendChild(new Column(null,null,"20%"));
+			grid.getColumns().appendChild(new Column());
 
 			Row row001 = new Row();
 			row001.appendChild(new Label("Start Date"));
 			row001.appendChild(start);
-			row001.appendChild(cell);
-
-			Row row0 = new Row();
-			row0.appendChild(new Label("Classification"));
-			row0.appendChild(classifications);
 
 			Row row1 = new Row();
 			row1.appendChild(new Label("Identity"));
@@ -286,8 +204,18 @@ public class DoctorEditContent extends FormContent
 			row7.appendChild(new Label("Status"));
 			row7.appendChild(statuses);
 
+			Cell cell = new Cell();
+			cell.appendChild(new Label("BPJS Information"));
+			cell.setColspan(2);
+			
+			Row row8 = new Row();
+			row8.appendChild(cell);
+			
+			Row row9 = new Row();
+			row9.appendChild(new Label("Card Number"));
+			row9.appendChild(bpjsNumber);
+			
 			rows.appendChild(row001);
-			rows.appendChild(row0);
 			rows.appendChild(row1);
 			rows.appendChild(row2);
 			rows.appendChild(row3);
@@ -295,6 +223,8 @@ public class DoctorEditContent extends FormContent
 			rows.appendChild(row5);
 			rows.appendChild(row6);
 			rows.appendChild(row7);
+			rows.appendChild(row8);
+			rows.appendChild(row9);
 		}
 	}
 }

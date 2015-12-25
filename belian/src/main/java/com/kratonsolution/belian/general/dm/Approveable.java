@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.general.dm;
 
+import java.util.UUID;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
@@ -18,8 +20,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
@@ -34,7 +37,7 @@ public abstract class Approveable
 	public enum Status{APPROVED,REJECTED,CORRECTION,SUBMITTED}
 	
 	@Id
-	protected String id;
+	protected String id = UUID.randomUUID().toString();
 	
 	@Column(name="type")
 	@Enumerated(EnumType.STRING)

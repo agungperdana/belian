@@ -13,12 +13,17 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
 import lombok.Getter;
 import lombok.Setter;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  * @author Agung Dodi Perdana
@@ -44,6 +49,16 @@ public class MedicalRecord implements Serializable
 	
 	@Column(name="diagnosis")
 	private String diagnosis;
+
+	@ManyToOne
+	@JoinColumn(name="fk_patient")
+	@NotFound(action=NotFoundAction.IGNORE)
+	private Patient patient;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_doctor_appointment")
+	@NotFound(action=NotFoundAction.IGNORE)
+	private DoctorAppointment appointment;
 	
 	@OneToMany(mappedBy="medical",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<Medication> medications = new HashSet<Medication>();

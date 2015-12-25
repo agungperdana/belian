@@ -219,23 +219,34 @@ public class NavigationMenu extends Window
 	
 	protected void initHealtcare(Map<String,Boolean> modules)
 	{
-		tabs.appendChild(new Tab(language.get("navbar.menu.healtcare")));
-		Tabpanel panel = new Tabpanel();
-
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
 		if(modules.get("DOCTORTYPE"))
 			list.appendChild(new DoctorTypeItem());
 		
-		list.appendChild(new DoctorItem());
-		list.appendChild(new PatientItem());
+		if(modules.get("DOCTOR"))
+			list.appendChild(new DoctorItem());
+		
+		if(modules.get("PATIENT"))
+			list.appendChild(new PatientItem());
+		
+		if(modules.get("DOCTOR_APPOINTMENT"))
+			list.appendChild(new DoctorAppointmentItem());
+		
 		list.appendChild(new MedicalRecordItem());
 		list.appendChild(new LabsItem());
 		list.appendChild(new ApotekItem());
 		
-		panel.appendChild(list);
-		panels.appendChild(panel);
+		if(!list.getChildren().isEmpty())
+		{
+			Tabpanel healtcare = new Tabpanel();
+			healtcare.setStyle("overflow:auto");
+			healtcare.appendChild(list);
+
+			tabs.appendChild(new Tab(language.get("navbar.menu.healtcare")));
+			panels.appendChild(healtcare);
+		}
 	}
 	
 	protected void initHR(Map<String,Boolean> modules)

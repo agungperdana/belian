@@ -28,7 +28,6 @@ import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.global.dm.Listable;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
@@ -43,7 +42,7 @@ public class PartyRole implements Serializable, Listable
 		HOLDING,SUBSIDIARY,DEPARTMENT,DIVISION,
 		CUSTOMER,SUPPLIER,EMPLOYEE,EMPLOYER,CONTACT,
 		INTERNALORGANIZATION,BUDGETREVIEWER,
-		BRANCH,DOCTOR
+		BRANCH,DOCTOR,PATIENT
 	}
 	
 	@Id

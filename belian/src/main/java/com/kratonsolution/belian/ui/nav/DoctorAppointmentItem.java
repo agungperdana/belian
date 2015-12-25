@@ -10,7 +10,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.Language;
-import com.kratonsolution.belian.ui.patient.PatientWindow;
+import com.kratonsolution.belian.ui.doctorappointment.DoctorAppointmentWindow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -18,35 +18,35 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class PatientItem extends Listitem
+public class DoctorAppointmentItem extends Listitem
 {
 	private Language language = Springs.get(Language.class);
 	
-	public PatientItem()
+	public DoctorAppointmentItem()
 	{
 		init();
 	}
 	
 	public void init()
 	{
-		setLabel(language.get("navbar.menu.healtcare.patient"));
-		setImage("/icons/patient.png");
+		setLabel(language.get("navbar.menu.healtcare.appointment"));
+		setImage("/icons/doctorappointment.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PatientWindow window = null;
+				DoctorAppointmentWindow window = null;
 				
 				for(Component component:getPage().getRoots())
 				{
-					if(component instanceof PatientWindow)
-						window = (PatientWindow)component;
+					if(component instanceof DoctorAppointmentWindow)
+						window = (DoctorAppointmentWindow)component;
 				}
 				
 				if(window == null)
-					window = PatientWindow.injectInto(getPage());
+					window = DoctorAppointmentWindow.injectInto(getPage());
 				
 				else if(!window.isVisible())
 				{
