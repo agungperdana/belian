@@ -12,8 +12,10 @@ import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Doublebox;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.global.dm.Listable;
@@ -338,5 +340,16 @@ public class Components
 	public static final Listitem newListitem(Listable listable)
 	{
 		return new Listitem(listable.getLabel(),listable.getValue());
+	}
+	
+	public static final Row row(int numberOfCell,String lastCellContent)
+	{
+		Row row = new Row();
+		for(int idx=1;idx<numberOfCell;idx++)
+			row.appendChild(new Label(""));
+		
+		row.appendChild(new Label(lastCellContent));
+		
+		return row;
 	}
 }

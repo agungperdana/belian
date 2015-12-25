@@ -101,7 +101,7 @@ public class ProductFormContent extends FormContent
 				
 				ProductWindow window = (ProductWindow)getParent();
 				window.removeCreateForm();
-				window.insertGrid();
+				window.insertEditForm(Components.row(9, product.getId()));
 			}
 		});
 	}
