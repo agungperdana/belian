@@ -15,8 +15,12 @@ import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
+import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.healtcare.svc.DoctorService;
+import com.kratonsolution.belian.ui.healtcare.doctordashboard.DoctorDashboardWindow;
 import com.kratonsolution.belian.ui.inbox.InboxWindow;
 import com.kratonsolution.belian.ui.setting.SettingWindow;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * 
@@ -35,6 +39,8 @@ public class IconBar extends Toolbar
 	
 	private Toolbarbutton inbox = new Toolbarbutton();
 	
+	private Toolbarbutton doctorDashboard = new Toolbarbutton();
+	
 	public static final void injectInto(Page page)
 	{
 		new IconBar().setPage(page);
@@ -48,10 +54,10 @@ public class IconBar extends Toolbar
 		initSetting();
 		initMenu();
 		initInbox();
-
+		initDoctorDashboard();
+		
 		Space space = new Space();
 		space.setBar(true);
-//		space.setHeight("40px");
 		
 		appendChild(space);
 	}
@@ -59,7 +65,6 @@ public class IconBar extends Toolbar
 	protected void init()
 	{
 		setTop("0px");
-//		setStyle("valign:middle;");
 		setWidth("100%");
 		setHeight("7%");
 	}
@@ -67,7 +72,6 @@ public class IconBar extends Toolbar
 	protected void initLogout()
 	{
 		logout.setImage("/icons/logout.png");
-//		logout.setHeight("38px");
 		logout.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
@@ -83,7 +87,6 @@ public class IconBar extends Toolbar
 	protected void initAbout()
 	{
 		about.setImage("/icons/about.png");
-//		about.setHeight("38px");
 		about.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
@@ -99,7 +102,6 @@ public class IconBar extends Toolbar
 	protected void initSetting()
 	{
 		setting.setImage("/icons/setting.png");
-//		setting.setHeight("38px");
 		setting.addEventListener(Events.ON_CLICK, new EventListener<Event>()
 		{
 			@Override
@@ -138,7 +140,6 @@ public class IconBar extends Toolbar
 	protected void initMenu()
 	{
 		menu.setImage("/icons/menu.png");
-//		menu.setHeight("38px");
 		menu.addEventListener(Events.ON_CLICK, new EventListener<Event>()
 		{
 			@Override
@@ -163,7 +164,6 @@ public class IconBar extends Toolbar
 	protected void initInbox()
 	{
 		inbox.setImage("/icons/inbox.png");
-//		inbox.setHeight("38px");
 		inbox.addEventListener(Events.ON_CLICK, new EventListener<Event>()
 		{
 			@Override
@@ -198,5 +198,49 @@ public class IconBar extends Toolbar
 		});
 
 		appendChild(inbox);
+	}
+	
+	protected void initDoctorDashboard()
+	{
+		doctorDashboard.setImage("/icons/doctordashboard.png");
+		doctorDashboard.addEventListener(Events.ON_CLICK, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				Window window = null;
+				for(Component instance:getPage().getRoots())
+				{
+					if(instance instanceof DoctorDashboardWindow)
+					{
+						window = (Window)instance;
+						break;
+					}
+				}
+				
+				if(window == null)
+				{
+					window = new DoctorDashboardWindow();
+					window.setPage(getPage());
+					window.setVisible(true);
+					window.setTopmost();
+				}
+				else if(window.isVisible())
+					window.setVisible(false);
+				else
+				{
+					window.setVisible(true);
+					window.setTopmost();
+				}
+			}
+		});
+		
+		SessionUtils utils = Springs.get(SessionUtils.class);
+		DoctorService service = Springs.get(DoctorService.class);
+		if(utils != null && service != null && utils.getUser().getPerson() != null)
+		{
+			if(!service.findAllByPerson(utils.getUser().getPerson().getId()).isEmpty())
+				appendChild(doctorDashboard);
+		}
 	}
 }

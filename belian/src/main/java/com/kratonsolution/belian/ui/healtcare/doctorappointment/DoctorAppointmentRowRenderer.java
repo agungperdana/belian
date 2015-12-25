@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.ui.healtcare.doctorappointment;
 
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
@@ -17,6 +18,13 @@ import com.kratonsolution.belian.ui.util.Dates;
  */
 public class DoctorAppointmentRowRenderer implements RowRenderer<DoctorAppointment>
 {
+	private Component parent;
+	
+	public DoctorAppointmentRowRenderer(Component component)
+	{
+		this.parent = component;
+	}
+	
 	@Override
 	public void render(Row row, DoctorAppointment data, int index) throws Exception
 	{
@@ -26,7 +34,7 @@ public class DoctorAppointmentRowRenderer implements RowRenderer<DoctorAppointme
 			row.appendChild(new Label(Dates.format(data.getDate())));
 			row.appendChild(new Label(data.getDoctor().getPerson().getName()));
 			row.appendChild(new Label(data.getPatient().getPerson().getName()));
-			row.appendChild(new Label(data.getStatus().name()));
+			row.appendChild(new Label(data.getStatus().toString()));
 			row.appendChild(new Label(data.getNote()));
 			row.appendChild(new Label(data.getId()));
 		}

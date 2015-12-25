@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
+import com.kratonsolution.belian.healtcare.dm.DoctorAppointment.Status;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentRepository;
 
 /**
@@ -74,5 +75,15 @@ public class DoctorAppointmentService
 	public void delete(@PathVariable String id)
 	{
 		repository.delete(id);
+	}
+	
+	public void inProgress(String id)
+	{
+		DoctorAppointment appointment = findOne(id);
+		if(appointment != null)
+		{
+			appointment.setStatus(Status.PROGRESS);
+			edit(appointment);
+		}
 	}
 }

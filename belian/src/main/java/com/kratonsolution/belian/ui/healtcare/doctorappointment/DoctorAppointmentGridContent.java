@@ -157,7 +157,7 @@ public class DoctorAppointmentGridContent extends GridContent
 		grid.setHeight("80%");
 		grid.setEmptyMessage("No appointment data exist.");
 		grid.setModel(model);
-		grid.setRowRenderer(new DoctorAppointmentRowRenderer());
+		grid.setRowRenderer(new DoctorAppointmentRowRenderer(getParent()));
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(utils.getRowPerPage());

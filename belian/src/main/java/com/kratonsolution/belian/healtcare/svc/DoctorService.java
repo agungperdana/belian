@@ -98,4 +98,11 @@ public class DoctorService
 	{
 		return repository.findAllPartners(id);
 	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_DOCTOR_READ")
+	public List<Doctor> findAllByPerson(String person)
+	{
+		return repository.findAllByPerson(person);
+	}
 }

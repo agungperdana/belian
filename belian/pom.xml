@@ -100,17 +100,17 @@
   <dependency>
       <groupId>org.zkoss.zk</groupId>
       <artifactId>zkplus</artifactId>
-      <version>7.0.3</version>
+      <version>8.0.0</version>
     </dependency>
     <dependency>
       <groupId>org.zkoss.zk</groupId>
       <artifactId>zhtml</artifactId>
-      <version>7.0.3</version>
+      <version>8.0.0</version>
     </dependency>
     <dependency>
       <groupId>org.zkoss.zk</groupId>
       <artifactId>zkbind</artifactId>
-      <version>7.0.3</version>
+      <version>8.0.0</version>
     </dependency>
     <dependency>
     	<groupId>xalan</groupId>

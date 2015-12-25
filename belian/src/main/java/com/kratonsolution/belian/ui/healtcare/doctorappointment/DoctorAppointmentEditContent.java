@@ -15,6 +15,7 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Toolbarbutton;
 
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.OrganizationService;
@@ -71,8 +72,8 @@ public class DoctorAppointmentEditContent extends FormContent
 	{
 		super();
 		this.row = row;
-		initToolbar();
 		initForm();
+		initToolbar();
 	}
 
 	@Override
@@ -107,6 +108,21 @@ public class DoctorAppointmentEditContent extends FormContent
 				window.insertGrid();
 			}
 		});
+
+		DoctorAppointment appointment = service.findOne(RowUtils.string(row, 6));
+		if(appointment != null && appointment.getStatus().equals(Status.PROGRESS))
+		{
+			Toolbarbutton record = new Toolbarbutton("Medical Record", "/icons/medicalrecord.png");
+			record.addEventListener(Events.ON_CLICK, new EventListener<Event>()
+			{
+				@Override
+				public void onEvent(Event event) throws Exception
+				{
+				}
+			});
+			
+			toolbar.appendChild(record);
+		}
 	}
 
 	@Override
@@ -120,6 +136,10 @@ public class DoctorAppointmentEditContent extends FormContent
 			note.setWidth("300px");
 			note.setText(appointment.getNote());
 			date.setValue(appointment.getDate());
+			
+			companys.setWidth("225px");
+			doctors.setWidth("225px");
+			patients.setWidth("225px");
 			
 			for(DoctorAppointment.Status status:DoctorAppointment.Status.values())
 			{

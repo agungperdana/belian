@@ -25,4 +25,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, String>
 	
 	@Query("SELECT DISTINCT(partner.child) FROM DoctorPartnership partner WHERE partner.parent.party.id =:company")
 	public List<Doctor> findAllPartners(@Param("company")String companys);
+	
+	@Query("FROM Doctor doc WHERE doc.party.id =:person")
+	public List<Doctor> findAllByPerson(@Param("person")String person);
 }
