@@ -10,7 +10,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.Language;
-import com.kratonsolution.belian.ui.currency.CurrencyWindow;
+import com.kratonsolution.belian.ui.accounting.currency.CurrencyWindow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**

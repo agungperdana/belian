@@ -10,7 +10,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.Language;
-import com.kratonsolution.belian.ui.journalentry.JournalEntryWindow;
+import com.kratonsolution.belian.ui.accounting.journalentry.JournalEntryWindow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**

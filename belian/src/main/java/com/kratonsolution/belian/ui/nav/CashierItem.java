@@ -9,7 +9,7 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
-import com.kratonsolution.belian.ui.cashsales.CashierWindow;
+import com.kratonsolution.belian.ui.sales.cashsales.CashierWindow;
 
 /**
  * 

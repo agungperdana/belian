@@ -10,7 +10,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.Language;
-import com.kratonsolution.belian.ui.doctor.DoctorWindow;
+import com.kratonsolution.belian.ui.healtcare.doctor.DoctorWindow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**

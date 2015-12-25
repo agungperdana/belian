@@ -10,7 +10,7 @@ import org.zkoss.zk.ui.Page;
 
 import com.kratonsolution.belian.accounting.dm.BudgetReviewResult;
 import com.kratonsolution.belian.global.dm.ReviewResult;
-import com.kratonsolution.belian.ui.budget.BudgetViewRenderer;
+import com.kratonsolution.belian.ui.accounting.budget.BudgetViewRenderer;
 
 /**
  * @author Agung Dodi Perdana
