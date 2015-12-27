@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.ui.healtcare.doctordashboard;
 
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Treechildren;
 import org.zkoss.zul.Treeitem;
 
@@ -26,16 +27,16 @@ public class AppointmentItem extends Treeitem
 
 	private Treechildren treechildren = new Treechildren();
 
-	public AppointmentItem(DoctorAppointment appointment)
+	public AppointmentItem(DoctorAppointment appointment,Component layout)
 	{
 		super("Medical Check History");
 		setImage("/icons/doctor-appointment-info.png");
 		appendChild(treechildren);
 		
-		initAppointment(appointment.getPatient());
+		initAppointment(appointment.getPatient(),layout);
 	}
 
-	private void initAppointment(Patient patient)
+	private void initAppointment(Patient patient,Component layout)
 	{
 		for(DoctorType type:typeService.findAll())
 		{

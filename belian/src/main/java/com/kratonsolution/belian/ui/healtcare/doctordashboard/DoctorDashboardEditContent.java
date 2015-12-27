@@ -12,7 +12,6 @@ import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treechildren;
 import org.zkoss.zul.Treecol;
 import org.zkoss.zul.Treecols;
-import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Vbox;
 
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
@@ -59,7 +58,7 @@ public class DoctorDashboardEditContent extends FormContent
 		layout.setWidth("100%");
 		
 		navLayout.setHeight("100%");
-		navLayout.setWidth("30%");
+		navLayout.setWidth("225px");
 		navLayout.setStyle("over-flow:auto;");
 		
 		contentLayout.setHeight("100%");
@@ -92,18 +91,10 @@ public class DoctorDashboardEditContent extends FormContent
 		{
 			treecols.appendChild(new Treecol(appointment.getPatient().getPerson().getName(),"","100%"));
 			
-			Treeitem records = new Treeitem("Medical Record Information");
-			records.setImage("/icons/medical-record-info.png");
-			records.appendChild(new Treechildren());
-			
-			Treeitem folder = new Treeitem("Famili Folder");
-			folder.setImage("/icons/famili-folder-info.png");
-			folder.appendChild(new Treechildren());
-			
 			children.appendChild(new PersonalItem(appointment, contentLayout));
-			children.appendChild(new AppointmentItem(appointment));
-			children.appendChild(records);
-			children.appendChild(folder);
+			children.appendChild(new AppointmentItem(appointment,contentLayout));
+			children.appendChild(new MedicalRecordItem(appointment, contentLayout));
+			children.appendChild(new FamiliFolderItem(appointment, contentLayout));
 		}
 		
 		navLayout.appendChild(tree);
