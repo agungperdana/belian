@@ -15,6 +15,10 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
+import com.google.common.base.Strings;
+import com.kratonsolution.belian.ui.AbstractWindow;
+import com.kratonsolution.belian.ui.HasEditForm;
+
 /**
  * 
  * @author Agung Dodi Perdana
@@ -101,5 +105,31 @@ public class RowUtils
 		{
 			((Checkbox)component).setChecked(false);
 		}
+	}
+	
+	public static AbstractWindow window(Row row)
+	{
+		if(row.getParent() != null && row.getParent().getParent() != null && 
+		   row.getParent().getParent().getParent() != null && row.getParent().getParent().getParent().getParent() != null)
+		{
+			if(row.getParent().getParent().getParent().getParent() instanceof HasEditForm)
+				return (AbstractWindow)row.getParent().getParent().getParent().getParent();
+		}
+			
+		return null;
+	}
+
+	public static Row row(String label,String value)
+	{
+		if(!Strings.isNullOrEmpty(label))
+		{
+			Row row = new Row();
+			row.appendChild(new Label(label));
+			row.appendChild(new Label(value));
+			
+			return row;
+		}
+		
+		return new Row();
 	}
 }

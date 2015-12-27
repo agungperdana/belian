@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.healtcare.svc;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,6 +36,13 @@ public class DoctorAppointmentService
 	public int size()
 	{
 		return Long.valueOf(repository.count()).intValue();
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_DOCTOR_APPOINTMENT_READ")
+	public int size(Date date,String companyId,String doctorId)
+	{
+		return repository.findAllTodayByDoctor(date,companyId,doctorId).size();
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -77,6 +85,7 @@ public class DoctorAppointmentService
 		repository.delete(id);
 	}
 	
+	@Secured("ROLE_DOCTOR_APPOINTMENT_UPDATE")
 	public void inProgress(String id)
 	{
 		DoctorAppointment appointment = findOne(id);
@@ -85,5 +94,12 @@ public class DoctorAppointmentService
 			appointment.setStatus(Status.PROGRESS);
 			edit(appointment);
 		}
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_DOCTOR_APPOINTMENT_READ")
+	public List<DoctorAppointment> findAllTodayByDoctor(Date date,String companyId,String doctorId)
+	{
+		return repository.findAllTodayByDoctor(date, companyId, doctorId);
 	}
 }

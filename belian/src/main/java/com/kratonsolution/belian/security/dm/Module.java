@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.security.dm;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,14 +15,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
 @Table(name="module")
-public class Module
+public class Module implements Serializable
 {
 	@Id
 	private String id;
