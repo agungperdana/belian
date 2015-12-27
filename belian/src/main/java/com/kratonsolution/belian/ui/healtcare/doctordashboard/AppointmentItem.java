@@ -32,9 +32,6 @@ public class AppointmentItem extends Treeitem
 		setImage("/icons/doctor-appointment-info.png");
 		appendChild(treechildren);
 		
-		
-		
-
 		initAppointment(appointment.getPatient());
 	}
 
