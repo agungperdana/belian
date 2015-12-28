@@ -28,7 +28,7 @@ public class DoctorDashboardWindow extends AbstractWindow implements HasGrid,Has
 	public DoctorDashboardWindow()
 	{
 		super();
-		setWidth("675px");
+		setWidth("725px");
 		init();
 	}
 	
@@ -56,7 +56,7 @@ public class DoctorDashboardWindow extends AbstractWindow implements HasGrid,Has
 	@Override
 	public void insertEditForm(Row row)
 	{
-		appendChild(new DoctorDashboardEditContent(row));
+		appendChild(new DoctorDashboardContent(row));
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class DoctorDashboardWindow extends AbstractWindow implements HasGrid,Has
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof DoctorDashboardEditContent)
+			if(component instanceof DoctorDashboardContent)
 			{
 				removeChild(component);
 				break;

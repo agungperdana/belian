@@ -21,13 +21,13 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class PatientInformation extends Grid
+public class PatientInformationPanel extends Grid
 {
 	private PatientService service = Springs.get(PatientService.class);
 	
 	private Patient patient;
 	
-	public PatientInformation(String patientId)
+	public PatientInformationPanel(String patientId)
 	{
 		if(!Strings.isNullOrEmpty(patientId))
 			this.patient = service.findOne(patientId);
@@ -56,6 +56,7 @@ public class PatientInformation extends Grid
 			setSpan("1");
 			getRows().appendChild(RowUtils.row("Identity",patient.getPerson().getIdentity()));
 			getRows().appendChild(RowUtils.row("Name",patient.getPerson().getName()));
+			getRows().appendChild(RowUtils.row("Age",Dates.getAge(patient.getPerson().getBirthDate())));
 			getRows().appendChild(RowUtils.row("Birth Place",patient.getPerson().getBirthPlace().getName()));
 			getRows().appendChild(RowUtils.row("Birth Date",Dates.format(patient.getPerson().getBirthDate())));
 			getRows().appendChild(RowUtils.row("Gender",patient.getPerson().getGender().toString()));

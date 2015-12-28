@@ -16,9 +16,9 @@ import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class PersonalItem extends Treeitem
+public class PatientInformationItem extends Treeitem
 {
-	public PersonalItem(DoctorAppointment appointment,Component layout)
+	public PatientInformationItem(DoctorAppointment appointment,Component layout)
 	{
 		super("Patient Information");
 		setImage("/icons/personal-info.png");
@@ -29,7 +29,7 @@ public class PersonalItem extends Treeitem
 			public void onEvent(Event arg0) throws Exception
 			{
 				layout.getChildren().clear();
-				layout.appendChild(new PatientInformation(appointment.getPatient().getId()));
+				layout.appendChild(new PatientInformationPanel(appointment.getPatient().getId()));
 			}
 		});
 	}
