@@ -114,37 +114,34 @@ public class CompanyStructureEditContent extends FormContent
 		{
 			for(Organization organization:utils.getOrganizations())
 			{
-				Listitem item = new Listitem(organization.getLabel(),organization.getValue());
+				Listitem parentItem = new Listitem(organization.getLabel(),organization.getValue());
+				Listitem childItem = new Listitem(organization.getLabel(),organization.getValue());
 				
-				parents.appendChild(item);
-				childs.appendChild(item);
+				parents.appendChild(parentItem);
+				childs.appendChild(childItem);
 				
 				if(companyStructure.getParent() != null && organization.getId().equals(companyStructure.getParent().getParty().getId()))
-					parents.setSelectedItem(item);
+					parents.setSelectedItem(parentItem);
 				
 				if(companyStructure.getChild() != null && organization.getId().equals(companyStructure.getChild().getParty().getId()))
-					childs.setSelectedItem(item);
+					childs.setSelectedItem(childItem);
 			}
 
 			for(PartyRole.Type type:PartyRole.Type.values())
 			{
-				Listitem item = new Listitem(type.name(),type.name());
+				Listitem fromType = new Listitem(type.toString(),type.toString());
+				Listitem toType = new Listitem(type.toString(),type.toString());
 
-				fromroles.appendChild(item);
-				toroles.appendChild(item);
+				fromroles.appendChild(fromType);
+				toroles.appendChild(toType);
 			
 				if(companyStructure.getParent() != null && type.equals(companyStructure.getParent().getType()))
-					fromroles.setSelectedItem(item);
+					fromroles.setSelectedItem(fromType);
 				
 				if(companyStructure.getChild() != null && type.equals(companyStructure.getChild().getType()))
-					toroles.setSelectedItem(item);
+					toroles.setSelectedItem(toType);
 			}
-			
-			Components.setDefault(parents);
-			Components.setDefault(childs);
-			Components.setDefault(fromroles);
-			Components.setDefault(toroles);
-			
+
 			from.setValue(companyStructure.getFrom());
 			to.setValue(companyStructure.getTo());
 			

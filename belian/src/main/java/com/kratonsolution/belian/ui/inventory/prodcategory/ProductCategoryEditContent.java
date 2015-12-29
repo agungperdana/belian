@@ -90,35 +90,45 @@ public class ProductCategoryEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		code.setConstraint("no empty");
-		code.setWidth("200px");
-		code.setText(RowUtils.string(this.row,1));
-		
-		name.setConstraint("no empty");
-		name.setWidth("300px");
-		name.setText(RowUtils.string(row, 2));
-		
-		note.setWidth("350px");
-		note.setText(RowUtils.string(row, 3));
-		
-		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
-		grid.getColumns().appendChild(new Column());
-		
-		Row row1 = new Row();
-		row1.appendChild(new Label("Code"));
-		row1.appendChild(code);
-		
-		Row row2 = new Row();
-		row2.appendChild(new Label("Name"));
-		row2.appendChild(name);
-		
-		Row row3 = new Row();
-		row3.appendChild(new Label("Note"));
-		row3.appendChild(note);
-		
-		rows.appendChild(row1);
-		rows.appendChild(row2);
-		rows.appendChild(row3);
+		ProductCategory category = service.findOne(RowUtils.string(row, 4));
+		if(category != null)
+		{
+			code.setConstraint("no empty");
+			code.setWidth("200px");
+			code.setText(category.getCode());
+			
+			name.setConstraint("no empty");
+			name.setWidth("300px");
+			name.setText(category.getName());
+			
+			note.setWidth("350px");
+			note.setText(category.getNote());
+			
+			if(!category.isDeleteable())
+			{
+				code.setReadonly(true);
+				name.setReadonly(true);
+			}
+			
+			grid.appendChild(new Columns());
+			grid.getColumns().appendChild(new Column(null,null,"135px"));
+			grid.getColumns().appendChild(new Column());
+			
+			Row row1 = new Row();
+			row1.appendChild(new Label("Code"));
+			row1.appendChild(code);
+			
+			Row row2 = new Row();
+			row2.appendChild(new Label("Name"));
+			row2.appendChild(name);
+			
+			Row row3 = new Row();
+			row3.appendChild(new Label("Note"));
+			row3.appendChild(note);
+			
+			rows.appendChild(row1);
+			rows.appendChild(row2);
+			rows.appendChild(row3);
+		}
 	}
 }

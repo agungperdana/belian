@@ -11,8 +11,9 @@ import org.zkoss.zul.RowRenderer;
 import com.kratonsolution.belian.inventory.dm.ProductCategory;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class ProductCategoryRowRenderer implements RowRenderer<ProductCategory>
 {
@@ -22,7 +23,11 @@ public class ProductCategoryRowRenderer implements RowRenderer<ProductCategory>
 	{
 		if(data != null)
 		{
-			row.appendChild(new Checkbox());
+			Checkbox checkbox = new Checkbox();
+			if(!data.isDeleteable())
+					checkbox.setDisabled(true);
+			
+			row.appendChild(checkbox);
 			row.appendChild(new Label(data.getCode()));
 			row.appendChild(new Label(data.getName()));
 			row.appendChild(new Label(data.getNote()));

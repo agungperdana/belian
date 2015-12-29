@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.inventory.svc;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -11,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.kratonsolution.belian.inventory.dm.IndustrySegmentation;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductCode;
 import com.kratonsolution.belian.inventory.dm.ProductComponent;
@@ -24,8 +27,9 @@ import com.kratonsolution.belian.inventory.dm.ProductRepository;
 import com.kratonsolution.belian.inventory.dm.ProductSupplier;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -34,28 +38,46 @@ public class ProductService
 	@Autowired
 	private ProductRepository repository;
 	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PRODUCT_READ")
 	public int size()
 	{
 		return Long.valueOf(repository.count()).intValue();
 	}
 	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PRODUCT_READ")
 	public Product findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PRODUCT_READ")
 	public List<Product> findAll()
 	{
 		return repository.findAll();
 	}
 	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PRODUCT_READ")
 	public List<Product> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_PRODUCT_READ")
+	public List<Product> findAllActiveByCategory(String categoryId,Date date)
+	{
+		return repository.findAllActiveProductByCategory(categoryId, date);
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_PRODUCT_READ")
+	public List<Product> findAllBySegmentation(IndustrySegmentation segmentation)
+	{
+		return repository.findAllBySegmentation(segmentation);
 	}
 	
 	@Secured("ROLE_PRODUCT_CREATE")

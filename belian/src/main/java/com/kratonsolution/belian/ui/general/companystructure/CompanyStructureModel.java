@@ -20,7 +20,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class CompanyStructureModel implements ListModel<CompanyStructure>
 {
-	private final CompanyStructureService controller = Springs.get(CompanyStructureService.class);
+	private CompanyStructureService controller = Springs.get(CompanyStructureService.class);
 	
 	private List<CompanyStructure> data = new ArrayList<CompanyStructure>();
 	
@@ -47,15 +47,11 @@ public class CompanyStructureModel implements ListModel<CompanyStructure>
 	@Override
 	public void addListDataListener(ListDataListener l)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void removeListDataListener(ListDataListener l)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void next(int pageIndex,int itemSize)

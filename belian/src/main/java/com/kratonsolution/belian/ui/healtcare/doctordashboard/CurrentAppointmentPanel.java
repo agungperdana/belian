@@ -6,6 +6,7 @@ package com.kratonsolution.belian.ui.healtcare.doctordashboard;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Grid;
@@ -45,9 +46,6 @@ public class CurrentAppointmentPanel extends Tabbox
 	
 	public CurrentAppointmentPanel(DoctorAppointment appointment)
 	{
-		setWidth("100%");
-		setHeight("100%");
-		
 		appendChild(new Tabs());
 		appendChild(new Tabpanels());
 
@@ -57,8 +55,8 @@ public class CurrentAppointmentPanel extends Tabbox
 		getTabs().appendChild(new Tab("Treatment"));
 		getTabs().appendChild(new Tab("Laboratiorium"));
 		getTabpanels().appendChild(info);
-		getTabpanels().appendChild(check);
-		getTabpanels().appendChild(medication);
+		getTabpanels().appendChild(new CheckingResult(appointment));
+		getTabpanels().appendChild(new MedicationPanel());
 		getTabpanels().appendChild(treatment);
 		getTabpanels().appendChild(lab);
 		
@@ -96,6 +94,9 @@ public class CurrentAppointmentPanel extends Tabbox
 				appointment.setStatus(Status.PROGRESS);
 				service.edit(appointment);
 				
+				Clients.showNotification("Appointment Status in Progress", Clients.NOTIFICATION_TYPE_INFO, null, null, 15, true);
+				
+				progress.setDisabled(true);
 				done.setDisabled(false);
 				cancel.setDisabled(false);
 			}

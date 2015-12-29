@@ -19,9 +19,8 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.inventory.dm.IndustrySegmentation;
 import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductCategory;
-import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
 import com.kratonsolution.belian.inventory.svc.ProductCategoryService;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.inventory.svc.UnitOfMeasureService;
@@ -42,7 +41,7 @@ public class ProductFormContent extends FormContent
 	
 	private final ProductCategoryService categoryService = Springs.get(ProductCategoryService.class);
 	
-	private Datebox start = new Datebox();
+	private Datebox start = Components.currentDatebox();
 	
 	private Datebox end = new Datebox();
 	
@@ -50,11 +49,13 @@ public class ProductFormContent extends FormContent
 	
 	private Textbox name = new Textbox();
 	
-	private Listbox categorys = new Listbox();
+	private Listbox categorys = Components.newSelect(categoryService.findAll(), false);
 	
 	private Listbox types = new Listbox();
 	
-	private Listbox uoms = new Listbox();
+	private Listbox segmentations = Components.newSelect();
+	
+	private Listbox uoms = Components.newSelect(unitOfMeasureService.findAll(), false);
 	
 	public ProductFormContent()
 	{
@@ -83,11 +84,26 @@ public class ProductFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				if(start.getValue() == null)
-					throw new WrongValueException(start,"Code cannot be empty");
+					throw new WrongValueException(start,"Available start date cannot be empty");
 			
+				if(Strings.isNullOrEmpty(code.getText()))
+					throw new WrongValueException(code,"Code cannot be empty");
+				
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 			
+				if(categorys.getSelectedCount() == 0)
+					throw new WrongValueException(categorys,"Please select category first");
+				
+				if(uoms.getSelectedCount() == 0)
+					throw new WrongValueException(uoms,"Please select UoM first");
+				
+				if(types.getSelectedCount() == 0)
+					throw new WrongValueException(categorys,"Please select product type first");
+				
+				if(segmentations.getSelectedCount() == 0)
+					throw new WrongValueException(segmentations,"Please select industry segmentation first");
+				
 				Product product = new Product();
 				product.setStart(start.getValue());
 				product.setEnd(end.getValue());
@@ -96,6 +112,7 @@ public class ProductFormContent extends FormContent
 				product.setType(Product.Type.valueOf(Components.string(types)));
 				product.setCategory(categoryService.findOne(Components.string(categorys)));
 				product.setUom(unitOfMeasureService.findOne(Components.string(uoms)));
+				product.setSegmentation(IndustrySegmentation.valueOf(Components.string(segmentations)));
 				
 				service.add(product);
 				
@@ -124,15 +141,10 @@ public class ProductFormContent extends FormContent
 		
 		for(Product.Type type:Product.Type.values())
 			types.appendChild(new Listitem(type.name(),type.name()));
-		
-		for(ProductCategory category:categoryService.findAll())
-			categorys.appendChild(new Listitem(category.getName(),category.getId()));
-		
-		for(UnitOfMeasure measure:unitOfMeasureService.findAll())
-			uoms.appendChild(new Listitem(measure.getCode(),measure.getId()));
-		
-		types.setSelectedIndex(0);
 
+		for(IndustrySegmentation segmentation:IndustrySegmentation.values())
+			segmentations.appendChild(new Listitem(segmentation.toString(), segmentation.toString()));
+		
 		if(!categorys.getItems().isEmpty())
 			categorys.setSelectedIndex(0);
 		
@@ -140,7 +152,7 @@ public class ProductFormContent extends FormContent
 			uoms.setSelectedIndex(0);
 		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"125px"));
+		grid.getColumns().appendChild(new Column(null,null,"150px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
@@ -171,6 +183,10 @@ public class ProductFormContent extends FormContent
 		row7.appendChild(new Label("Unit of Measure"));
 		row7.appendChild(uoms);
 		
+		Row row8 = new Row();
+		row8.appendChild(new Label("Industry Segmentation"));
+		row8.appendChild(segmentations);
+		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
@@ -178,5 +194,6 @@ public class ProductFormContent extends FormContent
 		rows.appendChild(row5);
 		rows.appendChild(row6);
 		rows.appendChild(row7);
+		rows.appendChild(row8);
 	}
 }

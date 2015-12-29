@@ -132,4 +132,18 @@ public class RowUtils
 		
 		return new Row();
 	}
+	
+	public static Row row(String label,Component component)
+	{
+		if(!Strings.isNullOrEmpty(label))
+		{
+			Row row = new Row();
+			row.appendChild(new Label(label));
+			row.appendChild(component);
+			
+			return row;
+		}
+		
+		return new Row();
+	}
 }

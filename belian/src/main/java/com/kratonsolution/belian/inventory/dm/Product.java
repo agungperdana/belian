@@ -54,6 +54,10 @@ public class Product extends EconomicResource implements Listable
 	@Enumerated(EnumType.STRING)
 	private Type type = Type.FINISHGOOD;
 	
+	@Column(name="industry_segmentation")
+	@Enumerated(EnumType.STRING)
+	private IndustrySegmentation segmentation = IndustrySegmentation.GENERAL;
+	
 	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<ProductCode> codes = new HashSet<ProductCode>();
 	
