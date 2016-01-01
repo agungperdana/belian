@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kratonsolution.belian.inventory.dm.IndustrySegmentation;
 import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.inventory.dm.Product.Type;
 import com.kratonsolution.belian.inventory.dm.ProductCode;
 import com.kratonsolution.belian.inventory.dm.ProductComponent;
 import com.kratonsolution.belian.inventory.dm.ProductCost;
@@ -75,9 +76,16 @@ public class ProductService
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PRODUCT_READ")
-	public List<Product> findAllBySegmentation(IndustrySegmentation segmentation)
+	public List<Product> findAllBySegmentation(IndustrySegmentation segmentation,Type type)
 	{
-		return repository.findAllBySegmentation(segmentation);
+		return repository.findAllBySegmentationAndType(segmentation,type);
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_PRODUCT_READ")
+	public List<Product> findAllBySegmentationAndName(IndustrySegmentation segmentation,String name,Type type)
+	{
+		return repository.findAllBySegmentationAndNameAndType(segmentation,name,type);
 	}
 	
 	@Secured("ROLE_PRODUCT_CREATE")

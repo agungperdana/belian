@@ -9,6 +9,8 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -26,6 +28,8 @@ import lombok.Setter;
 @Table(name="sequence_number")
 public class SequenceNumber implements Serializable
 {
+	public enum Code{BLDP}
+	
 	@Id
 	private String id = UUID.randomUUID().toString();
 
@@ -37,6 +41,10 @@ public class SequenceNumber implements Serializable
 	
 	@Column(name="organization_id")
 	private String companyId;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="code")
+	private Code code;
 	
 	@Column(name="sequence")
 	private int sequence = 1;

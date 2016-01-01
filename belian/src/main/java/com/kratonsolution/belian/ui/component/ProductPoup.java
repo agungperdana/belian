@@ -5,10 +5,12 @@ package com.kratonsolution.belian.ui.component;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
@@ -17,15 +19,13 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listhead;
 import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Rows;
-import org.zkoss.zul.Tab;
-import org.zkoss.zul.Tabbox;
-import org.zkoss.zul.Tabpanels;
-import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.inventory.dm.IndustrySegmentation;
 import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.inventory.dm.Product.Type;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -34,15 +34,13 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class MedicationProductPoup extends Window
+public class ProductPoup extends Window
 {
 	private ProductService service = Springs.get(ProductService.class);
 	
 	private Caption caption = new Caption("Medicine List");
 	
 	private Textbox textbox = new Textbox();
-
-	private Tabbox tabbox = new Tabbox();
 	
 	private Collection<ProductSelectionListener> listeners = new ArrayList<ProductSelectionListener>();
 	
@@ -50,8 +48,18 @@ public class MedicationProductPoup extends Window
 	
 	private Listbox products = new Listbox();
 	
-	public MedicationProductPoup()
+	private IndustrySegmentation segmentation = IndustrySegmentation.GENERAL;
+	
+	private Type type = Type.FINISHGOOD;
+	
+	public ProductPoup(IndustrySegmentation segmentation,Type type)
 	{
+		if(segmentation != null)
+			this.segmentation = segmentation;
+		
+		if(type != null)
+			this.type = type;
+		
 		setWidth("400px");
 		setHeight("350px");
 		setVisible(false);
@@ -59,12 +67,15 @@ public class MedicationProductPoup extends Window
 		setMode(Window.POPUP);
 		setPosition("center");
 		
-		tabbox.appendChild(new Tabs());
-		tabbox.appendChild(new Tabpanels());
-		tabbox.getTabs().appendChild(new Tab("Standard"));
-		tabbox.getTabs().appendChild(new Tab("BPJS"));
-		
 		textbox.setWidth("100%");
+		textbox.addEventListener(Events.ON_CHANGING,new EventListener<InputEvent>()
+		{
+			@Override
+			public void onEvent(InputEvent event) throws Exception
+			{
+				initContent(event.getValue());
+			}
+		});
 		
 		fGrid.setWidth("100%");
 		fGrid.appendChild(new Rows());
@@ -78,11 +89,13 @@ public class MedicationProductPoup extends Window
 		appendChild(fGrid);
 		appendChild(products);
 		
-		initContent();
+		initContent(textbox.getText());
 	}
 	
-	private void initContent()
+	private void initList()
 	{
+		products.getChildren().clear();
+		
 		Listhead listhead = new Listhead();
 		Listheader code = new Listheader("Code");
 		code.setWidth("100px");
@@ -99,10 +112,10 @@ public class MedicationProductPoup extends Window
 		
 		products.setWidth("100%");
 		products.appendChild(listhead);
-		
-		for(Product product:service.findAllBySegmentation(IndustrySegmentation.MEDICAL))
-			products.appendChild(new MedicationProductListItem(product));
-		
+	}
+	
+	private void initListEvent()
+	{
 		products.addEventListener(Events.ON_SELECT,new EventListener<Event>()
 		{
 			@Override
@@ -112,10 +125,26 @@ public class MedicationProductPoup extends Window
 				for(ProductSelectionListener listener:listeners)
 					listener.productSeledted(item.getProduct());
 				
-				MedicationProductPoup.this.setVisible(false);
-				MedicationProductPoup.this.setPage(null);
+				ProductPoup.this.setVisible(false);
+				ProductPoup.this.setPage(null);
 			}
 		});
+	}
+	
+	private void initContent(String name)
+	{
+		initList();
+		initListEvent();
+		
+		List<Product> datas = new ArrayList<Product>();
+		
+		if(Strings.isNullOrEmpty(name))
+			datas.addAll(service.findAllBySegmentation(segmentation,type));
+		else
+			datas.addAll(service.findAllBySegmentationAndName(segmentation,name,type));
+			
+		for(Product product:datas)
+			products.appendChild(new MedicationProductListItem(product));
 	}
 	
 	public void addProductSelectionListener(ProductSelectionListener listener)

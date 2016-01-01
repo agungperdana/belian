@@ -66,6 +66,9 @@ public class MedicalRecord implements Serializable
 	@OneToMany(mappedBy="medical",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<Treatment> treatments = new HashSet<Treatment>();
 	
+	@OneToMany(mappedBy="medical",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<Laboratory> laboratorys = new HashSet<Laboratory>();
+	
 	@Version
 	private Long version;
 	

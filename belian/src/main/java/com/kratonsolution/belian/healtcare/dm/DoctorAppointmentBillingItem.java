@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.healtcare.dm;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -18,7 +17,7 @@ import javax.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
-import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.sales.dm.BillingItem;
 
 /**
  * @author Agung Dodi Perdana
@@ -27,31 +26,30 @@ import com.kratonsolution.belian.inventory.dm.Product;
 @Getter
 @Setter
 @Entity
-@Table(name="medication")
-public class Medication implements Serializable
+@Table(name="doctor_appointment_billing_item")
+public class DoctorAppointmentBillingItem implements BillingItem
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@ManyToOne
-	@JoinColumn(name="fk_product_medicine")
-	private Product medicine;
+	@Column(name="resource")
+	private String resource;
 	
 	@Column(name="quantity")
-	private BigDecimal quantity;
+	private BigDecimal quantity = BigDecimal.ONE;
 	
-	@Column(name="description")
-	private String description;
+	@Column(name="unit_price")
+	private BigDecimal unitPrice = BigDecimal.ZERO;
+	
+	@Column(name="note")
+	private String note;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_medical_record")
-	private MedicalRecord medical;
-
-	@Column(name="is_billed")
-	private boolean billed;
+	@JoinColumn(name="fk_billing")
+	private DoctorAppointmentBilling billing;
 	
 	@Version
 	private Long version;
 	
-	public Medication(){}
+	public DoctorAppointmentBillingItem(){}
 }

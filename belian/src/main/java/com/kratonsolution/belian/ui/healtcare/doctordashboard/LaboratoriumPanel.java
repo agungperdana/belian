@@ -20,8 +20,8 @@ import org.zkoss.zul.Toolbarbutton;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
+import com.kratonsolution.belian.healtcare.dm.Laboratory;
 import com.kratonsolution.belian.healtcare.dm.MedicalRecord;
-import com.kratonsolution.belian.healtcare.dm.Medication;
 import com.kratonsolution.belian.healtcare.svc.MedicalRecordService;
 import com.kratonsolution.belian.inventory.dm.IndustrySegmentation;
 import com.kratonsolution.belian.inventory.dm.Product.Type;
@@ -36,7 +36,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class MedicationPanel extends Tabpanel
+public class LaboratoriumPanel extends Tabpanel
 {
 	private MedicalRecordService service = Springs.get(MedicalRecordService.class);
 	
@@ -46,7 +46,7 @@ public class MedicationPanel extends Tabpanel
 	
 	private NRCToolbar toolbar = new NRCToolbar(grid);
 	
-	public MedicationPanel(DoctorAppointment appointment)
+	public LaboratoriumPanel(DoctorAppointment appointment)
 	{
 		appendChild(toolbar);
 		appendChild(grid);
@@ -64,7 +64,7 @@ public class MedicationPanel extends Tabpanel
 			{
 				Row row = new Row();
 				row.appendChild(new Checkbox());
-				row.appendChild(MedicationProductBox.getInstance(IndustrySegmentation.MEDICAL,Type.FINISHGOOD));
+				row.appendChild(MedicationProductBox.getInstance(IndustrySegmentation.MEDICAL,Type.SERVICE));
 				row.appendChild(Components.doubleBox(1l));
 				row.appendChild(Components.textBox(""));
 				
@@ -83,7 +83,7 @@ public class MedicationPanel extends Tabpanel
 					record = new MedicalRecord();
 				
 				record.setAppointment(appointment);
-				record.getMedications().clear();
+				record.getLaboratorys().clear();
 				
 				service.edit(record);
 				
@@ -94,13 +94,13 @@ public class MedicationPanel extends Tabpanel
 					MedicationProductBox box = (MedicationProductBox)row.getChildren().get(1);
 					if(!Strings.isNullOrEmpty(box.getProductId()))
 					{
-						Medication medication = new Medication();
-						medication.setDescription(RowUtils.string(row, 3));
-						medication.setMedical(record);
-						medication.setQuantity(RowUtils.decimal(row, 2));
-						medication.setMedicine(productService.findOne(box.getProductId()));
+						Laboratory lab = new Laboratory();
+						lab.setDescription(RowUtils.string(row, 3));
+						lab.setMedical(record);
+						lab.setQuantity(RowUtils.decimal(row, 2));
+						lab.setService(productService.findOne(box.getProductId()));
 						
-						record.getMedications().add(medication);
+						record.getLaboratorys().add(lab);
 					}
 				}
 				
@@ -118,29 +118,29 @@ public class MedicationPanel extends Tabpanel
 		grid.appendChild(new Rows());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Medicine",null,"300px"));
+		grid.getColumns().appendChild(new Column("Service",null,"300px"));
 		grid.getColumns().appendChild(new Column("Quantity",null,"75px"));
 		grid.getColumns().appendChild(new Column("Note",null,null));
 		
 		MedicalRecord record = service.findOneByAppointmentId(appointment.getId());
 		if(record != null && !record.getMedications().isEmpty())
 		{
-			for(Medication medication:record.getMedications())
+			for(Laboratory laboratory:record.getLaboratorys())
 			{
-				MedicationProductBox box = MedicationProductBox.getInstance(IndustrySegmentation.MEDICAL,Type.SERVICE,medication.isBilled());
-				box.productSeledted(medication.getMedicine());
+				MedicationProductBox box = MedicationProductBox.getInstance(IndustrySegmentation.MEDICAL,Type.SERVICE,laboratory.isBilled());
+				box.productSeledted(laboratory.getService());
 
 				Checkbox checkbox = new Checkbox();
-				checkbox.setDisabled(medication.isBilled());
+				checkbox.setDisabled(laboratory.isBilled());
 				
-				Doublebox quan = Components.doubleBox(medication.getQuantity().doubleValue());
-				quan.setDisabled(medication.isBilled());
-				
+				Doublebox quan = Components.doubleBox(laboratory.getQuantity().doubleValue());
+				quan.setDisabled(laboratory.isBilled());
+					
 				Row row = new Row();
 				row.appendChild(checkbox);
 				row.appendChild(box);
 				row.appendChild(quan);
-				row.appendChild(Components.textBox(medication.getDescription()));
+				row.appendChild(Components.textBox(laboratory.getDescription()));
 				
 				grid.getRows().appendChild(row);
 			}

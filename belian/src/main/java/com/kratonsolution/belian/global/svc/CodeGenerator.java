@@ -1,0 +1,59 @@
+package com.kratonsolution.belian.global.svc;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.global.dm.SequenceNumber;
+import com.kratonsolution.belian.global.dm.SequenceNumber.Code;
+import com.kratonsolution.belian.global.dm.SequenceNumberRepository;
+
+/**
+ * 
+ */
+
+/**
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
+ */
+@Service
+@Transactional(rollbackFor=Exception.class)
+public class CodeGenerator
+{
+	@Autowired
+	private SequenceNumberRepository repository;
+	
+	public String generate(Date date,Organization organization,Code code)
+	{
+		SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy");
+		
+		StringBuilder builder = new StringBuilder();
+		builder.append(code.toString().toUpperCase()).append(format.format(date).toUpperCase());
+		
+		SequenceNumber number = repository.findOneByCompanyIdAndDateAndCode(organization.getId(),date,code);
+		if(number == null)
+		{
+			number = new SequenceNumber();
+			number.setCode(code);
+			number.setCompanyId(organization.getId());
+			number.setDate(date);
+			number.setSequence(2);
+			
+			builder.append("1");
+			
+			repository.save(number);
+		}
+		else
+		{
+			builder.append(number.getSequence());
+			
+			number.setSequence(number.getSequence()+1);
+			repository.save(number);
+		}
+		
+		return builder.toString();
+	}
+}

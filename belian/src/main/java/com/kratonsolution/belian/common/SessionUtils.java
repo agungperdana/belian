@@ -15,9 +15,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kratonsolution.belian.accounting.dm.Currency;
+import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.security.app.SecurityInformation;
 import com.kratonsolution.belian.security.dm.AccessRole;
 import com.kratonsolution.belian.security.dm.AccessibleOrganization;
@@ -37,6 +39,12 @@ public class SessionUtils
 {
 	@Autowired
 	private UserService service;
+	
+	@Autowired
+	private CurrencyService currencyService;
+	
+	@Autowired
+	private OrganizationService organizationService;
 	
 	public User getUser()
 	{
@@ -85,9 +93,13 @@ public class SessionUtils
 	
 	public Organization getOrganization()
 	{
-		Organization organization = new Organization();
-		organization.setId(getUser().getSetting().getOrganizationId());
-		organization.setName(getUser().getSetting().getOrganizationName());
+		Organization organization = organizationService.findOne(getUser().getSetting().getOrganizationId());
+		if(organization == null)
+		{
+			organization = new Organization();
+			organization.setId(getUser().getSetting().getOrganizationId());
+			organization.setName(getUser().getSetting().getOrganizationName());
+		}
 		
 		return organization;
 	}
@@ -107,9 +119,13 @@ public class SessionUtils
 	
 	public Currency getCurrency()
 	{
-		Currency currency = new Currency();
-		currency.setId(getUser().getSetting().getCurrencyId());
-		currency.setName(getUser().getSetting().getCurrencyName());
+		Currency currency = currencyService.findOne(getUser().getSetting().getCurrencyId());
+		if(currency == null)
+		{
+			currency = new Currency();
+			currency.setId(getUser().getSetting().getCurrencyId());
+			currency.setName(getUser().getSetting().getCurrencyName());
+		}
 		
 		return currency;
 	}

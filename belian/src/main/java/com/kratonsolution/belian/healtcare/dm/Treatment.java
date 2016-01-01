@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.healtcare.dm;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -14,10 +15,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.inventory.dm.Product;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import com.kratonsolution.belian.inventory.dm.Product;
 
 /**
  * @author Agung Dodi Perdana
@@ -27,7 +28,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="treatment")
-public class Treatment
+public class Treatment implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -45,6 +46,9 @@ public class Treatment
 	@ManyToOne
 	@JoinColumn(name="fk_medical_record")
 	private MedicalRecord medical;
+	
+	@Column(name="is_billed")
+	private boolean billed;
 	
 	@Version
 	private Long version;

@@ -27,15 +27,15 @@ import com.kratonsolution.belian.inventory.dm.Product;
 @Getter
 @Setter
 @Entity
-@Table(name="medication")
-public class Medication implements Serializable
+@Table(name="laboratory")
+public class Laboratory implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
 	@ManyToOne
-	@JoinColumn(name="fk_product_medicine")
-	private Product medicine;
+	@JoinColumn(name="fk_product_service")
+	private Product service;
 	
 	@Column(name="quantity")
 	private BigDecimal quantity;
@@ -46,12 +46,12 @@ public class Medication implements Serializable
 	@ManyToOne
 	@JoinColumn(name="fk_medical_record")
 	private MedicalRecord medical;
-
+	
 	@Column(name="is_billed")
 	private boolean billed;
 	
 	@Version
 	private Long version;
 	
-	public Medication(){}
+	public Laboratory(){}
 }

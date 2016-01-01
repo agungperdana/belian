@@ -34,7 +34,7 @@ import com.kratonsolution.belian.global.dm.EconomicAgent;
 @Table(name="product_price")
 public class ProductPrice
 {
-	public enum Type {BASE,DISCOUNT,CHARGE}
+	public enum Type {BASE,DISCOUNT,CHARGE,BPJS}
 	
 	@Id
 	private String id;
