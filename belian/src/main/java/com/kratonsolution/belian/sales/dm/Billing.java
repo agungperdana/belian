@@ -72,6 +72,8 @@ public abstract class Billing implements Serializable
 	
 	public abstract Set<? extends BillingItem> getItems();
 
+	public abstract String getBillingType();
+	
 	public BigDecimal getPaidAmount()
 	{
 		BigDecimal amount = BigDecimal.ZERO;

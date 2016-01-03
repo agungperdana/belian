@@ -41,6 +41,9 @@ public class DoctorAppointmentBillingItem implements BillingItem
 	@Column(name="unit_price")
 	private BigDecimal unitPrice = BigDecimal.ZERO;
 	
+	@Column(name="category")
+	private String category;
+	
 	@Column(name="note")
 	private String note;
 	

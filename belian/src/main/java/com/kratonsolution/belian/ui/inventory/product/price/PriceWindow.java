@@ -6,6 +6,7 @@ package com.kratonsolution.belian.ui.inventory.product.price;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -22,8 +23,8 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Vlayout;
 
-import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.global.dm.EconomicAgent;
@@ -34,11 +35,13 @@ import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.inventory.product.ProductEditContent;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class PriceWindow extends AbstractWindow
 {
@@ -56,6 +59,8 @@ public class PriceWindow extends AbstractWindow
 	
 	private CurrencyService currencyService = Springs.get(CurrencyService.class);
 	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
+	
 	private Product product;
 	
 	private Datebox from = new Datebox(new Date());
@@ -64,7 +69,7 @@ public class PriceWindow extends AbstractWindow
 	
 	private Doublebox price = new Doublebox();
 	
-	private Listbox currencys = new Listbox();
+	private Listbox currencys = Components.newSelect(currencyService.findAll(), true);
 	
 	private Listbox types = new Listbox();
 	
@@ -158,11 +163,12 @@ public class PriceWindow extends AbstractWindow
 		for(EconomicAgent party:partyService.findAll())
 			partys.appendChild(new Listitem(party.getName(), party.getId()));
 		
-		for(Currency currency:currencyService.findAll())
-			currencys.appendChild(new Listitem(currency.getCode(),currency.getId()));
-		
-		if(!currencys.getChildren().isEmpty())
-			currencys.setSelectedIndex(0);
+		for(Component com:currencys.getChildren())
+		{
+			Listitem item = (Listitem)com;
+			if(utils.getCurrency() != null && item.getValue().equals(utils.getCurrency().getId()))
+				currencys.setSelectedItem(item);
+		}
 		
 		content.getColumns().appendChild(new Column(null,null,"100px"));
 		content.getColumns().appendChild(new Column());

@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,14 +21,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
 @Table(name="facility")
-public class Facility
+public class Facility implements Serializable
 {
 	public enum Type{WAREHOUSE,PLAN}
 	

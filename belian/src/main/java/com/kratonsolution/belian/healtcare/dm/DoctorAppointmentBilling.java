@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -37,7 +38,14 @@ public class DoctorAppointmentBilling extends Billing
 	private DoctorAppointment appointment;
 	
 	@OneToMany(mappedBy="billing",cascade=CascadeType.ALL)
+	@OrderBy("resource ASC")
 	private Set<DoctorAppointmentBillingItem> items = new HashSet<DoctorAppointmentBillingItem>();
 	
 	public DoctorAppointmentBilling(){}
+
+	@Override
+	public String getBillingType()
+	{
+		return "Doctor Appointment";
+	}
 }

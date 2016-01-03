@@ -45,18 +45,10 @@ public class DoctorAppointmentModel implements ListModel<DoctorAppointment>
 	}
 
 	@Override
-	public void addListDataListener(ListDataListener l)
-	{
-		// TODO Auto-generated method stub
-		
-	}
+	public void addListDataListener(ListDataListener l){}
 
 	@Override
-	public void removeListDataListener(ListDataListener l)
-	{
-		// TODO Auto-generated method stub
-		
-	}
+	public void removeListDataListener(ListDataListener l){}
 
 	public void next(int pageIndex,int itemSize)
 	{

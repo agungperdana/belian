@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.sales.cashsales;
+package com.kratonsolution.belian.ui.sales.cashier;
 
 import org.zkoss.zul.Toolbarbutton;
 

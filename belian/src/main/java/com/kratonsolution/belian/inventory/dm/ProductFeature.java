@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -24,9 +26,9 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="product_feature")
-public class ProductFeature
+public class ProductFeature implements Serializable
 {
-	public enum Type{SIZE,WEIGH,HEIGH,COLOR}
+	public enum Type{SIZE,WEIGH,HEIGH,COLOR,BPJS}
 
 	@Id
 	private String id;

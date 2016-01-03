@@ -3,7 +3,9 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,17 +19,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * 
  * @author Agung Dodi Perdana
- *
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
 @Table(name="product_component")
-public class ProductComponent
+public class ProductComponent implements Serializable
 {
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="quantity")
 	private BigDecimal quantity = BigDecimal.ONE;

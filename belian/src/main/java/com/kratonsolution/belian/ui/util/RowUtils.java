@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.Cell;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Doublebox;
@@ -145,5 +146,20 @@ public class RowUtils
 		}
 		
 		return new Row();
+	}
+	
+	public static Cell cell(String content,int colspan)
+	{
+		if(!Strings.isNullOrEmpty(content))
+		{
+			Cell cell = new Cell();
+			cell.appendChild(new Label(content));
+			cell.setColspan(colspan);
+			cell.setStyle("font-weight:bolder;color:blue;");
+			
+			return cell;
+		}
+		
+		return new Cell();
 	}
 }

@@ -3,8 +3,10 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,19 +25,20 @@ import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.general.dm.Geographic;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
 @Table(name="product_cost")
-public class ProductCost
+public class ProductCost implements Serializable
 {
-	public enum Type {PURCHASE,FREIGHT,ADMINISTRATIVE}
+	public enum Type {PURCHASE,FREIGHT,ADMINISTRATIVE,BPJS}
 	
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 
 	@Column(name="estimated")
 	private BigDecimal estimated = BigDecimal.ZERO;

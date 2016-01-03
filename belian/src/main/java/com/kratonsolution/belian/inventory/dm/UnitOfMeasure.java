@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.inventory.dm;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,10 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.global.dm.Listable;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import com.kratonsolution.belian.global.dm.Listable;
 
 /**
  * 
@@ -28,7 +29,7 @@ import lombok.Setter;
 public class UnitOfMeasure implements Serializable,Listable
 {
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="code",nullable=false,unique=true)
 	private String code;

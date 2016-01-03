@@ -5,7 +5,6 @@ package com.kratonsolution.belian.healtcare.svc;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.kratonsolution.belian.global.svc.SessionAware;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment.Status;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentRepository;
@@ -26,7 +26,7 @@ import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentRepository;
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
-public class DoctorAppointmentService
+public class DoctorAppointmentService extends SessionAware
 {
 	@Autowired
 	private DoctorAppointmentRepository repository;
@@ -35,7 +35,10 @@ public class DoctorAppointmentService
 	@Secured("ROLE_DOCTOR_APPOINTMENT_READ")
 	public int size()
 	{
-		return Long.valueOf(repository.count()).intValue();
+		if(utils.getOrganization() == null)
+			return Long.valueOf(repository.count()).intValue();
+		else
+			return repository.count(utils.getOrganization().getId()).intValue();
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -63,20 +66,22 @@ public class DoctorAppointmentService
 	@Secured("ROLE_DOCTOR_APPOINTMENT_READ")
 	public List<DoctorAppointment> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		if(utils.getOrganization() == null)
+			return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		else
+			return repository.findAllByCompanyId(new PageRequest(pageIndex, pageSize), utils.getOrganization().getId());
 	}
 	
 	@Secured("ROLE_DOCTOR_APPOINTMENT_CREATE")
-	public void add(DoctorAppointment type)
+	public void add(DoctorAppointment appointment)
 	{
-		type.setId(UUID.randomUUID().toString());
-		repository.save(type);
+		repository.save(appointment);
 	}
 	
 	@Secured("ROLE_DOCTOR_APPOINTMENT_UPDATE")
-	public void edit(DoctorAppointment type)
+	public void edit(DoctorAppointment appointment)
 	{
-		repository.saveAndFlush(type);
+		repository.save(appointment);
 	}
 	
 	@Secured("ROLE_DOCTOR_APPOINTMENT_DELETE")
@@ -92,6 +97,39 @@ public class DoctorAppointmentService
 		if(appointment != null)
 		{
 			appointment.setStatus(Status.PROGRESS);
+			edit(appointment);
+		}
+	}
+	
+	@Secured("ROLE_DOCTOR_APPOINTMENT_UPDATE")
+	public void done(String id)
+	{
+		DoctorAppointment appointment = findOne(id);
+		if(appointment != null)
+		{
+			appointment.setStatus(Status.DONE);
+			edit(appointment);
+		}
+	}
+	
+	@Secured("ROLE_DOCTOR_APPOINTMENT_UPDATE")
+	public void cancel(String id)
+	{
+		DoctorAppointment appointment = findOne(id);
+		if(appointment != null)
+		{
+			appointment.setStatus(Status.CANCELED);
+			edit(appointment);
+		}
+	}
+	
+	@Secured("ROLE_DOCTOR_APPOINTMENT_UPDATE")
+	public void hold(String id)
+	{
+		DoctorAppointment appointment = findOne(id);
+		if(appointment != null)
+		{
+			appointment.setStatus(Status.ONHOLD);
 			edit(appointment);
 		}
 	}

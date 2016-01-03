@@ -36,7 +36,7 @@ public class EconomicResource implements Serializable
 	@Column(name="code")
 	protected String code;
 	
-	@Column(name="name")
+	@Column(name="name",unique=true,nullable=false)
 	protected String name;
 	
 	@Version

@@ -3,6 +3,10 @@
  */
 package com.kratonsolution.belian.ui.healtcare.doctordashboard;
 
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Hlayout;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Tree;
@@ -79,7 +83,24 @@ public class DoctorDashboardContent extends Hlayout
 		DoctorAppointment appointment = service.findOne(RowUtils.string(row, 6));
 		if(appointment != null)
 		{
-			treecols.appendChild(new Treecol(appointment.getPatient().getPerson().getName(),"","100%"));
+			Treecol title = new Treecol(appointment.getPatient().getPerson().getName(),"","100%");
+			title.setImage("/icons/close24.png");
+			title.setStyle("cursor:pointer;");
+			title.addEventListener(Events.ON_CLICK,new EventListener<Event>()
+			{
+				@Override
+				public void onEvent(Event event) throws Exception
+				{
+					Component window = getParent();
+					if(window instanceof DoctorDashboardWindow)
+					{
+						((DoctorDashboardWindow)window).removeEditForm();
+						((DoctorDashboardWindow)window).insertGrid();
+					}
+				}
+			});
+			
+			treecols.appendChild(title);
 			
 			children.appendChild(new CurrentAppointmentItem(appointment, contentLayout));
 			children.appendChild(new PatientInformationItem(appointment, contentLayout));

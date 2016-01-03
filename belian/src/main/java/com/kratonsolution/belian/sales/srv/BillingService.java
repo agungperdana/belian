@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.sales.srv;
 
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.sales.dm.Billing;
 import com.kratonsolution.belian.sales.dm.BillingRepository;
 
@@ -27,6 +30,9 @@ public class BillingService
 {
 	@Autowired
 	private BillingRepository repository;
+	
+	@Autowired
+	private SessionUtils utils;
 	
 	@Secured("ROLE_BILLING_READ")
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
@@ -46,13 +52,35 @@ public class BillingService
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<Billing> findAll(int pageindex,int itemSize)
 	{
-		return repository.findAll(new PageRequest(pageindex, itemSize)).getContent();
+		List<Billing> list = new ArrayList<Billing>();
+		if(utils.getOrganization() != null)
+			list.addAll(repository.findAllByOrganizationId(new PageRequest(pageindex, itemSize),utils.getOrganization().getId()));
+		else
+			list.addAll(repository.findAll(new PageRequest(pageindex, itemSize)).getContent());
+			
+		return list;
+	}
+	
+	@Secured("ROLE_BILLING_READ")
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
+	public List<Billing> findAllByDateAndOrganizationIdAndPaid(Date date,String companyId,boolean paid)
+	{
+		return repository.findAllByDateAndOrganizationIdAndPaid(date, companyId, paid);
 	}
 	
 	@Secured("ROLE_BILLING_READ")
 	public int size()
 	{
-		return Long.valueOf(repository.count()).intValue();
+		if(utils.getOrganization() != null)
+			return repository.count(utils.getOrganization().getId()).intValue();
+		else
+			return Long.valueOf(repository.count()).intValue();
+	}
+	
+	@Secured("ROLE_BILLING_READ")
+	public int unpaidSize(Date date,String companyId)
+	{
+		return repository.getUnpaodCount(date, companyId).intValue();
 	}
 	
 	@Secured("ROLE_BILLING_CREATE")

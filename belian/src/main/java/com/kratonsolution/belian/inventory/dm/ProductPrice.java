@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -32,7 +33,7 @@ import com.kratonsolution.belian.global.dm.EconomicAgent;
 @Setter
 @Entity
 @Table(name="product_price")
-public class ProductPrice
+public class ProductPrice implements Serializable
 {
 	public enum Type {BASE,DISCOUNT,CHARGE,BPJS}
 	

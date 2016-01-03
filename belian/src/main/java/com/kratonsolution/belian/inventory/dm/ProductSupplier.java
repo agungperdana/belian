@@ -3,7 +3,9 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,17 +21,18 @@ import lombok.Setter;
 import com.kratonsolution.belian.global.dm.EconomicAgent;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
 @Table(name="product_supplier")
-public class ProductSupplier
+public class ProductSupplier implements Serializable
 {
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 
 	@Column(name="from_date")
 	private Date from;

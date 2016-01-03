@@ -90,6 +90,7 @@ public class DoctorAppointmentEditContent extends FormContent
 			}
 		});
 
+		
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
@@ -108,10 +109,10 @@ public class DoctorAppointmentEditContent extends FormContent
 				window.insertGrid();
 			}
 		});
-
 		DoctorAppointment appointment = service.findOne(RowUtils.string(row, 6));
 		if(appointment != null && appointment.getStatus().equals(Status.PROGRESS))
 		{
+			
 			Toolbarbutton record = new Toolbarbutton("Medical Record", "/icons/medicalrecord.png");
 			record.addEventListener(Events.ON_CLICK, new EventListener<Event>()
 			{
@@ -122,6 +123,11 @@ public class DoctorAppointmentEditContent extends FormContent
 			});
 			
 			toolbar.appendChild(record);
+		}
+		else if(appointment != null && (appointment.getStatus().equals(Status.CANCELED) || 
+				appointment.getStatus().equals(Status.DONE)))
+		{
+			toolbar.getSave().setDisabled(true);
 		}
 	}
 

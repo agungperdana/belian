@@ -3,6 +3,9 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
+import java.io.Serializable;
+import java.util.UUID;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -24,12 +27,12 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="product_code")
-public class ProductCode
+public class ProductCode implements Serializable
 {
 	public enum Type{STANDARD,RFID,ISBN,BARCODE}
 	
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="code",nullable=false,unique=true)
 	private String code;

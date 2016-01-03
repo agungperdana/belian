@@ -13,8 +13,18 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.global.dm.SequenceNumber;
+import com.kratonsolution.belian.global.svc.CodeGenerator;
+import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
+import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentBilling;
+import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentBillingItem;
+import com.kratonsolution.belian.healtcare.dm.Laboratory;
 import com.kratonsolution.belian.healtcare.dm.MedicalRecord;
 import com.kratonsolution.belian.healtcare.dm.MedicalRecordRepository;
+import com.kratonsolution.belian.healtcare.dm.Medication;
+import com.kratonsolution.belian.healtcare.dm.Treatment;
+import com.kratonsolution.belian.sales.dm.BillingRepository;
 
 /**
  * 
@@ -27,6 +37,15 @@ public class MedicalRecordService
 {
 	@Autowired
 	private MedicalRecordRepository repository;
+	
+	@Autowired
+	private BillingRepository billingRepository;
+	
+	@Autowired
+	private CodeGenerator generator;
+	
+	@Autowired
+	private SessionUtils utils;
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_MEDICAL_RECORD_READ")
@@ -66,6 +85,77 @@ public class MedicalRecordService
 	public void edit(MedicalRecord type)
 	{
 		repository.saveAndFlush(type);
+	}
+
+	@Secured("ROLE_MEDICAL_RECORD_UPDATE")
+	public void createBilling(DoctorAppointment appointment)
+	{
+		MedicalRecord record = repository.findOneByAppointmentId(appointment.getId());
+		if(record != null)
+		{
+			DoctorAppointmentBilling appointmentBilling = new DoctorAppointmentBilling();
+			appointmentBilling.setNumber(generator.generate(appointment.getDate(), appointment.getCompany(),SequenceNumber.Code.BLDP));
+			appointmentBilling.setAppointment(appointment);
+			appointmentBilling.setCurrency(utils.getCurrency());
+			appointmentBilling.setCustomer(appointment.getPatient().getPerson());
+			appointmentBilling.setDate(appointment.getDate());
+			appointmentBilling.setOrganization(utils.getOrganization());
+			appointmentBilling.setSales(appointment.getDoctor().getPerson());
+			
+			for(Medication medication:record.getMedications())
+			{
+				if(!medication.isBilled())
+				{
+					DoctorAppointmentBillingItem item = new DoctorAppointmentBillingItem();
+					item.setBilling(appointmentBilling);
+					item.setNote(medication.getDescription());
+					item.setQuantity(medication.getQuantity());
+					item.setResource(medication.getMedicine().getName());
+					item.setCategory(Medication.class.getSimpleName());
+					
+					appointmentBilling.getItems().add(item);
+					
+					medication.setBilled(true);
+				}
+			}
+			
+			for(Treatment treatment:record.getTreatments())
+			{
+				if(!treatment.isBilled())
+				{
+					DoctorAppointmentBillingItem item = new DoctorAppointmentBillingItem();
+					item.setBilling(appointmentBilling);
+					item.setNote(treatment.getDescription());
+					item.setQuantity(treatment.getQuantity());
+					item.setResource(treatment.getService().getName());
+					item.setCategory(Treatment.class.getSimpleName());
+					
+					appointmentBilling.getItems().add(item);
+					
+					treatment.setBilled(true);
+				}
+			}
+			
+			for(Laboratory lab:record.getLaboratorys())
+			{
+				if(!lab.isBilled())
+				{
+					DoctorAppointmentBillingItem item = new DoctorAppointmentBillingItem();
+					item.setBilling(appointmentBilling);
+					item.setNote(lab.getDescription());
+					item.setQuantity(lab.getQuantity());
+					item.setResource(lab.getService().getName());
+					item.setCategory(Laboratory.class.getSimpleName());
+					
+					appointmentBilling.getItems().add(item);
+					
+					lab.setBilled(true);
+				}
+			}
+			
+			billingRepository.save(appointmentBilling);
+			repository.save(record);
+		}
 	}
 	
 	@Secured("ROLE_MEDICAL_RECORD_DELETE")

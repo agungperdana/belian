@@ -55,6 +55,20 @@ public class ProductService
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PRODUCT_READ")
+	public Product findOneByName(String name)
+	{
+		return repository.findOneByName(name);
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_PRODUCT_READ")
+	public Product findOneByNameOrId(String nameOrId)
+	{
+		return repository.findOneByNameOrId(nameOrId,nameOrId);
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_PRODUCT_READ")
 	public List<Product> findAll()
 	{
 		return repository.findAll();

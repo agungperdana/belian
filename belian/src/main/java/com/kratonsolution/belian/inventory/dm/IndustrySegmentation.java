@@ -9,5 +9,5 @@ package com.kratonsolution.belian.inventory.dm;
  */
 public enum IndustrySegmentation
 {
-	FOOD,MEDICAL,GENERAL
+	FOOD,MEDICAL,GENERAL,RETAIL
 }

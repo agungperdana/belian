@@ -17,6 +17,7 @@ import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.healtcare.svc.DoctorService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -186,6 +187,10 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
+		if(modules.get("CASHIER"))
+			list.appendChild(new CashierItem());
+		if(modules.get("BILLING"))
+			list.appendChild(new BillingItem());
 		if(modules.get("CASHSALES"))
 			list.appendChild(new CashSalesItem());
 		if(modules.get("SALES_REPORT"))
@@ -227,6 +232,14 @@ public class NavigationMenu extends Window
 		
 		if(modules.get("DOCTOR"))
 			list.appendChild(new DoctorItem());
+
+		SessionUtils utils = Springs.get(SessionUtils.class);
+		DoctorService service = Springs.get(DoctorService.class);
+		if(utils != null && service != null && utils.getUser().getPerson() != null)
+		{
+			if(!service.findAllByPerson(utils.getUser().getPerson().getId()).isEmpty())
+				list.appendChild(new DoctorDashboardItem());
+		}
 		
 		if(modules.get("PATIENT"))
 			list.appendChild(new PatientItem());

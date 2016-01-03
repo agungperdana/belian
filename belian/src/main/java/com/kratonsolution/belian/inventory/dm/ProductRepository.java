@@ -19,6 +19,8 @@ import com.kratonsolution.belian.inventory.dm.Product.Type;
 public interface ProductRepository extends JpaRepository<Product, String>
 {
 	public Product findOneByName(String name);
+
+	public Product findOneByNameOrId(String name,String id);
 	
 	public List<Product> findAllByTypeNot(Product.Type type);
 	

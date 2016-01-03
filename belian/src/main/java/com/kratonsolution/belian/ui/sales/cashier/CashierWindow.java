@@ -1,9 +1,13 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.healtcare.doctordashboard;
+package com.kratonsolution.belian.ui.sales.cashier;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Page;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Row;
 
@@ -20,26 +24,45 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class DoctorDashboardWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
+public class CashierWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
 	private Language language = Springs.get(Language.class);
 	
-	private Caption caption = new Caption(language.get("navbar.menu.healtcare.doctordashboard"));
+	private Caption caption = new Caption(language.get("navbar.menu.sales.cashier"));
 	
-	private DoctorDashboardButton status = new DoctorDashboardButton();
+	private CashierButton status = new CashierButton();
 	
-	public DoctorDashboardWindow()
+	public static CashierWindow injectInto(Page page)
+	{
+		CashierWindow window = new CashierWindow();
+		window.setPage(page);
+		window.init();
+		
+		return window;
+	}
+	
+	private CashierWindow()
 	{
 		super();
-		setWidth("750px");
-		init();
 	}
 	
 	protected void init()
 	{
-		caption.setImage("/icons/doctordashboard.png");
+		caption.setImage("/icons/cashier.png");
 		appendChild(caption);
 		insertGrid();
+		insertStatus();
+		status.addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				if(!isVisible())
+					setVisible(true);
+				else
+					setTopmost();
+			}
+		});
 	}
 	
 	@Override
@@ -73,7 +96,7 @@ public class DoctorDashboardWindow extends AbstractWindow implements HasGrid,Has
 	@Override
 	public void insertEditForm(Row row)
 	{
-		appendChild(new DoctorDashboardContent(row));
+		appendChild(new CashierEditContent(row));
 	}
 
 	@Override
@@ -81,7 +104,7 @@ public class DoctorDashboardWindow extends AbstractWindow implements HasGrid,Has
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof DoctorDashboardContent)
+			if(component instanceof CashierEditContent)
 			{
 				removeChild(component);
 				break;
@@ -90,15 +113,19 @@ public class DoctorDashboardWindow extends AbstractWindow implements HasGrid,Has
 	}
 
 	@Override
-	public void insertCreateForm(){}
+	public void insertCreateForm()
+	{
+	}
 
 	@Override
-	public void removeCreateForm(){}
+	public void removeCreateForm()
+	{
+	}
 
 	@Override
 	public void insertGrid()
 	{
-		appendChild(new DoctorDashboardGridContent());
+		appendChild(new CashierGridContent());
 	}
 
 	@Override
@@ -106,7 +133,7 @@ public class DoctorDashboardWindow extends AbstractWindow implements HasGrid,Has
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof DoctorDashboardGridContent)
+			if(component instanceof CashierGridContent)
 			{
 				removeChild(component);
 				break;
