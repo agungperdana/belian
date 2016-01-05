@@ -53,10 +53,9 @@ public class BillingService
 	public List<Billing> findAll(int pageindex,int itemSize)
 	{
 		List<Billing> list = new ArrayList<Billing>();
+	
 		if(utils.getOrganization() != null)
 			list.addAll(repository.findAllByOrganizationId(new PageRequest(pageindex, itemSize),utils.getOrganization().getId()));
-		else
-			list.addAll(repository.findAll(new PageRequest(pageindex, itemSize)).getContent());
 			
 		return list;
 	}
@@ -71,10 +70,10 @@ public class BillingService
 	@Secured("ROLE_BILLING_READ")
 	public int size()
 	{
-		if(utils.getOrganization() != null)
-			return repository.count(utils.getOrganization().getId()).intValue();
-		else
-			return Long.valueOf(repository.count()).intValue();
+		if(utils.getOrganization() == null)
+			return 0;
+
+		return repository.count(utils.getOrganization().getId()).intValue();
 	}
 	
 	@Secured("ROLE_BILLING_READ")
@@ -99,5 +98,12 @@ public class BillingService
 	public void delete(String id)
 	{
 		repository.delete(id);
+	}
+	
+	@Secured("ROLE_BILLING_DELETE")
+	public void delete(Billing module)
+	{
+		if(module != null)
+			repository.delete(module);
 	}
 }

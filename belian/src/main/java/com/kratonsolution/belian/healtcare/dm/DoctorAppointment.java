@@ -5,19 +5,15 @@ package com.kratonsolution.belian.healtcare.dm;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -71,8 +67,29 @@ public class DoctorAppointment implements Serializable
 	@Version
 	private Long version;
 	
-	@OneToMany(mappedBy="appointment",fetch=FetchType.EAGER)
-	private Set<DoctorAppointmentBilling> billings = new HashSet<DoctorAppointmentBilling>();
+	@ManyToOne
+	@JoinColumn(name="fk_doctor_appointment_billing")
+	private DoctorAppointmentBilling appointmentBilling;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_medicine_billing")
+	private MedicineBilling medicineBilling;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_laboratory_billing")
+	private LaboratoryBilling laboratoryBilling;
 
 	public DoctorAppointment(){}
+	
+	public boolean isCancelable()
+	{
+		if(appointmentBilling != null && appointmentBilling.isPaid())
+			return false;
+		if(medicineBilling != null && medicineBilling.isPaid())
+			return false;
+		if(laboratoryBilling != null && laboratoryBilling.isPaid())
+			return false;
+		
+		return true;
+	}
 }

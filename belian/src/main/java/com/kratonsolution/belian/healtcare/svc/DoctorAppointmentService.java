@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.healtcare.svc;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class DoctorAppointmentService extends SessionAware
 	public int size()
 	{
 		if(utils.getOrganization() == null)
-			return Long.valueOf(repository.count()).intValue();
+			return 0;
 		else
 			return repository.count(utils.getOrganization().getId()).intValue();
 	}
@@ -57,6 +58,13 @@ public class DoctorAppointmentService extends SessionAware
 
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_DOCTOR_APPOINTMENT_READ")
+	public List<DoctorAppointment> findAll(Date date,String companyId,String doctorId,String customer)
+	{
+		return repository.findAll(date,companyId,doctorId,customer);
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_DOCTOR_APPOINTMENT_READ")
 	public List<DoctorAppointment> findAll()
 	{
 		return repository.findAll();
@@ -67,7 +75,7 @@ public class DoctorAppointmentService extends SessionAware
 	public List<DoctorAppointment> findAll(int pageIndex,int pageSize)
 	{
 		if(utils.getOrganization() == null)
-			return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+			return new ArrayList<DoctorAppointment>();
 		else
 			return repository.findAllByCompanyId(new PageRequest(pageIndex, pageSize), utils.getOrganization().getId());
 	}

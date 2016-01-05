@@ -20,9 +20,13 @@ import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentBilling;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentBillingItem;
 import com.kratonsolution.belian.healtcare.dm.Laboratory;
+import com.kratonsolution.belian.healtcare.dm.LaboratoryBilling;
+import com.kratonsolution.belian.healtcare.dm.LaboratoryBillingItem;
 import com.kratonsolution.belian.healtcare.dm.MedicalRecord;
 import com.kratonsolution.belian.healtcare.dm.MedicalRecordRepository;
 import com.kratonsolution.belian.healtcare.dm.Medication;
+import com.kratonsolution.belian.healtcare.dm.MedicineBilling;
+import com.kratonsolution.belian.healtcare.dm.MedicineBillingItem;
 import com.kratonsolution.belian.healtcare.dm.Treatment;
 import com.kratonsolution.belian.sales.dm.BillingRepository;
 
@@ -93,70 +97,107 @@ public class MedicalRecordService
 		MedicalRecord record = repository.findOneByAppointmentId(appointment.getId());
 		if(record != null)
 		{
-			DoctorAppointmentBilling appointmentBilling = new DoctorAppointmentBilling();
-			appointmentBilling.setNumber(generator.generate(appointment.getDate(), appointment.getCompany(),SequenceNumber.Code.BLDP));
-			appointmentBilling.setAppointment(appointment);
-			appointmentBilling.setCurrency(utils.getCurrency());
-			appointmentBilling.setCustomer(appointment.getPatient().getPerson());
-			appointmentBilling.setDate(appointment.getDate());
-			appointmentBilling.setOrganization(utils.getOrganization());
-			appointmentBilling.setSales(appointment.getDoctor().getPerson());
+			createAppointmentBilling(appointment, record);
+			createMedicineBilling(appointment, record);
+			createLaboratoryBilling(appointment, record);
 			
-			for(Medication medication:record.getMedications())
-			{
-				if(!medication.isBilled())
-				{
-					DoctorAppointmentBillingItem item = new DoctorAppointmentBillingItem();
-					item.setBilling(appointmentBilling);
-					item.setNote(medication.getDescription());
-					item.setQuantity(medication.getQuantity());
-					item.setResource(medication.getMedicine().getName());
-					item.setCategory(Medication.class.getSimpleName());
-					
-					appointmentBilling.getItems().add(item);
-					
-					medication.setBilled(true);
-				}
-			}
-			
-			for(Treatment treatment:record.getTreatments())
-			{
-				if(!treatment.isBilled())
-				{
-					DoctorAppointmentBillingItem item = new DoctorAppointmentBillingItem();
-					item.setBilling(appointmentBilling);
-					item.setNote(treatment.getDescription());
-					item.setQuantity(treatment.getQuantity());
-					item.setResource(treatment.getService().getName());
-					item.setCategory(Treatment.class.getSimpleName());
-					
-					appointmentBilling.getItems().add(item);
-					
-					treatment.setBilled(true);
-				}
-			}
-			
-			for(Laboratory lab:record.getLaboratorys())
-			{
-				if(!lab.isBilled())
-				{
-					DoctorAppointmentBillingItem item = new DoctorAppointmentBillingItem();
-					item.setBilling(appointmentBilling);
-					item.setNote(lab.getDescription());
-					item.setQuantity(lab.getQuantity());
-					item.setResource(lab.getService().getName());
-					item.setCategory(Laboratory.class.getSimpleName());
-					
-					appointmentBilling.getItems().add(item);
-					
-					lab.setBilled(true);
-				}
-			}
-			
-			billingRepository.save(appointmentBilling);
 			repository.save(record);
 		}
 	}
+
+	private void createAppointmentBilling(DoctorAppointment appointment, MedicalRecord record)
+	{
+		DoctorAppointmentBilling appointmentBilling = new DoctorAppointmentBilling();
+		appointmentBilling.setNumber(generator.generate(appointment.getDate(), appointment.getCompany(),SequenceNumber.Code.BLDP));
+		appointmentBilling.setAppointment(appointment);
+		appointmentBilling.setCurrency(utils.getCurrency());
+		appointmentBilling.setCustomer(appointment.getPatient().getPerson());
+		appointmentBilling.setDate(appointment.getDate());
+		appointmentBilling.setOrganization(utils.getOrganization());
+		appointmentBilling.setSales(appointment.getDoctor().getPerson());
+		
+		for(Treatment treatment:record.getTreatments())
+		{
+			if(!treatment.isBilled())
+			{
+				DoctorAppointmentBillingItem item = new DoctorAppointmentBillingItem();
+				item.setBilling(appointmentBilling);
+				item.setNote(treatment.getDescription());
+				item.setQuantity(treatment.getQuantity());
+				item.setResource(treatment.getService().getName());
+				item.setCategory(Treatment.class.getSimpleName());
+				
+				appointmentBilling.getItems().add(item);
+				
+				treatment.setBilled(true);
+			}
+		}
+		
+		appointment.setAppointmentBilling(appointmentBilling);
+		
+		billingRepository.save(appointmentBilling);
+	}
+	
+	private void createMedicineBilling(DoctorAppointment appointment, MedicalRecord record)
+	{
+		MedicineBilling billing = new MedicineBilling();
+		billing.setNumber(generator.generate(appointment.getDate(), appointment.getCompany(),SequenceNumber.Code.BLMED));
+		billing.setAppointment(appointment);
+		billing.setCurrency(utils.getCurrency());
+		billing.setCustomer(appointment.getPatient().getPerson());
+		billing.setDate(appointment.getDate());
+		billing.setOrganization(utils.getOrganization());
+		billing.setSales(appointment.getDoctor().getPerson());
+		
+		for(Medication medication:record.getMedications())
+		{
+			MedicineBillingItem item = new MedicineBillingItem();
+			item.setBilling(billing);
+			item.setNote(medication.getDescription());
+			item.setQuantity(medication.getQuantity());
+			item.setResource(medication.getMedicine().getName());
+			item.setCategory("Medicine");
+			
+			billing.getItems().add(item);
+			
+			medication.setBilled(true);
+		}
+		
+		appointment.setMedicineBilling(billing);
+		
+		billingRepository.save(billing);
+	}
+	
+	private void createLaboratoryBilling(DoctorAppointment appointment, MedicalRecord record)
+	{
+		LaboratoryBilling billing = new LaboratoryBilling();
+		billing.setNumber(generator.generate(appointment.getDate(), appointment.getCompany(),SequenceNumber.Code.BLMED));
+		billing.setAppointment(appointment);
+		billing.setCurrency(utils.getCurrency());
+		billing.setCustomer(appointment.getPatient().getPerson());
+		billing.setDate(appointment.getDate());
+		billing.setOrganization(utils.getOrganization());
+		billing.setSales(appointment.getDoctor().getPerson());
+		
+		for(Laboratory laboratorys:record.getLaboratorys())
+		{
+			LaboratoryBillingItem item = new LaboratoryBillingItem();
+			item.setBilling(billing);
+			item.setNote(laboratorys.getDescription());
+			item.setQuantity(laboratorys.getQuantity());
+			item.setResource(laboratorys.getService().getName());
+			item.setCategory("Laboratory");
+			
+			billing.getItems().add(item);
+			
+			laboratorys.setBilled(true);
+		}
+		
+		appointment.setLaboratoryBilling(billing);
+		
+		billingRepository.save(billing);
+	}
+	
 	
 	@Secured("ROLE_MEDICAL_RECORD_DELETE")
 	public void delete(@PathVariable String id)

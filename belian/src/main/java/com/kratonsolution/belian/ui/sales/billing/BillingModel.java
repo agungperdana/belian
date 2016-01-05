@@ -9,6 +9,7 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.sales.dm.Billing;
 import com.kratonsolution.belian.sales.srv.BillingService;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -20,7 +21,9 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class BillingModel implements ListModel<Billing>
 {
-	private final BillingService service = Springs.get(BillingService.class);
+	private BillingService service = Springs.get(BillingService.class);
+	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	private List<Billing> data = new ArrayList<Billing>();
 	

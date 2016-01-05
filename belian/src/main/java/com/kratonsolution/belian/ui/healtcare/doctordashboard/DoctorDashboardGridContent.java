@@ -34,13 +34,16 @@ public class DoctorDashboardGridContent extends GridContent
 	public DoctorDashboardGridContent()
 	{
 		super();
+		
+		appendChild(gridToolbar);
+		appendChild(grid);
+		
 		initToolbar();
 		initGrid();
 	}
 	
 	protected void initToolbar()
 	{
-		gridToolbar.setParent(this);
 		gridToolbar.getRefresh().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
@@ -153,7 +156,6 @@ public class DoctorDashboardGridContent extends GridContent
 	{
 		final DoctorDashboardModel model = new DoctorDashboardModel(utils.getRowPerPage());
 		
-		grid.setParent(this);
 		grid.setHeight("80%");
 		grid.setEmptyMessage("No appointment data exist.");
 		grid.setModel(model);

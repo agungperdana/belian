@@ -24,7 +24,6 @@ import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.global.svc.CodeGenerator;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment.Status;
-import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentBilling;
 import com.kratonsolution.belian.healtcare.svc.DoctorAppointmentService;
 import com.kratonsolution.belian.healtcare.svc.MedicalRecordService;
 import com.kratonsolution.belian.sales.srv.BillingService;
@@ -142,6 +141,7 @@ public class CurrentAppointmentPanel extends Tabbox
 			{
 				service.done(appointment.getId());
 				medicalRecordService.createBilling(appointment);
+				service.edit(appointment);
 				
 				progress.setDisabled(true);
 				onhold.setDisabled(true);
@@ -160,19 +160,17 @@ public class CurrentAppointmentPanel extends Tabbox
 			@Override
 			public void onEvent(Event arg0) throws Exception
 			{
-				for(DoctorAppointmentBilling billing:appointment.getBillings())
+				if(!appointment.isCancelable())
 				{
-					if(billing.isPaid())
-					{
-						Clients.showNotification("Appointment cannot be canceled,bill already paid,use done instead", Clients.NOTIFICATION_TYPE_ERROR, null, null, 50, true);
-						return;
-					}
+					Clients.showNotification("Appointment cannot be canceled,bill already paid,use done instead", Clients.NOTIFICATION_TYPE_ERROR, null, null, 50, true);
+					return;
 				}
 
 				service.cancel(appointment.getId());
 
-				for(DoctorAppointmentBilling billing:appointment.getBillings())
-					billingService.delete(billing.getId());
+				billingService.delete(appointment.getAppointmentBilling());
+				billingService.delete(appointment.getMedicineBilling());
+				billingService.delete(appointment.getLaboratoryBilling());
 				
 				status.setValue(Status.CANCELED.toString());
 				
@@ -210,8 +208,8 @@ public class CurrentAppointmentPanel extends Tabbox
 		grid.getRows().appendChild(RowUtils.row("Note",appointment.getNote()));
 		grid.getRows().appendChild(RowUtils.row("Billing Information",""));
 		
-		for(DoctorAppointmentBilling bill:appointment.getBillings())
-			grid.getRows().appendChild(RowUtils.row(bill.getNumber(),bill.isPaid()?"PAID":"UNPAID"));
+		if(appointment.getAppointmentBilling() != null)
+			grid.getRows().appendChild(RowUtils.row(appointment.getAppointmentBilling().getNumber(),appointment.getAppointmentBilling().isPaid()?"PAID":"UNPAID"));
 	
 		info.appendChild(toolbar);
 		info.appendChild(grid);
