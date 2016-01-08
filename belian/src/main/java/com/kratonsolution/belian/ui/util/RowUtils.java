@@ -148,6 +148,15 @@ public class RowUtils
 		return new Row();
 	}
 	
+	public static Row row(Component label,Component component)
+	{
+		Row row = new Row();
+		row.appendChild(label);
+		row.appendChild(component);
+		
+		return row;
+	}
+	
 	public static Cell cell(String content,int colspan)
 	{
 		if(!Strings.isNullOrEmpty(content))

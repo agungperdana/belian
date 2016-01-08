@@ -37,10 +37,6 @@ public class Patient extends PersonRole
 	@OrderBy("date DESC")
 	private Set<DoctorAppointment> appointments = new HashSet<DoctorAppointment>();
 	
-	@OneToMany(mappedBy="patient")
-	@OrderBy("date DESC")
-	private Set<MedicalRecord> records = new HashSet<MedicalRecord>();
-	
 	public Patient()
 	{
 		setType(Type.PATIENT);

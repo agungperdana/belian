@@ -33,6 +33,7 @@ import com.kratonsolution.belian.healtcare.dm.BPJS;
 import com.kratonsolution.belian.healtcare.dm.Patient;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.component.OrganizationListItem;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -68,6 +69,8 @@ public class PatientFormContent extends FormContent
 	private Datebox birthDate = Components.currentDatebox();
 	
 	private Textbox bpjsNumber = new Textbox();
+	
+	private Listbox company = Components.newSelect();
 	
 	public PatientFormContent()
 	{
@@ -113,10 +116,9 @@ public class PatientFormContent extends FormContent
 					person.setMaritalStatus(MaritalStatus.valueOf(Components.string(statuses)));
 					person.setName(name.getText());
 					person.setTaxCode(taxNumber.getText());
-					
-					personService.add(person);
 
 					Patient patient = new Patient();
+					patient.setCompany(utils.getOrganization());
 					patient.setFrom(start.getValue());
 					patient.setBpjs(new BPJS());
 					patient.setDeleted(false);
@@ -136,21 +138,21 @@ public class PatientFormContent extends FormContent
 					person.setName(name.getText());
 					person.setTaxCode(taxNumber.getText());
 					
-					personService.edit(person);
-					
 					/**
 					 * Person exist, check if he/she already a patient?
 					 * if not register new role as a patient
 					 */
-					Patient patient = patientService.findOneByPartyId(person.getId());
+					Patient patient = patientService.findOne(person.getId(),utils.getOrganization().getId());
 					if(patient != null)
 					{
+						patient.setParty(person);
 						patient.getBpjs().setCard(bpjsNumber.getText());
 						patientService.edit(patient);
 					}
 					else
 					{
 						patient = new Patient();
+						patient.setCompany(utils.getOrganization());
 						patient.setFrom(start.getValue());
 						patient.setBpjs(new BPJS());
 						patient.setDeleted(false);
@@ -171,6 +173,12 @@ public class PatientFormContent extends FormContent
 	@Override
 	public void initForm()
 	{
+		if(utils.getOrganization() != null)
+		{
+			company.appendChild(new OrganizationListItem(utils.getOrganization()));
+			company.setSelectedIndex(0);
+		}
+		
 		for(Gender gender:Gender.values())
 			genders.appendChild(new Listitem(gender.name(), gender.name()));
 		
@@ -226,6 +234,10 @@ public class PatientFormContent extends FormContent
 		grid.getColumns().appendChild(new Column(null,null,"20%"));
 		grid.getColumns().appendChild(new Column());
 		
+		Row row002 = new Row();
+		row002.appendChild(new Label("Company"));
+		row002.appendChild(company);
+		
 		Row row001 = new Row();
 		row001.appendChild(new Label("Start Date"));
 		row001.appendChild(start);
@@ -269,6 +281,7 @@ public class PatientFormContent extends FormContent
 		row9.appendChild(new Label("Card Number"));
 		row9.appendChild(bpjsNumber);
 		
+		rows.appendChild(row002);
 		rows.appendChild(row001);
 		rows.appendChild(row1);
 		rows.appendChild(row2);
@@ -320,7 +333,7 @@ public class PatientFormContent extends FormContent
 				}
 			}
 			
-			Patient patient = patientService.findOneByPartyId(person.getId());
+			Patient patient = patientService.findOne(person.getId(),utils.getOrganization().getId());
 			if(patient != null)
 			{
 				toolbar.getSave().setDisabled(true);

@@ -26,4 +26,15 @@ public interface BillingRepository extends JpaRepository<Billing, String>
 	
 	@Query("SELECT COUNT(bill) FROM Billing bill WHERE bill.organization.id =:org")
 	public Long count(String organizationId);
+
+	@Query("FROM Billing bil WHERE bil.date =:date AND bil.organization.id =:company AND (bil.number LIKE :key% OR bil.customer.name LIKE :key%) ORDER BY bil.number DESC")
+	public List<Billing> findAll(@Param("date")Date date,@Param("company")String companyId,@Param("key")String key);
+	
+	public List<Billing> findAllByDateAndOrganizationId(Date date,String company);
+	
+	@Query("FROM Billing bil WHERE bil.organization.id =:company AND (bil.number LIKE :key% OR bil.customer.name LIKE :key%) ORDER BY bil.number DESC")
+	public List<Billing> findAll(@Param("company")String companyId,@Param("key")String param);
+	
+	@Query("FROM Billing bil WHERE bil.organization.id =:company ORDER BY bil.number DESC")
+	public List<Billing> findAll(String companyId);
 }

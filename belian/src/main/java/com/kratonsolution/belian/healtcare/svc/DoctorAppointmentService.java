@@ -32,14 +32,17 @@ public class DoctorAppointmentService extends SessionAware
 	@Autowired
 	private DoctorAppointmentRepository repository;
 	
+	@Autowired
+	private MedicalRecordService service;
+	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_DOCTOR_APPOINTMENT_READ")
 	public int size()
 	{
-		if(utils.getOrganization() == null)
-			return 0;
-		else
+		if(utils.getOrganization() != null)
 			return repository.count(utils.getOrganization().getId()).intValue();
+			
+		return 0;
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -77,7 +80,7 @@ public class DoctorAppointmentService extends SessionAware
 		if(utils.getOrganization() == null)
 			return new ArrayList<DoctorAppointment>();
 		else
-			return repository.findAllByCompanyId(new PageRequest(pageIndex, pageSize), utils.getOrganization().getId());
+			return repository.findAll(new PageRequest(pageIndex, pageSize), utils.getOrganization().getId());
 	}
 	
 	@Secured("ROLE_DOCTOR_APPOINTMENT_CREATE")
@@ -89,7 +92,7 @@ public class DoctorAppointmentService extends SessionAware
 	@Secured("ROLE_DOCTOR_APPOINTMENT_UPDATE")
 	public void edit(DoctorAppointment appointment)
 	{
-		repository.save(appointment);
+		repository.saveAndFlush(appointment);
 	}
 	
 	@Secured("ROLE_DOCTOR_APPOINTMENT_DELETE")
@@ -116,6 +119,7 @@ public class DoctorAppointmentService extends SessionAware
 		if(appointment != null)
 		{
 			appointment.setStatus(Status.DONE);
+			service.createBilling(appointment);
 			edit(appointment);
 		}
 	}

@@ -3,9 +3,9 @@
  */
 package com.kratonsolution.belian.healtcare.svc;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.PartyRole.Type;
 import com.kratonsolution.belian.healtcare.dm.Doctor;
 import com.kratonsolution.belian.healtcare.dm.DoctorRepository;
@@ -29,13 +30,19 @@ import com.kratonsolution.belian.healtcare.dm.DoctorRepository;
 public class DoctorService
 {
 	@Autowired
+	private SessionUtils utils;
+	
+	@Autowired
 	private DoctorRepository repository;
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_DOCTOR_READ")
 	public int size()
 	{
-		return Long.valueOf(repository.count()).intValue();
+		if(utils.getOrganization() == null)
+			return 0;
+		
+		return repository.count(utils.getOrganization().getId()).intValue();
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -49,6 +56,9 @@ public class DoctorService
 	@Secured("ROLE_DOCTOR_READ")
 	public List<Doctor> findAll()
 	{
+		if(utils.getOrganization() == null)
+			return new ArrayList<Doctor>();
+
 		return repository.findAll();
 	}
 		
@@ -56,13 +66,15 @@ public class DoctorService
 	@Secured("ROLE_DOCTOR_READ")
 	public List<Doctor> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		if(utils.getOrganization() == null)
+			return new ArrayList<Doctor>();
+
+		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId());
 	}
 	
 	@Secured("ROLE_DOCTOR_CREATE")
 	public void add(Doctor type)
 	{
-		type.setId(UUID.randomUUID().toString());
 		repository.save(type);
 	}
 	

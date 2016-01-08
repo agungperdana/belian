@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.healtcare.dm;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -12,4 +14,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface MedicalRecordRepository extends JpaRepository<MedicalRecord, String>
 {
 	public MedicalRecord findOneByAppointmentId(String appointmentId);
+	
+	public List<MedicalRecord> findAllByPatientId(String patientId);
 }

@@ -140,8 +140,6 @@ public class CurrentAppointmentPanel extends Tabbox
 			public void onEvent(Event arg0) throws Exception
 			{
 				service.done(appointment.getId());
-				medicalRecordService.createBilling(appointment);
-				service.edit(appointment);
 				
 				progress.setDisabled(true);
 				onhold.setDisabled(true);

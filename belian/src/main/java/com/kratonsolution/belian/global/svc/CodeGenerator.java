@@ -1,6 +1,5 @@
 package com.kratonsolution.belian.global.svc;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,10 +27,8 @@ public class CodeGenerator
 	
 	public String generate(Date date,Organization organization,Code code)
 	{
-		SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy");
-		
 		StringBuilder builder = new StringBuilder();
-		builder.append(code.toString().toUpperCase()).append(format.format(date).toUpperCase());
+		builder.append(code.toString().toUpperCase()).append(System.currentTimeMillis());
 		
 		SequenceNumber number = repository.findOneByCompanyIdAndDateAndCode(organization.getId(),date,code);
 		if(number == null)

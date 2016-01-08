@@ -12,6 +12,8 @@ import org.zkoss.zul.event.ListDataListener;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.sales.dm.Billing;
 import com.kratonsolution.belian.sales.srv.BillingService;
+import com.kratonsolution.belian.ui.SearchCriteria;
+import com.kratonsolution.belian.ui.Searchable;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -19,7 +21,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class BillingModel implements ListModel<Billing>
+public class BillingModel implements ListModel<Billing>,Searchable
 {
 	private BillingService service = Springs.get(BillingService.class);
 	
@@ -61,5 +63,19 @@ public class BillingModel implements ListModel<Billing>
 	{
 		data.clear();
 		data.addAll(service.findAll(pageIndex,itemSize));
+	}
+
+	@Override
+	public void search(String param)
+	{
+		data.clear();
+		data.addAll(service.findAll(param));
+	}
+
+	@Override
+	public void search(SearchCriteria criteria)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -56,6 +56,11 @@ public class MedicalRecord implements Serializable
 	private Patient patient;
 	
 	@ManyToOne
+	@JoinColumn(name="fk_doctor")
+	@NotFound(action=NotFoundAction.IGNORE)
+	private Doctor doctor;
+	
+	@ManyToOne
 	@JoinColumn(name="fk_doctor_appointment")
 	@NotFound(action=NotFoundAction.IGNORE)
 	private DoctorAppointment appointment;

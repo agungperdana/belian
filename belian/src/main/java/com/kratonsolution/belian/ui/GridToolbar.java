@@ -6,6 +6,9 @@ package com.kratonsolution.belian.ui;
 import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 
+import com.kratonsolution.belian.common.Language;
+import com.kratonsolution.belian.ui.util.Springs;
+
 /**
  * 
  * @author Agung Dodi Perdana
@@ -13,17 +16,19 @@ import org.zkoss.zul.Toolbarbutton;
  */
 public class GridToolbar extends Toolbar
 {
-	private final Toolbarbutton refresh = new Toolbarbutton("Refresh","/icons/refresh.png");
+	private Language language = Springs.get(Language.class);
 	
-	private final Toolbarbutton newData = new Toolbarbutton("New","/icons/new.png");
+	private final Toolbarbutton refresh = new Toolbarbutton(language.get("label.component.button.refresh"),"/icons/refresh.png");
+	
+	private final Toolbarbutton newData = new Toolbarbutton(language.get("label.component.button.new"),"/icons/new.png");
 
-	private final Toolbarbutton select = new Toolbarbutton("Select All","/icons/selectall.png");
+	private final Toolbarbutton select = new Toolbarbutton(language.get("label.component.button.selectall"),"/icons/selectall.png");
 	
-	private final Toolbarbutton deselect = new Toolbarbutton("Deselect All","/icons/deselect.png");
+	private final Toolbarbutton deselect = new Toolbarbutton(language.get("label.component.button.deselectall"),"/icons/deselect.png");
 	
-	private final Toolbarbutton delete = new Toolbarbutton("Remove","/icons/delete.png");
+	private final Toolbarbutton delete = new Toolbarbutton(language.get("label.component.button.delete"),"/icons/delete.png");
 	
-	private final Toolbarbutton search = new Toolbarbutton("Search","/icons/search.png");
+	private final Toolbarbutton search = new Toolbarbutton(language.get("label.component.button.refresh"),"/icons/search.png");
 	
 	public GridToolbar()
 	{

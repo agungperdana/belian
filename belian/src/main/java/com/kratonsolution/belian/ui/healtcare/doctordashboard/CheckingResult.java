@@ -82,6 +82,8 @@ public class CheckingResult extends Tabpanel
 				record.setAppointment(appointment);
 				record.setCheckingResult(checkingResult.getText());
 				record.setDiagnosis(diagnosis.getText());
+				record.setPatient(appointment.getPatient());
+				record.setDoctor(appointment.getDoctor());
 				
 				service.edit(record);
 				

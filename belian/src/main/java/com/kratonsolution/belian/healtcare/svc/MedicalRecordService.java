@@ -79,6 +79,13 @@ public class MedicalRecordService
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
 	}
 	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_MEDICAL_RECORD_READ")
+	public List<MedicalRecord> findAllByPatientId(String patientId)
+	{
+		return repository.findAllByPatientId(patientId);
+	}
+	
 	@Secured("ROLE_MEDICAL_RECORD_CREATE")
 	public void add(MedicalRecord type)
 	{

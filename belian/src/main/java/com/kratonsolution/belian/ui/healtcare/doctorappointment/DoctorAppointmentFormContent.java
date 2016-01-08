@@ -9,6 +9,7 @@ import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Combobox;
@@ -59,7 +60,7 @@ public class DoctorAppointmentFormContent extends FormContent
 	
 	private DoctorAppointmentService service = Springs.get(DoctorAppointmentService.class);
 	
-	private Listbox companys = Components.newSelect(utils.getOrganizations(), false);
+	private Listbox companys = Components.newSelect();
 	
 	private Textbox note = new Textbox();
 
@@ -136,6 +137,15 @@ public class DoctorAppointmentFormContent extends FormContent
 		
 		Components.setDefault(statuses);
 		
+		if(utils.getOrganization() == null)
+		{
+			Clients.showNotification("Default organization does not exist,please go to user profile and set it.");
+			DoctorAppointmentWindow window = (DoctorAppointmentWindow)getParent();
+			window.removeCreateForm();
+			window.insertGrid();
+		}
+
+		companys.appendChild(new Listitem(utils.getOrganization().getLabel(),utils.getOrganization().getValue()));
 		companys.addEventListener(Events.ON_SELECT, new EventListener<Event>()
 		{
 			@Override

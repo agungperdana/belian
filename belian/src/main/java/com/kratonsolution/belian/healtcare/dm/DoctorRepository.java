@@ -6,6 +6,7 @@ package com.kratonsolution.belian.healtcare.dm;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,4 +29,10 @@ public interface DoctorRepository extends JpaRepository<Doctor, String>
 	
 	@Query("FROM Doctor doc WHERE doc.party.id =:person")
 	public List<Doctor> findAllByPerson(@Param("person")String person);
+	
+	@Query("FROM Doctor doc WHERE doc.company.id =:company ORDER BY doc.party.name ASC")
+	public List<Doctor> findAll(Pageable pageable,@Param("company")String company);
+	
+	@Query("SELECT COUNT(doc) FROM Doctor doc WHERE doc.company.id =:company")
+	public Long count(@Param("company")String company);
 }

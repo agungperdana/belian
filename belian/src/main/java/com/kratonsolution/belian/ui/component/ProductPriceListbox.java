@@ -8,6 +8,7 @@ import java.sql.Date;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.healtcare.dm.Patient;
@@ -25,6 +26,8 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class ProductPriceListbox extends Listbox
 {
+	private SessionUtils utils = Springs.get(SessionUtils.class);
+	
 	public static ProductPriceListbox newInstance(String productName,EconomicAgent customer,Geographic location,Date date)
 	{
 		return new ProductPriceListbox(productName, customer, location,date);
@@ -67,7 +70,7 @@ public class ProductPriceListbox extends Listbox
 			
 			PatientService patientService = Springs.get(PatientService.class);
 			
-			Patient patient = patientService.findOneByPartyId(customer.getId());
+			Patient patient = patientService.findOne(customer.getId(),utils.getOrganization().getId());
 			if(patient != null && patient.getBpjs() != null && product.getSegmentation().equals(IndustrySegmentation.MEDICAL) && bpjs != null)
 			{
 				appendChild(bpjs);

@@ -6,12 +6,16 @@ package com.kratonsolution.belian.ui.sales.billing;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
+import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.sales.dm.Billing;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.component.SearchBox;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -26,13 +30,32 @@ public class BillingGridContent extends GridContent
 	public BillingGridContent()
 	{
 		super();
+		
+		appendChild(gridToolbar);
+		appendChild(new SearchBox(new EventListener<InputEvent>()
+		{
+			@Override
+			public void onEvent(InputEvent event) throws Exception
+			{
+				ListModel<Billing> model = grid.getModel();
+				if(model instanceof BillingModel)
+				{
+					
+					BillingModel cm = (BillingModel)model;
+					cm.search(event.getValue());
+					grid.setModel(cm);
+				}
+			}
+		}));
+		
+		appendChild(grid);
+		
 		initToolbar();
 		initGrid();
 	}
 	
 	protected void initToolbar()
 	{
-		gridToolbar.setParent(this);
 		gridToolbar.getRefresh().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
@@ -45,22 +68,13 @@ public class BillingGridContent extends GridContent
 		
 		gridToolbar.removeChild(gridToolbar.getNew());
 		gridToolbar.removeChild(gridToolbar.getDelete());
-		
-		gridToolbar.getSearch().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-			}
-		});
-
+		gridToolbar.removeChild(gridToolbar.getSelect());
 	}
 	
 	protected void initGrid()
 	{
 		final BillingModel model = new BillingModel(utils.getRowPerPage());
 
-		grid.setParent(this);
 		grid.setHeight("80%");
 		grid.setEmptyMessage("No billing data exist.");
 		grid.setModel(model);

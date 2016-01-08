@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.sales.dm.Billing;
 import com.kratonsolution.belian.sales.dm.BillingRepository;
@@ -105,5 +106,25 @@ public class BillingService
 	{
 		if(module != null)
 			repository.delete(module);
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_BILLING_READ")
+	public List<Billing> findAllCurrent(String key)
+	{
+		if(Strings.isNullOrEmpty(key))
+			return repository.findAllByDateAndOrganizationId(new Date(System.currentTimeMillis()),utils.getOrganization().getId());
+		else
+			return repository.findAll(new Date(System.currentTimeMillis()),utils.getOrganization().getId(),key);
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_BILLING_READ")
+	public List<Billing> findAll(String key)
+	{
+		if(Strings.isNullOrEmpty(key))
+			return repository.findAll(utils.getOrganization().getId());
+		else
+			return repository.findAll(utils.getOrganization().getId(),key);
 	}
 }

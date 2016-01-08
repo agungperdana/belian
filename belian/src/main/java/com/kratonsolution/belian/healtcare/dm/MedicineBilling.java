@@ -42,6 +42,6 @@ public class MedicineBilling extends Billing
 	@Override
 	public String getBillingType()
 	{
-		return "Medicine Billing";
+		return "Medicine";
 	}
 }

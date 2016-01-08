@@ -45,7 +45,7 @@ public class MedicationProductBox extends Hbox implements ProductSelectionListen
 	
 	public static MedicationProductBox getInstance(IndustrySegmentation segmentation,Type type)
 	{
-		return new MedicationProductBox(null,null,false);
+		return new MedicationProductBox(segmentation,type,false);
 	}
 	
 	public static MedicationProductBox getInstance(IndustrySegmentation segmentation,Type type,boolean readOnly)

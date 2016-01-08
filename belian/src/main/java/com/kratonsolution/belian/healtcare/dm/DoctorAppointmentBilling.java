@@ -46,6 +46,6 @@ public class DoctorAppointmentBilling extends Billing
 	@Override
 	public String getBillingType()
 	{
-		return "Doctor Appointment";
+		return "Treatment";
 	}
 }

@@ -12,6 +12,8 @@ import org.zkoss.zul.event.ListDataListener;
 
 import com.kratonsolution.belian.sales.dm.Billing;
 import com.kratonsolution.belian.sales.srv.BillingService;
+import com.kratonsolution.belian.ui.SearchCriteria;
+import com.kratonsolution.belian.ui.Searchable;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -19,7 +21,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class CashierModel implements ListModel<Billing>
+public class CashierModel implements ListModel<Billing>,Searchable
 {
 	private final BillingService service = Springs.get(BillingService.class);
 	
@@ -63,5 +65,19 @@ public class CashierModel implements ListModel<Billing>
 	{
 		data.clear();
 		data.addAll(service.findAllByDateAndOrganizationIdAndPaid(new Date(System.currentTimeMillis()),companyId,false));
+	}
+
+	@Override
+	public void search(String param)
+	{
+		data.clear();
+		data.addAll(service.findAllCurrent(param));
+	}
+
+	@Override
+	public void search(SearchCriteria criteria)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }
