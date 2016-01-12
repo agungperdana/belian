@@ -4,6 +4,9 @@
 package com.kratonsolution.belian.ui.healtcare.doctordashboard;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Treechildren;
 import org.zkoss.zul.Treeitem;
 
@@ -46,7 +49,21 @@ public class AppointmentItem extends Treeitem
 			for(DoctorAppointment app:patient.getAppointments())
 			{
 				if(type.getId().equals(app.getDoctor().getCategory().getId()))
-					childs.appendChild(new Treeitem(Dates.format(app.getDate())+" - "+app.getCompany().getName()+" - "+app.getDoctor().getPerson().getName()));
+				{
+					Treeitem treeitem = new Treeitem(Dates.format(app.getDate())+" "+app.getDoctor().getPerson().getName());
+					treeitem.setId(app.getId());
+					treeitem.addEventListener(Events.ON_CLICK,new EventListener<Event>()
+					{
+						@Override
+						public void onEvent(Event event) throws Exception
+						{
+							layout.getChildren().clear();
+							layout.appendChild(new CurrentAppointmentPanel(app));
+						}
+					});
+					
+					childs.appendChild(treeitem);
+				}
 			}
 			
 			item.appendChild(childs);

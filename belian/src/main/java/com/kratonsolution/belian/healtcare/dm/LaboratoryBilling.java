@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -31,6 +32,9 @@ import com.kratonsolution.belian.sales.dm.Billing;
 @Table(name="laboratory_billing")
 public class LaboratoryBilling extends Billing
 {
+	@Column(name="is_finish")
+	private boolean finish;
+	
 	@ManyToOne
 	@JoinColumn(name="fk_appointment")
 	@NotFound(action=NotFoundAction.IGNORE)

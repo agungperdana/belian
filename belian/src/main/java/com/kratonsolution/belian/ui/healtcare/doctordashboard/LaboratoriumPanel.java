@@ -20,6 +20,7 @@ import org.zkoss.zul.Toolbarbutton;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
+import com.kratonsolution.belian.healtcare.dm.DoctorAppointment.Status;
 import com.kratonsolution.belian.healtcare.dm.Laboratory;
 import com.kratonsolution.belian.healtcare.dm.MedicalRecord;
 import com.kratonsolution.belian.healtcare.svc.MedicalRecordService;
@@ -57,6 +58,9 @@ public class LaboratoriumPanel extends Tabpanel
 	
 	private void initToolbar(DoctorAppointment appointment)
 	{
+		if(!appointment.getStatus().equals(Status.PROGRESS))
+			toolbar.disabled();
+		
 		toolbar.getNew().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
@@ -73,6 +77,8 @@ public class LaboratoriumPanel extends Tabpanel
 		});
 	
 		Toolbarbutton save = new Toolbarbutton("Save","/icons/save.png");
+		if(appointment.getStatus().equals(Status.DONE) || appointment.getStatus().equals(Status.CANCELED))
+			save.setDisabled(true);
 		save.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override

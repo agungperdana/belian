@@ -32,4 +32,16 @@ public class FormToolbar extends Toolbar
 		appendChild(cancel);
 		appendChild(save);
 	}
+	
+	public void disbaled()
+	{
+		cancel.setDisabled(true);
+		save.setDisabled(true);
+	}
+	
+	public void enabled()
+	{
+		cancel.setDisabled(false);
+		save.setDisabled(false);
+	}
 }

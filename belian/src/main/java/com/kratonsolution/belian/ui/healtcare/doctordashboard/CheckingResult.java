@@ -20,6 +20,7 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
+import com.kratonsolution.belian.healtcare.dm.DoctorAppointment.Status;
 import com.kratonsolution.belian.healtcare.dm.MedicalRecord;
 import com.kratonsolution.belian.healtcare.svc.MedicalRecordService;
 import com.kratonsolution.belian.ui.FormToolbar;
@@ -58,6 +59,9 @@ public class CheckingResult extends Tabpanel
 	
 	private void initToolbar(DoctorAppointment appointment)
 	{
+		if(!appointment.getStatus().equals(Status.PROGRESS))
+			toolbar.disbaled();
+			
 		toolbar.removeChild(toolbar.getCancel());
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{

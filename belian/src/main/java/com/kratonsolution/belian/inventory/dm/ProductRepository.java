@@ -32,4 +32,7 @@ public interface ProductRepository extends JpaRepository<Product, String>
 	
 	@Query("FROM Product prd WHERE prd.segmentation =:segmentation AND (prd.code LIKE :name% OR prd.name LIKE :name%) AND prd.type =:type ORDER BY prd.name ASC")
 	public List<Product> findAllBySegmentationAndNameAndType(@Param("segmentation")IndustrySegmentation segmentation,@Param("name")String name,@Param("type")Type type);
+
+	@Query("FROM Product prd WHERE prd.segmentation =:segment AND prd.category.id =:category AND (:date BETWEEN prd.start AND prd.end) ORDER BY prd.name ASC")
+	public List<Product> findAll(@Param("date")Date date,@Param("category")String category,@Param("segment")IndustrySegmentation segmentation);
 }

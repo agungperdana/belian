@@ -76,4 +76,22 @@ public class GridToolbar extends Toolbar
 	{
 		return search;
 	}
+	
+	public void disabled()
+	{
+		refresh.setDisabled(true);
+		newData.setDisabled(true);
+		select.setDisabled(true);
+		deselect.setDisabled(true);
+		search.setDisabled(true);
+	}
+	
+	public void enabled()
+	{
+		refresh.setDisabled(false);
+		newData.setDisabled(false);
+		select.setDisabled(false);
+		deselect.setDisabled(false);
+		search.setDisabled(false);
+	}
 }

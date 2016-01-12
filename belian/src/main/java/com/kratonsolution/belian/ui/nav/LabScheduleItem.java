@@ -10,7 +10,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.Language;
-import com.kratonsolution.belian.ui.accounting.budget.BudgetWindow;
+import com.kratonsolution.belian.ui.healtcare.labschedule.LabScheduleWindow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -18,35 +18,35 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class LabsItem extends Listitem
+public class LabScheduleItem extends Listitem
 {
 	private Language language = Springs.get(Language.class);
 	
-	public LabsItem()
+	public LabScheduleItem()
 	{
 		init();
 	}
 	
 	public void init()
 	{
-		setLabel(language.get("navbar.menu.healtcare.labs"));
-		setImage("/icons/medicalrecord.png");
+		setLabel(language.get("navbar.menu.healtcare.labschedule"));
+		setImage("/icons/labschedule.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				BudgetWindow window = null;
+				LabScheduleWindow window = null;
 				
 				for(Component component:getPage().getRoots())
 				{
-					if(component instanceof BudgetWindow)
-						window = (BudgetWindow)component;
+					if(component instanceof LabScheduleWindow)
+						window = (LabScheduleWindow)component;
 				}
 				
 				if(window == null)
-					window = BudgetWindow.injectInto(getPage());
+					window = LabScheduleWindow.injectInto(getPage());
 				
 				else if(!window.isVisible())
 				{

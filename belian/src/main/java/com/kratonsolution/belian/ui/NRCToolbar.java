@@ -23,15 +23,21 @@ import com.kratonsolution.belian.ui.util.RowUtils;
  */
 public class NRCToolbar extends Toolbar
 {
+	private Toolbarbutton newDate = new Toolbarbutton("New","/icons/new.png");
+	
+	private Toolbarbutton remove = new Toolbarbutton("Remove","/icons/delete.png");
+	
+	private Toolbarbutton clear = new Toolbarbutton("Clear","/icons/refresh.png");
+	
 	private Grid parent;
 	
 	public NRCToolbar(Grid grid)
 	{
 		this.parent = grid;
 		setHeight("40px");
-		appendChild(new Toolbarbutton("New","/icons/new.png"));
-		appendChild(new Toolbarbutton("Remove","/icons/delete.png"));
-		appendChild(new Toolbarbutton("Clear","/icons/refresh.png"));
+		appendChild(newDate);
+		appendChild(remove);
+		appendChild(clear);
 		
 		getRemove().addEventListener(Events.ON_CLICK,new RemoveListener());
 		getClear().addEventListener(Events.ON_CLICK,new ClearListener());
@@ -42,19 +48,19 @@ public class NRCToolbar extends Toolbar
 		this(null);
 	}
 	
-	public Component getNew()
+	public Toolbarbutton getNew()
 	{
-		return getChildren().get(0);
+		return newDate;
 	}
 	
-	public Component getRemove()
+	public Toolbarbutton getRemove()
 	{
-		return getChildren().get(1);
+		return remove;
 	}
 	
-	public Component getClear()
+	public Toolbarbutton getClear()
 	{
-		return getChildren().get(2);
+		return clear;
 	}
 	
 	private class RemoveListener implements EventListener<Event>
@@ -83,5 +89,19 @@ public class NRCToolbar extends Toolbar
 			if(parent != null)
 				parent.getRows().getChildren().clear();
 		}
+	}
+	
+	public void disabled()
+	{
+		newDate.setDisabled(true);
+		remove.setDisabled(true);
+		clear.setDisabled(true);
+	}
+	
+	public void enabled()
+	{
+		newDate.setDisabled(false);
+		remove.setDisabled(false);
+		clear.setDisabled(false);
 	}
 }

@@ -17,10 +17,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.general.dm.Organization;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import com.kratonsolution.belian.general.dm.Organization;
 
 /**
  * @author Agung Dodi Perdana
@@ -34,20 +34,26 @@ import com.kratonsolution.belian.general.dm.Organization;
 @Table(name="doctor_appointment")
 public class DoctorAppointment implements Serializable
 {
-	public enum Status{QUEUE,PROGRESS,ONHOLD,DONE,CANCELED}
-	
+	public enum Status{REGISTERED,QUEUE,PROGRESS,ONHOLD,DONE,CANCELED}
+		
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="date")
 	private Date date;
 	
-	@Column(name="queue")
-	private int queue = 1;
-	
 	@ManyToOne
 	@JoinColumn(name="fk_organization")
 	private Organization company;
+	
+	@Column(name="note")
+	private String note;
+	
+	@Version
+	private Long version;
+	
+	@Column(name="queue")
+	private int queue = 1;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_doctor")
@@ -59,13 +65,7 @@ public class DoctorAppointment implements Serializable
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="status")
-	private Status status = Status.QUEUE;
-	
-	@Column(name="note")
-	private String note;
-	
-	@Version
-	private Long version;
+	private Status status = Status.REGISTERED;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_doctor_appointment_billing")

@@ -57,7 +57,7 @@ public class CurrentAppointmentPanel extends Tabbox
 		appendChild(new Tabpanels());
 
 		getTabs().appendChild(new Tab("Appointment"));
-		getTabs().appendChild(new Tab("Checking"));
+		getTabs().appendChild(new Tab("Observation"));
 		getTabs().appendChild(new Tab("Medication"));
 		getTabs().appendChild(new Tab("Treatment"));
 		getTabs().appendChild(new Tab("Laboratiorium"));
@@ -97,6 +97,14 @@ public class CurrentAppointmentPanel extends Tabbox
 			onhold.setDisabled(false);
 			done.setDisabled(false);
 			cancel.setDisabled(false);
+		}
+		else if(appointment.getStatus().equals(Status.DONE) || appointment.getStatus().equals(Status.CANCELED))
+		{
+			progress.setDisabled(true);
+			onhold.setDisabled(true);
+			done.setDisabled(true);
+			cancel.setDisabled(true);
+			billing.setDisabled(true);
 		}
 
 		progress.addEventListener(Events.ON_CLICK,new EventListener<Event>()
