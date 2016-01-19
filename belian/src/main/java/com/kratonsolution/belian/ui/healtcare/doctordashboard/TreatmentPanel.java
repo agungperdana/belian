@@ -19,12 +19,12 @@ import org.zkoss.zul.Tabpanel;
 import org.zkoss.zul.Toolbarbutton;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment.Status;
 import com.kratonsolution.belian.healtcare.dm.MedicalRecord;
 import com.kratonsolution.belian.healtcare.dm.Treatment;
 import com.kratonsolution.belian.healtcare.svc.MedicalRecordService;
-import com.kratonsolution.belian.inventory.dm.IndustrySegmentation;
 import com.kratonsolution.belian.inventory.dm.Product.Type;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.NRCToolbar;

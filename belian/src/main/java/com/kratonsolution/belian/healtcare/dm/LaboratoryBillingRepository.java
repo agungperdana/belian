@@ -16,9 +16,9 @@ import org.springframework.data.repository.query.Param;
  */
 public interface LaboratoryBillingRepository extends JpaRepository<LaboratoryBilling, String>
 {
-	@Query("FROM LaboratoryBilling bil WHERE bil.organization.id =:company AND bil.paid IS true ORDER BY bil.number ASC")
+	@Query("FROM LaboratoryBilling bil WHERE bil.organization.id =:company AND bil.paid IS true AND bil.status = 'REGISTERED' ORDER BY bil.number ASC")
 	public List<LaboratoryBilling> findAll(Pageable pageable,@Param("company")String company);
 	
-	@Query("SELECT COUNT(bil) FROM LaboratoryBilling bil WHERE bil.organization.id =:company AND bil.paid IS true")
+	@Query("SELECT COUNT(bil) FROM LaboratoryBilling bil WHERE bil.organization.id =:company AND bil.paid IS true AND bil.status = 'REGISTERED'")
 	public Long count(@Param("company")String company);
 }

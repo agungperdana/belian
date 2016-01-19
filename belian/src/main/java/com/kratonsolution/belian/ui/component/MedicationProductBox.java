@@ -13,7 +13,7 @@ import org.zkoss.zul.Button;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Textbox;
 
-import com.kratonsolution.belian.inventory.dm.IndustrySegmentation;
+import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.Product.Type;
 

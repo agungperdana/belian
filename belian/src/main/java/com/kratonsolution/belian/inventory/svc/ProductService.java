@@ -16,7 +16,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.kratonsolution.belian.inventory.dm.IndustrySegmentation;
+import com.google.common.base.Strings;
+import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.Product.Type;
 import com.kratonsolution.belian.inventory.dm.ProductCode;
@@ -72,6 +73,27 @@ public class ProductService
 	public List<Product> findAll()
 	{
 		return repository.findAll();
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_PRODUCT_READ")
+	public List<Product> findAll(Date date,String name)
+	{
+		if(Strings.isNullOrEmpty(name))
+			return repository.findAll(date);
+		else
+			return repository.findAll(date, name);
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_PRODUCT_READ")
+	public List<Product> findAll(Date date,String category,IndustrySegmentation segmentation,Type type,String name)
+	{
+		if(Strings.isNullOrEmpty(name))
+			return repository.findAll(date,category,segmentation,type);
+		else
+			return repository.findAll(date,category,segmentation,type,name);
+	
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)

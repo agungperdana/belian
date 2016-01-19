@@ -9,6 +9,7 @@ import org.zkoss.zul.RowRenderer;
 
 import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.healtcare.dm.LaboratoryBilling;
+import com.kratonsolution.belian.healtcare.dm.LaboratoryBilling.Status;
 import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -27,14 +28,19 @@ public class LabScheduleRowRenderer implements RowRenderer<LaboratoryBilling>
 			Language language = Springs.get(Language.class);
 			
 			Label status = new Label();
-			if(data.isFinish())
+			if(data.getStatus().equals(Status.FINISHED))
 			{
 				status.setValue(language.get("label.component.generic.done"));
 				status.setStyle("font-weight:bolder;color:red;");
 			}
-			else
+			else if(data.getStatus().equals(Status.REGISTERED))
 			{
 				status.setValue(language.get("label.component.generic.wait"));
+				status.setStyle("font-weight:bolder;color:green;");
+			}
+			else
+			{
+				status.setValue(language.get("label.component.generic.handled"));
 				status.setStyle("font-weight:bolder;color:green;");
 			}
 			

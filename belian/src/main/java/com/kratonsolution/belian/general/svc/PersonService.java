@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.dm.PersonRepository;
 
@@ -47,6 +48,16 @@ public class PersonService
 	public List<Person> findAll()
 	{
 		return repository.findAll();
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_PERSON_READ")
+	public List<Person> findAll(String identityOrName)
+	{
+		if(Strings.isNullOrEmpty(identityOrName))
+			return repository.findAll();
+		else
+			return repository.findAll(identityOrName);
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)

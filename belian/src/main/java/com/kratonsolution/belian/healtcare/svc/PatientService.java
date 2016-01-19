@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.PersonRepository;
 import com.kratonsolution.belian.healtcare.dm.Patient;
@@ -53,6 +54,16 @@ public class PatientService
 	{
 		return repository.findOne(id);
 	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_PATIENT_READ")
+	public Patient findOneByName(String name)
+	{
+		if(utils.getOrganization() == null)
+			return null;
+		
+		return repository.findOneByPartyNameAndCompanyId(name,utils.getOrganization().getId());
+	}
 
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PATIENT_READ")
@@ -61,7 +72,7 @@ public class PatientService
 		if(utils.getOrganization() == null)
 			return new ArrayList<Patient>();
 		
-		return repository.findAll();
+		return repository.findAll(utils.getOrganization().getId());
 	}
 		
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -99,6 +110,16 @@ public class PatientService
 	public Patient findOneByBPJS(String number)
 	{
 		return repository.findOneByBpjsCard(number);
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_PATIENT_READ")
+	public List<Patient> findAll(String nameOrIdentity)
+	{
+		if(Strings.isNullOrEmpty(nameOrIdentity))
+			return findAll();
+		else
+			return repository.findAll(nameOrIdentity, utils.getOrganization().getId());
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)

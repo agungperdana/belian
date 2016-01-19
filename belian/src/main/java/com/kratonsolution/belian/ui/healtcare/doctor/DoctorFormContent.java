@@ -4,7 +4,6 @@
 package com.kratonsolution.belian.ui.healtcare.doctor;
 
 import java.util.List;
-import java.util.Vector;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
@@ -12,7 +11,6 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.InputEvent;
-import org.zkoss.zul.Cell;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Combobox;
@@ -26,11 +24,7 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.Branch;
-import com.kratonsolution.belian.general.dm.BranchRepository;
-import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.OrganizationUnit;
-import com.kratonsolution.belian.general.dm.PartyRelationship;
 import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.dm.PartyRole.Type;
 import com.kratonsolution.belian.general.dm.Person;
@@ -58,8 +52,6 @@ public class DoctorFormContent extends FormContent
 {	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
-	private BranchRepository branchRepository = Springs.get(BranchRepository.class);
-	
 	private DoctorService service = Springs.get(DoctorService.class);
 	
 	private DoctorTypeService doctorTypeService = Springs.get(DoctorTypeService.class);
@@ -71,6 +63,8 @@ public class DoctorFormContent extends FormContent
 	private PersonService personService = Springs.get(PersonService.class);
 	
 	private OrganizationUnitService unitService = Springs.get(OrganizationUnitService.class);
+	
+	private Listbox companys = Components.newSelect(utils.getOrganization());
 	
 	private Combobox identity = Components.autoComplete();
 	
@@ -140,110 +134,16 @@ public class DoctorFormContent extends FormContent
 					person.setTaxCode(taxNumber.getText());
 					
 					personService.add(person);
-					
-					Doctor doctor = new Doctor();
-					doctor.setCategory(doctorTypeService.findOne(Components.string(classifications)));
-					doctor.setFrom(start.getValue());
-					doctor.setParty(person);
-					doctor.setType(PartyRole.Type.DOCTOR);
-					
-					service.add(doctor);
-
-					for(Component component:orgs.getChildren())
-					{
-						CheckboxItem item = (CheckboxItem)component;
-						if(item.isSelected())
-						{
-							Branch branch = branchRepository.findOneByPartyId(item.getId());
-							if(branch != null)
-							{
-								DoctorPartnership partnership = new DoctorPartnership();
-								partnership.setFrom(start.getValue());
-								partnership.setChild(doctor);
-								partnership.setParent(branch);
-								partnership.setType(PartyRelationship.Type.DOCTORPARTNERSHIP);
-								
-								partnershipRepository.save(partnership);
-							}
-						}
-					}
 				}
-				else
-				{
-					person.setBirthDate(birthDate.getValue());
-					person.setBirthPlace(geographicService.findOne(Components.string(birthPlace)));
-					person.setDeleteadble(true);
-					person.setGender(Gender.valueOf(Components.string(genders)));
-					person.setIdentity(identity.getText());
-					person.setMaritalStatus(MaritalStatus.valueOf(Components.string(statuses)));
-					person.setName(name.getText());
-					person.setTaxCode(taxNumber.getText());
-					
-					personService.edit(person);
-					
-					/**
-					 * Person exist, check if he/she already a doctor?
-					 * if not register new role as a doctor and partnership to organization
-					 */
-					Doctor doctor = service.findOneByPartyIdAndType(person.getId(), Type.DOCTOR);
-					if(doctor == null)
-					{
-						doctor = new Doctor();
-						doctor.setCategory(doctorTypeService.findOne(Components.string(classifications)));
-						doctor.setFrom(start.getValue());
-						doctor.setParty(person);
-						doctor.setType(PartyRole.Type.DOCTOR);
-						
-						service.add(doctor);
-						
-						for(Component component:orgs.getChildren())
-						{
-							CheckboxItem item = (CheckboxItem)component;
-							if(item.isSelected())
-							{
-								Branch branch = branchRepository.findOneByPartyId(item.getId());
-								if(branch != null)
-								{
-									DoctorPartnership partnership = new DoctorPartnership();
-									partnership.setFrom(start.getValue());
-									partnership.setChild(doctor);
-									partnership.setParent(branch);
-									partnership.setType(PartyRelationship.Type.DOCTORPARTNERSHIP);
-									
-									partnershipRepository.save(partnership);
-								}
-							}
-						}
-					}
-					/**
-					 * The doctor already registered into one or more organization as a doctor
-					 */
-					else
-					{
-						for(Component component:orgs.getChildren())
-						{
-							CheckboxItem item = (CheckboxItem)component;
-							if(item.isSelected())
-							{
-								Branch branch = branchRepository.findOneByPartyId(item.getId());
-								if(branch != null)
-								{
-									DoctorPartnership partner = partnershipRepository.findOneByParentIdAndChildId(doctor.getId(), branch.getId());
-									if(partner == null)
-									{
-										partner = new DoctorPartnership();
-										partner.setFrom(start.getValue());
-										partner.setChild(doctor);
-										partner.setParent(branch);
-										partner.setType(PartyRelationship.Type.DOCTORPARTNERSHIP);
-										
-										partnershipRepository.save(partner);
-									}
-								}
-							}
-						}
-					}
-				}
+				
+				Doctor doctor = new Doctor();
+				doctor.setCompany(utils.getOrganization());
+				doctor.setCategory(doctorTypeService.findOne(Components.string(classifications)));
+				doctor.setFrom(start.getValue());
+				doctor.setParty(person);
+				doctor.setType(PartyRole.Type.DOCTOR);
+				
+				service.add(doctor);
 				
 				DoctorWindow window = (DoctorWindow)getParent();
 				window.removeCreateForm();
@@ -306,38 +206,21 @@ public class DoctorFormContent extends FormContent
 			}
 		});
 		
-		Vector<Organization> vOrgs = new Vector<Organization>();
-		
-		List<Branch> branchs = branchRepository.findAll();
-		for(Branch branch:branchs)
-		{
-			for(Organization organization:utils.getOrganizations())
-			{
-				if(organization.getId().equals(branch.getParty().getId()))
-				{
-					vOrgs.add(organization);
-					break;
-				}
-			}
-		}
-		
-		for(Organization organization:vOrgs)
-			orgs.appendChild(new CheckboxItem(organization.getId(), organization.getName()));
+		if(companys.getItemCount() > 0)
+			companys.setSelectedIndex(0);
 		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"15%"));
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column(null,null,"40%"));
-		grid.getColumns().appendChild(new Column(null,null,"45%"));
+		grid.setSpan("1");
 		
-		Cell cell = new Cell();
-		cell.setRowspan(10);
-		cell.appendChild(orgs);
-		cell.setValign("top");
+		Row row002 = new Row();
+		row002.appendChild(new Label("Company"));
+		row002.appendChild(companys);
 		
 		Row row001 = new Row();
 		row001.appendChild(new Label("Start Date"));
 		row001.appendChild(start);
-		row001.appendChild(cell);
 			
 		Row row0 = new Row();
 		row0.appendChild(new Label("Classification"));
@@ -371,6 +254,7 @@ public class DoctorFormContent extends FormContent
 		row7.appendChild(new Label("Status"));
 		row7.appendChild(statuses);
 		
+		rows.appendChild(row002);
 		rows.appendChild(row001);
 		rows.appendChild(row0);
 		rows.appendChild(row1);

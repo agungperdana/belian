@@ -28,7 +28,7 @@ import lombok.Setter;
 @Table(name="sequence_number")
 public class SequenceNumber implements Serializable
 {
-	public enum Code{BLDP,BLMED,BLLAB}
+	public enum Code{BLDP,BLMED,BLLAB,LABREG}
 	
 	@Id
 	private String id = UUID.randomUUID().toString();

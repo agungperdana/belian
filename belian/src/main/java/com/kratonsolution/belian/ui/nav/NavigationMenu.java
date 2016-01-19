@@ -248,6 +248,10 @@ public class NavigationMenu extends Window
 			list.appendChild(new DoctorAppointmentItem());
 		
 		list.appendChild(new LabScheduleItem());
+		
+		if(modules.get("LABS_REGISTRATION"))
+			list.appendChild(new LabsRegistrationItem());
+		
 		list.appendChild(new ApotekItem());
 		
 		if(!list.getChildren().isEmpty())

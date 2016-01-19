@@ -19,7 +19,6 @@ import lombok.Setter;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
-import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.PersonRole;
 
 /**
@@ -32,11 +31,6 @@ import com.kratonsolution.belian.general.dm.PersonRole;
 @Table(name="doctor")
 public class Doctor extends PersonRole
 {
-	@ManyToOne
-	@JoinColumn(name="fk_company")
-	@NotFound(action=NotFoundAction.IGNORE)
-	private Organization company;
-	
 	@ManyToOne
 	@JoinColumn(name="fk_doctor_type")
 	@NotFound(action=NotFoundAction.IGNORE)

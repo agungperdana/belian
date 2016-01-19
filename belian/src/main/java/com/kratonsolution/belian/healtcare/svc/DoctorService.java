@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.PartyRole.Type;
 import com.kratonsolution.belian.healtcare.dm.Doctor;
@@ -51,6 +52,16 @@ public class DoctorService
 	{
 		return repository.findOne(id);
 	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_DOCTOR_READ")
+	public Doctor findOneByName(String name)
+	{
+		if(utils.getOrganization() == null)
+			return null;
+		
+		return repository.findOneByPartyNameAndCompanyId(name,utils.getOrganization().getId());
+	}
 
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_DOCTOR_READ")
@@ -59,7 +70,7 @@ public class DoctorService
 		if(utils.getOrganization() == null)
 			return new ArrayList<Doctor>();
 
-		return repository.findAll();
+		return repository.findAll(utils.getOrganization().getId());
 	}
 		
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -113,8 +124,18 @@ public class DoctorService
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_DOCTOR_READ")
-	public List<Doctor> findAllByPerson(String person)
+	public List<Doctor> findAllByPerson(String id)
 	{
-		return repository.findAllByPerson(person);
+		return repository.findAllByPerson(id);
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_DOCTOR_READ")
+	public List<Doctor> findAll(String nameOrIdentity)
+	{
+		if(Strings.isNullOrEmpty(nameOrIdentity))
+			return findAll();
+		else
+			return repository.findAll(nameOrIdentity, utils.getOrganization().getId());
 	}
 }

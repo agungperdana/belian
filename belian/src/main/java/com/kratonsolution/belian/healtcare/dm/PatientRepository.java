@@ -24,6 +24,14 @@ public interface PatientRepository extends JpaRepository<Patient, String>
 	@Query("FROM Patient pat WHERE pat.company.id =:company ORDER BY pat.party.name")
 	public List<Patient> findAll(Pageable pageable,@Param("company")String company);
 	
+	@Query("FROM Patient pat WHERE pat.company.id =:company ORDER BY pat.party.name")
+	public List<Patient> findAll(@Param("company")String company);
+	
 	@Query("SELECT COUNT(pat) FROM Patient pat WHERE pat.company.id =:company")
 	public Long count(@Param("company")String company);
+	
+	@Query("FROM Patient pat WHERE pat.party.name LIKE :name% AND pat.company.id =:company ORDER BY pat.party.name ASC")
+	public List<Patient> findAll(@Param("name")String name,@Param("company")String company);
+
+	public Patient findOneByPartyNameAndCompanyId(String name,String company);
 }

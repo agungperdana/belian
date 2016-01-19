@@ -7,8 +7,6 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.kratonsolution.belian.general.dm.Organization.IndustryType;
-
 /**
  * 
  * @author Agung Dodi Perdana
@@ -16,5 +14,5 @@ import com.kratonsolution.belian.general.dm.Organization.IndustryType;
  */
 public interface OrganizationRepository extends JpaRepository<Organization, String>
 {
-	public List<Organization> findAllByType(IndustryType type);
+	public List<Organization> findAllByType(IndustrySegmentation type);
 }

@@ -33,6 +33,14 @@ public interface DoctorRepository extends JpaRepository<Doctor, String>
 	@Query("FROM Doctor doc WHERE doc.company.id =:company ORDER BY doc.party.name ASC")
 	public List<Doctor> findAll(Pageable pageable,@Param("company")String company);
 	
+	@Query("FROM Doctor doc WHERE doc.company.id =:company ORDER BY doc.party.name ASC")
+	public List<Doctor> findAll(@Param("company")String company);
+	
 	@Query("SELECT COUNT(doc) FROM Doctor doc WHERE doc.company.id =:company")
 	public Long count(@Param("company")String company);
+	
+	@Query("FROM Doctor doc WHERE doc.party.name LIKE :name% AND doc.company.id =:company ORDER BY doc.party.name ASC")
+	public List<Doctor> findAll(@Param("name")String name,@Param("company")String company);
+
+	public Doctor findOneByPartyNameAndCompanyId(String name,String company);
 }

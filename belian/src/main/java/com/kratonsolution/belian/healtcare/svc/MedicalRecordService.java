@@ -22,6 +22,9 @@ import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentBillingItem;
 import com.kratonsolution.belian.healtcare.dm.Laboratory;
 import com.kratonsolution.belian.healtcare.dm.LaboratoryBilling;
 import com.kratonsolution.belian.healtcare.dm.LaboratoryBillingItem;
+import com.kratonsolution.belian.healtcare.dm.LaboratoryRegistration;
+import com.kratonsolution.belian.healtcare.dm.LaboratoryRegistrationItem;
+import com.kratonsolution.belian.healtcare.dm.LaboratoryRegistrationRepository;
 import com.kratonsolution.belian.healtcare.dm.MedicalRecord;
 import com.kratonsolution.belian.healtcare.dm.MedicalRecordRepository;
 import com.kratonsolution.belian.healtcare.dm.Medication;
@@ -44,6 +47,9 @@ public class MedicalRecordService
 	
 	@Autowired
 	private BillingRepository billingRepository;
+	
+	@Autowired
+	private LaboratoryRegistrationRepository registrationRepository;
 	
 	@Autowired
 	private CodeGenerator generator;
@@ -194,6 +200,14 @@ public class MedicalRecordService
 			billing.setOrganization(utils.getOrganization());
 			billing.setSales(appointment.getDoctor().getPerson());
 			
+			LaboratoryRegistration registration = new LaboratoryRegistration();
+			registration.setDate(appointment.getDate());
+			registration.setOrganization(appointment.getCompany());
+			registration.setDoctor(appointment.getDoctor());
+			registration.setNumber(generator.generate(appointment.getDate(), appointment.getCompany(), SequenceNumber.Code.LABREG));
+			registration.setPatient(appointment.getPatient());
+			registration.setBilling(billing);
+			
 			for(Laboratory laboratorys:record.getLaboratorys())
 			{
 				LaboratoryBillingItem item = new LaboratoryBillingItem();
@@ -205,12 +219,20 @@ public class MedicalRecordService
 				
 				billing.getItems().add(item);
 				
+				LaboratoryRegistrationItem registrationItem = new LaboratoryRegistrationItem();
+				registrationItem.setNote(laboratorys.getDescription());
+				registrationItem.setQuantity(laboratorys.getQuantity());
+				registrationItem.setRegistration(registration);
+				registrationItem.setService(laboratorys.getService());
+
+				registration.getItems().add(registrationItem);
+				
 				laboratorys.setBilled(true);
 			}
 			
 			appointment.setLaboratoryBilling(billing);
 			
-			billingRepository.save(billing);
+			registrationRepository.save(registration);
 		}
 	}
 	

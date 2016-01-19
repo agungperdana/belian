@@ -17,8 +17,8 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.general.dm.Organization;
-import com.kratonsolution.belian.general.dm.Organization.IndustryType;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -76,7 +76,7 @@ public class OrganizationFormContent extends FormContent
 				org.setName(name.getText());
 				org.setBirthDate(date.getValue());
 				org.setTaxCode(tax.getText());
-				org.setType(IndustryType.valueOf(types.getSelectedItem().getValue().toString()));
+				org.setType(IndustrySegmentation.valueOf(types.getSelectedItem().getValue().toString()));
 				
 				service.add(org);
 				
@@ -98,7 +98,7 @@ public class OrganizationFormContent extends FormContent
 		
 		tax.setWidth("300px");
 		
-		for(IndustryType type:IndustryType.values())
+		for(IndustrySegmentation type:IndustrySegmentation.values())
 			types.appendChild(new Listitem(type.name(),type.name()));
 		
 		types.setSelectedIndex(0);

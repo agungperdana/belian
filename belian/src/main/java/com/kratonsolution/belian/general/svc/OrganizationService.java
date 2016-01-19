@@ -12,8 +12,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.general.dm.Organization;
-import com.kratonsolution.belian.general.dm.Organization.IndustryType;
 import com.kratonsolution.belian.general.dm.OrganizationRepository;
 import com.kratonsolution.belian.global.dm.EconomicAgentRoleEventListener;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
@@ -55,7 +55,7 @@ public class OrganizationService
 	}
 
 	@Secured("ROLE_ORGANIZATION_READ")
-	public List<Organization> findAllByIndustryType(IndustryType type)
+	public List<Organization> findAllByIndustryType(IndustrySegmentation type)
 	{
 		return repository.findAllByType(type);
 	}

@@ -51,6 +51,9 @@ public class LaboratoryBillingItem implements BillingItem
 	@JoinColumn(name="fk_billing")
 	private LaboratoryBilling billing;
 	
+	@Column(name="handled")
+	private boolean handled;
+	
 	@Version
 	private Long version;
 	

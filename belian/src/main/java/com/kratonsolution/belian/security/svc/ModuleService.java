@@ -10,6 +10,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -56,7 +57,7 @@ public class ModuleService
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<Module> findAll(int pageindex,int itemSize)
 	{
-		return repository.findAll(new PageRequest(pageindex, itemSize)).getContent();
+		return repository.findAll(new PageRequest(pageindex, itemSize,new Sort(Direction.ASC, "code"))).getContent();
 	}
 	
 	@Secured("ROLE_MODULE_READ")

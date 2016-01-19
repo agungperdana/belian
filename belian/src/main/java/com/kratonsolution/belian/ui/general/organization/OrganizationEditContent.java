@@ -19,8 +19,8 @@ import org.zkoss.zul.Textbox;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Contact;
+import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.general.dm.Organization;
-import com.kratonsolution.belian.general.dm.Organization.IndustryType;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.Refreshable;
@@ -92,7 +92,7 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 				org.setName(name.getText());
 				org.setBirthDate(date.getValue());
 				org.setTaxCode(tax.getText());
-				org.setType(IndustryType.valueOf(types.getSelectedItem().getValue().toString()));
+				org.setType(IndustrySegmentation.valueOf(types.getSelectedItem().getValue().toString()));
 
 				service.edit(org);
 
@@ -122,7 +122,7 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 			
 			types.setMold("select");
 			
-			for(IndustryType type:IndustryType.values())
+			for(IndustrySegmentation type:IndustrySegmentation.values())
 			{
 				Listitem listitem = new Listitem(type.name(),type.name());
 				types.appendChild(listitem);

@@ -9,6 +9,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -32,8 +34,11 @@ import com.kratonsolution.belian.sales.dm.Billing;
 @Table(name="laboratory_billing")
 public class LaboratoryBilling extends Billing
 {
-	@Column(name="is_finish")
-	private boolean finish;
+	public enum Status{REGISTERED,HANDLED,FINISHED}
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="status")
+	private Status status = Status.REGISTERED;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_appointment")

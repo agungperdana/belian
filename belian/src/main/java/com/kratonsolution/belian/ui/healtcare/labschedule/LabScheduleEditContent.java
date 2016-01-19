@@ -15,6 +15,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 
 import com.kratonsolution.belian.healtcare.dm.LaboratoryBilling;
+import com.kratonsolution.belian.healtcare.dm.LaboratoryBilling.Status;
 import com.kratonsolution.belian.healtcare.dm.LaboratoryBillingItem;
 import com.kratonsolution.belian.healtcare.svc.LaboratoryBillingService;
 import com.kratonsolution.belian.ui.FormContent;
@@ -54,19 +55,24 @@ public class LabScheduleEditContent extends FormContent
 			}
 		});
 
-		toolbar.getSave().setLabel("Done");
+		toolbar.getSave().setLabel("Handled");
+		toolbar.getSave().setImage("/icons/handled.png");
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
 				LaboratoryBilling billing = service.findOne(RowUtils.string(row, 6));
-				if(!billing.isFinish())
+				if(billing.getStatus().equals(Status.REGISTERED))
 				{
-					billing.setFinish(true);
+					billing.setStatus(Status.HANDLED);
 					service.edit(billing);
 				
 					Clients.showNotification("Document Successfuly saved.");
+					
+					LabScheduleWindow window = (LabScheduleWindow)getParent();
+					window.removeEditForm();
+					window.insertGrid();
 				}
 			}
 		});
@@ -88,7 +94,7 @@ public class LabScheduleEditContent extends FormContent
 			grid.getRows().appendChild(RowUtils.row("Patient", billing.getCustomer().getName()));
 			grid.getRows().appendChild(RowUtils.row("Doctor/Initiator", billing.getSales().getName()));
 			grid.getRows().appendChild(RowUtils.row("Payment Status", billing.isPaid()?"Paid":"Unpaid"));
-			grid.getRows().appendChild(RowUtils.row("Handling Status", billing.isFinish()?"Done":"Not Yet"));
+			grid.getRows().appendChild(RowUtils.row("Handling Status", billing.getStatus().name()));
 			
 			Grid items = new Grid();
 			items.setWidth("100%");
