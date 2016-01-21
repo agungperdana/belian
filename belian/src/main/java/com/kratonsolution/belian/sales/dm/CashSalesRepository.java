@@ -18,18 +18,18 @@ import org.springframework.data.repository.query.Param;
  */
 public interface CashSalesRepository extends JpaRepository<CashSales,String>
 {
-	@Query("FROM CashSales cash WHERE cash.status = 'UNPAID' ORDER BY cash.table ASC")
+	@Query("FROM CashSales cash WHERE cash.paid IS false ORDER BY cash.table ASC")
 	public List<CashSales> loadAllUnpaid(Pageable pageable);
 	
-	@Query("FROM CashSales cash WHERE cash.organization.id IN :companys ORDER BY cash.table ASC,cash.status DESC")
-	public List<CashSales> loadAllOrderByStatus(Pageable pageable,@Param("companys")List<String> companys);
+	@Query("FROM CashSales cash WHERE cash.organization.id =:company ORDER BY cash.date DESC")
+	public List<CashSales> findAll(Pageable pageable,@Param("company")String company);
 	
-	@Query("SELECT COUNT(cash) FROM CashSales cash WHERE cash.organization.id IN :companys")
-	public int count(@Param("companys")List<String> companys);
+	@Query("SELECT COUNT(cash) FROM CashSales cash WHERE cash.organization.id =:company")
+	public int count(@Param("company")String company);
 	
-	@Query("FROM CashSales cash WHERE cash.organization.id IN :companys AND cash.date >= :date AND cash.status = 'PAID'")
+	@Query("FROM CashSales cash WHERE cash.organization.id IN :companys AND cash.date >= :date AND cash.paid IS true")
 	public List<CashSales> findAllByDate(@Param("date")Date date,@Param("companys")List<String> companys);
 	
-	@Query("FROM CashSales cash WHERE (cash.date BETWEEN :start AND :end) AND cash.organization.id IN :companys AND cash.status = 'PAID'")
+	@Query("FROM CashSales cash WHERE (cash.date BETWEEN :start AND :end) AND cash.organization.id IN :companys AND cash.paid IS true")
 	public List<CashSales> findAllByDateBetween(@Param("start")Date start,@Param("end")Date end,@Param("companys")List<String> companys);
 }

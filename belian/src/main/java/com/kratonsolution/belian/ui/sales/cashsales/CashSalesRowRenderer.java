@@ -35,9 +35,9 @@ public class CashSalesRowRenderer implements RowRenderer<CashSales>
 	{
 		if(data != null)
 		{
-			Label status = new Label(data.getStatus().name());
+			Label status = new Label(data.isPaid()?"PAID":"UNPAID");
 			
-			if(data.getStatus().equals(CashSales.Status.UNPAID))
+			if(!data.isPaid())
 				status.setStyle("font-weight:bold;color:red");
 			else
 				status.setStyle("font-weight:bold;color:green");
@@ -48,7 +48,7 @@ public class CashSalesRowRenderer implements RowRenderer<CashSales>
 				@Override
 				public void onEvent(Event event) throws Exception
 				{
-					service.addPayment(data);
+//					service.addPayment(data);
 					
 					PrintWindow print = new PrintWindow("/cashsalesprint.htm?id="+data.getId());
 					print.setPage(row.getPage());
@@ -76,10 +76,10 @@ public class CashSalesRowRenderer implements RowRenderer<CashSales>
 			row.appendChild(new Label(data.getNumber()));
 			row.appendChild(new Label(Dates.format(data.getDate())));
 			row.appendChild(new Label(data.getTable()+""));
-			row.appendChild(new Label(Numbers.format(data.getBill().add(data.getTaxAmount()))));
+			row.appendChild(new Label(Numbers.format(data.getBillingAmount().add(data.getTaxAmount()))));
 			row.appendChild(status);
 			
-			if(data.getStatus().equals(CashSales.Status.UNPAID))
+			if(!data.isPaid())
 				row.appendChild(paid);
 			else
 				row.appendChild(print);

@@ -76,7 +76,6 @@ public class PartyRole implements Serializable, Listable
 			case SUBSIDIARY:return new Subsidiary();
 			case DEPARTMENT:return new Department();
 			case DIVISION:return new Division();
-			case CUSTOMER:return new Customer();
 			case SUPPLIER:return new Supplier();
 			case EMPLOYEE:return new Employee();
 			case EMPLOYER:return new Employer();

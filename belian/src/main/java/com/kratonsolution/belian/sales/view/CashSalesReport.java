@@ -28,7 +28,6 @@ public class CashSalesReport
 		CashSales sales = service.findOne(id);
 		
 		model.addAttribute("sales",sales);
-		model.addAttribute("lines",sales.getDecrements());
 		
 		return "cashsalesprint";
 	}

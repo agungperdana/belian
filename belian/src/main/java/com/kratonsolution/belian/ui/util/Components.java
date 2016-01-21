@@ -69,6 +69,7 @@ public class Components
 	{
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");
+		listbox.setStyle("text-align:center;");
 		listbox.appendChild(new Listitem(listable.getLabel(),listable.getValue()));
 		listbox.setSelectedIndex(0);
 		
@@ -79,6 +80,7 @@ public class Components
 	{
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");
+		listbox.setStyle("text-align:center;");
 		listbox.appendChild(new Listitem(label,value));
 		listbox.setSelectedIndex(0);
 		
@@ -89,6 +91,7 @@ public class Components
 	{
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");
+		listbox.setStyle("text-align:center;");
 		
 		for(Listable object:collections)
 			listbox.appendChild(new Listitem(object.getLabel(), object.getValue()));
@@ -103,6 +106,7 @@ public class Components
 	{
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");
+		listbox.setStyle("text-align:center;");
 		listbox.setWidth("100%");
 		
 		for(Listable object:collections)
@@ -118,6 +122,7 @@ public class Components
 	{
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");
+		listbox.setStyle("text-align:center;");
 		listbox.setWidth("100%");
 		listbox.appendChild(new Listitem(listable.getLabel(), listable.getValue()));
 		listbox.setSelectedIndex(0);
@@ -164,6 +169,23 @@ public class Components
 	public static final Doublebox readOnlyDoubleBox()
 	{
 		Doublebox box = new Doublebox(0d);
+		box.setWidth("100%");
+		box.setReadonly(true);
+		box.setStyle("text-align:right;");
+		return box;
+	}
+	
+	public static final Doublebox doubleOne()
+	{
+		Doublebox box = new Doublebox(1);
+		box.setWidth("100%");
+		box.setStyle("text-align:right;");
+		return box;
+	}
+	
+	public static final Doublebox readOnlyDoubleOne()
+	{
+		Doublebox box = new Doublebox(1);
 		box.setWidth("100%");
 		box.setReadonly(true);
 		box.setStyle("text-align:right;");

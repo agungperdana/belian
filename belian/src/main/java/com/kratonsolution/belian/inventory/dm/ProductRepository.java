@@ -43,6 +43,6 @@ public interface ProductRepository extends JpaRepository<Product, String>
 	@Query("FROM Product prd WHERE :date BETWEEN prd.start AND prd.end ORDER BY prd.name ASC")
 	public List<Product> findAll(@Param("date")Date date);
 	
-	@Query("FROM Product prd WHERE (:date BETWEEN prd.start AND prd.end) AND prd.name LIKE :name% ORDER BY prd.name ASC")
+	@Query("FROM Product prd WHERE ((:date BETWEEN prd.start AND prd.end) OR (prd.start <= :date AND prd.end IS NULL)) AND prd.name LIKE :name% ORDER BY prd.name ASC")
 	public List<Product> findAll(@Param("date")Date date,@Param("name")String name);
 }

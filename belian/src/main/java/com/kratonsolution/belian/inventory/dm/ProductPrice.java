@@ -5,7 +5,8 @@ package com.kratonsolution.belian.inventory.dm;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.text.NumberFormat;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,6 +24,7 @@ import lombok.Setter;
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.global.dm.Listable;
 
 /**
  * 
@@ -33,7 +35,7 @@ import com.kratonsolution.belian.global.dm.EconomicAgent;
 @Setter
 @Entity
 @Table(name="product_price")
-public class ProductPrice implements Serializable
+public class ProductPrice implements Serializable,Listable
 {
 	public enum Type {BASE,DISCOUNT,CHARGE,BPJS}
 	
@@ -71,4 +73,19 @@ public class ProductPrice implements Serializable
 	
 	@Version
 	private Long version;
+
+	@Override
+	public String getLabel()
+	{
+		NumberFormat format = NumberFormat.getNumberInstance();
+		format.setGroupingUsed(true);
+
+		return format.format(price);
+	}
+
+	@Override
+	public String getValue()
+	{
+		return price.toString();
+	}
 }

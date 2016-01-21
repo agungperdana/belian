@@ -17,8 +17,9 @@ import com.kratonsolution.belian.global.dm.EconomicAgentRepository;
 import com.kratonsolution.belian.global.dm.EconomicAgentRoleEventListener;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
 @Transactional(rollbackFor=Exception.class)

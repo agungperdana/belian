@@ -23,6 +23,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import com.kratonsolution.belian.accounting.dm.Currency;
+import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Person;
 
@@ -65,6 +66,10 @@ public abstract class Billing implements Serializable
 	@JoinColumn(name="fk_person_customer")
 	protected Person customer;
 	
+	@ManyToOne
+	@JoinColumn(name="fk_tax")
+	protected Tax tax;
+	
 	@Version
 	protected Long version;
 	
@@ -74,7 +79,7 @@ public abstract class Billing implements Serializable
 
 	public abstract String getBillingType();
 	
-	public BigDecimal getPaidAmount()
+	public BigDecimal getBillingAmount()
 	{
 		BigDecimal amount = BigDecimal.ZERO;
 		
@@ -82,5 +87,13 @@ public abstract class Billing implements Serializable
 			amount = amount.add(item.getQuantity().multiply(item.getUnitPrice()));
 		
 		return amount;
+	}
+	
+	public BigDecimal getTaxAmount()
+	{
+		if(tax != null)
+			return getBillingAmount().multiply(tax.getAmount().divide(BigDecimal.valueOf(100)));
+		
+		return BigDecimal.ZERO;
 	}
 }

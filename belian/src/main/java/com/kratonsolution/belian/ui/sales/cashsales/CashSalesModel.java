@@ -44,7 +44,7 @@ public class CashSalesModel implements ListModel<CashSales>
 	@Override
 	public int getSize()
 	{
-		return service.count(utils.getOrganizationIds());
+		return service.size();
 	}
 
 	@Override
@@ -57,13 +57,11 @@ public class CashSalesModel implements ListModel<CashSales>
 	@Override
 	public void removeListDataListener(ListDataListener l)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void next(int pageIndex,int itemSize)
 	{
 		data.clear();
-		data.addAll(service.loadAllOrderByStatus(0, (itemSize*pageIndex)+itemSize,utils.getOrganizationIds()));
+		data.addAll(service.findAll(0, (itemSize*pageIndex)+itemSize));
 	}
 }

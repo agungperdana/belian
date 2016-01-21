@@ -111,8 +111,8 @@ public class PriceWindow extends AbstractWindow
 			public void onEvent(Event event) throws Exception
 			{
 				ProductPrice productPrice = new ProductPrice();
-				productPrice.setFrom(from.getValue());
-				productPrice.setTo(to.getValue());
+				productPrice.setFrom(new java.sql.Date(from.getValue().getTime()));
+				productPrice.setTo(to.getValue()!=null?new java.sql.Date(to.getValue().getTime()):null);
 				productPrice.setPrice(BigDecimal.valueOf(price.getValue()));
 				productPrice.setType(ProductPrice.Type.valueOf(types.getSelectedItem().getValue().toString()));
 				productPrice.setCurrency(currencyService.findOne(currencys.getSelectedItem().getValue().toString()));

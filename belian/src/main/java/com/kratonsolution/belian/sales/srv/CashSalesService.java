@@ -3,33 +3,24 @@
  */
 package com.kratonsolution.belian.sales.srv;
 
-import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kratonsolution.belian.accounting.dm.AccountingPeriodRepository;
-import com.kratonsolution.belian.accounting.dm.JournalEntry;
-import com.kratonsolution.belian.accounting.dm.JournalEntryDetail;
-import com.kratonsolution.belian.accounting.dm.JournalSetting;
 import com.kratonsolution.belian.accounting.dm.JournalSettingRepository;
 import com.kratonsolution.belian.accounting.dm.OrganizationAccountRepository;
-import com.kratonsolution.belian.global.dm.EconomicEventType;
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.inventory.dm.InventoryItemRepository;
 import com.kratonsolution.belian.sales.dm.CashSales;
-import com.kratonsolution.belian.sales.dm.CashSales.Status;
-import com.kratonsolution.belian.sales.dm.CashSalesLine;
-import com.kratonsolution.belian.sales.dm.CashSalesPayment;
 import com.kratonsolution.belian.sales.dm.CashSalesRepository;
-import com.kratonsolution.belian.sales.dm.PaymentType;
-import com.kratonsolution.belian.sales.dm.SaleEvent;
 
 /**
  * 
@@ -40,6 +31,9 @@ import com.kratonsolution.belian.sales.dm.SaleEvent;
 @Transactional(rollbackFor=Exception.class)
 public class CashSalesService
 {
+	@Autowired
+	private SessionUtils utils;
+	
 	@Autowired
 	private CashSalesRepository repository;
 	
@@ -58,13 +52,10 @@ public class CashSalesService
 	@Secured("ROLE_CASHSALES_READ")
 	public int size()
 	{
-		return Long.valueOf(repository.count()).intValue();
-	}
-	
-	@Secured("ROLE_CASHSALES_READ")
-	public int count(@Param("companys")List<String> companys)
-	{
-		return repository.count(companys);
+		if(utils.getOrganization() == null)
+			return 0;
+		
+		return repository.count(utils.getOrganization().getId());
 	}
 	
 	@Secured("ROLE_CASHSALES_READ")
@@ -82,19 +73,16 @@ public class CashSalesService
 	@Secured("ROLE_CASHSALES_READ")
 	public List<CashSales> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		if(utils.getOrganization() == null)
+			return new ArrayList<CashSales>();
+		
+		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId());
 	}
 	
 	@Secured("ROLE_CASHSALES_READ")
 	public List<CashSales> loadAllUnpaid(int pageIndex,int pageSize)
 	{
 		return repository.loadAllUnpaid(new PageRequest(pageIndex, pageSize));
-	}
-	
-	@Secured("ROLE_CASHSALES_READ")
-	public List<CashSales> loadAllOrderByStatus(int pageIndex,int pageSize,List<String> companys)
-	{
-		return repository.loadAllOrderByStatus(new PageRequest(pageIndex, pageSize),companys);
 	}
 	
 	@Secured("ROLE_CASHSALES_READ")
@@ -112,20 +100,6 @@ public class CashSalesService
 	@Secured("ROLE_CASHSALES_CREATE")
 	public void add(CashSales sales)
 	{
-		for(CashSalesLine line:sales.getDecrements())
-		{
-			SaleEvent sale = new SaleEvent();
-			sale.setName("Stok out from sale event.");
-			sale.setAmount(line.getQuantity());
-			sale.setCustomer(line.getCashSales().getConsumer());
-			sale.setDate(new Date(line.getCashSales().getDate().getTime()));
-			sale.setProduct(line.getProduct());
-			sale.setType(EconomicEventType.GIVE);
-			sale.setSalesPerson(line.getCashSales().getProducer());
-
-			line.setEvent(sale);
-		}
-		
 		repository.save(sales);
 	}
 	
@@ -138,6 +112,7 @@ public class CashSalesService
 	@Secured("ROLE_CASHSALES_UPDATE")
 	public void addPayment(CashSales out)
 	{
+		/**
 		out.setStatus(Status.PAID);
 		
 		repository.save(out);
@@ -168,9 +143,7 @@ public class CashSalesService
 	
 			payment.setJournal(journal);
 		}
-		
-		/**
-		 * REA (Resource Event Agent) Event
+
 		JournalSetting journalSetting = journalRepository.findOneByOrganizationId(out.getOrganization().getId());
 		if(journalSetting != null && journalSetting.getCashSales() != null && journalSetting.getTax() != null)
 		{
@@ -197,10 +170,13 @@ public class CashSalesService
 			payment.setCashEvent(cashEvent);
 			payment.setTaxEvent(taxEvent);
 		}
-		*/
+
 		out.getIncrements().add(payment);
 		
 		repository.save(out);
+		*
+		*/
+
 	}
 	
 	@Secured("ROLE_CASHSALES_DELETE")

@@ -4,15 +4,15 @@
 package com.kratonsolution.belian.ui.sales.cashsales;
 
 import java.math.BigDecimal;
-import java.util.Iterator;
 import java.sql.Date;
+import java.text.NumberFormat;
+import java.util.Iterator;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
@@ -38,33 +38,24 @@ import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.accounting.svc.TaxService;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.AddressRepository;
-import com.kratonsolution.belian.general.dm.Organization;
-import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.PersonService;
-import com.kratonsolution.belian.global.svc.EconomicAgentService;
-import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductPrice;
-import com.kratonsolution.belian.inventory.dm.ProductPriceRepository;
-import com.kratonsolution.belian.inventory.svc.ProductService;
-import com.kratonsolution.belian.inventory.svc.UnitOfMeasureService;
 import com.kratonsolution.belian.sales.dm.CashSales;
 import com.kratonsolution.belian.sales.dm.CashSalesLine;
 import com.kratonsolution.belian.sales.srv.CashSalesService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.component.ProductPriceSelectionListener;
+import com.kratonsolution.belian.ui.component.ProductRow;
 import com.kratonsolution.belian.ui.util.Components;
-import com.kratonsolution.belian.ui.util.Numbers;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class CashSalesFormContent extends FormContent
+public class CashSalesFormContent extends FormContent implements ProductPriceSelectionListener
 {	
 	private SessionUtils sessionUtils = Springs.get(SessionUtils.class);
 	
@@ -72,21 +63,9 @@ public class CashSalesFormContent extends FormContent
 	
 	private GeographicService geographicService = Springs.get(GeographicService.class);
 	
-	private ProductPriceRepository priceRepository = Springs.get(ProductPriceRepository.class);
-	
-	private EconomicAgentService agentService = Springs.get(EconomicAgentService.class);
-	
-	private CompanyStructureService unitService = Springs.get(CompanyStructureService.class);
-	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 	
 	private CurrencyService currencyService = Springs.get(CurrencyService.class);
-	
-	private ProductService productService = Springs.get(ProductService.class);
-	
-	private UnitOfMeasureService unitOfMeasureService = Springs.get(UnitOfMeasureService.class);
-	
-	private AddressRepository addressService = Springs.get(AddressRepository.class);
 	
 	private PersonService personService = Springs.get(PersonService.class);
 	
@@ -114,7 +93,7 @@ public class CashSalesFormContent extends FormContent
 	
 	private Listbox currencys = Components.fullSpanSelect();
 	
-	private Listbox organizations = Components.fullSpanSelect(sessionUtils.getOrganizations(),true);
+	private Listbox organizations = Components.fullSpanSelect();
 	
 	private Listbox locations = Components.fullSpanSelect(geographicService.findAll(),true);
 	
@@ -166,39 +145,33 @@ public class CashSalesFormContent extends FormContent
 				
 				CashSales sales = new CashSales();
 				sales.setTable(Integer.parseInt(Components.string(tableNumber)));
-				sales.setConsumer(agentService.findOne(Components.string(consumers)));
-				sales.setCreditTerm(term.getValue().intValue());
+				sales.setCustomer(personService.findOne(Components.string(consumers)));
 				sales.setCurrency(currencyService.findOne(Components.string(currencys)));
 				sales.setDate(new Date(date.getValue().getTime()));
 				sales.setNote(note.getText());
 				sales.setNumber(number.getText());
 				sales.setTax(taxService.findOne(Components.string(taxes)));
 				sales.setOrganization(organizationService.findOne(Components.string(organizations)));
-				sales.setProducer(agentService.findOne(Components.string(producers)));
+				sales.setSales(personService.findOne(Components.string(producers)));
 				sales.setLocation(geographicService.findOne(Components.string(locations)));
 				
-				for(Object object:saleItems.getRows().getChildren())
+				System.out.println(sales.getOrganization());
+				
+				for(Component com:saleItems.getRows().getChildren())
 				{
-					Row row = (Row)object;
+					ProductRow row = (ProductRow)com;
 					
-					Listbox products = (Listbox)row.getChildren().get(1);
-					Listbox prices = (Listbox)row.getChildren().get(2);
-					Listbox discs = (Listbox)row.getChildren().get(3);
-					Listbox charges = (Listbox)row.getChildren().get(4);
-					Doublebox quantity = (Doublebox)row.getChildren().get(5);
-					Textbox note = (Textbox)row.getChildren().get(7);
-
 					CashSalesLine line = new CashSalesLine();
 					line.setCashSales(sales);
-					line.setPrice(Components.decimal(prices));
-					line.setDiscount(Components.decimal(discs));
-					line.setCharge(Components.decimal(charges));
-					line.setQuantity(BigDecimal.valueOf(quantity.doubleValue()));
-					line.setProduct(productService.findOne(Components.string(products)));
+					line.setCharge(row.getCharge());
+					line.setDiscount(row.getDiscount());
+					line.setNote(row.getNote());
+					line.setPrice(row.getPrice());
+					line.setProduct(row.getProduct());
+					line.setQuantity(row.getQuantity());
 					line.setUom(line.getProduct().getUom());
-					line.setNote(note.getText());
 					
-					sales.getDecrements().add(line);
+					sales.getItems().add(line);
 				}
 				
 				service.add(sales);
@@ -234,14 +207,12 @@ public class CashSalesFormContent extends FormContent
 		
 		Components.setDefault(tableNumber);
 		
-		for(Organization organization:sessionUtils.getOrganizations())
+		if(sessionUtils.getOrganization() != null)
 		{
-			Listitem listitem = new Listitem(organization.getName(),organization.getId());
-			organizations.appendChild(listitem);
-			if(sessionUtils.getOrganization() != null && sessionUtils.getOrganization().getId().equals(organization.getId()))
-				organizations.setSelectedItem(listitem);
+			organizations.appendItem(sessionUtils.getOrganization().getName(), sessionUtils.getOrganization().getId());
+			organizations.setSelectedIndex(0);
 		}
-			
+		
 		for(Currency currency:currencyService.findAll())
 		{
 			Listitem listitem = new Listitem(currency.getCode(), currency.getId());
@@ -268,6 +239,15 @@ public class CashSalesFormContent extends FormContent
 		
 		consumers.appendChild(new Listitem(personService.anonymous().getLabel(), personService.anonymous().getValue()));
 		consumers.setSelectedIndex(0);
+		
+		taxes.addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				display();
+			}
+		});
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
@@ -297,10 +277,6 @@ public class CashSalesFormContent extends FormContent
 		row3.appendChild(new Label("Total Billing"));
 		row3.appendChild(totalBill);
 		
-		Row row4 = new Row();
-		row4.appendChild(new Label("Credit Term"));
-		row4.appendChild(term);
-		
 		Row row5 = new Row();
 		row5.appendChild(new Label("Tax"));
 		row5.appendChild(taxes);
@@ -323,7 +299,6 @@ public class CashSalesFormContent extends FormContent
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
-		rows.appendChild(row4);
 		rows.appendChild(row5);
 		rows.appendChild(row6);
 		rows.appendChild(row8);
@@ -337,11 +312,11 @@ public class CashSalesFormContent extends FormContent
 		saleItems.appendChild(new Columns());
 		saleItems.getColumns().appendChild(new Column(null,null,"25px"));
 		saleItems.getColumns().appendChild(new Column("Product",null,"225px"));
+		saleItems.getColumns().appendChild(new Column("Quantity",null,"85px"));
+		saleItems.getColumns().appendChild(new Column("UoM",null,"85px"));
 		saleItems.getColumns().appendChild(new Column("Price",null,"95px"));
 		saleItems.getColumns().appendChild(new Column("Disc",null,"95px"));
 		saleItems.getColumns().appendChild(new Column("Charge",null,"95px"));
-		saleItems.getColumns().appendChild(new Column("Quantity",null,"85px"));
-		saleItems.getColumns().appendChild(new Column("UoM",null,"85px"));
 		saleItems.getColumns().appendChild(new Column("Note",null));
 		saleItems.appendChild(new Rows());
 		saleItems.setSpan("4");
@@ -356,84 +331,8 @@ public class CashSalesFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Listbox products = new Listbox();
-				products.setMold("select");
-				products.setWidth("100%");
-				
-				for(Product product:productService.findAll())
-					products.appendChild(new Listitem(product.getName(), product.getId()));
-
-				Listbox prices = new Listbox();
-				prices.setMold("select");
-				prices.setWidth("100%");
-				
-				Listbox discs = new Listbox();
-				discs.setMold("select");
-				discs.setWidth("100%");
-				
-				Listbox charges = new Listbox();
-				charges.setMold("select");
-				charges.setWidth("100%");
-				
-				Listbox uoms = new Listbox();
-				uoms.setMold("select");
-				uoms.setWidth("100%");
-				
-				Doublebox quantity = new Doublebox(0d);
-				quantity.setWidth("100%");
-				quantity.addEventListener(Events.ON_CHANGE, new EventListener<Event>()
-				{
-					@Override
-					public void onEvent(Event event) throws Exception
-					{
-						setBill();
-					}
-				});
-				
-				Textbox note = new Textbox();
-				note.setWidth("100%");
-				
-				products.addEventListener(Events.ON_SELECT, new EventListener<Event>()
-				{
-					@Override
-					public void onEvent(Event event) throws Exception
-					{
-						Product product = productService.findOne(products.getSelectedItem().getValue().toString());
-						if(product != null)
-						{
-							for(ProductPrice price:priceRepository.load(date.getValue(), Components.string(currencys), Components.string(locations), Components.string(consumers), product.getId(),ProductPrice.Type.BASE))
-								prices.appendChild(new Listitem(Numbers.format(price.getPrice()), price.getPrice()));
-							
-							for(ProductPrice price:priceRepository.load(date.getValue(), Components.string(currencys), Components.string(locations), Components.string(consumers), product.getId(),ProductPrice.Type.DISCOUNT))
-								discs.appendChild(new Listitem(Numbers.format(price.getPrice()), price.getPrice()));
-							
-							for(ProductPrice price:priceRepository.load(date.getValue(), Components.string(currencys), Components.string(locations), Components.string(consumers), product.getId(),ProductPrice.Type.CHARGE))
-								charges.appendChild(new Listitem(Numbers.format(price.getPrice()), price.getPrice()));
-							
-							uoms.appendChild(new Listitem(product.getUom().getCode(),product.getUom().getId()));
-							
-							Components.setDefault(prices);
-							Components.setDefault(discs);
-							Components.setDefault(charges);
-							Components.setDefault(uoms);
-						}
-					}
-				});
-				
-				prices.addEventListener(Events.ON_SELECT,new BillEventListener());
-				discs.addEventListener(Events.ON_SELECT,new BillEventListener());
-				charges.addEventListener(Events.ON_SELECT,new BillEventListener());
-				
-				Row row = new Row();
-				row.appendChild(new Checkbox());
-				row.appendChild(products);
-				row.appendChild(prices);
-				row.appendChild(discs);
-				row.appendChild(charges);
-				row.appendChild(quantity);
-				row.appendChild(uoms);
-				row.appendChild(note);
-				
+				ProductRow row = new ProductRow(Components.string(locations),Components.string(consumers),Components.string(currencys));
+				row.addProductPriceListener(CashSalesFormContent.this);
 				saleItems.getRows().appendChild(row);
 			}
 		});
@@ -450,6 +349,8 @@ public class CashSalesFormContent extends FormContent
 					if(RowUtils.isChecked(row, 0))
 						iterator.remove();
 				}
+				
+				display();
 			}
 		});
 		
@@ -459,46 +360,43 @@ public class CashSalesFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				saleItems.getRows().getChildren().clear();
+				display();
 			}
 		});
 		
 		this.tabbox.getTabpanels().getChildren().get(0).appendChild(toolbar);
 		this.tabbox.getTabpanels().getChildren().get(0).appendChild(saleItems);
 	}
-	
-	private void setBill()
+
+	@Override
+	public void fireSelectedPrice(BigDecimal quantity, BigDecimal price,BigDecimal discount, BigDecimal charge)
 	{
-		BigDecimal tBill = BigDecimal.ZERO;
-		BigDecimal taxAmt = BigDecimal.ZERO;
-		
-		for(Object object:saleItems.getRows().getChildren())
-		{
-			Row row = (Row)object;
-			
-			BigDecimal price = RowUtils.decimal(row, 2).multiply(RowUtils.decimal(row, 5));
-			price = price.add(RowUtils.decimal(row, 4)).subtract(RowUtils.decimal(row, 3));
-		
-			tBill = tBill.add(price);
-		}
-
-
-		
-		Tax out = taxService.findOne(Components.string(taxes));
-		if(out != null)
-			taxAmt = tBill.multiply(out.getAmount().divide(BigDecimal.valueOf(100)));
-
-
-		bill.setText(Numbers.format(tBill));
-		tax.setText(Numbers.format(taxAmt));
-		totalBill.setText(Numbers.format(tBill.add(taxAmt)));
+		display();
 	}
-	
-	private class BillEventListener implements EventListener<Event>
+
+	private void display()
 	{
-		@Override
-		public void onEvent(Event event) throws Exception
+		BigDecimal billAmount = BigDecimal.ZERO;
+		BigDecimal taxAmount = BigDecimal.ZERO;
+		BigDecimal totalAmount = BigDecimal.ZERO;
+		
+		for(Component com:saleItems.getRows().getChildren())
 		{
-			setBill();
+			ProductRow row = (ProductRow)com;
+			billAmount = billAmount.add(row.getQuantity().multiply(row.getPrice().subtract(row.getDiscount()).add(row.getCharge())));
 		}
+		
+		Tax tx = taxService.findOne(Components.string(taxes));
+		if(tx != null)
+			taxAmount = billAmount.multiply(tx.getAmount()).divide(BigDecimal.valueOf(100));
+		
+		totalAmount = billAmount.add(taxAmount);
+		
+		NumberFormat format = NumberFormat.getNumberInstance();
+		format.setGroupingUsed(true);
+		
+		bill.setText(format.format(billAmount));
+		tax.setText(format.format(taxAmount));
+		totalBill.setText(format.format(totalAmount));
 	}
 }

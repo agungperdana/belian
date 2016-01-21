@@ -17,6 +17,7 @@ public class Numbers
 	public static final String format(BigDecimal number)
 	{
 		NumberFormat format = NumberFormat.getInstance();
+		format.setGroupingUsed(true);
 		format.setCurrency(Currency.getInstance("IDR"));
 		
 		return format.format(number.doubleValue());
