@@ -34,9 +34,9 @@ import com.kratonsolution.belian.general.dm.Person;
 @Getter
 @Setter
 @Entity
-@Table(name="billing")
+@Table(name="billable")
 @Inheritance(strategy=InheritanceType.JOINED)
-public abstract class Billing implements Serializable
+public abstract class Billable implements Serializable
 {
 	@Id
 	protected String id = UUID.randomUUID().toString();
@@ -73,9 +73,9 @@ public abstract class Billing implements Serializable
 	@Version
 	protected Long version;
 	
-	public Billing(){}
+	public Billable(){}
 	
-	public abstract Set<? extends BillingItem> getItems();
+	public abstract Set<? extends BillableItem> getItems();
 
 	public abstract String getBillingType();
 	
@@ -83,7 +83,7 @@ public abstract class Billing implements Serializable
 	{
 		BigDecimal amount = BigDecimal.ZERO;
 		
-		for(BillingItem item:getItems())
+		for(BillableItem item:getItems())
 			amount = amount.add(item.getQuantity().multiply(item.getUnitPrice()));
 		
 		return amount;

@@ -31,7 +31,7 @@ import com.kratonsolution.belian.healtcare.dm.Medication;
 import com.kratonsolution.belian.healtcare.dm.MedicineBilling;
 import com.kratonsolution.belian.healtcare.dm.MedicineBillingItem;
 import com.kratonsolution.belian.healtcare.dm.Treatment;
-import com.kratonsolution.belian.sales.dm.BillingRepository;
+import com.kratonsolution.belian.sales.dm.BillableRepository;
 
 /**
  * 
@@ -46,7 +46,7 @@ public class MedicalRecordService
 	private MedicalRecordRepository repository;
 	
 	@Autowired
-	private BillingRepository billingRepository;
+	private BillableRepository billingRepository;
 	
 	@Autowired
 	private LaboratoryRegistrationRepository registrationRepository;

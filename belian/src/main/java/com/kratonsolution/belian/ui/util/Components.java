@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.ui.util;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.Date;
 
@@ -173,6 +174,32 @@ public class Components
 		box.setReadonly(true);
 		box.setStyle("text-align:right;");
 		return box;
+	}
+	
+	public static final Textbox readOnlyMoneyBox(BigDecimal decimal)
+	{
+		NumberFormat format = NumberFormat.getNumberInstance();
+		format.setGroupingUsed(true);
+		
+		Textbox box = new Textbox();
+		box.setWidth("100%");
+		box.setReadonly(true);
+		box.setText(format.format(decimal));
+		box.setStyle("text-align:right;");
+		return box;
+	}
+	
+	public static final Label numberLabel(BigDecimal amout)
+	{
+		NumberFormat format = NumberFormat.getNumberInstance();
+		format.setGroupingUsed(true);
+		
+		Label label = new Label();
+		label.setWidth("100%");
+		label.setValue(format.format(amout));
+		label.setStyle("text-align:right;");
+		
+		return label;
 	}
 	
 	public static final Doublebox doubleOne()

@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public interface BillingItem extends Serializable
+public interface BillableItem extends Serializable
 {
 	public String getId();
 	

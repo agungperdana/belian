@@ -19,7 +19,7 @@ import lombok.Setter;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
-import com.kratonsolution.belian.sales.dm.Billing;
+import com.kratonsolution.belian.sales.dm.Billable;
 
 /**
  * @author Agung Dodi Perdana
@@ -29,7 +29,7 @@ import com.kratonsolution.belian.sales.dm.Billing;
 @Setter
 @Entity
 @Table(name="medicine_billing")
-public class MedicineBilling extends Billing
+public class MedicineBilling extends Billable
 {
 	@ManyToOne
 	@JoinColumn(name="fk_appointment")

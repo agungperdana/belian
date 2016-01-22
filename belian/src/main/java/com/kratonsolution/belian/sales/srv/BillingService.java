@@ -17,8 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.sales.dm.Billing;
-import com.kratonsolution.belian.sales.dm.BillingRepository;
+import com.kratonsolution.belian.sales.dm.Billable;
+import com.kratonsolution.belian.sales.dm.BillableRepository;
 
 /**
  * 
@@ -30,30 +30,30 @@ import com.kratonsolution.belian.sales.dm.BillingRepository;
 public class BillingService
 {
 	@Autowired
-	private BillingRepository repository;
+	private BillableRepository repository;
 	
 	@Autowired
 	private SessionUtils utils;
 	
 	@Secured("ROLE_BILLING_READ")
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
-	public Billing findOne(String id)
+	public Billable findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 	
 	@Secured("ROLE_BILLING_READ")
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
-	public List<Billing> findAll()
+	public List<Billable> findAll()
 	{
 		return repository.findAll(new Sort(Sort.Direction.ASC,"code"));
 	}
 	
 	@Secured("ROLE_BILLING_READ")
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
-	public List<Billing> findAll(int pageindex,int itemSize)
+	public List<Billable> findAll(int pageindex,int itemSize)
 	{
-		List<Billing> list = new ArrayList<Billing>();
+		List<Billable> list = new ArrayList<Billable>();
 	
 		if(utils.getOrganization() != null)
 			list.addAll(repository.findAllByOrganizationId(new PageRequest(pageindex, itemSize),utils.getOrganization().getId()));
@@ -63,7 +63,7 @@ public class BillingService
 	
 	@Secured("ROLE_BILLING_READ")
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
-	public List<Billing> findAllByDateAndOrganizationIdAndPaid(Date date,String companyId,boolean paid)
+	public List<Billable> findAllByDateAndOrganizationIdAndPaid(Date date,String companyId,boolean paid)
 	{
 		return repository.findAllByDateAndOrganizationIdAndPaid(date, companyId, paid);
 	}
@@ -84,13 +84,13 @@ public class BillingService
 	}
 	
 	@Secured("ROLE_BILLING_CREATE")
-	public void add(Billing module)
+	public void add(Billable module)
 	{
 		repository.save(module);
 	}
 	
 	@Secured("ROLE_BILLING_UPDATE")
-	public void edit(Billing module)
+	public void edit(Billable module)
 	{
 		repository.save(module);
 	}
@@ -102,7 +102,7 @@ public class BillingService
 	}
 	
 	@Secured("ROLE_BILLING_DELETE")
-	public void delete(Billing module)
+	public void delete(Billable module)
 	{
 		if(module != null)
 			repository.delete(module);
@@ -110,7 +110,7 @@ public class BillingService
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_BILLING_READ")
-	public List<Billing> findAllCurrent(String key)
+	public List<Billable> findAllCurrent(String key)
 	{
 		if(Strings.isNullOrEmpty(key))
 			return repository.findAllByDateAndOrganizationId(new Date(System.currentTimeMillis()),utils.getOrganization().getId());
@@ -120,7 +120,7 @@ public class BillingService
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_BILLING_READ")
-	public List<Billing> findAll(String key)
+	public List<Billable> findAll(String key)
 	{
 		if(Strings.isNullOrEmpty(key))
 			return repository.findAll(utils.getOrganization().getId());

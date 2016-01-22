@@ -29,7 +29,7 @@ import com.kratonsolution.belian.general.dm.Geographic;
 @Setter
 @Entity
 @Table(name="cash_sales")
-public class CashSales extends Billing
+public class CashSales extends Billable
 {
 	@Column(name="table_number")
 	private int table = 1;

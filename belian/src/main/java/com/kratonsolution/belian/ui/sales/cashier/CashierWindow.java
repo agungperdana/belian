@@ -44,6 +44,7 @@ public class CashierWindow extends AbstractWindow implements HasGrid,HasCreateFo
 	private CashierWindow()
 	{
 		super();
+		setWidth("650px");
 	}
 	
 	protected void init()

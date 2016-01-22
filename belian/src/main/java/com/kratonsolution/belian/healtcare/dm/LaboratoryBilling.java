@@ -22,7 +22,7 @@ import lombok.Setter;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
-import com.kratonsolution.belian.sales.dm.Billing;
+import com.kratonsolution.belian.sales.dm.Billable;
 
 /**
  * @author Agung Dodi Perdana
@@ -32,7 +32,7 @@ import com.kratonsolution.belian.sales.dm.Billing;
 @Setter
 @Entity
 @Table(name="laboratory_billing")
-public class LaboratoryBilling extends Billing
+public class LaboratoryBilling extends Billable
 {
 	public enum Status{REGISTERED,HANDLED,FINISHED}
 	

@@ -366,7 +366,6 @@ public class CashSalesEditContent extends FormContent implements ProductPriceSel
 			saleItems.getColumns().appendChild(new Column("Note",null));
 			saleItems.appendChild(new Rows());
 			saleItems.setSpan("1");
-			saleItems.getColumns().getChildren().get(8).setVisible(false);
 
 			for(CashSalesLine line:cash.getItems())
 			{

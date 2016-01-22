@@ -17,7 +17,7 @@ import javax.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
-import com.kratonsolution.belian.sales.dm.BillingItem;
+import com.kratonsolution.belian.sales.dm.BillableItem;
 
 /**
  * @author Agung Dodi Perdana
@@ -27,7 +27,7 @@ import com.kratonsolution.belian.sales.dm.BillingItem;
 @Setter
 @Entity
 @Table(name="medicine_billing_item")
-public class MedicineBillingItem implements BillingItem
+public class MedicineBillingItem implements BillableItem
 {
 	@Id
 	private String id = UUID.randomUUID().toString();

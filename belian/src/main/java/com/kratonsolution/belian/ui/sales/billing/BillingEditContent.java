@@ -19,8 +19,8 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.sales.dm.Billing;
-import com.kratonsolution.belian.sales.dm.BillingItem;
+import com.kratonsolution.belian.sales.dm.Billable;
+import com.kratonsolution.belian.sales.dm.BillableItem;
 import com.kratonsolution.belian.sales.srv.BillingService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.component.ProductPriceListbox;
@@ -72,7 +72,7 @@ public class BillingEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		Billing billing = service.findOne(RowUtils.string(row, 6));
+		Billable billing = service.findOne(RowUtils.string(row, 6));
 		if(billing != null)
 		{
 			grid.appendChild(new Columns());
@@ -98,11 +98,11 @@ public class BillingEditContent extends FormContent
 			billingItems.getColumns().getChildren().get(4).setVisible(false);
 			billingItems.setSpan("0");
 
-			Map<String,List<BillingItem>> maps = new HashMap<String,List<BillingItem>>();
-			for(BillingItem item:billing.getItems())
+			Map<String,List<BillableItem>> maps = new HashMap<String,List<BillableItem>>();
+			for(BillableItem item:billing.getItems())
 			{
 				if(!maps.containsKey(item.getCategory()))
-					maps.put(item.getCategory(),new ArrayList<BillingItem>());
+					maps.put(item.getCategory(),new ArrayList<BillableItem>());
 
 				maps.get(item.getCategory()).add(item);
 			}
@@ -113,7 +113,7 @@ public class BillingEditContent extends FormContent
 				header.appendChild(RowUtils.cell(category, 5));
 				billingItems.getRows().appendChild(header);
 				
-				for(BillingItem item:maps.get(category))
+				for(BillableItem item:maps.get(category))
 				{
 					Row row = new Row();
 					row.appendChild(new Label(item.getResource()));

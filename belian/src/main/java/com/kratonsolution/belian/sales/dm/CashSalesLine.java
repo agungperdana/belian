@@ -29,7 +29,7 @@ import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
 @Getter
 @Entity
 @Table(name="cash_sales_line")
-public class CashSalesLine implements BillingItem
+public class CashSalesLine implements BillableItem
 {	
 	@Id
 	private String id = UUID.randomUUID().toString();

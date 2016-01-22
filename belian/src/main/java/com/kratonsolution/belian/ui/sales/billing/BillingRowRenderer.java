@@ -7,17 +7,17 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
-import com.kratonsolution.belian.sales.dm.Billing;
+import com.kratonsolution.belian.sales.dm.Billable;
 import com.kratonsolution.belian.ui.util.Numbers;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class BillingRowRenderer implements RowRenderer<Billing>
+public class BillingRowRenderer implements RowRenderer<Billable>
 {
 	@Override
-	public void render(Row row, Billing data, int index) throws Exception
+	public void render(Row row, Billable data, int index) throws Exception
 	{
 		if(data != null)
 		{

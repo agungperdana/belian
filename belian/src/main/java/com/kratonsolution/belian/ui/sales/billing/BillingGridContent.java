@@ -13,7 +13,7 @@ import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.sales.dm.Billing;
+import com.kratonsolution.belian.sales.dm.Billable;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.component.SearchBox;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -37,7 +37,7 @@ public class BillingGridContent extends GridContent
 			@Override
 			public void onEvent(InputEvent event) throws Exception
 			{
-				ListModel<Billing> model = grid.getModel();
+				ListModel<Billable> model = grid.getModel();
 				if(model instanceof BillingModel)
 				{
 					
