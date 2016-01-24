@@ -22,7 +22,6 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
-import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.Product.Type;
@@ -138,9 +137,9 @@ public class ProductPoup extends Window
 		
 		List<Product> datas = new ArrayList<Product>();
 		
-		if(Strings.isNullOrEmpty(name))
-			datas.addAll(service.findAllBySegmentation(segmentation,type));
-		else
+//		if(Strings.isNullOrEmpty(name))
+//			datas.addAll(service.findAllBySegmentation(segmentation,type));
+//		else
 			datas.addAll(service.findAllBySegmentationAndName(segmentation,name,type));
 			
 		for(Product product:datas)

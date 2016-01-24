@@ -5,8 +5,6 @@ package com.kratonsolution.belian.healtcare.dm;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.CascadeType;
@@ -15,7 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -65,14 +62,20 @@ public class MedicalRecord implements Serializable
 	@NotFound(action=NotFoundAction.IGNORE)
 	private DoctorAppointment appointment;
 	
-	@OneToMany(mappedBy="medical",cascade=CascadeType.ALL,orphanRemoval=true)
-	private Set<Medication> medications = new HashSet<Medication>();
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="fk_medication")
+	@NotFound(action=NotFoundAction.IGNORE)
+	private Medication medication;
 	
-	@OneToMany(mappedBy="medical",cascade=CascadeType.ALL,orphanRemoval=true)
-	private Set<Treatment> treatments = new HashSet<Treatment>();
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="fk_treatment")
+	@NotFound(action=NotFoundAction.IGNORE)
+	private Treatment treatment;
 	
-	@OneToMany(mappedBy="medical",cascade=CascadeType.ALL,orphanRemoval=true)
-	private Set<Laboratory> laboratorys = new HashSet<Laboratory>();
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="fk_laboratory")
+	@NotFound(action=NotFoundAction.IGNORE)
+	private Laboratory laboratory;
 	
 	@Version
 	private Long version;

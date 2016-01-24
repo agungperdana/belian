@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.PersonRole;
 
 /**
@@ -40,5 +41,10 @@ public class Patient extends PersonRole
 	public Patient()
 	{
 		setType(Type.PATIENT);
+	}
+	
+	public boolean isBpjs()
+	{
+		return (bpjs != null && !Strings.isNullOrEmpty(bpjs.getCard()));
 	}
 }

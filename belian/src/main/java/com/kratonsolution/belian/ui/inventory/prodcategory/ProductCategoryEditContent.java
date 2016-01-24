@@ -10,13 +10,17 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.inventory.dm.ProductCategory;
 import com.kratonsolution.belian.inventory.svc.ProductCategoryService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -34,6 +38,8 @@ public class ProductCategoryEditContent extends FormContent
 	private Textbox name = new Textbox();
 	
 	private Textbox note = new Textbox();
+	
+	private Listbox segmentations = Components.newSelect();
 	
 	private Row row;
 	
@@ -77,6 +83,7 @@ public class ProductCategoryEditContent extends FormContent
 				category.setCode(code.getText());
 				category.setName(name.getText());
 				category.setNote(note.getText());
+				category.setSegmentation(IndustrySegmentation.valueOf(Components.string(segmentations)));
 				
 				service.edit(category);
 				
@@ -110,6 +117,17 @@ public class ProductCategoryEditContent extends FormContent
 				name.setReadonly(true);
 			}
 			
+			for(IndustrySegmentation segmentation:IndustrySegmentation.values())
+			{
+				Listitem listitem = new Listitem(segmentation.name(), segmentation.name());
+				segmentations.appendChild(listitem);
+				if(category.getSegmentation() != null && segmentation.equals(category.getSegmentation()))
+					segmentations.setSelectedItem(listitem);
+			}
+			
+			if(segmentations.getSelectedItem() != null)
+				segmentations.setSelectedIndex(0);
+				
 			grid.appendChild(new Columns());
 			grid.getColumns().appendChild(new Column(null,null,"135px"));
 			grid.getColumns().appendChild(new Column());

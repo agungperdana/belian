@@ -35,7 +35,7 @@ import com.kratonsolution.belian.healtcare.svc.DoctorAppointmentService;
 import com.kratonsolution.belian.healtcare.svc.DoctorService;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
 import com.kratonsolution.belian.ui.FormContent;
-import com.kratonsolution.belian.ui.healtcare.patient.PatientComboItem;
+import com.kratonsolution.belian.ui.component.PatientComboItem;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 

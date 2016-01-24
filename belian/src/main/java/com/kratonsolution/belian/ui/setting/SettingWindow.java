@@ -29,6 +29,7 @@ import org.zkoss.zul.Vlayout;
 
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
+import com.kratonsolution.belian.accounting.svc.TaxService;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.Organization;
@@ -55,6 +56,8 @@ public class SettingWindow extends AbstractWindow
 	
 	private CurrencyService currencyService = Springs.get(CurrencyService.class);
 	
+	private TaxService taxService = Springs.get(TaxService.class);
+	
 	private SessionUtils sessionUtils = Springs.get(SessionUtils.class);
 	
 	private Vlayout layout = new Vlayout(); 
@@ -68,6 +71,8 @@ public class SettingWindow extends AbstractWindow
 	private Listbox languanges = Components.newSelect();
 	
 	private Listbox currencys = Components.newSelect();
+	
+	private Listbox taxes = Components.newSelect(taxService.findAll(), true);
 	
 	private Doublebox rowPerPage = new Doublebox(25);
 	
@@ -121,6 +126,15 @@ public class SettingWindow extends AbstractWindow
 				locations.setSelectedItem(listitem);
 		}
 		
+		for(Listitem listitem:taxes.getItems())
+		{
+			if(sessionUtils.getTax() != null && sessionUtils.getTax().getId().equals(listitem.getValue().toString()))
+			{
+				taxes.setSelectedItem(listitem);
+				break;
+			}
+		}
+		
 		languanges.appendChild(new Listitem("Bahasa Indonesia", "in_ID"));
 		languanges.appendChild(new Listitem("English", "en_US"));
 		Components.setDefault(languanges);
@@ -163,14 +177,19 @@ public class SettingWindow extends AbstractWindow
 		row4.appendChild(currencys);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Row per page"));
-		row5.appendChild(rowPerPage);
+		row5.appendChild(new Label("Tax"));
+		row5.appendChild(taxes);
+		
+		Row row6 = new Row();
+		row6.appendChild(new Label("Row per page"));
+		row6.appendChild(rowPerPage);
 		
 		grid.getRows().appendChild(row1);
 		grid.getRows().appendChild(row2);
 		grid.getRows().appendChild(row3);
 		grid.getRows().appendChild(row4);
 		grid.getRows().appendChild(row5);
+		grid.getRows().appendChild(row6);
 		
 		tabpanel.appendChild(grid);
 	}

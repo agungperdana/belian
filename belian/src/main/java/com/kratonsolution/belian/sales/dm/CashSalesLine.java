@@ -79,11 +79,6 @@ public class CashSalesLine implements BillableItem
 	}
 
 	@Override
-	public void setUnitPrice(BigDecimal unitPrice)
-	{
-	}
-
-	@Override
 	public String getCategory()
 	{
 		return "";

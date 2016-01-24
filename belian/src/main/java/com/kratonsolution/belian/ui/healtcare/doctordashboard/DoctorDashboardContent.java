@@ -7,14 +7,16 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zul.Hlayout;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treechildren;
 import org.zkoss.zul.Treecol;
 import org.zkoss.zul.Treecols;
-import org.zkoss.zul.Vlayout;
+import org.zkoss.zul.West;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.svc.DoctorAppointmentService;
 import com.kratonsolution.belian.healtcare.svc.DoctorTypeService;
@@ -26,15 +28,15 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class DoctorDashboardContent extends Hlayout
+public class DoctorDashboardContent extends Borderlayout
 {	
 	private DoctorAppointmentService service = Springs.get(DoctorAppointmentService.class);
 	
 	private DoctorTypeService typeService = Springs.get(DoctorTypeService.class);
 	
-	private Vlayout navLayout = new Vlayout();
+	private West west = new West();
 	
-	private Vlayout contentLayout = new Vlayout();
+	private Center center = new Center();
 
 	private Tree tree = new Tree();
 	
@@ -44,10 +46,8 @@ public class DoctorDashboardContent extends Hlayout
 	{
 		this.row = row;
 		
-		setSpacing("3px");
 		setWidth("100%");
 		setHeight("97%");
-		setStyle("overflow:auto");
 
 		initLayout();
 		initTree();
@@ -55,18 +55,15 @@ public class DoctorDashboardContent extends Hlayout
 	
 	private void initLayout()
 	{
-		navLayout.setHeight("100%");
-		navLayout.setWidth("225px");
-		navLayout.setStyle("over-flow:auto;");
+		west.setWidth("25%");
+		west.setStyle("over-flow:auto;");
+		west.setBorder("none");
 		
-		contentLayout.setWidth("100%");
-		contentLayout.setHeight("100%");
+		center.setStyle("over-flow:auto;");
+		center.setBorder("none");
 		
-		appendChild(navLayout);
-		appendChild(contentLayout);
-		
-		appendChild(navLayout);
-		appendChild(contentLayout);
+		appendChild(west);
+		appendChild(center);
 	}
 
 	private void initTree()
@@ -83,7 +80,13 @@ public class DoctorDashboardContent extends Hlayout
 		DoctorAppointment appointment = service.findOne(RowUtils.string(row, 6));
 		if(appointment != null)
 		{
-			Treecol title = new Treecol(appointment.getPatient().getPerson().getName(),"","100%");
+			StringBuilder builder = new StringBuilder();
+			builder.append(appointment.getPatient().getPerson().getName());
+			
+			if(appointment.getPatient().getBpjs() != null && !Strings.isNullOrEmpty(appointment.getPatient().getBpjs().getCard()))
+				builder.append(" (BPJS : "+appointment.getPatient().getBpjs().getCard()+")");
+			
+			Treecol title = new Treecol(builder.toString(),"100%");
 			title.setImage("/icons/close24.png");
 			title.setStyle("cursor:pointer;");
 			title.addEventListener(Events.ON_CLICK,new EventListener<Event>()
@@ -102,13 +105,13 @@ public class DoctorDashboardContent extends Hlayout
 			
 			treecols.appendChild(title);
 			
-			children.appendChild(new CurrentAppointmentItem(appointment, contentLayout));
-			children.appendChild(new PatientInformationItem(appointment, contentLayout));
-			children.appendChild(new AppointmentItem(appointment,contentLayout));
-			children.appendChild(new MedicalRecordItem(appointment, contentLayout));
-			children.appendChild(new FamiliFolderItem(appointment, contentLayout));
+			children.appendChild(new CurrentAppointmentItem(appointment, center));
+			children.appendChild(new PatientInformationItem(appointment, center));
+			children.appendChild(new AppointmentItem(appointment,center));
+			children.appendChild(new MedicalRecordItem(appointment, center));
+			children.appendChild(new FamiliFolderItem(appointment, center));
 		}
 		
-		navLayout.appendChild(tree);
+		west.appendChild(tree);
 	}
 }

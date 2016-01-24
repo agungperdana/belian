@@ -3,22 +3,18 @@
  */
 package com.kratonsolution.belian.healtcare.dm;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.UUID;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.sales.dm.Billable;
 
 /**
  * @author Agung Dodi Perdana
@@ -28,30 +24,14 @@ import com.kratonsolution.belian.inventory.dm.Product;
 @Setter
 @Entity
 @Table(name="medication")
-public class Medication implements Serializable
+public class Medication extends Billable
 {
-	@Id
-	private String id = UUID.randomUUID().toString();
-	
-	@ManyToOne
-	@JoinColumn(name="fk_product_medicine")
-	private Product medicine;
-	
-	@Column(name="quantity")
-	private BigDecimal quantity;
-	
-	@Column(name="description")
-	private String description;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_medical_record")
-	private MedicalRecord medical;
+	@OneToMany(mappedBy="medication",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<MedicationItem> items = new HashSet<MedicationItem>();
 
-	@Column(name="is_billed")
-	private boolean billed;
-	
-	@Version
-	private Long version;
-	
-	public Medication(){}
+	@Override
+	public String getBillingType()
+	{
+		return "Medication";
+	}
 }

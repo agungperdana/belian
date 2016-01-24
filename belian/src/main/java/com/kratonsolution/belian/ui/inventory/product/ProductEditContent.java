@@ -20,7 +20,6 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductCategory;
 import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
@@ -65,8 +64,6 @@ public class ProductEditContent extends FormContent implements Refreshable
 	private Listbox types = new Listbox();
 	
 	private Listbox uoms = new Listbox();
-	
-	private Listbox segmentations = Components.newSelect();
 	
 	private Tabbox tabbox;
 
@@ -118,9 +115,6 @@ public class ProductEditContent extends FormContent implements Refreshable
 				if(types.getSelectedCount() == 0)
 					throw new WrongValueException(categorys,"Please select product type first");
 				
-				if(segmentations.getSelectedCount() == 0)
-					throw new WrongValueException(segmentations,"Please select industry segmentation first");
-
 				Product product = service.findOne(RowUtils.string(row, 8));
 				product.setStart(start.getValue());
 				product.setEnd(end.getValue());
@@ -129,8 +123,7 @@ public class ProductEditContent extends FormContent implements Refreshable
 				product.setType(Product.Type.valueOf(Components.string(types)));
 				product.setCategory(categoryService.findOne(Components.string(categorys)));
 				product.setUom(unitOfMeasureService.findOne(Components.string(uoms)));
-				product.setSegmentation(IndustrySegmentation.valueOf(Components.string(segmentations)));
-
+				
 				service.edit(product);
 
 				ProductWindow window = (ProductWindow)getParent();
@@ -172,14 +165,6 @@ public class ProductEditContent extends FormContent implements Refreshable
 				types.appendChild(listitem);
 				if(type.equals(product.getType()))
 					types.setSelectedItem(listitem);
-			}
-			
-			for(IndustrySegmentation segmentation:IndustrySegmentation.values())
-			{
-				Listitem listitem = new Listitem(segmentation.name(),segmentation.name());
-				segmentations.appendChild(listitem);
-				if(segmentation.equals(product.getSegmentation()))
-					segmentations.setSelectedItem(listitem);
 			}
 			
 			for(ProductCategory category:categoryService.findAll())
@@ -230,10 +215,6 @@ public class ProductEditContent extends FormContent implements Refreshable
 			row7.appendChild(new Label("Unit of Measure"));
 			row7.appendChild(uoms);
 			
-			Row row8 = new Row();
-			row8.appendChild(new Label("Industry Segmentation"));
-			row8.appendChild(segmentations);
-			
 			rows.appendChild(row1);
 			rows.appendChild(row2);
 			rows.appendChild(row3);
@@ -241,7 +222,6 @@ public class ProductEditContent extends FormContent implements Refreshable
 			rows.appendChild(row5);
 			rows.appendChild(row6);
 			rows.appendChild(row7);
-			rows.appendChild(row8);
 		}
 	}
 	

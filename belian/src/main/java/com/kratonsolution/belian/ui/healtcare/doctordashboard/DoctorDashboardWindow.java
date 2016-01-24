@@ -32,6 +32,7 @@ public class DoctorDashboardWindow extends AbstractWindow implements HasGrid,Has
 	{
 		super();
 		setWidth("750px");
+		setHeight("525px");
 		init();
 	}
 	

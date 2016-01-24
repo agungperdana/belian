@@ -47,6 +47,12 @@ public class UserSetting implements Serializable
 	@Column(name="currency_name")
 	private String currencyName;
 	
+	@Column(name="tax_id")
+	private String taxId;
+	
+	@Column(name="tax_name")
+	private String taxName;
+	
 	@Column(name="language")
 	private String language;
 	

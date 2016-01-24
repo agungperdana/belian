@@ -6,7 +6,6 @@ package com.kratonsolution.belian.ui.healtcare.labschedule;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Grid;
@@ -14,10 +13,10 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 
-import com.kratonsolution.belian.healtcare.dm.LaboratoryBilling;
-import com.kratonsolution.belian.healtcare.dm.LaboratoryBilling.Status;
-import com.kratonsolution.belian.healtcare.dm.LaboratoryBillingItem;
-import com.kratonsolution.belian.healtcare.svc.LaboratoryBillingService;
+import com.kratonsolution.belian.healtcare.dm.LabHandlingStatus;
+import com.kratonsolution.belian.healtcare.dm.Laboratory;
+import com.kratonsolution.belian.healtcare.dm.LaboratoryItem;
+import com.kratonsolution.belian.healtcare.svc.LaboratoryRegistrationService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.RowUtils;
@@ -29,7 +28,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class LabScheduleEditContent extends FormContent
 {	
-	private LaboratoryBillingService service = Springs.get(LaboratoryBillingService.class);
+	private LaboratoryRegistrationService service = Springs.get(LaboratoryRegistrationService.class);
 	
 	private Row row;
 
@@ -62,18 +61,15 @@ public class LabScheduleEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				LaboratoryBilling billing = service.findOne(RowUtils.string(row, 6));
-				if(billing.getStatus().equals(Status.REGISTERED))
+				Laboratory laboratory = service.findOne(RowUtils.string(row, 4));
+				if(laboratory != null && laboratory.getStatus().equals(LabHandlingStatus.Registered))
 				{
-					billing.setStatus(Status.HANDLED);
-					service.edit(billing);
-				
-					Clients.showNotification("Document Successfuly saved.");
-					
-					LabScheduleWindow window = (LabScheduleWindow)getParent();
-					window.removeEditForm();
-					window.insertGrid();
+					laboratory.setStatus(LabHandlingStatus.Handled);
 				}
+				
+				LabScheduleWindow window = (LabScheduleWindow)getParent();
+				window.removeEditForm();
+				window.insertGrid();
 			}
 		});
 	}
@@ -81,20 +77,20 @@ public class LabScheduleEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		LaboratoryBilling billing = service.findOne(RowUtils.string(row, 6));
-		if(billing != null)
+		Laboratory laboratory = service.findOne(RowUtils.string(row, 4));
+		if(laboratory != null)
 		{
 			grid.appendChild(new Columns());
 			grid.getColumns().appendChild(new Column(null,null,"125px"));
 			grid.getColumns().appendChild(new Column());
 			grid.setSpan("1");
-			grid.getRows().appendChild(RowUtils.row("Company", billing.getOrganization().getName()));
-			grid.getRows().appendChild(RowUtils.row("Number", billing.getNumber()));
-			grid.getRows().appendChild(RowUtils.row("Date", Dates.format(billing.getDate())));
-			grid.getRows().appendChild(RowUtils.row("Patient", billing.getCustomer().getName()));
-			grid.getRows().appendChild(RowUtils.row("Doctor/Initiator", billing.getSales().getName()));
-			grid.getRows().appendChild(RowUtils.row("Payment Status", billing.isPaid()?"Paid":"Unpaid"));
-			grid.getRows().appendChild(RowUtils.row("Handling Status", billing.getStatus().name()));
+			grid.getRows().appendChild(RowUtils.row("Company", laboratory.getOrganization().getName()));
+			grid.getRows().appendChild(RowUtils.row("Number", laboratory.getNumber()));
+			grid.getRows().appendChild(RowUtils.row("Date", Dates.format(laboratory.getDate())));
+			grid.getRows().appendChild(RowUtils.row("Patient", laboratory.getCustomer().getName()));
+			grid.getRows().appendChild(RowUtils.row("Doctor/Initiator", laboratory.getSales().getName()));
+			grid.getRows().appendChild(RowUtils.row("Payment Status", laboratory.isPaid()?"Paid":"Unpaid"));
+			grid.getRows().appendChild(RowUtils.row("Handling Status", laboratory.getStatus().name()));
 			
 			Grid items = new Grid();
 			items.setWidth("100%");
@@ -102,15 +98,17 @@ public class LabScheduleEditContent extends FormContent
 			items.appendChild(new Columns());
 			items.appendChild(new Rows());
 			items.getColumns().appendChild(new Column("Service",null,"200px"));
-			items.getColumns().appendChild(new Column("Quantity",null,"85px"));
+			items.getColumns().appendChild(new Column("Quantity",null,"100px"));
+			items.getColumns().appendChild(new Column("UoM",null,"100px"));
 			items.getColumns().appendChild(new Column("Note",null,"165px"));
 			items.setSpan("0");
 			
-			for(LaboratoryBillingItem item:billing.getItems())
+			for(LaboratoryItem item:laboratory.getItems())
 			{
 				Row row = new Row();
 				row.appendChild(new Label(item.getResource()));
-				row.appendChild(new Label(item.getQuantity().intValue()+""));
+				row.appendChild(new Label(item.getQuantity().toString()));
+				row.appendChild(new Label(item.getService().getUom().getName()));
 				row.appendChild(new Label(item.getNote()));
 				
 				items.getRows().appendChild(row);

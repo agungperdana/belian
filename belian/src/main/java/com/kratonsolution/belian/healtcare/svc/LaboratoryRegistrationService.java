@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.healtcare.dm.LaboratoryRegistration;
-import com.kratonsolution.belian.healtcare.dm.LaboratoryRegistrationRepository;
+import com.kratonsolution.belian.healtcare.dm.Laboratory;
+import com.kratonsolution.belian.healtcare.dm.LaboratoryRepository;
 
 /**
  * 
@@ -31,7 +31,7 @@ public class LaboratoryRegistrationService
 	private SessionUtils utils;
 	
 	@Autowired
-	private LaboratoryRegistrationRepository repository;
+	private LaboratoryRepository repository;
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_LABS_REGISTRATION_READ")
@@ -45,39 +45,49 @@ public class LaboratoryRegistrationService
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_LABS_REGISTRATION_READ")
-	public LaboratoryRegistration findOne(String id)
+	public Laboratory findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_LABS_REGISTRATION_READ")
-	public List<LaboratoryRegistration> findAll()
+	public List<Laboratory> findAll()
 	{
 		if(utils.getOrganization() == null)
-			return new ArrayList<LaboratoryRegistration>();
+			return new ArrayList<Laboratory>();
 
 		return repository.findAll();
 	}
-		
+	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_LABS_REGISTRATION_READ")
-	public List<LaboratoryRegistration> findAll(int pageIndex,int pageSize)
+	public List<Laboratory> findAllPaid()
 	{
 		if(utils.getOrganization() == null)
-			return new ArrayList<LaboratoryRegistration>();
+			return new ArrayList<Laboratory>();
+
+		return repository.findAllPaid(utils.getOrganization().getId());
+	}
+			
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_LABS_REGISTRATION_READ")
+	public List<Laboratory> findAll(int pageIndex,int pageSize)
+	{
+		if(utils.getOrganization() == null)
+			return new ArrayList<Laboratory>();
 
 		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId());
 	}
 	
 	@Secured("ROLE_LABS_REGISTRATION_CREATE")
-	public void add(LaboratoryRegistration lab)
+	public void add(Laboratory lab)
 	{
 		repository.save(lab);
 	}
 	
 	@Secured("ROLE_LABS_REGISTRATION_UPDATE")
-	public void edit(LaboratoryRegistration lab)
+	public void edit(Laboratory lab)
 	{
 		repository.saveAndFlush(lab);
 	}
@@ -85,6 +95,8 @@ public class LaboratoryRegistrationService
 	@Secured("ROLE_LABS_REGISTRATION_DELETE")
 	public void delete(@PathVariable String id)
 	{
-		repository.delete(id);
+		Laboratory lab = findOne(id);
+		if(!lab.isPaid())
+			repository.delete(lab);
 	}
 }

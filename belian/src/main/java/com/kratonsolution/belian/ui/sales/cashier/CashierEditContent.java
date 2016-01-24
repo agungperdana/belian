@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -76,18 +75,6 @@ public class CashierEditContent extends FormContent
 				Billable billing = service.findOne(RowUtils.string(row, 5));
 				if(billing != null)
 				{
-					for(BillableItem item:billing.getItems())
-					{
-						for(Component com:billingItems.getRows().getChildren())
-						{
-							if(com.getChildren().size() > 2)
-							{
-								if(item.getId().equals(RowUtils.string((Row)com, 4)))
-									item.setUnitPrice(RowUtils.decimal((Row)com, 2));
-							}
-						}
-					}
-					
 					billing.setPaid(true);
 					service.edit(billing);
 				}

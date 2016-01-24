@@ -9,7 +9,7 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
-import com.kratonsolution.belian.healtcare.dm.LaboratoryRegistration;
+import com.kratonsolution.belian.healtcare.dm.Laboratory;
 import com.kratonsolution.belian.healtcare.svc.LaboratoryRegistrationService;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -18,11 +18,11 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class LabsRegistrationModel implements ListModel<LaboratoryRegistration>
+public class LabsRegistrationModel implements ListModel<Laboratory>
 {
-	private final LaboratoryRegistrationService service = Springs.get(LaboratoryRegistrationService.class);
+	private LaboratoryRegistrationService service = Springs.get(LaboratoryRegistrationService.class);
 	
-	private List<LaboratoryRegistration> data = new ArrayList<LaboratoryRegistration>();
+	private List<Laboratory> data = new ArrayList<Laboratory>();
 	
 	public LabsRegistrationModel(int itemSize)
 	{
@@ -30,7 +30,7 @@ public class LabsRegistrationModel implements ListModel<LaboratoryRegistration>
 	}
 	
 	@Override
-	public LaboratoryRegistration getElementAt(int index)
+	public Laboratory getElementAt(int index)
 	{
 		if(index >= data.size())
 			return null;
@@ -47,15 +47,11 @@ public class LabsRegistrationModel implements ListModel<LaboratoryRegistration>
 	@Override
 	public void addListDataListener(ListDataListener l)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void removeListDataListener(ListDataListener l)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void next(int pageIndex,int itemSize)

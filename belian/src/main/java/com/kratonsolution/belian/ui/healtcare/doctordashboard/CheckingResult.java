@@ -5,11 +5,6 @@ package com.kratonsolution.belian.ui.healtcare.doctordashboard;
 
 import java.sql.Date;
 
-import org.zkoss.zk.ui.WrongValueException;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
@@ -18,12 +13,9 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Tabpanel;
 import org.zkoss.zul.Textbox;
 
-import com.google.common.base.Strings;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
-import com.kratonsolution.belian.healtcare.dm.DoctorAppointment.Status;
 import com.kratonsolution.belian.healtcare.dm.MedicalRecord;
 import com.kratonsolution.belian.healtcare.svc.MedicalRecordService;
-import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -35,8 +27,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class CheckingResult extends Tabpanel
 {
 	private MedicalRecordService service = Springs.get(MedicalRecordService.class);
-	
-	private FormToolbar toolbar = new FormToolbar();
 	
 	private Grid grid = new Grid();
 	
@@ -50,50 +40,8 @@ public class CheckingResult extends Tabpanel
 	
 	public CheckingResult(DoctorAppointment appointment)
 	{
-		appendChild(toolbar);
 		appendChild(grid);
-	
-		initToolbar(appointment);
 		initGrid(appointment);
-	}
-	
-	private void initToolbar(DoctorAppointment appointment)
-	{
-		if(!appointment.getStatus().equals(Status.PROGRESS))
-			toolbar.disbaled();
-			
-		toolbar.removeChild(toolbar.getCancel());
-		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event arg0) throws Exception
-			{
-				if(Strings.isNullOrEmpty(anamnesis.getText()))
-					throw new WrongValueException(anamnesis,"Anamnesis cannot be empty.");
-				
-				if(Strings.isNullOrEmpty(checkingResult.getText()))
-					throw new WrongValueException(checkingResult,"Checking Result cannot be empty.");
-				
-				if(Strings.isNullOrEmpty(diagnosis.getText()))
-					throw new WrongValueException(diagnosis,"Diagnonis cannot be empty.");
-				
-				MedicalRecord record = service.findOneByAppointmentId(appointment.getId());
-				if(record == null)
-					record = new MedicalRecord();
-				
-				record.setDate(new Date(datebox.getValue().getTime()));
-				record.setAnamnesis(anamnesis.getText());
-				record.setAppointment(appointment);
-				record.setCheckingResult(checkingResult.getText());
-				record.setDiagnosis(diagnosis.getText());
-				record.setPatient(appointment.getPatient());
-				record.setDoctor(appointment.getDoctor());
-				
-				service.edit(record);
-				
-				Clients.showNotification("Data successfully saved", Clients.NOTIFICATION_TYPE_INFO, null, null, 15, true);
-			}
-		});
 	}
 	
 	private void initGrid(DoctorAppointment appointment)
@@ -122,13 +70,23 @@ public class CheckingResult extends Tabpanel
 	
 	private void setValues(DoctorAppointment appointment)
 	{
-		MedicalRecord record = service.findOneByAppointmentId(appointment.getId());
-		if(record != null)
+		if(appointment.getRecord() != null)
 		{
-			datebox.setValue(record.getDate());
-			anamnesis.setText(record.getAnamnesis());
-			checkingResult.setText(record.getCheckingResult());
-			diagnosis.setText(record.getDiagnosis());
+			datebox.setValue(appointment.getRecord().getDate());
+			anamnesis.setText(appointment.getRecord().getAnamnesis());
+			checkingResult.setText(appointment.getRecord().getCheckingResult());
+			diagnosis.setText(appointment.getRecord().getDiagnosis());
 		}
+	}
+	
+	public void store(DoctorAppointment appointment)
+	{
+		if(appointment.getRecord() == null)
+			appointment.setRecord(new MedicalRecord());
+		
+		appointment.getRecord().setDate(new Date(datebox.getValue().getTime()));
+		appointment.getRecord().setAnamnesis(anamnesis.getText());
+		appointment.getRecord().setCheckingResult(checkingResult.getText());
+		appointment.getRecord().setDiagnosis(diagnosis.getText());
 	}
 }

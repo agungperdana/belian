@@ -41,8 +41,8 @@ public class LabScheduleGridContent extends GridContent
 	}
 
 	protected void initToolbar()
-	{
-		gridToolbar.setParent(this);
+	{	
+		appendChild(gridToolbar);
 		gridToolbar.getRefresh().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
@@ -134,7 +134,7 @@ public class LabScheduleGridContent extends GridContent
 								}
 							}
 							
-							grid.setModel(new LabScheduleModel(8));
+							grid.setModel(new LabScheduleModel(utils.getRowPerPage()));
 						}
 					}
 				});
@@ -154,7 +154,7 @@ public class LabScheduleGridContent extends GridContent
 	{
 		final LabScheduleModel model = new LabScheduleModel(utils.getRowPerPage());
 		
-		grid.setParent(this);
+		appendChild(grid);
 		grid.setHeight("80%");
 		grid.setEmptyMessage("No laboratory data exist.");
 		grid.setModel(model);
@@ -164,15 +164,13 @@ public class LabScheduleGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		
-		grid.getColumns().appendChild(new Column(null,null,"25px"));
 		grid.getColumns().appendChild(new Column(language.get("healtcare.grid.column.number"),null,"155px"));
 		grid.getColumns().appendChild(new Column(language.get("healtcare.grid.column.date"),null,"85px"));
 		grid.getColumns().appendChild(new Column(language.get("healtcare.grid.column.patient"),null,"150px"));
 		grid.getColumns().appendChild(new Column(language.get("healtcare.grid.column.doctor"),null,"150px"));
-		grid.getColumns().appendChild(new Column(language.get("healtcare.grid.column.status"),null,"85px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(6).setVisible(false);
-		grid.setSpan("3");
+		grid.getColumns().getChildren().get(4).setVisible(false);
+		grid.setSpan("0");
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{

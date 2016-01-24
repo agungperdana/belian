@@ -113,18 +113,6 @@ public class DoctorAppointmentService extends SessionAware
 	}
 	
 	@Secured("ROLE_DOCTOR_APPOINTMENT_UPDATE")
-	public void done(String id)
-	{
-		DoctorAppointment appointment = findOne(id);
-		if(appointment != null)
-		{
-			appointment.setStatus(Status.DONE);
-			service.createBilling(appointment);
-			edit(appointment);
-		}
-	}
-	
-	@Secured("ROLE_DOCTOR_APPOINTMENT_UPDATE")
 	public void cancel(String id)
 	{
 		DoctorAppointment appointment = findOne(id);

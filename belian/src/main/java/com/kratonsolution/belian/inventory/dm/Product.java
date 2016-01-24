@@ -21,7 +21,6 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.global.dm.EconomicResource;
 import com.kratonsolution.belian.global.dm.Listable;
 
@@ -55,10 +54,6 @@ public class Product extends EconomicResource implements Listable
 	@Column(name="type")
 	@Enumerated(EnumType.STRING)
 	private Type type = Type.FINISHGOOD;
-	
-	@Column(name="industry_segmentation")
-	@Enumerated(EnumType.STRING)
-	private IndustrySegmentation segmentation = IndustrySegmentation.GENERAL;
 	
 	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<ProductCode> codes = new HashSet<ProductCode>();

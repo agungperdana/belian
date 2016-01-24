@@ -109,14 +109,7 @@ public class ProductService
 	{
 		return repository.findAllActiveProductByCategory(categoryId, date);
 	}
-	
-	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_PRODUCT_READ")
-	public List<Product> findAllBySegmentation(IndustrySegmentation segmentation,Type type)
-	{
-		return repository.findAllBySegmentationAndType(segmentation,type);
-	}
-	
+		
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PRODUCT_READ")
 	public List<Product> findAllBySegmentationAndName(IndustrySegmentation segmentation,String name,Type type)

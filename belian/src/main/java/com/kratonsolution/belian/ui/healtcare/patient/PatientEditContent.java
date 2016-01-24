@@ -8,6 +8,7 @@ import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Cell;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
@@ -19,11 +20,12 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.dm.Person.Gender;
 import com.kratonsolution.belian.general.dm.Person.MaritalStatus;
 import com.kratonsolution.belian.general.svc.GeographicService;
-import com.kratonsolution.belian.general.svc.OrganizationUnitService;
+import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.healtcare.dm.Patient;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
@@ -39,13 +41,15 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PatientEditContent extends FormContent
 {	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
+	
 	private PatientService service = Springs.get(PatientService.class);
 	
 	private GeographicService geographicService = Springs.get(GeographicService.class);
+	
+	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 
 	private PersonService personService = Springs.get(PersonService.class);
-
-	private OrganizationUnitService unitService = Springs.get(OrganizationUnitService.class);
 
 	private Textbox identity = Components.mandatoryTextBox();
 
@@ -56,6 +60,8 @@ public class PatientEditContent extends FormContent
 	private Listbox genders = Components.newSelect();
 
 	private Listbox statuses = Components.newSelect();
+	
+	private Listbox companys = Components.newSelect();
 
 	private Listbox birthPlace = Components.newSelect(geographicService.findAll(),true);
 
@@ -79,7 +85,7 @@ public class PatientEditContent extends FormContent
 	public void initToolbar()
 	{
 		toolbar.getCancel().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-				{
+		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
@@ -87,7 +93,7 @@ public class PatientEditContent extends FormContent
 				window.removeEditForm();
 				window.insertGrid();
 			}
-				});
+		});
 
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
@@ -115,6 +121,7 @@ public class PatientEditContent extends FormContent
 					personService.edit(person);
 					
 					patient.getBpjs().setCard(bpjsNumber.getText());
+					patient.setCompany(organizationService.findOne(Components.string(companys)));
 					service.edit(patient);
 				}
 
@@ -143,6 +150,21 @@ public class PatientEditContent extends FormContent
 			
 			bpjsNumber.setWidth("225px");
 			bpjsNumber.setText(patient.getBpjs().getCard());
+			
+			if(patient.getCompany() != null)
+			{
+				companys.appendItem(patient.getCompany().getName(), patient.getCompany().getId());
+				companys.setSelectedIndex(0);
+			}
+			else if(utils.getOrganization() != null)
+			{
+				companys.appendItem(utils.getOrganization().getName(),utils.getOrganization().getId());
+				companys.setSelectedIndex(0);
+			}
+			else
+			{
+				Clients.showNotification("Default organization does not exist,please go to setting to set it up.");
+			}
 
 			for(Gender gender:Gender.values())
 			{
@@ -172,6 +194,10 @@ public class PatientEditContent extends FormContent
 			grid.getColumns().appendChild(new Column(null,null,"20%"));
 			grid.getColumns().appendChild(new Column());
 
+			Row row0012 = new Row();
+			row0012.appendChild(new Label("Company"));
+			row0012.appendChild(companys);
+			
 			Row row001 = new Row();
 			row001.appendChild(new Label("Start Date"));
 			row001.appendChild(start);
@@ -215,6 +241,7 @@ public class PatientEditContent extends FormContent
 			row9.appendChild(new Label("Card Number"));
 			row9.appendChild(bpjsNumber);
 			
+			rows.appendChild(row0012);
 			rows.appendChild(row001);
 			rows.appendChild(row1);
 			rows.appendChild(row2);

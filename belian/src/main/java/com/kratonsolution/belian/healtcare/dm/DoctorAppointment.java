@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -66,30 +67,10 @@ public class DoctorAppointment implements Serializable
 	@Enumerated(EnumType.STRING)
 	@Column(name="status")
 	private Status status = Status.REGISTERED;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_doctor_appointment_billing")
-	private DoctorAppointmentBilling appointmentBilling;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_medicine_billing")
-	private MedicineBilling medicineBilling;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_laboratory_billing")
-	private LaboratoryBilling laboratoryBilling;
 
-	public DoctorAppointment(){}
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="fk_medical_record")
+	private MedicalRecord record;
 	
-	public boolean isCancelable()
-	{
-		if(appointmentBilling != null && appointmentBilling.isPaid())
-			return false;
-		if(medicineBilling != null && medicineBilling.isPaid())
-			return false;
-		if(laboratoryBilling != null && laboratoryBilling.isPaid())
-			return false;
-		
-		return true;
-	}
+	public DoctorAppointment(){}
 }

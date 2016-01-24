@@ -23,7 +23,7 @@ import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.dm.Person.Gender;
 import com.kratonsolution.belian.general.dm.Person.MaritalStatus;
 import com.kratonsolution.belian.general.svc.GeographicService;
-import com.kratonsolution.belian.general.svc.OrganizationUnitService;
+import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.healtcare.dm.Doctor;
 import com.kratonsolution.belian.healtcare.dm.DoctorPartnershipRepository;
@@ -53,7 +53,7 @@ public class DoctorEditContent extends FormContent
 
 	private PersonService personService = Springs.get(PersonService.class);
 
-	private OrganizationUnitService unitService = Springs.get(OrganizationUnitService.class);
+	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 
 	private Listbox companys = Components.newSelect();
 	
@@ -129,6 +129,9 @@ public class DoctorEditContent extends FormContent
 					personService.edit(person);
 				
 					doctor.setTo(end.getValue());
+					doctor.setCompany(organizationService.findOne(Components.string(companys)));
+				
+					service.edit(doctor);
 				}
 
 				DoctorWindow window = (DoctorWindow)getParent();
@@ -144,12 +147,30 @@ public class DoctorEditContent extends FormContent
 		Doctor doctor = service.findOne(RowUtils.string(row, 5));
 		if(doctor != null)
 		{
+			identity.setWidth("250px");
 			identity.setText(doctor.getPerson().getIdentity());
+
+			name.setWidth("300px");
 			name.setText(doctor.getPerson().getName());
+			
 			birthDate.setValue(doctor.getPerson().getBirthDate());
 			taxNumber.setText(doctor.getPerson().getTaxCode());
+
 			start.setValue(doctor.getFrom());
-			companys.appendChild(new Listitem(doctor.getCompany().getLabel(), doctor.getCompany().getValue()));
+			
+			if(doctor.getCompany() != null)
+			{
+				companys.appendChild(new Listitem(doctor.getCompany().getLabel(), doctor.getCompany().getValue()));
+				companys.setSelectedIndex(0);
+			}
+			else
+			{
+				if(utils.getOrganization() != null)
+				{
+					companys.appendChild(new Listitem(utils.getOrganization().getLabel(), utils.getOrganization().getValue()));
+					companys.setSelectedIndex(0);
+				}
+			}
 
 			for(Gender gender:Gender.values())
 			{
@@ -171,7 +192,7 @@ public class DoctorEditContent extends FormContent
 			for(Component component:birthPlace.getChildren())
 			{
 				Listitem listitem = (Listitem)component;
-				if(listitem.getValue().equals(doctor.getParty().getBirthPlace().getId()))
+				if(doctor.getParty() != null && doctor.getParty().getBirthPlace() != null && listitem.getValue().equals(doctor.getParty().getBirthPlace().getId()))
 					birthPlace.setSelectedItem(listitem);
 			}
 

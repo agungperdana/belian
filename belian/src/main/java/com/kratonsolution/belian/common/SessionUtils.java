@@ -14,8 +14,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.Currency;
+import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
+import com.kratonsolution.belian.accounting.svc.TaxService;
 import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.Organization;
@@ -46,11 +49,13 @@ public class SessionUtils
 	@Autowired
 	private OrganizationService organizationService;
 	
+	@Autowired
+	private TaxService taxService;
+	
 	public User getUser()
 	{
 		SecurityInformation information = (SecurityInformation)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return service.findOne(information.getUser().getId());
-				
 	}
 	
 	public List<Organization> getOrganizations()
@@ -169,5 +174,13 @@ public class SessionUtils
 	public String getLanguage()
 	{
 		return getUser().getSetting().getLanguage();
+	}
+	
+	public Tax getTax()
+	{
+		if(getUser() != null && getUser().getSetting() != null && !Strings.isNullOrEmpty(getUser().getSetting().getTaxId()))
+			return taxService.findOne(getUser().getSetting().getTaxId());
+			
+		return null;
 	}
 }

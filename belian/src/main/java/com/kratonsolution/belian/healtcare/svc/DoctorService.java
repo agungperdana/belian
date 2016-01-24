@@ -60,7 +60,7 @@ public class DoctorService
 		if(utils.getOrganization() == null)
 			return null;
 		
-		return repository.findOneByPartyNameAndCompanyId(name,utils.getOrganization().getId());
+		return repository.findOne(name,utils.getOrganization().getId());
 	}
 
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -106,6 +106,13 @@ public class DoctorService
 	public Doctor findOneByPartyIdAndType(String id,Type type)
 	{
 		return repository.findOneByPartyIdAndType(id, type);
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_DOCTOR_READ")
+	public Doctor findOne(String partyId,String companyId)
+	{
+		return repository.findOne(partyId, companyId);
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)

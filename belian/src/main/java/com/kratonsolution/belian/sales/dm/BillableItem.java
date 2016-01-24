@@ -20,8 +20,6 @@ public interface BillableItem extends Serializable
 	
 	public BigDecimal getUnitPrice();
 	
-	public void setUnitPrice(BigDecimal unitPrice);
-	
 	public String getNote();
 	
 	public String getCategory();

@@ -17,6 +17,7 @@ import javax.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
+import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.sales.dm.BillableItem;
 
 /**
@@ -26,33 +27,55 @@ import com.kratonsolution.belian.sales.dm.BillableItem;
 @Getter
 @Setter
 @Entity
-@Table(name="medicine_billing_item")
-public class MedicineBillingItem implements BillableItem
+@Table(name="medication_item")
+public class MedicationItem implements BillableItem
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@Column(name="resource")
-	private String resource;
+	@ManyToOne
+	@JoinColumn(name="fk_product_medicine")
+	private Product medicine;
 	
 	@Column(name="quantity")
 	private BigDecimal quantity = BigDecimal.ONE;
 	
-	@Column(name="unit_price")
-	private BigDecimal unitPrice = BigDecimal.ZERO;
+	@Column(name="price")
+	private BigDecimal price = BigDecimal.ZERO;
 	
-	@Column(name="category")
-	private String category;
+	@Column(name="discount")
+	private BigDecimal discount = BigDecimal.ZERO;
+	
+	@Column(name="charge")
+	private BigDecimal charge = BigDecimal.ZERO;
 	
 	@Column(name="note")
 	private String note;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_billing")
-	private MedicineBilling billing;
+	@JoinColumn(name="fk_medication")
+	private Medication medication;
 	
 	@Version
 	private Long version;
 	
-	public MedicineBillingItem(){}
+	public MedicationItem(){}
+
+	@Override
+	public String getResource()
+	{
+		return medicine.getName();
+	}
+
+	@Override
+	public BigDecimal getUnitPrice()
+	{
+		return price.subtract(discount).add(charge);
+	}
+
+	@Override
+	public String getCategory()
+	{
+		return "Medicine";
+	}
 }

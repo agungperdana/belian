@@ -9,8 +9,8 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
-import com.kratonsolution.belian.healtcare.dm.LaboratoryBilling;
-import com.kratonsolution.belian.healtcare.svc.LaboratoryBillingService;
+import com.kratonsolution.belian.healtcare.dm.Laboratory;
+import com.kratonsolution.belian.healtcare.svc.LaboratoryRegistrationService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -18,11 +18,11 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class LabScheduleModel implements ListModel<LaboratoryBilling>
+public class LabScheduleModel implements ListModel<Laboratory>
 {
-	private final LaboratoryBillingService service = Springs.get(LaboratoryBillingService.class);
+	private final LaboratoryRegistrationService service = Springs.get(LaboratoryRegistrationService.class);
 	
-	private List<LaboratoryBilling> data = new ArrayList<LaboratoryBilling>();
+	private List<Laboratory> data = new ArrayList<Laboratory>();
 	
 	public LabScheduleModel(int itemSize)
 	{
@@ -30,7 +30,7 @@ public class LabScheduleModel implements ListModel<LaboratoryBilling>
 	}
 
 	@Override
-	public LaboratoryBilling getElementAt(int index)
+	public Laboratory getElementAt(int index)
 	{
 		if(index >= data.size())
 			return null;
@@ -41,7 +41,7 @@ public class LabScheduleModel implements ListModel<LaboratoryBilling>
 	@Override
 	public int getSize()
 	{
-		return service.size();
+		return data.size();
 	}
 
 	@Override
@@ -61,6 +61,6 @@ public class LabScheduleModel implements ListModel<LaboratoryBilling>
 	public void next(int pageIndex,int itemSize)
 	{
 		data.clear();
-		data.addAll(service.findAll(0, (itemSize*pageIndex)+itemSize));
+		data.addAll(service.findAllPaid());
 	}
 }

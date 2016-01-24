@@ -3,22 +3,21 @@
  */
 package com.kratonsolution.belian.healtcare.dm;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.UUID;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.sales.dm.Billable;
 
 /**
  * @author Agung Dodi Perdana
@@ -28,30 +27,23 @@ import com.kratonsolution.belian.inventory.dm.Product;
 @Setter
 @Entity
 @Table(name="laboratory")
-public class Laboratory implements Serializable
+public class Laboratory extends Billable
 {
-	@Id
-	private String id = UUID.randomUUID().toString();
+	@Enumerated(EnumType.STRING)
+	@Column(name="lab_handling_status")
+	private LabHandlingStatus status = LabHandlingStatus.Registered;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_product_service")
-	private Product service;
-	
-	@Column(name="quantity")
-	private BigDecimal quantity;
-	
-	@Column(name="description")
-	private String description;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_medical_record")
-	private MedicalRecord medical;
-	
-	@Column(name="is_billed")
-	private boolean billed;
-	
-	@Version
-	private Long version;
-	
+	@OneToMany(mappedBy="laboratory",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<LaboratoryItem> items = new HashSet<LaboratoryItem>();
+
 	public Laboratory(){}
+	
+	/* (non-Javadoc)
+	 * @see com.kratonsolution.belian.sales.dm.Billable#getBillingType()
+	 */
+	@Override
+	public String getBillingType()
+	{
+		return "Medical Laboratory";
+	}
 }

@@ -51,8 +51,21 @@ public class CurrentAppointmentPanel extends Tabbox
 	
 	private Label status = new Label();
 	
+	private CheckingResult result;
+	
+	private MedicationPanel medication;
+	
+	private TreatmentPanel treatment;
+	
+	private LaboratoriumPanel laboratory;
+	
 	public CurrentAppointmentPanel(DoctorAppointment appointment)
 	{
+		result = new CheckingResult(appointment);
+		medication = new MedicationPanel(appointment);
+		treatment = new TreatmentPanel(appointment);
+		laboratory = new LaboratoriumPanel(appointment);
+		
 		appendChild(new Tabs());
 		appendChild(new Tabpanels());
 
@@ -62,98 +75,38 @@ public class CurrentAppointmentPanel extends Tabbox
 		getTabs().appendChild(new Tab("Treatment"));
 		getTabs().appendChild(new Tab("Laboratiorium"));
 		getTabpanels().appendChild(info);
-		getTabpanels().appendChild(new CheckingResult(appointment));
-		getTabpanels().appendChild(new MedicationPanel(appointment));
-		getTabpanels().appendChild(new TreatmentPanel(appointment));
-		getTabpanels().appendChild(new LaboratoriumPanel(appointment));
+		getTabpanels().appendChild(result);
+		getTabpanels().appendChild(medication);
+		getTabpanels().appendChild(treatment);
+		getTabpanels().appendChild(laboratory);
 		
 		initAppointmentInfo(appointment);
 	}
 	
 	private void initAppointmentInfo(DoctorAppointment appointment)
 	{
-		Toolbarbutton onhold = new Toolbarbutton("Hold","/icons/onhold24.png");
-		Toolbarbutton progress = new Toolbarbutton("In Progress","/icons/handle.png");
 		Toolbarbutton done = new Toolbarbutton("Completed","/icons/completed.png");
 		Toolbarbutton cancel = new Toolbarbutton("Cancel","/icons/cancel.png");
-		Toolbarbutton billing = new Toolbarbutton("Make Billing","/icons/cashier24.png");
 
 		Toolbar toolbar = new Toolbar();
-		toolbar.appendChild(progress);
-		toolbar.appendChild(onhold);
 		toolbar.appendChild(done);
 		toolbar.appendChild(cancel);
-		toolbar.appendChild(billing);
-		
-		if(appointment.getStatus().equals(Status.QUEUE))
-		{
-			onhold.setDisabled(true);
-			done.setDisabled(true);
-			cancel.setDisabled(true);
-		}
-		else if(appointment.getStatus().equals(Status.PROGRESS))
-		{
-			progress.setDisabled(true);
-			onhold.setDisabled(false);
-			done.setDisabled(false);
-			cancel.setDisabled(false);
-		}
-		else if(appointment.getStatus().equals(Status.DONE) || appointment.getStatus().equals(Status.CANCELED))
-		{
-			progress.setDisabled(true);
-			onhold.setDisabled(true);
-			done.setDisabled(true);
-			cancel.setDisabled(true);
-			billing.setDisabled(true);
-		}
-
-		progress.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event arg0) throws Exception
-			{
-				service.inProgress(appointment.getId());
-				
-				status.setValue(Status.PROGRESS.toString());
-				
-				Clients.showNotification("Appointment Status in Progress", Clients.NOTIFICATION_TYPE_INFO, null, null, 15, true);
-				
-				progress.setDisabled(true);
-				onhold.setDisabled(false);
-				done.setDisabled(false);
-				cancel.setDisabled(false);
-			}
-		});
-		
-		onhold.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event arg0) throws Exception
-			{
-				service.hold(appointment.getId());
-				status.setValue(Status.ONHOLD.toString());
-				
-				Clients.showNotification("Appointment Status On Hold", Clients.NOTIFICATION_TYPE_INFO, null, null, 15, true);
-				
-				progress.setDisabled(false);
-				onhold.setDisabled(true);
-				done.setDisabled(false);
-				cancel.setDisabled(false);
-			}
-		});
 		
 		done.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event arg0) throws Exception
 			{
-				service.done(appointment.getId());
+				appointment.setStatus(Status.DONE);
+				result.store(appointment);
+				medication.store(appointment);
+				treatment.store(appointment);
+				laboratory.store(appointment);
 				
-				progress.setDisabled(true);
-				onhold.setDisabled(true);
+				service.edit(appointment);
+				
 				done.setDisabled(true);
 				cancel.setDisabled(true);
-				billing.setDisabled(true);
 				
 				status.setValue(Status.DONE.toString());
 				
@@ -166,35 +119,11 @@ public class CurrentAppointmentPanel extends Tabbox
 			@Override
 			public void onEvent(Event arg0) throws Exception
 			{
-				if(!appointment.isCancelable())
-				{
-					Clients.showNotification("Appointment cannot be canceled,bill already paid,use done instead", Clients.NOTIFICATION_TYPE_ERROR, null, null, 50, true);
-					return;
-				}
-
 				service.cancel(appointment.getId());
-
-				billingService.delete(appointment.getAppointmentBilling());
-				billingService.delete(appointment.getMedicineBilling());
-				billingService.delete(appointment.getLaboratoryBilling());
-				
 				status.setValue(Status.CANCELED.toString());
 				
-				progress.setDisabled(true);
-				onhold.setDisabled(true);
 				done.setDisabled(true);
 				cancel.setDisabled(true);
-				billing.setDisabled(true);
-			}
-		});
-		
-		billing.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event arg0) throws Exception
-			{
-				medicalRecordService.createBilling(appointment);
-				Clients.showNotification("Billing successfully created", Clients.NOTIFICATION_TYPE_INFO, null, null, 25, true);
 			}
 		});
 		
@@ -214,9 +143,6 @@ public class CurrentAppointmentPanel extends Tabbox
 		grid.getRows().appendChild(RowUtils.row("Note",appointment.getNote()));
 		grid.getRows().appendChild(RowUtils.row("Billing Information",""));
 		
-		if(appointment.getAppointmentBilling() != null)
-			grid.getRows().appendChild(RowUtils.row(appointment.getAppointmentBilling().getNumber(),appointment.getAppointmentBilling().isPaid()?"PAID":"UNPAID"));
-	
 		info.appendChild(toolbar);
 		info.appendChild(grid);
 	}

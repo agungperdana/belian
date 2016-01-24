@@ -33,7 +33,6 @@ import com.kratonsolution.belian.healtcare.dm.BPJS;
 import com.kratonsolution.belian.healtcare.dm.Patient;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
 import com.kratonsolution.belian.ui.FormContent;
-import com.kratonsolution.belian.ui.component.OrganizationListItem;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -70,7 +69,7 @@ public class PatientFormContent extends FormContent
 	
 	private Textbox bpjsNumber = new Textbox();
 	
-	private Listbox company = Components.newSelect();
+	private Listbox company = Components.newSelect(utils.getOrganization());
 	
 	public PatientFormContent()
 	{
@@ -172,13 +171,7 @@ public class PatientFormContent extends FormContent
 
 	@Override
 	public void initForm()
-	{
-		if(utils.getOrganization() != null)
-		{
-			company.appendChild(new OrganizationListItem(utils.getOrganization()));
-			company.setSelectedIndex(0);
-		}
-		
+	{		
 		for(Gender gender:Gender.values())
 			genders.appendChild(new Listitem(gender.name(), gender.name()));
 		

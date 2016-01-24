@@ -42,5 +42,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, String>
 	@Query("FROM Doctor doc WHERE doc.party.name LIKE :name% AND doc.company.id =:company ORDER BY doc.party.name ASC")
 	public List<Doctor> findAll(@Param("name")String name,@Param("company")String company);
 
-	public Doctor findOneByPartyNameAndCompanyId(String name,String company);
+	@Query("FROM Doctor doc WHERE doc.party.id =:party AND doc.company.id =:company")
+	public Doctor findOne(@Param("party")String party,@Param("company")String company);
 }

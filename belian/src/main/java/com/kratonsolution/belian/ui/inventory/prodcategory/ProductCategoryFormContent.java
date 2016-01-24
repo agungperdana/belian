@@ -10,13 +10,16 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.inventory.dm.ProductCategory;
 import com.kratonsolution.belian.inventory.svc.ProductCategoryService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -33,6 +36,8 @@ public class ProductCategoryFormContent extends FormContent
 	private Textbox name = new Textbox();
 	
 	private Textbox note = new Textbox();
+	
+	private Listbox segmentations = Components.newSelect();
 	
 	public ProductCategoryFormContent()
 	{
@@ -70,6 +75,7 @@ public class ProductCategoryFormContent extends FormContent
 				category.setCode(code.getText());
 				category.setName(name.getText());
 				category.setNote(note.getText());
+				category.setSegmentation(IndustrySegmentation.valueOf(Components.string(segmentations)));
 				
 				service.add(category);
 				
@@ -91,8 +97,13 @@ public class ProductCategoryFormContent extends FormContent
 		
 		note.setWidth("350px");
 		
+		for(IndustrySegmentation segmentation:IndustrySegmentation.values())
+			segmentations.appendItem(segmentation.name(), segmentation.name());
+
+		Components.setDefault(segmentations);
+		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
@@ -107,8 +118,13 @@ public class ProductCategoryFormContent extends FormContent
 		row3.appendChild(new Label("Note"));
 		row3.appendChild(note);
 		
+		Row row4 = new Row();
+		row4.appendChild(new Label("Industry"));
+		row4.appendChild(segmentations);
+		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
+		rows.appendChild(row4);
 	}
 }

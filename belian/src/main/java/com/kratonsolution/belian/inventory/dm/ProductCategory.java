@@ -7,6 +7,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -14,6 +16,7 @@ import javax.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
+import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.global.dm.Listable;
 
 /**
@@ -41,6 +44,10 @@ public class ProductCategory implements Serializable,Listable
 	
 	@Column(name="deleteable")
 	private boolean deleteable = true;
+	
+	@Column(name="industry_segmentation")
+	@Enumerated(EnumType.STRING)
+	private IndustrySegmentation segmentation = IndustrySegmentation.GENERAL;
 	
 	@Version
 	private Long version;

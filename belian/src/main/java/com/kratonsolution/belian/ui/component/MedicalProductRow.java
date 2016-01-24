@@ -23,6 +23,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
 import com.kratonsolution.belian.inventory.dm.ProductPrice.Type;
@@ -36,7 +37,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class ProductRow extends Row
+public class MedicalProductRow extends Row
 {
 	private ProductRepository repository = Springs.get(ProductRepository.class);
 
@@ -58,11 +59,13 @@ public class ProductRow extends Row
 
 	private Textbox note = new Textbox();
 	
+	private Checkbox deleteable = new Checkbox();
+	
 	private Collection<ProductPriceSelectionListener> listeners = new ArrayList<ProductPriceSelectionListener>();
 
-	public ProductRow(String geographic,String customer,String currency)
+	public MedicalProductRow(String geographic,String customer,String currency,boolean bpjs)
 	{
-		appendChild(new Checkbox());
+		appendChild(deleteable);
 		appendChild(products);
 		appendChild(quantity);
 		appendChild(uoms);
@@ -71,7 +74,7 @@ public class ProductRow extends Row
 		appendChild(charges);
 		appendChild(note);
 		
-		init(geographic,customer,currency);
+		init(geographic,customer,currency,bpjs);
 	}
 	
 	public Product getProduct()
@@ -143,10 +146,15 @@ public class ProductRow extends Row
 	{
 		return note.getText();
 	}
-
-	private void init(String geographic,String customer,String currency)
+	
+	public void undeleteable()
 	{
-		ProductListener listener = new ProductListener(geographic,customer,currency);
+		this.deleteable.setDisabled(true);
+	}
+
+	private void init(String geographic,String customer,String currency,boolean bpjs)
+	{
+		ProductListener listener = new ProductListener(geographic,customer,currency,bpjs);
 		
 		products.setWidth("100%");
 		products.setConstraint("no empty");
@@ -219,11 +227,14 @@ public class ProductRow extends Row
 		
 		private String currency;
 		
-		public ProductListener(String geographic,String customer,String currency)
+		private boolean bpjs;
+		
+		public ProductListener(String geographic,String customer,String currency,boolean bpjs)
 		{
 			this.location = geographic;
 			this.customer = customer;
 			this.currency = currency;
+			this.bpjs = bpjs;
 		}
 		
 		@Override
@@ -235,8 +246,17 @@ public class ProductRow extends Row
 
 				products.getChildren().clear();
 
-				for(Product product:repository.findAll(new Date(System.currentTimeMillis()),input.getValue()))
-					products.appendChild(new ProductComboItem(product));
+				
+				if(!Strings.isNullOrEmpty(input.getValue()))
+				{
+					for(Product product:repository.findAll(new Date(System.currentTimeMillis()),input.getValue(),IndustrySegmentation.MEDICAL))
+						products.appendChild(new ProductComboItem(product));
+				}
+				else
+				{
+					for(Product product:repository.findAll(new Date(System.currentTimeMillis()),IndustrySegmentation.MEDICAL))
+						products.appendChild(new ProductComboItem(product));
+				}
 			}
 			else if(event instanceof SelectEvent)
 			{
@@ -261,6 +281,11 @@ public class ProductRow extends Row
 						initPrice(product);
 						initUom(product);
 					}
+				}
+				else if(key.getKeyCode() == KeyEvent.DOWN)
+				{
+					for(Product product:repository.findAll(new Date(System.currentTimeMillis()),IndustrySegmentation.MEDICAL))
+						products.appendChild(new ProductComboItem(product));
 				}
 			}
 		}
@@ -318,8 +343,14 @@ public class ProductRow extends Row
 			
 			if(prices.getChildren().isEmpty())
 			{
+				if(bpjs)
+				{
+					for(ProductPrice price:priceRepository.findAll(new Date(System.currentTimeMillis()),currency,item.getId(),Type.BPJS))
+						prices.appendItem("BPJS ("+price.getLabel()+")", price.getValue());
+				}
+				
 				for(ProductPrice price:priceRepository.findAll(new Date(System.currentTimeMillis()),currency,item.getId(),Type.BASE))
-					prices.appendItem(price.getLabel(), price.getValue());
+					prices.appendItem("Reguler ("+price.getLabel()+")", price.getValue());
 			}
 			
 			if(discounts.getChildren().isEmpty())
