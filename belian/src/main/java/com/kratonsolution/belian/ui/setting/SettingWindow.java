@@ -28,6 +28,7 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Vlayout;
 
 import com.kratonsolution.belian.accounting.dm.Currency;
+import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.accounting.svc.TaxService;
 import com.kratonsolution.belian.common.SessionUtils;
@@ -35,6 +36,7 @@ import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.global.dm.PrinterType;
 import com.kratonsolution.belian.global.svc.UserSettingService;
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.ui.AbstractWindow;
@@ -74,6 +76,8 @@ public class SettingWindow extends AbstractWindow
 	
 	private Listbox taxes = Components.newSelect(taxService.findAll(), true);
 	
+	private Listbox printers = Components.newSelect();
+	
 	private Doublebox rowPerPage = new Doublebox(25);
 	
 	public SettingWindow()
@@ -101,6 +105,13 @@ public class SettingWindow extends AbstractWindow
 	
 	private void initMyAccount()
 	{
+		for(PrinterType type:PrinterType.values())
+		{
+			Listitem listitem = printers.appendItem(type.name(),type.name());
+			if(sessionUtils.getPrinterType().equals(type))
+				printers.setSelectedItem(listitem);
+		}
+		
 		for(Organization organization:sessionUtils.getOrganizations())
 		{
 			Listitem listitem = new Listitem(organization.getName(), organization.getId());
@@ -184,12 +195,17 @@ public class SettingWindow extends AbstractWindow
 		row6.appendChild(new Label("Row per page"));
 		row6.appendChild(rowPerPage);
 		
+		Row row7 = new Row();
+		row7.appendChild(new Label("Printer Type"));
+		row7.appendChild(printers);
+		
 		grid.getRows().appendChild(row1);
 		grid.getRows().appendChild(row2);
 		grid.getRows().appendChild(row3);
 		grid.getRows().appendChild(row4);
 		grid.getRows().appendChild(row5);
 		grid.getRows().appendChild(row6);
+		grid.getRows().appendChild(row7);
 		
 		tabpanel.appendChild(grid);
 	}
@@ -242,6 +258,14 @@ public class SettingWindow extends AbstractWindow
 				user.getSetting().setCurrencyName(currency.getName());
 			}
 			
+			Tax tax = taxService.findOne(Components.string(taxes));
+			if(tax != null)
+			{
+				user.getSetting().setTaxId(tax.getId());
+				user.getSetting().setTaxName(tax.getName());
+			}
+			
+			user.getSetting().setPrinter(PrinterType.valueOf(Components.string(printers)));
 			userService.edit(user);
 			
 			try

@@ -8,6 +8,8 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -58,6 +60,10 @@ public class UserSetting implements Serializable
 	
 	@Column(name="row_per_page")
 	private int rowPerPage = 25;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="printer_type")
+	private PrinterType printer = PrinterType.POS;
 	
 	@Version
 	private Long version;

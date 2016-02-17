@@ -19,7 +19,6 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.inventory.dm.Container;
 import com.kratonsolution.belian.inventory.dm.Facility;
 import com.kratonsolution.belian.inventory.dm.InventoryItem;
 import com.kratonsolution.belian.inventory.dm.Product;
@@ -139,14 +138,14 @@ public class InventoryItemEditContent extends FormContent
 				public void onEvent(Event event) throws Exception
 				{
 					containers.getChildren().clear();
-					for(Container container:facility.getContainers())
-					{
-						Listitem list = new Listitem(container.getName(),container.getId());
-						containers.appendChild(list);
-						
-						if(item.getContainer() != null && item.getContainer().getId().equals(container.getId()))
-							containers.setSelectedItem(list);
-					}
+//					for(Container container:facility.getContainers())
+//					{
+//						Listitem list = new Listitem(container.getName(),container.getId());
+//						containers.appendChild(list);
+//						
+//						if(item.getContainer() != null && item.getContainer().getId().equals(container.getId()))
+//							containers.setSelectedItem(list);
+//					}
 				}
 			});
 			

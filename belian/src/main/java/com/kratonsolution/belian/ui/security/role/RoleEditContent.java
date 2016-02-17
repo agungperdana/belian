@@ -438,12 +438,15 @@ public class RoleEditContent extends FormContent
 	{
 		for(AccessibleOrganization access:companys)
 		{
-			Row row = new Row();
-			row.appendChild(new Label(access.getOrganization().getName()));
-			row.appendChild(Components.checkbox(access.isSelected()));
-			row.appendChild(new Label(access.getId()));
-			
-			accessibleCompanys.getRows().appendChild(row);
+			if(access.getOrganization() != null)
+			{
+				Row row = new Row();
+				row.appendChild(new Label(access.getOrganization().getName()));
+				row.appendChild(Components.checkbox(access.isSelected()));
+				row.appendChild(new Label(access.getId()));
+				
+				accessibleCompanys.getRows().appendChild(row);
+			}
 		}
 	}
 }

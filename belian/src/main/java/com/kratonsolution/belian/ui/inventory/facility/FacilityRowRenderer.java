@@ -17,7 +17,6 @@ import com.kratonsolution.belian.inventory.dm.Facility;
  */
 public class FacilityRowRenderer implements RowRenderer<Facility>
 {
-
 	@Override
 	public void render(Row row, Facility data, int index) throws Exception
 	{

@@ -10,7 +10,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.Language;
-import com.kratonsolution.belian.ui.accounting.budget.BudgetWindow;
+import com.kratonsolution.belian.ui.healtcare.pharmacyorder.PharmacyOrderWindow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -18,35 +18,35 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class ApotekItem extends Listitem
+public class PharmacyOrderItem extends Listitem
 {
 	private Language language = Springs.get(Language.class);
 	
-	public ApotekItem()
+	public PharmacyOrderItem()
 	{
 		init();
 	}
 	
 	public void init()
 	{
-		setLabel(language.get("navbar.menu.healtcare.apotek"));
-		setImage("/icons/apotek.png");
+		setLabel(language.get("navbar.menu.healtcare.apotekorder"));
+		setImage("/icons/pharmacyorder.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				BudgetWindow window = null;
+				PharmacyOrderWindow window = null;
 				
 				for(Component component:getPage().getRoots())
 				{
-					if(component instanceof BudgetWindow)
-						window = (BudgetWindow)component;
+					if(component instanceof PharmacyOrderWindow)
+						window = (PharmacyOrderWindow)component;
 				}
 				
 				if(window == null)
-					window = BudgetWindow.injectInto(getPage());
+					window = PharmacyOrderWindow.injectInto(getPage());
 				
 				else if(!window.isVisible())
 				{

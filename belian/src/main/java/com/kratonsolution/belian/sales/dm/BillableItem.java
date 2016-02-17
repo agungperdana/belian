@@ -18,6 +18,8 @@ public interface BillableItem extends Serializable
 	
 	public BigDecimal getQuantity();
 	
+	public String getMeasure();
+	
 	public BigDecimal getUnitPrice();
 	
 	public String getNote();

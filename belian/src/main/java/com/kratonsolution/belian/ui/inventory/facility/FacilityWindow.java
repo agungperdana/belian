@@ -40,6 +40,7 @@ public class FacilityWindow extends AbstractWindow implements HasGrid,HasCreateF
 	private FacilityWindow()
 	{
 		super();
+		setWidth("650px");
 	}
 	
 	protected void init()
@@ -92,7 +93,6 @@ public class FacilityWindow extends AbstractWindow implements HasGrid,HasCreateF
 	@Override
 	public void insertEditForm(Row row)
 	{
-		appendChild(new FacilityEditContent(row));
 	}
 
 	@Override
@@ -111,7 +111,6 @@ public class FacilityWindow extends AbstractWindow implements HasGrid,HasCreateF
 	@Override
 	public void insertCreateForm()
 	{
-		appendChild(new FacilityFormContent());
 	}
 
 	@Override
@@ -130,7 +129,7 @@ public class FacilityWindow extends AbstractWindow implements HasGrid,HasCreateF
 	@Override
 	public void insertGrid()
 	{
-		appendChild(new FacilityGridContent());
+		appendChild(new FacilityContent());
 	}
 
 	@Override
@@ -138,7 +137,7 @@ public class FacilityWindow extends AbstractWindow implements HasGrid,HasCreateF
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof FacilityGridContent)
+			if(component instanceof FacilityContent)
 			{
 				removeChild(component);
 				break;

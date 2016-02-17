@@ -17,15 +17,26 @@ public class PrintWindow extends Window
 	
 	private Iframe iframe = new Iframe();
 	
-	public PrintWindow(String printsource)
+	public PrintWindow(String printsource,boolean isPos)
 	{
 		setMode(Mode.HIGHLIGHTED);
 		setClosable(true);
-		setWidth("250px");
-		setHeight("500px");
 		
-		iframe.setWidth("250px");
-		iframe.setHeight("500px");
+		if(isPos)
+		{
+			setWidth("250px");
+			setHeight("500px");
+			iframe.setWidth("250px");
+			iframe.setHeight("500px");
+		}
+		else
+		{
+			setWidth("700px");
+			setHeight("500px");
+			iframe.setWidth("700px");
+			iframe.setHeight("500px");
+		}
+	
 		iframe.setSrc(printsource);
 		
 		appendChild(caption);

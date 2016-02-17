@@ -168,7 +168,7 @@ public class FacilityGridContent extends GridContent
 		Column select = new Column(null,null,"25px");
 		Column code = new Column("Code",null,"100px");
 		Column name = new Column("Name",null,"150px");
-		Column type = new Column("Type",null,"75px");
+		Column type = new Column("Type",null,"100px");
 		Column note = new Column("Note");
 		Column id = new Column();
 		id.setVisible(false);

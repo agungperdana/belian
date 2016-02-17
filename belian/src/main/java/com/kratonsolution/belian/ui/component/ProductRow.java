@@ -126,16 +126,25 @@ public class ProductRow extends Row
 	
 	public BigDecimal getPrice()
 	{
+		if(prices.getSelectedItem() == null)
+			return BigDecimal.ZERO;
+		
 		return BigDecimal.valueOf(Double.parseDouble(prices.getSelectedItem().getValue().toString()));
 	}
 	
 	public BigDecimal getDiscount()
 	{
+		if(discounts.getSelectedItem() == null)
+			return BigDecimal.ZERO;
+		
 		return BigDecimal.valueOf(Double.parseDouble(discounts.getSelectedItem().getValue().toString()));
 	}
 	
 	public BigDecimal getCharge()
 	{
+		if(charges.getSelectedItem() == null)
+			return BigDecimal.ZERO;
+		
 		return BigDecimal.valueOf(Double.parseDouble(charges.getSelectedItem().getValue().toString()));
 	}
 	

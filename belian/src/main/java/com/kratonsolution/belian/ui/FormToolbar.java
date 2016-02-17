@@ -20,6 +20,8 @@ public class FormToolbar extends Toolbar
 	
 	private Toolbarbutton save = new Toolbarbutton("Save");
 	
+	private Toolbarbutton print = new Toolbarbutton("Print","/icons/print.png");
+	
 	public FormToolbar()
 	{
 		setWidth("100%");
@@ -31,6 +33,11 @@ public class FormToolbar extends Toolbar
 	
 		appendChild(cancel);
 		appendChild(save);
+	}
+	
+	public void attachPrint()
+	{
+		appendChild(print);
 	}
 	
 	public void disbaled()

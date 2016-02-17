@@ -250,7 +250,10 @@ public class NavigationMenu extends Window
 		if(modules.get("LABS_REGISTRATION"))
 			list.appendChild(new LabsRegistrationItem());
 		
-		list.appendChild(new ApotekItem());
+		if(modules.containsKey("MEDICATION") && modules.get("MEDICATION"))
+			list.appendChild(new PharmacySalesItem());
+		
+		list.appendChild(new PharmacyOrderItem());
 		
 		if(!list.getChildren().isEmpty())
 		{

@@ -7,7 +7,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -26,6 +29,10 @@ import com.kratonsolution.belian.sales.dm.Billable;
 @Table(name="medication")
 public class Medication extends Billable
 {
+	@Enumerated(EnumType.STRING)
+	@Column(name="medication_status")
+	private MedicationStatus status = MedicationStatus.Registered;
+	
 	@OneToMany(mappedBy="medication",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<MedicationItem> items = new HashSet<MedicationItem>();
 

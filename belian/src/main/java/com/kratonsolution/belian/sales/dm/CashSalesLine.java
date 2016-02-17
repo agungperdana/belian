@@ -83,4 +83,10 @@ public class CashSalesLine implements BillableItem
 	{
 		return "";
 	}
+
+	@Override
+	public String getMeasure()
+	{
+		return this.uom.getName();
+	}
 }

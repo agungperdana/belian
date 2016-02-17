@@ -3,10 +3,14 @@
  */
 package com.kratonsolution.belian.ui.inventory.facility;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Label;
@@ -17,8 +21,10 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.inventory.dm.Facility;
+import com.kratonsolution.belian.inventory.dm.FacilityType;
 import com.kratonsolution.belian.inventory.svc.FacilityService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.ModelDataListener;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -38,9 +44,16 @@ public class FacilityFormContent extends FormContent
 	
 	private Listbox types = new Listbox();
 	
-	public FacilityFormContent()
+	private Facility parent;
+	
+	private Collection<ModelDataListener> listeners = new ArrayList<>();
+	
+	public FacilityFormContent(Facility parent)
 	{
 		super();
+		
+		this.parent = parent;
+
 		initToolbar();
 		initForm();
 	}
@@ -48,17 +61,7 @@ public class FacilityFormContent extends FormContent
 	@Override
 	public void initToolbar()
 	{
-		toolbar.getCancel().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				FacilityWindow window = (FacilityWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
-			}
-		});
-		
+		toolbar.removeChild(toolbar.getCancel());
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
@@ -70,17 +73,28 @@ public class FacilityFormContent extends FormContent
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 				
+				Facility out = service.findOneByCode(code.getText());
+				if(out != null)
+				{
+					Clients.showNotification("Facility with code "+code.getText()+" already exist.");
+					return;
+				}
+					
 				Facility facility = new Facility();
 				facility.setCode(code.getText());
 				facility.setName(name.getText());
 				facility.setNote(note.getText());
-				facility.setType(Facility.Type.valueOf(types.getSelectedItem().getValue().toString()));
+				facility.setType(FacilityType.valueOf(types.getSelectedItem().getValue().toString()));
+				
+				if(parent != null)
+					facility.setParent(parent);
 				
 				service.add(facility);
 				
-				FacilityWindow window = (FacilityWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				for(ModelDataListener listener:listeners)
+					listener.fireDataAdded(facility);
+				
+				Clients.showNotification("Data successfully added.");
 			}
 		});
 	}
@@ -97,7 +111,7 @@ public class FacilityFormContent extends FormContent
 		note.setWidth("350px");
 		
 		types.setMold("select");
-		for(Facility.Type type:Facility.Type.values())
+		for(FacilityType type:FacilityType.values())
 			types.appendChild(new Listitem(type.name(),type.name()));
 		
 		types.setSelectedIndex(0);
@@ -126,5 +140,10 @@ public class FacilityFormContent extends FormContent
 		rows.appendChild(row2);
 		rows.appendChild(row3);
 		rows.appendChild(row4);
+	}
+	
+	public void addModelDataListener(ModelDataListener listener)
+	{
+		listeners.add(listener);
 	}
 }

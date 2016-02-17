@@ -22,7 +22,9 @@ import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.sales.dm.Billable;
 import com.kratonsolution.belian.sales.dm.BillableItem;
 import com.kratonsolution.belian.sales.srv.BillingService;
+import com.kratonsolution.belian.sales.view.BillablePrint;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.PrintWindow;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.RowUtils;
@@ -77,6 +79,10 @@ public class CashierEditContent extends FormContent
 				{
 					billing.setPaid(true);
 					service.edit(billing);
+					
+					PrintWindow window = new PrintWindow(BillablePrint.GEN(billing.getId(),utils.isPos()),true);
+					window.setPage(getPage());
+					window.setVisible(true);
 				}
 				
 				CashierWindow window = (CashierWindow)getParent();

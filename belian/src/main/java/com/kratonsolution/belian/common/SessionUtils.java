@@ -23,6 +23,7 @@ import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.global.dm.PrinterType;
 import com.kratonsolution.belian.security.app.SecurityInformation;
 import com.kratonsolution.belian.security.dm.AccessRole;
 import com.kratonsolution.belian.security.dm.AccessibleOrganization;
@@ -68,8 +69,11 @@ public class SessionUtils
 			{
 				for(AccessibleOrganization organization:role.getRole().getOrganizations())
 				{
-					if(organization.isSelected())
-						list.add(organization.getOrganization());
+					if(organization.getOrganization() != null)
+					{
+						if(organization.isSelected())
+							list.add(organization.getOrganization());
+					}
 				}
 			}
 		}
@@ -87,8 +91,11 @@ public class SessionUtils
 			{
 				for(AccessibleOrganization organization:role.getRole().getOrganizations())
 				{
-					if(organization.isSelected())
-						list.add(organization.getOrganization().getId());
+					if(organization.getOrganization() != null)
+					{
+						if(organization.isSelected())
+							list.add(organization.getOrganization().getId());
+					}
 				}
 			}
 		}
@@ -182,5 +189,18 @@ public class SessionUtils
 			return taxService.findOne(getUser().getSetting().getTaxId());
 			
 		return null;
+	}
+	
+	public PrinterType getPrinterType()
+	{
+		if(getUser() != null && getUser().getSetting() != null && getUser().getSetting().getPrinter() != null)
+			return getUser().getSetting().getPrinter();
+		
+		return PrinterType.POS;
+	}
+	
+	public boolean isPos()
+	{
+		return getPrinterType().equals(PrinterType.POS);
 	}
 }

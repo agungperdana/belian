@@ -78,4 +78,10 @@ public class LaboratoryItem implements BillableItem
 	{
 		return "";
 	}
+
+	@Override
+	public String getMeasure()
+	{
+		return getService().getUom().getName();
+	}
 }

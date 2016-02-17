@@ -4,10 +4,11 @@
 package com.kratonsolution.belian.inventory.svc;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,8 +18,9 @@ import com.kratonsolution.belian.inventory.dm.Facility;
 import com.kratonsolution.belian.inventory.dm.FacilityRepository;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -30,7 +32,7 @@ public class FacilityService
 	@Secured("ROLE_FACILITY_READ")
 	public int size()
 	{
-		return Long.valueOf(repository.count()).intValue();
+		return repository.size().intValue();
 	}
 	
 	@Secured("ROLE_FACILITY_READ")
@@ -40,21 +42,32 @@ public class FacilityService
 	}
 	
 	@Secured("ROLE_FACILITY_READ")
+	public Facility findOneByCode(String code)
+	{
+		return repository.findOneByCode(code);
+	}
+	
+	@Secured("ROLE_FACILITY_READ")
 	public List<Facility> findAll()
 	{
-		return repository.findAll();
+		return repository.findAll(new Sort(Direction.ASC, "code","name"));
+	}
+	
+	@Secured("ROLE_FACILITY_READ")
+	public List<Facility> findAllParent()
+	{
+		return repository.findAllParent();
 	}
 	
 	@Secured("ROLE_FACILITY_READ")
 	public List<Facility> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		return repository.findAllParent(new PageRequest(pageIndex, pageSize));
 	}
 	
 	@Secured("ROLE_FACILITY_CREATE")
 	public void add(Facility facility)
 	{
-		facility.setId(UUID.randomUUID().toString());
 		repository.save(facility);
 	}
 	

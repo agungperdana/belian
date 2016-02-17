@@ -155,8 +155,6 @@ public class CashSalesFormContent extends FormContent implements ProductPriceSel
 				sales.setSales(personService.findOne(Components.string(producers)));
 				sales.setLocation(geographicService.findOne(Components.string(locations)));
 				
-				System.out.println(sales.getOrganization());
-				
 				for(Component com:saleItems.getRows().getChildren())
 				{
 					ProductRow row = (ProductRow)com;

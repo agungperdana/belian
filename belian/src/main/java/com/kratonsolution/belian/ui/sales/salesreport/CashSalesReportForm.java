@@ -32,6 +32,7 @@ import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.sales.dm.CashSales;
+import com.kratonsolution.belian.sales.dm.CashSalesLine;
 import com.kratonsolution.belian.sales.srv.CashSalesService;
 import com.kratonsolution.belian.ui.ReportToolbar;
 import com.kratonsolution.belian.ui.util.Components;
@@ -134,6 +135,7 @@ public class CashSalesReportForm extends Window
 						break;
 					}
 				}
+				
 				generate();
 				
 				for(Component com:CashSalesReportForm.this.canvas.getChildren())
@@ -194,36 +196,36 @@ public class CashSalesReportForm extends Window
 		{
 			if(all.isChecked())
 			{
-//				for(CashSalesLine line:cashSales.getDecrements())
-//				{
-//					BigDecimal amount = line.getPrice().multiply(line.getQuantity());
-//					BigDecimal tax = line.getPrice().multiply(line.getQuantity()).multiply(cashSales.getTax().getAmount());
-//					
-//					Row row1 = new Row();
-//					row1.appendChild(new Label(line.getProduct().getName()));
-//					row1.appendChild(new Label(line.getQuantity().toString()));
-//					row1.appendChild(new Label(decimalFormat.format(line.getPrice())));
-//					row1.appendChild(new Label(decimalFormat.format(amount)));
-//					row1.appendChild(new Label(decimalFormat.format(tax)));
-//					row1.appendChild(new Label(decimalFormat.format(amount.add(tax))));
-//					
-//					grid.getRows().appendChild(row1);
-//				}
+				for(CashSalesLine line:cashSales.getItems())
+				{
+					BigDecimal amount = line.getPrice().multiply(line.getQuantity());
+					BigDecimal tax = line.getPrice().multiply(line.getQuantity()).multiply(cashSales.getTax().getAmount());
+					
+					Row row1 = new Row();
+					row1.appendChild(new Label(line.getProduct().getName()));
+					row1.appendChild(new Label(line.getQuantity().toString()));
+					row1.appendChild(new Label(decimalFormat.format(line.getPrice())));
+					row1.appendChild(new Label(decimalFormat.format(amount)));
+					row1.appendChild(new Label(decimalFormat.format(tax)));
+					row1.appendChild(new Label(decimalFormat.format(amount.add(tax))));
+					
+					grid.getRows().appendChild(row1);
+				}
 			}
 			else
 			{
 				Row row = new Row();
 				row.appendChild(new Label(cashSales.getNumber()));
-//				row.appendChild(new Label(cashSales.getDecrements().size()+""));
+				row.appendChild(new Label(cashSales.getItems().size()+""));
 				row.appendChild(new Label(""));
-//				row.appendChild(new Label(decimalFormat.format(cashSales.getBill())));
+				row.appendChild(new Label(decimalFormat.format(cashSales.getBillingAmount())));
 				row.appendChild(new Label(decimalFormat.format(cashSales.getTaxAmount())));
-//				row.appendChild(new Label(decimalFormat.format(cashSales.getTotalBill())));
+				row.appendChild(new Label(decimalFormat.format(cashSales.getBillingAmount().add(cashSales.getTaxAmount()))));
 
 				grid.getRows().appendChild(row);
 			}
 
-//			totalIncome = totalIncome.add(cashSales.getBill());
+			totalIncome = totalIncome.add(cashSales.getBillingAmount());
 			totalTax = totalTax.add(cashSales.getTaxAmount());
 		}
 

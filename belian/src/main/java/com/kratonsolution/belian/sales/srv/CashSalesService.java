@@ -9,6 +9,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,7 +79,7 @@ public class CashSalesService
 		if(utils.getOrganization() == null)
 			return new ArrayList<CashSales>();
 		
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId());
+		return repository.findAll(new PageRequest(pageIndex, pageSize,new Sort(new Order(Direction.DESC, "date"),new Order(Direction.ASC, "paid"))),utils.getOrganization().getId());
 	}
 	
 	@Secured("ROLE_CASHSALES_READ")

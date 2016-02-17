@@ -40,10 +40,10 @@ import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.PersonService;
-import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.sales.dm.CashSales;
 import com.kratonsolution.belian.sales.dm.CashSalesLine;
 import com.kratonsolution.belian.sales.srv.CashSalesService;
+import com.kratonsolution.belian.sales.view.BillablePrint;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.PrintWindow;
 import com.kratonsolution.belian.ui.component.ProductPriceSelectionListener;
@@ -146,7 +146,7 @@ public class CashSalesEditContent extends FormContent implements ProductPriceSel
 				if(Strings.isNullOrEmpty(number.getText()))
 					throw new WrongValueException(number,"Code cannot be empty");
 
-				CashSales sales = service.findOne(RowUtils.string(row, 7));
+				CashSales sales = service.findOne(RowUtils.string(row, 6));
 				if(sales != null && !sales.isPaid())
 				{
 					sales.setTable(Integer.parseInt(Components.string(tableNumber)));
@@ -189,38 +189,13 @@ public class CashSalesEditContent extends FormContent implements ProductPriceSel
 			}
 		});
 		
-		Toolbarbutton print = new Toolbarbutton("","/icons/print.png");
-		Toolbarbutton pay = new Toolbarbutton("","/icons/paid.png");
-		
-		//check sales status
-		if(RowUtils.string(row, 5).equals("PAID"))
-			toolbar.appendChild(print);
-		else
-			toolbar.appendChild(pay);
-		
-		print.addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		toolbar.attachPrint();
+		toolbar.getPrint().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PrintWindow print = new PrintWindow("/cashsalesprint.htm?id="+RowUtils.string(row, 7));
-				print.setPage(getPage());
-				print.setVisible(true);
-				
-			}
-		});
-		
-		pay.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				service.addPayment(service.findOne(RowUtils.string(row, 7)));
-				
-				toolbar.removeChild(pay);
-				toolbar.appendChild(print);
-				
-				PrintWindow print = new PrintWindow("/cashsalesprint.htm?id="+RowUtils.string(row, 7));
+				PrintWindow print = new PrintWindow(BillablePrint.GEN(RowUtils.string(row, 6),sessionUtils.isPos()),sessionUtils.isPos());
 				print.setPage(getPage());
 				print.setVisible(true);
 				
@@ -231,7 +206,7 @@ public class CashSalesEditContent extends FormContent implements ProductPriceSel
 	@Override
 	public void initForm()
 	{
-		CashSales cash = service.findOne(RowUtils.string(row, 7));
+		CashSales cash = service.findOne(RowUtils.string(row, 6));
 		if(cash != null)
 		{
 			date.setConstraint("no empty");
@@ -259,13 +234,8 @@ public class CashSalesEditContent extends FormContent implements ProductPriceSel
 					taxes.setSelectedItem(listitem);
 			}
 
-			for(EconomicAgent unit:sessionUtils.getOrganizations())
-			{
-				Listitem listitem = new Listitem(unit.getName(),unit.getId());
-				organizations.appendChild(listitem);
-				if(unit.getId().equals(cash.getOrganization().getId()))
-					organizations.setSelectedItem(listitem);
-			}
+			organizations.appendChild(new Listitem(cash.getOrganization().getLabel(), cash.getOrganization().getId()));
+			organizations.setSelectedIndex(0);
 
 			for(Currency currency:currencyService.findAll())
 			{
@@ -349,7 +319,7 @@ public class CashSalesEditContent extends FormContent implements ProductPriceSel
 
 	private void initItems()
 	{
-		CashSales cash = service.findOne(RowUtils.string(row, 7));
+		CashSales cash = service.findOne(RowUtils.string(row, 6));
 		if(cash != null)
 		{
 			this.tabbox.getTabs().appendChild(new Tab("Sales Item(s)"));

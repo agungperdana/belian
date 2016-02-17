@@ -125,8 +125,12 @@ public class Components
 		listbox.setMold("select");
 		listbox.setStyle("text-align:center;");
 		listbox.setWidth("100%");
-		listbox.appendChild(new Listitem(listable.getLabel(), listable.getValue()));
-		listbox.setSelectedIndex(0);
+	
+		if(listable != null)
+		{
+			listbox.appendChild(new Listitem(listable.getLabel(), listable.getValue()));
+			listbox.setSelectedIndex(0);
+		}
 		
 		return listbox;
 	}
