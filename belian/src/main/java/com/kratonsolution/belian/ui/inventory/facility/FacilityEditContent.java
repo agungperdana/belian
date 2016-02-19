@@ -111,18 +111,6 @@ public class FacilityEditContent extends FormContent
 				}
 			}
 		});
-		
-		Toolbarbutton inv = new Toolbarbutton("Add Inventory(s)","/icons/new-inv-item.png");
-		toolbar.appendChild(inv);
-		inv.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				FacilityEditContent.this.getParent().getChildren().clear();
-				FacilityEditContent.this.getParent().appendChild(new FacilityFormContent(facility));
-			}
-		});
 	}
 
 	@Override

@@ -21,6 +21,8 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.global.dm.Listable;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,7 +35,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="facility")
-public class Facility implements Serializable
+public class Facility implements Serializable,Listable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -62,5 +64,20 @@ public class Facility implements Serializable
 	@OrderBy("code ASC")
 	private Set<Facility> childs = new HashSet<Facility>();
 	
+	@OneToMany(mappedBy="facility",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<FacilityOrganization> organizations = new HashSet<>();
+	
 	public Facility(){}
+
+	@Override
+	public String getLabel()
+	{
+		return getName();
+	}
+
+	@Override
+	public String getValue()
+	{
+		return getId();
+	}
 }

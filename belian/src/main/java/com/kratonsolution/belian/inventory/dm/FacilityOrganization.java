@@ -4,7 +4,6 @@
 package com.kratonsolution.belian.inventory.dm;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -15,39 +14,42 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
+import com.kratonsolution.belian.general.dm.Organization;
+
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
-@Table(name="inventory_item")
-public class InventoryItem implements Serializable
+@Table(name="facility_organization")
+public class FacilityOrganization implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@ManyToOne
-	@JoinColumn(name="fk_product")
-	private Product product;
+	@Column(name="enabled")
+	private boolean enabled;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_facility")
+	@NotFound(action=NotFoundAction.IGNORE)
 	private Facility facility;
 	
-	@Column(name="serial_number")
-	private String serialNumber;
-	
-	@Column(name="onhand")
-	private BigDecimal onhand = BigDecimal.ZERO;
+	@ManyToOne
+	@JoinColumn(name="fk_organization")
+	@NotFound(action=NotFoundAction.IGNORE)
+	private Organization organization;
 	
 	@Version
 	private Long version;
 	
-	public InventoryItem(){}
+	public FacilityOrganization(){}
 }

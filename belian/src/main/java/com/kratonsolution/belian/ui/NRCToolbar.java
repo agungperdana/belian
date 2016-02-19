@@ -23,7 +23,7 @@ import com.kratonsolution.belian.ui.util.RowUtils;
  */
 public class NRCToolbar extends Toolbar
 {
-	private Toolbarbutton newDate = new Toolbarbutton("New","/icons/new.png");
+	private Toolbarbutton newData = new Toolbarbutton("New","/icons/new.png");
 	
 	private Toolbarbutton remove = new Toolbarbutton("Remove","/icons/delete.png");
 	
@@ -35,7 +35,7 @@ public class NRCToolbar extends Toolbar
 	{
 		this.parent = grid;
 		setHeight("40px");
-		appendChild(newDate);
+		appendChild(newData);
 		appendChild(remove);
 		appendChild(clear);
 		
@@ -50,7 +50,7 @@ public class NRCToolbar extends Toolbar
 	
 	public Toolbarbutton getNew()
 	{
-		return newDate;
+		return newData;
 	}
 	
 	public Toolbarbutton getRemove()
@@ -93,14 +93,14 @@ public class NRCToolbar extends Toolbar
 	
 	public void disabled()
 	{
-		newDate.setDisabled(true);
+		newData.setDisabled(true);
 		remove.setDisabled(true);
 		clear.setDisabled(true);
 	}
 	
 	public void enabled()
 	{
-		newDate.setDisabled(false);
+		newData.setDisabled(false);
 		remove.setDisabled(false);
 		clear.setDisabled(false);
 	}

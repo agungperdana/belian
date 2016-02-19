@@ -23,7 +23,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class ProductBox extends Combobox implements EventListener<InputEvent>
 {
-	ProductService service = Springs.get(ProductService.class);
+	private ProductService service = Springs.get(ProductService.class);
 	
 	private String category;
 	
@@ -83,5 +83,12 @@ public class ProductBox extends Combobox implements EventListener<InputEvent>
 			return ((ProductComboItem)getSelectedItem()).getProduct();
 	
 		return service.findOneByName(getValue());
+	}
+	
+	public void setProduct(Product product)
+	{
+		ProductComboItem item = new ProductComboItem(product);
+		appendChild(item);
+		setSelectedItem(item);
 	}
 }
