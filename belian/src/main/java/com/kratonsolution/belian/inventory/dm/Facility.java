@@ -13,6 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -64,7 +65,7 @@ public class Facility implements Serializable,Listable
 	@OrderBy("code ASC")
 	private Set<Facility> childs = new HashSet<Facility>();
 	
-	@OneToMany(mappedBy="facility",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(mappedBy="facility",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
 	private Set<FacilityOrganization> organizations = new HashSet<>();
 	
 	public Facility(){}

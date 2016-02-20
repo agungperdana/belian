@@ -3,8 +3,6 @@
  */
 package com.kratonsolution.belian.ui.security.role;
 
-import java.util.UUID;
-
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.CheckEvent;
@@ -28,9 +26,9 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.general.dm.CompanyStructure;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.security.dm.AccessRole;
 import com.kratonsolution.belian.security.dm.AccessibleOrganization;
 import com.kratonsolution.belian.security.dm.Module;
@@ -112,7 +110,6 @@ public class RoleFormContent extends FormContent
 					throw new WrongValueException(name,"Name cannot be empty");
 			
 				Role role = new Role();
-				role.setId(UUID.randomUUID().toString());
 				role.setCode(code.getText());
 				role.setName(name.getText());
 				role.setNote(note.getText());
@@ -126,7 +123,6 @@ public class RoleFormContent extends FormContent
 					if(module != null)
 					{
 						AccessRole accessRole = new AccessRole();
-						accessRole.setId(UUID.randomUUID().toString());
 						accessRole.setModule(module);
 						accessRole.setRole(role);
 						accessRole.setCanCreate(RowUtils.isChecked(_row, 1));
@@ -144,7 +140,6 @@ public class RoleFormContent extends FormContent
 					Row row = (Row)component;
 					
 					AccessibleOrganization organization = new AccessibleOrganization();
-					organization.setId(UUID.randomUUID().toString());
 					organization.setOrganization(organizationService.findOne(RowUtils.string(row, 2)));
 					organization.setRole(role);
 					organization.setSelected(RowUtils.isChecked(row, 1));
@@ -351,12 +346,12 @@ public class RoleFormContent extends FormContent
 		accessibleCompanys.getColumns().appendChild(new Column("",null,null));
 		accessibleCompanys.getColumns().getChildren().get(2).setVisible(false);
 		
-		for(EconomicAgent unit:structure.findAllCompanyMembers())
+		for(CompanyStructure unit:structure.findAll())
 		{
 			Row row = new Row();
-			row.appendChild(new Label(unit.getName()));
+			row.appendChild(new Label(unit.getOrganization().getName()));
 			row.appendChild(new Checkbox());
-			row.appendChild(new Label(unit.getId()));
+			row.appendChild(new Label(unit.getOrganization().getId()));
 			
 			accessibleCompanys.getRows().appendChild(row);
 		}

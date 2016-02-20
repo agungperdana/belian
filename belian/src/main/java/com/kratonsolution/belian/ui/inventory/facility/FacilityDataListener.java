@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui;
+package com.kratonsolution.belian.ui.inventory.facility;
 
 import com.kratonsolution.belian.inventory.dm.Facility;
 
@@ -9,7 +9,7 @@ import com.kratonsolution.belian.inventory.dm.Facility;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public interface ModelDataListener
+public interface FacilityDataListener
 {
 	public void fireDataAdded(Facility facility);
 	

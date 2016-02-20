@@ -17,7 +17,6 @@ import org.zkoss.zul.Treechildren;
 import org.zkoss.zul.Treeitem;
 
 import com.kratonsolution.belian.inventory.dm.Facility;
-import com.kratonsolution.belian.ui.ModelDataListener;
 
 /**
  * @author Agung Dodi Perdana
@@ -25,11 +24,11 @@ import com.kratonsolution.belian.ui.ModelDataListener;
  */
 @Getter
 @Setter
-public class FacilityTreeItem extends Treeitem implements ModelDataListener
+public class FacilityTreeItem extends Treeitem implements FacilityDataListener
 {
 	private Facility facility;
 	
-	private ModelDataListener listener;
+	private FacilityDataListener listener;
 	
 	private Component canvas;
 	
@@ -53,7 +52,7 @@ public class FacilityTreeItem extends Treeitem implements ModelDataListener
 		return item;
 	}
 	
-	public static Treeitem New(Component canvas,ModelDataListener listener)
+	public static Treeitem New(Component canvas,FacilityDataListener listener)
 	{
 		Treeitem treeitem = new Treeitem("New");
 		treeitem.setImage("/icons/new-warehouse.png");

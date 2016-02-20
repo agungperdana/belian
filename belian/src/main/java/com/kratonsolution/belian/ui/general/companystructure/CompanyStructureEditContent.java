@@ -3,9 +3,14 @@
  */
 package com.kratonsolution.belian.ui.general.companystructure;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
@@ -13,19 +18,14 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
+import org.zkoss.zul.Toolbarbutton;
 
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.CompanyStructure;
-import com.kratonsolution.belian.general.dm.Organization;
-import com.kratonsolution.belian.general.dm.PartyRelationship;
-import com.kratonsolution.belian.general.dm.PartyRole;
+import com.kratonsolution.belian.general.dm.CompanyStructureType;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.general.svc.OrganizationUnitService;
-import com.kratonsolution.belian.general.svc.PartyRoleService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
-import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -35,36 +35,29 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class CompanyStructureEditContent extends FormContent
 {	
-	private CompanyStructureService service = Springs.get(CompanyStructureService.class);
-
-	private OrganizationUnitService unitService = Springs.get(OrganizationUnitService.class);
-
-	private OrganizationService organizationService = Springs.get(OrganizationService.class);
-
-	private PartyRoleService partyRoleService = Springs.get(PartyRoleService.class);
+private final CompanyStructureService service = Springs.get(CompanyStructureService.class);
 	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
-
+	private final OrganizationService organizationService = Springs.get(OrganizationService.class);
+	
 	private Datebox from = Components.currentDatebox();
-
+	
 	private Datebox to = Components.datebox();
+	
+	private Listbox organizations = Components.newSelect(organizationService.findAll(), false);
+	
+	private Listbox types = Components.newSelect();
+	
+	private Collection<CompanyStructureDataListener> listeners = new ArrayList<CompanyStructureDataListener>();
+	
+	private CompanyStructure structure;
 
-	private Listbox fromroles = Components.newSelect();
-
-	private Listbox toroles = Components.newSelect();
-
-	private Listbox parents = Components.newSelect();
-
-	private Listbox childs = Components.newSelect();
-
-	private Listbox types = Components.newSelect(PartyRelationship.Type.COMPANYSTRUCTURE.name(),PartyRelationship.Type.COMPANYSTRUCTURE.name());
-
-	private Row row;
-
-	public CompanyStructureEditContent(Row row)
+	private Component canvas;
+	
+	public CompanyStructureEditContent(Component canvas,CompanyStructure structure)
 	{
 		super();
-		this.row = row;
+		this.canvas = canvas;
+		this.structure = structure;
 		initToolbar();
 		initForm();
 	}
@@ -72,81 +65,74 @@ public class CompanyStructureEditContent extends FormContent
 	@Override
 	public void initToolbar()
 	{
-		toolbar.getCancel().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				CompanyStructureWindow window = (CompanyStructureWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
-			}
-		});
-
+		toolbar.removeChild(toolbar.getCancel());
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				CompanyStructure structure = service.findOne(RowUtils.string(row, 7));
-				structure.setFrom(from.getValue());
-				structure.setTo(to.getValue());
-				structure.setType(PartyRelationship.Type.COMPANYSTRUCTURE);
-				structure.getParent().setFrom(from.getValue());
-				structure.getParent().setTo(to.getValue());
-				structure.getChild().setFrom(from.getValue());
-				structure.getChild().setTo(to.getValue());
+				if(structure != null)
+				{
+					structure.setFrom(from.getValue());
+					structure.setTo(to.getValue());
+					service.edit(structure);
 				
-				service.edit(structure);
+					for(CompanyStructureDataListener listener:listeners)
+						listener.fireDataUpdated(structure);
 				
-				CompanyStructureWindow window = (CompanyStructureWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+					Clients.showNotification("Data successfully updated.");
+				}
 			}
 		});
+		
+		Toolbarbutton toolbarbutton = new Toolbarbutton("New Child", "/icons/new-warehouse.png");
+		toolbarbutton.addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				if(structure != null)
+				{
+					CompanyStructureFormContent form = new CompanyStructureFormContent(structure);
+					for(CompanyStructureDataListener listener:listeners)
+						form.addDataListener(listener);
+					
+					canvas.getChildren().clear();
+					canvas.appendChild(form);
+				}
+			}
+		});
+		
+		toolbar.appendChild(toolbarbutton);
 	}
 
 	@Override
 	public void initForm()
 	{
-		CompanyStructure companyStructure = service.findOne(RowUtils.string(row, 7));
-		if(companyStructure != null)
+		if(structure != null)
 		{
-			for(Organization organization:utils.getOrganizations())
+			for(CompanyStructureType type:CompanyStructureType.values())
 			{
-				Listitem parentItem = new Listitem(organization.getLabel(),organization.getValue());
-				Listitem childItem = new Listitem(organization.getLabel(),organization.getValue());
-				
-				parents.appendChild(parentItem);
-				childs.appendChild(childItem);
-				
-				if(companyStructure.getParent() != null && organization.getId().equals(companyStructure.getParent().getParty().getId()))
-					parents.setSelectedItem(parentItem);
-				
-				if(companyStructure.getChild() != null && organization.getId().equals(companyStructure.getChild().getParty().getId()))
-					childs.setSelectedItem(childItem);
+				Listitem item = new Listitem(type.name(), type.name());
+				types.appendChild(item);
+				if(structure.getType().equals(type))
+					types.setSelectedItem(item);
 			}
-
-			for(PartyRole.Type type:PartyRole.Type.values())
-			{
-				Listitem fromType = new Listitem(type.toString(),type.toString());
-				Listitem toType = new Listitem(type.toString(),type.toString());
-
-				fromroles.appendChild(fromType);
-				toroles.appendChild(toType);
 			
-				if(companyStructure.getParent() != null && type.equals(companyStructure.getParent().getType()))
-					fromroles.setSelectedItem(fromType);
-				
-				if(companyStructure.getChild() != null && type.equals(companyStructure.getChild().getType()))
-					toroles.setSelectedItem(toType);
+			for(Listitem com:organizations.getItems())
+			{
+				if(com.getValue().toString().equals(structure.getOrganization().getId()))
+					organizations.setSelectedItem(com);
 			}
-
-			from.setValue(companyStructure.getFrom());
-			to.setValue(companyStructure.getTo());
+			
+			types.setDisabled(true);
+			organizations.setDisabled(true);
+			
+			from.setValue(structure.getFrom());
+			to.setValue(structure.getTo());
 			
 			grid.appendChild(new Columns());
-			grid.getColumns().appendChild(new Column(null,null,"75px"));
+			grid.getColumns().appendChild(new Column(null,null,"125px"));
 			grid.getColumns().appendChild(new Column());
 			
 			Row row1 = new Row();
@@ -158,27 +144,22 @@ public class CompanyStructureEditContent extends FormContent
 			row2.appendChild(to);
 			
 			Row row3 = new Row();
-			row3.appendChild(new Label("Parent"));
-			row3.appendChild(parents);
+			row3.appendChild(new Label("Organization"));
+			row3.appendChild(organizations);
 			
 			Row row4 = new Row();
-			row4.appendChild(new Label("Role As"));
-			row4.appendChild(fromroles);
-			
-			Row row5 = new Row();
-			row5.appendChild(new Label("Child"));
-			row5.appendChild(childs);
-			
-			Row row6 = new Row();
-			row6.appendChild(new Label("Role As"));
-			row6.appendChild(toroles);
+			row4.appendChild(new Label("Type"));
+			row4.appendChild(types);
 			
 			rows.appendChild(row1);
 			rows.appendChild(row2);
 			rows.appendChild(row3);
 			rows.appendChild(row4);
-			rows.appendChild(row5);
-			rows.appendChild(row6);
 		}
+	}
+	
+	public void addDataListener(CompanyStructureDataListener listener)
+	{
+		listeners.add(listener);
 	}
 }

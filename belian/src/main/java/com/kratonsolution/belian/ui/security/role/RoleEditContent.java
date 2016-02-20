@@ -32,9 +32,9 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.general.dm.CompanyStructure;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
-import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.security.dm.AccessRole;
 import com.kratonsolution.belian.security.dm.AccessibleOrganization;
 import com.kratonsolution.belian.security.dm.Module;
@@ -408,27 +408,41 @@ public class RoleEditContent extends FormContent
 		
 		if(role != null)
 		{
-			if(!role.getOrganizations().isEmpty())
-				populateCompanys(role.getOrganizations());
-			else
+			populateCompanys(role.getOrganizations());
+			
+			Collection<Organization> ins = new ArrayList<>();
+			for(CompanyStructure structure:structureService.findAll())
 			{
-				List<AccessibleOrganization> orgs = new ArrayList<AccessibleOrganization>();
-				for(EconomicAgent organization:structureService.findAllCompanyMembers())
+				boolean fresh = true;
+				for(AccessibleOrganization com:role.getOrganizations())
 				{
-					AccessibleOrganization accessibleOrganization = new AccessibleOrganization();
-					accessibleOrganization.setId(UUID.randomUUID().toString());
-					accessibleOrganization.setRole(role);
-					accessibleOrganization.setOrganization((Organization)organization);
-					
-					role.getOrganizations().add(accessibleOrganization);
-				
-					orgs.add(accessibleOrganization);
+					if(com.getOrganization() != null && com.getOrganization().getId().equals(structure.getOrganization().getId()))
+					{
+						fresh = false;
+						break;
+					}
 				}
 				
-				service.edit(role);
-				
-				populateCompanys(orgs);
+				if(fresh)
+					ins.add(structure.getOrganization());
 			}
+			
+			List<AccessibleOrganization> orgs = new ArrayList<AccessibleOrganization>();
+			for(Organization structure:ins)
+			{
+				AccessibleOrganization accessibleOrganization = new AccessibleOrganization();
+				accessibleOrganization.setId(UUID.randomUUID().toString());
+				accessibleOrganization.setRole(role);
+				accessibleOrganization.setOrganization(structure);
+				
+				role.getOrganizations().add(accessibleOrganization);
+			
+				orgs.add(accessibleOrganization);
+			}
+			
+			service.edit(role);
+			
+			populateCompanys(orgs);
 		}
 		
 		tabbox.getTabpanels().getChildren().get(1).appendChild(accessibleCompanys);

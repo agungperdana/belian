@@ -93,7 +93,6 @@ public class CompanyStructureWindow extends AbstractWindow implements HasGrid,Ha
 	@Override
 	public void insertEditForm(Row row)
 	{
-		appendChild(new CompanyStructureEditContent(row));
 	}
 
 	@Override
@@ -112,7 +111,6 @@ public class CompanyStructureWindow extends AbstractWindow implements HasGrid,Ha
 	@Override
 	public void insertCreateForm()
 	{
-		appendChild(new CompanyStructureFormContent());
 	}
 
 	@Override
@@ -131,7 +129,7 @@ public class CompanyStructureWindow extends AbstractWindow implements HasGrid,Ha
 	@Override
 	public void insertGrid()
 	{
-		appendChild(new CompanyStructureGridContent());
+		appendChild(new CompanyStructureContent());
 	}
 
 	@Override
@@ -139,7 +137,7 @@ public class CompanyStructureWindow extends AbstractWindow implements HasGrid,Ha
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof CompanyStructureGridContent)
+			if(component instanceof CompanyStructureContent)
 			{
 				removeChild(component);
 				break;

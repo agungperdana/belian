@@ -13,7 +13,6 @@ import org.zkoss.zul.Treecols;
 
 import com.kratonsolution.belian.inventory.dm.Facility;
 import com.kratonsolution.belian.inventory.svc.FacilityService;
-import com.kratonsolution.belian.ui.ModelDataListener;
 import com.kratonsolution.belian.ui.util.Springs;
 
 
@@ -21,7 +20,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class FacilityTree extends Tree implements ModelDataListener
+public class FacilityTree extends Tree implements FacilityDataListener
 {
 	private FacilityService service = Springs.get(FacilityService.class);
 	

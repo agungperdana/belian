@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.general.svc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kratonsolution.belian.general.dm.CompanyStructure;
 import com.kratonsolution.belian.general.dm.CompanyStructureRepository;
-import com.kratonsolution.belian.general.dm.OrganizationUnitRepository;
-import com.kratonsolution.belian.general.dm.PartyRoleRepository;
 import com.kratonsolution.belian.global.dm.EconomicAgent;
 
 /**
@@ -26,12 +25,6 @@ import com.kratonsolution.belian.global.dm.EconomicAgent;
 @Transactional(rollbackFor=Exception.class)
 public class CompanyStructureService
 {	
-	@Autowired
-	private PartyRoleRepository partyRoleRepository;
-
-	@Autowired
-	private OrganizationUnitRepository unitService;
-
 	@Autowired
 	private CompanyStructureRepository repository;
 
@@ -45,6 +38,18 @@ public class CompanyStructureService
 	public List<CompanyStructure> findAll()
 	{
 		return repository.findAll();
+	}
+	
+	@Secured("ROLE_COMPANY_STRUCTURE_READ")
+	public List<String> findAllOrganizationId()
+	{
+		return repository.findAllOrganizationId();
+	}
+	
+	@Secured("ROLE_COMPANY_STRUCTURE_READ")
+	public List<CompanyStructure> findAllParent()
+	{
+		return repository.findAllParent();
 	}
 
 	@Secured("ROLE_COMPANY_STRUCTURE_READ")
@@ -80,6 +85,7 @@ public class CompanyStructureService
 	@Secured("ROLE_COMPANY_STRUCTURE_READ")
 	public List<EconomicAgent> findAllCompanyMembers()
 	{
-		return repository.findAllCompanyMembers();
+		return new ArrayList<>();
+//		return repository.findAllCompanyMembers();
 	}
 }

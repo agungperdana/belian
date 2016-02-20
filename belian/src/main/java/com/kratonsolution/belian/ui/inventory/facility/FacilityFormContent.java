@@ -6,6 +6,7 @@ package com.kratonsolution.belian.ui.inventory.facility;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -13,18 +14,30 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
+import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
+import org.zkoss.zul.Rows;
+import org.zkoss.zul.Tab;
+import org.zkoss.zul.Tabbox;
+import org.zkoss.zul.Tabpanel;
+import org.zkoss.zul.Tabpanels;
+import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.inventory.dm.Facility;
+import com.kratonsolution.belian.inventory.dm.FacilityOrganization;
 import com.kratonsolution.belian.inventory.dm.FacilityType;
 import com.kratonsolution.belian.inventory.svc.FacilityService;
 import com.kratonsolution.belian.ui.FormContent;
-import com.kratonsolution.belian.ui.ModelDataListener;
+import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -36,6 +49,10 @@ public class FacilityFormContent extends FormContent
 {	
 	private FacilityService service = Springs.get(FacilityService.class);
 	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
+	
+	private OrganizationService organizationService = Springs.get(OrganizationService.class);
+	
 	private Textbox code = new Textbox();
 	
 	private Textbox name = new Textbox();
@@ -46,7 +63,11 @@ public class FacilityFormContent extends FormContent
 	
 	private Facility parent;
 	
-	private Collection<ModelDataListener> listeners = new ArrayList<>();
+	private Collection<FacilityDataListener> listeners = new ArrayList<>();
+	
+	private Tabbox tabbox = new Tabbox();
+	
+	private Grid orgs = new Grid();
 	
 	public FacilityFormContent(Facility parent)
 	{
@@ -54,8 +75,23 @@ public class FacilityFormContent extends FormContent
 		
 		this.parent = parent;
 
+		removeChild(grid);
+		
+		tabbox.setHeight("100%");
+		tabbox.setWidth("100%");
+		tabbox.appendChild(new Tabs());
+		tabbox.appendChild(new Tabpanels());
+		tabbox.getTabs().appendChild(new Tab("FORM"));
+		tabbox.getTabs().appendChild(new Tab("ORGANIZATION(S)"));
+		tabbox.getTabpanels().appendChild(new Tabpanel());
+		tabbox.getTabpanels().appendChild(new Tabpanel());
+		tabbox.getTabpanels().getChildren().get(0).appendChild(grid);
+
+		appendChild(tabbox);
+		
 		initToolbar();
 		initForm();
+		initOrganization();
 	}
 
 	@Override
@@ -89,9 +125,21 @@ public class FacilityFormContent extends FormContent
 				if(parent != null)
 					facility.setParent(parent);
 				
+				for(Component com:orgs.getRows().getChildren())
+				{
+					Row row = (Row)com;
+					
+					FacilityOrganization organization = new FacilityOrganization();
+					organization.setEnabled(RowUtils.isChecked(row, 0));
+					organization.setFacility(facility);
+					organization.setOrganization(organizationService.findOne(RowUtils.string(row, 2)));
+					
+					facility.getOrganizations().add(organization);
+				}
+				
 				service.add(facility);
 				
-				for(ModelDataListener listener:listeners)
+				for(FacilityDataListener listener:listeners)
 					listener.fireDataAdded(facility);
 				
 				Clients.showNotification("Data successfully added.");
@@ -142,7 +190,29 @@ public class FacilityFormContent extends FormContent
 		rows.appendChild(row4);
 	}
 	
-	public void addModelDataListener(ModelDataListener listener)
+	public void initOrganization()
+	{
+		orgs.appendChild(new Columns());
+		orgs.appendChild(new Rows());
+		orgs.getColumns().appendChild(new Column(null,null,"25px"));
+		orgs.getColumns().appendChild(new Column("Organization",null,"150px"));
+		orgs.getColumns().appendChild(new Column(null,null,"0px"));
+		orgs.getColumns().getChildren().get(2).setVisible(false);
+		
+		for(Organization organization:utils.getOrganizations())
+		{
+			Row row = new Row();
+			row.appendChild(Components.checkbox(false));
+			row.appendChild(new Label(organization.getName()));
+			row.appendChild(new Label(organization.getId()));
+		
+			orgs.getRows().appendChild(row);
+		}
+		
+		tabbox.getTabpanels().getChildren().get(1).appendChild(orgs);
+	}
+	
+	public void addModelDataListener(FacilityDataListener listener)
 	{
 		listeners.add(listener);
 	}

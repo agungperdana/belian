@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.security.dm;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,7 +35,7 @@ import com.kratonsolution.belian.general.dm.Organization;
 public class AccessibleOrganization implements Serializable
 {
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="fk_role")

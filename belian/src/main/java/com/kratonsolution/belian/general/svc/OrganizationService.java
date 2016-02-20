@@ -47,6 +47,12 @@ public class OrganizationService
 	{
 		return repository.findAll();
 	}
+	
+	@Secured("ROLE_ORGANIZATION_READ")
+	public List<Organization> findAllNotIn(List<String> ids)
+	{
+		return repository.findAllNot(ids);
+	}
 
 	@Secured("ROLE_ORGANIZATION_READ")
 	public List<Organization> findAll(int pageIndex,int pageSize)
