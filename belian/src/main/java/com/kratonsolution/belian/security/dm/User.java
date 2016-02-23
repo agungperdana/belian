@@ -23,6 +23,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import com.kratonsolution.belian.general.dm.Person;
+import com.kratonsolution.belian.global.dm.Listable;
 import com.kratonsolution.belian.global.dm.UserSetting;
 
 /**
@@ -34,7 +35,7 @@ import com.kratonsolution.belian.global.dm.UserSetting;
 @Setter
 @Entity
 @Table(name="user")
-public class User implements Serializable
+public class User implements Serializable,Listable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -72,5 +73,17 @@ public class User implements Serializable
 	{
 		this.person = person;
 		person.setUser(this);
+	}
+
+	@Override
+	public String getLabel()
+	{
+		return getPerson().getName();
+	}
+
+	@Override
+	public String getValue()
+	{
+		return getPerson().getId();
 	}
 }

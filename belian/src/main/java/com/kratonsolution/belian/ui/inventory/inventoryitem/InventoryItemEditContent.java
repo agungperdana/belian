@@ -19,7 +19,6 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.inventory.dm.InventoryItem;
-import com.kratonsolution.belian.inventory.svc.ContainerService;
 import com.kratonsolution.belian.inventory.svc.FacilityService;
 import com.kratonsolution.belian.inventory.svc.InventoryItemService;
 import com.kratonsolution.belian.inventory.svc.ProductService;
@@ -41,8 +40,6 @@ public class InventoryItemEditContent extends FormContent
 	private ProductService productService = Springs.get(ProductService.class);
 
 	private FacilityService facilityService = Springs.get(FacilityService.class);
-
-	private ContainerService containerService = Springs.get(ContainerService.class);
 
 	private ProductBox products = new ProductBox();
 

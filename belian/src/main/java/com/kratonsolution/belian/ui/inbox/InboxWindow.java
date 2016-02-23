@@ -10,8 +10,9 @@ import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.HasGrid;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class InboxWindow extends AbstractWindow implements HasGrid
 {
@@ -20,6 +21,7 @@ public class InboxWindow extends AbstractWindow implements HasGrid
 	public InboxWindow()
 	{
 		super();
+		setWidth("700px");
 		init();
 	}
 	
@@ -42,7 +44,7 @@ public class InboxWindow extends AbstractWindow implements HasGrid
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof InboxGridContent)
+			if(component instanceof InboxContent)
 			{
 				removeChild(component);
 				break;
@@ -52,7 +54,7 @@ public class InboxWindow extends AbstractWindow implements HasGrid
 
 	public void insertGrid()
 	{
-		appendChild(new InboxGridContent());
+		appendChild(new InboxContent());
 	}
 
 	@Override

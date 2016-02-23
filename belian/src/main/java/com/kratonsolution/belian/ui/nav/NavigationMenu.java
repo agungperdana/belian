@@ -161,21 +161,28 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
-		if(modules.get("UOM"))
+		if(modules.containsKey("UOM") && modules.get("UOM"))
 			list.appendChild(new UOMItem());
-		if(modules.get("FACILITY"))
+		if(modules.containsKey("FACILITY") && modules.get("FACILITY"))
 			list.appendChild(new FacilityItem());
-		if(modules.get("PRDCATEGORY"))
+		if(modules.containsKey("PRDCATEGORY") && modules.get("PRDCATEGORY"))
 			list.appendChild(new ProductCategoryItem());
-		if(modules.get("PRODUCT"))
+		if(modules.containsKey("PRODUCT") && modules.get("PRODUCT"))
 			list.appendChild(new ProductItem());
-		if(modules.get("INVITEM"))
+		if(modules.containsKey("INVITEM") && modules.get("INVITEM"))
 			list.appendChild(new InventoryItemItem());
+		if(modules.containsKey("TRN_ORDER_REQ") && modules.get("TRN_ORDER_REQ"))
+			list.appendChild(new TransferOrderRequestItem());
+		if(modules.containsKey("GOODS_TRANSFER") && modules.get("GOODS_TRANSFER"))
+			list.appendChild(new GoodsTransferItem());
+		if(modules.containsKey("GOODS_ISSUE") && modules.get("GOODS_ISSUE"))
+			list.appendChild(new GoodsIssueItem());
 		
 		if(!list.getChildren().isEmpty())
 		{
 			tabs.appendChild(new Tab(language.get("navbar.menu.inventory")));
 			Tabpanel panel = new Tabpanel();
+			panel.setStyle("overflow:auto");
 			panel.setParent(panels);
 			panel.appendChild(list);
 			panels.appendChild(panel);

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.inbox;
+package com.kratonsolution.belian.ui.inventory.goodstransfer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +9,8 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
-import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.tools.dm.Inbox;
-import com.kratonsolution.belian.tools.svc.InboxService;
+import com.kratonsolution.belian.inventory.dm.GoodsTransfer;
+import com.kratonsolution.belian.inventory.svc.GoodsTransferService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -19,21 +18,19 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class InboxModel implements ListModel<Inbox>
+public class GoodsTransferModel implements ListModel<GoodsTransfer>
 {
-	private final InboxService service = Springs.get(InboxService.class);
+	private final GoodsTransferService service = Springs.get(GoodsTransferService.class);
 	
-	private final SessionUtils utils = Springs.get(SessionUtils.class);
+	private List<GoodsTransfer> data = new ArrayList<GoodsTransfer>();
 	
-	private List<Inbox> data = new ArrayList<Inbox>();
-	
-	public InboxModel(int itemSize)
+	public GoodsTransferModel(int itemSize)
 	{
 		next(0, itemSize);
 	}
 	
 	@Override
-	public Inbox getElementAt(int index)
+	public GoodsTransfer getElementAt(int index)
 	{
 		if(index >= data.size())
 			return null;
@@ -64,8 +61,6 @@ public class InboxModel implements ListModel<Inbox>
 	public void next(int pageIndex,int itemSize)
 	{
 		data.clear();
-		
-		if(utils.getUser().getPerson() != null)
-			data.addAll(service.findAllByOwnerId(utils.getUser().getPerson().getId(),0, (itemSize*pageIndex)+itemSize));
+		data.addAll(service.findAll(0, (itemSize*pageIndex)+itemSize));
 	}
 }

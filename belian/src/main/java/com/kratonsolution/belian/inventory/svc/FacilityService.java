@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.inventory.svc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.inventory.dm.Facility;
+import com.kratonsolution.belian.inventory.dm.FacilityOrganization;
 import com.kratonsolution.belian.inventory.dm.FacilityRepository;
 
 /**
@@ -28,6 +31,9 @@ public class FacilityService
 {
 	@Autowired
 	private FacilityRepository repository;
+	
+	@Autowired
+	private SessionUtils utils;
 	
 	@Secured("ROLE_FACILITY_READ")
 	public int size()
@@ -45,6 +51,20 @@ public class FacilityService
 	public Facility findOneByCode(String code)
 	{
 		return repository.findOneByCode(code);
+	}
+	
+	@Secured("ROLE_FACILITY_READ")
+	public List<Facility> findAllActive()
+	{
+		List<Facility> ins = new ArrayList<Facility>();
+		
+		for(FacilityOrganization organization:utils.getOrganization().getFacilitys())
+		{
+			if(organization.isEnabled())
+				ins.add(organization.getFacility());
+		}
+	
+		return ins;
 	}
 	
 	@Secured("ROLE_FACILITY_READ")

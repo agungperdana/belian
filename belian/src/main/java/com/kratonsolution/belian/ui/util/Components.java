@@ -20,6 +20,8 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.global.dm.Listable;
+import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.ui.component.ProductBox;
 
 /**
  * 
@@ -97,7 +99,7 @@ public class Components
 		for(Listable object:collections)
 			listbox.appendChild(new Listitem(object.getLabel(), object.getValue()));
 		
-		if(setDefault)
+		if(setDefault && listbox.getItemCount() > 0)
 			setDefault(listbox);
 		
 		return listbox;
@@ -384,6 +386,16 @@ public class Components
 		
 		return combobox;
 	}
+	
+	public static Label label(BigDecimal decimal)
+	{
+		Label label = new Label();
+		label.setWidth("100%");
+		label.setStyle("text-align:right;");
+		label.setValue(Numbers.format(decimal));
+		
+		return label;
+	}
 
 	public static final Listitem newListitem(BigDecimal decimal)
 	{
@@ -404,5 +416,16 @@ public class Components
 		row.appendChild(new Label(lastCellContent));
 		
 		return row;
+	}
+	
+	public static final Product product(Row row,int index)
+	{
+		if(row.getChildren().get(index) != null && row.getChildren().get(index) instanceof ProductBox)
+		{
+			ProductBox box = (ProductBox)row.getChildren().get(index);
+			return box.getProduct();
+		}
+		
+		return null;
 	}
 }

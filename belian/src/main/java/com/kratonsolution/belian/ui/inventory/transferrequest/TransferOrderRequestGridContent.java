@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.inbox;
+package com.kratonsolution.belian.ui.inventory.transferrequest;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -15,23 +15,23 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.global.dm.ReviewResult;
-import com.kratonsolution.belian.tools.svc.InboxService;
+import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.inventory.svc.TransferOrderRequestService;
 import com.kratonsolution.belian.ui.GridContent;
-import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
-public class InboxGridContent extends GridContent
+public class TransferOrderRequestGridContent extends GridContent
 {
-	private final InboxService service = Springs.get(InboxService.class);
+	private TransferOrderRequestService service = Springs.get(TransferOrderRequestService.class);
 	
-	private final InboxViewFacade facade = new InboxViewFacade();
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
-	public InboxGridContent()
+	public TransferOrderRequestGridContent()
 	{
 		super();
 		initToolbar();
@@ -47,7 +47,18 @@ public class InboxGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new InboxModel(8));
+				refresh(new TransferOrderRequestModel(utils.getRowPerPage()));
+			}
+		});
+		
+		gridToolbar.getNew().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				TransferOrderRequestWindow window = (TransferOrderRequestWindow)getParent();
+				window.removeGrid();
+				window.insertCreateForm();
 			}
 		});
 		
@@ -99,33 +110,32 @@ public class InboxGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",
-						Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				{
+					@Override
+					public void onEvent(Event event) throws Exception
+					{
+						if(event.getName().equals("onOK"))
 						{
-							@Override
-							public void onEvent(Event event) throws Exception
+							for(Object object:grid.getRows().getChildren())
 							{
-								if(event.getName().equals("onOK"))
+								Row row = (Row)object;
+								
+								if(row.getFirstChild() instanceof Checkbox)
 								{
-									for(Object object:grid.getRows().getChildren())
+									Checkbox check = (Checkbox)row.getFirstChild();
+									if(check.isChecked())
 									{
-										Row row = (Row)object;
-										
-										if(row.getFirstChild() instanceof Checkbox)
-										{
-											Checkbox check = (Checkbox)row.getFirstChild();
-											if(check.isChecked())
-											{
-												Label label = (Label)row.getLastChild();
-												service.delete(label.getValue());
-											}
-										}
+										Label label = (Label)row.getLastChild();
+										service.delete(label.getValue());
 									}
-									
-									grid.setModel(new InboxModel(8));
 								}
 							}
-						});
+							
+							refresh(new TransferOrderRequestModel(utils.getRowPerPage()));
+						}
+					}
+				});
 			}
 		});
 		
@@ -141,47 +151,37 @@ public class InboxGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final InboxModel model = new InboxModel(8);
+		appendChild(grid);
 		
-		grid.setParent(this);
+		final TransferOrderRequestModel model = new TransferOrderRequestModel(utils.getRowPerPage());
+		
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No geographic data exist.");
+		grid.setEmptyMessage("No Transfer Order Request data exist.");
 		grid.setModel(model);
-		grid.setRowRenderer(new InboxRowRenderer());
+		grid.setRowRenderer(new TransferOrderRequestRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
-		grid.setPageSize(8);
+		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
-		
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Date",null,"100px"));
-		grid.getColumns().appendChild(new Column("Content",null,"150px"));
-		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(3).setVisible(false);
+		grid.getColumns().appendChild(new Column("Date",null,"85px"));
+		grid.getColumns().appendChild(new Column("Requested By",null,"150px"));
+		grid.getColumns().appendChild(new Column("Req Status",null,"100px"));
+		grid.getColumns().appendChild(new Column("Approver Status",null,"100px"));
+		grid.getColumns().appendChild(new Column(null,null,"0px"));
+		grid.getColumns().getChildren().get(5).setVisible(false);
 		grid.setSpan("2");
-		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), 8);
+				model.next(event.getActivePage(), utils.getRowPerPage());
 				grid.setModel(model);
+				refresh(model);
 			}
 		});
 		
-		Rows rows = grid.getRows();
-		for(Object object:rows.getChildren())
-		{
-			final Row row = (Row)object;
-			row.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-			{
-				@Override
-				public void onEvent(Event event) throws Exception
-				{
-					facade.open(getPage(), (ReviewResult)service.findOne(RowUtils.string(row, 3)));
-				}
-			});
-		}
+		refresh(new TransferOrderRequestModel(utils.getRowPerPage()));
 	}
 }

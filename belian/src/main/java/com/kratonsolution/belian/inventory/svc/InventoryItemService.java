@@ -39,6 +39,12 @@ public class InventoryItemService
 	}
 	
 	@Secured("ROLE_INVITEM_READ")
+	public InventoryItem findOne(String product,String facility)
+	{
+		return repository.findOne(product,facility);
+	}
+	
+	@Secured("ROLE_INVITEM_READ")
 	public List<InventoryItem> findAll()
 	{
 		return repository.findAll();
