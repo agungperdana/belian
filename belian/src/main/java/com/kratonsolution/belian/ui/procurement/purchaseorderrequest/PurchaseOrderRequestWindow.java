@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.inventory.transferrequest;
+package com.kratonsolution.belian.ui.procurement.purchaseorderrequest;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Page;
@@ -24,36 +24,38 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class TransferOrderRequestWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
+public class PurchaseOrderRequestWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
 	private Language language = Springs.get(Language.class);
-	
-	private Caption caption = new Caption(language.get("navbar.menu.inventory.transferrequest"));
-	
-	private TransferOrderRequestButton status = new TransferOrderRequestButton();
-	
-	public static TransferOrderRequestWindow injectInto(Page page)
+
+	private Caption caption = new Caption(language.get("navbar.menu.procurement.purchaseorderrequest"));
+
+	private PurchaseOrderRequestButton status = new PurchaseOrderRequestButton();
+
+	public static PurchaseOrderRequestWindow injectInto(Page page)
 	{
-		TransferOrderRequestWindow window = new TransferOrderRequestWindow();
+		PurchaseOrderRequestWindow window = new PurchaseOrderRequestWindow();
 		window.setPage(page);
 		window.init();
-		
+
 		return window;
 	}
-	
-	private TransferOrderRequestWindow()
+
+	private PurchaseOrderRequestWindow()
 	{
 		super();
+		setWidth("750px");
+		setHeight("520px");
 	}
-	
+
 	protected void init()
 	{
-		caption.setImage("/icons/transfer_request.png");
+		caption.setImage("/icons/purchase_order_request.png");
 		appendChild(caption);
 		insertGrid();
 		insertStatus();
 		status.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
+				{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
@@ -62,9 +64,9 @@ public class TransferOrderRequestWindow extends AbstractWindow implements HasGri
 				else
 					setTopmost();
 			}
-		});
+				});
 	}
-	
+
 	@Override
 	public void onClose()
 	{
@@ -96,7 +98,7 @@ public class TransferOrderRequestWindow extends AbstractWindow implements HasGri
 	@Override
 	public void insertEditForm(Row row)
 	{
-		appendChild(new TransferOrderRequestEditContent(row));
+		appendChild(new PurchaseOrderRequestEditContent(row));
 	}
 
 	@Override
@@ -104,7 +106,7 @@ public class TransferOrderRequestWindow extends AbstractWindow implements HasGri
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof TransferOrderRequestEditContent)
+			if(component instanceof PurchaseOrderRequestEditContent)
 			{
 				removeChild(component);
 				break;
@@ -115,7 +117,7 @@ public class TransferOrderRequestWindow extends AbstractWindow implements HasGri
 	@Override
 	public void insertCreateForm()
 	{
-		appendChild(new TransferOrderRequestFormContent());
+		appendChild(new PurchaseOrderRequestFormContent());
 	}
 
 	@Override
@@ -123,7 +125,7 @@ public class TransferOrderRequestWindow extends AbstractWindow implements HasGri
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof TransferOrderRequestFormContent)
+			if(component instanceof PurchaseOrderRequestFormContent)
 			{
 				removeChild(component);
 				break;
@@ -134,7 +136,7 @@ public class TransferOrderRequestWindow extends AbstractWindow implements HasGri
 	@Override
 	public void insertGrid()
 	{
-		appendChild(new TransferOrderRequestGridContent());
+		appendChild(new PurchaseOrderRequestGridContent());
 	}
 
 	@Override
@@ -142,7 +144,7 @@ public class TransferOrderRequestWindow extends AbstractWindow implements HasGri
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof TransferOrderRequestGridContent)
+			if(component instanceof PurchaseOrderRequestGridContent)
 			{
 				removeChild(component);
 				break;

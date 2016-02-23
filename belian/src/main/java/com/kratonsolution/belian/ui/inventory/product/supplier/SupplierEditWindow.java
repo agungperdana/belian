@@ -26,11 +26,12 @@ import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.inventory.product.ProductEditContent;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class SupplierEditWindow extends AbstractWindow
 {
@@ -46,13 +47,13 @@ public class SupplierEditWindow extends AbstractWindow
 	
 	private Product product;
 	
-	private Datebox from = new Datebox();
+	private Datebox from = Components.currentDatebox();
 	
-	private Datebox to = new Datebox();
+	private Datebox to = Components.datebox();
 	
 	private Textbox note = new Textbox();
 	
-	private Listbox suppliers = new Listbox();
+	private Listbox suppliers = Components.newSelect();
 
 	private String supplierId;
 	
@@ -94,11 +95,7 @@ public class SupplierEditWindow extends AbstractWindow
 				ProductSupplier supplier = service.findSupplier(product, supplierId);
 				if(supplier != null)
 				{
-					supplier.setFrom(from.getValue());
 					supplier.setTo(to.getValue());
-					supplier.setNote(note.getText());
-					supplier.setSupplier(partyRepository.findOne(suppliers.getSelectedItem().getValue().toString()));
-					
 					service.editSupplier(supplier);
 				}
 				
@@ -128,20 +125,12 @@ public class SupplierEditWindow extends AbstractWindow
 			if(supplier.getId().equals(supplierId))
 			{
 				from.setValue(supplier.getFrom());
-				from.setConstraint("no empty");
-				from.setWidth("150px");
-				
 				to.setValue(supplier.getTo());
-				to.setWidth("150px");
-				
 				note.setText(supplier.getNote());
-				note.setWidth("300px");
-				
-				suppliers.setMold("select");
 				suppliers.appendChild(new Listitem(supplier.getSupplier().getName(),supplier.getSupplier().getId()));
 				suppliers.setSelectedIndex(0);
 				
-				content.getColumns().appendChild(new Column(null,null,"100px"));
+				content.getColumns().appendChild(new Column(null,null,"125px"));
 				content.getColumns().appendChild(new Column());
 				
 				Row row1 = new Row();

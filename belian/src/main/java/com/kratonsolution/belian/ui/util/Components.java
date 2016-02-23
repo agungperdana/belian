@@ -391,7 +391,7 @@ public class Components
 	{
 		Label label = new Label();
 		label.setWidth("100%");
-		label.setStyle("text-align:right;");
+		label.setStyle("text-align:right;display:block;");
 		label.setValue(Numbers.format(decimal));
 		
 		return label;

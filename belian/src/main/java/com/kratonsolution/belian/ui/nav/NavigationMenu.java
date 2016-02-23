@@ -215,8 +215,10 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
-		if(modules.containsKey("PURCHASE_ORDER") && modules.get("PURCHASE_ORDER"))
-			list.appendChild(new PurchaseOrderItem());
+		if(modules.containsKey("PURCHASE_ORDER_REQUEST") && modules.get("PURCHASE_ORDER_REQUEST"))
+			list.appendChild(new PurchaseOrderRequestItem());
+		if(modules.containsKey("CASH_PURCHASE_ORDER") && modules.get("CASH_PURCHASE_ORDER"))
+			list.appendChild(new CashPurchaseOrderItem());
 		
 		if(!list.getChildren().isEmpty())
 		{

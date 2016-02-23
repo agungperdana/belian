@@ -3,8 +3,6 @@
  */
 package com.kratonsolution.belian.ui.inventory.product.supplier;
 
-import java.util.Date;
-
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -21,12 +19,14 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vlayout;
 
 import com.kratonsolution.belian.global.dm.EconomicAgentRepository;
+import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductSupplier;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.inventory.product.ProductEditContent;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -36,6 +36,8 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class SupplierWindow extends AbstractWindow
 {
+	private EconomicAgentService agentService = Springs.get(EconomicAgentService.class);
+	
 	private Vlayout layout = new Vlayout();
 	
 	private FormToolbar toolbar = new FormToolbar();
@@ -48,17 +50,18 @@ public class SupplierWindow extends AbstractWindow
 	
 	private Product product;
 	
-	private Datebox from = new Datebox(new Date());
+	private Datebox from = Components.currentDatebox();
 	
-	private Datebox to = new Datebox();
+	private Datebox to = Components.datebox();
 	
 	private Textbox note = new Textbox();
 	
-	private Listbox suppliers = new Listbox();
+	private Listbox suppliers = Components.newSelect(agentService.findAll(), true);
 	
 	public SupplierWindow(Product product)
 	{
 		super();
+		
 		this.product = product;
 		
 		setMode(Mode.POPUP);
@@ -117,22 +120,9 @@ public class SupplierWindow extends AbstractWindow
 	
 	protected void initContent()
 	{
-		from.setConstraint("no empty");
-		from.setWidth("150px");
-		
-		to.setWidth("150px");
-		
 		note.setWidth("300px");
-		
-//		for(EconomicAgent party:partyRepository.findAllByRolesType("Supplier"))
-//			suppliers.appendChild(new Listitem(party.getName(),party.getId()));
-		
-		suppliers.setMold("select");
 
-		if(!suppliers.getChildren().isEmpty())
-			suppliers.setSelectedIndex(0);
-		
-		content.getColumns().appendChild(new Column(null,null,"100px"));
+		content.getColumns().appendChild(new Column(null,null,"125px"));
 		content.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();

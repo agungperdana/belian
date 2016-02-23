@@ -27,7 +27,6 @@ import com.kratonsolution.belian.global.dm.ApproverStatus;
 import com.kratonsolution.belian.global.svc.ApproveableService;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Dates;
-import com.kratonsolution.belian.ui.util.Numbers;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -132,7 +131,7 @@ public class ApproveableForm extends Vlayout
 			{
 				Row row = new Row();
 				row.appendChild(new Label(item.getProduct().getName()));
-				row.appendChild(new Label(Numbers.format(item.getQuantity())));
+				row.appendChild(Components.label(item.getQuantity()));
 				row.appendChild(new Label(item.getNote()));
 				
 				items.getRows().appendChild(row);

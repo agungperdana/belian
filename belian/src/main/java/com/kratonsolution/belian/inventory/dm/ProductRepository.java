@@ -87,4 +87,11 @@ public interface ProductRepository extends JpaRepository<Product, String>
 			+ "ORDER BY prd.name ASC")
 	public List<Product> findAll(@Param("date")Date date,
 								 @Param("segmentation")IndustrySegmentation segmentation);
+	
+	@Query("SELECT DISTINCT(sup.product) FROM ProductSupplier sup WHERE "
+			+ "sup.supplier.id =:supplier "
+			+ "AND ((:date BETWEEN sup.product.start AND sup.product.end) "
+			+ "OR (sup.product.start <= :date AND sup.product.end IS NULL)) "
+			+ "ORDER BY sup.product.name ASC ")
+	public List<Product> findAllBySupplier(@Param("supplier")String supplierId,@Param("date")java.sql.Date date);
 }
