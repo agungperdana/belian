@@ -33,6 +33,8 @@ import com.kratonsolution.belian.global.dm.Listable;
 @Table(name="cash_purchase_order")
 public class CashPurchaseOrder implements Serializable, Listable
 {
+	public static final String NCODE = "CSPO";
+	
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
@@ -48,7 +50,7 @@ public class CashPurchaseOrder implements Serializable, Listable
 	
 	@ManyToOne
 	@JoinColumn(name="fk_party")
-	private EconomicAgent party;
+	private EconomicAgent supplier;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_purchaser")

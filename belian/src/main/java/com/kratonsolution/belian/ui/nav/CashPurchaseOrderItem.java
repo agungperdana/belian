@@ -10,7 +10,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.Language;
-import com.kratonsolution.belian.ui.sales.billing.BillingWindow;
+import com.kratonsolution.belian.ui.procurement.cashpurchaseorder.CashPurchaseOrderWindow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -37,16 +37,16 @@ public class CashPurchaseOrderItem extends Listitem
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				BillingWindow window = null;
+				CashPurchaseOrderWindow window = null;
 				
 				for(Component component:getPage().getRoots())
 				{
-					if(component instanceof BillingWindow)
-						window = (BillingWindow)component;
+					if(component instanceof CashPurchaseOrderWindow)
+						window = (CashPurchaseOrderWindow)component;
 				}
 				
 				if(window == null)
-					window = BillingWindow.injectInto(getPage());
+					window = CashPurchaseOrderWindow.injectInto(getPage());
 				
 				else if(!window.isVisible())
 				{

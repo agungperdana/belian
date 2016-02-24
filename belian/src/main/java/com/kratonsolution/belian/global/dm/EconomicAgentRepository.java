@@ -19,4 +19,7 @@ public interface EconomicAgentRepository extends JpaRepository<EconomicAgent,Str
 {	
 	@Query("FROM EconomicAgent agent WHERE agent.id !=:id ORDER BY agent.name ASC")
 	public List<EconomicAgent> findAllExcept(@Param("id")String id);
+	
+	@Query("FROM EconomicAgent agent WHERE agent.name LIKE %:name% ORDER BY agent.name ASC")
+	public List<EconomicAgent> findAll(@Param("name")String name);
 }

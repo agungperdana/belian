@@ -248,7 +248,7 @@ public class Components
 	{
 		Doublebox box = new Doublebox(0d);
 		box.setWidth("100%");
-		box.setStyle("text-align:right;");
+		box.setStyle("text-align:right;display:block;");
 		box.setValue(value);
 		
 		return box;

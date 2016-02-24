@@ -11,6 +11,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.global.dm.EconomicAgentRepository;
@@ -41,6 +42,15 @@ public class EconomicAgentService
 	public List<EconomicAgent> findAll()
 	{
 		return repository.findAll();
+	}
+	
+	@Secured("ROLE_PARTY_READ")
+	public List<EconomicAgent> findAll(String name)
+	{
+		if(!Strings.isNullOrEmpty(name))
+			return repository.findAll(name);
+		else
+			return repository.findAll();
 	}
 	
 	@Secured("ROLE_PARTY_READ")
