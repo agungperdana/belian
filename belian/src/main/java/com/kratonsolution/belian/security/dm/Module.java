@@ -7,6 +7,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -36,6 +38,10 @@ public class Module implements Serializable
 	
 	@Column(name="note")
 	private String note;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="module_group")
+	private ModuleGroup group = ModuleGroup.GENERAL;
 	
 	@Column(name="is_enabled")
 	private boolean enabled;

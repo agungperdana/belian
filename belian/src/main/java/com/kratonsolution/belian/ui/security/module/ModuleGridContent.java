@@ -156,12 +156,13 @@ public class ModuleGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Code",null,"155px"));
+		grid.getColumns().appendChild(new Column("Code",null,"200px"));
 		grid.getColumns().appendChild(new Column("Name",null,"150px"));
-		grid.getColumns().appendChild(new Column("Note"));
+		grid.getColumns().appendChild(new Column("Group"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
 		grid.getColumns().getChildren().get(4).setVisible(false);
 		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
+		grid.setSpan("2");
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{

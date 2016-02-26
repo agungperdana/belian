@@ -10,13 +10,17 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.security.dm.Module;
+import com.kratonsolution.belian.security.dm.ModuleGroup;
 import com.kratonsolution.belian.security.svc.ModuleService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -34,6 +38,8 @@ public class ModuleEditContent extends FormContent
 	private Textbox name = new Textbox();
 	
 	private Textbox note = new Textbox();
+	
+	private Listbox groups = Components.newSelect();
 	
 	private Row row;
 	
@@ -76,6 +82,7 @@ public class ModuleEditContent extends FormContent
 					module.setCode(code.getText());
 					module.setName(name.getText());
 					module.setNote(note.getText());
+					module.setGroup(ModuleGroup.valueOf(Components.string(groups)));
 					
 					service.edit(module);
 				}
@@ -90,32 +97,48 @@ public class ModuleEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		code.setConstraint("no empty");
-		code.setText(RowUtils.string(this.row,1));
-		
-		name.setConstraint("no empty");
-		name.setText(RowUtils.string(row, 2));
-		
-		note.setText(RowUtils.string(row,3));
-		
-		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
-		grid.getColumns().appendChild(new Column());
-		
-		Row row1 = new Row();
-		row1.appendChild(new Label("Code"));
-		row1.appendChild(code);
-		
-		Row row2 = new Row();
-		row2.appendChild(new Label("Name"));
-		row2.appendChild(name);
-		
-		Row row3 = new Row();
-		row3.appendChild(new Label("Note"));
-		row3.appendChild(note);
-		
-		rows.appendChild(row1);
-		rows.appendChild(row2);
-		rows.appendChild(row3);
+		Module module = service.findOne(RowUtils.string(row, 4));
+		if(module != null)
+		{
+			code.setConstraint("no empty");
+			code.setText(RowUtils.string(this.row,1));
+			
+			name.setConstraint("no empty");
+			name.setText(RowUtils.string(row, 2));
+			
+			note.setText(RowUtils.string(row,3));
+			
+			for(ModuleGroup group:ModuleGroup.values())
+			{
+				Listitem item = groups.appendItem(group.name(),group.name());
+				if(group.equals(module.getGroup()))
+					groups.setSelectedItem(item);
+			}
+			
+			grid.appendChild(new Columns());
+			grid.getColumns().appendChild(new Column(null,null,"75px"));
+			grid.getColumns().appendChild(new Column());
+			
+			Row row1 = new Row();
+			row1.appendChild(new Label("Code"));
+			row1.appendChild(code);
+			
+			Row row2 = new Row();
+			row2.appendChild(new Label("Name"));
+			row2.appendChild(name);
+			
+			Row row3 = new Row();
+			row3.appendChild(new Label("Note"));
+			row3.appendChild(note);
+			
+			Row row4 = new Row();
+			row4.appendChild(new Label("Group"));
+			row4.appendChild(groups);
+			
+			rows.appendChild(row1);
+			rows.appendChild(row2);
+			rows.appendChild(row3);
+			rows.appendChild(row4);
+		}
 	}
 }

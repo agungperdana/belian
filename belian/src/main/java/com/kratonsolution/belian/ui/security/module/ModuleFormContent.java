@@ -10,13 +10,16 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.security.dm.Module;
+import com.kratonsolution.belian.security.dm.ModuleGroup;
 import com.kratonsolution.belian.security.svc.ModuleService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -33,6 +36,8 @@ public class ModuleFormContent extends FormContent
 	private Textbox name = new Textbox();
 	
 	private Textbox note = new Textbox();
+	
+	private Listbox groups = Components.newSelect();
 	
 	public ModuleFormContent()
 	{
@@ -70,6 +75,7 @@ public class ModuleFormContent extends FormContent
 				module.setCode(code.getText());
 				module.setName(name.getText());
 				module.setNote(note.getText());
+				module.setGroup(ModuleGroup.valueOf(Components.string(groups)));
 				
 				moduleService.add(module);
 				
@@ -91,6 +97,11 @@ public class ModuleFormContent extends FormContent
 		
 		note.setWidth("300px");
 		
+		for(ModuleGroup group:ModuleGroup.values())
+			groups.appendItem(group.name(),group.name());
+
+		Components.setDefault(groups);
+		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"75px"));
 		grid.getColumns().appendChild(new Column());
@@ -107,8 +118,13 @@ public class ModuleFormContent extends FormContent
 		row3.appendChild(new Label("Note"));
 		row3.appendChild(note);
 		
+		Row row4 = new Row();
+		row4.appendChild(new Label("Group"));
+		row4.appendChild(groups);
+		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
+		rows.appendChild(row4);
 	}
 }

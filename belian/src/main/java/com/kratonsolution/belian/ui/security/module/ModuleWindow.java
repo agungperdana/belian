@@ -40,6 +40,7 @@ public class ModuleWindow extends AbstractWindow implements HasGrid,HasCreateFor
 	private ModuleWindow()
 	{
 		super();
+		setWidth("650px");
 	}
 	
 	protected void init()

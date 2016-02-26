@@ -40,6 +40,7 @@ public class RoleWindow extends AbstractWindow implements HasCreateForm,HasEditF
 	private RoleWindow()
 	{
 		super();
+		setWidth("750px");
 	}
 	
 	protected void init()

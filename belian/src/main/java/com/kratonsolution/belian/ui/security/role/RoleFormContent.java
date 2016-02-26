@@ -333,6 +333,7 @@ public class RoleFormContent extends FormContent
 		accessModules.appendChild(head);
 		accessModules.appendChild(columns);
 		accessModules.appendChild(moduleRows);
+		accessModules.setSpan("0");
 		
 		tabbox.getTabpanels().getChildren().get(0).appendChild(accessModules);
 	}
