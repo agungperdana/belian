@@ -102,7 +102,7 @@ public class PurchaseOrderRequestEditContent extends FormContent
 						Row row = (Row)com;
 						
 						PurchaseOrderRequestItem item = new PurchaseOrderRequestItem();
-						item.setNote(RowUtils.string(row, 3));
+						item.setNote(RowUtils.string(row, 4));
 						item.setProduct(Components.product(row, 1));
 						item.setRequest(request);
 						item.setQuantity(RowUtils.decimal(row, 2));
@@ -178,6 +178,7 @@ public class PurchaseOrderRequestEditContent extends FormContent
 			items.getColumns().appendChild(new Column(null,null,"25px"));
 			items.getColumns().appendChild(new Column("Product",null,"150px"));
 			items.getColumns().appendChild(new Column("Quantity",null,"100px"));
+			items.getColumns().appendChild(new Column("UoM",null,"100px"));
 			items.getColumns().appendChild(new Column("Note",null,"150px"));
 			items.setSpan("1");
 			
@@ -190,6 +191,7 @@ public class PurchaseOrderRequestEditContent extends FormContent
 				row.appendChild(Components.checkbox(false));
 				row.appendChild(box);
 				row.appendChild(Components.doubleBox(item.getQuantity().doubleValue()));
+				row.appendChild(box.getUoms());
 				row.appendChild(Components.textBox(item.getNote()));
 				
 				items.getRows().appendChild(row);
@@ -200,10 +202,13 @@ public class PurchaseOrderRequestEditContent extends FormContent
 				@Override
 				public void onEvent(Event event) throws Exception
 				{
+					ProductBox box = new ProductBox();
+					
 					Row row = new Row();
 					row.appendChild(Components.checkbox(false));
-					row.appendChild(new ProductBox());
+					row.appendChild(box);
 					row.appendChild(Components.doubleBox(1));
+					row.appendChild(box.getUoms());
 					row.appendChild(Components.textBox(null));
 					
 					items.getRows().appendChild(row);

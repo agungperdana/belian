@@ -5,16 +5,20 @@ package com.kratonsolution.belian.ui.component;
 
 import java.util.Date;
 
+import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Listbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.Product.Type;
 import com.kratonsolution.belian.inventory.svc.ProductService;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -32,6 +36,8 @@ public class ProductBox extends Combobox implements EventListener<InputEvent>
 	private Type type;
 	
 	private Date date;
+	
+	private Listbox uoms = Components.fullSpanSelect();
 	
 	public ProductBox()
 	{
@@ -55,6 +61,14 @@ public class ProductBox extends Combobox implements EventListener<InputEvent>
 		setConstraint("no empty");
 		setWidth("100%");
 		addEventListener(Events.ON_CHANGING,this);
+		addEventListener(Events.ON_BLUR,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event arg0) throws Exception
+			{
+				initUom(getValue());
+			}
+		});
 	}
 	
 	@Override
@@ -75,6 +89,8 @@ public class ProductBox extends Combobox implements EventListener<InputEvent>
 			for(Product product:service.findAll(date,category,segmentation,type,event.getValue()))
 				appendChild(new ProductComboItem(product));
 		}
+		
+		initUom(event.getValue());
 	}
 	
 	public Product getProduct()
@@ -90,5 +106,35 @@ public class ProductBox extends Combobox implements EventListener<InputEvent>
 		ProductComboItem item = new ProductComboItem(product);
 		appendChild(item);
 		setSelectedItem(item);
+		initUom(item.getLabel());
+	}
+	
+	public Listbox getUoms()
+	{
+		return uoms;
+	}
+	
+	private void initUom(String value)
+	{
+		try
+		{
+			if(!Strings.isNullOrEmpty(value))
+			{
+				for(Comboitem item:getItems())
+				{
+					if(item.getLabel().equals(value))
+					{
+						Product product = service.findOne(item.getId());
+						if(product != null)
+						{
+							uoms.getChildren().clear();
+							uoms.appendItem(product.getUom().getLabel(), product.getUom().getValue());
+							uoms.setSelectedIndex(0);
+						}
+					}
+				}
+			}
+		}
+		catch (Exception e){e.printStackTrace();}
 	}
 }

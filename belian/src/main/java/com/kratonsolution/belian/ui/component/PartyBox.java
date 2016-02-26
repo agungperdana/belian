@@ -57,14 +57,18 @@ public class PartyBox extends Combobox implements EventListener<InputEvent>
 	
 	public EconomicAgent getParty()
 	{
-		if(!Strings.isNullOrEmpty(getValue()))
+		try
 		{
-			for(Comboitem item:getItems())
+			if(!Strings.isNullOrEmpty(getValue()))
 			{
-				if(item.getValue().equals(getValue()))
-					return service.findOne(item.getId());
+				for(Comboitem item:getItems())
+				{
+					if(item.getValue().equals(getValue()))
+						return service.findOne(item.getId());
+				}
 			}
-		}
+		} 
+		catch (Exception e){}
 		
 		return null;
 	}

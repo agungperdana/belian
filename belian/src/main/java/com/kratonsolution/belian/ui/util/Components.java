@@ -313,6 +313,15 @@ public class Components
 		return textbox;
 	}
 	
+	public static final Textbox stdTextBox(String text,boolean readonly)
+	{
+		Textbox textbox = new Textbox(text);
+		textbox.setWidth("250px");
+		textbox.setReadonly(readonly);
+		
+		return textbox;
+	}
+	
 	public static final Textbox textBox(String text)
 	{
 		Textbox textbox = new Textbox(text);

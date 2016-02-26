@@ -79,10 +79,14 @@ public class ProductService
 	@Secured("ROLE_PRODUCT_READ")
 	public List<Product> findAll(Date date,String name)
 	{
+		if(date == null && Strings.isNullOrEmpty(name))
+			return repository.findAll();
+			
 		if(Strings.isNullOrEmpty(name))
 			return repository.findAll(date);
 		else
 			return repository.findAll(date, name);
+		
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)

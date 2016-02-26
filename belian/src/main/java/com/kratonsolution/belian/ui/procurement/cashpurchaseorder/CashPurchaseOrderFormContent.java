@@ -3,6 +3,10 @@
  */
 package com.kratonsolution.belian.ui.procurement.cashpurchaseorder;
 
+import java.math.BigDecimal;
+import java.sql.Date;
+
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -17,18 +21,19 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.global.dm.RequestStatus;
 import com.kratonsolution.belian.inventory.dm.ProductSupplier;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.procurement.dm.CashPurchaseOrder;
+import com.kratonsolution.belian.procurement.dm.CashPurchaseOrderItem;
 import com.kratonsolution.belian.procurement.dm.PurchaseOrderRequest;
 import com.kratonsolution.belian.procurement.dm.PurchaseOrderRequestItem;
 import com.kratonsolution.belian.procurement.svc.CashPurchaseOrderService;
 import com.kratonsolution.belian.procurement.svc.PurchaseOrderRequestService;
-import com.kratonsolution.belian.security.svc.UserService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.component.PartyBox;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -44,10 +49,6 @@ public class CashPurchaseOrderFormContent extends FormContent
 	private ProductService productService = Springs.get(ProductService.class);
 	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
-	
-	private UserService userService = Springs.get(UserService.class);
-	
-	private PersonService personService = Springs.get(PersonService.class);
 	
 	private Textbox number = Components.readOnlyTextBox();
 	
@@ -90,6 +91,35 @@ public class CashPurchaseOrderFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
+				CashPurchaseOrder order = new CashPurchaseOrder();
+				order.setDate(new Date(date.getValue().getTime()));
+				order.setNumber(number.getText());
+				order.setOrganization(utils.getOrganization());
+				order.setPurchaser(utils.getUser().getPerson());
+				order.setRequest(requestService.findOne(Components.string(requests)));
+				order.setSupplier(suppliers.getParty());
+				
+				for(Component com:items.getRows().getChildren())
+				{
+					Row row = (Row)com;
+					
+					if(RowUtils.decimal(row, 2).compareTo(BigDecimal.ZERO) > 0)
+					{
+						CashPurchaseOrderItem item = new CashPurchaseOrderItem();
+						item.setProduct(productService.findOne(RowUtils.string(row, 5)));
+						item.setNote(RowUtils.string(row, 4));
+						item.setPurchaseOrder(order);
+						item.setQuantity(RowUtils.decimal(row, 2));
+						
+						order.getItems().add(item);
+					}
+				}
+				
+				service.add(order);
+				
+				order.getRequest().setRequestStatus(RequestStatus.COMPLETE);
+				requestService.edit(order.getRequest());
+				
 				
 				CashPurchaseOrderWindow window = (CashPurchaseOrderWindow)getParent();
 				window.removeCreateForm();
@@ -102,6 +132,15 @@ public class CashPurchaseOrderFormContent extends FormContent
 	public void initForm()
 	{
 		suppliers.addEventListener(Events.ON_BLUR,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event arg0) throws Exception
+			{
+				initItemsRow();
+			}
+		});
+		
+		suppliers.addEventListener(Events.ON_SELECT,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event arg0) throws Exception
@@ -163,8 +202,11 @@ public class CashPurchaseOrderFormContent extends FormContent
 		items.appendChild(new Columns());
 		items.getColumns().appendChild(new Column("Product",null,"150px"));
 		items.getColumns().appendChild(new Column("Requested",null,"100px"));
-		items.getColumns().appendChild(new Column("Accepted",null,"100px"));
+		items.getColumns().appendChild(new Column("Buying",null,"100px"));
+		items.getColumns().appendChild(new Column("UoM",null,"100px"));
 		items.getColumns().appendChild(new Column("Note",null,"150px"));
+		items.getColumns().appendChild(new Column(null,null,"0px"));
+		items.getColumns().getChildren().get(5).setVisible(false);
 		items.setSpan("0");
 		
 		initItemsRow();
@@ -199,16 +241,15 @@ public class CashPurchaseOrderFormContent extends FormContent
 						row.appendChild(new Label(item.getProduct().getName()));
 						row.appendChild(Components.label(item.getQuantity()));
 						row.appendChild(Components.doubleBox(item.getQuantity().doubleValue()));
+						row.appendChild(new Label(item.getProduct().getUom().getName()));
 						row.appendChild(Components.textBox(null));
+						row.appendChild(new Label(item.getProduct().getId()));
 						
 						items.getRows().appendChild(row);
 					}
 				}
 			}
 		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		catch (Exception e){}
 	}
 }
