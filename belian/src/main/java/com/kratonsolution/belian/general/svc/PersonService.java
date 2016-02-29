@@ -82,7 +82,7 @@ public class PersonService
 	@Secured("ROLE_PERSON_UPDATE")
 	public void edit(Person person)
 	{
-		repository.save(person);
+		repository.saveAndFlush(person);
 	}
 	
 	@Secured("ROLE_PERSON_DELETE")

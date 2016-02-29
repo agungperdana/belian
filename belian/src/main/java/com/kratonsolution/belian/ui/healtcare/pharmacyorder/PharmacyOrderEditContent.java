@@ -119,7 +119,7 @@ public class PharmacyOrderEditContent extends FormContent
 					else if(medication.getStatus().equals(MedicationStatus.Prepared))
 						medication.setStatus(MedicationStatus.Finished);
 
-					service.edit(medication);
+					service.finish(medication);
 					
 					PharmacyOrderWindow window = (PharmacyOrderWindow)getParent();
 					window.removeEditForm();
@@ -216,12 +216,9 @@ public class PharmacyOrderEditContent extends FormContent
 		saleItems.appendChild(new Columns());
 		saleItems.appendChild(new Rows());
 		saleItems.getColumns().appendChild(new Column(null,null,"25px"));
-		saleItems.getColumns().appendChild(new Column("Product",null,"225px"));
-		saleItems.getColumns().appendChild(new Column("Quantity",null,"85px"));
-		saleItems.getColumns().appendChild(new Column("UoM",null,"85px"));
-		saleItems.getColumns().appendChild(new Column("Price",null,"95px"));
-		saleItems.getColumns().appendChild(new Column("Disc",null,"95px"));
-		saleItems.getColumns().appendChild(new Column("Charge",null,"95px"));
+		saleItems.getColumns().appendChild(new Column("Product",null,"200px"));
+		saleItems.getColumns().appendChild(new Column("Quantity",null,"70px"));
+		saleItems.getColumns().appendChild(new Column("UoM",null,"75px"));
 		saleItems.getColumns().appendChild(new Column("Note",null));
 		saleItems.setSpan("4");
 

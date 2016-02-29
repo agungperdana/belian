@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.general.dm;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,12 +21,11 @@ import lombok.Setter;
 @Table(name="person_role")
 public class PersonRole extends PartyRole
 {
-	@ManyToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="fk_company")
-	protected Organization company;
-	
-	public Person getPerson()
-	{
-		return (Person)getParty();
-	}
+	@ManyToOne
+	@JoinColumn(name="fk_organization_to")
+	protected Organization to;
+
+	@ManyToOne
+	@JoinColumn(name="fk_person_from")
+	protected Person from;
 }

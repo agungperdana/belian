@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kratonsolution.belian.general.dm.OrganizationRole;
-import com.kratonsolution.belian.general.dm.OrganizationRoleTypeRepository;
+import com.kratonsolution.belian.general.dm.OrganizationRoleRepository;
 
 /**
  * @author agungdodiperdana
@@ -23,7 +23,7 @@ import com.kratonsolution.belian.general.dm.OrganizationRoleTypeRepository;
 public class OrganizationRoleTypeService
 {	
 	@Autowired
-	private OrganizationRoleTypeRepository repository;
+	private OrganizationRoleRepository repository;
 		
 	@Secured("ROLE_ORGROLETYPE_READ")
 	public OrganizationRole findOne(String id)

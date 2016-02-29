@@ -12,7 +12,6 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
-import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Label;
@@ -21,21 +20,17 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
-import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.healtcare.dm.Doctor;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment.Status;
-import com.kratonsolution.belian.healtcare.dm.DoctorPartnershipRepository;
-import com.kratonsolution.belian.healtcare.dm.Patient;
 import com.kratonsolution.belian.healtcare.svc.AppointmentQueueGenerator;
 import com.kratonsolution.belian.healtcare.svc.DoctorAppointmentService;
 import com.kratonsolution.belian.healtcare.svc.DoctorService;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
 import com.kratonsolution.belian.ui.FormContent;
-import com.kratonsolution.belian.ui.component.PatientComboItem;
+import com.kratonsolution.belian.ui.component.DoctorBox;
+import com.kratonsolution.belian.ui.component.PatientBox;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -56,17 +51,15 @@ public class DoctorAppointmentFormContent extends FormContent
 	
 	private PatientService patientService = Springs.get(PatientService.class);
 	
-	private DoctorPartnershipRepository partnershipRepository = Springs.get(DoctorPartnershipRepository.class);
-	
 	private DoctorAppointmentService service = Springs.get(DoctorAppointmentService.class);
 	
-	private Listbox companys = Components.newSelect();
+	private Listbox companys = Components.newSelect(utils.getOrganization());
 	
 	private Textbox note = new Textbox();
 
-	private Listbox doctors = Components.newSelect();
+	private DoctorBox doctors = new DoctorBox();
 	
-	private Combobox patients = Components.autoComplete();
+	private PatientBox patients = new PatientBox();
 	
 	private Listbox statuses = Components.newSelect();
 	
@@ -103,19 +96,19 @@ public class DoctorAppointmentFormContent extends FormContent
 				if(companys.getSelectedCount() == 0)
 					throw new WrongValueException(companys,"Company cannot be empty.");
 				
-				if(doctors.getSelectedCount() == 0)
+				if(doctors.getDoctor() == null)
 					throw new WrongValueException(doctors,"Doctor cannot be empty.");
 				
-				if(Strings.isNullOrEmpty(patients.getValue()))
+				if(patients.getPatient() == null)
 					throw new WrongValueException(patients,"Patient cannot be empty.");
 				
 				DoctorAppointment appointment = new DoctorAppointment();
 				appointment.setDate(new Date(date.getValue().getTime()));
-				appointment.setDoctor(doctorService.findOne(Components.string(doctors)));
-				appointment.setCompany(organizationService.findOne(Components.string(companys)));
+				appointment.setDoctor(doctors.getDoctor());
+				appointment.setCompany(utils.getOrganization());
 				appointment.setNote(note.getText());
 				appointment.setStatus(Status.valueOf(Components.string(statuses)));
-				appointment.setPatient(((PatientComboItem)patients.getSelectedItem()).getPatient());
+				appointment.setPatient(patients.getPatient());
 				
 				service.add(appointment);
 				
@@ -129,14 +122,6 @@ public class DoctorAppointmentFormContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		queue.setWidth("75px");
-		note.setWidth("300px");
-		
-		for(DoctorAppointment.Status status:DoctorAppointment.Status.values())
-			statuses.appendChild(new Listitem(status.toString(),status.toString()));
-		
-		Components.setDefault(statuses);
-		
 		if(utils.getOrganization() == null)
 		{
 			Clients.showNotification("Default organization does not exist,please go to user profile and set it.");
@@ -144,33 +129,14 @@ public class DoctorAppointmentFormContent extends FormContent
 			window.removeCreateForm();
 			window.insertGrid();
 		}
-
-		companys.appendChild(new Listitem(utils.getOrganization().getLabel(),utils.getOrganization().getValue()));
-		companys.addEventListener(Events.ON_SELECT, new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				doctors.getChildren().clear();
-				for(Doctor doctor:doctorService.findAllPartner(Components.string(companys)))
-						doctors.appendChild(new Listitem(doctor.getCategory().getCode()+". "+doctor.getPerson().getName(),doctor.getId()));
-			}
-		});
 		
-		doctors.addEventListener(Events.ON_SELECT, new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				Doctor doctor = doctorService.findOne(Components.string(doctors));
-				Organization organization = organizationService.findOne(Components.string(companys));
-				
-				queue.setValue(generator.next(new Date(date.getValue().getTime()), doctor.getPerson().getId(), organization.getId()));
-			}
-		});
+		queue.setWidth("75px");
+		note.setWidth("300px");
 		
-		for(Patient patient:patientService.findAll())
-			patients.appendChild(new PatientComboItem(patient));
+		for(DoctorAppointment.Status status:DoctorAppointment.Status.values())
+			statuses.appendChild(new Listitem(status.toString(),status.toString()));
+		
+		Components.setDefault(statuses);
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"20%"));

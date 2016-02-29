@@ -22,7 +22,6 @@ import com.kratonsolution.belian.accounting.svc.BudgetService;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -35,8 +34,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class BudgetFormContent extends FormContent
 {	
 	private BudgetService service = Springs.get(BudgetService.class);
-	
-	private OrganizationUnitService unitService = Springs.get(OrganizationUnitService.class);
 	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 	

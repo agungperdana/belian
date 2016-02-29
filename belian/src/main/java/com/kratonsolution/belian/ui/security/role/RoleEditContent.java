@@ -413,18 +413,21 @@ public class RoleEditContent extends FormContent
 			Collection<Organization> ins = new ArrayList<>();
 			for(CompanyStructure structure:structureService.findAll())
 			{
-				boolean fresh = true;
-				for(AccessibleOrganization com:role.getOrganizations())
+				if(structure.getOrganization() != null)
 				{
-					if(com.getOrganization() != null && com.getOrganization().getId().equals(structure.getOrganization().getId()))
+					boolean fresh = true;
+					for(AccessibleOrganization com:role.getOrganizations())
 					{
-						fresh = false;
-						break;
+						if(com.getOrganization() != null && com.getOrganization().getId().equals(structure.getOrganization().getId()))
+						{
+							fresh = false;
+							break;
+						}
 					}
+					
+					if(fresh)
+						ins.add(structure.getOrganization());
 				}
-				
-				if(fresh)
-					ins.add(structure.getOrganization());
 			}
 			
 			List<AccessibleOrganization> orgs = new ArrayList<AccessibleOrganization>();

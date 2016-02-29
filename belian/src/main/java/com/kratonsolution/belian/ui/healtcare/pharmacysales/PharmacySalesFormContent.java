@@ -135,7 +135,7 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 				
 				Medication medication = new Medication();
 				medication.setCurrency(sessionUtils.getCurrency());
-				medication.setCustomer(customers.getPatient().getPerson());
+				medication.setCustomer(customers.getPatient().getFrom());
 				medication.setDate(new Date(date.getValue().getTime()));
 				medication.setNumber(number.getText());
 				medication.setOrganization(sessionUtils.getOrganization());
@@ -257,7 +257,7 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				MedicalProductRow row = new MedicalProductRow(Components.string(locations),customers.getPatient().getPerson().getId(),Components.string(currencys),customers.getPatient().isBpjs());
+				MedicalProductRow row = new MedicalProductRow(Components.string(locations),customers.getPatient().getFrom().getId(),Components.string(currencys),customers.getPatient().isBpjs());
 				row.addProductPriceListener(PharmacySalesFormContent.this);
 				saleItems.getRows().appendChild(row);
 			}

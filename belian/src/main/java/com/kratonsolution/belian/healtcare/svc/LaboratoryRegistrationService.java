@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.healtcare.dm.Laboratory;
+import com.kratonsolution.belian.healtcare.dm.LaboratoryItem;
 import com.kratonsolution.belian.healtcare.dm.LaboratoryRepository;
+import com.kratonsolution.belian.inventory.dm.ProductComponent;
+import com.kratonsolution.belian.inventory.svc.InventoryStockService;
 
 /**
  * 
@@ -32,6 +35,9 @@ public class LaboratoryRegistrationService
 	
 	@Autowired
 	private LaboratoryRepository repository;
+	
+	@Autowired
+	private InventoryStockService stockService;
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_LABS_REGISTRATION_READ")
@@ -89,7 +95,25 @@ public class LaboratoryRegistrationService
 	@Secured("ROLE_LABS_REGISTRATION_UPDATE")
 	public void edit(Laboratory lab)
 	{
-		repository.saveAndFlush(lab);
+		repository.save(lab);
+	}
+	
+	@Secured("ROLE_LABS_REGISTRATION_UPDATE")
+	public void handle(Laboratory lab)
+	{
+		repository.save(lab);
+		
+		for(LaboratoryItem item:lab.getItems())
+		{
+			if(!item.getService().getComponents().isEmpty())
+			{
+				for(ProductComponent com:item.getService().getComponents())
+					stockService.inventoryProccess(com.getProduct(), item.getQuantity().multiply(com.getQuantity()));
+			}
+			else
+				stockService.inventoryProccess(item.getService(), item.getQuantity());
+		}		
+		
 	}
 	
 	@Secured("ROLE_LABS_REGISTRATION_DELETE")

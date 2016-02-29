@@ -24,6 +24,11 @@ import javax.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
+import com.kratonsolution.belian.global.dm.Listable;
+
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
@@ -32,7 +37,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="company_structure")
-public class CompanyStructure implements Serializable
+public class CompanyStructure implements Serializable,Listable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -49,6 +54,7 @@ public class CompanyStructure implements Serializable
 	
 	@ManyToOne
 	@JoinColumn(name="fk_organization")
+	@NotFound(action=NotFoundAction.IGNORE)
 	private Organization organization;
 	
 	@ManyToOne
@@ -62,4 +68,16 @@ public class CompanyStructure implements Serializable
 	private Set<CompanyStructure> childs = new HashSet<>();
 	
 	public CompanyStructure(){}
+
+	@Override
+	public String getLabel()
+	{
+		return getOrganization().getName();
+	}
+
+	@Override
+	public String getValue()
+	{
+		return getId();
+	}
 }

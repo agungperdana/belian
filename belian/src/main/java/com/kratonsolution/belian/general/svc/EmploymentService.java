@@ -4,7 +4,6 @@
 package com.kratonsolution.belian.general.svc;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -16,8 +15,9 @@ import com.kratonsolution.belian.general.dm.Employment;
 import com.kratonsolution.belian.general.dm.EmploymentRepository;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -47,7 +47,6 @@ public class EmploymentService
 	@Secured("ROLE_EMPLOYMENT_CREATE")
 	public void add(Employment geographic)
 	{
-		geographic.setId(UUID.randomUUID().toString());
 		repository.save(geographic);
 	}
 	

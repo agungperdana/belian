@@ -49,7 +49,7 @@ public class DoctorDashboardRowRenderer implements RowRenderer<DoctorAppointment
 			
 			row.appendChild(new Checkbox());
 			row.appendChild(new Label(Dates.format(data.getDate())));
-			row.appendChild(new Label(data.getPatient().getPerson().getName()));
+			row.appendChild(new Label(data.getPatient().getFrom().getName()));
 			row.appendChild(new Label(data.getStatus().toString()));
 			row.appendChild(new Label(data.getNote()));
 			row.appendChild(handle);

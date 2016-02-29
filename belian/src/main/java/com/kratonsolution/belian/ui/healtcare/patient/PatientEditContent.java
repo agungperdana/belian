@@ -21,11 +21,9 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.dm.Person.Gender;
 import com.kratonsolution.belian.general.dm.Person.MaritalStatus;
 import com.kratonsolution.belian.general.svc.GeographicService;
-import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.healtcare.dm.Patient;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
@@ -47,8 +45,6 @@ public class PatientEditContent extends FormContent
 	
 	private GeographicService geographicService = Springs.get(GeographicService.class);
 	
-	private OrganizationService organizationService = Springs.get(OrganizationService.class);
-
 	private PersonService personService = Springs.get(PersonService.class);
 
 	private Textbox identity = Components.mandatoryTextBox();
@@ -109,20 +105,17 @@ public class PatientEditContent extends FormContent
 				Patient patient = service.findOne(RowUtils.string(row, 5));
 				if(patient != null)
 				{
-					Person person = patient.getPerson();
-					person.setBirthDate(birthDate.getValue());
-					person.setBirthPlace(geographicService.findOne(Components.string(birthPlace)));
-					person.setGender(Gender.valueOf(Components.string(genders)));
-					person.setIdentity(identity.getText());
-					person.setMaritalStatus(MaritalStatus.valueOf(Components.string(statuses)));
-					person.setName(name.getText());
-					person.setTaxCode(taxNumber.getText());
-					
-					personService.edit(person);
-					
+					patient.getFrom().setBirthDate(birthDate.getValue());
+					patient.getFrom().setBirthPlace(geographicService.findOne(Components.string(birthPlace)));
+					patient.getFrom().setGender(Gender.valueOf(Components.string(genders)));
+					patient.getFrom().setIdentity(identity.getText());
+					patient.getFrom().setMaritalStatus(MaritalStatus.valueOf(Components.string(statuses)));
+					patient.getFrom().setName(name.getText());
+					patient.getFrom().setTaxCode(taxNumber.getText());
+
 					patient.getBpjs().setCard(bpjsNumber.getText());
-					patient.setCompany(organizationService.findOne(Components.string(companys)));
-					service.edit(patient);
+					
+					personService.edit(patient.getFrom());
 				}
 
 				PatientWindow window = (PatientWindow)getParent();
@@ -138,22 +131,22 @@ public class PatientEditContent extends FormContent
 		Patient patient = service.findOne(RowUtils.string(row, 5));
 		if(patient != null)
 		{
-			identity.setText(patient.getPerson().getIdentity());
+			identity.setText(patient.getFrom().getIdentity());
 			identity.setWidth("300px");
 			
-			name.setText(patient.getPerson().getName());
+			name.setText(patient.getFrom().getName());
 			name.setWidth("300px");
 			
-			birthDate.setValue(patient.getPerson().getBirthDate());
-			taxNumber.setText(patient.getPerson().getTaxCode());
-			start.setValue(patient.getFrom());
+			birthDate.setValue(patient.getFrom().getBirthDate());
+			taxNumber.setText(patient.getFrom().getTaxCode());
+			start.setValue(patient.getStart());
 			
 			bpjsNumber.setWidth("225px");
 			bpjsNumber.setText(patient.getBpjs().getCard());
 			
-			if(patient.getCompany() != null)
+			if(patient.getTo() != null)
 			{
-				companys.appendItem(patient.getCompany().getName(), patient.getCompany().getId());
+				companys.appendItem(patient.getTo().getName(), patient.getTo().getId());
 				companys.setSelectedIndex(0);
 			}
 			else if(utils.getOrganization() != null)
@@ -171,7 +164,7 @@ public class PatientEditContent extends FormContent
 				Listitem listitem = new Listitem(gender.name(), gender.name());
 				genders.appendChild(listitem);
 
-				if(gender.equals(patient.getPerson().getGender()))
+				if(gender.equals(patient.getFrom().getGender()))
 					genders.setSelectedItem(listitem);
 			}
 
@@ -179,14 +172,14 @@ public class PatientEditContent extends FormContent
 			{
 				Listitem listitem = new Listitem(status.name(), status.name());
 				statuses.appendChild(listitem);
-				if(status.equals(patient.getPerson().getMaritalStatus()))
+				if(status.equals(patient.getFrom().getMaritalStatus()))
 					statuses.setSelectedItem(listitem);
 			}
 
 			for(Component component:birthPlace.getChildren())
 			{
 				Listitem listitem = (Listitem)component;
-				if(listitem.getValue().equals(patient.getParty().getBirthPlace().getId()))
+				if(listitem.getValue().equals(patient.getFrom().getBirthPlace().getId()))
 					birthPlace.setSelectedItem(listitem);
 			}
 

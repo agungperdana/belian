@@ -70,7 +70,7 @@ public class LaboratoriumPanel extends Tabpanel
 					return;
 				}
 					
-				grid.getRows().appendChild(new MedicalProductRow(utils.getLocation().getId(),appointment.getPatient().getPerson().getId(),utils.getCurrency().getId(),appointment.getPatient().isBpjs()));
+				grid.getRows().appendChild(new MedicalProductRow(utils.getLocation().getId(),appointment.getPatient().getFrom().getId(),utils.getCurrency().getId(),appointment.getPatient().isBpjs()));
 			}
 		});
 		
@@ -104,14 +104,11 @@ public class LaboratoriumPanel extends Tabpanel
 		grid.appendChild(new Columns());
 		grid.appendChild(new Rows());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Product",null,"225px"));
-		grid.getColumns().appendChild(new Column("Quantity",null,"85px"));
-		grid.getColumns().appendChild(new Column("UoM",null,"85px"));
-		grid.getColumns().appendChild(new Column("Price",null,"135px"));
-		grid.getColumns().appendChild(new Column("Disc",null,"95px"));
-		grid.getColumns().appendChild(new Column("Charge",null,"95px"));
+		grid.getColumns().appendChild(new Column("Product",null,"200px"));
+		grid.getColumns().appendChild(new Column("Quantity",null,"70px"));
+		grid.getColumns().appendChild(new Column("UoM",null,"75px"));
 		grid.getColumns().appendChild(new Column("Note",null));
-		grid.setSpan("1");
+		grid.setSpan("4");
 	}
 	
 	public void store(DoctorAppointment appointment)
@@ -122,13 +119,15 @@ public class LaboratoriumPanel extends Tabpanel
 			
 			Laboratory laboratory = new Laboratory();
 			laboratory.setCurrency(utils.getCurrency());
-			laboratory.setCustomer(appointment.getPatient().getPerson());
+			laboratory.setCustomer(appointment.getPatient().getFrom());
 			laboratory.setDate(appointment.getDate());
 			laboratory.setNumber(generator.generate(appointment.getDate(), appointment.getCompany(), Code.BLLAB));
 			laboratory.setOrganization(appointment.getCompany());
 			laboratory.setPaid(false);
-			laboratory.setSales(appointment.getDoctor().getPerson());
+			laboratory.setSales(appointment.getDoctor().getFrom());
 			laboratory.setTax(utils.getTax());
+			laboratory.setBpjs(appointment.getPatient().isBpjs());
+			laboratory.setPaid(laboratory.isBpjs());
 			
 			LaboratoryItem item = new LaboratoryItem();
 			item.setCharge(row.getCharge());

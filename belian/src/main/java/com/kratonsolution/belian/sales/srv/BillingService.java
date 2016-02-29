@@ -69,6 +69,20 @@ public class BillingService
 	}
 	
 	@Secured("ROLE_BILLING_READ")
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
+	public List<Billable> forCashier()
+	{
+		return repository.forCashier(new Date(System.currentTimeMillis()), utils.getOrganization().getId());
+	}
+	
+	@Secured("ROLE_BILLING_READ")
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
+	public List<Billable> forCashier(String key)
+	{
+		return repository.forCashier(new Date(System.currentTimeMillis()), utils.getOrganization().getId(),key);
+	}
+	
+	@Secured("ROLE_BILLING_READ")
 	public int size()
 	{
 		if(utils.getOrganization() == null)
@@ -113,9 +127,9 @@ public class BillingService
 	public List<Billable> findAllCurrent(String key)
 	{
 		if(Strings.isNullOrEmpty(key))
-			return repository.findAllByDateAndOrganizationId(new Date(System.currentTimeMillis()),utils.getOrganization().getId());
+			return forCashier();
 		else
-			return repository.findAll(new Date(System.currentTimeMillis()),utils.getOrganization().getId(),key);
+			return forCashier(key);
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)

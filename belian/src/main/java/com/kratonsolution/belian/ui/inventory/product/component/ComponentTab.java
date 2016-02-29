@@ -30,8 +30,9 @@ import com.kratonsolution.belian.ui.inventory.product.ProductEditContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class ComponentTab implements TabedDisplay
 {
@@ -120,7 +121,7 @@ public class ComponentTab implements TabedDisplay
 
 			Row row = new Row();
 			row.appendChild(remove);
-			row.appendChild(new Label(component.getComponent().getName()));
+			row.appendChild(new Label(component.getProduct().getName()));
 			row.appendChild(new Label(component.getQuantity().toPlainString()));
 			row.appendChild(new Label(component.getNote()));
 			row.appendChild(new Label(component.getId()));

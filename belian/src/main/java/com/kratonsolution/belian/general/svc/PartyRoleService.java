@@ -68,9 +68,9 @@ public class PartyRoleService
 		repository.delete(id);
 	}
 	
-	@Secured("ROLE_PARTY_ROLE_READ")
-	public PartyRole findOneByPartyIdAndType(String partyId,PartyRole.Type type)
-	{
-		return repository.findOneByPartyIdAndType(partyId, type);
-	}
+//	@Secured("ROLE_PARTY_ROLE_READ")
+//	public PartyRole findOneByPartyIdAndType(String partyId,PartyRole.Type type)
+//	{
+//		return repository.findOneByPartyIdAndType(partyId, type);
+//	}
 }

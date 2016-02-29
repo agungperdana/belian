@@ -61,7 +61,7 @@ public class Product extends EconomicResource implements Listable
 	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<ProductFeature> features = new HashSet<ProductFeature>();
 	
-	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(mappedBy="parent",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
 	private Set<ProductComponent> components = new HashSet<ProductComponent>();
 	
 	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true)

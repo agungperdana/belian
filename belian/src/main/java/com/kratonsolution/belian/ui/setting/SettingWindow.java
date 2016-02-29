@@ -38,6 +38,7 @@ import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.global.dm.PrinterType;
 import com.kratonsolution.belian.global.svc.UserSettingService;
+import com.kratonsolution.belian.inventory.svc.FacilityService;
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.util.Components;
@@ -55,6 +56,8 @@ public class SettingWindow extends AbstractWindow
 	private GeographicService geographicService = Springs.get(GeographicService.class);
 	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
+	
+	private FacilityService facilityService = Springs.get(FacilityService.class);
 	
 	private CurrencyService currencyService = Springs.get(CurrencyService.class);
 	
@@ -77,6 +80,8 @@ public class SettingWindow extends AbstractWindow
 	private Listbox taxes = Components.newSelect(taxService.findAll(), true);
 	
 	private Listbox printers = Components.newSelect();
+	
+	private Listbox facilitys = Components.newSelect(facilityService.findAllActive(),true);
 	
 	private Doublebox rowPerPage = new Doublebox(25);
 	
@@ -145,6 +150,7 @@ public class SettingWindow extends AbstractWindow
 				break;
 			}
 		}
+		
 		
 		languanges.appendChild(new Listitem("Bahasa Indonesia", "in_ID"));
 		languanges.appendChild(new Listitem("English", "en_US"));

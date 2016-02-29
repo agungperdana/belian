@@ -12,11 +12,9 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.InputEvent;
-import org.zkoss.zk.ui.event.KeyEvent;
-import org.zkoss.zk.ui.event.SelectEvent;
-import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Row;
@@ -55,7 +53,7 @@ public class MedicalProductRow extends Row
 	
 	private Listbox charges = Components.newSelect();
 	
-	private Doublebox quantity = Components.readOnlyDoubleOne();
+	private Doublebox quantity = Components.doubleOne();
 
 	private Textbox note = new Textbox();
 	
@@ -69,9 +67,6 @@ public class MedicalProductRow extends Row
 		appendChild(products);
 		appendChild(quantity);
 		appendChild(uoms);
-		appendChild(prices);
-		appendChild(discounts);
-		appendChild(charges);
 		appendChild(note);
 		
 		init(geographic,customer,currency,bpjs);
@@ -80,7 +75,7 @@ public class MedicalProductRow extends Row
 	public Product getProduct()
 	{
 		if(products.getSelectedItem() != null)
-			return ((ProductComboItem)products.getSelectedItem()).getProduct();
+			return productRepository.findOne(products.getSelectedItem().getId());
 		
 		return null;
 	}
@@ -245,49 +240,72 @@ public class MedicalProductRow extends Row
 				InputEvent input = (InputEvent)event;
 
 				products.getChildren().clear();
-
 				
 				if(!Strings.isNullOrEmpty(input.getValue()))
 				{
 					for(Product product:repository.findAll(new Date(System.currentTimeMillis()),input.getValue(),IndustrySegmentation.MEDICAL))
-						products.appendChild(new ProductComboItem(product));
+					{
+						Comboitem item = products.appendItem(product.getName());
+						item.setId(product.getId());
+					}
 				}
 				else
 				{
 					for(Product product:repository.findAll(new Date(System.currentTimeMillis()),IndustrySegmentation.MEDICAL))
-						products.appendChild(new ProductComboItem(product));
+					{
+						Comboitem item = products.appendItem(product.getName());
+						item.setId(product.getId());
+					}
 				}
 			}
-			else if(event instanceof SelectEvent)
+			else
 			{
 				if(products.getSelectedItem() != null)
 				{
-					ProductComboItem item = (ProductComboItem)products.getSelectedItem();
-					initPrice(item.getProduct());
-					initUom(item.getProduct());
-				}
-				else
-					Clients.showNotification("Please select product first.");
-				
-			}
-			else if(event instanceof KeyEvent)
-			{
-				KeyEvent key = (KeyEvent)event;
-				if(key.getName().equals("onOK"))
-				{
-					Product product = productRepository.findOneByName(products.getValue());
-					if(product != null)
+					for(Comboitem comboitem:products.getItems())
 					{
-						initPrice(product);
-						initUom(product);
+						if(comboitem.getId().equals(products.getSelectedItem().getId()))
+						{
+							Product product = productRepository.findOne(comboitem.getId());
+							if(product != null)
+							{
+								initPrice(product);
+								initUom(product);
+							}
+						}
 					}
 				}
-				else if(key.getKeyCode() == KeyEvent.DOWN)
-				{
-					for(Product product:repository.findAll(new Date(System.currentTimeMillis()),IndustrySegmentation.MEDICAL))
-						products.appendChild(new ProductComboItem(product));
-				}
 			}
+//			else if(event instanceof SelectEvent)
+//			{
+//				if(products.getSelectedItem() != null)
+//				{
+//					ProductComboItem item = (ProductComboItem)products.getSelectedItem();
+//					initPrice(item.getProduct());
+//					initUom(item.getProduct());
+//				}
+//				else
+//					Clients.showNotification("Please select product first.");
+//				
+//			}
+//			else if(event instanceof KeyEvent)
+//			{
+//				KeyEvent key = (KeyEvent)event;
+//				if(key.getName().equals("onOK"))
+//				{
+//					Product product = productRepository.findOneByName(products.getValue());
+//					if(product != null)
+//					{
+//						initPrice(product);
+//						initUom(product);
+//					}
+//				}
+//				else if(key.getKeyCode() == KeyEvent.DOWN)
+//				{
+//					for(Product product:repository.findAll(new Date(System.currentTimeMillis()),IndustrySegmentation.MEDICAL))
+//						products.appendChild(new ProductComboItem(product));
+//				}
+//			}
 		}
 
 		private void initUom(Product item)

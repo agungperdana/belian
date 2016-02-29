@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public interface DoctorPartnershipRepository extends JpaRepository<DoctorPartnership, String>
+public interface TreatmentRepository extends JpaRepository<Treatment, String>
 {
-	public DoctorPartnership findOneByParentIdAndChildId(String parentId,String childId);
+
 }

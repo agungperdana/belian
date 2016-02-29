@@ -30,8 +30,9 @@ import com.kratonsolution.belian.ui.inventory.product.ProductEditContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class ComponentWindow extends AbstractWindow
 {
@@ -85,7 +86,7 @@ public class ComponentWindow extends AbstractWindow
 			public void onEvent(Event event) throws Exception
 			{
 				ProductComponent component = new ProductComponent();
-				component.setComponent(service.findOne(products.getSelectedItem().getValue().toString()));
+				component.setProduct(service.findOne(products.getSelectedItem().getValue().toString()));
 				component.setQuantity(BigDecimal.valueOf(quantity.doubleValue()));
 				component.setNote(note.getText());
 				

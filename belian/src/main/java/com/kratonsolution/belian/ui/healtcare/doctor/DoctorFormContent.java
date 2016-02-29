@@ -24,21 +24,15 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.OrganizationUnit;
-import com.kratonsolution.belian.general.dm.PartyRole;
-import com.kratonsolution.belian.general.dm.PartyRole.Type;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.dm.Person.Gender;
 import com.kratonsolution.belian.general.dm.Person.MaritalStatus;
+import com.kratonsolution.belian.general.dm.PersonRole;
 import com.kratonsolution.belian.general.svc.GeographicService;
-import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.healtcare.dm.Doctor;
-import com.kratonsolution.belian.healtcare.dm.DoctorPartnership;
-import com.kratonsolution.belian.healtcare.dm.DoctorPartnershipRepository;
 import com.kratonsolution.belian.healtcare.svc.DoctorService;
 import com.kratonsolution.belian.healtcare.svc.DoctorTypeService;
-import com.kratonsolution.belian.ui.CheckboxItem;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -56,13 +50,9 @@ public class DoctorFormContent extends FormContent
 	
 	private DoctorTypeService doctorTypeService = Springs.get(DoctorTypeService.class);
 	
-	private DoctorPartnershipRepository partnershipRepository = Springs.get(DoctorPartnershipRepository.class);
-	
 	private GeographicService geographicService = Springs.get(GeographicService.class);
 	
 	private PersonService personService = Springs.get(PersonService.class);
-	
-	private OrganizationUnitService unitService = Springs.get(OrganizationUnitService.class);
 	
 	private Listbox companys = Components.newSelect(utils.getOrganization());
 	
@@ -133,17 +123,42 @@ public class DoctorFormContent extends FormContent
 					person.setName(name.getText());
 					person.setTaxCode(taxNumber.getText());
 					
+					Doctor doctor = new Doctor();
+					doctor.setTo(utils.getOrganization());
+					doctor.setCategory(doctorTypeService.findOne(Components.string(classifications)));
+					doctor.setStart(start.getValue());
+					doctor.setFrom(person);
+					
+					person.getRoles().add(doctor);
+					
 					personService.add(person);
 				}
-				
-				Doctor doctor = new Doctor();
-				doctor.setCompany(utils.getOrganization());
-				doctor.setCategory(doctorTypeService.findOne(Components.string(classifications)));
-				doctor.setFrom(start.getValue());
-				doctor.setParty(person);
-				doctor.setType(PartyRole.Type.DOCTOR);
-				
-				service.add(doctor);
+				else
+				{
+					boolean _new = true;
+					
+					for(PersonRole role:person.getRoles())
+					{
+						if(role instanceof Doctor && role.getTo().getId().equals(utils.getOrganization().getId()))
+						{
+							_new = false;
+							break;
+						}
+					}
+					
+					if(_new)
+					{
+						Doctor doctor = new Doctor();
+						doctor.setTo(utils.getOrganization());
+						doctor.setCategory(doctorTypeService.findOne(Components.string(classifications)));
+						doctor.setStart(start.getValue());
+						doctor.setFrom(person);
+						
+						person.getRoles().add(doctor);
+						
+						personService.edit(person);
+					}
+				}
 				
 				DoctorWindow window = (DoctorWindow)getParent();
 				window.removeCreateForm();
@@ -302,23 +317,6 @@ public class DoctorFormContent extends FormContent
 					Listitem listitem = (Listitem)component;
 					if(listitem.getValue().equals(person.getGender().name()))
 						genders.setSelectedItem(listitem);
-				}
-			}
-			
-			Doctor doctor = service.findOneByPartyIdAndType(person.getId(), Type.DOCTOR);
-			if(doctor != null)
-			{
-				for(Component component:orgs.getChildren())
-				{
-					CheckboxItem checkboxItem = (CheckboxItem)component;
-				
-					OrganizationUnit unit = unitService.findOneByPartyIdAndType(checkboxItem.getId(), Type.SUBSIDIARY);
-					if(unit == null)
-						throw new RuntimeException("Company not inside organization structure");
-					
-					DoctorPartnership partner = partnershipRepository.findOneByParentIdAndChildId(unit.getId(),doctor.getId() );
-					if(partner != null)
-						checkboxItem.selected();
 				}
 			}
 		}

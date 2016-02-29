@@ -22,7 +22,6 @@ import com.kratonsolution.belian.accounting.svc.OrganizationAccountService;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.RowUtils;
@@ -34,24 +33,22 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class JournalSettingEditContent extends FormContent
 {	
-private JournalSettingService service = Springs.get(JournalSettingService.class);
-	
-	private OrganizationUnitService unitService = Springs.get(OrganizationUnitService.class);
-	
+	private JournalSettingService service = Springs.get(JournalSettingService.class);
+
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
-	
+
 	private OrganizationAccountService organizationAccountService = Springs.get(OrganizationAccountService.class);
-	
+
 	private GLAccountService accountService = Springs.get(GLAccountService.class);
-	
+
 	private SessionUtils utils = Springs.get(SessionUtils.class);
-	
+
 	private Listbox organizations = Components.newSelect();
-	
+
 	private Listbox cashses = Components.newSelect();
-	
+
 	private Listbox saleses = Components.newSelect();
-	
+
 	private Listbox ppnpayables = Components.newSelect();
 
 	private Row row;
@@ -69,7 +66,7 @@ private JournalSettingService service = Springs.get(JournalSettingService.class)
 	public void initToolbar()
 	{
 		toolbar.getCancel().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
+				{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
@@ -77,10 +74,10 @@ private JournalSettingService service = Springs.get(JournalSettingService.class)
 				window.removeEditForm();
 				window.insertGrid();
 			}
-		});
+				});
 
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
+				{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
@@ -99,7 +96,7 @@ private JournalSettingService service = Springs.get(JournalSettingService.class)
 				window.removeEditForm();
 				window.insertGrid();
 			}
-		});
+				});
 	}
 
 	@Override
@@ -115,18 +112,18 @@ private JournalSettingService service = Springs.get(JournalSettingService.class)
 				if(unit.getId().equals(setting.getOrganization().getId()))
 					organizations.setSelectedItem(listitem);
 			}
-			
+
 			OrganizationAccount accounts = organizationAccountService.findOneByOrganization(Components.string(organizations));
 			for(OGLAccount account:accounts.getAccounts())
 			{
 				Listitem cash = new Listitem(account.getLabel(),account.getValue());
 				Listitem cogs = new Listitem(account.getLabel(),account.getValue());
 				Listitem taxs = new Listitem(account.getLabel(),account.getValue());
-				
+
 				cashses.appendChild(cash);
 				saleses.appendChild(cogs);
 				ppnpayables.appendChild(taxs);
-				
+
 				if(setting.getCash() != null)
 				{
 					if(account.getId().equals(setting.getCash().getId()))
@@ -138,7 +135,7 @@ private JournalSettingService service = Springs.get(JournalSettingService.class)
 					if(account.getId().equals(setting.getSales().getId()))
 						saleses.setSelectedItem(cogs);
 				}
-				
+
 				if(setting.getPpnPayable() != null)
 				{
 					if(account.getId().equals(setting.getPpnPayable().getId()))
@@ -146,27 +143,27 @@ private JournalSettingService service = Springs.get(JournalSettingService.class)
 				}
 
 			}
-			
+
 			grid.appendChild(new Columns());
 			grid.getColumns().appendChild(new Column(null,null,"150px"));
 			grid.getColumns().appendChild(new Column());
-			
+
 			Row row1 = new Row();
 			row1.appendChild(new Label("Organization"));
 			row1.appendChild(organizations);
-			
+
 			Row row2 = new Row();
 			row2.appendChild(new Label("Cash Account"));
 			row2.appendChild(cashses);
-			
+
 			Row row3 = new Row();
 			row3.appendChild(new Label("Sales Account"));
 			row3.appendChild(saleses);
-			
+
 			Row row4 = new Row();
 			row4.appendChild(new Label("PPN Payable Account"));
 			row4.appendChild(ppnpayables);
-			
+
 			rows.appendChild(row1);
 			rows.appendChild(row2);
 			rows.appendChild(row3);

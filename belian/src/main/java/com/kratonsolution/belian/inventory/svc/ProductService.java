@@ -210,8 +210,7 @@ public class ProductService
 	@Secured("ROLE_PRODUCT_UPDATE")
 	public void addComponent(Product product,ProductComponent component)
 	{
-		component.setId(UUID.randomUUID().toString());
-		component.setProduct(product);
+		component.setParent(product);
 		product.getComponents().add(component);
 		
 		edit(product);
@@ -278,7 +277,6 @@ public class ProductService
 	@Secured("ROLE_PRODUCT_UPDATE")
 	public void addPrice(Product product,ProductPrice price)
 	{
-		price.setId(UUID.randomUUID().toString());
 		price.setProduct(product);
 		product.getPrices().add(price);
 		

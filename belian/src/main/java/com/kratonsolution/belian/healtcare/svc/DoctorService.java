@@ -5,6 +5,7 @@ package com.kratonsolution.belian.healtcare.svc;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,12 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.PartyRole.Type;
+import com.kratonsolution.belian.general.dm.Person;
+import com.kratonsolution.belian.general.dm.PersonRole;
+import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.healtcare.dm.Doctor;
 import com.kratonsolution.belian.healtcare.dm.DoctorRepository;
 
@@ -35,6 +37,9 @@ public class DoctorService
 	
 	@Autowired
 	private DoctorRepository repository;
+	
+	@Autowired
+	private PersonService personService;
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_DOCTOR_READ")
@@ -96,16 +101,24 @@ public class DoctorService
 	}
 	
 	@Secured("ROLE_DOCTOR_DELETE")
-	public void delete(@PathVariable String id)
+	public void delete(String id)
 	{
-		repository.delete(id);
-	}
-	
-	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_DOCTOR_READ")
-	public Doctor findOneByPartyIdAndType(String id,Type type)
-	{
-		return repository.findOneByPartyIdAndType(id, type);
+		Person person = repository.findPerson(id);
+		if(person != null)
+		{
+			Iterator<PersonRole> iterator = person.getRoles().iterator();
+			while (iterator.hasNext())
+			{
+				PersonRole personRole = (PersonRole) iterator.next();
+				if(personRole instanceof Doctor && personRole.getId().equals(id))
+				{
+					iterator.remove();
+					break;
+				}
+			}
+			
+			personService.edit(person);
+		}
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -119,14 +132,16 @@ public class DoctorService
 	@Secured("ROLE_DOCTOR_READ")
 	public List<Doctor> findAllByCompanys(Collection<String> companys)
 	{
-		return repository.findAllForCompanys(companys);
+		return new ArrayList<>();
+//		return repository.findAllForCompanys(companys);
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_DOCTOR_READ")
 	public List<Doctor> findAllPartner(String id)
 	{
-		return repository.findAllPartners(id);
+		return new ArrayList<>();
+//		return repository.findAllPartners(id);
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)

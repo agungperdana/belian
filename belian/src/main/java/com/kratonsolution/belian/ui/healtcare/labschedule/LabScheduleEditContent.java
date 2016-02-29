@@ -65,6 +65,7 @@ public class LabScheduleEditContent extends FormContent
 				if(laboratory != null && laboratory.getStatus().equals(LabHandlingStatus.Registered))
 				{
 					laboratory.setStatus(LabHandlingStatus.Handled);
+					service.handle(laboratory);
 				}
 				
 				LabScheduleWindow window = (LabScheduleWindow)getParent();

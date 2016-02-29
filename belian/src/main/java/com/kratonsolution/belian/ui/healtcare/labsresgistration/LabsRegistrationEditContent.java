@@ -206,7 +206,7 @@ public class LabsRegistrationEditContent extends FormContent
 						return;
 					}
 						
-					details.getRows().appendChild(new MedicalProductRow(utils.getLocation().getId(),patient.getPatient().getPerson().getId(),utils.getCurrency().getId(),patient.getPatient().isBpjs()));
+					details.getRows().appendChild(new MedicalProductRow(utils.getLocation().getId(),patient.getPatient().getFrom().getId(),utils.getCurrency().getId(),patient.getPatient().isBpjs()));
 				}
 			});
 			

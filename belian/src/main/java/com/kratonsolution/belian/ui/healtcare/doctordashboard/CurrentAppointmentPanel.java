@@ -98,6 +98,7 @@ public class CurrentAppointmentPanel extends Tabbox
 			public void onEvent(Event arg0) throws Exception
 			{
 				appointment.setStatus(Status.DONE);
+				
 				result.store(appointment);
 				medication.store(appointment);
 				treatment.store(appointment);

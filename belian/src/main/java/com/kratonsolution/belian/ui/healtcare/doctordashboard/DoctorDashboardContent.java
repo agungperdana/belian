@@ -47,7 +47,7 @@ public class DoctorDashboardContent extends Borderlayout
 		this.row = row;
 		
 		setWidth("100%");
-		setHeight("97%");
+		setHeight("100%");
 
 		initLayout();
 		initTree();
@@ -55,7 +55,7 @@ public class DoctorDashboardContent extends Borderlayout
 	
 	private void initLayout()
 	{
-		west.setWidth("25%");
+		west.setWidth("30%");
 		west.setStyle("over-flow:auto;");
 		west.setBorder("none");
 		
@@ -69,7 +69,7 @@ public class DoctorDashboardContent extends Borderlayout
 	private void initTree()
 	{
 		tree.setWidth("100%");
-		tree.setHeight("100%");
+		tree.setHeight("97%");
 		
 		Treecols treecols = new Treecols();
 		Treechildren children = new Treechildren();
@@ -81,7 +81,7 @@ public class DoctorDashboardContent extends Borderlayout
 		if(appointment != null)
 		{
 			StringBuilder builder = new StringBuilder();
-			builder.append(appointment.getPatient().getPerson().getName());
+			builder.append(appointment.getPatient().getFrom().getName());
 			
 			if(appointment.getPatient().getBpjs() != null && !Strings.isNullOrEmpty(appointment.getPatient().getBpjs().getCard()))
 				builder.append(" (BPJS : "+appointment.getPatient().getBpjs().getCard()+")");

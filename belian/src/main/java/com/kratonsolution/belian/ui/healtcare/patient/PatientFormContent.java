@@ -27,6 +27,7 @@ import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.dm.Person.Gender;
 import com.kratonsolution.belian.general.dm.Person.MaritalStatus;
+import com.kratonsolution.belian.general.dm.PersonRole;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.healtcare.dm.BPJS;
@@ -117,14 +118,15 @@ public class PatientFormContent extends FormContent
 					person.setTaxCode(taxNumber.getText());
 
 					Patient patient = new Patient();
-					patient.setCompany(utils.getOrganization());
-					patient.setFrom(start.getValue());
+					patient.setTo(utils.getOrganization());
+					patient.setStart(start.getValue());
 					patient.setBpjs(new BPJS());
-					patient.setDeleted(false);
-					patient.setParty(person);
+					patient.setFrom(person);
 					patient.getBpjs().setCard(bpjsNumber.getText());
 					
-					patientService.add(patient);
+					person.getRoles().add(patient);
+					
+					personService.add(person);
 				}
 				else
 				{
@@ -136,30 +138,31 @@ public class PatientFormContent extends FormContent
 					person.setMaritalStatus(MaritalStatus.valueOf(Components.string(statuses)));
 					person.setName(name.getText());
 					person.setTaxCode(taxNumber.getText());
+
+					boolean _new = true;
 					
-					/**
-					 * Person exist, check if he/she already a patient?
-					 * if not register new role as a patient
-					 */
-					Patient patient = patientService.findOne(person.getId(),utils.getOrganization().getId());
-					if(patient != null)
+					for(PersonRole role:person.getRoles())
 					{
-						patient.setParty(person);
-						patient.getBpjs().setCard(bpjsNumber.getText());
-						patientService.edit(patient);
+						if(role instanceof Patient && role.getTo().getId().equals(utils.getOrganization().getId()))
+						{
+							_new = false;
+							break;
+						}
 					}
-					else
+
+					if(_new)
 					{
-						patient = new Patient();
-						patient.setCompany(utils.getOrganization());
-						patient.setFrom(start.getValue());
+						Patient patient = new Patient();
+						patient.setTo(utils.getOrganization());
+						patient.setStart(start.getValue());
 						patient.setBpjs(new BPJS());
-						patient.setDeleted(false);
-						patient.setParty(person);
+						patient.setFrom(person);
 						patient.getBpjs().setCard(bpjsNumber.getText());
-						
-						patientService.add(patient);
+					
+						person.getRoles().add(patient);
 					}
+					
+					personService.edit(person);
 				}
 				
 				PatientWindow window = (PatientWindow)getParent();

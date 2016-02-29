@@ -6,6 +6,7 @@ package com.kratonsolution.belian.general.dm;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -37,4 +38,7 @@ public class Organization extends EconomicAgent
 	
 	@OneToMany(mappedBy="organization",fetch=FetchType.EAGER)
 	private Set<FacilityOrganization> facilitys = new HashSet<>();
+	
+	@OneToMany(mappedBy="from",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
+	private Set<OrganizationRole> roles = new HashSet<>();
 }

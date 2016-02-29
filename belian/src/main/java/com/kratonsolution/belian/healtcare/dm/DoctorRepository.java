@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.healtcare.dm;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -11,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.kratonsolution.belian.general.dm.PartyRole.Type;
+import com.kratonsolution.belian.general.dm.Person;
 
 /**
  * @author Agung Dodi Perdana
@@ -19,29 +18,24 @@ import com.kratonsolution.belian.general.dm.PartyRole.Type;
  */
 public interface DoctorRepository extends JpaRepository<Doctor, String>
 {
-	public Doctor findOneByPartyIdAndType(String id,Type type);
-
-	@Query("SELECT DISTINCT(partner.child) FROM DoctorPartnership partner WHERE partner.parent.party.id IN(:companys)")
-	public List<Doctor> findAllForCompanys(@Param("companys")Collection<String> companys);
-	
-	@Query("SELECT DISTINCT(partner.child) FROM DoctorPartnership partner WHERE partner.parent.party.id =:company")
-	public List<Doctor> findAllPartners(@Param("company")String companys);
-	
-	@Query("FROM Doctor doc WHERE doc.party.id =:person")
+	@Query("FROM Doctor doc WHERE doc.from.id =:person")
 	public List<Doctor> findAllByPerson(@Param("person")String person);
 	
-	@Query("FROM Doctor doc WHERE doc.company.id =:company ORDER BY doc.party.name ASC")
-	public List<Doctor> findAll(Pageable pageable,@Param("company")String company);
+	@Query("FROM Doctor doc WHERE doc.to.id =:to ORDER BY doc.from.name ASC")
+	public List<Doctor> findAll(Pageable pageable,@Param("to")String to);
 	
-	@Query("FROM Doctor doc WHERE doc.company.id =:company ORDER BY doc.party.name ASC")
-	public List<Doctor> findAll(@Param("company")String company);
+	@Query("FROM Doctor doc WHERE doc.to.id =:to ORDER BY doc.from.name ASC")
+	public List<Doctor> findAll(@Param("to")String to);
 	
-	@Query("SELECT COUNT(doc) FROM Doctor doc WHERE doc.company.id =:company")
-	public Long count(@Param("company")String company);
+	@Query("SELECT COUNT(doc) FROM Doctor doc WHERE doc.to.id =:to")
+	public Long count(@Param("to")String to);
 	
-	@Query("FROM Doctor doc WHERE doc.party.name LIKE :name% AND doc.company.id =:company ORDER BY doc.party.name ASC")
-	public List<Doctor> findAll(@Param("name")String name,@Param("company")String company);
+	@Query("FROM Doctor doc WHERE doc.from.name LIKE :name% AND doc.to.id =:to ORDER BY doc.from.name ASC")
+	public List<Doctor> findAll(@Param("name")String name,@Param("to")String to);
 
-	@Query("FROM Doctor doc WHERE doc.party.id =:party AND doc.company.id =:company")
-	public Doctor findOne(@Param("party")String party,@Param("company")String company);
+	@Query("FROM Doctor doc WHERE doc.from.id =:from AND doc.to.id =:to")
+	public Doctor findOne(@Param("from")String from,@Param("to")String to);
+	
+	@Query("SELECT doc.from FROM Doctor doc WHERE doc.id =:id")
+	public Person findPerson(@Param("id")String id);
 }

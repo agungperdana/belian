@@ -118,8 +118,6 @@ public class FacilityEditContent extends FormContent
 					facility.setName(name.getText());
 					facility.setNote(note.getText());
 					facility.getOrganizations().clear();
-
-					service.edit(facility);
 					
 					for(Component com:orgs.getRows().getChildren())
 					{

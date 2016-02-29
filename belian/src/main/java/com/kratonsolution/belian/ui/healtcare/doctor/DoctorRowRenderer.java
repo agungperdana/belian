@@ -23,10 +23,10 @@ public class DoctorRowRenderer implements RowRenderer<Doctor>
 		if(data != null)
 		{
 			row.appendChild(new Checkbox());
-			row.appendChild(new Label(Dates.format(data.getFrom())));
-			row.appendChild(new Label(data.getPerson().getIdentity()));
+			row.appendChild(new Label(Dates.format(data.getStart())));
+			row.appendChild(new Label(data.getFrom().getIdentity()));
 			row.appendChild(new Label(data.getCategory().getCode()));
-			row.appendChild(new Label(data.getPerson().getName()));
+			row.appendChild(new Label(data.getFrom().getName()));
 			row.appendChild(new Label(data.getId()));
 		}
 	}

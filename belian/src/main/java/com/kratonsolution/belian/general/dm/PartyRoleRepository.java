@@ -11,5 +11,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface PartyRoleRepository extends JpaRepository<PartyRole, String>
 {
-	public PartyRole findOneByPartyIdAndType(String partyId,PartyRole.Type type);
+//	public PartyRole findOneByPartyIdAndType(String partyId,PartyRole.Type type);
 }

@@ -33,7 +33,7 @@ public class FamiliFolderItem extends Treeitem
 		Treeitem parents = new Treeitem("Parents");
 		Treeitem partner = null;
 		
-		if(patient.getPerson().getGender().equals(Gender.MALE))
+		if(patient.getFrom().getGender().equals(Gender.MALE))
 			partner = new Treeitem("Wife");
 		else
 			partner = new Treeitem("Husband");

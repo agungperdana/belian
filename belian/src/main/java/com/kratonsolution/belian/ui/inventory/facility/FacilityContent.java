@@ -38,7 +38,7 @@ public class FacilityContent extends Borderlayout
 	{
 		appendChild(west);
 		
-		west.setWidth("25%");
+		west.setWidth("35%");
 		west.setStyle("over-flow:auto;");
 		west.setBorder("none");
 		west.appendChild(tree);

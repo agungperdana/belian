@@ -9,8 +9,8 @@ package com.kratonsolution.belian.general.dm;
  */
 public class BudgetReviewer extends PersonRole
 {
-	public BudgetReviewer()
-	{
-		setType(Type.BUDGETREVIEWER);
-	}
+//	public BudgetReviewer()
+//	{
+//		setType(Type.BUDGETREVIEWER);
+//	}
 }

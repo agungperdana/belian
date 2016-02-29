@@ -37,11 +37,11 @@ public class ProductComponent implements Serializable
 	
 	@ManyToOne
 	@JoinColumn(name="fk_product_component")
-	private Product component;
+	private Product product;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_product_parent")
-	private Product product;
+	private Product parent;
 	
 	@Column(name="note")
 	private String note;

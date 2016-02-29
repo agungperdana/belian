@@ -17,7 +17,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.healtcare.dm.Medication;
+import com.kratonsolution.belian.healtcare.dm.MedicationItem;
 import com.kratonsolution.belian.healtcare.dm.MedicationRepository;
+import com.kratonsolution.belian.healtcare.dm.MedicationStatus;
+import com.kratonsolution.belian.inventory.dm.ProductComponent;
+import com.kratonsolution.belian.inventory.svc.InventoryStockService;
 
 /**
  * 
@@ -33,6 +37,9 @@ public class MedicationService
 	
 	@Autowired
 	private MedicationRepository repository;
+	
+	@Autowired
+	private InventoryStockService stockService;
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_MEDICATION_READ")
@@ -108,6 +115,29 @@ public class MedicationService
 	}
 	
 	@Secured("ROLE_MEDICATION_UPDATE")
+	public void finish(Medication medication)
+	{
+		if(utils.getOrganization() == null)
+			throw new RuntimeException("Default Organization not exist,please go to user setting.");
+		
+		repository.saveAndFlush(medication);
+		
+		if(medication.getStatus().equals(MedicationStatus.Finished))
+		{
+			for(MedicationItem item:medication.getItems())
+			{
+				if(!item.getMedicine().getComponents().isEmpty())
+				{
+					for(ProductComponent com:item.getMedicine().getComponents())
+						stockService.inventoryProccess(com.getProduct(), com.getQuantity().multiply(item.getQuantity()));
+				}
+				else
+					stockService.inventoryProccess(item.getMedicine(),item.getQuantity());
+			}
+		}
+	}
+
+	@Secured("ROLE_MEDICATION_UPDATE")
 	public void edit(Medication medication)
 	{
 		repository.saveAndFlush(medication);
@@ -117,7 +147,9 @@ public class MedicationService
 	public void delete(@PathVariable String id)
 	{
 		Medication medication = findOne(id);
-		if(!medication.isPaid())
+		if(!medication.isPaid() && medication.getStatus().equals(MedicationStatus.Registered))
 			repository.delete(medication);
+		else
+			throw new RuntimeException("This medication order already prepared or finished.");
 	}
 }

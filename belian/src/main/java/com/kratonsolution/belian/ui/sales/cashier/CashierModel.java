@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.ui.sales.cashier;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,21 +49,17 @@ public class CashierModel implements ListModel<Billable>,Searchable
 	@Override
 	public void addListDataListener(ListDataListener l)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void removeListDataListener(ListDataListener l)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void next(int pageIndex,int itemSize,String companyId)
 	{
 		data.clear();
-		data.addAll(service.findAllByDateAndOrganizationIdAndPaid(new Date(System.currentTimeMillis()),companyId,false));
+		data.addAll(service.forCashier());
 	}
 
 	@Override
@@ -77,7 +72,5 @@ public class CashierModel implements ListModel<Billable>,Searchable
 	@Override
 	public void search(SearchCriteria criteria)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 }

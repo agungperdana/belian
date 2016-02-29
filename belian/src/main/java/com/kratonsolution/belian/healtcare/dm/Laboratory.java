@@ -29,6 +29,13 @@ import com.kratonsolution.belian.sales.dm.Billable;
 @Table(name="laboratory")
 public class Laboratory extends Billable
 {
+	@Column(name="bpjs")
+	private boolean bpjs;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="bpjs_payment_status")
+	private BPJSPaymentStatus bpjsStatus = BPJSPaymentStatus.UNPAID;
+	
 	@Enumerated(EnumType.STRING)
 	@Column(name="lab_handling_status")
 	private LabHandlingStatus status = LabHandlingStatus.Registered;

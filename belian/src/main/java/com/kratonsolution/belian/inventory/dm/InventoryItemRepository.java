@@ -20,5 +20,4 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, St
 	
 	@Query("FROM InventoryItem item WHERE item.product.id =:product AND item.facility.id =:facility ")
 	public InventoryItem findOne(@Param("product")String product,@Param("facility")String facility);
-
 }

@@ -79,7 +79,7 @@ public class MedicalRecordItem extends Treeitem
 		{
 			Row row = new Row();
 			row.appendChild(new Label(Dates.format(record.getDate())));
-			row.appendChild(new Label(record.getAppointment().getDoctor().getPerson().getName()));
+			row.appendChild(new Label(record.getAppointment().getDoctor().getFrom().getName()));
 			row.appendChild(new Label(record.getAnamnesis()));
 			row.appendChild(new Label(record.getCheckingResult()));
 			row.appendChild(new Label(record.getDiagnosis()));

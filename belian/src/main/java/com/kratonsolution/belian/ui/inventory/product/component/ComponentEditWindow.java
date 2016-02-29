@@ -30,8 +30,9 @@ import com.kratonsolution.belian.ui.inventory.product.ProductEditContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class ComponentEditWindow extends AbstractWindow
 {
@@ -127,7 +128,7 @@ public class ComponentEditWindow extends AbstractWindow
 				note.setWidth("300px");
 				
 				products.setMold("select");
-				products.appendChild(new Listitem(component.getComponent().getName(),component.getComponent().getId()));
+				products.appendChild(new Listitem(component.getProduct().getName(),component.getProduct().getId()));
 				products.setSelectedIndex(0);
 				
 				content.getColumns().appendChild(new Column(null,null,"100px"));

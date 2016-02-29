@@ -140,7 +140,7 @@ public class PharmacySalesEditContent extends FormContent implements ProductPric
 				if(medication != null && !medication.isPaid())
 				{
 					medication.getItems().clear();
-					service.edit(medication);
+					service.finish(medication);
 
 					for(Component com:saleItems.getRows().getChildren())
 					{
@@ -158,7 +158,7 @@ public class PharmacySalesEditContent extends FormContent implements ProductPric
 						medication.getItems().add(item);
 					}
 
-					service.edit(medication);
+					service.finish(medication);
 				}
 
 				PharmacySalesWindow window = (PharmacySalesWindow)getParent();

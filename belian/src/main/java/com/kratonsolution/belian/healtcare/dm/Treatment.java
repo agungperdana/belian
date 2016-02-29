@@ -7,7 +7,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -26,6 +29,13 @@ import com.kratonsolution.belian.sales.dm.Billable;
 @Table(name="treatment")
 public class Treatment extends Billable
 {
+	@Column(name="bpjs")
+	private boolean bpjs;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="bpjs_payment_status")
+	private BPJSPaymentStatus bpjsStatus = BPJSPaymentStatus.UNPAID;
+	
 	@OneToMany(mappedBy="treatment",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<TreatmentItem> items = new HashSet<TreatmentItem>(); 
 	

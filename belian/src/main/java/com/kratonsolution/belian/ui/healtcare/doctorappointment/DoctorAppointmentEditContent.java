@@ -21,7 +21,6 @@ import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment.Status;
-import com.kratonsolution.belian.healtcare.dm.DoctorPartnershipRepository;
 import com.kratonsolution.belian.healtcare.svc.AppointmentQueueGenerator;
 import com.kratonsolution.belian.healtcare.svc.DoctorAppointmentService;
 import com.kratonsolution.belian.healtcare.svc.DoctorService;
@@ -47,8 +46,6 @@ public class DoctorAppointmentEditContent extends FormContent
 	private DoctorService doctorService = Springs.get(DoctorService.class);
 
 	private PatientService patientService = Springs.get(PatientService.class);
-
-	private DoctorPartnershipRepository partnershipRepository = Springs.get(DoctorPartnershipRepository.class);
 
 	private DoctorAppointmentService service = Springs.get(DoctorAppointmentService.class);
 
@@ -156,8 +153,8 @@ public class DoctorAppointmentEditContent extends FormContent
 			}
 			
 			companys.appendChild(new Listitem(appointment.getCompany().getLabel(), appointment.getCompany().getValue()));
-			doctors.appendChild(new Listitem(appointment.getDoctor().getPerson().getLabel(),appointment.getDoctor().getPerson().getValue()));
-			patients.appendChild(new Listitem(appointment.getPatient().getPerson().getLabel(),appointment.getPatient().getPerson().getValue()));
+			doctors.appendChild(new Listitem(appointment.getDoctor().getFrom().getLabel(),appointment.getDoctor().getFrom().getValue()));
+			patients.appendChild(new Listitem(appointment.getPatient().getFrom().getLabel(),appointment.getPatient().getFrom().getValue()));
 			
 			Components.setDefault(companys);
 			Components.setDefault(doctors);

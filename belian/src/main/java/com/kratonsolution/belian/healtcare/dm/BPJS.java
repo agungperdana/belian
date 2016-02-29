@@ -31,6 +31,9 @@ public class BPJS implements Serializable
 	@Column(name="card_number")
 	private String card;
 	
+	@Column(name="is_active")
+	private boolean active;
+	
 	@Version
 	private Long version;
 	

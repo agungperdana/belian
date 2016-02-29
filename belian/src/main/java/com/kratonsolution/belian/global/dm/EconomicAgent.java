@@ -13,6 +13,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -31,6 +32,7 @@ import org.hibernate.annotations.NotFoundAction;
 import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Contact;
 import com.kratonsolution.belian.general.dm.Geographic;
+import com.kratonsolution.belian.general.dm.MixRole;
 
 /**
  * @author Agung Dodi Perdana
@@ -72,6 +74,9 @@ public class EconomicAgent implements Serializable, Listable
 	
 	@Column(name="is_deleteable")
 	protected boolean deleteadble = true;
+	
+	@OneToMany(mappedBy="from",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
+	private Set<MixRole> partyRoles = new HashSet<>();
 	
 	@Override
 	public String getLabel()

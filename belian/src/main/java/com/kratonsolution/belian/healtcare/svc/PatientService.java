@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.healtcare.svc;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,12 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.dm.PersonRepository;
+import com.kratonsolution.belian.general.dm.PersonRole;
 import com.kratonsolution.belian.healtcare.dm.Patient;
 import com.kratonsolution.belian.healtcare.dm.PatientRepository;
 
@@ -62,7 +64,7 @@ public class PatientService
 		if(utils.getOrganization() == null)
 			return null;
 		
-		return repository.findOneByPartyNameAndCompanyId(name,utils.getOrganization().getId());
+		return repository.findOneByFromNameAndToId(name,utils.getOrganization().getId());
 	}
 
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -88,21 +90,33 @@ public class PatientService
 	@Secured("ROLE_PATIENT_CREATE")
 	public void add(Patient patient)
 	{
-		personRepo.save(patient.getPerson());
+		personRepo.save(patient.getFrom());
 		repository.save(patient);
 	}
 	
 	@Secured("ROLE_PATIENT_UPDATE")
 	public void edit(Patient patient)
 	{
-		personRepo.save(patient.getPerson());
+		personRepo.save(patient.getFrom());
 		repository.saveAndFlush(patient);
 	}
 	
 	@Secured("ROLE_PATIENT_DELETE")
-	public void delete(@PathVariable String id)
+	public void delete(String id)
 	{
-		repository.delete(id);
+		Person person = repository.findPerson(id);
+		if(person != null)
+		{
+			Iterator<PersonRole> iterator = person.getRoles().iterator();
+			while (iterator.hasNext())
+			{
+				PersonRole personRole = (PersonRole) iterator.next();
+				if(personRole.getId().equals(id))
+					iterator.remove();
+			}
+			
+			personRepo.save(person);
+		}
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)

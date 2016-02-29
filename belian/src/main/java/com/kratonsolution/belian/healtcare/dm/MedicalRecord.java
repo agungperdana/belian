@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -62,17 +61,17 @@ public class MedicalRecord implements Serializable
 	@NotFound(action=NotFoundAction.IGNORE)
 	private DoctorAppointment appointment;
 	
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="fk_medication")
 	@NotFound(action=NotFoundAction.IGNORE)
 	private Medication medication;
 	
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="fk_treatment")
 	@NotFound(action=NotFoundAction.IGNORE)
 	private Treatment treatment;
 	
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="fk_laboratory")
 	@NotFound(action=NotFoundAction.IGNORE)
 	private Laboratory laboratory;

@@ -47,8 +47,6 @@ public class PharmacyOrderModel implements ListModel<Medication>
 	@Override
 	public void addListDataListener(ListDataListener l)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

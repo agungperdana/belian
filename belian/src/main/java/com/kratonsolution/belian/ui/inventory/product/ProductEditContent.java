@@ -55,15 +55,15 @@ public class ProductEditContent extends FormContent implements Refreshable
 
 	private Datebox end = new Datebox();
 	
-	private Textbox code = new Textbox();
+	private Textbox code = Components.textBox(null);
 
-	private Textbox name = new Textbox();
+	private Textbox name = Components.textBox(null);
 
-	private Listbox categorys = new Listbox();
+	private Listbox categorys = Components.newSelect();
 
-	private Listbox types = new Listbox();
+	private Listbox types = Components.newSelect();
 	
-	private Listbox uoms = new Listbox();
+	private Listbox uoms = Components.newSelect();
 	
 	private Tabbox tabbox;
 
@@ -139,25 +139,14 @@ public class ProductEditContent extends FormContent implements Refreshable
 		Product product = service.findOne(RowUtils.string(row, 8));
 		if(product != null)
 		{
-			start.setConstraint("no empty");
-
 			if(product.getStart() != null)
 				start.setValue(product.getStart());
 			
 			if(product.getEnd() != null)
-			end.setValue(product.getEnd());
+				end.setValue(product.getEnd());
 			
-			code.setConstraint("no empty");
-			code.setWidth("250px");
 			code.setText(product.getCode());
-			
-			name.setConstraint("no empty");
-			name.setWidth("300px");
 			name.setText(product.getName());
-			
-			types.setMold("select");
-			categorys.setMold("select");
-			uoms.setMold("select");
 			
 			for(Product.Type type:Product.Type.values())
 			{
@@ -184,44 +173,38 @@ public class ProductEditContent extends FormContent implements Refreshable
 			}
 			
 			grid.appendChild(new Columns());
-			grid.getColumns().appendChild(new Column(null,null,"150px"));
+			grid.getColumns().appendChild(new Column(null,null,"120px"));
 			grid.getColumns().appendChild(new Column());
+			grid.getColumns().appendChild(new Column(null,null,"120px"));
+			grid.getColumns().appendChild(new Column());
+			grid.setSpan("1");
 			
 			Row row1 = new Row();
 			row1.appendChild(new Label("Start"));
 			row1.appendChild(start);
+			row1.appendChild(new Label("End"));
+			row1.appendChild(end);
 			
 			Row row2 = new Row();
-			row2.appendChild(new Label("End"));
-			row2.appendChild(end);
+			row2.appendChild(new Label("Code"));
+			row2.appendChild(code);
+			row2.appendChild(new Label("Unit of Measure"));
+			row2.appendChild(uoms);
 			
 			Row row3 = new Row();
-			row3.appendChild(new Label("Code"));
-			row3.appendChild(code);
+			row3.appendChild(new Label("Name"));
+			row3.appendChild(name);
+			row3.appendChild(new Label("Type"));
+			row3.appendChild(types);
 			
 			Row row4 = new Row();
-			row4.appendChild(new Label("Name"));
-			row4.appendChild(name);
-			
-			Row row5 = new Row();
-			row5.appendChild(new Label("Type"));
-			row5.appendChild(types);
-			
-			Row row6 = new Row();
-			row6.appendChild(new Label("Category"));
-			row6.appendChild(categorys);
-			
-			Row row7 = new Row();
-			row7.appendChild(new Label("Unit of Measure"));
-			row7.appendChild(uoms);
-			
+			row4.appendChild(new Label("Category"));
+			row4.appendChild(categorys);
+
 			rows.appendChild(row1);
 			rows.appendChild(row2);
 			rows.appendChild(row3);
 			rows.appendChild(row4);
-			rows.appendChild(row5);
-			rows.appendChild(row6);
-			rows.appendChild(row7);
 		}
 	}
 	

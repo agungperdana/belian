@@ -14,15 +14,8 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 
-import com.kratonsolution.belian.general.dm.Employee;
-import com.kratonsolution.belian.general.dm.Employer;
-import com.kratonsolution.belian.general.dm.Employment;
-import com.kratonsolution.belian.general.dm.OrganizationUnit;
-import com.kratonsolution.belian.general.dm.PartyRelationship;
-import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.svc.EmploymentService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.hr.dm.EmploymentApplication;
 import com.kratonsolution.belian.hr.svc.EmploymentApplicationService;
@@ -31,8 +24,9 @@ import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class EmploymentFormContent extends FormContent
 {	
@@ -43,8 +37,6 @@ public class EmploymentFormContent extends FormContent
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 	
 	private EmploymentApplicationService applicationService = Springs.get(EmploymentApplicationService.class);
-	
-	private OrganizationUnitService unitService = Springs.get(OrganizationUnitService.class);
 	
 	private Datebox start = Components.currentDatebox();
 	
@@ -82,27 +74,25 @@ public class EmploymentFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Employment employment = new Employment();
-				employment.setFrom(start.getValue());
-				employment.setTo(end.getValue());
-				employment.setType(PartyRelationship.Type.EMPLOYMENT);
-				
-				Employee person = new Employee();
-				person.setFrom(start.getValue());
-				person.setTo(end.getValue());
-				person.setParty(personService.findOne(Components.string(employee)));
-				person.setType(PartyRole.Type.EMPLOYEE);
-				
-				Employer org = new Employer();
-				org.setFrom(start.getValue());
-				org.setTo(end.getValue());
-				org.setParty(organizationService.findOne(Components.string(employer)));
-				org.setType(PartyRole.Type.EMPLOYER);
-				
-				employment.setParent(org);
-				employment.setChild(person);
-				
-				service.add(employment);
+//				Employment employment = new Employment();
+//				employment.setFrom(start.getValue());
+//				employment.setTo(end.getValue());
+//				employment.setType(PartyRelationship.Type.EMPLOYMENT);
+//				
+//				Employee person = new Employee();
+//				person.setFrom(start.getValue());
+//				person.setTo(end.getValue());
+//				person.setParty(personService.findOne(Components.string(employee)));
+//				
+//				Employer org = new Employer();
+//				org.setFrom(start.getValue());
+//				org.setTo(end.getValue());
+//				org.setParty(organizationService.findOne(Components.string(employer)));
+//				
+//				employment.setParent(org);
+//				employment.setChild(person);
+//				
+//				service.add(employment);
 				
 				EmploymentWindow window = (EmploymentWindow)getParent();
 				window.removeCreateForm();
@@ -117,9 +107,6 @@ public class EmploymentFormContent extends FormContent
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.getColumns().appendChild(new Column());
-		
-		for(OrganizationUnit unit:unitService.findAll())
-			employer.appendChild(new Listitem(unit.getParty().getLabel(),unit.getParty().getValue()));
 		
 		for(EmploymentApplication application:applicationService.findAllByStatusType(EmploymentApplication.StatusType.ACCEPTED))
 		{

@@ -26,7 +26,6 @@ import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.healtcare.dm.Doctor;
-import com.kratonsolution.belian.healtcare.dm.DoctorPartnershipRepository;
 import com.kratonsolution.belian.healtcare.svc.DoctorService;
 import com.kratonsolution.belian.healtcare.svc.DoctorTypeService;
 import com.kratonsolution.belian.ui.FormContent;
@@ -46,8 +45,6 @@ public class DoctorEditContent extends FormContent
 	private DoctorService service = Springs.get(DoctorService.class);
 
 	private DoctorTypeService doctorTypeService = Springs.get(DoctorTypeService.class);
-
-	private DoctorPartnershipRepository partnershipRepository = Springs.get(DoctorPartnershipRepository.class);
 
 	private GeographicService geographicService = Springs.get(GeographicService.class);
 
@@ -117,7 +114,7 @@ public class DoctorEditContent extends FormContent
 				Doctor doctor = service.findOne(RowUtils.string(row, 5));
 				if(doctor != null)
 				{
-					Person person = doctor.getPerson();
+					Person person = doctor.getFrom();
 					person.setBirthDate(birthDate.getValue());
 					person.setBirthPlace(geographicService.findOne(Components.string(birthPlace)));
 					person.setGender(Gender.valueOf(Components.string(genders)));
@@ -128,8 +125,8 @@ public class DoctorEditContent extends FormContent
 
 					personService.edit(person);
 				
-					doctor.setTo(end.getValue());
-					doctor.setCompany(organizationService.findOne(Components.string(companys)));
+					doctor.setEnd(end.getValue());
+					doctor.setTo(organizationService.findOne(Components.string(companys)));
 				
 					service.edit(doctor);
 				}
@@ -148,19 +145,19 @@ public class DoctorEditContent extends FormContent
 		if(doctor != null)
 		{
 			identity.setWidth("250px");
-			identity.setText(doctor.getPerson().getIdentity());
+			identity.setText(doctor.getFrom().getIdentity());
 
 			name.setWidth("300px");
-			name.setText(doctor.getPerson().getName());
+			name.setText(doctor.getFrom().getName());
 			
-			birthDate.setValue(doctor.getPerson().getBirthDate());
-			taxNumber.setText(doctor.getPerson().getTaxCode());
+			birthDate.setValue(doctor.getFrom().getBirthDate());
+			taxNumber.setText(doctor.getFrom().getTaxCode());
 
-			start.setValue(doctor.getFrom());
+			start.setValue(doctor.getStart());
 			
-			if(doctor.getCompany() != null)
+			if(doctor.getTo() != null)
 			{
-				companys.appendChild(new Listitem(doctor.getCompany().getLabel(), doctor.getCompany().getValue()));
+				companys.appendChild(new Listitem(doctor.getTo().getLabel(), doctor.getTo().getValue()));
 				companys.setSelectedIndex(0);
 			}
 			else
@@ -177,7 +174,7 @@ public class DoctorEditContent extends FormContent
 				Listitem listitem = new Listitem(gender.name(), gender.name());
 				genders.appendChild(listitem);
 
-				if(gender.equals(doctor.getPerson().getGender()))
+				if(gender.equals(doctor.getFrom().getGender()))
 					genders.setSelectedItem(listitem);
 			}
 
@@ -185,14 +182,14 @@ public class DoctorEditContent extends FormContent
 			{
 				Listitem listitem = new Listitem(status.name(), status.name());
 				statuses.appendChild(listitem);
-				if(status.equals(doctor.getPerson().getMaritalStatus()))
+				if(status.equals(doctor.getFrom().getMaritalStatus()))
 					statuses.setSelectedItem(listitem);
 			}
 
 			for(Component component:birthPlace.getChildren())
 			{
 				Listitem listitem = (Listitem)component;
-				if(doctor.getParty() != null && doctor.getParty().getBirthPlace() != null && listitem.getValue().equals(doctor.getParty().getBirthPlace().getId()))
+				if(doctor.getTo() != null && doctor.getTo().getBirthPlace() != null && listitem.getValue().equals(doctor.getTo().getBirthPlace().getId()))
 					birthPlace.setSelectedItem(listitem);
 			}
 

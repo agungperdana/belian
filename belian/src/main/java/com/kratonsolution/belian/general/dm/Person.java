@@ -3,12 +3,18 @@
  */
 package com.kratonsolution.belian.general.dm;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -53,6 +59,9 @@ public class Person extends EconomicAgent
 	@ManyToOne
 	@JoinColumn(name="fk_user")
 	private User user;
+	
+	@OneToMany(mappedBy="from",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
+	private Set<PersonRole> roles = new HashSet<>();
 	
 	public Person()
 	{

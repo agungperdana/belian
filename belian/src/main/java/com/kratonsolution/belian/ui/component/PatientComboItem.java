@@ -21,7 +21,7 @@ public class PatientComboItem extends Comboitem
 	public PatientComboItem(Patient patient)
 	{
 		this.patient = patient;
-		setLabel(patient.getPerson().getName());
+		setLabel(patient.getFrom().getName());
 		setValue(patient.getId());
 	}
 }

@@ -70,7 +70,7 @@ public class TreatmentPanel extends Tabpanel
 					return;
 				}
 					
-				grid.getRows().appendChild(new MedicalProductRow(utils.getLocation().getId(),appointment.getPatient().getPerson().getId(),utils.getCurrency().getId(),appointment.getPatient().isBpjs()));
+				grid.getRows().appendChild(new MedicalProductRow(utils.getLocation().getId(),appointment.getPatient().getFrom().getId(),utils.getCurrency().getId(),appointment.getPatient().isBpjs()));
 			}
 		});
 		
@@ -104,14 +104,11 @@ public class TreatmentPanel extends Tabpanel
 		grid.appendChild(new Columns());
 		grid.appendChild(new Rows());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Product",null,"225px"));
-		grid.getColumns().appendChild(new Column("Quantity",null,"85px"));
-		grid.getColumns().appendChild(new Column("UoM",null,"85px"));
-		grid.getColumns().appendChild(new Column("Price",null,"135px"));
-		grid.getColumns().appendChild(new Column("Disc",null,"95px"));
-		grid.getColumns().appendChild(new Column("Charge",null,"95px"));
+		grid.getColumns().appendChild(new Column("Product",null,"200px"));
+		grid.getColumns().appendChild(new Column("Quantity",null,"70px"));
+		grid.getColumns().appendChild(new Column("UoM",null,"75px"));
 		grid.getColumns().appendChild(new Column("Note",null));
-		grid.setSpan("1");
+		grid.setSpan("4");
 	}
 	
 	public void store(DoctorAppointment appointment)
@@ -122,13 +119,15 @@ public class TreatmentPanel extends Tabpanel
 			
 			Treatment treatment = new Treatment();
 			treatment.setCurrency(utils.getCurrency());
-			treatment.setCustomer(appointment.getPatient().getPerson());
+			treatment.setCustomer(appointment.getPatient().getFrom());
 			treatment.setDate(appointment.getDate());
 			treatment.setNumber(generator.generate(appointment.getDate(), appointment.getCompany(), Code.BLTRE));
 			treatment.setOrganization(appointment.getCompany());
 			treatment.setPaid(false);
-			treatment.setSales(appointment.getDoctor().getPerson());
+			treatment.setSales(appointment.getDoctor().getFrom());
 			treatment.setTax(utils.getTax());
+			treatment.setBpjs(appointment.getPatient().isBpjs());
+			treatment.setPaid(treatment.isBpjs());
 			
 			TreatmentItem item = new TreatmentItem();
 			item.setCharge(row.getCharge());

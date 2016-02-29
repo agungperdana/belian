@@ -38,13 +38,8 @@ public class Patient extends PersonRole
 	@OrderBy("date DESC")
 	private Set<DoctorAppointment> appointments = new HashSet<DoctorAppointment>();
 	
-	public Patient()
-	{
-		setType(Type.PATIENT);
-	}
-	
 	public boolean isBpjs()
 	{
-		return (bpjs != null && !Strings.isNullOrEmpty(bpjs.getCard()));
+		return (bpjs != null && !Strings.isNullOrEmpty(bpjs.getCard()) && bpjs.isActive());
 	}
 }

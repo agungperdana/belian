@@ -4,9 +4,9 @@
 package com.kratonsolution.belian.ui.accounting.journalentry;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.Iterator;
 import java.util.UUID;
-import java.sql.Date;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
@@ -40,7 +40,6 @@ import com.kratonsolution.belian.accounting.svc.OrganizationAccountService;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.util.Components;
@@ -67,8 +66,6 @@ public class JournalEntryFormContent extends FormContent
 	private AccountingPeriodService accountingPeriodService = Springs.get(AccountingPeriodService.class);
 	
 	private GLAccountService glAccountService = Springs.get(GLAccountService.class);
-	
-	private OrganizationUnitService unitService = Springs.get(OrganizationUnitService.class);
 	
 	private Datebox date = Components.currentDatebox();
 	

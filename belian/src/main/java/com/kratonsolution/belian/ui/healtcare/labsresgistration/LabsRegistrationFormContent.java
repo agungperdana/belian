@@ -97,11 +97,11 @@ public class LabsRegistrationFormContent extends FormContent
 				
 				Laboratory laboratory = new Laboratory();
 				laboratory.setCurrency(utils.getCurrency());
-				laboratory.setCustomer(patient.getPatient().getPerson());
+				laboratory.setCustomer(patient.getPatient().getFrom());
 				laboratory.setDate(new Date(date.getValue().getTime()));
 				laboratory.setNumber(generator.generate(laboratory.getDate(), utils.getOrganization(), Code.BLLAB));
 				laboratory.setOrganization(utils.getOrganization());
-				laboratory.setSales(doctor.getDoctor().getPerson());
+				laboratory.setSales(doctor.getDoctor().getFrom());
 				laboratory.setTax(utils.getTax());
 
 				for(Component com:details.getRows().getChildren())
@@ -178,7 +178,7 @@ public class LabsRegistrationFormContent extends FormContent
 					return;
 				}
 					
-				details.getRows().appendChild(new MedicalProductRow(utils.getLocation().getId(),patient.getPatient().getPerson().getId(),utils.getCurrency().getId(),patient.getPatient().isBpjs()));
+				details.getRows().appendChild(new MedicalProductRow(utils.getLocation().getId(),patient.getPatient().getFrom().getId(),utils.getCurrency().getId(),patient.getPatient().isBpjs()));
 			}
 		});
 		

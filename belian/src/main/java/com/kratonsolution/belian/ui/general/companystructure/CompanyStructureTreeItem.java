@@ -80,7 +80,10 @@ public class CompanyStructureTreeItem extends Treeitem
 		Collection<CompanyStructureTreeItem> outs = new ArrayList<CompanyStructureTreeItem>();
 		
 		for(CompanyStructure company:list)
-			outs.add(in(canvas,company));
+		{
+			if(company.getOrganization() != null)
+				outs.add(in(canvas,company));
+		}
 	
 		return outs;
 	}

@@ -35,6 +35,15 @@ public class DoctorAppointmentService extends SessionAware
 	@Autowired
 	private MedicalRecordService service;
 	
+	@Autowired
+	private MedicationService medicationService;
+	
+	@Autowired
+	private TreatmentService treatmentService;
+	
+	@Autowired
+	private LaboratoryRegistrationService labService;
+	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_DOCTOR_APPOINTMENT_READ")
 	public int size()
@@ -92,7 +101,10 @@ public class DoctorAppointmentService extends SessionAware
 	@Secured("ROLE_DOCTOR_APPOINTMENT_UPDATE")
 	public void edit(DoctorAppointment appointment)
 	{
-		repository.saveAndFlush(appointment);
+		medicationService.add(appointment.getRecord().getMedication());
+		treatmentService.add(appointment.getRecord().getTreatment());
+		labService.add(appointment.getRecord().getLaboratory());
+		repository.save(appointment);
 	}
 	
 	@Secured("ROLE_DOCTOR_APPOINTMENT_DELETE")

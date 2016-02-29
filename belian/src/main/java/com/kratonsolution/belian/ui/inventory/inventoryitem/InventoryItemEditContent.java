@@ -43,7 +43,7 @@ public class InventoryItemEditContent extends FormContent
 
 	private ProductBox products = new ProductBox();
 
-	private Listbox facilitys = Components.newSelect(facilityService.findAll(), true);
+	private Listbox facilitys = Components.newSelect();
 
 	private Textbox serial = new Textbox();
 
@@ -112,10 +112,11 @@ public class InventoryItemEditContent extends FormContent
 			serial.setText(item.getSerialNumber());
 			serial.setReadonly(true);
 			
-			facilitys.setDisabled(true);
+			facilitys.appendItem(item.getFacility().getLabel(), item.getFacility().getId());
+			facilitys.setSelectedIndex(0);
 			
 			grid.appendChild(new Columns());
-			grid.getColumns().appendChild(new Column(null,null,"75px"));
+			grid.getColumns().appendChild(new Column(null,null,"100px"));
 			grid.getColumns().appendChild(new Column());
 			
 			Row row1 = new Row();

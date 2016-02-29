@@ -15,9 +15,7 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 
 import com.kratonsolution.belian.accounting.svc.BudgetItemService;
-import com.kratonsolution.belian.general.dm.OrganizationUnit;
 import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.general.svc.OrganizationUnitService;
 import com.kratonsolution.belian.hr.dm.Position;
 import com.kratonsolution.belian.hr.dm.Position.EmploymentStatus;
 import com.kratonsolution.belian.hr.dm.Position.PositionStatusType;
@@ -30,8 +28,9 @@ import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class PositionFormContent extends FormContent
 {	
@@ -42,8 +41,6 @@ public class PositionFormContent extends FormContent
 	private PositionTypeService positionTypeService = Springs.get(PositionTypeService.class);
 	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
-	
-	private OrganizationUnitService unitService = Springs.get(OrganizationUnitService.class);
 	
 	private Datebox start = Components.currentDatebox();
 	
@@ -135,9 +132,6 @@ public class PositionFormContent extends FormContent
 			if(status.equals(PositionStatusType.Planned))
 				positionStatusTypes.setSelectedItem(listitem);
 		}
-		
-		for(OrganizationUnit unit:unitService.findAll())
-			hirings.appendChild(new Listitem(unit.getParty().getLabel(), unit.getParty().getValue()));
 		
 		Components.setDefault(hirings);
 		Components.setDefault(worktimes);

@@ -83,10 +83,13 @@ public class CompanyStructureTree extends Tree implements CompanyStructureDataLi
 	{
 		for(CompanyStructure company:parent.getCompany().getChilds())
 		{
-			CompanyStructureTreeItem item = CompanyStructureTreeItem.in(container, company);
-			parent.getTreechildren().appendChild(item);
-			if(!company.getChilds().isEmpty())
-				populate(item);
+			if(company.getOrganization() != null)
+			{
+				CompanyStructureTreeItem item = CompanyStructureTreeItem.in(container, company);
+				parent.getTreechildren().appendChild(item);
+				if(!company.getChilds().isEmpty())
+					populate(item);
+			}
 		}
 	}
 }
