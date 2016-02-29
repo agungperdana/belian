@@ -36,7 +36,7 @@ public class CashPurchaseOrder extends ProductReceiveable implements Serializabl
 	
 	@ManyToOne
 	@JoinColumn(name="fk_party")
-	private EconomicAgent supplier;
+	private EconomicAgent supplier;//try commit
 	
 	@ManyToOne
 	@JoinColumn(name="fk_purchaser")
