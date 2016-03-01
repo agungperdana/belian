@@ -83,13 +83,13 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
-		if(modules.get("GEOGRAPHIC"))
+		if(modules.containsKey("GEOGRAPHIC") && modules.get("GEOGRAPHIC"))
 			list.appendChild(new GeographicItem());
-		if(modules.get("ORGANIZATION"))
+		if(modules.containsKey("ORGANIZATION") && modules.get("ORGANIZATION"))
 			list.appendChild(new OrganizationItem());
-		if(modules.get("PERSON"))
+		if(modules.containsKey("PERSON") && modules.get("PERSON"))
 			list.appendChild(new PersonItem());
-		if(modules.get("COMPANY_STRUCTURE"))
+		if(modules.containsKey("COMPANY_STRUCTURE") && modules.get("COMPANY_STRUCTURE"))
 			list.appendChild(new CompanyStructureItem());
 		
 		if(!list.getChildren().isEmpty())
@@ -108,11 +108,11 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
-		if(modules.get("MODULE"))
+		if(modules.containsKey("MODULE") && modules.get("MODULE"))
 			list.appendChild(new ModuleItem());
-		if(modules.get("RLE"))
+		if(modules.containsKey("RLE") && modules.get("RLE"))
 			list.appendChild(new RoleItem());
-		if(modules.get("USERMENU"))
+		if(modules.containsKey("USERMENU") && modules.get("USERMENU"))
 			list.appendChild(new UserItem());
 		
 		if(!list.getChildren().isEmpty())
@@ -129,21 +129,21 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
-		if(modules.get("CURRENCY"))
+		if(modules.containsKey("CURRENCY") && modules.get("CURRENCY"))
 			list.appendChild(new CurrencyItem());
-		if(modules.get("TAX"))
+		if(modules.containsKey("TAX") && modules.get("TAX"))
 			list.appendChild(new TaxItem());
-		if(modules.get("COA"))
+		if(modules.containsKey("COA") && modules.get("COA"))
 			list.appendChild(new CoAItem());
-		if(modules.get("ACCOUNTINGPERIOD"))
+		if(modules.containsKey("ACCOUNTINGPERIOD") && modules.get("ACCOUNTINGPERIOD"))
 			list.appendChild(new AccountingPeriodItem());
-		if(modules.get("ORGANIZATIONACCOUNT"))
+		if(modules.containsKey("ORGANIZATIONACCOUNT") && modules.get("ORGANIZATIONACCOUNT"))
 			list.appendChild(new OrganizationAccountItem());
-		if(modules.get("JOURNALSETTING"))
+		if(modules.containsKey("JOURNALSETTING") && modules.get("JOURNALSETTING"))
 			list.appendChild(new JournalSettingItem());
-		if(modules.get("JOURNALENTRY"))
+		if(modules.containsKey("JOURNALENTRY") && modules.get("JOURNALENTRY"))
 			list.appendChild(new JournalEntryItem());
-		if(modules.get("BUDGET"))
+		if(modules.containsKey("BUDGET") && modules.get("BUDGET"))
 			list.appendChild(new BudgetItem());
 		
 		if(!list.getChildren().isEmpty())
@@ -196,11 +196,11 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
-		if(modules.get("CASHIER"))
+		if(modules.containsKey("CASHIER") && modules.get("CASHIER"))
 			list.appendChild(new CashierItem());
-		if(modules.get("CASHSALES"))
+		if(modules.containsKey("CASHSALES") && modules.get("CASHSALES"))
 			list.appendChild(new CashSalesItem());
-		if(modules.get("SALES_REPORT"))
+		if(modules.containsKey("SALES_REPORT") && modules.get("SALES_REPORT"))
 			list.appendChild(new SalesReportItem());
 		
 		if(!list.getChildren().isEmpty())
@@ -236,10 +236,10 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
-		if(modules.get("DOCTORTYPE"))
+		if(modules.containsKey("DOCTORTYPE") && modules.get("DOCTORTYPE"))
 			list.appendChild(new DoctorTypeItem());
 		
-		if(modules.get("DOCTOR"))
+		if(modules.containsKey("DOCTOR") && modules.get("DOCTOR"))
 			list.appendChild(new DoctorItem());
 
 		SessionUtils utils = Springs.get(SessionUtils.class);
@@ -250,21 +250,26 @@ public class NavigationMenu extends Window
 				list.appendChild(new DoctorDashboardItem());
 		}
 		
-		if(modules.get("PATIENT"))
+		if(modules.containsKey("PATIENT") && modules.get("PATIENT"))
 			list.appendChild(new PatientItem());
 		
-		if(modules.get("DOCTOR_APPOINTMENT"))
+		if(modules.containsKey("DOCTOR_APPOINTMENT") && modules.get("DOCTOR_APPOINTMENT"))
 			list.appendChild(new DoctorAppointmentItem());
 		
-		list.appendChild(new LabScheduleItem());
+		if(modules.containsKey("LABS_REGISTRATION") && modules.get("LABS_REGISTRATION"))
+			list.appendChild(new LabScheduleItem());
 		
-		if(modules.get("LABS_REGISTRATION"))
+		if(modules.containsKey("LABS_REGISTRATION") && modules.get("LABS_REGISTRATION"))
 			list.appendChild(new LabsRegistrationItem());
 		
 		if(modules.containsKey("MEDICATION") && modules.get("MEDICATION"))
 			list.appendChild(new PharmacySalesItem());
 		
-		list.appendChild(new PharmacyOrderItem());
+		if(modules.containsKey("MEDICATION") && modules.get("MEDICATION"))
+			list.appendChild(new PharmacyOrderItem());
+		
+		if(modules.containsKey("FAMILY_FOLDER") && modules.get("FAMILY_FOLDER"))
+			list.appendChild(new FamilyFolderItem());
 		
 		if(!list.getChildren().isEmpty())
 		{
@@ -282,17 +287,17 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
-		if(modules.get("POSITIONTYPE"))
+		if(modules.containsKey("POSITIONTYPE") && modules.get("POSITIONTYPE"))
 			list.appendChild(new PositionTypeItem());
-		if(modules.get("POSITIONTYPERATE"))
+		if(modules.containsKey("POSITIONTYPERATE") && modules.get("POSITIONTYPERATE"))
 			list.appendChild(new PositionTypeRateItem());
-		if(modules.get("PAY_GRADE"))
+		if(modules.containsKey("PAY_GRADE") && modules.get("PAY_GRADE"))
 			list.appendChild(new PayGradeItem());
-		if(modules.get("POSITION"))
+		if(modules.containsKey("POSITION") && modules.get("POSITION"))
 			list.appendChild(new PositionItem());
-		if(modules.get("EMPYAPP"))
+		if(modules.containsKey("EMPYAPP") && modules.get("EMPYAPP"))
 			list.appendChild(new EmploymentApplicationItem());
-		if(modules.get("EMPLOYMENT"))
+		if(modules.containsKey("EMPLOYMENT") && modules.get("EMPLOYMENT"))
 			list.appendChild(new EmploymentItem());
 
 		if(!list.getChildren().isEmpty())

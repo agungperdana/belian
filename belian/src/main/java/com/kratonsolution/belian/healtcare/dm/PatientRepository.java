@@ -20,6 +20,8 @@ public interface PatientRepository extends JpaRepository<Patient, String>
 {
 	public Patient findOneByBpjsCard(String bpjsCardNumber);
 	
+	public Patient findOneByFromId(String id);
+	
 	@Query("FROM Patient pat WHERE pat.from.id =:person AND pat.to.id =:to")
 	public Patient findOne(@Param("person")String person,@Param("to")String to);
 
@@ -34,6 +36,9 @@ public interface PatientRepository extends JpaRepository<Patient, String>
 	
 	@Query("FROM Patient pat WHERE pat.from.name LIKE :name% AND pat.to.id =:to ORDER BY pat.from.name ASC")
 	public List<Patient> findAll(@Param("name")String name,@Param("to")String to);
+	
+	@Query("FROM Patient pat WHERE pat.from.name LIKE %:name% OR pat.from.identity LIKE %:name% ORDER BY pat.from.name ASC")
+	public List<Patient> findAllWith(@Param("name")String name);
 
 	public Patient findOneByFromNameAndToId(String name,String to);
 	

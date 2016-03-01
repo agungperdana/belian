@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -37,6 +38,9 @@ public class Patient extends PersonRole
 	@OneToMany(mappedBy="patient")
 	@OrderBy("date DESC")
 	private Set<DoctorAppointment> appointments = new HashSet<DoctorAppointment>();
+	
+	@OneToMany(mappedBy="patient",fetch=FetchType.EAGER)
+	private Set<FamilyMember> members = new HashSet<>();
 	
 	public boolean isBpjs()
 	{

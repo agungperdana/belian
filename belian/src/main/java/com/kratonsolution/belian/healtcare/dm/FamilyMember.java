@@ -16,6 +16,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -23,11 +26,13 @@ import org.hibernate.annotations.NotFoundAction;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
+@Getter
+@Setter
 @Entity
 @Table(name="family_member")
 public class FamilyMember implements Serializable
 {
-	public enum Type{FATHER,MOTHER,HUSBAND,WIFE,CHILD,BRODTHER,SISTER}
+	public enum Type{FATHER,MOTHER,HEAD,WIFE,CHILD,BRODTHER,SISTER}
 	
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -39,12 +44,12 @@ public class FamilyMember implements Serializable
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="member_type")
-	private Type type = Type.HUSBAND;
+	private Type type = Type.HEAD;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_folder")
 	@NotFound(action=NotFoundAction.IGNORE)
-	private FamiliFolder folder;
+	private FamilyFolder folder;
 	
 	@Version
 	private Long version;

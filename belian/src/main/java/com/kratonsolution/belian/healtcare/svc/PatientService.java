@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.healtcare.svc;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -44,10 +43,7 @@ public class PatientService
 	@Secured("ROLE_PATIENT_READ")
 	public int size()
 	{
-		if(utils.getOrganization() != null)
-			return repository.count(utils.getOrganization().getId()).intValue();
-		
-		return 0;
+		return (int)repository.count();
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -59,32 +55,23 @@ public class PatientService
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PATIENT_READ")
-	public Patient findOneByName(String name)
+	public Patient findPerson(String id)
 	{
-		if(utils.getOrganization() == null)
-			return null;
-		
-		return repository.findOneByFromNameAndToId(name,utils.getOrganization().getId());
+		return repository.findOneByFromId(id);
 	}
 
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PATIENT_READ")
 	public List<Patient> findAll()
 	{
-		if(utils.getOrganization() == null)
-			return new ArrayList<Patient>();
-		
-		return repository.findAll(utils.getOrganization().getId());
+		return repository.findAll();
 	}
 		
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PATIENT_READ")
 	public List<Patient> findAll(int pageIndex,int pageSize)
 	{
-		if(utils.getOrganization() == null)
-			return new ArrayList<Patient>();
-		
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId());
+		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
 	}
 	
 	@Secured("ROLE_PATIENT_CREATE")
@@ -133,7 +120,7 @@ public class PatientService
 		if(Strings.isNullOrEmpty(nameOrIdentity))
 			return findAll();
 		else
-			return repository.findAll(nameOrIdentity, utils.getOrganization().getId());
+			return repository.findAllWith(nameOrIdentity);
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)

@@ -12,6 +12,7 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zul.Cell;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Combobox;
@@ -27,7 +28,6 @@ import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.dm.Person.Gender;
 import com.kratonsolution.belian.general.dm.Person.MaritalStatus;
-import com.kratonsolution.belian.general.dm.PersonRole;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.healtcare.dm.BPJS;
@@ -71,6 +71,8 @@ public class PatientFormContent extends FormContent
 	private Textbox bpjsNumber = new Textbox();
 	
 	private Listbox company = Components.newSelect(utils.getOrganization());
+	
+	private Checkbox bpjsStatus = new Checkbox("Active");
 	
 	public PatientFormContent()
 	{
@@ -139,18 +141,7 @@ public class PatientFormContent extends FormContent
 					person.setName(name.getText());
 					person.setTaxCode(taxNumber.getText());
 
-					boolean _new = true;
-					
-					for(PersonRole role:person.getRoles())
-					{
-						if(role instanceof Patient && role.getTo().getId().equals(utils.getOrganization().getId()))
-						{
-							_new = false;
-							break;
-						}
-					}
-
-					if(_new)
+					if(patientService.findPerson(person.getId()) == null)
 					{
 						Patient patient = new Patient();
 						patient.setTo(utils.getOrganization());
@@ -277,6 +268,10 @@ public class PatientFormContent extends FormContent
 		row9.appendChild(new Label("Card Number"));
 		row9.appendChild(bpjsNumber);
 		
+		Row row10 = new Row();
+		row10.appendChild(new Label("Status"));
+		row10.appendChild(bpjsStatus);
+		
 		rows.appendChild(row002);
 		rows.appendChild(row001);
 		rows.appendChild(row1);
@@ -288,6 +283,7 @@ public class PatientFormContent extends FormContent
 		rows.appendChild(row7);
 		rows.appendChild(row8);
 		rows.appendChild(row9);
+		rows.appendChild(row10);
 	}
 	
 	private void fillForm(Person person)

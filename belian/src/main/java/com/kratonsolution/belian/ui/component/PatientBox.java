@@ -27,11 +27,20 @@ public class PatientBox extends Combobox implements EventListener<Event>
 	
 	public PatientBox()
 	{
+		this(false);
+	}
+	
+	public PatientBox(boolean fullspan)
+	{
 		setAutocomplete(true);
 		setAutodrop(true);
-		setWidth("300px");
 		setConstraint("no empty");
 		addEventListener(Events.ON_CHANGING,this);
+		
+		if(fullspan)
+			setWidth("100%");
+		else
+			setWidth("300px");
 	}
 
 	@Override
@@ -60,5 +69,12 @@ public class PatientBox extends Combobox implements EventListener<Event>
 			return service.findOne(getSelectedItem().getId());
 		
 		return null;
+	}
+	
+	public void setPatient(Patient patient)
+	{
+		getChildren().clear();
+		appendItem(patient.getFrom().getName()).setId(patient.getId());
+		setSelectedIndex(0);
 	}
 }

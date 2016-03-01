@@ -10,6 +10,7 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Cell;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
@@ -67,6 +68,8 @@ public class PatientEditContent extends FormContent
 
 	private Textbox bpjsNumber = new Textbox();
 	
+	private Checkbox bpjsStatus = new Checkbox("Active");
+	
 	private Row row;
 
 	public PatientEditContent(Row row)
@@ -114,6 +117,7 @@ public class PatientEditContent extends FormContent
 					patient.getFrom().setTaxCode(taxNumber.getText());
 
 					patient.getBpjs().setCard(bpjsNumber.getText());
+					patient.getBpjs().setActive(bpjsStatus.isChecked());
 					
 					personService.edit(patient.getFrom());
 				}
@@ -143,6 +147,7 @@ public class PatientEditContent extends FormContent
 			
 			bpjsNumber.setWidth("225px");
 			bpjsNumber.setText(patient.getBpjs().getCard());
+			bpjsStatus.setChecked(patient.getBpjs().isActive());
 			
 			if(patient.getTo() != null)
 			{
@@ -155,9 +160,7 @@ public class PatientEditContent extends FormContent
 				companys.setSelectedIndex(0);
 			}
 			else
-			{
 				Clients.showNotification("Default organization does not exist,please go to setting to set it up.");
-			}
 
 			for(Gender gender:Gender.values())
 			{
@@ -234,6 +237,10 @@ public class PatientEditContent extends FormContent
 			row9.appendChild(new Label("Card Number"));
 			row9.appendChild(bpjsNumber);
 			
+			Row row10 = new Row();
+			row10.appendChild(new Label("Status"));
+			row10.appendChild(bpjsStatus);
+			
 			rows.appendChild(row0012);
 			rows.appendChild(row001);
 			rows.appendChild(row1);
@@ -245,6 +252,7 @@ public class PatientEditContent extends FormContent
 			rows.appendChild(row7);
 			rows.appendChild(row8);
 			rows.appendChild(row9);
+			rows.appendChild(row10);
 		}
 	}
 }

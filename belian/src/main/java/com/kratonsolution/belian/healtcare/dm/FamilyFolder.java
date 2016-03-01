@@ -10,6 +10,7 @@ import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -26,7 +27,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="family_folder")
-public class FamiliFolder
+public class FamilyFolder
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -35,13 +36,13 @@ public class FamiliFolder
 	private String name;
 	
 	@Column(name="description")
-	private String description;
+	private String note;
 
 	@Version
 	private Long version;
 	
-	@OneToMany(mappedBy="folder",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="folder",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
 	private Set<FamilyMember> members = new HashSet<FamilyMember>();
 	
-	public FamiliFolder(){}
+	public FamilyFolder(){}
 }
