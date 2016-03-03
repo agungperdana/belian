@@ -48,7 +48,7 @@ public class DoctorDashboardContent extends Borderlayout
 		
 		setWidth("100%");
 		setHeight("100%");
-
+		
 		initLayout();
 		initTree();
 	}

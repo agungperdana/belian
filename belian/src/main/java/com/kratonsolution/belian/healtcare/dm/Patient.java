@@ -35,7 +35,7 @@ public class Patient extends PersonRole
 	@JoinColumn(name="fk_bpjs")
 	private BPJS bpjs;
 	
-	@OneToMany(mappedBy="patient")
+	@OneToMany(mappedBy="patient",fetch=FetchType.EAGER)
 	@OrderBy("date DESC")
 	private Set<DoctorAppointment> appointments = new HashSet<DoctorAppointment>();
 	
