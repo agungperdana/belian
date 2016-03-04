@@ -257,7 +257,7 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				MedicalProductRow row = new MedicalProductRow(Components.string(locations),customers.getPatient().getFrom().getId(),Components.string(currencys),customers.getPatient().isBpjs());
+				MedicalProductRow row = new MedicalProductRow(Components.string(locations),customers.getPatient().getFrom().getId(),Components.string(currencys),customers.getPatient().isBpjs(),true);
 				row.addProductPriceListener(PharmacySalesFormContent.this);
 				saleItems.getRows().appendChild(row);
 			}

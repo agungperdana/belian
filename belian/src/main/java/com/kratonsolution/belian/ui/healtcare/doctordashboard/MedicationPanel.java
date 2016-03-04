@@ -113,10 +113,8 @@ public class MedicationPanel extends Tabpanel
 	
 	public void store(DoctorAppointment appointment)
 	{
-		for(Component com:grid.getRows().getChildren())
+		if(!grid.getRows().getChildren().isEmpty())
 		{
-			MedicalProductRow row = (MedicalProductRow)com;
-			
 			Medication medication = new Medication();
 			medication.setCurrency(utils.getCurrency());
 			medication.setCustomer(appointment.getPatient().getFrom());
@@ -129,16 +127,21 @@ public class MedicationPanel extends Tabpanel
 			medication.setBpjs(appointment.getPatient().isBpjs());
 			medication.setPaid(medication.isBpjs());
 			
-			MedicationItem item = new MedicationItem();
-			item.setCharge(row.getCharge());
-			item.setDiscount(row.getDiscount());
-			item.setMedication(medication);
-			item.setMedicine(row.getProduct());
-			item.setNote(row.getNote());
-			item.setPrice(row.getPrice());
-			item.setQuantity(row.getQuantity());
-			
-			medication.getItems().add(item);
+			for(Component com:grid.getRows().getChildren())
+			{
+				MedicalProductRow row = (MedicalProductRow)com;
+				
+				MedicationItem item = new MedicationItem();
+				item.setCharge(row.getCharge());
+				item.setDiscount(row.getDiscount());
+				item.setMedication(medication);
+				item.setMedicine(row.getProduct());
+				item.setNote(row.getNote());
+				item.setPrice(row.getPrice());
+				item.setQuantity(row.getQuantity());
+				
+				medication.getItems().add(item);
+			}
 			
 			appointment.getRecord().setMedication(medication);
 		}

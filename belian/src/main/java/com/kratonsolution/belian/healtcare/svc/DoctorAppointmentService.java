@@ -101,9 +101,13 @@ public class DoctorAppointmentService extends SessionAware
 	@Secured("ROLE_DOCTOR_APPOINTMENT_UPDATE")
 	public void edit(DoctorAppointment appointment)
 	{
-		medicationService.add(appointment.getRecord().getMedication());
-		treatmentService.add(appointment.getRecord().getTreatment());
-		labService.add(appointment.getRecord().getLaboratory());
+		if(appointment.getRecord() != null)
+			medicationService.add(appointment.getRecord().getMedication());
+		if(appointment.getRecord().getTreatment() != null)
+			treatmentService.add(appointment.getRecord().getTreatment());
+		if(appointment.getRecord().getLaboratory() != null)
+			labService.add(appointment.getRecord().getLaboratory());
+		
 		repository.save(appointment);
 	}
 	

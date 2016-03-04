@@ -84,4 +84,10 @@ public class MedicationItem implements BillableItem
 	{
 		return getMedicine().getUom().getName();
 	}
+
+	@Override
+	public Product getProduct()
+	{
+		return getMedicine();
+	}
 }

@@ -113,10 +113,8 @@ public class LaboratoriumPanel extends Tabpanel
 	
 	public void store(DoctorAppointment appointment)
 	{
-		for(Component com:grid.getRows().getChildren())
+		if(!grid.getRows().getChildren().isEmpty())
 		{
-			MedicalProductRow row = (MedicalProductRow)com;
-			
 			Laboratory laboratory = new Laboratory();
 			laboratory.setCurrency(utils.getCurrency());
 			laboratory.setCustomer(appointment.getPatient().getFrom());
@@ -129,16 +127,21 @@ public class LaboratoriumPanel extends Tabpanel
 			laboratory.setBpjs(appointment.getPatient().isBpjs());
 			laboratory.setPaid(laboratory.isBpjs());
 			
-			LaboratoryItem item = new LaboratoryItem();
-			item.setCharge(row.getCharge());
-			item.setDiscount(row.getDiscount());
-			item.setLaboratory(laboratory);
-			item.setService(row.getProduct());
-			item.setNote(row.getNote());
-			item.setPrice(row.getPrice());
-			item.setQuantity(row.getQuantity());
-			
-			laboratory.getItems().add(item);
+			for(Component com:grid.getRows().getChildren())
+			{
+				MedicalProductRow row = (MedicalProductRow)com;
+				
+				LaboratoryItem item = new LaboratoryItem();
+				item.setCharge(row.getCharge());
+				item.setDiscount(row.getDiscount());
+				item.setLaboratory(laboratory);
+				item.setService(row.getProduct());
+				item.setNote(row.getNote());
+				item.setPrice(row.getPrice());
+				item.setQuantity(row.getQuantity());
+				
+				laboratory.getItems().add(item);
+			}
 			
 			appointment.getRecord().setLaboratory(laboratory);
 		}

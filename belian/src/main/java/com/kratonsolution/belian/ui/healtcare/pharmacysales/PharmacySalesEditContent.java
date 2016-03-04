@@ -285,7 +285,7 @@ public class PharmacySalesEditContent extends FormContent implements ProductPric
 			
 			for(MedicationItem item:medication.getItems())
 			{
-				MedicalProductRow row = new MedicalProductRow(utils.getLocation().getId(),medication.getCustomer().getId(), medication.getCurrency().getId(), bpjs);
+				MedicalProductRow row = new MedicalProductRow(utils.getLocation().getId(),medication.getCustomer().getId(), medication.getCurrency().getId(), bpjs,true);
 				row.setCharge(item.getCharge());
 				row.setDiscount(item.getDiscount());
 				row.setNote(item.getNote());

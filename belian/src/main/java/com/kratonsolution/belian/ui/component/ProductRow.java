@@ -18,7 +18,9 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Doublebox;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
@@ -28,6 +30,7 @@ import com.kratonsolution.belian.inventory.dm.ProductPrice;
 import com.kratonsolution.belian.inventory.dm.ProductPrice.Type;
 import com.kratonsolution.belian.inventory.dm.ProductPriceRepository;
 import com.kratonsolution.belian.inventory.dm.ProductRepository;
+import com.kratonsolution.belian.sales.dm.BillableItem;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Numbers;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -58,6 +61,8 @@ public class ProductRow extends Row
 
 	private Textbox note = new Textbox();
 	
+	private EventListener<Event> onSelectEvent;
+	
 	private Collection<ProductPriceSelectionListener> listeners = new ArrayList<ProductPriceSelectionListener>();
 
 	public ProductRow(String geographic,String customer,String currency)
@@ -71,7 +76,44 @@ public class ProductRow extends Row
 		appendChild(charges);
 		appendChild(note);
 		
+		initComponent();
 		init(geographic,customer,currency);
+	}
+	
+	public ProductRow(BillableItem item,EventListener<Event> onSelectEvent)
+	{
+		this.onSelectEvent = onSelectEvent;
+		setId(item.getId());
+		initComponent();
+		
+		appendChild(products);
+		appendChild(quantity);
+		appendChild(uoms);
+		appendChild(prices);
+		appendChild(discounts);
+		appendChild(charges);
+		appendChild(note);
+		appendChild(new Label(item.getId()));
+		
+		setBillable(item);
+	}
+
+	private void initComponent()
+	{
+		products.setWidth("100%");
+		quantity.setWidth("100%");
+		uoms.setWidth("100%");
+		prices.setWidth("100%");
+		discounts.setWidth("100%");
+		charges.setWidth("100%");
+		note.setWidth("100%");
+		
+		if(onSelectEvent != null)
+		{
+			prices.addEventListener(Events.ON_SELECT,onSelectEvent);
+			discounts.addEventListener(Events.ON_SELECT,onSelectEvent);
+			charges.addEventListener(Events.ON_SELECT,onSelectEvent);
+		}
 	}
 	
 	public Product getProduct()
@@ -82,6 +124,58 @@ public class ProductRow extends Row
 		return null;
 	}
 	
+	public void setBillable(BillableItem bill)
+	{
+		
+		products.appendChild(new ProductComboItem(bill.getProduct()));
+		products.setSelectedIndex(0);
+		products.setReadonly(true);
+	
+		quantity.setValue(bill.getQuantity().doubleValue());
+		quantity.setReadonly(true);
+		
+		uoms.appendItem(bill.getProduct().getUom().getName(), bill.getProduct().getUom().getId());
+		uoms.setSelectedIndex(0);
+		
+		for(ProductPrice price:bill.getProduct().getPrices())
+		{
+			if(!price.getType().equals(ProductPrice.Type.DISCOUNT) && !price.getType().equals(ProductPrice.Type.CHARGE))
+			{
+				Listitem itm = prices.appendItem(price.getLabel()+"("+price.getType().name()+")", price.getValue());
+				if(price.getType().equals(ProductPrice.Type.BASE))
+					prices.setSelectedItem(itm);
+			}
+		}
+		
+		for(ProductPrice price:bill.getProduct().getPrices())
+			if(price.getType().equals(ProductPrice.Type.DISCOUNT))
+				discounts.appendItem(price.getLabel(), price.getValue());
+		
+		for(ProductPrice price:bill.getProduct().getPrices())
+			if(price.getType().equals(ProductPrice.Type.CHARGE))
+				charges.appendItem(price.getLabel(), price.getValue());
+		
+		note.setText(bill.getNote());
+		
+		if(prices.getChildren().isEmpty())
+		{
+			prices.appendItem("Free", "0");
+			Components.setDefault(prices);
+		}
+		
+		if(discounts.getChildren().isEmpty())
+		{
+			discounts.appendItem("No Discount", "0");
+			Components.setDefault(discounts);
+		}
+		
+		if(charges.getChildren().isEmpty())
+		{
+			charges.appendItem("No Charge", "0");
+			Components.setDefault(charges);
+		}
+	}
+	
 	public void setProduct(Product product)
 	{
 		products.appendChild(new ProductComboItem(product));
@@ -89,6 +183,9 @@ public class ProductRow extends Row
 		
 		uoms.appendItem(product.getUom().getName(), product.getUom().getId());
 		uoms.setSelectedIndex(0);
+		
+		for(ProductPrice price:product.getPrices())
+			prices.appendItem(price.getLabel(), price.getValue());
 	}
 	
 	public void setQuantity(BigDecimal quantity)

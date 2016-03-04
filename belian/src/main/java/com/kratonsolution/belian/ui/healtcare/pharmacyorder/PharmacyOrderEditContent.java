@@ -168,44 +168,35 @@ public class PharmacyOrderEditContent extends FormContent
 			Row row1 = new Row();
 			row1.appendChild(new Label("Company"));
 			row1.appendChild(organizations);
-			row1.appendChild(new Label("Billing"));
-			row1.appendChild(bill);
-
+			row1.appendChild(new Label("Currency"));
+			row1.appendChild(currencys);
+			
 			Row row2 = new Row();
 			row2.appendChild(new Label("Document Number"));
 			row2.appendChild(number);
-			row2.appendChild(new Label("Tax"));
-			row2.appendChild(tax);
+			row2.appendChild(new Label("Customer"));
+			row2.appendChild(customers);
 
 			Row row3 = new Row();
 			row3.appendChild(new Label("Date"));
 			row3.appendChild(date);
-			row3.appendChild(new Label("Total Billing"));
-			row3.appendChild(totalBill);
-
+			row3.appendChild(new Label("Note"));
+			row3.appendChild(note);
+			
 			Row row5 = new Row();
 			row5.appendChild(new Label("Tax"));
 			row5.appendChild(taxes);
-			row5.appendChild(new Label("Currency"));
-			row5.appendChild(currencys);
-
-			Row row6 = new Row();
-			row6.appendChild(new Label("Sales"));
-			row6.appendChild(saleses);
-			row6.appendChild(new Label("Customer"));
-			row6.appendChild(customers);
+			row5.appendChild(new Label("Sales"));
+			row5.appendChild(saleses);
 
 			Row row8 = new Row();
 			row8.appendChild(new Label("Sales Location"));
 			row8.appendChild(locations);
-			row8.appendChild(new Label("Note"));
-			row8.appendChild(note);
 
 			rows.appendChild(row1);
 			rows.appendChild(row2);
 			rows.appendChild(row3);
 			rows.appendChild(row5);
-			rows.appendChild(row6);
 			rows.appendChild(row8);
 		}
 	}

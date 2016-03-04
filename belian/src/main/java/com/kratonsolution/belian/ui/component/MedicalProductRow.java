@@ -72,6 +72,20 @@ public class MedicalProductRow extends Row
 		init(geographic,customer,currency,bpjs);
 	}
 	
+	public MedicalProductRow(String geographic,String customer,String currency,boolean bpjs,boolean showPrice)
+	{
+		appendChild(deleteable);
+		appendChild(products);
+		appendChild(quantity);
+		appendChild(uoms);
+		appendChild(prices);
+		appendChild(discounts);
+		appendChild(charges);
+		appendChild(note);
+		
+		init(geographic,customer,currency,bpjs);
+	}
+	
 	public Product getProduct()
 	{
 		if(products.getSelectedItem() != null)
