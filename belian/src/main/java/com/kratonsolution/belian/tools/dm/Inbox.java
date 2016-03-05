@@ -49,6 +49,8 @@ public abstract class Inbox implements Serializable
 	@JoinColumn(name="fk_person_owner")
 	protected Person owner;
 
+	
+	
 	@Column(name="content")
 	protected String content;
 	
