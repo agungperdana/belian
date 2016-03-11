@@ -3,11 +3,8 @@
  */
 package com.kratonsolution.belian.ui.inventory.product.cost;
 
-import java.math.RoundingMode;
 import java.util.Iterator;
 
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -31,6 +28,7 @@ import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.TabedDisplay;
 import com.kratonsolution.belian.ui.inventory.product.ProductEditContent;
 import com.kratonsolution.belian.ui.util.Dates;
+import com.kratonsolution.belian.ui.util.Numbers;
 import com.kratonsolution.belian.ui.util.Objects;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -128,7 +126,7 @@ public class CostTab implements TabedDisplay
 			row.appendChild(remove);
 			row.appendChild(new Label(Dates.format(cost.getFrom())));
 			row.appendChild(new Label(Dates.format(cost.getTo())));
-			row.appendChild(new Label(Money.of(CurrencyUnit.of(cost.getCurrency().getCode()),cost.getEstimated(),RoundingMode.HALF_DOWN).toString()));
+			row.appendChild(new Label(Numbers.format(cost.getEstimated())));
 			row.appendChild(new Label(cost.getType().toString()));
 			row.appendChild(new Label(Objects.notNull(cost.getGeographic())?cost.getGeographic().getName():""));
 			row.appendChild(new Label(cost.getId()));

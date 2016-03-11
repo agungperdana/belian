@@ -16,8 +16,9 @@ import com.kratonsolution.belian.inventory.dm.InventoryItem;
 import com.kratonsolution.belian.inventory.dm.InventoryItemRepository;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -59,6 +60,10 @@ public class InventoryItemService
 	@Secured("ROLE_INVITEM_CREATE")
 	public void add(InventoryItem item)
 	{
+		InventoryItem ondb = repository.findOne(item.getProduct().getId(), item.getFacility().getId());
+		if(ondb != null)
+			throw new RuntimeException("Inventory Item already exist,please use stock adjustment to change on hand quantity.");
+		
 		repository.save(item);
 	}
 	
