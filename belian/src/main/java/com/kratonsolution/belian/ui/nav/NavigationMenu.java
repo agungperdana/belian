@@ -181,6 +181,8 @@ public class NavigationMenu extends Window
 			list.appendChild(new GoodsReceiveItem());
 		if(modules.containsKey("STOCK_ADJUSTMENT") && modules.get("STOCK_ADJUSTMENT"))
 			list.appendChild(new StockAdjustmentMenu());
+		if(modules.containsKey("STOCK_OPNAME") && modules.get("STOCK_OPNAME"))
+			list.appendChild(new StockOpnameMenu());
 		
 		if(!list.getChildren().isEmpty())
 		{

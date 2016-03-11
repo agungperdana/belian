@@ -48,6 +48,8 @@ public class RowUtils
 		Object object = row.getChildren().get(index);
 		if(object != null)
 		{
+			if(object instanceof Label)
+				return new BigDecimal(((Label)object).getValue());
 			if(object instanceof Doublebox)
 				return BigDecimal.valueOf(((Doublebox)object).doubleValue());
 			if(object instanceof Listbox)

@@ -68,6 +68,9 @@ public class Facility implements Serializable,Listable
 	@OneToMany(mappedBy="facility",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
 	private Set<FacilityOrganization> organizations = new HashSet<>();
 	
+	@OneToMany(mappedBy="facility")
+	private Set<InventoryItem> inventorys = new HashSet<>();
+	
 	public Facility(){}
 
 	@Override
