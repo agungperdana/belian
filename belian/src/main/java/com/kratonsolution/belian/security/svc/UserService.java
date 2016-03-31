@@ -33,7 +33,7 @@ public class UserService
 		
 	private StrongPasswordEncryptor encryptor = new StrongPasswordEncryptor();
 		
-	@Secured("ROLE_USER_READ")
+	@Secured({"ROLE_USER_READ","ROLE_SYSTEM_READ"})
 	public User findOne(String id)
 	{
 		User user = repository.findOne(id);

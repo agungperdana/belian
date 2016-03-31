@@ -3,6 +3,9 @@
  */
 package com.kratonsolution.belian.ui.security.role;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.CheckEvent;
@@ -32,10 +35,12 @@ import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.security.dm.AccessRole;
 import com.kratonsolution.belian.security.dm.AccessibleOrganization;
 import com.kratonsolution.belian.security.dm.Module;
+import com.kratonsolution.belian.security.dm.ModuleGroup;
 import com.kratonsolution.belian.security.dm.Role;
 import com.kratonsolution.belian.security.svc.ModuleService;
 import com.kratonsolution.belian.security.svc.RoleService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -60,11 +65,11 @@ public class RoleFormContent extends FormContent
 	
 	private Textbox note = new Textbox();
 	
-	private Grid accessModules = new Grid();
-	
 	private Tabbox tabbox = new Tabbox();
 	
 	private Grid accessibleCompanys = new Grid();
+	
+	private Collection<Grid> modules = new ArrayList<>();
 	
 	public RoleFormContent()
 	{
@@ -72,10 +77,6 @@ public class RoleFormContent extends FormContent
 		
 		tabbox.appendChild(new Tabs());
 		tabbox.appendChild(new Tabpanels());
-		tabbox.getTabs().appendChild(new Tab("Accessible Module"));
-		tabbox.getTabs().appendChild(new Tab("Accessible Company"));
-		tabbox.getTabpanels().appendChild(new Tabpanel());
-		tabbox.getTabpanels().appendChild(new Tabpanel());
 		appendChild(tabbox);
 		
 		initToolbar();
@@ -114,24 +115,27 @@ public class RoleFormContent extends FormContent
 				role.setName(name.getText());
 				role.setNote(note.getText());
 				
-				Rows moduleRows = accessModules.getRows();
-				for(Object object:moduleRows.getChildren())
+				for(Grid grid:modules)
 				{
-					Row _row = (Row)object;
-					
-					Module module = moduleService.findOne(RowUtils.string(_row, 6));
-					if(module != null)
+					Rows moduleRows = grid.getRows();
+					for(Object object:moduleRows.getChildren())
 					{
-						AccessRole accessRole = new AccessRole();
-						accessRole.setModule(module);
-						accessRole.setRole(role);
-						accessRole.setCanCreate(RowUtils.isChecked(_row, 1));
-						accessRole.setCanRead(RowUtils.isChecked(_row, 2));
-						accessRole.setCanUpdate(RowUtils.isChecked(_row, 3));
-						accessRole.setCanDelete(RowUtils.isChecked(_row, 4));
-						accessRole.setCanPrint(RowUtils.isChecked(_row, 5));
+						Row _row = (Row)object;
 						
-						role.getAccesses().add(accessRole);
+						Module module = moduleService.findOne(RowUtils.string(_row, 6));
+						if(module != null)
+						{
+							AccessRole accessRole = new AccessRole();
+							accessRole.setModule(module);
+							accessRole.setRole(role);
+							accessRole.setCanCreate(RowUtils.isChecked(_row, 1));
+							accessRole.setCanRead(RowUtils.isChecked(_row, 2));
+							accessRole.setCanUpdate(RowUtils.isChecked(_row, 3));
+							accessRole.setCanDelete(RowUtils.isChecked(_row, 4));
+							accessRole.setCanPrint(RowUtils.isChecked(_row, 5));
+							
+							role.getAccesses().add(accessRole);
+						}
 					}
 				}
 				
@@ -190,152 +194,161 @@ public class RoleFormContent extends FormContent
 	
 	protected void initModules()
 	{
-		Auxhead head = new Auxhead();
-		Auxheader header = new Auxheader("Module Access");
-		header.setColspan(7);
-		header.setRowspan(1);
-		
-		head.appendChild(header);
-		
-		Columns columns = new Columns();
-		
-		Column moduleName = new Column("Module");
-		moduleName.setWidth("175px");
-		
-		Column canCreate = new Column();
-		Column canRead = new Column();
-		Column canUpdate = new Column();
-		Column canDelete = new Column();
-		Column canPrint = new Column();
-		Column moduleId = new Column();
-		moduleId.setVisible(false);
-		
-		Checkbox check1 = new Checkbox("Create");
-		check1.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
+		for(ModuleGroup group:ModuleGroup.values())
 		{
-			@Override
-			public void onEvent(CheckEvent event) throws Exception
-			{
-				Rows rows = accessModules.getRows();
-				for(Object object:rows.getChildren())
-				{
-					Row _row = (Row)object;
-					if(event.isChecked())
-						RowUtils.checked(_row, 1);
-					else
-						RowUtils.unchecked(_row, 1);
-				}
-			}
-		});
-		
-		Checkbox check2 = new Checkbox("Read");
-		check2.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
-		{
-			@Override
-			public void onEvent(CheckEvent event) throws Exception
-			{
-				Rows rows = accessModules.getRows();
-				for(Object object:rows.getChildren())
-				{
-					Row _row = (Row)object;
-					if(event.isChecked())
-						RowUtils.checked(_row, 2);
-					else
-						RowUtils.unchecked(_row, 2);
-				}
-			}
-		});
-		
-		Checkbox check3 = new Checkbox("Update");
-		check3.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
-		{
-			@Override
-			public void onEvent(CheckEvent event) throws Exception
-			{
-				Rows rows = accessModules.getRows();
-				for(Object object:rows.getChildren())
-				{
-					Row _row = (Row)object;
-					if(event.isChecked())
-						RowUtils.checked(_row, 3);
-					else
-						RowUtils.unchecked(_row, 3);
-				}
-			}
-		});
-		
-		Checkbox check4 = new Checkbox("Delete");
-		check4.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
-		{
-			@Override
-			public void onEvent(CheckEvent event) throws Exception
-			{
-				Rows rows = accessModules.getRows();
-				for(Object object:rows.getChildren())
-				{
-					Row _row = (Row)object;
-					if(event.isChecked())
-						RowUtils.checked(_row, 4);
-					else
-						RowUtils.unchecked(_row, 4);
-				}
-			}
-		});
-		
-		Checkbox check5 = new Checkbox("Print");
-		check5.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
-		{
-			@Override
-			public void onEvent(CheckEvent event) throws Exception
-			{
-				Rows rows = accessModules.getRows();
-				for(Object object:rows.getChildren())
-				{
-					Row _row = (Row)object;
-					if(event.isChecked())
-						RowUtils.checked(_row, 5);
-					else
-						RowUtils.unchecked(_row, 5);
-				}
-			}
-		});
-		
-		canCreate.appendChild(check1);
-		canRead.appendChild(check2);
-		canUpdate.appendChild(check3);
-		canDelete.appendChild(check4);
-		canPrint.appendChild(check5);
-		
-		columns.appendChild(moduleName);
-		columns.appendChild(canCreate);
-		columns.appendChild(canRead);
-		columns.appendChild(canUpdate);
-		columns.appendChild(canDelete);
-		columns.appendChild(canPrint);
-		columns.appendChild(moduleId);
-	
-		Rows moduleRows = new Rows();
-		
-		for(Module module:moduleService.findAll())
-		{
-			Row row = new Row();
-			row.appendChild(new Label(module.getName()));
-			row.appendChild(new Checkbox());
-			row.appendChild(new Checkbox());
-			row.appendChild(new Checkbox());
-			row.appendChild(new Checkbox());
-			row.appendChild(new Checkbox());
-			row.appendChild(new Label(module.getId()));
+			Grid grid = new Grid();
+			grid.appendChild(new Rows());
+			grid.appendChild(new Columns());
+			grid.setHflex("1");
+			grid.setSpan("0");
 			
-			moduleRows.appendChild(row);
+			Auxhead head = new Auxhead();
+			Auxheader header = new Auxheader("Module Access");
+			header.setColspan(7);
+			header.setRowspan(1);
+			
+			head.appendChild(header);
+			
+			Column canCreate = new Column(null,null,"85px");
+			Column canRead = new Column(null,null,"85px");
+			Column canUpdate = new Column(null,null,"85px");
+			Column canDelete = new Column(null,null,"85px");
+			Column canPrint = new Column(null,null,"85px");
+			Column moduleId = new Column();
+			moduleId.setVisible(false);
+			
+			Checkbox check1 = new Checkbox("Create");
+			check1.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
+			{
+				@Override
+				public void onEvent(CheckEvent event) throws Exception
+				{
+					Rows rows = grid.getRows();
+					for(Object object:rows.getChildren())
+					{
+						Row _row = (Row)object;
+						if(event.isChecked())
+							RowUtils.checked(_row, 1);
+						else
+							RowUtils.unchecked(_row, 1);
+					}
+				}
+			});
+			
+			Checkbox check2 = new Checkbox("Read");
+			check2.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
+			{
+				@Override
+				public void onEvent(CheckEvent event) throws Exception
+				{
+					Rows rows = grid.getRows();
+					for(Object object:rows.getChildren())
+					{
+						Row _row = (Row)object;
+						if(event.isChecked())
+							RowUtils.checked(_row, 2);
+						else
+							RowUtils.unchecked(_row, 2);
+					}
+				}
+			});
+			
+			Checkbox check3 = new Checkbox("Update");
+			check3.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
+			{
+				@Override
+				public void onEvent(CheckEvent event) throws Exception
+				{
+					Rows rows = grid.getRows();
+					for(Object object:rows.getChildren())
+					{
+						Row _row = (Row)object;
+						if(event.isChecked())
+							RowUtils.checked(_row, 3);
+						else
+							RowUtils.unchecked(_row, 3);
+					}
+				}
+			});
+			
+			Checkbox check4 = new Checkbox("Delete");
+			check4.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
+			{
+				@Override
+				public void onEvent(CheckEvent event) throws Exception
+				{
+					Rows rows = grid.getRows();
+					for(Object object:rows.getChildren())
+					{
+						Row _row = (Row)object;
+						if(event.isChecked())
+							RowUtils.checked(_row, 4);
+						else
+							RowUtils.unchecked(_row, 4);
+					}
+				}
+			});
+			
+			Checkbox check5 = new Checkbox("Print");
+			check5.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
+			{
+				@Override
+				public void onEvent(CheckEvent event) throws Exception
+				{
+					Rows rows = grid.getRows();
+					for(Object object:rows.getChildren())
+					{
+						Row _row = (Row)object;
+						if(event.isChecked())
+							RowUtils.checked(_row, 5);
+						else
+							RowUtils.unchecked(_row, 5);
+					}
+				}
+			});
+			
+			canCreate.appendChild(check1);
+			canRead.appendChild(check2);
+			canUpdate.appendChild(check3);
+			canDelete.appendChild(check4);
+			canPrint.appendChild(check5);
+			
+			grid.getColumns().appendChild(new Column("Module",null,"175px"));
+			grid.getColumns().appendChild(canCreate);
+			grid.getColumns().appendChild(canRead);
+			grid.getColumns().appendChild(canUpdate);
+			grid.getColumns().appendChild(canDelete);
+			grid.getColumns().appendChild(canPrint);
+			grid.getColumns().appendChild(moduleId);
+			
+			for(Module module:moduleService.findAll())
+			{
+				if(module.getGroup().equals(group))
+				{
+					Row row = new Row();
+					row.appendChild(new Label(module.getName()));
+					row.appendChild(Components.checkbox(module.getGroup().equals(ModuleGroup.SYSTEM)));
+					row.appendChild(Components.checkbox(module.getGroup().equals(ModuleGroup.SYSTEM)));
+					row.appendChild(Components.checkbox(module.getGroup().equals(ModuleGroup.SYSTEM)));
+					row.appendChild(Components.checkbox(module.getGroup().equals(ModuleGroup.SYSTEM)));
+					row.appendChild(Components.checkbox(module.getGroup().equals(ModuleGroup.SYSTEM)));
+					row.appendChild(new Label(module.getId()));
+					
+					grid.getRows().appendChild(row);
+				}
+			}
+			
+			grid.appendChild(head);
+			grid.setSpan("0");
+			
+			Tabpanel panel = new Tabpanel();
+			panel.appendChild(grid);
+			
+			tabbox.getTabs().appendChild(new Tab(group.name()));
+			tabbox.getTabpanels().appendChild(panel);
+			
+			modules.add(grid);
 		}
-		
-		accessModules.appendChild(head);
-		accessModules.appendChild(columns);
-		accessModules.appendChild(moduleRows);
-		accessModules.setSpan("0");
-		
-		tabbox.getTabpanels().getChildren().get(0).appendChild(accessModules);
 	}
 	
 	private void initCompanys()
@@ -357,6 +370,10 @@ public class RoleFormContent extends FormContent
 			accessibleCompanys.getRows().appendChild(row);
 		}
 		
-		tabbox.getTabpanels().getChildren().get(1).appendChild(accessibleCompanys);
+		Tabpanel tabpanel = new Tabpanel();
+		tabpanel.appendChild(accessibleCompanys);
+		
+		tabbox.getTabs().appendChild(new Tab("Accessible Company"));
+		tabbox.getTabpanels().appendChild(tabpanel);
 	}
 }

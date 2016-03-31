@@ -13,12 +13,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.accounting.dm.TaxRepository;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -33,13 +35,16 @@ public class TaxService
 		return Long.valueOf(repository.count()).intValue();
 	}
 	
-	@Secured("ROLE_TAX_READ")
+	@Secured({"ROLE_TAX_READ","ROLE_SYSTEM_READ"})
 	public Tax findOne(String id)
 	{
-		return repository.findOne(id);
+		if(!Strings.isNullOrEmpty(id))
+			return repository.findOne(id);
+		
+		return null;
 	}
 	
-	@Secured("ROLE_TAX_READ")
+	@Secured({"ROLE_TAX_READ","ROLE_SYSTEM_READ"})
 	public List<Tax> findAll()
 	{
 		return repository.findAll();

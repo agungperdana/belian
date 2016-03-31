@@ -133,7 +133,6 @@ public class DoctorService
 	public List<Doctor> findAllByCompanys(Collection<String> companys)
 	{
 		return new ArrayList<>();
-//		return repository.findAllForCompanys(companys);
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -141,11 +140,10 @@ public class DoctorService
 	public List<Doctor> findAllPartner(String id)
 	{
 		return new ArrayList<>();
-//		return repository.findAllPartners(id);
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_DOCTOR_READ")
+	@Secured({"ROLE_DOCTOR_READ","ROLE_SYSTEM_READ"})
 	public List<Doctor> findAllByPerson(String id)
 	{
 		return repository.findAllByPerson(id);

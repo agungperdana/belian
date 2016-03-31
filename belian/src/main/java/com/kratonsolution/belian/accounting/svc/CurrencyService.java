@@ -13,12 +13,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.dm.CurrencyRepository;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -33,13 +35,16 @@ public class CurrencyService
 		return Long.valueOf(repository.count()).intValue();
 	}
 	
-	@Secured("ROLE_CURRENCY_READ")
+	@Secured({"ROLE_CURRENCY_READ","ROLE_SYSTEM_READ"})
 	public Currency findOne(String id)
 	{
-		return repository.findOne(id);
+		if(!Strings.isNullOrEmpty(id))
+			return repository.findOne(id);
+		
+		return null;
 	}
 	
-	@Secured("ROLE_CURRENCY_READ")
+	@Secured({"ROLE_CURRENCY_READ","ROLE_SYSTEM_READ"})
 	public List<Currency> findAll()
 	{
 		return repository.findAll();

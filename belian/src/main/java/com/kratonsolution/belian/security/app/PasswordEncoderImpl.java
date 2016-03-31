@@ -7,8 +7,9 @@ import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class PasswordEncoderImpl implements PasswordEncoder
 {

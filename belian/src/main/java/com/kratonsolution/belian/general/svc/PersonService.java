@@ -30,14 +30,14 @@ public class PersonService
 	private PersonRepository repository;
 		
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_PERSON_READ")
+	@Secured({"ROLE_PERSON_READ","ROLE_SYSTEM_READ"})
 	public Person findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_PERSON_READ")
+	@Secured({"ROLE_PERSON_READ","ROLE_SYSTEM_READ"})
 	public Person findOneByName(String name)
 	{
 		return repository.findOneByName(name);
@@ -120,7 +120,7 @@ public class PersonService
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_PERSON_READ")
+	@Secured({"ROLE_PERSON_READ","ROLE_SYSTEM_READ"})
 	public Person anonymous()
 	{
 		return repository.findOneByName(Person.ANONYMOUS);

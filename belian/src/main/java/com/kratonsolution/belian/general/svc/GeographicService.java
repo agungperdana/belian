@@ -12,13 +12,15 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.GeographicRepository;
 import com.kratonsolution.belian.security.dm.AccessGrantedFor;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -27,13 +29,16 @@ public class GeographicService
 	@Autowired
 	private GeographicRepository repository;
 		
-	@Secured(AccessGrantedFor.ROLE_GEOGRAPHIC_READ)
+	@Secured({AccessGrantedFor.ROLE_GEOGRAPHIC_READ,"ROLE_SYSTEM_READ"})
 	public Geographic findOne(String id)
 	{
-		return repository.findOne(id);
+		if(!Strings.isNullOrEmpty(id))
+			return repository.findOne(id);
+	
+		return null;
 	}
 	
-	@Secured(AccessGrantedFor.ROLE_GEOGRAPHIC_READ)
+	@Secured({AccessGrantedFor.ROLE_GEOGRAPHIC_READ,"ROLE_SYSTEM_READ"})
 	public List<Geographic> findAll()
 	{
 		return repository.findAll();

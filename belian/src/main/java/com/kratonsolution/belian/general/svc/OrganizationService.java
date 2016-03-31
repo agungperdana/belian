@@ -12,6 +12,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.OrganizationRepository;
@@ -36,13 +37,16 @@ public class OrganizationService
 	@Autowired
 	private List<EconomicAgentRoleEventListener> listeners;
 
-	@Secured("ROLE_ORGANIZATION_READ")
+	@Secured({"ROLE_ORGANIZATION_READ","ROLE_SYSTEM_READ"})
 	public Organization findOne(String id)
 	{
-		return repository.findOne(id);
+		if(!Strings.isNullOrEmpty(id))
+			return repository.findOne(id);
+	
+		return null;
 	}
 
-	@Secured("ROLE_ORGANIZATION_READ")
+	@Secured({"ROLE_ORGANIZATION_READ","ROLE_SYSTEM_READ"})
 	public List<Organization> findAll()
 	{
 		return repository.findAll();

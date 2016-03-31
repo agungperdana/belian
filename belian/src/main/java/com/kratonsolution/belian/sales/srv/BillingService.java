@@ -35,21 +35,21 @@ public class BillingService
 	@Autowired
 	private SessionUtils utils;
 	
-	@Secured("ROLE_BILLING_READ")
+	@Secured({"ROLE_BILLING_READ","ROLE_CASHIER_READ"})
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public Billable findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 	
-	@Secured("ROLE_BILLING_READ")
+	@Secured({"ROLE_BILLING_READ","ROLE_CASHIER_READ"})
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<Billable> findAll()
 	{
 		return repository.findAll(new Sort(Sort.Direction.ASC,"code"));
 	}
 	
-	@Secured("ROLE_BILLING_READ")
+	@Secured({"ROLE_BILLING_READ","ROLE_CASHIER_READ"})
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<Billable> findAll(int pageindex,int itemSize)
 	{
@@ -61,21 +61,21 @@ public class BillingService
 		return list;
 	}
 	
-	@Secured("ROLE_BILLING_READ")
+	@Secured({"ROLE_BILLING_READ","ROLE_CASHIER_READ"})
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<Billable> findAllByDateAndOrganizationIdAndPaid(Date date,String companyId,boolean paid)
 	{
 		return repository.findAllByDateAndOrganizationIdAndPaid(date, companyId, paid);
 	}
 	
-	@Secured("ROLE_BILLING_READ")
+	@Secured({"ROLE_BILLING_READ","ROLE_CASHIER_READ"})
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<Billable> forCashier()
 	{
 		return repository.forCashier(new Date(System.currentTimeMillis()), utils.getOrganization().getId());
 	}
 	
-	@Secured("ROLE_BILLING_READ")
+	@Secured({"ROLE_BILLING_READ","ROLE_CASHIER_READ"})
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<Billable> forCashier(String key)
 	{
@@ -103,7 +103,7 @@ public class BillingService
 		repository.save(module);
 	}
 	
-	@Secured("ROLE_BILLING_UPDATE")
+	@Secured({"ROLE_BILLING_UPDATE","ROLE_CASHIER_UPDATE"})
 	public void edit(Billable module)
 	{
 		repository.save(module);
@@ -123,7 +123,7 @@ public class BillingService
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_BILLING_READ")
+	@Secured({"ROLE_BILLING_READ","ROLE_CASHIER_READ"})
 	public List<Billable> findAllCurrent(String key)
 	{
 		if(Strings.isNullOrEmpty(key))
@@ -133,7 +133,7 @@ public class BillingService
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_BILLING_READ")
+	@Secured({"ROLE_BILLING_READ","ROLE_CASHIER_READ"})
 	public List<Billable> findAll(String key)
 	{
 		if(Strings.isNullOrEmpty(key))

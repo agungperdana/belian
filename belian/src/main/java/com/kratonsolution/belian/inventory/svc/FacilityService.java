@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.inventory.dm.Facility;
 import com.kratonsolution.belian.inventory.dm.FacilityOrganization;
@@ -41,19 +42,22 @@ public class FacilityService
 		return repository.size().intValue();
 	}
 	
-	@Secured("ROLE_FACILITY_READ")
+	@Secured({"ROLE_FACILITY_READ","ROLE_SYSTEM_READ"})
 	public Facility findOne(String id)
 	{
-		return repository.findOne(id);
+		if(!Strings.isNullOrEmpty(id))
+			return repository.findOne(id);
+		
+		return null;
 	}
 	
-	@Secured("ROLE_FACILITY_READ")
+	@Secured({"ROLE_FACILITY_READ","ROLE_SYSTEM_READ"})
 	public Facility findOneByCode(String code)
 	{
 		return repository.findOneByCode(code);
 	}
 	
-	@Secured("ROLE_FACILITY_READ")
+	@Secured({"ROLE_FACILITY_READ","ROLE_SYSTEM_READ"})
 	public List<Facility> findAllActive()
 	{
 		List<Facility> ins = new ArrayList<Facility>();

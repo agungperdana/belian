@@ -37,7 +37,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 			.antMatchers("/js/**").permitAll()
 			.anyRequest().authenticated();
 
-		http.formLogin().failureUrl("/failur").loginPage("/login").permitAll()
+		http.formLogin().failureUrl("/svc/failur").loginPage("/login").permitAll()
 			.and()
         	.logout().logoutUrl("/logout").permitAll();
 		

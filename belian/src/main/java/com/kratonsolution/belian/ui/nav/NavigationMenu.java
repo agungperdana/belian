@@ -52,6 +52,7 @@ public class NavigationMenu extends Window
 		initSecurity(modules);
 		initAccounting(modules);
 		initInventory(modules);
+		initAsset(modules);
 		initSales(modules);
 		initProcurement(modules);
 		initHealtcare(modules);
@@ -307,6 +308,24 @@ public class NavigationMenu extends Window
 		if(!list.getChildren().isEmpty())
 		{
 			tabs.appendChild(new Tab(language.get("navbar.menu.hr")));
+			Tabpanel hr = new Tabpanel();
+			hr.setStyle("overflow:auto");
+			hr.appendChild(list);
+			panels.appendChild(hr);
+		}
+	}
+	
+	protected void initAsset(Map<String,Boolean> modules)
+	{
+		Listbox list = new Listbox();
+		list.setStyle("border:none");
+		
+		if(modules.containsKey("ASSET_TYPE") && modules.get("ASSET_TYPE"))
+			list.appendChild(new AssetTypeItem());
+
+		if(!list.getChildren().isEmpty())
+		{
+			tabs.appendChild(new Tab(language.get("navbar.menu.asset")));
 			Tabpanel hr = new Tabpanel();
 			hr.setStyle("overflow:auto");
 			hr.appendChild(list);

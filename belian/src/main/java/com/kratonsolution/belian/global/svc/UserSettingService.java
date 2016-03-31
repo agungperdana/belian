@@ -3,8 +3,6 @@
  */
 package com.kratonsolution.belian.global.svc;
 
-import java.util.UUID;
-
 import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -36,7 +34,6 @@ public class UserSettingService
 		if(user != null && user.getSetting() == null)
 		{
 			UserSetting setting = new UserSetting();
-			setting.setId(UUID.randomUUID().toString());
 			setting.setLanguage("en_US");
 			
 			user.setSetting(setting);
@@ -47,7 +44,7 @@ public class UserSettingService
 		return user;
 	}
 	
-	@Secured("ROLE_USER_SETTING_UPDATE")
+	@Secured({"ROLE_USER_SETTING_UPDATE","ROLE_SYSTEM_UPDATE"})
 	public void edit(User user)
 	{
 		userRepository.save(user);
