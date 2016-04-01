@@ -3,41 +3,22 @@
  */
 package com.kratonsolution.belian.ui.assettype;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
-import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
-import org.zkoss.zul.Rows;
-import org.zkoss.zul.Tab;
-import org.zkoss.zul.Tabbox;
-import org.zkoss.zul.Tabpanel;
-import org.zkoss.zul.Tabpanels;
-import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
-import com.google.common.base.Strings;
-import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.Organization;
-import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.inventory.dm.Facility;
-import com.kratonsolution.belian.inventory.dm.FacilityOrganization;
-import com.kratonsolution.belian.inventory.dm.FacilityType;
-import com.kratonsolution.belian.inventory.svc.FacilityService;
+import com.kratonsolution.belian.asset.dm.AssetType;
+import com.kratonsolution.belian.asset.svc.AssetTypeService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.Removeable;
 import com.kratonsolution.belian.ui.util.Components;
-import com.kratonsolution.belian.ui.util.RowUtils;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -45,104 +26,55 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class AssetTypeFormContent extends FormContent
+public class AssetTypeFormContent extends FormContent implements Removeable
 {	
-	private FacilityService service = Springs.get(FacilityService.class);
-	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
-	
-	private OrganizationService organizationService = Springs.get(OrganizationService.class);
+private AssetTypeService service = Springs.get(AssetTypeService.class);
 	
 	private Textbox code = new Textbox();
-	
+
 	private Textbox name = new Textbox();
+
+	private Listbox types = Components.newSelect();
 	
-	private Textbox note = new Textbox();
+	private AssetType parent;
 	
-	private Listbox types = new Listbox();
-	
-	private Facility parent;
-	
-	private Collection<FacilityDataListener> listeners = new ArrayList<>();
-	
-	private Tabbox tabbox = new Tabbox();
-	
-	private Grid orgs = new Grid();
-	
-	public AssetTypeFormContent(Facility parent)
+	public AssetTypeFormContent(AssetType parent)
 	{
 		super();
-		
+
 		this.parent = parent;
-
-		removeChild(grid);
-		
-		tabbox.setHeight("100%");
-		tabbox.setWidth("100%");
-		tabbox.appendChild(new Tabs());
-		tabbox.appendChild(new Tabpanels());
-		tabbox.getTabs().appendChild(new Tab("FORM"));
-		tabbox.getTabs().appendChild(new Tab("ORGANIZATION(S)"));
-		tabbox.getTabpanels().appendChild(new Tabpanel());
-		tabbox.getTabpanels().appendChild(new Tabpanel());
-		tabbox.getTabpanels().getChildren().get(0).appendChild(grid);
-
-		appendChild(tabbox);
 		
 		initToolbar();
 		initForm();
-		initOrganization();
 	}
 
 	@Override
 	public void initToolbar()
 	{
-		toolbar.removeChild(toolbar.getCancel());
+		toolbar.getCancel().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				Flow.next(getParent(), null);
+			}
+		});
+		
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				if(Strings.isNullOrEmpty(code.getText()))
-					throw new WrongValueException(code,"Code cannot be empty");
-			
-				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
-				
-				Facility out = service.findOneByCode(code.getText());
-				if(out != null)
-				{
-					Clients.showNotification("Facility with code "+code.getText()+" already exist.");
-					return;
-				}
-					
-				Facility facility = new Facility();
-				facility.setCode(code.getText());
-				facility.setName(name.getText());
-				facility.setNote(note.getText());
-				facility.setType(FacilityType.valueOf(types.getSelectedItem().getValue().toString()));
+				AssetType type = new AssetType();
+				type.setCode(code.getText());
+				type.setName(name.getText());
 				
 				if(parent != null)
-					facility.setParent(parent);
+					type.setParent(parent);
+			
+				service.add(type);
 				
-				for(Component com:orgs.getRows().getChildren())
-				{
-					Row row = (Row)com;
-					
-					FacilityOrganization organization = new FacilityOrganization();
-					organization.setEnabled(RowUtils.isChecked(row, 0));
-					organization.setFacility(facility);
-					organization.setOrganization(organizationService.findOne(RowUtils.string(row, 2)));
-					
-					facility.getOrganizations().add(organization);
-				}
-				
-				service.add(facility);
-				
-				for(FacilityDataListener listener:listeners)
-					listener.fireDataAdded(facility);
-				
-				Clients.showNotification("Data successfully added.");
+				Flow.next(getParent().getParent().getParent(), new AssetTypeContent());
 			}
 		});
 	}
@@ -156,16 +88,15 @@ public class AssetTypeFormContent extends FormContent
 		name.setConstraint("no empty");
 		name.setWidth("300px");
 		
-		note.setWidth("350px");
-		
 		types.setMold("select");
-		for(FacilityType type:FacilityType.values())
-			types.appendChild(new Listitem(type.name(),type.name()));
-		
-		types.setSelectedIndex(0);
+		if(this.parent != null)
+		{
+			types.appendItem(this.parent.getName(), this.parent.getId());
+			types.setSelectedIndex(0);
+		}
 		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
@@ -177,43 +108,11 @@ public class AssetTypeFormContent extends FormContent
 		row2.appendChild(name);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Type"));
+		row3.appendChild(new Label("Parent"));
 		row3.appendChild(types);
-		
-		Row row4 = new Row();
-		row4.appendChild(new Label("Note"));
-		row4.appendChild(note);
 		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
-		rows.appendChild(row4);
-	}
-	
-	public void initOrganization()
-	{
-		orgs.appendChild(new Columns());
-		orgs.appendChild(new Rows());
-		orgs.getColumns().appendChild(new Column(null,null,"25px"));
-		orgs.getColumns().appendChild(new Column("Organization",null,"150px"));
-		orgs.getColumns().appendChild(new Column(null,null,"0px"));
-		orgs.getColumns().getChildren().get(2).setVisible(false);
-		
-		for(Organization organization:utils.getOrganizations())
-		{
-			Row row = new Row();
-			row.appendChild(Components.checkbox(false));
-			row.appendChild(new Label(organization.getName()));
-			row.appendChild(new Label(organization.getId()));
-		
-			orgs.getRows().appendChild(row);
-		}
-		
-		tabbox.getTabpanels().getChildren().get(1).appendChild(orgs);
-	}
-	
-	public void addModelDataListener(FacilityDataListener listener)
-	{
-		listeners.add(listener);
 	}
 }

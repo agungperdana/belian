@@ -4,7 +4,6 @@
 package com.kratonsolution.belian.asset.svc;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -56,16 +55,15 @@ public class AssetTypeService
 	}
 	
 	@Secured("ROLE_ASSET_TYPE_CREATE")
-	public void add(AssetType geographic)
+	public void add(AssetType asset)
 	{
-		geographic.setId(UUID.randomUUID().toString());
-		repository.save(geographic);
+		repository.save(asset);
 	}
 	
 	@Secured("ROLE_ASSET_TYPE_UPDATE")
-	public void edit(AssetType geographic)
+	public void edit(AssetType asset)
 	{
-		repository.saveAndFlush(geographic);
+		repository.saveAndFlush(asset);
 	}
 	
 	@Secured("ROLE_ASSET_TYPE_DELETE")
