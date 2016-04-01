@@ -16,6 +16,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.global.dm.Listable;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,7 +30,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="asset")
-public class Asset implements Serializable
+public class Asset implements Serializable,Listable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -63,8 +66,24 @@ public class Asset implements Serializable
 	@JoinColumn(name="fk_asset_type")
 	private AssetType type;
 	
+	@ManyToOne
+	@JoinColumn(name="fk_organization")
+	private Organization organization;
+	
 	@Version
 	private Long version;
 	
 	public Asset(){}
+
+	@Override
+	public String getLabel()
+	{
+		return getName();
+	}
+
+	@Override
+	public String getValue()
+	{
+		return getId();
+	}
 }

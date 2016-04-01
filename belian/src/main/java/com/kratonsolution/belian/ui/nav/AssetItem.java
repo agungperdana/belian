@@ -18,19 +18,19 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class AssetTypeItem extends Listitem
+public class AssetItem extends Listitem
 {
 	private Language language = Springs.get(Language.class);
 	
-	public AssetTypeItem()
+	public AssetItem()
 	{
 		init();
 	}
 	
 	public void init()
 	{
-		setLabel(language.get("navbar.menu.asset.assettype"));
-		setImage("/icons/assettype.png");
+		setLabel(language.get("navbar.menu.asset.asset"));
+		setImage("/icons/asset.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{

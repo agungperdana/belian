@@ -18,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.global.dm.Listable;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,7 +31,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="asset_type")
-public class AssetType
+public class AssetType implements Listable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -51,4 +53,16 @@ public class AssetType
 	private Set<AssetType> childs = new HashSet<>();
 	
 	public AssetType(){}
+
+	@Override
+	public String getLabel()
+	{
+		return getName();
+	}
+
+	@Override
+	public String getValue()
+	{
+		return getId();
+	}
 }

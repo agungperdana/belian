@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.assettype;
+package com.kratonsolution.belian.ui.asset.assettype;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Page;

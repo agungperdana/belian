@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.assettype;
+package com.kratonsolution.belian.ui.asset.assettype;
 
 import org.zkoss.zul.Toolbarbutton;
 
