@@ -40,6 +40,7 @@ public class AssetWindow extends AbstractWindow implements HasGrid,HasCreateForm
 	private AssetWindow()
 	{
 		super();
+		setWidth("600px");
 	}
 	
 	protected void init()

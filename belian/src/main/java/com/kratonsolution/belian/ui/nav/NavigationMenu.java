@@ -322,6 +322,8 @@ public class NavigationMenu extends Window
 		
 		if(modules.containsKey("ASSET_TYPE") && modules.get("ASSET_TYPE"))
 			list.appendChild(new AssetTypeItem());
+		if(modules.containsKey("ASSET") && modules.get("ASSET"))
+			list.appendChild(new AssetItem());
 
 		if(!list.getChildren().isEmpty())
 		{

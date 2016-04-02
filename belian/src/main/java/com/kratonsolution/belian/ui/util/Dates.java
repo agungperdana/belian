@@ -29,4 +29,12 @@ public class Dates
 		Period period = Period.between(new java.sql.Date(birthDate.getTime()).toLocalDate(), new java.sql.Date(System.currentTimeMillis()).toLocalDate());
 		return period.getYears()+"";
 	}
+	
+	public static java.sql.Date sql(Date date)
+	{
+		if(date != null)
+			return new java.sql.Date(date.getTime());
+		
+		return null;
+	}
 }

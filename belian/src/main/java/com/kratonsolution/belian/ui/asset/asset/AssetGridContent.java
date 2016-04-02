@@ -18,6 +18,7 @@ import org.zkoss.zul.event.PagingEvent;
 import com.kratonsolution.belian.asset.svc.AssetService;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.Removeable;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -25,7 +26,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class AssetGridContent extends GridContent
+public class AssetGridContent extends GridContent implements Removeable
 {
 	private AssetService service = Springs.get(AssetService.class);
 	
@@ -154,7 +155,7 @@ public class AssetGridContent extends GridContent
 		final AssetModel model = new AssetModel(utils.getRowPerPage());
 		
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No tax data exist.");
+		grid.setEmptyMessage("No Asset data exist.");
 		grid.setModel(model);
 		grid.setRowRenderer(new AssetRowRenderer());
 		grid.setPagingPosition("both");
@@ -182,5 +183,7 @@ public class AssetGridContent extends GridContent
 		});
 		
 		refresh(new AssetModel(utils.getRowPerPage()));
+		
+		appendChild(grid);
 	}
 }

@@ -10,7 +10,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.Language;
-import com.kratonsolution.belian.ui.asset.assettype.AssetTypeWindow;
+import com.kratonsolution.belian.ui.asset.asset.AssetWindow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -37,16 +37,16 @@ public class AssetItem extends Listitem
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				AssetTypeWindow window = null;
+				AssetWindow window = null;
 				
 				for(Component component:getPage().getRoots())
 				{
-					if(component instanceof AssetTypeWindow)
-						window = (AssetTypeWindow)component;
+					if(component instanceof AssetWindow)
+						window = (AssetWindow)component;
 				}
 				
 				if(window == null)
-					window = AssetTypeWindow.injectInto(getPage());
+					window = AssetWindow.injectInto(getPage());
 				
 				else if(!window.isVisible())
 				{

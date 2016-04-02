@@ -254,6 +254,16 @@ public class Components
 		return box;
 	}
 	
+	public static final Doublebox stdDoubleBox(double value)
+	{
+		Doublebox box = new Doublebox(0d);
+		box.setWidth("200px");
+		box.setStyle("text-align:right;display:block;");
+		box.setValue(value);
+		
+		return box;
+	}
+	
 	public static final boolean isEmpty(Listbox listbox)
 	{
 		if(listbox == null)
