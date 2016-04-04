@@ -3,23 +3,26 @@
  */
 package com.kratonsolution.belian.accounting.dm;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import com.kratonsolution.belian.general.dm.Organization;
-import com.kratonsolution.belian.global.dm.Reviewable;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -33,8 +36,11 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="budget")
-public class Budget extends Reviewable
+public class Budget implements Serializable
 {
+	@Id
+	private String id = UUID.randomUUID().toString();
+	
 	@Column(name="start")
 	private Date start;
 	
@@ -52,6 +58,13 @@ public class Budget extends Reviewable
 	@Enumerated(EnumType.STRING)
 	private BudgetType type = BudgetType.Operating;
 
+	@ManyToOne
+	@JoinColumn(name="fk_last_status")
+	private BudgetStatus lastStatus;
+	
+	@Version
+	private Long version;
+	
 	@OneToMany(mappedBy="budget",cascade=CascadeType.ALL,orphanRemoval=true)
 	@OrderBy("sequence")
 	private Set<BudgetItem> items = new HashSet<BudgetItem>();
@@ -62,4 +75,12 @@ public class Budget extends Reviewable
 	
 	@OneToMany(mappedBy="budget",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<BudgetRole> roles = new HashSet<>();
+	
+	@OneToMany(mappedBy="budget",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<BudgetRevision> revisions = new HashSet<>();
+	
+	@OneToMany(mappedBy="budget",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<BudgetReview> reviews = new HashSet<>();
+	
+	public Budget(){}
 }

@@ -4,7 +4,6 @@
 package com.kratonsolution.belian.accounting.svc;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -61,7 +60,6 @@ public class BudgetService
 	@Secured("ROLE_BUDGET_CREATE")
 	public void add(Budget budget)
 	{
-		budget.setId(UUID.randomUUID().toString());
 		repository.save(budget);
 	}
 	

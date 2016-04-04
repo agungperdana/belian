@@ -9,5 +9,5 @@ package com.kratonsolution.belian.accounting.dm;
  */
 public enum BudgetRoleType
 {
-	Initiator,Reviewer,Approver
+	Initiator,Reviewer,Approver,RequestedFor
 }

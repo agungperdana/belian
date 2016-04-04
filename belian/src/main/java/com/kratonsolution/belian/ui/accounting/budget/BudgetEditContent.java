@@ -10,7 +10,6 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
@@ -29,7 +28,6 @@ import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.accounting.dm.Budget;
 import com.kratonsolution.belian.accounting.dm.BudgetItem;
-import com.kratonsolution.belian.accounting.dm.BudgetReviewResult;
 import com.kratonsolution.belian.accounting.dm.BudgetStatus;
 import com.kratonsolution.belian.accounting.dm.BudgetStatusType;
 import com.kratonsolution.belian.accounting.dm.BudgetType;
@@ -41,7 +39,6 @@ import com.kratonsolution.belian.global.dm.ReviewResult;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.util.Components;
-import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -167,22 +164,22 @@ public class BudgetEditContent extends FormContent
 
 						budget.getStatuses().add(status);
 					}
-
-					for(Component component:reviews.getRows().getChildren())
-					{
-						Row row = (Row)component;
-
-						ReviewResult review = new BudgetReviewResult();
-						review.setReviewable(budget);
-						review.setContent("[Budget Review] "+budget.getComment());
-						review.setDate(RowUtils.date(row, 1));
-						review.setOwner(personService.findOne(RowUtils.string(row, 2)));
-						review.setType(ReviewResult.Type.valueOf(RowUtils.string(row, 3)));
-						review.setComment(RowUtils.string(row, 4));
-						review.setId(RowUtils.string(row, 5));
-
-						budget.getReviews().add(review);
-					}
+//
+//					for(Component component:reviews.getRows().getChildren())
+//					{
+//						Row row = (Row)component;
+//
+//						ReviewResult review = new BudgetReviewResult();
+//						review.setReviewable(budget);
+//						review.setContent("[Budget Review] "+budget.getComment());
+//						review.setDate(RowUtils.date(row, 1));
+//						review.setOwner(personService.findOne(RowUtils.string(row, 2)));
+//						review.setType(ReviewResult.Type.valueOf(RowUtils.string(row, 3)));
+//						review.setComment(RowUtils.string(row, 4));
+//						review.setId(RowUtils.string(row, 5));
+//
+//						budget.getReviews().add(review);
+//					}
 				}
 
 				service.edit(budget);
@@ -368,23 +365,23 @@ public class BudgetEditContent extends FormContent
 		reviews.setSpan("4");
 
 		Budget budget = service.findOne(RowUtils.string(row, 6));
-		for(ReviewResult item:budget.getReviews())
-		{
-			Checkbox checkbox = Components.checkbox(false);
-			
-			Row row = new Row();
-			row.appendChild(checkbox);
-			row.appendChild(Components.readOnlyTextBox(Dates.format(item.getDate())));
-			row.appendChild(Components.readOnlyTextBox(item.getOwner().getName()));
-			row.appendChild(Components.readOnlyTextBox(item.getType().name()));
-			row.appendChild(Components.readOnlyTextBox(item.getComment()));
-			row.appendChild(new Label(item.getId()));
-
-			if(utils.getUser().getPerson() == null || !utils.getUser().getPerson().getId().equals(item.getOwner().getId()))
-				checkbox.setDisabled(true);
-			
-			reviews.getRows().appendChild(row);
-		}
+//		for(ReviewResult item:budget.getReviews())
+//		{
+//			Checkbox checkbox = Components.checkbox(false);
+//			
+//			Row row = new Row();
+//			row.appendChild(checkbox);
+//			row.appendChild(Components.readOnlyTextBox(Dates.format(item.getDate())));
+//			row.appendChild(Components.readOnlyTextBox(item.getOwner().getName()));
+//			row.appendChild(Components.readOnlyTextBox(item.getType().name()));
+//			row.appendChild(Components.readOnlyTextBox(item.getComment()));
+//			row.appendChild(new Label(item.getId()));
+//
+//			if(utils.getUser().getPerson() == null || !utils.getUser().getPerson().getId().equals(item.getOwner().getId()))
+//				checkbox.setDisabled(true);
+//			
+//			reviews.getRows().appendChild(row);
+//		}
 
 		toolbar.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()
 		{

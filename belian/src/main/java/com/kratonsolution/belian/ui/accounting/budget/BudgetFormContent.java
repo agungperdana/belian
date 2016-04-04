@@ -86,10 +86,11 @@ public class BudgetFormContent extends FormContent
 				BudgetStatus status = new BudgetStatus();
 				status.setBudget(budget);
 				status.setDate(start.getValue());
-				status.setDescription("Submitted for review.");
+				status.setDescription("Just Created");
 				status.setType(BudgetStatusType.Created);
 				
 				budget.getStatuses().add(status);
+				budget.setLastStatus(status);
 				
 				service.add(budget);
 				

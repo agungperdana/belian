@@ -4,12 +4,11 @@
 package com.kratonsolution.belian.accounting.dm;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -28,26 +27,28 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="budget_role")
-public class BudgetRole implements Serializable
+@Table(name="budget_review")
+public class BudgetReview implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 
-	@ManyToOne
-	@JoinColumn(name="fk_budget")
-	private Budget budget;
+	@Column(name="date")
+	private Date date;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_party")
 	private EconomicAgent party;
 	
-	@Enumerated(EnumType.STRING)
-	@Column(name="role_type")
-	private BudgetRoleType type;
+	@Column(name="result")
+	private String result;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_budget")
+	private Budget budget;
 	
 	@Version
 	private Long version;
-	
-	public BudgetRole(){}
+
+	public BudgetReview(){}
 }
