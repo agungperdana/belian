@@ -16,8 +16,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.accounting.dm.Budget;
-import com.kratonsolution.belian.accounting.dm.Budget.Type;
 import com.kratonsolution.belian.accounting.dm.BudgetStatus;
+import com.kratonsolution.belian.accounting.dm.BudgetStatusType;
+import com.kratonsolution.belian.accounting.dm.BudgetType;
 import com.kratonsolution.belian.accounting.svc.BudgetService;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Organization;
@@ -76,8 +77,8 @@ public class BudgetFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				Budget budget = new Budget();
-				budget.setType(Type.valueOf(Components.string(types)));
-				budget.setPartyRequested(organizationService.findOne(Components.string(targets)));
+				budget.setType(BudgetType.valueOf(Components.string(types)));
+				budget.setOrganization(sessionUtils.getOrganization());
 				budget.setStart(start.getValue());
 				budget.setEnd(end.getValue());
 				budget.setComment(comment.getText());
@@ -86,7 +87,7 @@ public class BudgetFormContent extends FormContent
 				status.setBudget(budget);
 				status.setDate(start.getValue());
 				status.setDescription("Submitted for review.");
-				status.setType(BudgetStatus.StatusType.SUBMITTED);
+				status.setType(BudgetStatusType.Created);
 				
 				budget.getStatuses().add(status);
 				
@@ -104,8 +105,8 @@ public class BudgetFormContent extends FormContent
 	{
 		comment.setWidth("300px");
 		
-		for(Type type:Type.values())
-			types.appendChild(new Listitem(type.name(), type.name()));
+		for(BudgetType type:BudgetType.values())
+			types.appendItem(type.name(), type.name());
 		
 		Components.setDefault(types);
 		

@@ -26,7 +26,7 @@ public class BudgetRowRenderer implements RowRenderer<Budget>
 		{
 			row.appendChild(new Checkbox());
 			row.appendChild(new Label(data.getType().name()));
-			row.appendChild(new Label(data.getPartyRequested().getName()));
+			row.appendChild(new Label(data.getOrganization().getName()));
 			row.appendChild(new Label(Dates.format(data.getStart())));
 			row.appendChild(new Label(Dates.format(data.getEnd())));
 			row.appendChild(new Label(data.getComment()));

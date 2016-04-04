@@ -28,13 +28,13 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.accounting.dm.Budget;
-import com.kratonsolution.belian.accounting.dm.Budget.Type;
 import com.kratonsolution.belian.accounting.dm.BudgetItem;
 import com.kratonsolution.belian.accounting.dm.BudgetReviewResult;
 import com.kratonsolution.belian.accounting.dm.BudgetStatus;
+import com.kratonsolution.belian.accounting.dm.BudgetStatusType;
+import com.kratonsolution.belian.accounting.dm.BudgetType;
 import com.kratonsolution.belian.accounting.svc.BudgetService;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.global.dm.ReviewResult;
@@ -127,8 +127,7 @@ public class BudgetEditContent extends FormContent
 				Budget budget = service.findOne(RowUtils.string(row, 6));
 				if(budget != null)
 				{
-					budget.setType(Type.valueOf(Components.string(types)));
-					budget.setPartyRequested(organizationService.findOne(Components.string(targets)));
+					budget.setType(BudgetType.valueOf(Components.string(types)));
 					budget.setStart(start.getValue());
 					budget.setEnd(end.getValue());
 					budget.setComment(comment.getText());
@@ -162,7 +161,7 @@ public class BudgetEditContent extends FormContent
 						BudgetStatus status = new BudgetStatus();
 						status.setBudget(budget);
 						status.setDate(RowUtils.date(row, 1));
-						status.setType(BudgetStatus.StatusType.valueOf(RowUtils.string(row, 2)));
+						status.setType(BudgetStatusType.valueOf(RowUtils.string(row, 2)));
 						status.setDescription(RowUtils.string(row, 3));
 						status.setId(RowUtils.string(row, 4));
 
@@ -207,7 +206,7 @@ public class BudgetEditContent extends FormContent
 			comment.setWidth("300px");
 			comment.setValue(budget.getComment());
 			
-			for(Type type: Type.values())
+			for(BudgetType type: BudgetType.values())
 			{
 				Listitem listitem = new Listitem(type.name(), type.name());
 				types.appendChild(listitem);
@@ -216,14 +215,8 @@ public class BudgetEditContent extends FormContent
 					types.setSelectedItem((Listitem)types.getLastChild());
 			}
 
-			for(Organization unit:sessionUtils.getOrganizations())
-			{
-				Listitem listitem = new Listitem(unit.getLabel(),unit.getValue());
-				targets.appendChild(listitem);
-
-				if(budget.getPartyRequested().getId().equals(unit.getId()))
-					targets.setSelectedItem(listitem);
-			}
+			targets.appendItem(budget.getOrganization().getName(),budget.getOrganization().getId());
+			targets.setSelectedIndex(0);
 
 			grid.appendChild(new Columns());
 			grid.getColumns().appendChild(new Column(null,null,"75px"));

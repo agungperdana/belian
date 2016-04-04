@@ -49,7 +49,7 @@ public class BudgetViewRenderer implements InboxViewRenderer<BudgetReviewResult>
 				Row row = new Row();
 				row.appendChild(Components.checkbox(false));
 				row.appendChild(new Label(budget.getType().name()));
-				row.appendChild(new Label(budget.getPartyRequested().getName()));
+				row.appendChild(new Label(budget.getOrganization().getName()));
 				row.appendChild(new Label(Dates.format(budget.getStart())));
 				row.appendChild(new Label(Dates.format(budget.getEnd())));
 				row.appendChild(new Label(budget.getComment()));

@@ -18,11 +18,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.global.dm.Reviewable;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 
@@ -35,8 +35,6 @@ import com.kratonsolution.belian.global.dm.Reviewable;
 @Table(name="budget")
 public class Budget extends Reviewable
 {
-	public enum Type{Operating,Capital}
-	
 	@Column(name="start")
 	private Date start;
 	
@@ -48,11 +46,11 @@ public class Budget extends Reviewable
 
 	@ManyToOne
 	@JoinColumn(name="fk_organization_requested")
-	private Organization partyRequested;
+	private Organization organization;
 	
 	@Column(name="type")
 	@Enumerated(EnumType.STRING)
-	private Type type = Type.Operating;
+	private BudgetType type = BudgetType.Operating;
 
 	@OneToMany(mappedBy="budget",cascade=CascadeType.ALL,orphanRemoval=true)
 	@OrderBy("sequence")
@@ -61,4 +59,7 @@ public class Budget extends Reviewable
 	@OneToMany(mappedBy="budget",cascade=CascadeType.ALL,orphanRemoval=true)
 	@OrderBy("date")
 	private Set<BudgetStatus> statuses = new HashSet<BudgetStatus>();
+	
+	@OneToMany(mappedBy="budget",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<BudgetRole> roles = new HashSet<>();
 }

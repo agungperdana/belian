@@ -4,7 +4,6 @@
 package com.kratonsolution.belian.accounting.dm;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -21,32 +20,32 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
-@Table(name="budget_status")
-public class BudgetStatus implements Serializable
+@Table(name="budget_revision_item")
+public class BudgetRevisionItem implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@Column(name="date")
-	private Date date;
-	
-	@Column(name="description")
-	private String description;
-	
-	@Column(name="type")
 	@Enumerated(EnumType.STRING)
-	private BudgetStatusType type = BudgetStatusType.Created;
+	@Column(name="type")
+	private BudgetRevisionType type = BudgetRevisionType.Addition;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_budget")
-	private Budget budget;
+	@JoinColumn(name="fk_budget_item")
+	private BudgetItem item;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_budget_revision")
+	private BudgetRevision revision;
+	
+	@Column(name="note")
+	private String note;
 	
 	@Version
 	private Long version;
