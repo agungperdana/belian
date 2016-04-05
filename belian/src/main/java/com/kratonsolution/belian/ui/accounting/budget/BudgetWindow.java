@@ -40,7 +40,7 @@ public class BudgetWindow extends AbstractWindow implements HasGrid,HasCreateFor
 	private BudgetWindow()
 	{
 		super();
-		setWidth("600px");
+		setWidth("650px");
 	}
 	
 	protected void init()

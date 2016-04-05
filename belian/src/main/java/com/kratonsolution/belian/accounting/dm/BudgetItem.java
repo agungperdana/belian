@@ -5,6 +5,7 @@ package com.kratonsolution.belian.accounting.dm;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,10 +32,10 @@ import lombok.Setter;
 public class BudgetItem implements Serializable, Listable
 {
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="sequence")
-	private int sequence;
+	private int sequence = 1;
 	
 	@Column(name="purpose")
 	private String purpose;
@@ -43,7 +44,7 @@ public class BudgetItem implements Serializable, Listable
 	private String justification;
 
 	@Column(name="amount")
-	private BigDecimal amount;
+	private BigDecimal amount = BigDecimal.ZERO;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_budget")

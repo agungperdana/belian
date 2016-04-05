@@ -17,9 +17,9 @@ import org.springframework.data.repository.query.Param;
  */
 public interface BudgetRepository extends JpaRepository<Budget, String>
 {
-	@Query("FROM Budget budget WHERE budget.partyRequested.id IN :companys")
+	@Query("FROM Budget budget WHERE budget.organization.id IN :companys")
 	public List<Budget> findAll(Pageable pageable,@Param("companys")List<String> companys);
 	
-	@Query("SELECT COUNT(budget) FROM Budget budget WHERE budget.partyRequested.id IN :companys")
+	@Query("SELECT COUNT(budget) FROM Budget budget WHERE budget.organization.id IN :companys")
 	public int count(@Param("companys")List<String> companys);
 }

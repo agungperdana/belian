@@ -23,7 +23,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public abstract class GridContent extends Vlayout
+public abstract class GridContent extends Vlayout implements Removeable
 {
 	protected SessionUtils utils = Springs.get(SessionUtils.class);
 	

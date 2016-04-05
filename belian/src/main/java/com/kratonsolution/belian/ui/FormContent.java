@@ -12,7 +12,7 @@ import org.zkoss.zul.Vlayout;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public abstract class FormContent extends Vlayout
+public abstract class FormContent extends Vlayout implements Removeable
 {
 	protected FormToolbar toolbar = new FormToolbar();
 	

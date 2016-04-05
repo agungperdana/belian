@@ -19,6 +19,7 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.global.dm.Listable;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.ui.component.ProductBox;
@@ -131,6 +132,22 @@ public class Components
 		if(listable != null)
 		{
 			listbox.appendChild(new Listitem(listable.getLabel(), listable.getValue()));
+			listbox.setSelectedIndex(0);
+		}
+		
+		return listbox;
+	}
+	
+	public static final Listbox fullSpanSelect(String label,String value)
+	{
+		Listbox listbox = new Listbox();
+		listbox.setMold("select");
+		listbox.setStyle("text-align:center;");
+		listbox.setWidth("100%");
+	
+		if(!Strings.isNullOrEmpty(label) && !Strings.isNullOrEmpty(value))
+		{
+			listbox.appendItem(label, value);
 			listbox.setSelectedIndex(0);
 		}
 		
