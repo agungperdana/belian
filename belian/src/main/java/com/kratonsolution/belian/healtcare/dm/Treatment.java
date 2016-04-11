@@ -47,4 +47,10 @@ public class Treatment extends Billable
 	{
 		return "Medical Treatment";
 	}
+
+	@Override
+	public int getTableNumber()
+	{
+		return 0;
+	}
 }

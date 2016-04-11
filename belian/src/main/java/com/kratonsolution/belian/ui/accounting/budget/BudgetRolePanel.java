@@ -24,7 +24,7 @@ import com.kratonsolution.belian.accounting.dm.Budget;
 import com.kratonsolution.belian.accounting.dm.BudgetRole;
 import com.kratonsolution.belian.accounting.dm.BudgetRoleType;
 import com.kratonsolution.belian.accounting.svc.BudgetItemService;
-import com.kratonsolution.belian.global.svc.EconomicAgentService;
+import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.RowUtils;
@@ -38,7 +38,7 @@ public class BudgetRolePanel extends Tabpanel
 {
 	private BudgetItemService service = Springs.get(BudgetItemService.class);
 	
-	private EconomicAgentService agentService = Springs.get(EconomicAgentService.class);
+	private PersonService agentService = Springs.get(PersonService.class);
 	
 	private Grid grid = new Grid();
 	

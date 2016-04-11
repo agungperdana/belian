@@ -71,11 +71,12 @@ public class CashierGridContent extends GridContent
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column("Number",null,"150px"));
 		grid.getColumns().appendChild(new Column("Customer",null,"150px"));
+		grid.getColumns().appendChild(new Column("Table",null,"50px"));
 		grid.getColumns().appendChild(new Column("Amount",null,"100px"));
 		grid.getColumns().appendChild(new Column("Currency",null,"100px"));
 		grid.getColumns().appendChild(new Column("Type",null,"125px"));
 		grid.getColumns().appendChild(new Column(null,null,"0px"));
-		grid.getColumns().getChildren().get(5).setVisible(false);
+		grid.getColumns().getChildren().get(6).setVisible(false);
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override

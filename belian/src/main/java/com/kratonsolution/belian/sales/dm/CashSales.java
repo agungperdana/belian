@@ -51,4 +51,10 @@ public class CashSales extends Billable
 	{
 		return "Cash Sales";
 	}
+
+	@Override
+	public int getTableNumber()
+	{
+		return this.table;
+	}
 }

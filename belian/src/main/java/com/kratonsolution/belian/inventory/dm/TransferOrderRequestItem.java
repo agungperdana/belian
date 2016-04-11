@@ -17,10 +17,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.kratonsolution.belian.global.dm.ApproveableItem;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import com.kratonsolution.belian.global.dm.ApproveableItem;
 
 /**
  * @author Agung Dodi Perdana
@@ -72,5 +72,17 @@ public class TransferOrderRequestItem implements Serializable,ApproveableItem
 	public boolean isDone()
 	{
 		return (getQuantity().compareTo(getFullfilled()) == 0);
+	}
+
+	@Override
+	public String getResource()
+	{
+		return getProduct().getName();
+	}
+
+	@Override
+	public String getUom()
+	{
+		return getProduct().getUom().getName();
 	}
 }

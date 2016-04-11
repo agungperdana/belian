@@ -36,6 +36,7 @@ import com.kratonsolution.belian.sales.dm.CashSalesLine;
 import com.kratonsolution.belian.sales.srv.CashSalesService;
 import com.kratonsolution.belian.ui.ReportToolbar;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -215,7 +216,7 @@ public class CashSalesReportForm extends Window
 			else
 			{
 				Row row = new Row();
-				row.appendChild(new Label(cashSales.getNumber()));
+				row.appendChild(new Label(Dates.format(cashSales.getDate())+" ["+cashSales.getNumber()+"]"));
 				row.appendChild(new Label(cashSales.getItems().size()+""));
 				row.appendChild(new Label(""));
 				row.appendChild(new Label(decimalFormat.format(cashSales.getBillingAmount())));

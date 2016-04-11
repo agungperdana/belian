@@ -14,10 +14,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.kratonsolution.belian.sales.dm.Billable;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import com.kratonsolution.belian.sales.dm.Billable;
 
 /**
  * @author Agung Dodi Perdana
@@ -52,5 +52,11 @@ public class Laboratory extends Billable
 	public String getBillingType()
 	{
 		return "Medical Laboratory";
+	}
+
+	@Override
+	public int getTableNumber()
+	{
+		return 0;
 	}
 }

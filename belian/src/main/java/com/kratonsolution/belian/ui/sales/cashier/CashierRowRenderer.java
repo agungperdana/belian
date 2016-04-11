@@ -23,7 +23,8 @@ public class CashierRowRenderer implements RowRenderer<Billable>
 		{
 			row.appendChild(new Label(data.getNumber()));
 			row.appendChild(new Label(data.getCustomer().getName()));
-			row.appendChild(new Label(Numbers.format(data.getBillingAmount())));
+			row.appendChild(new Label(data.getTableNumber()+""));
+			row.appendChild(new Label(Numbers.format(data.getBillingAmount().add(data.getTaxAmount()))));
 			row.appendChild(new Label(data.getCurrency().getCode()));
 			row.appendChild(new Label(data.getBillingType()));
 			row.appendChild(new Label(data.getId()));

@@ -240,7 +240,7 @@ public class GoodsTransferFormContent extends FormContent
 				if(!item.isDone())
 				{
 					Row row = new Row();
-					row.appendChild(new Label(item.getProduct().getName()));
+					row.appendChild(new Label(item.getResource()));
 					row.appendChild(Components.doubleBox(item.getQuantity().subtract(item.getFullfilled()).doubleValue()));
 					row.appendChild(Components.textBox(null));
 					row.appendChild(new Label(item.getId()));

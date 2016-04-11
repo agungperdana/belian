@@ -238,10 +238,10 @@ public class CashPurchaseOrderFormContent extends FormContent
 					if(exist)
 					{
 						Row row = new Row();
-						row.appendChild(new Label(item.getProduct().getName()));
+						row.appendChild(new Label(item.getResource()));
 						row.appendChild(Components.label(item.getQuantity()));
 						row.appendChild(Components.doubleBox(item.getQuantity().doubleValue()));
-						row.appendChild(new Label(item.getProduct().getUom().getName()));
+						row.appendChild(new Label(item.getResource()));
 						row.appendChild(Components.textBox(null));
 						row.appendChild(new Label(item.getProduct().getId()));
 						

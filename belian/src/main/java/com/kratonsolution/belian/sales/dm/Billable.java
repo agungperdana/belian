@@ -79,6 +79,8 @@ public abstract class Billable implements Serializable
 
 	public abstract String getBillingType();
 	
+	public abstract int getTableNumber();
+	
 	public BigDecimal getBillingAmount()
 	{
 		BigDecimal amount = BigDecimal.ZERO;

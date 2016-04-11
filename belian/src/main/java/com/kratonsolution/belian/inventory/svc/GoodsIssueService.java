@@ -73,7 +73,7 @@ public class GoodsIssueService
 		
 		for(GoodsIssueItem item:order.getItems())
 		{
-			InventoryItem inventoryItem = itemRepository.findOne(item.getProduct().getId(),order.getSource().getId());
+			InventoryItem inventoryItem = itemRepository.findOne(item.getItem().getProduct().getId(),order.getSource().getId());
 			if(inventoryItem == null)
 				throw new RuntimeException("Item not exist.");
 			

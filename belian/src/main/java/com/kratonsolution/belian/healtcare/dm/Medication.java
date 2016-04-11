@@ -48,4 +48,10 @@ public class Medication extends Billable
 	{
 		return "Medication";
 	}
+
+	@Override
+	public int getTableNumber()
+	{
+		return 0;
+	}
 }

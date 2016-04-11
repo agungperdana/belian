@@ -45,6 +45,7 @@ public class SalesReportWindow extends AbstractWindow
 	private SalesReportWindow()
 	{
 		super();
+		setWidth("700px");
 	}
 	
 	private void init()

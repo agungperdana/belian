@@ -14,11 +14,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.kratonsolution.belian.global.dm.ApproveableItem;
 import com.kratonsolution.belian.inventory.dm.Product;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Agung Dodi Perdana
@@ -51,4 +51,16 @@ public class PurchaseOrderRequestItem implements ApproveableItem
 	private Long version;
 	
 	public PurchaseOrderRequestItem(){}
+
+	@Override
+	public String getResource()
+	{
+		return getProduct().getName();
+	}
+
+	@Override
+	public String getUom()
+	{
+		return getProduct().getUom().getName();
+	}
 }

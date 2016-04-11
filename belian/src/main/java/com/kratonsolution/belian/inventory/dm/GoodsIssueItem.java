@@ -49,9 +49,4 @@ public class GoodsIssueItem implements Serializable
 	private Long version;
 	
 	public GoodsIssueItem(){}
-
-	public Product getProduct()
-	{
-		return item.getProduct();
-	}
 }

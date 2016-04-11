@@ -122,8 +122,8 @@ public class ApproveableForm extends Vlayout
 			items.appendChild(new Columns());
 			items.appendChild(new Rows());
 			items.setWidth("100%");
-			items.getColumns().appendChild(new Column("Product",null,"150px"));
-			items.getColumns().appendChild(new Column("Quantity",null,"100px"));
+			items.getColumns().appendChild(new Column("Resource",null,"150px"));
+			items.getColumns().appendChild(new Column("Quan/Amount",null,"100px"));
 			items.getColumns().appendChild(new Column("UoM",null,"100px"));
 			items.getColumns().appendChild(new Column("Note",null,"150px"));
 			items.setSpan("0");
@@ -131,9 +131,9 @@ public class ApproveableForm extends Vlayout
 			for(ApproveableItem item:approveable.getItems())
 			{
 				Row row = new Row();
-				row.appendChild(new Label(item.getProduct().getName()));
+				row.appendChild(new Label(item.getResource()));
 				row.appendChild(Components.label(item.getQuantity()));
-				row.appendChild(new Label(item.getProduct().getUom().getName()));
+				row.appendChild(new Label(item.getUom()));
 				row.appendChild(new Label(item.getNote()));
 				
 				items.getRows().appendChild(row);

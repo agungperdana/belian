@@ -81,7 +81,7 @@ public class CashierEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Billable billing = service.findOne(RowUtils.string(row, 5));
+				Billable billing = service.findOne(RowUtils.string(row, 6));
 				if(billing != null)
 				{
 					billing.setPaid(true);
@@ -118,7 +118,7 @@ public class CashierEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		Billable billing = service.findOne(RowUtils.string(row, 5));
+		Billable billing = service.findOne(RowUtils.string(row, 6));
 		if(billing != null)
 		{
 			grid.appendChild(new Columns());
@@ -128,14 +128,14 @@ public class CashierEditContent extends FormContent
 			grid.getColumns().appendChild(new Column());
 
 			Row numbers = new Row();
-			numbers.appendChild(new Label("Number"));
-			numbers.appendChild(new Label(billing.getNumber()));
+			numbers.appendChild(new Label("Table"));
+			numbers.appendChild(new Label(billing.getTableNumber()+""));
 			numbers.appendChild(new Label("Billing"));
 			numbers.appendChild(amount);
 			
 			Row comps = new Row();
-			comps.appendChild(new Label("Company"));
-			comps.appendChild(new Label(billing.getOrganization().getName()));
+			comps.appendChild(new Label("Number"));
+			comps.appendChild(new Label(billing.getNumber()));
 			comps.appendChild(new Label("Tax"));
 			comps.appendChild(tax);
 			
@@ -188,7 +188,7 @@ public class CashierEditContent extends FormContent
 	
 	private void display()
 	{
-		Billable billing = service.findOne(RowUtils.string(row, 5));
+		Billable billing = service.findOne(RowUtils.string(row, 6));
 		if(billing != null)
 		{
 			BigDecimal _amount = BigDecimal.ZERO;
