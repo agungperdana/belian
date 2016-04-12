@@ -22,7 +22,7 @@ import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Vlayout;
 
 import com.kratonsolution.belian.global.dm.Approveable;
-import com.kratonsolution.belian.global.dm.ApproveableItem;
+import com.kratonsolution.belian.global.dm.ApproveAndReviewableItem;
 import com.kratonsolution.belian.global.dm.ApproverStatus;
 import com.kratonsolution.belian.global.svc.ApproveableService;
 import com.kratonsolution.belian.ui.util.Components;
@@ -128,7 +128,7 @@ public class ApproveableForm extends Vlayout
 			items.getColumns().appendChild(new Column("Note",null,"150px"));
 			items.setSpan("0");
 			
-			for(ApproveableItem item:approveable.getItems())
+			for(ApproveAndReviewableItem item:approveable.getItems())
 			{
 				Row row = new Row();
 				row.appendChild(new Label(item.getResource()));

@@ -23,6 +23,8 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.global.dm.HasStatus;
+import com.kratonsolution.belian.global.dm.Statuses;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -36,7 +38,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="budget")
-public class Budget implements Serializable
+public class Budget implements Serializable,HasStatus
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -60,7 +62,7 @@ public class Budget implements Serializable
 
 	@ManyToOne
 	@JoinColumn(name="fk_last_status")
-	private BudgetStatus lastStatus;
+	private Statuses lastStatus;
 	
 	@Version
 	private Long version;

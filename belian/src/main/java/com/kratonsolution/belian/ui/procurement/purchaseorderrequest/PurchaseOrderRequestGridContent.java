@@ -164,10 +164,9 @@ public class PurchaseOrderRequestGridContent extends GridContent
 		grid.getColumns().appendChild(new Column("Date",null,"85px"));
 		grid.getColumns().appendChild(new Column("Number",null,"150px"));
 		grid.getColumns().appendChild(new Column("Request By",null,"150px"));
-		grid.getColumns().appendChild(new Column("Approver",null,"150px"));
 		grid.getColumns().appendChild(new Column("Status",null,"100px"));
 		grid.getColumns().appendChild(new Column(null,null,"0px"));
-		grid.getColumns().getChildren().get(6).setVisible(false);
+		grid.getColumns().getChildren().get(5).setVisible(false);
 		grid.setSpan("3");
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()

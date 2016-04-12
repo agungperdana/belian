@@ -26,11 +26,11 @@ import org.zkoss.zul.Textbox;
 import com.kratonsolution.belian.accounting.dm.Budget;
 import com.kratonsolution.belian.accounting.dm.BudgetItem;
 import com.kratonsolution.belian.accounting.dm.BudgetStatus;
-import com.kratonsolution.belian.accounting.dm.BudgetStatusType;
 import com.kratonsolution.belian.accounting.dm.BudgetType;
 import com.kratonsolution.belian.accounting.svc.BudgetService;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.global.dm.StatusType;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
@@ -171,7 +171,7 @@ public class BudgetEditContent extends FormContent
 						BudgetStatus status = new BudgetStatus();
 						status.setBudget(budget);
 						status.setDate(RowUtils.date(row, 1));
-						status.setType(BudgetStatusType.valueOf(RowUtils.string(row, 2)));
+						status.setType(StatusType.valueOf(RowUtils.string(row, 2)));
 						status.setDescription(RowUtils.string(row, 3));
 						status.setId(RowUtils.string(row, 4));
 

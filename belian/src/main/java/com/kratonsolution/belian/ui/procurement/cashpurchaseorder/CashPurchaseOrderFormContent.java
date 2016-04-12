@@ -21,7 +21,6 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.global.dm.RequestStatus;
 import com.kratonsolution.belian.inventory.dm.ProductSupplier;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.procurement.dm.CashPurchaseOrder;
@@ -117,8 +116,8 @@ public class CashPurchaseOrderFormContent extends FormContent
 				
 				service.add(order);
 				
-				order.getRequest().setRequestStatus(RequestStatus.COMPLETE);
-				requestService.edit(order.getRequest());
+//				order.getRequest().setRequestStatus(RequestStatus.COMPLETE);
+//				requestService.edit(order.getRequest());
 				
 				
 				CashPurchaseOrderWindow window = (CashPurchaseOrderWindow)getParent();

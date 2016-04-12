@@ -21,8 +21,7 @@ public interface PurchaseOrderRequestRepository extends JpaRepository<PurchaseOr
 	
 	@Query("FROM PurchaseOrderRequest po WHERE "
 			+ "po.organization.id =:company "
-			+ "AND po.approverStatus = 'ACCEPTED' "
-			+ "AND po.requestStatus = 'INCOMPLETE' "
+			+ "AND po.lastStatus.type = 'Approved' "
 			+ "ORDER BY po.date DESC")
 	public List<PurchaseOrderRequest> findAllIncomplete(@Param("company")String company);
 }

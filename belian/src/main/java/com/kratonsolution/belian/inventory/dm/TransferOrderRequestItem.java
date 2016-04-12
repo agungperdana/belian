@@ -17,7 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.kratonsolution.belian.global.dm.ApproveableItem;
+import com.kratonsolution.belian.global.dm.ApproveAndReviewableItem;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -30,7 +30,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="transfer_order_request_item")
-public class TransferOrderRequestItem implements Serializable,ApproveableItem
+public class TransferOrderRequestItem implements Serializable,ApproveAndReviewableItem
 {
 	@Id
 	private String id = UUID.randomUUID().toString();

@@ -9,7 +9,7 @@ import java.math.BigDecimal;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public interface ApproveableItem
+public interface ApproveAndReviewableItem
 {
 	public String getResource();
 	

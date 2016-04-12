@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.procurement.svc;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.procurement.dm.PORRole;
 import com.kratonsolution.belian.procurement.dm.PurchaseOrderRequest;
+import com.kratonsolution.belian.procurement.dm.PurchaseOrderRequestItem;
 import com.kratonsolution.belian.procurement.dm.PurchaseOrderRequestRepository;
 
 /**
@@ -70,6 +73,20 @@ public class PurchaseOrderRequestService
 	@Secured("ROLE_PURCHASE_ORDER_REQUEST_UPDATE")
 	public void edit(PurchaseOrderRequest order)
 	{
+		repository.saveAndFlush(order);
+	}
+	
+	@Secured("ROLE_PURCHASE_ORDER_REQUEST_UPDATE")
+	public void edit(PurchaseOrderRequest order,Collection<PurchaseOrderRequestItem> items,Collection<PORRole> roles)
+	{
+		order.getItems().clear();
+		order.getRoles().clear();
+
+		repository.saveAndFlush(order);
+		
+		order.getItems().addAll(items);
+		order.getRoles().addAll(roles);
+		
 		repository.saveAndFlush(order);
 	}
 	

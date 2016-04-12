@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.global.dm.ApproveableItem;
+import com.kratonsolution.belian.global.dm.ApproveAndReviewableItem;
 import com.kratonsolution.belian.inventory.dm.Product;
 
 import lombok.Getter;
@@ -28,7 +28,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="purchase_order_request_item")
-public class PurchaseOrderRequestItem implements ApproveableItem
+public class PurchaseOrderRequestItem implements ApproveAndReviewableItem
 {
 	@Id
 	private String id = UUID.randomUUID().toString();

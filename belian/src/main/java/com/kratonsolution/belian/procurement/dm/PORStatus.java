@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.accounting.dm;
+package com.kratonsolution.belian.procurement.dm;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -14,19 +14,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
-@Table(name="budget_status")
-public class BudgetStatus extends Statuses
+@Table(name="purchase_order_request_status")
+public class PORStatus extends Statuses
 {
 	@ManyToOne
-	@JoinColumn(name="fk_budget")
-	private Budget budget;
-	
-	public BudgetStatus(){}
+	@JoinColumn(name="fk_purchase_order_request")
+	private PurchaseOrderRequest request;
 }

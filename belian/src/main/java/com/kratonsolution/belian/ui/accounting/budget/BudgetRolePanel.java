@@ -22,9 +22,9 @@ import org.zkoss.zul.Tabpanel;
 
 import com.kratonsolution.belian.accounting.dm.Budget;
 import com.kratonsolution.belian.accounting.dm.BudgetRole;
-import com.kratonsolution.belian.accounting.dm.BudgetRoleType;
 import com.kratonsolution.belian.accounting.svc.BudgetItemService;
 import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.global.dm.RoledType;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.RowUtils;
@@ -84,9 +84,9 @@ public class BudgetRolePanel extends Tabpanel
 			public void onEvent(Event arg0) throws Exception
 			{
 				Listbox types = Components.fullSpanSelect();
-				for(BudgetRoleType type:BudgetRoleType.values())
+				for(RoledType type:RoledType.values())
 				{
-					if(!type.equals(BudgetRoleType.Initiator) && !type.equals(BudgetRoleType.RequestedFor))
+					if(!type.equals(RoledType.Initiator) && !type.equals(RoledType.Requested))
 					{
 						types.appendItem(type.name(),type.name());
 						types.setSelectedIndex(0);
@@ -120,7 +120,7 @@ public class BudgetRolePanel extends Tabpanel
 			BudgetRole item = new BudgetRole();
 			item.setBudget(budget);
 			item.setParty(agentService.findOne(RowUtils.string(row, 1)));
-			item.setType(BudgetRoleType.valueOf(RowUtils.string(row, 2)));
+			item.setType(RoledType.valueOf(RowUtils.string(row, 2)));
 			item.setId(RowUtils.string(row, 3));
 			
 			items.add(item);

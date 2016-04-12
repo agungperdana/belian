@@ -17,10 +17,19 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
+import org.zkoss.zul.Tab;
+import org.zkoss.zul.Tabbox;
+import org.zkoss.zul.Tabpanel;
+import org.zkoss.zul.Tabpanels;
+import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.global.dm.RoledType;
+import com.kratonsolution.belian.global.dm.StatusType;
+import com.kratonsolution.belian.procurement.dm.PORRole;
+import com.kratonsolution.belian.procurement.dm.PORStatus;
 import com.kratonsolution.belian.procurement.dm.PurchaseOrderRequest;
 import com.kratonsolution.belian.procurement.dm.PurchaseOrderRequestItem;
 import com.kratonsolution.belian.procurement.svc.PurchaseOrderRequestService;
@@ -52,18 +61,18 @@ private PurchaseOrderRequestService service = Springs.get(PurchaseOrderRequestSe
 	
 	private Datebox date = Components.currentDatebox();
 	
-	private Listbox requester = Components.newSelect(utils.getUser().getPerson());
-	
-	private Listbox approver = Components.newSelect(userService.findAll(),true);
-	
 	private Grid items = new Grid();
+	
+	private Tabbox tabbox = new Tabbox();
+	
+	private Grid rolesGrid = new Grid();
 	
 	public PurchaseOrderRequestFormContent()
 	{
 		super();
 		initToolbar();
 		initForm();
-		initItems();
+		initTabbox();
 	}
 
 	@Override
@@ -89,8 +98,6 @@ private PurchaseOrderRequestService service = Springs.get(PurchaseOrderRequestSe
 				request.setNumber(number.getText());
 				request.setDate(new Date(date.getValue().getTime()));
 				request.setOrganization(utils.getOrganization());
-				request.setRequester(utils.getUser().getPerson());
-				request.setApprover(personService.findOne(Components.string(approver)));
 				
 				for(Component com:items.getRows().getChildren())
 				{
@@ -103,6 +110,43 @@ private PurchaseOrderRequestService service = Springs.get(PurchaseOrderRequestSe
 					item.setQuantity(RowUtils.decimal(row, 2));
 					
 					request.getItems().add(item);
+				}
+				
+				PORStatus status = new PORStatus();
+				status.setDate(request.getDate());
+				status.setDescription("Just Created");
+				status.setParty(utils.getUser().getPerson());
+				status.setRequest(request);
+				status.setType(StatusType.Created);
+				
+				request.setLastStatus(status);
+				request.getStatuses().add(status);
+				
+				PORRole initiator = new PORRole();
+				initiator.setParty(utils.getUser().getPerson());
+				initiator.setRequest(request);
+				initiator.setType(RoledType.Initiator);
+				initiator.setDone(true);
+				
+				PORRole requested = new PORRole();
+				requested.setParty(utils.getOrganization());
+				requested.setRequest(request);
+				requested.setType(RoledType.Requested);
+				requested.setDone(true);
+				
+				request.getRoles().add(initiator);
+				request.getRoles().add(requested);
+				
+				for(Component com:rolesGrid.getRows().getChildren())
+				{
+					Row row = (Row)com;
+					
+					PORRole role = new PORRole();
+					role.setRequest(request);
+					role.setParty(personService.findOne(RowUtils.string(row, 1)));
+					role.setType(RoledType.valueOf(RowUtils.string(row, 2)));
+					
+					request.getRoles().add(role);
 				}
 				
 				service.add(request);
@@ -135,18 +179,25 @@ private PurchaseOrderRequestService service = Springs.get(PurchaseOrderRequestSe
 		row2.appendChild(new Label("Company"));
 		row2.appendChild(companys);
 		
-		Row row3 = new Row();
-		row3.appendChild(new Label("Requested By"));
-		row3.appendChild(requester);
-		
-		Row row4 = new Row();
-		row4.appendChild(new Label("Approver"));
-		row4.appendChild(approver);
-		
+		rows.appendChild(row0);
 		rows.appendChild(row1);
 		rows.appendChild(row2);
-		rows.appendChild(row3);
-		rows.appendChild(row4);
+	}
+	
+	private void initTabbox()
+	{
+		tabbox.setWidth("100%");
+		tabbox.appendChild(new Tabs());
+		tabbox.appendChild(new Tabpanels());
+		tabbox.getTabs().appendChild(new Tab("Item(s)"));
+		tabbox.getTabs().appendChild(new Tab("Role(s)"));
+		tabbox.getTabpanels().appendChild(new Tabpanel());
+		tabbox.getTabpanels().appendChild(new Tabpanel());
+		
+		appendChild(tabbox);
+	
+		initItems();
+		initRolesGrid();
 	}
 	
 	public void initItems()
@@ -181,7 +232,41 @@ private PurchaseOrderRequestService service = Springs.get(PurchaseOrderRequestSe
 			}
 		});
 		
-		appendChild(nrc);
-		appendChild(items);
+		tabbox.getTabpanels().getChildren().get(0).appendChild(nrc);
+		tabbox.getTabpanels().getChildren().get(0).appendChild(items);
+	}
+	
+	private void initRolesGrid()
+	{
+		NRCToolbar bar = new NRCToolbar(rolesGrid);
+		
+		rolesGrid.appendChild(new Columns());
+		rolesGrid.appendChild(new Rows());
+		rolesGrid.getColumns().appendChild(new Column(null,null,"25px"));
+		rolesGrid.getColumns().appendChild(new Column("Person",null,"150px"));
+		rolesGrid.getColumns().appendChild(new Column("Type",null,"125px"));
+		rolesGrid.setSpan("1");
+		
+		bar.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event arg0) throws Exception
+			{
+				Row row = new Row();
+				row.appendChild(Components.checkbox(false));
+				row.appendChild(Components.fullSpanSelect(personService.findAll(),true));
+				
+				Listbox listbox = Components.fullSpanSelect();
+				listbox.appendItem(RoledType.Reviewer.name(), RoledType.Reviewer.name());
+				listbox.appendItem(RoledType.Approver.name(), RoledType.Approver.name());
+				
+				row.appendChild(listbox);
+				
+				rolesGrid.getRows().appendChild(row);
+			}
+		});
+		
+		tabbox.getTabpanels().getChildren().get(1).appendChild(bar);
+		tabbox.getTabpanels().getChildren().get(1).appendChild(rolesGrid);
 	}
 }

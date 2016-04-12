@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.accounting.dm;
+package com.kratonsolution.belian.procurement.dm;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -21,18 +21,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="budget_role")
-public class BudgetRole extends Roled
+@Table(name="purchase_order_request_role")
+public class PORRole extends Roled
 {
 	@ManyToOne
-	@JoinColumn(name="fk_budget")
-	private Budget budget;
-	
-	public BudgetRole(){}
+	@JoinColumn(name="fk_purchase_order_request")
+	private PurchaseOrderRequest request;
 
 	@Override
 	public HasStatus getDocument()
 	{
-		return null;
+		return getRequest();
 	}
 }

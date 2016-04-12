@@ -25,13 +25,13 @@ import org.zkoss.zul.Textbox;
 import com.kratonsolution.belian.accounting.dm.Budget;
 import com.kratonsolution.belian.accounting.dm.BudgetItem;
 import com.kratonsolution.belian.accounting.dm.BudgetRole;
-import com.kratonsolution.belian.accounting.dm.BudgetRoleType;
 import com.kratonsolution.belian.accounting.dm.BudgetStatus;
-import com.kratonsolution.belian.accounting.dm.BudgetStatusType;
 import com.kratonsolution.belian.accounting.dm.BudgetType;
 import com.kratonsolution.belian.accounting.svc.BudgetService;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.global.dm.RoledType;
+import com.kratonsolution.belian.global.dm.StatusType;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.util.Components;
@@ -104,7 +104,7 @@ public class BudgetFormContent extends FormContent
 				status.setBudget(budget);
 				status.setDate(start.getValue());
 				status.setDescription("Just Created");
-				status.setType(BudgetStatusType.Created);
+				status.setType(StatusType.Created);
 				
 				budget.getStatuses().add(status);
 				budget.setLastStatus(status);
@@ -112,12 +112,12 @@ public class BudgetFormContent extends FormContent
 				BudgetRole initiator = new BudgetRole();
 				initiator.setBudget(budget);
 				initiator.setParty(sessionUtils.getUser().getPerson());
-				initiator.setType(BudgetRoleType.Initiator);
+				initiator.setType(RoledType.Initiator);
 				
 				BudgetRole requested = new BudgetRole();
 				requested.setBudget(budget);
 				requested.setParty(sessionUtils.getOrganization());
-				requested.setType(BudgetRoleType.RequestedFor);
+				requested.setType(RoledType.Requested);
 				
 				budget.getRoles().add(initiator);
 				budget.getRoles().add(requested);
@@ -143,7 +143,7 @@ public class BudgetFormContent extends FormContent
 					BudgetRole role = new BudgetRole();
 					role.setBudget(budget);
 					role.setParty(personService.findOne(RowUtils.string(row, 1)));
-					role.setType(BudgetRoleType.valueOf(RowUtils.string(row, 2)));
+					role.setType(RoledType.valueOf(RowUtils.string(row, 2)));
 					
 					budget.getRoles().add(role);
 				}
@@ -280,8 +280,8 @@ public class BudgetFormContent extends FormContent
 					row.appendChild(Components.fullSpanSelect(personService.findAll(),true));
 					
 					Listbox listbox = Components.fullSpanSelect();
-					listbox.appendItem(BudgetRoleType.Reviewer.name(), BudgetRoleType.Reviewer.name());
-					listbox.appendItem(BudgetRoleType.Approver.name(), BudgetRoleType.Approver.name());
+					listbox.appendItem(RoledType.Reviewer.name(), RoledType.Reviewer.name());
+					listbox.appendItem(RoledType.Approver.name(), RoledType.Approver.name());
 					
 					row.appendChild(listbox);
 					

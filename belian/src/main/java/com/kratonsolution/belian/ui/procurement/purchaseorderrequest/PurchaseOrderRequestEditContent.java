@@ -3,6 +3,9 @@
  */
 package com.kratonsolution.belian.ui.procurement.purchaseorderrequest;
 
+import java.util.UUID;
+import java.util.Vector;
+
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -16,13 +19,20 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
+import org.zkoss.zul.Tab;
+import org.zkoss.zul.Tabbox;
+import org.zkoss.zul.Tabpanel;
+import org.zkoss.zul.Tabpanels;
+import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.PersonService;
-import com.kratonsolution.belian.global.dm.ApproverStatus;
-import com.kratonsolution.belian.global.dm.RequestStatus;
+import com.kratonsolution.belian.global.dm.Roled;
+import com.kratonsolution.belian.global.dm.RoledType;
+import com.kratonsolution.belian.global.dm.StatusType;
+import com.kratonsolution.belian.procurement.dm.PORRole;
 import com.kratonsolution.belian.procurement.dm.PurchaseOrderRequest;
 import com.kratonsolution.belian.procurement.dm.PurchaseOrderRequestItem;
 import com.kratonsolution.belian.procurement.svc.PurchaseOrderRequestService;
@@ -31,6 +41,7 @@ import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.component.ProductBox;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -50,16 +61,16 @@ public class PurchaseOrderRequestEditContent extends FormContent
 	private PersonService personService = Springs.get(PersonService.class);
 
 	private Textbox number = Components.readOnlyTextBox();
-	
+
 	private Listbox companys = Components.newSelect();
 
 	private Datebox date = Components.currentDatebox();
 
-	private Listbox requester = Components.newSelect();
-
-	private Listbox approver = Components.newSelect();
-
 	private Grid items = new Grid();
+
+	private Grid rolesGrid = new Grid();
+
+	private Tabbox tabbox = new Tabbox();
 
 	private Row row;
 
@@ -69,7 +80,7 @@ public class PurchaseOrderRequestEditContent extends FormContent
 		this.row = row;
 		initToolbar();
 		initForm();
-		initItems();
+		initTabbox();
 	}
 
 	@Override
@@ -80,9 +91,7 @@ public class PurchaseOrderRequestEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PurchaseOrderRequestWindow window = (PurchaseOrderRequestWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new PurchaseOrderRequestGridContent());
 			}
 		});
 
@@ -91,31 +100,41 @@ public class PurchaseOrderRequestEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PurchaseOrderRequest request = service.findOne(RowUtils.string(row, 6));
-				if(request != null && request.getRequestStatus().equals(RequestStatus.INCOMPLETE) && request.getApproverStatus().equals(ApproverStatus.SUBMITTED))
+				PurchaseOrderRequest request = service.findOne(RowUtils.string(row, 5));
+				if(request != null && request.getLastStatus().getType().equals(StatusType.Created))
 				{
-					request.getItems().clear();
-					service.edit(request);
-					
+					Vector<PurchaseOrderRequestItem> vItems = new Vector<>();
 					for(Component com:items.getRows().getChildren())
 					{
 						Row row = (Row)com;
-						
+
 						PurchaseOrderRequestItem item = new PurchaseOrderRequestItem();
 						item.setNote(RowUtils.string(row, 4));
 						item.setProduct(Components.product(row, 1));
 						item.setRequest(request);
 						item.setQuantity(RowUtils.decimal(row, 2));
-						
-						request.getItems().add(item);
+
+						vItems.add(item);
 					}
 					
-					service.edit(request);
+					Vector<PORRole> vRoles = new Vector<>();
+					for(Component com:rolesGrid.getRows().getChildren())
+					{
+						Row row = (Row)com;
+
+						PORRole role = new PORRole();
+						role.setRequest(request);
+						role.setParty(personService.findOne(RowUtils.string(row, 1)));
+						role.setType(RoledType.valueOf(RowUtils.string(row, 2)));
+						role.setId(RowUtils.string(row, 3));
+						
+						vRoles.add(role);
+					}
+
+					service.edit(request,vItems,vRoles);
 				}
-				
-				PurchaseOrderRequestWindow window = (PurchaseOrderRequestWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+
+				Flow.next(getParent(), new PurchaseOrderRequestGridContent());
 			}
 		});
 	}
@@ -123,100 +142,160 @@ public class PurchaseOrderRequestEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		PurchaseOrderRequest request = service.findOne(RowUtils.string(row, 6));
+		PurchaseOrderRequest request = service.findOne(RowUtils.string(row, 5));
 		if(request != null)
 		{
 			if(Strings.isNullOrEmpty(request.getNumber()))
 				request.setNumber(PurchaseOrderRequest.NCODE+System.currentTimeMillis());
-				
+
 			number.setText(request.getNumber());
 			date.setValue(request.getDate());
 			companys.appendChild(new Listitem(request.getOrganization().getLabel(),request.getOrganization().getValue()));
 			companys.setSelectedIndex(0);
-			requester.appendChild(new Listitem(request.getRequester().getLabel(),request.getRequester().getValue()));
-			requester.setSelectedIndex(0);
-			approver.appendChild(new Listitem(request.getApprover().getLabel(), request.getApprover().getValue()));
-			approver.setSelectedIndex(0);
-			
+
 			grid.appendChild(new Columns());
 			grid.getColumns().appendChild(new Column(null,null,"125px"));
 			grid.getColumns().appendChild(new Column());
-			
+
+			Row row0 = new Row();
+			row0.appendChild(new Label("Number"));
+			row0.appendChild(number);
+
 			Row row1 = new Row();
 			row1.appendChild(new Label("Date"));
 			row1.appendChild(date);
-			
+
 			Row row2 = new Row();
 			row2.appendChild(new Label("Company"));
 			row2.appendChild(companys);
-			
-			Row row3 = new Row();
-			row3.appendChild(new Label("Requested By"));
-			row3.appendChild(requester);
-			
-			Row row4 = new Row();
-			row4.appendChild(new Label("Approver"));
-			row4.appendChild(approver);
-			
+
+			rows.appendChild(row0);
 			rows.appendChild(row1);
 			rows.appendChild(row2);
-			rows.appendChild(row3);
-			rows.appendChild(row4);
 		}
 	}
-	
+
+	private void initTabbox()
+	{
+		tabbox.setWidth("100%");
+		tabbox.appendChild(new Tabs());
+		tabbox.appendChild(new Tabpanels());
+		tabbox.getTabs().appendChild(new Tab("Item(s)"));
+		tabbox.getTabs().appendChild(new Tab("Role(s)"));
+		tabbox.getTabpanels().appendChild(new Tabpanel());
+		tabbox.getTabpanels().appendChild(new Tabpanel());
+
+		appendChild(tabbox);
+
+		initItems();
+		initRolesGrid();
+	}
+
 	public void initItems()
 	{
-		PurchaseOrderRequest request = service.findOne(RowUtils.string(row, 6));
+
+		NRCToolbar nrc = new NRCToolbar(items);
+
+		items.setWidth("100%");
+		items.appendChild(new Rows());
+		items.appendChild(new Columns());
+		items.getColumns().appendChild(new Column(null,null,"25px"));
+		items.getColumns().appendChild(new Column("Product",null,"150px"));
+		items.getColumns().appendChild(new Column("Quantity",null,"100px"));
+		items.getColumns().appendChild(new Column("UoM",null,"100px"));
+		items.getColumns().appendChild(new Column("Note",null,"150px"));
+		items.setSpan("1");
+
+		PurchaseOrderRequest request = service.findOne(RowUtils.string(row, 5));
 		if(request != null)
 		{
-			NRCToolbar nrc = new NRCToolbar(items);
-
-			items.setWidth("100%");
-			items.appendChild(new Rows());
-			items.appendChild(new Columns());
-			items.getColumns().appendChild(new Column(null,null,"25px"));
-			items.getColumns().appendChild(new Column("Product",null,"150px"));
-			items.getColumns().appendChild(new Column("Quantity",null,"100px"));
-			items.getColumns().appendChild(new Column("UoM",null,"100px"));
-			items.getColumns().appendChild(new Column("Note",null,"150px"));
-			items.setSpan("1");
-			
 			for(PurchaseOrderRequestItem item:request.getItems())
 			{
 				ProductBox box = new ProductBox();
 				box.setProduct(item.getProduct());
-				
+
 				Row row = new Row();
 				row.appendChild(Components.checkbox(false));
 				row.appendChild(box);
 				row.appendChild(Components.doubleBox(item.getQuantity().doubleValue()));
 				row.appendChild(box.getUoms());
 				row.appendChild(Components.textBox(item.getNote()));
-				
+
 				items.getRows().appendChild(row);
 			}
-			
-			nrc.getNew().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-			{
-				@Override
-				public void onEvent(Event event) throws Exception
-				{
-					ProductBox box = new ProductBox();
-					
-					Row row = new Row();
-					row.appendChild(Components.checkbox(false));
-					row.appendChild(box);
-					row.appendChild(Components.doubleBox(1));
-					row.appendChild(box.getUoms());
-					row.appendChild(Components.textBox(null));
-					
-					items.getRows().appendChild(row);
-				}
-			});
-			
-			appendChild(nrc);
-			appendChild(items);
 		}
+
+		nrc.getNew().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				ProductBox box = new ProductBox();
+
+				Row row = new Row();
+				row.appendChild(Components.checkbox(false));
+				row.appendChild(box);
+				row.appendChild(Components.doubleBox(1));
+				row.appendChild(box.getUoms());
+				row.appendChild(Components.textBox(null));
+
+				items.getRows().appendChild(row);
+			}
+		});
+
+		tabbox.getTabpanels().getChildren().get(0).appendChild(nrc);
+		tabbox.getTabpanels().getChildren().get(0).appendChild(items);
+	}
+
+	private void initRolesGrid()
+	{
+		NRCToolbar bar = new NRCToolbar(rolesGrid);
+
+		rolesGrid.appendChild(new Columns());
+		rolesGrid.appendChild(new Rows());
+		rolesGrid.getColumns().appendChild(new Column(null,null,"25px"));
+		rolesGrid.getColumns().appendChild(new Column("Person",null,"150px"));
+		rolesGrid.getColumns().appendChild(new Column("Type",null,"125px"));
+		rolesGrid.getColumns().appendChild(new Column(null,null,"0px"));
+		rolesGrid.getColumns().getChildren().get(3).setVisible(false);
+		rolesGrid.setSpan("1");
+
+		PurchaseOrderRequest request = service.findOne(RowUtils.string(row, 5));
+		if(request != null)
+		{
+			for(Roled roled:request.getRoles())
+			{
+				Row row = new Row();
+				row.appendChild(Components.readOnlyCheckbox());
+				row.appendChild(Components.fullSpanSelect(roled.getParty()));
+				row.appendChild(Components.fullSpanSelect(roled.getType().name(), roled.getType().name()));
+				row.appendChild(new Label(roled.getId()));
+
+				rolesGrid.getRows().appendChild(row);
+			}
+		}
+
+		bar.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event arg0) throws Exception
+			{
+				Row row = new Row();
+				row.appendChild(Components.checkbox(false));
+				row.appendChild(Components.fullSpanSelect(personService.findAll(),true));
+
+				Listbox listbox = Components.fullSpanSelect();
+				listbox.appendItem(RoledType.Reviewer.name(), RoledType.Reviewer.name());
+				listbox.appendItem(RoledType.Approver.name(), RoledType.Approver.name());
+
+				row.appendChild(listbox);
+				row.appendChild(new Label(UUID.randomUUID().toString()));
+
+				rolesGrid.getRows().appendChild(row);
+			}
+		});
+
+		tabbox.getTabpanels().getChildren().get(1).appendChild(bar);
+		tabbox.getTabpanels().getChildren().get(1).appendChild(rolesGrid);
 	}
 }

@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.global.dm.ApproveAndReviewableItem;
 import com.kratonsolution.belian.global.dm.Listable;
 
 import lombok.Getter;
@@ -29,7 +30,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="budget_item")
-public class BudgetItem implements Serializable, Listable
+public class BudgetItem implements Serializable, Listable,ApproveAndReviewableItem
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -63,5 +64,29 @@ public class BudgetItem implements Serializable, Listable
 	public String getValue()
 	{
 		return getId();
+	}
+
+	@Override
+	public String getResource()
+	{
+		return getPurpose();
+	}
+
+	@Override
+	public BigDecimal getQuantity()
+	{
+		return getAmount();
+	}
+
+	@Override
+	public String getUom()
+	{
+		return "";
+	}
+
+	@Override
+	public String getNote()
+	{
+		return getJustification();
 	}
 }
