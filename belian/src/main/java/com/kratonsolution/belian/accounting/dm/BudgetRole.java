@@ -8,7 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.kratonsolution.belian.global.dm.HasStatus;
+import com.kratonsolution.belian.global.dm.ApproveAndReviewable;
 import com.kratonsolution.belian.global.dm.Roled;
 
 import lombok.Getter;
@@ -31,8 +31,8 @@ public class BudgetRole extends Roled
 	public BudgetRole(){}
 
 	@Override
-	public HasStatus getDocument()
+	public ApproveAndReviewable getDocument()
 	{
-		return null;
+		return getBudget();
 	}
 }

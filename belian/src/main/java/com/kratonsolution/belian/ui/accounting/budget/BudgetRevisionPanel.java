@@ -38,6 +38,7 @@ public class BudgetRevisionPanel extends Tabpanel
 		grid.setWidth("100%");
 		grid.appendChild(new Columns());
 		grid.appendChild(new Rows());
+		grid.setEmptyMessage("No budget revision exist.");
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
 		grid.getColumns().appendChild(new Column("Seq",null,"50px"));
 		grid.getColumns().appendChild(new Column("Date",null,"125px"));

@@ -37,4 +37,9 @@ public class Dates
 		
 		return null;
 	}
+	
+	public static java.sql.Date now()
+	{
+		return new java.sql.Date(System.currentTimeMillis());
+	}
 }

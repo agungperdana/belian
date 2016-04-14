@@ -34,6 +34,7 @@ import com.kratonsolution.belian.global.dm.StatusType;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -138,12 +139,12 @@ public class BudgetEditContent extends FormContent
 				if(budget != null)
 				{
 					budget.setType(BudgetType.valueOf(Components.string(types)));
-					budget.setStart(start.getValue());
-					budget.setEnd(end.getValue());
+					budget.setStart(Dates.sql(start.getValue()));
+					budget.setEnd(Dates.sql(end.getValue()));
 					budget.setComment(comment.getText());
 					
 					budget.getItems().clear();
-					budget.getStatuses().clear();
+					budget.getReviews().clear();
 					budget.getReviews().clear();
 
 					service.edit(budget);

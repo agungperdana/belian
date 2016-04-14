@@ -81,7 +81,7 @@ public class BudgetItem implements Serializable, Listable,ApproveAndReviewableIt
 	@Override
 	public String getUom()
 	{
-		return "";
+		return "-";
 	}
 
 	@Override

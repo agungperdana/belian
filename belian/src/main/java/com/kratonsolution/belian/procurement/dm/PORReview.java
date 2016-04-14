@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.kratonsolution.belian.global.dm.ApproveAndReviewable;
-import com.kratonsolution.belian.global.dm.Roled;
+import com.kratonsolution.belian.global.dm.Review;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,8 +21,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="purchase_order_request_role")
-public class PORRole extends Roled
+@Table(name="purchase_order_request_review")
+public class PORReview extends Review
 {
 	@ManyToOne
 	@JoinColumn(name="fk_purchase_order_request")

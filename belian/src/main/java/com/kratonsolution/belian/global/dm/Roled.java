@@ -41,7 +41,7 @@ public abstract class Roled implements Serializable
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="role_type")
-	protected RoledType type;
+	protected RoledType type = RoledType.Initiator;
 	
 	@Column(name="is_done")
 	protected boolean done;
@@ -51,5 +51,5 @@ public abstract class Roled implements Serializable
 	
 	public Roled(){}
 	
-	public abstract HasStatus getDocument();
+	public abstract ApproveAndReviewable getDocument();
 }

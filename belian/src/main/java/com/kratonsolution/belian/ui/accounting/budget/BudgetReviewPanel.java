@@ -37,6 +37,7 @@ public class BudgetReviewPanel extends Tabpanel
 		grid.setWidth("100%");
 		grid.appendChild(new Columns());
 		grid.appendChild(new Rows());
+		grid.setEmptyMessage("No budget review exist.");
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
 		grid.getColumns().appendChild(new Column("Date",null,"125px"));
 		grid.getColumns().appendChild(new Column("Party",null,"150px"));

@@ -35,6 +35,7 @@ import com.kratonsolution.belian.global.dm.StatusType;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -96,8 +97,8 @@ public class BudgetFormContent extends FormContent
 				Budget budget = new Budget();
 				budget.setType(BudgetType.valueOf(Components.string(types)));
 				budget.setOrganization(sessionUtils.getOrganization());
-				budget.setStart(start.getValue());
-				budget.setEnd(end.getValue());
+				budget.setStart(Dates.sql(start.getValue()));
+				budget.setEnd(Dates.sql(end.getValue()));
 				budget.setComment(comment.getText());
 				
 				BudgetStatus status = new BudgetStatus();
