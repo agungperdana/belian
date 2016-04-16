@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.general.svc;
+package com.kratonsolution.belian.hr.svc;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kratonsolution.belian.general.dm.Employment;
-import com.kratonsolution.belian.general.dm.EmploymentRepository;
+import com.kratonsolution.belian.hr.dm.Employment;
+import com.kratonsolution.belian.hr.dm.EmploymentRepository;
 
 /**
  * 

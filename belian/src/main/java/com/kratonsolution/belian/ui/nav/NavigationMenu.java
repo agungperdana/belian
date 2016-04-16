@@ -296,10 +296,10 @@ public class NavigationMenu extends Window
 			list.appendChild(new PositionTypeItem());
 		if(modules.containsKey("POSITIONTYPERATE") && modules.get("POSITIONTYPERATE"))
 			list.appendChild(new PositionTypeRateItem());
-		if(modules.containsKey("PAY_GRADE") && modules.get("PAY_GRADE"))
-			list.appendChild(new PayGradeItem());
 		if(modules.containsKey("POSITION") && modules.get("POSITION"))
 			list.appendChild(new PositionItem());
+		if(modules.containsKey("BENEFIT_TYPE") && modules.get("BENEFIT_TYPE"))
+			list.appendChild(new BenefitTypeItem());
 		if(modules.containsKey("EMPYAPP") && modules.get("EMPYAPP"))
 			list.appendChild(new EmploymentApplicationItem());
 		if(modules.containsKey("EMPLOYMENT") && modules.get("EMPLOYMENT"))

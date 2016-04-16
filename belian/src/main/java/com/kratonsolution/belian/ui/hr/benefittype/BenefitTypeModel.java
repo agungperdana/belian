@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.hr.paygrade;
+package com.kratonsolution.belian.ui.hr.benefittype;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +9,8 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
-import com.kratonsolution.belian.hr.dm.PayGrade;
-import com.kratonsolution.belian.hr.svc.PayGradeService;
+import com.kratonsolution.belian.hr.dm.BenefitType;
+import com.kratonsolution.belian.hr.svc.BenefitTypeService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -18,19 +18,19 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class PayGradeModel implements ListModel<PayGrade>
+public class BenefitTypeModel implements ListModel<BenefitType>
 {
-	private final PayGradeService controller = Springs.get(PayGradeService.class);
+	private final BenefitTypeService controller = Springs.get(BenefitTypeService.class);
 	
-	private List<PayGrade> data = new ArrayList<PayGrade>();
+	private List<BenefitType> data = new ArrayList<BenefitType>();
 	
-	public PayGradeModel(int itemSize)
+	public BenefitTypeModel(int itemSize)
 	{
 		next(0, itemSize);
 	}
 	
 	@Override
-	public PayGrade getElementAt(int index)
+	public BenefitType getElementAt(int index)
 	{
 		if(index >= data.size())
 			return null;

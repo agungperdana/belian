@@ -26,20 +26,19 @@ import org.zkoss.zul.Tabpanel;
 import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 
-import com.kratonsolution.belian.accounting.dm.BudgetItem;
 import com.kratonsolution.belian.accounting.svc.BudgetItemService;
-import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.hr.dm.EmploymentStatus;
 import com.kratonsolution.belian.hr.dm.Position;
-import com.kratonsolution.belian.hr.dm.Position.EmploymentStatus;
-import com.kratonsolution.belian.hr.dm.Position.PositionStatusType;
-import com.kratonsolution.belian.hr.dm.Position.SalaryStatus;
-import com.kratonsolution.belian.hr.dm.Position.WorktimeStatus;
 import com.kratonsolution.belian.hr.dm.PositionFulfillment;
 import com.kratonsolution.belian.hr.dm.PositionReportingStructure;
 import com.kratonsolution.belian.hr.dm.PositionResponsibility;
+import com.kratonsolution.belian.hr.dm.PositionStatus;
 import com.kratonsolution.belian.hr.dm.PositionType;
+import com.kratonsolution.belian.hr.dm.SalaryStatus;
+import com.kratonsolution.belian.hr.dm.WorktimeStatus;
 import com.kratonsolution.belian.hr.svc.PositionReportingStructureService;
 import com.kratonsolution.belian.hr.svc.PositionService;
 import com.kratonsolution.belian.hr.svc.PositionTypeService;
@@ -56,6 +55,8 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class EmploymentEditContent extends FormContent
 {	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
+	
 	private PositionService service = Springs.get(PositionService.class);
 
 	private BudgetItemService budgetItemService = Springs.get(BudgetItemService.class);
@@ -88,7 +89,7 @@ public class EmploymentEditContent extends FormContent
 	
 	private Listbox positionStatusTypes = Components.newSelect();
 	
-	private Listbox owners = Components.newSelect();
+	private Listbox owners = Components.newSelect(utils.getOrganization());
 
 	private Row row;
 	
@@ -162,13 +163,13 @@ public class EmploymentEditContent extends FormContent
 					position.setActualStart(actualStart.getValue());
 					position.setBudgetItem(budgetItemService.findOne(Components.string(budgetItems)));
 					position.setEnd(end.getValue());
-					position.setHiringOrganization(organizationService.findOne(Components.string(owners)));
+					position.setOrganization(utils.getOrganization());
 					position.setSalaryStatus(SalaryStatus.valueOf(Components.string(salaryStatus)));
 					position.setStart(start.getValue());
 					position.setEmploymentStatus(EmploymentStatus.valueOf(Components.string(employmentstatuses)));
 					position.setType(positionTypeService.findOne(Components.string(positionTypes)));
 					position.setWorktimeStatus(WorktimeStatus.valueOf(Components.string(worktimes)));
-					position.setPositionStatusType(PositionStatusType.valueOf(Components.string(positionStatusTypes)));
+					position.setPositionStatusType(PositionStatus.valueOf(Components.string(positionStatusTypes)));
 					position.getResponsibilitys().clear();
 					position.getFulfillments().clear();
 					position.getReportings().clear();
@@ -216,7 +217,7 @@ public class EmploymentEditContent extends FormContent
 						report.setPrimary(false);
 						report.setReportTo(service.findOne(RowUtils.string(row, 3)));
 						report.setStart(RowUtils.date(row, 1));
-						report.setParent(position);
+						report.setPosition(position);
 						
 						position.getReportings().add(report);
 					}
@@ -260,7 +261,7 @@ public class EmploymentEditContent extends FormContent
 				salaryStatus.setSelectedItem(listitem);
 		}
 		
-		for(PositionStatusType status:PositionStatusType.values())
+		for(PositionStatus status:PositionStatus.values())
 		{
 			Listitem listitem = new Listitem(status.name(), status.name());
 			positionStatusTypes.appendChild(listitem);
@@ -274,36 +275,6 @@ public class EmploymentEditContent extends FormContent
 			positionTypes.appendChild(listitem);
 			if(type.getId().equals(position.getType().getId()))
 				positionTypes.setSelectedItem(listitem);
-		}
-		
-		for(Organization organization:organizationService.findAllByRolesTypeName("Internal Organization"))
-		{
-			Listitem listitem = new Listitem(position.getHiringOrganization().getName(), position.getHiringOrganization().getId());
-			owners.appendChild(listitem);
-			if(organization.getId().equals(position.getHiringOrganization().getId()))
-				owners.setSelectedItem(listitem);
-		}
-
-		owners.addEventListener(Events.ON_CLICK, new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				budgetItems.getChildren().clear();
-				
-				for(BudgetItem item:budgetItemService.findAllByOwner(Components.string(owners)))
-					budgetItems.appendChild(new Listitem(item.getLabel(), item.getValue()));
-			
-				Components.setDefault(budgetItems);
-			}
-		});
-		
-		for(BudgetItem budgetItem:budgetItemService.findAllByOwner(Components.string(owners)))
-		{
-			Listitem listitem = new Listitem(position.getBudgetItem().getLabel(),position.getBudgetItem().getValue());
-			budgetItems.appendChild(listitem);
-			if(position.getBudgetItem() != null && budgetItem.getId().equals(position.getBudgetItem().getId()))
-				budgetItems.setSelectedItem(listitem);
 		}
 		
 		start.setValue(position.getStart());

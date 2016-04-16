@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.hr.paygrade;
+package com.kratonsolution.belian.ui.hr.benefittype;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -12,10 +12,11 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
-import com.kratonsolution.belian.hr.dm.PayGrade;
-import com.kratonsolution.belian.hr.svc.PayGradeService;
+import com.kratonsolution.belian.hr.dm.BenefitType;
+import com.kratonsolution.belian.hr.svc.BenefitTypeService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -24,17 +25,19 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class PayGradeEditContent extends FormContent
+public class BenefitTypeEditContent extends FormContent
 {	
-	private PayGradeService service = Springs.get(PayGradeService.class);
+	private BenefitTypeService service = Springs.get(BenefitTypeService.class);
 
+	private Textbox code = Components.mandatoryTextBox();
+	
 	private Textbox name = Components.mandatoryTextBox();
 	
-	private Textbox comment = new Textbox();
+	private Textbox note = new Textbox();
 	
 	private Row row;
 	
-	public PayGradeEditContent(Row row)
+	public BenefitTypeEditContent(Row row)
 	{
 		super();
 		this.row = row;
@@ -50,9 +53,7 @@ public class PayGradeEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PayGradeWindow window = (PayGradeWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new BenefitTypeGridContent());
 			}
 		});
 		
@@ -61,18 +62,17 @@ public class PayGradeEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PayGrade grade = service.findOne(RowUtils.string(row, 7));
+				BenefitType grade = service.findOne(RowUtils.id(row));
 				if(grade != null)
 				{
+					grade.setCode(code.getText());
 					grade.setName(name.getText());
-					grade.setComment(comment.getText());
+					grade.setNote(note.getText());
 
 					service.edit(grade);
 				}
 				
-				PayGradeWindow window = (PayGradeWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new BenefitTypeGridContent());
 			}
 		});
 	}
@@ -80,26 +80,32 @@ public class PayGradeEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		PayGrade grade = service.findOne(RowUtils.string(row, 3));
+		BenefitType grade = service.findOne(RowUtils.id(row));
 		if(grade != null)
 		{
+			code.setText(grade.getCode());
 			name.setText(grade.getName());
-			comment.setText(grade.getComment());
+			note.setText(grade.getNote());
 			
 			grid.appendChild(new Columns());
 			grid.getColumns().appendChild(new Column(null,null,"125px"));
 			grid.getColumns().appendChild(new Column());
 			
 			Row row1 = new Row();
-			row1.appendChild(new Label("Name"));
-			row1.appendChild(name);
+			row1.appendChild(new Label("Code"));
+			row1.appendChild(code);
 			
 			Row row2 = new Row();
-			row2.appendChild(new Label("Comment"));
-			row2.appendChild(comment);
+			row2.appendChild(new Label("Name"));
+			row2.appendChild(name);
+			
+			Row row3 = new Row();
+			row3.appendChild(new Label("Note"));
+			row3.appendChild(note);
 			
 			rows.appendChild(row1);
 			rows.appendChild(row2);
+			rows.appendChild(row3);
 		}
 	}
 }

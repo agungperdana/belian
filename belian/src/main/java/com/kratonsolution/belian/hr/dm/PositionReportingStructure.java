@@ -5,6 +5,7 @@ package com.kratonsolution.belian.hr.dm;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +19,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * 
  * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
@@ -27,7 +30,7 @@ import lombok.Setter;
 public class PositionReportingStructure implements Serializable
 {
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="start_date")
 	private Date start;
@@ -47,7 +50,7 @@ public class PositionReportingStructure implements Serializable
 	
 	@ManyToOne
 	@JoinColumn(name="fk_position_parent")
-	private Position parent;
+	private Position position;
 	
 	@Version
 	private Long version;

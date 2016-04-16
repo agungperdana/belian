@@ -11,8 +11,10 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.BudgetItem;
 import com.kratonsolution.belian.accounting.dm.BudgetItemRepository;
+import com.kratonsolution.belian.common.SessionUtils;
 
 /**
  * 
@@ -25,6 +27,9 @@ public class BudgetItemService
 {
 	@Autowired
 	private BudgetItemRepository repository;
+	
+	@Autowired
+	private SessionUtils utils;
 	
 	@Secured("ROLE_BUDGETITEM_READ")
 	public int size()
@@ -45,7 +50,10 @@ public class BudgetItemService
 	@Secured("ROLE_BUDGETITEM_READ")
 	public BudgetItem findOne(String id)
 	{
-		return repository.findOne(id);
+		if(!Strings.isNullOrEmpty(id))
+			return repository.findOne(id);
+	
+		return null;
 	}
 	
 	@Secured("ROLE_BUDGETITEM_READ")
@@ -79,8 +87,8 @@ public class BudgetItemService
 	}
 	
 	@Secured("ROLE_BUDGETITEM_READ")
-	public List<BudgetItem> findAllByOwner(String owner)
+	public List<BudgetItem> findAllByOwner()
 	{
-		return repository.findAllByOwner(owner);
+		return repository.findAllByOwner(utils.getOrganization().getId());
 	}
 }

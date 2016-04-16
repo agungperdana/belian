@@ -15,12 +15,12 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 
 import com.kratonsolution.belian.accounting.svc.BudgetItemService;
-import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.hr.dm.EmploymentStatus;
 import com.kratonsolution.belian.hr.dm.Position;
-import com.kratonsolution.belian.hr.dm.Position.EmploymentStatus;
-import com.kratonsolution.belian.hr.dm.Position.PositionStatusType;
-import com.kratonsolution.belian.hr.dm.Position.SalaryStatus;
-import com.kratonsolution.belian.hr.dm.Position.WorktimeStatus;
+import com.kratonsolution.belian.hr.dm.PositionStatus;
+import com.kratonsolution.belian.hr.dm.SalaryStatus;
+import com.kratonsolution.belian.hr.dm.WorktimeStatus;
 import com.kratonsolution.belian.hr.svc.PositionService;
 import com.kratonsolution.belian.hr.svc.PositionTypeService;
 import com.kratonsolution.belian.ui.FormContent;
@@ -40,7 +40,7 @@ public class PositionFormContent extends FormContent
 	
 	private PositionTypeService positionTypeService = Springs.get(PositionTypeService.class);
 	
-	private OrganizationService organizationService = Springs.get(OrganizationService.class);
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	private Datebox start = Components.currentDatebox();
 	
@@ -58,11 +58,11 @@ public class PositionFormContent extends FormContent
 	
 	private Listbox positionStatusTypes = Components.fullSpanSelect();
 	
-	private Listbox budgetItems = Components.fullSpanSelect();
+	private Listbox budgetItems = Components.fullSpanSelect(budgetItemService.findAllByOwner(),false);
 		
 	private Listbox positionTypes = Components.fullSpanSelect(positionTypeService.findAll(),true);
 	
-	private Listbox hirings = Components.fullSpanSelect();
+	private Listbox hirings = Components.fullSpanSelect(utils.getOrganization());
 	
 	public PositionFormContent()
 	{
@@ -97,11 +97,11 @@ public class PositionFormContent extends FormContent
 				position.setEnd(end.getValue());
 				position.setSalaryStatus(SalaryStatus.valueOf(Components.string(salarys)));
 				position.setStart(start.getValue());
-				position.setHiringOrganization(organizationService.findOne(Components.string(hirings)));
+				position.setOrganization(utils.getOrganization());
 				position.setEmploymentStatus(EmploymentStatus.valueOf(Components.string(employmentstatuses)));
 				position.setType(positionTypeService.findOne(Components.string(positionTypes)));
 				position.setWorktimeStatus(WorktimeStatus.valueOf(Components.string(worktimes)));
-				position.setPositionStatusType(PositionStatusType.valueOf(Components.string(positionStatusTypes)));
+				position.setPositionStatusType(PositionStatus.valueOf(Components.string(positionStatusTypes)));
 				
 				service.add(position);
 				
@@ -124,12 +124,12 @@ public class PositionFormContent extends FormContent
 		for(SalaryStatus status:SalaryStatus.values())
 			salarys.appendChild(new Listitem(status.name(), status.name()));
 		
-		for(PositionStatusType status:PositionStatusType.values())
+		for(PositionStatus status:PositionStatus.values())
 		{
 			Listitem listitem = new Listitem(status.name(), status.name());
 			positionStatusTypes.appendChild(listitem);
 			
-			if(status.equals(PositionStatusType.Planned))
+			if(status.equals(PositionStatus.Planned))
 				positionStatusTypes.setSelectedItem(listitem);
 		}
 		

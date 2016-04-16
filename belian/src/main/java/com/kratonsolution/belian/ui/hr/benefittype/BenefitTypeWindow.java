@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.hr.paygrade;
+package com.kratonsolution.belian.ui.hr.benefittype;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Page;
@@ -11,40 +11,44 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Row;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.HasCreateForm;
 import com.kratonsolution.belian.ui.HasEditForm;
 import com.kratonsolution.belian.ui.HasGrid;
 import com.kratonsolution.belian.ui.nav.IconBar;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class PayGradeWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
+public class BenefitTypeWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption("Pay Grade");
+	private Language lang = Springs.get(Language.class);
 	
-	private PayGradeButton status = new PayGradeButton();
+	private Caption caption = new Caption(lang.get("navbar.menu.hr.benefittype"));
 	
-	public static PayGradeWindow injectInto(Page page)
+	private BenefitTypeButton status = new BenefitTypeButton();
+	
+	public static BenefitTypeWindow injectInto(Page page)
 	{
-		PayGradeWindow window = new PayGradeWindow();
+		BenefitTypeWindow window = new BenefitTypeWindow();
 		window.setPage(page);
 		window.init();
 		
 		return window;
 	}
 	
-	private PayGradeWindow()
+	private BenefitTypeWindow()
 	{
 		super();
 	}
 	
 	protected void init()
 	{
-		caption.setImage("/icons/paygrade.png");
+		caption.setImage("/icons/benefittype.png");
 		appendChild(caption);
 		insertGrid();
 		insertStatus();
@@ -92,7 +96,7 @@ public class PayGradeWindow extends AbstractWindow implements HasGrid,HasCreateF
 	@Override
 	public void insertEditForm(Row row)
 	{
-		appendChild(new PayGradeEditContent(row));
+		appendChild(new BenefitTypeEditContent(row));
 	}
 
 	@Override
@@ -100,7 +104,7 @@ public class PayGradeWindow extends AbstractWindow implements HasGrid,HasCreateF
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof PayGradeEditContent)
+			if(component instanceof BenefitTypeEditContent)
 			{
 				removeChild(component);
 				break;
@@ -111,7 +115,7 @@ public class PayGradeWindow extends AbstractWindow implements HasGrid,HasCreateF
 	@Override
 	public void insertCreateForm()
 	{
-		appendChild(new PayGradeFormContent());
+		appendChild(new BenefitTypeFormContent());
 	}
 
 	@Override
@@ -119,7 +123,7 @@ public class PayGradeWindow extends AbstractWindow implements HasGrid,HasCreateF
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof PayGradeFormContent)
+			if(component instanceof BenefitTypeFormContent)
 			{
 				removeChild(component);
 				break;
@@ -130,7 +134,7 @@ public class PayGradeWindow extends AbstractWindow implements HasGrid,HasCreateF
 	@Override
 	public void insertGrid()
 	{
-		appendChild(new PayGradeGridContent());
+		appendChild(new BenefitTypeGridContent());
 	}
 
 	@Override
@@ -138,7 +142,7 @@ public class PayGradeWindow extends AbstractWindow implements HasGrid,HasCreateF
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof PayGradeGridContent)
+			if(component instanceof BenefitTypeGridContent)
 			{
 				removeChild(component);
 				break;

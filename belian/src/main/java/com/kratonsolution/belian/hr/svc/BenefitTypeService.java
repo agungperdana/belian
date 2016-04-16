@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.kratonsolution.belian.hr.dm.PayGrade;
-import com.kratonsolution.belian.hr.dm.PayGradeRepository;
+import com.kratonsolution.belian.hr.dm.BenefitType;
+import com.kratonsolution.belian.hr.dm.BenefitTypeRepository;
 
 /**
  * 
@@ -23,49 +23,49 @@ import com.kratonsolution.belian.hr.dm.PayGradeRepository;
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
-public class PayGradeService
+public class BenefitTypeService
 {
 	@Autowired
-	private PayGradeRepository repository;
+	private BenefitTypeRepository repository;
 	
-	@Secured("ROLE_PAY_GRADE_READ")
+	@Secured("ROLE_BENEFIT_TYPE_READ")
 	public int size()
 	{
 		return Long.valueOf(repository.count()).intValue();
 	}
 	
-	@Secured("ROLE_PAY_GRADE_READ")
-	public PayGrade findOne(String id)
+	@Secured("ROLE_BENEFIT_TYPE_READ")
+	public BenefitType findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 	
-	@Secured("ROLE_PAY_GRADE_READ")
-	public List<PayGrade> findAll()
+	@Secured("ROLE_BENEFIT_TYPE_READ")
+	public List<BenefitType> findAll()
 	{
 		return repository.findAll();
 	}
 		
-	@Secured("ROLE_PAY_GRADE_READ")
-	public List<PayGrade> findAll(int pageIndex,int pageSize)
+	@Secured("ROLE_BENEFIT_TYPE_READ")
+	public List<BenefitType> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
 	}
 	
-	@Secured("ROLE_PAY_GRADE_CREATE")
-	public void add(PayGrade grade)
+	@Secured("ROLE_BENEFIT_TYPE_CREATE")
+	public void add(BenefitType grade)
 	{
 		grade.setId(UUID.randomUUID().toString());
 		repository.save(grade);
 	}
 	
-	@Secured("ROLE_PAY_GRADE_UPDATE")
-	public void edit(PayGrade grade)
+	@Secured("ROLE_BENEFIT_TYPE_UPDATE")
+	public void edit(BenefitType grade)
 	{
 		repository.saveAndFlush(grade);
 	}
 	
-	@Secured("ROLE_PAY_GRADE_DELETE")
+	@Secured("ROLE_BENEFIT_TYPE_DELETE")
 	public void delete(@PathVariable String id)
 	{
 		repository.delete(id);

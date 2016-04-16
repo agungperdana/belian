@@ -31,7 +31,6 @@ import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.global.dm.Roled;
 import com.kratonsolution.belian.global.dm.RoledType;
-import com.kratonsolution.belian.global.dm.StatusType;
 import com.kratonsolution.belian.procurement.dm.PORRole;
 import com.kratonsolution.belian.procurement.dm.PurchaseOrderRequest;
 import com.kratonsolution.belian.procurement.dm.PurchaseOrderRequestItem;
@@ -86,6 +85,8 @@ public class PurchaseOrderRequestEditContent extends FormContent
 	@Override
 	public void initToolbar()
 	{
+		PurchaseOrderRequest request = service.findOne(RowUtils.string(row, 5));
+		
 		toolbar.getCancel().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
@@ -95,13 +96,13 @@ public class PurchaseOrderRequestEditContent extends FormContent
 			}
 		});
 
+		toolbar.getSave().setDisabled(request.isDone());
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PurchaseOrderRequest request = service.findOne(RowUtils.string(row, 5));
-				if(request != null && request.getLastStatus().getType().equals(StatusType.Created))
+				if(request != null && !request.isDone())
 				{
 					Vector<PurchaseOrderRequestItem> vItems = new Vector<>();
 					for(Component com:items.getRows().getChildren())

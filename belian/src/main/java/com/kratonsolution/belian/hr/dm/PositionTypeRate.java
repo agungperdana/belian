@@ -27,6 +27,9 @@ import lombok.Getter;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * 
+ * @Description too provide the costs and standard rates for various types of positions
+ * 				in order to capture appropriate cost estimates for work efforts.
  */
 @Getter
 @Setter
@@ -44,7 +47,7 @@ public class PositionTypeRate implements Serializable
 	private Date end;
 
 	@Column(name="amount")
-	private BigDecimal amount;
+	private BigDecimal amount = BigDecimal.ONE;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_currency")

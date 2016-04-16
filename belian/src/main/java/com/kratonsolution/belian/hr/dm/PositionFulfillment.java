@@ -3,7 +3,9 @@
  */
 package com.kratonsolution.belian.hr.dm;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,17 +21,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
 @Table(name="position_fulfillment")
-public class PositionFulfillment
+public class PositionFulfillment implements Serializable
 {
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 
 	@Column(name="start_date")
 	private Date start;
@@ -50,4 +53,6 @@ public class PositionFulfillment
 	
 	@Version
 	private Long version;
+	
+	public PositionFulfillment(){}
 }

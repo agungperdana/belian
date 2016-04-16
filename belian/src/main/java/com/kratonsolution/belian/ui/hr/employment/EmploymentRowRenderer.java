@@ -7,7 +7,7 @@ import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
-import com.kratonsolution.belian.general.dm.Employment;
+import com.kratonsolution.belian.hr.dm.Employment;
 
 /**
  * 

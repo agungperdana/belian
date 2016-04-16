@@ -28,19 +28,20 @@ import org.zkoss.zul.Tabs;
 import com.kratonsolution.belian.accounting.svc.BudgetItemService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.hr.dm.EmploymentStatus;
 import com.kratonsolution.belian.hr.dm.Position;
-import com.kratonsolution.belian.hr.dm.Position.EmploymentStatus;
-import com.kratonsolution.belian.hr.dm.Position.PositionStatusType;
-import com.kratonsolution.belian.hr.dm.Position.SalaryStatus;
-import com.kratonsolution.belian.hr.dm.Position.WorktimeStatus;
 import com.kratonsolution.belian.hr.dm.PositionFulfillment;
 import com.kratonsolution.belian.hr.dm.PositionReportingStructure;
 import com.kratonsolution.belian.hr.dm.PositionResponsibility;
+import com.kratonsolution.belian.hr.dm.PositionStatus;
+import com.kratonsolution.belian.hr.dm.SalaryStatus;
+import com.kratonsolution.belian.hr.dm.WorktimeStatus;
 import com.kratonsolution.belian.hr.svc.PositionService;
 import com.kratonsolution.belian.hr.svc.PositionTypeService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -125,13 +126,11 @@ public class PositioEditContent extends FormContent
 	public void initToolbar()
 	{
 		toolbar.getCancel().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-				{
+		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PositionWindow window = (PositionWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new PositionGridContent());
 			}
 		});
 
@@ -147,13 +146,13 @@ public class PositioEditContent extends FormContent
 					position.setActualEnd(actualEnd.getValue());
 					position.setActualStart(actualStart.getValue());
 					position.setEnd(end.getValue());
-					position.setHiringOrganization(organizationService.findOne(Components.string(hirings)));
+					position.setOrganization(organizationService.findOne(Components.string(hirings)));
 					position.setSalaryStatus(SalaryStatus.valueOf(Components.string(salarys)));
 					position.setStart(start.getValue());
 					position.setEmploymentStatus(EmploymentStatus.valueOf(Components.string(employmentstatuses)));
 					position.setType(positionTypeService.findOne(Components.string(positionTypes)));
 					position.setWorktimeStatus(WorktimeStatus.valueOf(Components.string(worktimes)));
-					position.setPositionStatusType(PositionStatusType.valueOf(Components.string(positionStatusTypes)));
+					position.setPositionStatusType(PositionStatus.valueOf(Components.string(positionStatusTypes)));
 					position.setBudgetItem(budgetItemService.findOne(Components.string(budgetItems)));
 					position.getResponsibilitys().clear();
 					position.getFulfillments().clear();
@@ -202,7 +201,7 @@ public class PositioEditContent extends FormContent
 						report.setPrimary(false);
 						report.setReportTo(service.findOne(RowUtils.string(row, 3)));
 						report.setStart(RowUtils.date(row, 1));
-						report.setParent(position);
+						report.setPosition(position);
 
 						position.getReportings().add(report);
 					}
@@ -210,9 +209,7 @@ public class PositioEditContent extends FormContent
 					service.edit(position);
 				}
 
-				PositionWindow window = (PositionWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new PositionGridContent());
 			}
 		});
 	}
@@ -220,9 +217,15 @@ public class PositioEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		Position position = service.findOne(RowUtils.string(row, 9));
+		Position position = service.findOne(RowUtils.id(row));
 		if(position != null)
 		{
+			if(position.getBudgetItem() != null)
+			{
+				budgetItems.appendItem(position.getBudgetItem().getLabel(),position.getBudgetItem().getValue());
+				budgetItems.setSelectedIndex(0);
+			}
+			
 			for(WorktimeStatus status:WorktimeStatus.values())
 			{
 				Listitem listitem = new Listitem(status.name(), status.name());
@@ -248,12 +251,12 @@ public class PositioEditContent extends FormContent
 					salarys.setSelectedItem(listitem);
 			}
 
-			for(PositionStatusType status:PositionStatusType.values())
+			for(PositionStatus status:PositionStatus.values())
 			{
 				Listitem listitem = new Listitem(status.name(), status.name());
 				positionStatusTypes.appendChild(listitem);
 
-				if(status.equals(PositionStatusType.Planned))
+				if(status.equals(PositionStatus.Planned))
 					positionStatusTypes.setSelectedItem(listitem);
 			}
 

@@ -43,6 +43,15 @@ public class RowUtils
 		return "";
 	}
 	
+	public static String id(Row row)
+	{
+		Object object = row.getLastChild();
+		if(object != null && object instanceof Label)
+			return ((Label)object).getValue();
+		
+		return "";
+	}
+	
 	public static BigDecimal decimal(Row row,int index)
 	{
 		Object object = row.getChildren().get(index);

@@ -74,6 +74,7 @@ public class PurchaseOrderRequest extends ApproveAndReviewable implements Listab
 	{
 		PORStatus status = new PORStatus();
 		status.setRequest(this);
+		this.getStatuses().add(status);
 		
 		return status;
 	}
@@ -83,7 +84,7 @@ public class PurchaseOrderRequest extends ApproveAndReviewable implements Listab
 	{
 		PORReview review = new PORReview();
 		review.setRequest(this);
-		
+		this.getReviews().add(review);
 		return review;
 	}
 }

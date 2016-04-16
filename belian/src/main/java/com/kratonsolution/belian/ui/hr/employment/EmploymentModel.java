@@ -9,8 +9,8 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
-import com.kratonsolution.belian.general.dm.Employment;
-import com.kratonsolution.belian.general.svc.EmploymentService;
+import com.kratonsolution.belian.hr.dm.Employment;
+import com.kratonsolution.belian.hr.svc.EmploymentService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**

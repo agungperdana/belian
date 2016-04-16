@@ -131,6 +131,7 @@ public class BudgetEditContent extends FormContent
 			}
 		});
 
+		toolbar.getSave().setDisabled(budget.isDone());
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override

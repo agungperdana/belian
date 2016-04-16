@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -29,25 +30,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @author agungdodiperdana
- *
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
 @Table(name="position")
 public class Position implements Serializable,Listable
-{
-	public enum WorktimeStatus{Fulltime,Parttime,Freelance}
-	
-	public enum EmploymentStatus{Permanent,Contract}
-	
-	public enum SalaryStatus{Monthly,Weekly,Daily,Hourly}
-	
-	public enum PositionStatusType{Planned,Open,Closed}
-	
+{	
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="start_date")
 	private Date start;
@@ -75,7 +68,7 @@ public class Position implements Serializable,Listable
 	
 	@Column(name="position_status_type")
 	@Enumerated(EnumType.STRING)
-	private PositionStatusType positionStatusType = PositionStatusType.Planned;
+	private PositionStatus positionStatusType = PositionStatus.Planned;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_budget_item")
@@ -87,7 +80,7 @@ public class Position implements Serializable,Listable
 	
 	@ManyToOne
 	@JoinColumn(name="fk_organization_owner")
-	private Organization hiringOrganization;
+	private Organization organization;
 	
 	@Version
 	private Long version;
@@ -100,7 +93,7 @@ public class Position implements Serializable,Listable
 	@OrderBy("start ASC")
 	private Set<PositionFulfillment> fulfillments = new HashSet<PositionFulfillment>();
 	
-	@OneToMany(mappedBy="parent",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(mappedBy="position",cascade=CascadeType.ALL,orphanRemoval=true)
 	@OrderBy("start ASC")
 	private Set<PositionReportingStructure> reportings = new HashSet<PositionReportingStructure>();
 
