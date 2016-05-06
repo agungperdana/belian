@@ -51,6 +51,7 @@ public class NavigationMenu extends Window
 		initGeneral(modules);
 		initSecurity(modules);
 		initAccounting(modules);
+		initPayment(modules);
 		initInventory(modules);
 		initAsset(modules);
 		initSales(modules);
@@ -328,6 +329,26 @@ public class NavigationMenu extends Window
 		if(!list.getChildren().isEmpty())
 		{
 			tabs.appendChild(new Tab(language.get("navbar.menu.asset")));
+			Tabpanel hr = new Tabpanel();
+			hr.setStyle("overflow:auto");
+			hr.appendChild(list);
+			panels.appendChild(hr);
+		}
+	}
+	
+	protected void initPayment(Map<String,Boolean> modules)
+	{
+		Listbox list = new Listbox();
+		list.setStyle("border:none");
+		
+		if(modules.containsKey("DEDUCTION_TYPE") && modules.get("DEDUCTION_TYPE"))
+			list.appendChild(new DeductionTypeItem());
+		if(modules.containsKey("PAYCHECK") && modules.get("PAYCHECK"))
+			list.appendChild(new PaycheckItem());
+
+		if(!list.getChildren().isEmpty())
+		{
+			tabs.appendChild(new Tab(language.get("navbar.menu.payment")));
 			Tabpanel hr = new Tabpanel();
 			hr.setStyle("overflow:auto");
 			hr.appendChild(list);

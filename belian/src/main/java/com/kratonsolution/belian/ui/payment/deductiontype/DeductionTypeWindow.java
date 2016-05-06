@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.hr.positiontyperate;
+package com.kratonsolution.belian.ui.payment.deductiontype;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Page;
@@ -11,41 +11,44 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Row;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.HasCreateForm;
 import com.kratonsolution.belian.ui.HasEditForm;
 import com.kratonsolution.belian.ui.HasGrid;
 import com.kratonsolution.belian.ui.nav.IconBar;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class PositionTypeRateWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
+public class DeductionTypeWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption("Position Type Rate");
+	private Language lang = Springs.get(Language.class);
 	
-	private PositionTypeRateButton status = new PositionTypeRateButton();
+	private Caption caption = new Caption(lang.get("navbar.menu.payment.deductiontype"));
 	
-	public static PositionTypeRateWindow injectInto(Page page)
+	private DeductionTypeButton status = new DeductionTypeButton();
+	
+	public static DeductionTypeWindow injectInto(Page page)
 	{
-		PositionTypeRateWindow window = new PositionTypeRateWindow();
+		DeductionTypeWindow window = new DeductionTypeWindow();
 		window.setPage(page);
 		window.init();
 		
 		return window;
 	}
 	
-	private PositionTypeRateWindow()
+	private DeductionTypeWindow()
 	{
 		super();
-		setWidth("700px");
 	}
 	
 	protected void init()
 	{
-		caption.setImage("/icons/positiontyperate.png");
+		caption.setImage("/icons/deductiontype.png");
 		appendChild(caption);
 		insertGrid();
 		insertStatus();
@@ -93,7 +96,7 @@ public class PositionTypeRateWindow extends AbstractWindow implements HasGrid,Ha
 	@Override
 	public void insertEditForm(Row row)
 	{
-		appendChild(new PositionTypeRateEditContent(row));
+		appendChild(new DeductionTypeEditContent(row));
 	}
 
 	@Override
@@ -101,7 +104,7 @@ public class PositionTypeRateWindow extends AbstractWindow implements HasGrid,Ha
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof PositionTypeRateEditContent)
+			if(component instanceof DeductionTypeEditContent)
 			{
 				removeChild(component);
 				break;
@@ -112,7 +115,7 @@ public class PositionTypeRateWindow extends AbstractWindow implements HasGrid,Ha
 	@Override
 	public void insertCreateForm()
 	{
-		appendChild(new PositionTypeRateFormContent());
+		appendChild(new DeductionTypeFormContent());
 	}
 
 	@Override
@@ -120,7 +123,7 @@ public class PositionTypeRateWindow extends AbstractWindow implements HasGrid,Ha
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof PositionTypeRateFormContent)
+			if(component instanceof DeductionTypeFormContent)
 			{
 				removeChild(component);
 				break;
@@ -131,7 +134,7 @@ public class PositionTypeRateWindow extends AbstractWindow implements HasGrid,Ha
 	@Override
 	public void insertGrid()
 	{
-		appendChild(new PositionTypeRateGridContent());
+		appendChild(new DeductionTypeGridContent());
 	}
 
 	@Override
@@ -139,7 +142,7 @@ public class PositionTypeRateWindow extends AbstractWindow implements HasGrid,Ha
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof PositionTypeRateGridContent)
+			if(component instanceof DeductionTypeGridContent)
 			{
 				removeChild(component);
 				break;

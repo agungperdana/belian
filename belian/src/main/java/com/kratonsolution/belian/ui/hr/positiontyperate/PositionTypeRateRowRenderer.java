@@ -10,6 +10,7 @@ import org.zkoss.zul.RowRenderer;
 
 import com.kratonsolution.belian.hr.dm.PositionTypeRate;
 import com.kratonsolution.belian.ui.util.Dates;
+import com.kratonsolution.belian.ui.util.Numbers;
 
 /**
  * 
@@ -28,9 +29,9 @@ public class PositionTypeRateRowRenderer implements RowRenderer<PositionTypeRate
 			row.appendChild(new Label(Dates.format(data.getStart())));
 			row.appendChild(new Label(Dates.format(data.getEnd())));
 			row.appendChild(new Label(data.getPositionType().getLabel()));
-			row.appendChild(new Label(data.getRateType().name()));
-			row.appendChild(new Label(data.getPeriodType().name()));
-			row.appendChild(new Label(data.getCurrency().getCode()+" "+data.getAmount()));
+			row.appendChild(new Label(data.getRateType().display()));
+			row.appendChild(new Label(data.getPeriodType().display()));
+			row.appendChild(new Label(data.getCurrency().getCode()+" "+Numbers.format(data.getAmount())));
 			row.appendChild(new Label(data.getId()));
 		}
 	}

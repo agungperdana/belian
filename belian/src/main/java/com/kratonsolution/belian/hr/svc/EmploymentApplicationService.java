@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kratonsolution.belian.hr.dm.EmploymentApplication;
 import com.kratonsolution.belian.hr.dm.EmploymentApplicationRepository;
+import com.kratonsolution.belian.hr.dm.EmploymentApplicationStatusType;
 
 /**
  * 
@@ -73,7 +74,7 @@ public class EmploymentApplicationService
 	}
 	
 	@Secured("ROLE_EMPYAPP_READ")
-	public List<EmploymentApplication> findAllByStatusType(EmploymentApplication.StatusType statusType)
+	public List<EmploymentApplication> findAllByStatusType(EmploymentApplicationStatusType statusType)
 	{
 		return repository.findAllByStatusType(statusType);
 	}

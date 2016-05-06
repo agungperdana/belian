@@ -56,7 +56,7 @@ private PositionTypeRateService service = Springs.get(PositionTypeRateService.cl
 	
 	private Listbox currencys = Components.newSelect();
 	
-	private Doublebox amount = Components.doubleBox(0);
+	private Doublebox amount = Components.stdDoubleBox(0);
 	
 	private Textbox comment = new Textbox();
 	
@@ -114,7 +114,7 @@ private PositionTypeRateService service = Springs.get(PositionTypeRateService.cl
 	@Override
 	public void initForm()
 	{
-		PositionTypeRate rate = service.findOne(RowUtils.string(row, 7));
+		PositionTypeRate rate = service.findOne(RowUtils.id(row));
 		if(rate != null)
 		{
 			start.setValue(rate.getStart());
@@ -135,7 +135,7 @@ private PositionTypeRateService service = Springs.get(PositionTypeRateService.cl
 				Listitem listitem = new Listitem(type.display(),type.name());
 				periodTypes.appendChild(listitem);
 				if(type.equals(rate.getPeriodType()))
-					periodTypes.appendChild(listitem);
+					periodTypes.setSelectedItem(listitem);
 			}
 			
 			for(PositionType type:positionTypeService.findAll())
@@ -143,7 +143,7 @@ private PositionTypeRateService service = Springs.get(PositionTypeRateService.cl
 				Listitem listitem = new Listitem(type.getLabel(), type.getValue());
 				positions.appendChild(listitem);
 				if(type.getId().equals(rate.getPositionType().getId()))
-					positions.appendChild(listitem);
+					positions.setSelectedItem(listitem);
 			}
 			
 			for(Currency currency:currencyService.findAll())

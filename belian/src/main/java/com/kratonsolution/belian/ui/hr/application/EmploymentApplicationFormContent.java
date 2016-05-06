@@ -16,12 +16,14 @@ import org.zkoss.zul.Row;
 
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.hr.dm.EmploymentApplication;
-import com.kratonsolution.belian.hr.dm.EmploymentApplication.SourceType;
-import com.kratonsolution.belian.hr.dm.EmploymentApplication.StatusType;
+import com.kratonsolution.belian.hr.dm.EmploymentApplicationSourceType;
+import com.kratonsolution.belian.hr.dm.EmploymentApplicationStatusType;
 import com.kratonsolution.belian.hr.svc.EmploymentApplicationService;
 import com.kratonsolution.belian.hr.svc.PositionService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.component.PersonBox;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -45,9 +47,9 @@ public class EmploymentApplicationFormContent extends FormContent
 
 	private Listbox positions = Components.newSelect(positionService.findAll(),true);
 
-	private Listbox applicants = Components.newSelect(personService.findAll(),true);
+	private PersonBox applicant = new PersonBox(true);
 	
-	private Listbox referals = Components.newSelect(personService.findAll(),false);
+	private PersonBox referals = new PersonBox(false);
 
 	public EmploymentApplicationFormContent()
 	{
@@ -64,9 +66,7 @@ public class EmploymentApplicationFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				EmploymentApplicationWindow window = (EmploymentApplicationWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new EmploymentApplicationGridContent());
 			}
 		});
 
@@ -76,20 +76,16 @@ public class EmploymentApplicationFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				EmploymentApplication application = new EmploymentApplication();
-				application.setApplicant(personService.findOne(Components.string(applicants)));
 				application.setDate(date.getValue());
 				application.setPosition(positionService.findOne(Components.string(positions)));
-				application.setSourceType(SourceType.valueOf(Components.string(sources)));
-				application.setStatusType(StatusType.valueOf(Components.string(types)));
-
-				if(referals.getSelectedCount() > 0)
-					application.setReferal(personService.findOne(Components.string(referals)));
+				application.setSourceType(EmploymentApplicationSourceType.valueOf(Components.string(sources)));
+				application.setStatusType(EmploymentApplicationStatusType.valueOf(Components.string(types)));
+				application.setApplicant(applicant.getPerson());
+				application.setReferal(referals.getPerson());
 				
 				service.add(application);
 				
-				EmploymentApplicationWindow window = (EmploymentApplicationWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new EmploymentApplicationGridContent());
 			}
 		});
 	}
@@ -97,14 +93,17 @@ public class EmploymentApplicationFormContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		for(EmploymentApplication.StatusType statusType:StatusType.values())
+		for(EmploymentApplicationStatusType statusType:EmploymentApplicationStatusType.values())
 			types.appendChild(new Listitem(statusType.name(), statusType.name()));
 		
-		for(SourceType sourceType:SourceType.values())
+		for(EmploymentApplicationSourceType sourceType:EmploymentApplicationSourceType.values())
 			sources.appendChild(new Listitem(sourceType.name(), sourceType.name()));
 		
+		Components.setDefault(types);
+		Components.setDefault(sources);
+		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"125px"));
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
 
 		Row row1 = new Row();
@@ -125,7 +124,7 @@ public class EmploymentApplicationFormContent extends FormContent
 		
 		Row row5 = new Row();
 		row5.appendChild(new Label("Applicant"));
-		row5.appendChild(applicants);
+		row5.appendChild(applicant);
 
 		Row row6 = new Row();
 		row6.appendChild(new Label("Referal"));

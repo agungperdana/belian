@@ -8,10 +8,11 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public interface EmploymentApplicationRepository extends JpaRepository<EmploymentApplication, String>
 {
-	public List<EmploymentApplication> findAllByStatusType(EmploymentApplication.StatusType statusType);
+	public List<EmploymentApplication> findAllByStatusType(EmploymentApplicationStatusType statusType);
 }

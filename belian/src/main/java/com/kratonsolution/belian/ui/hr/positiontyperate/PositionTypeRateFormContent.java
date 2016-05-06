@@ -43,9 +43,9 @@ public class PositionTypeRateFormContent extends FormContent
 	
 	private PositionTypeService positionTypeService = Springs.get(PositionTypeService.class);
 	
-	private Datebox start = Components.mandatoryDatebox();
+	private Datebox start = Components.currentDatebox();
 	
-	private Datebox end = Components.mandatoryDatebox();
+	private Datebox end = Components.datebox();
 	
 	private Listbox positions = Components.newSelect();
 	
@@ -55,7 +55,7 @@ public class PositionTypeRateFormContent extends FormContent
 	
 	private Listbox currencys = Components.newSelect();
 	
-	private Doublebox amount = Components.doubleBox(0);
+	private Doublebox amount = Components.stdDoubleBox(0);
 	
 	private Textbox comment = new Textbox();
 	

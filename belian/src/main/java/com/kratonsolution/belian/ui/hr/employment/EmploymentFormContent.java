@@ -17,6 +17,7 @@ import org.zkoss.zul.Row;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.hr.dm.EmploymentApplication;
+import com.kratonsolution.belian.hr.dm.EmploymentApplicationStatusType;
 import com.kratonsolution.belian.hr.svc.EmploymentApplicationService;
 import com.kratonsolution.belian.hr.svc.EmploymentService;
 import com.kratonsolution.belian.ui.FormContent;
@@ -108,7 +109,7 @@ public class EmploymentFormContent extends FormContent
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.getColumns().appendChild(new Column());
 		
-		for(EmploymentApplication application:applicationService.findAllByStatusType(EmploymentApplication.StatusType.ACCEPTED))
+		for(EmploymentApplication application:applicationService.findAllByStatusType(EmploymentApplicationStatusType.ACCEPTED))
 		{
 			applications.appendChild(
 					new Listitem(application.getApplicant().getLabel()+" - "+application.getPosition().getType().getLabel(),

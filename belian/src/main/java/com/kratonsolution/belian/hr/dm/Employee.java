@@ -16,11 +16,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.dm.Person;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -32,12 +31,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="employment")
-public class Employment implements Serializable
+@Table(name="employee")
+public class Employee implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
-	
+
 	@Column(name="start")
 	private Date start;
 	
@@ -45,21 +44,12 @@ public class Employment implements Serializable
 	private Date end;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_employee")
-	private Employee employee;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_employer")
-	private Organization employer;
+	@JoinColumn(name="fk_person")
+	private Person person;
 	
 	@Version
 	private Long version;
 	
-	@OneToMany(mappedBy="employment",cascade=CascadeType.ALL,orphanRemoval=true)
-	@OrderBy("start DESC")
-	private Set<PayHistory> payHistorys = new HashSet<>();
-	
-	@OneToMany(mappedBy="employment",cascade=CascadeType.ALL,orphanRemoval=true)
-	@OrderBy("start DESC")
-	private Set<Benefit> benefits = new HashSet<>();
+	@OneToMany(mappedBy="employee",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<Employment> employments = new HashSet<>();
 }

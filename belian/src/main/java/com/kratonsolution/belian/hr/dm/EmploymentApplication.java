@@ -32,10 +32,6 @@ import lombok.Setter;
 @Table(name="employment_application")
 public class EmploymentApplication implements Serializable
 {
-	public enum StatusType{RECEIVED,REVIEWED,REJECTED,ACCEPTED}
-	
-	public enum SourceType{NEWSPAPER,INTERNET,REFERENCE}
-	
 	@Id
 	private String id;
 	
@@ -44,11 +40,11 @@ public class EmploymentApplication implements Serializable
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="status_type")
-	private StatusType statusType = StatusType.RECEIVED;
+	private EmploymentApplicationStatusType statusType = EmploymentApplicationStatusType.RECEIVED;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="source_type")
-	private SourceType sourceType = SourceType.INTERNET;
+	private EmploymentApplicationSourceType sourceType = EmploymentApplicationSourceType.INTERNET;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_position")

@@ -16,8 +16,8 @@ import org.zkoss.zul.Row;
 
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.hr.dm.EmploymentApplication;
-import com.kratonsolution.belian.hr.dm.EmploymentApplication.SourceType;
-import com.kratonsolution.belian.hr.dm.EmploymentApplication.StatusType;
+import com.kratonsolution.belian.hr.dm.EmploymentApplicationSourceType;
+import com.kratonsolution.belian.hr.dm.EmploymentApplicationStatusType;
 import com.kratonsolution.belian.hr.svc.EmploymentApplicationService;
 import com.kratonsolution.belian.hr.svc.PositionService;
 import com.kratonsolution.belian.ui.FormContent;
@@ -26,8 +26,9 @@ import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class EmploymentApplicationEditContent extends FormContent
 {	
@@ -84,8 +85,8 @@ public class EmploymentApplicationEditContent extends FormContent
 					application.setDate(date.getValue());
 					application.setPosition(positionService.findOne(Components.string(positions)));
 					application.setApplicant(personService.findOne(Components.string(applicants)));
-					application.setSourceType(EmploymentApplication.SourceType.valueOf(Components.string(sources)));
-					application.setStatusType(EmploymentApplication.StatusType.valueOf(Components.string(types)));
+					application.setSourceType(EmploymentApplicationSourceType.valueOf(Components.string(sources)));
+					application.setStatusType(EmploymentApplicationStatusType.valueOf(Components.string(types)));
 					
 					service.edit(application);
 				}
@@ -103,7 +104,7 @@ public class EmploymentApplicationEditContent extends FormContent
 		EmploymentApplication application = service.findOne(RowUtils.string(row, 6));
 		if(application != null)
 		{
-			for(EmploymentApplication.StatusType statusType:StatusType.values())
+			for(EmploymentApplicationStatusType statusType:EmploymentApplicationStatusType.values())
 			{
 				Listitem listitem = new Listitem(statusType.name(), statusType.name());
 				types.appendChild(listitem);
@@ -111,7 +112,7 @@ public class EmploymentApplicationEditContent extends FormContent
 					types.setSelectedItem(listitem);
 			}
 			
-			for(SourceType sourceType:SourceType.values())
+			for(EmploymentApplicationSourceType sourceType:EmploymentApplicationSourceType.values())
 			{	
 				Listitem listitem = new Listitem(sourceType.name(), sourceType.name());
 				sources.appendChild(listitem);
