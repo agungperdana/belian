@@ -35,8 +35,6 @@ import lombok.Setter;
 @Table(name="doctor_appointment")
 public class DoctorAppointment implements Serializable
 {
-	public enum Status{REGISTERED,QUEUE,PROGRESS,ONHOLD,DONE,CANCELED}
-		
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
@@ -66,7 +64,7 @@ public class DoctorAppointment implements Serializable
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="status")
-	private Status status = Status.REGISTERED;
+	private DoctorAppointmentStatus status = DoctorAppointmentStatus.REGISTERED;
 
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="fk_medical_record")

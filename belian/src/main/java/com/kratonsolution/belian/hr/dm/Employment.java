@@ -3,24 +3,16 @@
  */
 package com.kratonsolution.belian.hr.dm;
 
-import java.io.Serializable;
-import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.Date;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
-import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.dm.InternalOrganization;
+import com.kratonsolution.belian.general.dm.PartyRelationship;
+import com.kratonsolution.belian.ui.util.Dates;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -33,33 +25,26 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="employment")
-public class Employment implements Serializable
+public class Employment extends PartyRelationship
 {
-	@Id
-	private String id = UUID.randomUUID().toString();
-	
-	@Column(name="start")
-	private Date start;
-	
-	@Column(name="end")
-	private Date end;
-	
 	@ManyToOne
 	@JoinColumn(name="fk_employee")
 	private Employee employee;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_employer")
-	private Organization employer;
+	@JoinColumn(name="fk_internal_organization")
+	private InternalOrganization internalOrganization;
 	
-	@Version
-	private Long version;
+	public Employment(){}
 	
-	@OneToMany(mappedBy="employment",cascade=CascadeType.ALL,orphanRemoval=true)
-	@OrderBy("start DESC")
-	private Set<PayHistory> payHistorys = new HashSet<>();
-	
-	@OneToMany(mappedBy="employment",cascade=CascadeType.ALL,orphanRemoval=true)
-	@OrderBy("start DESC")
-	private Set<Benefit> benefits = new HashSet<>();
+	public boolean isValid()
+	{
+		if(getStart().compareTo(Dates.sql(new Date())) <= 0 && getEnd() == null)
+			return true;
+		
+		if(getStart().compareTo(Dates.sql(new Date())) <= 0 && getEnd().compareTo(Dates.sql(new Date())) >= 0)
+			return true;
+		
+		return false;
+	}
 }

@@ -24,10 +24,10 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.Gender;
+import com.kratonsolution.belian.general.dm.MaritalStatus;
+import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.dm.Person.Gender;
-import com.kratonsolution.belian.general.dm.Person.MaritalStatus;
-import com.kratonsolution.belian.general.dm.PersonRole;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.healtcare.dm.Doctor;
@@ -35,6 +35,7 @@ import com.kratonsolution.belian.healtcare.svc.DoctorService;
 import com.kratonsolution.belian.healtcare.svc.DoctorTypeService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -114,9 +115,8 @@ public class DoctorFormContent extends FormContent
 				if(person == null)
 				{
 					person = new Person();
-					person.setBirthDate(birthDate.getValue());
+					person.setBirthDate(Dates.sql(birthDate.getValue()));
 					person.setBirthPlace(geographicService.findOne(Components.string(birthPlace)));
-					person.setDeleteadble(true);
 					person.setGender(Gender.valueOf(Components.string(genders)));
 					person.setIdentity(identity.getText());
 					person.setMaritalStatus(MaritalStatus.valueOf(Components.string(statuses)));
@@ -126,10 +126,10 @@ public class DoctorFormContent extends FormContent
 					Doctor doctor = new Doctor();
 					doctor.setTo(utils.getOrganization());
 					doctor.setCategory(doctorTypeService.findOne(Components.string(classifications)));
-					doctor.setStart(start.getValue());
+					doctor.setStart(Dates.sql(start.getValue()));
 					doctor.setFrom(person);
 					
-					person.getRoles().add(doctor);
+					person.getPartyRoles().add(doctor);
 					
 					personService.add(person);
 				}
@@ -137,13 +137,13 @@ public class DoctorFormContent extends FormContent
 				{
 					boolean _new = true;
 					
-					for(PersonRole role:person.getRoles())
+					for(PartyRole role:person.getPartyRoles())
 					{
-						if(role instanceof Doctor && role.getTo().getId().equals(utils.getOrganization().getId()))
-						{
-							_new = false;
-							break;
-						}
+//						if(role instanceof Doctor && role.getTo().getId().equals(utils.getOrganization().getId()))
+//						{
+//							_new = false;
+//							break;
+//						}
 					}
 					
 					if(_new)
@@ -151,10 +151,10 @@ public class DoctorFormContent extends FormContent
 						Doctor doctor = new Doctor();
 						doctor.setTo(utils.getOrganization());
 						doctor.setCategory(doctorTypeService.findOne(Components.string(classifications)));
-						doctor.setStart(start.getValue());
+						doctor.setStart(Dates.sql(start.getValue()));
 						doctor.setFrom(person);
 						
-						person.getRoles().add(doctor);
+						person.getPartyRoles().add(doctor);
 						
 						personService.edit(person);
 					}

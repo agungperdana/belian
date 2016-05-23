@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.global.svc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,25 +60,31 @@ public class RoledService
 		return repository.findAll();
 	}
 	
-	@Secured("ROLE_ROLED_READ")
+	@Secured({"ROLE_ROLED_READ","ROLE_SYSTEM_READ"})
 	public List<Roled> allNewApproveable()
 	{
-		return repository.findActiveApprover(utils.getUser().getPerson().getId());
+		if(!utils.isSysAdmin())
+			return repository.findActiveApprover(utils.getUser().getPerson().getId());
+		
+		return new ArrayList<>();
 	}
 	
-	@Secured("ROLE_ROLED_READ")
+	@Secured({"ROLE_ROLED_READ","ROLE_SYSTEM_READ"})
 	public List<Roled> allNewReviewable()
 	{
-		return repository.findActiveReview(utils.getUser().getPerson().getId());
+		if(!utils.isSysAdmin())
+			return repository.findActiveReview(utils.getUser().getPerson().getId());
+	
+		return new ArrayList<>();
 	}
 
-	@Secured("ROLE_ROLED_READ")
+	@Secured({"ROLE_ROLED_READ","ROLE_SYSTEM_READ"})
 	public List<Roled> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
 	}
 
-	@Secured("ROLE_ROLED_READ")
+	@Secured({"ROLE_ROLED_READ","ROLE_SYSTEM_READ"})
 	public int size()
 	{
 		return Long.valueOf(repository.count()).intValue();

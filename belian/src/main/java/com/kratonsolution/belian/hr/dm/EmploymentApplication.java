@@ -4,7 +4,8 @@
 package com.kratonsolution.belian.hr.dm;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,7 +34,7 @@ import lombok.Setter;
 public class EmploymentApplication implements Serializable
 {
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="date")
 	private Date date;
@@ -60,4 +61,6 @@ public class EmploymentApplication implements Serializable
 	
 	@Version
 	private Long version;
+	
+	public EmploymentApplication(){}
 }

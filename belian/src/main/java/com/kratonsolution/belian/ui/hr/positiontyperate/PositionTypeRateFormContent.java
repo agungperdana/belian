@@ -28,6 +28,7 @@ import com.kratonsolution.belian.hr.svc.PositionTypeRateService;
 import com.kratonsolution.belian.hr.svc.PositionTypeService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -86,8 +87,8 @@ public class PositionTypeRateFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				PositionTypeRate rate = new PositionTypeRate();
-				rate.setStart(start.getValue());
-				rate.setEnd(end.getValue());
+				rate.setStart(Dates.sql(start.getValue()));
+				rate.setEnd(Dates.sql(end.getValue()));
 				rate.setAmount(BigDecimal.valueOf(amount.doubleValue()));
 				rate.setComment(comment.getText());
 				rate.setCurrency(currencyService.findOne(Components.string(currencys)));

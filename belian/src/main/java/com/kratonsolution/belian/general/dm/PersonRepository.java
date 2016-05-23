@@ -25,9 +25,6 @@ public interface PersonRepository extends JpaRepository<Person, String>
 	@Query("FROM Person person WHERE person.name LIKE :name%")
 	public List<Person> findAllByName(@Param("name")String name);
 	
-	@Query("FROM Person p WHERE p.user IS NULL ORDER BY p.name ASC")
-	public List<Person> findAllWhereUserIsNull();
-	
 	@Query("FROM Person person WHERE person.identity LIKE :identity%")
 	public List<Person> findAllByIdentity(@Param("identity")String identity);
 	

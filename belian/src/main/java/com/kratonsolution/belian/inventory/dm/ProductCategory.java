@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.inventory.dm;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,11 +14,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.global.dm.Listable;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 
@@ -31,7 +32,7 @@ import com.kratonsolution.belian.global.dm.Listable;
 public class ProductCategory implements Serializable,Listable
 {
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="code",nullable=false,unique=true)
 	private String code;
@@ -42,15 +43,14 @@ public class ProductCategory implements Serializable,Listable
 	@Column(name="note")
 	private String note;
 	
-	@Column(name="deleteable")
-	private boolean deleteable = true;
-	
 	@Column(name="industry_segmentation")
 	@Enumerated(EnumType.STRING)
 	private IndustrySegmentation segmentation = IndustrySegmentation.GENERAL;
 	
 	@Version
 	private Long version;
+	
+	public ProductCategory(){}
 
 	@Override
 	public String getLabel()

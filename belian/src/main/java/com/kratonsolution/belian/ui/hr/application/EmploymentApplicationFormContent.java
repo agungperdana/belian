@@ -23,6 +23,7 @@ import com.kratonsolution.belian.hr.svc.PositionService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.component.PersonBox;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -76,7 +77,7 @@ public class EmploymentApplicationFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				EmploymentApplication application = new EmploymentApplication();
-				application.setDate(date.getValue());
+				application.setDate(Dates.sql(date.getValue()));
 				application.setPosition(positionService.findOne(Components.string(positions)));
 				application.setSourceType(EmploymentApplicationSourceType.valueOf(Components.string(sources)));
 				application.setStatusType(EmploymentApplicationStatusType.valueOf(Components.string(types)));

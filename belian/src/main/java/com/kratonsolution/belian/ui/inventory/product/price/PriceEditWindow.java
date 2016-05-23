@@ -25,11 +25,12 @@ import org.zkoss.zul.Vlayout;
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.general.dm.Geographic;
+import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.svc.GeographicService;
-import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
+import com.kratonsolution.belian.inventory.dm.ProductPriceType;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
@@ -37,8 +38,9 @@ import com.kratonsolution.belian.ui.inventory.product.ProductEditContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class PriceEditWindow extends AbstractWindow
 {
@@ -113,7 +115,7 @@ public class PriceEditWindow extends AbstractWindow
 				productPrice.setFrom(new java.sql.Date(from.getValue().getTime()));
 				productPrice.setTo(to.getValue()!=null?new java.sql.Date(to.getValue().getTime()):null);
 				productPrice.setPrice(BigDecimal.valueOf(price.getValue()));
-				productPrice.setType(ProductPrice.Type.valueOf(types.getSelectedItem().getValue().toString()));
+				productPrice.setType(ProductPriceType.valueOf(types.getSelectedItem().getValue().toString()));
 				productPrice.setCurrency(currencyService.findOne(currencys.getSelectedItem().getValue().toString()));
 				
 				if(geographics.getSelectedCount() > 0)
@@ -157,7 +159,7 @@ public class PriceEditWindow extends AbstractWindow
 		currencys.setMold("select");
 		partys.setMold("select");
 
-		for(ProductPrice.Type type:ProductPrice.Type.values())
+		for(ProductPriceType type:ProductPriceType.values())
 		{
 			Listitem listitem = new Listitem(type.name(),type.name());
 			types.appendChild(listitem);
@@ -174,7 +176,7 @@ public class PriceEditWindow extends AbstractWindow
 				geographics.setSelectedItem(listitem);
 		}
 		
-		for(EconomicAgent party:partyService.findAll())
+		for(Party party:partyService.findAll())
 		{
 			Listitem listitem = new Listitem(party.getName(), party.getId());
 			partys.appendChild(listitem);

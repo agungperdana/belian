@@ -7,8 +7,9 @@ import org.zkoss.zul.Tab;
 import org.zkoss.zul.Tabpanel;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public interface TabedDisplay
 {

@@ -20,6 +20,7 @@ import org.zkoss.zul.Vlayout;
 
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductFeature;
+import com.kratonsolution.belian.inventory.dm.ProductFeatureType;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
@@ -27,8 +28,9 @@ import com.kratonsolution.belian.ui.inventory.product.ProductEditContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class FeatureWindow extends AbstractWindow
 {
@@ -84,7 +86,7 @@ public class FeatureWindow extends AbstractWindow
 				ProductFeature feature = new ProductFeature();
 				feature.setValue(value.getText());
 				feature.setNote(note.getText());
-				feature.setType(ProductFeature.Type.valueOf(types.getSelectedItem().getValue().toString()));
+				feature.setType(ProductFeatureType.valueOf(types.getSelectedItem().getValue().toString()));
 				
 				service.addFeature(product,feature);
 				
@@ -113,7 +115,7 @@ public class FeatureWindow extends AbstractWindow
 		
 		note.setWidth("300px");
 		
-		for(ProductFeature.Type type:ProductFeature.Type.values())
+		for(ProductFeatureType type:ProductFeatureType.values())
 			types.appendChild(new Listitem(type.name(),type.name()));
 		
 		types.setMold("select");

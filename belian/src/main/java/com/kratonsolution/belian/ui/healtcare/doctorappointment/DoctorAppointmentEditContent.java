@@ -20,7 +20,7 @@ import org.zkoss.zul.Toolbarbutton;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
-import com.kratonsolution.belian.healtcare.dm.DoctorAppointment.Status;
+import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentStatus;
 import com.kratonsolution.belian.healtcare.svc.AppointmentQueueGenerator;
 import com.kratonsolution.belian.healtcare.svc.DoctorAppointmentService;
 import com.kratonsolution.belian.healtcare.svc.DoctorService;
@@ -96,7 +96,7 @@ public class DoctorAppointmentEditContent extends FormContent
 				DoctorAppointment appointment = service.findOne(RowUtils.string(row, 6));
 				if(appointment != null)
 				{
-					appointment.setStatus(Status.valueOf(Components.string(statuses)));
+					appointment.setStatus(DoctorAppointmentStatus.valueOf(Components.string(statuses)));
 					
 					service.edit(appointment);
 				}
@@ -107,7 +107,7 @@ public class DoctorAppointmentEditContent extends FormContent
 			}
 		});
 		DoctorAppointment appointment = service.findOne(RowUtils.string(row, 6));
-		if(appointment != null && appointment.getStatus().equals(Status.PROGRESS))
+		if(appointment != null && appointment.getStatus().equals(DoctorAppointmentStatus.PROGRESS))
 		{
 			
 			Toolbarbutton record = new Toolbarbutton("Medical Record", "/icons/medicalrecord.png");
@@ -121,8 +121,8 @@ public class DoctorAppointmentEditContent extends FormContent
 			
 			toolbar.appendChild(record);
 		}
-		else if(appointment != null && (appointment.getStatus().equals(Status.CANCELED) || 
-				appointment.getStatus().equals(Status.DONE)))
+		else if(appointment != null && (appointment.getStatus().equals(DoctorAppointmentStatus.CANCELED) || 
+				appointment.getStatus().equals(DoctorAppointmentStatus.DONE)))
 		{
 			toolbar.getSave().setDisabled(true);
 		}
@@ -144,7 +144,7 @@ public class DoctorAppointmentEditContent extends FormContent
 			doctors.setWidth("225px");
 			patients.setWidth("225px");
 			
-			for(DoctorAppointment.Status status:DoctorAppointment.Status.values())
+			for(DoctorAppointmentStatus status:DoctorAppointmentStatus.values())
 			{
 				Listitem listitem = new Listitem(status.toString(),status.toString());
 				statuses.appendChild(listitem);

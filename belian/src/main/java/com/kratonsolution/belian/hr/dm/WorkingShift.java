@@ -8,7 +8,9 @@ import java.sql.Time;
 import java.util.UUID;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Version;
 
 import lombok.Getter;
@@ -20,8 +22,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-//@Entity
-//@Table(name="working_shift")
+@Entity
+@Table(name="working_shift")
 public class WorkingShift implements Serializable
 {
 	@Id

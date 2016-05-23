@@ -30,7 +30,7 @@ public interface GLAccountRepository extends JpaRepository<GLAccount, String>
 	public GLAccount findOneByName(String name);
 	
 	@Query("SELECT MAX(account.number) FROM GLAccount account WHERE account.type =:type ORDER BY account.number DESC")
-	public Long lastNumber(@Param("type")GLAccount.Type type);
+	public Long lastNumber(@Param("type")GLAccountType type);
 	
-	public List<GLAccount> findAllByType(GLAccount.Type type);
+	public List<GLAccount> findAllByType(GLAccountType type);
 }

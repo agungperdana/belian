@@ -26,6 +26,7 @@ import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -73,8 +74,8 @@ private final CompanyStructureService service = Springs.get(CompanyStructureServ
 			{
 				if(structure != null)
 				{
-					structure.setFrom(from.getValue());
-					structure.setTo(to.getValue());
+					structure.setFrom(Dates.sql(from.getValue()));
+					structure.setTo(Dates.sql(to.getValue()));
 					service.edit(structure);
 				
 					for(CompanyStructureDataListener listener:listeners)

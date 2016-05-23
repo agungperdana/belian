@@ -19,9 +19,9 @@ import org.zkoss.zul.Textbox;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Contact;
+import com.kratonsolution.belian.general.dm.Gender;
+import com.kratonsolution.belian.general.dm.MaritalStatus;
 import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.dm.Person.Gender;
-import com.kratonsolution.belian.general.dm.Person.MaritalStatus;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.Refreshable;
@@ -32,6 +32,8 @@ import com.kratonsolution.belian.ui.general.party.ContactInformation;
 import com.kratonsolution.belian.ui.general.party.PartyInformation;
 import com.kratonsolution.belian.ui.general.party.PartyToolbar;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Dates;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -44,17 +46,17 @@ public class PersonEditContent extends FormContent implements Refreshable
 {	
 	private final PersonService service = Springs.get(PersonService.class);
 
-	private Textbox identity = Components.mandatoryTextBox();
+	private Textbox identity = Components.mandatoryTextBox(false);
 	
-	private Textbox name = Components.mandatoryTextBox();
+	private Textbox name = Components.mandatoryTextBox(false);
 
 	private Datebox date = Components.currentDatebox();
 
 	private Textbox tax = new Textbox();
 
-	private Listbox genders = new Listbox();
+	private Listbox genders = Components.newSelect();
 
-	private Listbox maritals = new Listbox();
+	private Listbox maritals = Components.newSelect();
 
 	private Row row;
 
@@ -80,9 +82,7 @@ public class PersonEditContent extends FormContent implements Refreshable
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PersonWindow window = (PersonWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new PersonGridContent());
 			}
 		});
 
@@ -97,16 +97,14 @@ public class PersonEditContent extends FormContent implements Refreshable
 				Person person = service.findOne(RowUtils.string(row, 7));
 				person.setIdentity(identity.getText());
 				person.setName(name.getText());
-				person.setBirthDate(date.getValue());
+				person.setBirthDate(Dates.sql(date.getValue()));
 				person.setTaxCode(tax.getText());
 				person.setGender(Gender.valueOf(genders.getSelectedItem().getValue().toString()));
 				person.setMaritalStatus(MaritalStatus.valueOf(maritals.getSelectedItem().getValue().toString()));
 
 				service.edit(person);
 
-				PersonWindow window = (PersonWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new PersonGridContent());
 			}
 		});
 	}

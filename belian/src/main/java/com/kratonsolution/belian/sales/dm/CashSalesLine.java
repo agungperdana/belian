@@ -54,11 +54,11 @@ public class CashSalesLine implements BillableItem
 	private UnitOfMeasure uom;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_product_resource")
+	@JoinColumn(name="fk_product")
 	private Product product;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_direct_sales")
+	@JoinColumn(name="fk_cash_sales")
 	private CashSales cashSales;
 	
 	@Version

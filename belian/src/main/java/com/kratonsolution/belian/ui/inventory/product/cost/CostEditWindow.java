@@ -28,15 +28,18 @@ import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductCost;
+import com.kratonsolution.belian.inventory.dm.ProductCostType;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.inventory.product.ProductEditContent;
+import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class CostEditWindow extends AbstractWindow
 {
@@ -104,10 +107,10 @@ public class CostEditWindow extends AbstractWindow
 			public void onEvent(Event event) throws Exception
 			{
 				ProductCost productCost = service.findCost(product, costId);
-				productCost.setFrom(from.getValue());
-				productCost.setTo(to.getValue());
+				productCost.setFrom(Dates.sql(from.getValue()));
+				productCost.setTo(Dates.sql(to.getValue()));
 				productCost.setEstimated(BigDecimal.valueOf(cost.getValue()));
-				productCost.setType(ProductCost.Type.valueOf(types.getSelectedItem().getValue().toString()));
+				productCost.setType(ProductCostType.valueOf(types.getSelectedItem().getValue().toString()));
 				productCost.setCurrency(currencyService.findOne(currencys.getSelectedItem().getValue().toString()));
 				
 				if(geographics.getSelectedCount() > 0)
@@ -147,7 +150,7 @@ public class CostEditWindow extends AbstractWindow
 		geographics.setMold("select");
 		currencys.setMold("select");
 
-		for(ProductCost.Type type:ProductCost.Type.values())
+		for(ProductCostType type:ProductCostType.values())
 		{
 			Listitem listitem = new Listitem(type.name(),type.name());
 			types.appendChild(listitem);

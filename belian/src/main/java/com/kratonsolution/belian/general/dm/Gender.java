@@ -1,13 +1,13 @@
 /**
  * 
  */
-package com.kratonsolution.belian.global.dm;
+package com.kratonsolution.belian.general.dm;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public enum EconomicEventType
+public enum Gender
 {
-	GET,GIVE
+	MALE,FEMALE
 }

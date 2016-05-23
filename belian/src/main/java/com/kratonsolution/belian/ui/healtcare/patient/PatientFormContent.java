@@ -25,9 +25,9 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.Gender;
+import com.kratonsolution.belian.general.dm.MaritalStatus;
 import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.dm.Person.Gender;
-import com.kratonsolution.belian.general.dm.Person.MaritalStatus;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.healtcare.dm.BPJS;
@@ -35,6 +35,7 @@ import com.kratonsolution.belian.healtcare.dm.Patient;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -110,9 +111,8 @@ public class PatientFormContent extends FormContent
 				if(person == null)
 				{
 					person = new Person();
-					person.setBirthDate(birthDate.getValue());
+					person.setBirthDate(Dates.sql(birthDate.getValue()));
 					person.setBirthPlace(geographicService.findOne(Components.string(birthPlace)));
-					person.setDeleteadble(true);
 					person.setGender(Gender.valueOf(Components.string(genders)));
 					person.setIdentity(identity.getText());
 					person.setMaritalStatus(MaritalStatus.valueOf(Components.string(statuses)));
@@ -121,20 +121,19 @@ public class PatientFormContent extends FormContent
 
 					Patient patient = new Patient();
 					patient.setTo(utils.getOrganization());
-					patient.setStart(start.getValue());
+					patient.setStart(Dates.sql(start.getValue()));
 					patient.setBpjs(new BPJS());
 					patient.setFrom(person);
 					patient.getBpjs().setCard(bpjsNumber.getText());
 					
-					person.getRoles().add(patient);
+					person.getPartyRoles().add(patient);
 					
 					personService.add(person);
 				}
 				else
 				{
-					person.setBirthDate(birthDate.getValue());
+					person.setBirthDate(Dates.sql(birthDate.getValue()));
 					person.setBirthPlace(geographicService.findOne(Components.string(birthPlace)));
-					person.setDeleteadble(true);
 					person.setGender(Gender.valueOf(Components.string(genders)));
 					person.setIdentity(identity.getText());
 					person.setMaritalStatus(MaritalStatus.valueOf(Components.string(statuses)));
@@ -145,12 +144,12 @@ public class PatientFormContent extends FormContent
 					{
 						Patient patient = new Patient();
 						patient.setTo(utils.getOrganization());
-						patient.setStart(start.getValue());
+						patient.setStart(Dates.sql(start.getValue()));
 						patient.setBpjs(new BPJS());
 						patient.setFrom(person);
 						patient.getBpjs().setCard(bpjsNumber.getText());
 					
-						person.getRoles().add(patient);
+						person.getPartyRoles().add(patient);
 					}
 					
 					personService.edit(person);

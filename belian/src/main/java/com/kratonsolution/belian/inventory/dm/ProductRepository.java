@@ -11,7 +11,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
-import com.kratonsolution.belian.inventory.dm.Product.Type;
 
 /**
  * @author Agung Dodi Perdana
@@ -23,7 +22,7 @@ public interface ProductRepository extends JpaRepository<Product, String>
 
 	public Product findOneByNameOrId(String name,String id);
 	
-	public List<Product> findAllByTypeNot(Product.Type type);
+	public List<Product> findAllByTypeNot(ProductType type);
 	
 	@Query("FROM Product prd WHERE prd.category.id =:category AND (:date BETWEEN prd.start AND prd.end) ORDER BY prd.name ASC")
 	public List<Product> findAllActiveProductByCategory(@Param("category")String categoryId,@Param("date")Date date);
@@ -35,7 +34,7 @@ public interface ProductRepository extends JpaRepository<Product, String>
 			+ "ORDER BY prd.name ASC")
 	public List<Product> findAllBySegmentationAndNameAndType(@Param("segmentation")IndustrySegmentation segmentation,
 															 @Param("name")String name,
-															 @Param("type")Type type);
+															 @Param("type")ProductType type);
 
 	@Query("FROM Product prd WHERE "
 			+ "prd.category.segmentation =:segment "
@@ -46,7 +45,7 @@ public interface ProductRepository extends JpaRepository<Product, String>
 	public List<Product> findAll(@Param("date")Date date,
 								 @Param("category")String category,
 								 @Param("segment")IndustrySegmentation segmentation,
-								 @Param("type")Type type);
+								 @Param("type")ProductType type);
 	
 	@Query("FROM Product prd WHERE "
 			+ "prd.category.segmentation =:segment "
@@ -58,7 +57,7 @@ public interface ProductRepository extends JpaRepository<Product, String>
 	public List<Product> findAll(@Param("date")Date date,
 								 @Param("category")String category,
 								 @Param("segment")IndustrySegmentation segmentation,
-								 @Param("type")Type type,
+								 @Param("type")ProductType type,
 								 @Param("name")String name);
 
 	@Query("FROM Product prd WHERE :date BETWEEN prd.start AND prd.end ORDER BY prd.name ASC")

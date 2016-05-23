@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -32,6 +33,7 @@ import org.hibernate.annotations.NotFoundAction;
 @Setter
 @Entity
 @Table(name="gl_account_balance")
+@Cacheable
 public class GLAccountBalance implements Serializable
 {
 	@Id

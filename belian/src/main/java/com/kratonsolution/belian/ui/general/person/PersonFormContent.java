@@ -7,6 +7,7 @@ import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
@@ -17,12 +18,14 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.general.dm.Gender;
+import com.kratonsolution.belian.general.dm.MaritalStatus;
 import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.dm.Person.Gender;
-import com.kratonsolution.belian.general.dm.Person.MaritalStatus;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Dates;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -34,17 +37,17 @@ public class PersonFormContent extends FormContent
 {	
 	private final PersonService controller = Springs.get(PersonService.class);
 	
-	private Textbox identity = Components.mandatoryTextBox();
+	private Textbox identity = Components.mandatoryTextBox(false);
 	
-	private Textbox name = Components.mandatoryTextBox();
+	private Textbox name = Components.mandatoryTextBox(false);
 	
 	private Datebox date = Components.currentDatebox();
 	
 	private Textbox tax = new Textbox();
 	
-	private Listbox genders = new Listbox();
+	private Listbox genders = Components.newSelect();
 	
-	private Listbox maritals = new Listbox();
+	private Listbox maritals = Components.newSelect();
 	
 	public PersonFormContent()
 	{
@@ -61,9 +64,7 @@ public class PersonFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PersonWindow window = (PersonWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new PersonGridContent());
 			}
 		});
 		
@@ -81,16 +82,14 @@ public class PersonFormContent extends FormContent
 				Person person = new Person();
 				person.setIdentity(identity.getText());
 				person.setName(name.getText());
-				person.setBirthDate(date.getValue());
+				person.setBirthDate(Dates.sql(date.getValue()));
 				person.setTaxCode(tax.getText());
 				person.setGender(Gender.valueOf(genders.getSelectedItem().getValue().toString()));
 				person.setMaritalStatus(MaritalStatus.valueOf(maritals.getSelectedItem().getValue().toString()));
 				
 				controller.add(person);
 				
-				PersonWindow window = (PersonWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new PersonGridContent());
 			}
 		});
 	}
@@ -98,9 +97,33 @@ public class PersonFormContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		name.setConstraint("no empty");
-		name.setWidth("300px");
-		name.setText(Person.ANONYMOUS);
+		name.addEventListener(Events.ON_CHANGING,new EventListener<InputEvent>()
+		{
+			@Override
+			public void onEvent(InputEvent event) throws Exception
+			{
+				if(!Strings.isNullOrEmpty(event.getValue()))
+				{
+					Person person = controller.findOneByName(event.getValue());
+					if(person != null)
+						throw new WrongValueException(name,"Person with name "+event.getValue()+" already exist.");
+				}
+			}
+		});
+		
+		identity.addEventListener(Events.ON_CHANGING,new EventListener<InputEvent>()
+		{
+			@Override
+			public void onEvent(InputEvent event) throws Exception
+			{
+				if(!Strings.isNullOrEmpty(event.getValue()))
+				{
+					Person person = controller.findOneByIdentity(event.getValue());
+					if(person != null)
+						throw new WrongValueException(identity,"Person with identity "+event.getValue()+" already exist.");
+				}
+			}
+		});
 		
 		date.setConstraint("no empty");
 		date.setWidth("250px");

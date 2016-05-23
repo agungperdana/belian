@@ -15,7 +15,7 @@ public class PersonButton extends Toolbarbutton
 	public PersonButton()
 	{
 		setImage("/icons/person.png");
-		setTooltip("Person Management");
+		setTooltiptext("Person Management");
 		setHeight("38px");
 	}
 }

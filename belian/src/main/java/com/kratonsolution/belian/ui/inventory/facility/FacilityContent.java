@@ -9,12 +9,13 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.West;
 
 import com.kratonsolution.belian.ui.GridToolbar;
+import com.kratonsolution.belian.ui.Removeable;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class FacilityContent extends Borderlayout
+public class FacilityContent extends Borderlayout implements Removeable
 {
 	private GridToolbar toolbar = new GridToolbar();
 

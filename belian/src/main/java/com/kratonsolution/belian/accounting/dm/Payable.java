@@ -9,6 +9,7 @@ import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -26,4 +27,6 @@ public class Payable implements Serializable
 	@Id
 	private String id = UUID.randomUUID().toString();
 
+	@Version
+	private Long version;
 }

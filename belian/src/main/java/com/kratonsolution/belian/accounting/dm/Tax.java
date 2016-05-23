@@ -5,7 +5,9 @@ package com.kratonsolution.belian.accounting.dm;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.UUID;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -26,10 +28,11 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="tax")
+@Cacheable
 public class Tax implements Serializable,Listable
 {
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="code",nullable=false,unique=true)
 	private String code;
@@ -37,7 +40,10 @@ public class Tax implements Serializable,Listable
 	@Column(name="name",nullable=false,unique=true)
 	private String name;
 	
-	@Column(name="value",nullable=false)
+	@Column(name="note")
+	private String note;
+	
+	@Column(name="amount",nullable=false)
 	private BigDecimal amount = BigDecimal.ZERO;
 
 	@Version

@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.Product.Type;
 import com.kratonsolution.belian.inventory.dm.ProductCode;
 import com.kratonsolution.belian.inventory.dm.ProductComponent;
 import com.kratonsolution.belian.inventory.dm.ProductCost;
@@ -27,6 +26,7 @@ import com.kratonsolution.belian.inventory.dm.ProductFeature;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
 import com.kratonsolution.belian.inventory.dm.ProductRepository;
 import com.kratonsolution.belian.inventory.dm.ProductSupplier;
+import com.kratonsolution.belian.inventory.dm.ProductType;
 
 /**
  * 
@@ -91,7 +91,7 @@ public class ProductService
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PRODUCT_READ")
-	public List<Product> findAll(Date date,String category,IndustrySegmentation segmentation,Type type,String name)
+	public List<Product> findAll(Date date,String category,IndustrySegmentation segmentation,ProductType type,String name)
 	{
 		if(Strings.isNullOrEmpty(name))
 			return repository.findAll(date,category,segmentation,type);
@@ -116,7 +116,7 @@ public class ProductService
 		
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PRODUCT_READ")
-	public List<Product> findAllBySegmentationAndName(IndustrySegmentation segmentation,String name,Type type)
+	public List<Product> findAllBySegmentationAndName(IndustrySegmentation segmentation,String name,ProductType type)
 	{
 		return repository.findAllBySegmentationAndNameAndType(segmentation,name,type);
 	}

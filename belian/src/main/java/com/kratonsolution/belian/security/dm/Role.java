@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,8 +29,13 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="role")
+@Cacheable
 public class Role implements Serializable
 {
+	public static final String SYSADMIN = "Sys Admin";
+	
+	public static final String SYSTEM = "System";
+	
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
@@ -50,4 +56,16 @@ public class Role implements Serializable
 	
 	@OneToMany(mappedBy="role",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<AccessibleOrganization> organizations = new HashSet<AccessibleOrganization>();
+
+	public Role(){}
+	
+	public boolean isUndeleteable()
+	{
+		return code.equals(SYSADMIN) || code.equals(SYSTEM);
+	}
+
+	public boolean isMandatory()
+	{
+		return code.equals(SYSTEM);
+	}
 }

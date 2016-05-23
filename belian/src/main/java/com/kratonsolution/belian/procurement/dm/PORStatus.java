@@ -26,4 +26,6 @@ public class PORStatus extends Statuses
 	@ManyToOne
 	@JoinColumn(name="fk_purchase_order_request")
 	private PurchaseOrderRequest request;
+	
+	public PORStatus(){}
 }

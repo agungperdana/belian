@@ -4,7 +4,7 @@
 package com.kratonsolution.belian.global.dm;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -18,6 +18,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
+import com.kratonsolution.belian.general.dm.Party;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -48,7 +50,7 @@ public abstract class Statuses implements Serializable
 
 	@ManyToOne
 	@JoinColumn(name="fk_party")
-	protected EconomicAgent party;
+	protected Party party;
 	
 	@Version
 	protected Long version;

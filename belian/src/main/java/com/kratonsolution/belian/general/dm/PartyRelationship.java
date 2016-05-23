@@ -1,16 +1,19 @@
 /**
  * 
  */
-package com.kratonsolution.belian.global.dm;
+package com.kratonsolution.belian.general.dm;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.UUID;
 
-import javax.persistence.DiscriminatorColumn;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -18,21 +21,35 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
-@Table(name="increment_commitment")
+@Table(name="party_relationship")
 @Inheritance(strategy=InheritanceType.JOINED)
-@DiscriminatorColumn(name="commitment_type")
-public abstract class IncrementCommitment implements Serializable
+public class PartyRelationship implements Serializable
 {
 	@Id
 	protected String id = UUID.randomUUID().toString();
 	
+	@Column(name="date_from",nullable=false)
+	protected Date start;
+	
+	@Column(name="date_to")
+	protected Date end;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_role_from")
+	protected PartyRole from;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_role_to")
+	protected PartyRole to;
+	
 	@Version
 	protected Long version;
+	
+	public PartyRelationship(){}
 }

@@ -29,7 +29,7 @@ import com.kratonsolution.belian.sales.dm.Billable;
 @Table(name="medication")
 public class Medication extends Billable
 {
-	@Column(name="bpjs")
+	@Column(name="is_bpjs")
 	private boolean bpjs;
 	
 	@Enumerated(EnumType.STRING)

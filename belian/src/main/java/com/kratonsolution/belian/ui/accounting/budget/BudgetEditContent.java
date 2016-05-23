@@ -172,7 +172,7 @@ public class BudgetEditContent extends FormContent
 
 						BudgetStatus status = new BudgetStatus();
 						status.setBudget(budget);
-						status.setDate(RowUtils.date(row, 1));
+						status.setDate(RowUtils.sql(row, 1));
 						status.setType(StatusType.valueOf(RowUtils.string(row, 2)));
 						status.setDescription(RowUtils.string(row, 3));
 						status.setId(RowUtils.string(row, 4));

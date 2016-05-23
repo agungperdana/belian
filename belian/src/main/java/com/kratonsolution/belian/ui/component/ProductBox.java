@@ -16,7 +16,7 @@ import org.zkoss.zul.Listbox;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.Product.Type;
+import com.kratonsolution.belian.inventory.dm.ProductType;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -33,7 +33,7 @@ public class ProductBox extends Combobox implements EventListener<InputEvent>
 	
 	private IndustrySegmentation segmentation;
 	
-	private Type type;
+	private ProductType type;
 	
 	private Date date;
 	
@@ -44,12 +44,12 @@ public class ProductBox extends Combobox implements EventListener<InputEvent>
 		this(null,null,null);
 	}
 	
-	public ProductBox(String category,IndustrySegmentation segmentation,Type type)
+	public ProductBox(String category,IndustrySegmentation segmentation,ProductType type)
 	{
 		this(new Date(),category,segmentation,type);
 	}
 	
-	public ProductBox(Date date,String category,IndustrySegmentation segmentation,Type type)
+	public ProductBox(Date date,String category,IndustrySegmentation segmentation,ProductType type)
 	{
 		this.date = date;
 		this.category = category;

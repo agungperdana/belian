@@ -20,6 +20,7 @@ import org.zkoss.zul.Vlayout;
 
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductCode;
+import com.kratonsolution.belian.inventory.dm.ProductCodeType;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
@@ -27,8 +28,9 @@ import com.kratonsolution.belian.ui.inventory.product.ProductEditContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class CodeEditWindow extends AbstractWindow
 {
@@ -90,7 +92,7 @@ public class CodeEditWindow extends AbstractWindow
 				{
 					on.setCode(code.getText());
 					on.setNote(note.getText());
-					on.setType(ProductCode.Type.valueOf(types.getSelectedItem().getValue().toString()));
+					on.setType(ProductCodeType.valueOf(types.getSelectedItem().getValue().toString()));
 				
 					service.editCode(on);
 				}
@@ -125,7 +127,7 @@ public class CodeEditWindow extends AbstractWindow
 				note.setText(productCode.getNote());
 				note.setWidth("300px");
 				
-				for(ProductCode.Type type:ProductCode.Type.values())
+				for(ProductCodeType type:ProductCodeType.values())
 				{
 					Listitem listitem = new Listitem(type.name(),type.name());
 					types.appendChild(listitem);

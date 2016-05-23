@@ -4,7 +4,9 @@
 package com.kratonsolution.belian.accounting.dm;
 
 import java.io.Serializable;
+import java.util.UUID;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -17,17 +19,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
+@Cacheable
 @Table(name="currency")
 public class Currency implements Serializable,Listable
 {
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="code",nullable=false,unique=true)
 	private String code;

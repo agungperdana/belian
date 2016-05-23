@@ -27,9 +27,11 @@ import org.zkoss.zul.Vlayout;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.AccountingPeriod;
+import com.kratonsolution.belian.accounting.dm.Month;
 import com.kratonsolution.belian.accounting.svc.AccountingPeriodService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.Refreshable;
+import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -114,9 +116,9 @@ public class AccountingPeriodFormContent extends AbstractWindow
 				period.setId(UUID.randomUUID().toString());
 				period.setNumber(number.getText());
 				period.setName(name.getText());
-				period.setFrom(from.getValue());
-				period.setTo(to.getValue());
-				period.setMonth(AccountingPeriod.Month.valueOf(months.getSelectedItem().getValue().toString()));
+				period.setFrom(Dates.sql(from.getValue()));
+				period.setTo(Dates.sql(to.getValue()));
+				period.setMonth(Month.valueOf(months.getSelectedItem().getValue().toString()));
 				period.setParent(parent);
 				
 				service.add(period);
@@ -144,7 +146,7 @@ public class AccountingPeriodFormContent extends AbstractWindow
 			parents.setSelectedIndex(0);
 		}
 		
-		for(AccountingPeriod.Month month:AccountingPeriod.Month.values())
+		for(Month month:Month.values())
 			months.appendChild(new Listitem(month.name(),month.name()));
 		
 		months.setMold("select");

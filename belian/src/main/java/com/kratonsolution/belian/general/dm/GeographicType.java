@@ -7,10 +7,7 @@ package com.kratonsolution.belian.general.dm;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class BudgetReviewer extends PersonRole
+public enum GeographicType
 {
-//	public BudgetReviewer()
-//	{
-//		setType(Type.BUDGETREVIEWER);
-//	}
+	COUNTRY,CITY,PROVINCE,KECAMATAN,KELURAHAN,RW,RT
 }

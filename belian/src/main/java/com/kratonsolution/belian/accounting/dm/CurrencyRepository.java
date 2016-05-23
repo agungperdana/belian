@@ -6,8 +6,9 @@ package com.kratonsolution.belian.accounting.dm;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public interface CurrencyRepository extends JpaRepository<Currency, String>
 {

@@ -19,7 +19,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vlayout;
 
-import com.kratonsolution.belian.global.dm.EconomicAgentRepository;
+import com.kratonsolution.belian.general.dm.PartyRepository;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductSupplier;
 import com.kratonsolution.belian.inventory.svc.ProductService;
@@ -27,6 +27,7 @@ import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.inventory.product.ProductEditContent;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -43,7 +44,7 @@ public class SupplierEditWindow extends AbstractWindow
 	
 	private ProductService service = Springs.get(ProductService.class);
 	
-	private EconomicAgentRepository partyRepository = Springs.get(EconomicAgentRepository.class);
+	private PartyRepository partyRepository = Springs.get(PartyRepository.class);
 	
 	private Product product;
 	
@@ -95,7 +96,7 @@ public class SupplierEditWindow extends AbstractWindow
 				ProductSupplier supplier = service.findSupplier(product, supplierId);
 				if(supplier != null)
 				{
-					supplier.setTo(to.getValue());
+					supplier.setTo(Dates.sql(to.getValue()));
 					service.editSupplier(supplier);
 				}
 				

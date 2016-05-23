@@ -6,6 +6,7 @@ package com.kratonsolution.belian.accounting.dm;
 import java.io.Serializable;
 import java.util.UUID;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -29,6 +30,7 @@ import com.kratonsolution.belian.general.dm.Organization;
 @Setter
 @Entity
 @Table(name="journal_setting")
+@Cacheable
 public class JournalSetting implements Serializable
 {
 	@Id

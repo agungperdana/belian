@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.UUID;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -30,6 +31,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="asset")
+@Cacheable
 public class Asset implements Serializable,Listable
 {
 	@Id

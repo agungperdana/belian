@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.general.dm;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.global.dm.Listable;
 
 import lombok.Getter;
@@ -32,10 +32,8 @@ import lombok.Setter;
 @Table(name="address")
 public class Address implements Serializable,Listable
 {
-	public enum Type{HOME,OFFICE,WAREHOUSE}
-	
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="address",nullable=false)
 	private String address;
@@ -43,12 +41,12 @@ public class Address implements Serializable,Listable
 	@Column(name="postal",nullable=false)
 	private String postal;
 	
-	@Column(name="active",nullable=false)
+	@Column(name="status",nullable=false)
 	private boolean active;
 	
 	@Column(name="type",nullable=false)
 	@Enumerated(EnumType.STRING)
-	private Type type = Type.OFFICE;
+	private AddressType type = AddressType.OFFICE;
 
 	@ManyToOne
 	@JoinColumn(name="fk_geographic_city")
@@ -64,7 +62,7 @@ public class Address implements Serializable,Listable
 	
 	@ManyToOne
 	@JoinColumn(name="fk_party")
-	private EconomicAgent party;
+	private Party party;
 	
 	@Version
 	private Long version;

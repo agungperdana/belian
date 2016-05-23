@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kratonsolution.belian.general.dm.CompanyStructure;
 import com.kratonsolution.belian.general.dm.CompanyStructureRepository;
-import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.general.dm.Party;
 
 /**
  * 
@@ -83,7 +83,7 @@ public class CompanyStructureService
 	}
 	
 	@Secured("ROLE_COMPANY_STRUCTURE_READ")
-	public List<EconomicAgent> findAllCompanyMembers()
+	public List<Party> findAllCompanyMembers()
 	{
 		return new ArrayList<>();
 //		return repository.findAllCompanyMembers();

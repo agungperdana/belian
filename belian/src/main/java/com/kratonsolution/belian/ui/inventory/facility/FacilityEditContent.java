@@ -12,8 +12,8 @@ import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Center;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Grid;
@@ -32,7 +32,9 @@ import org.zkoss.zul.Toolbarbutton;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.CompanyStructure;
 import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.inventory.dm.Facility;
 import com.kratonsolution.belian.inventory.dm.FacilityOrganization;
@@ -40,6 +42,7 @@ import com.kratonsolution.belian.inventory.dm.FacilityType;
 import com.kratonsolution.belian.inventory.svc.FacilityService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -50,17 +53,19 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class FacilityEditContent extends FormContent
 {	
-	private final FacilityService service = Springs.get(FacilityService.class);
+	private FacilityService service = Springs.get(FacilityService.class);
 
-	private SessionUtils utils = Springs.get(SessionUtils.class);
+	private CompanyStructureService companyStructureService = Springs.get(CompanyStructureService.class);
 	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
+
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 
-	private Textbox code = new Textbox();
+	private Textbox code = Components.mandatoryTextBox(false);
 
-	private Textbox name = new Textbox();
+	private Textbox name = Components.mandatoryTextBox(false);
 
-	private Textbox note = new Textbox();
+	private Textbox note = Components.stdTextBox(null,false);
 
 	private Listbox types = Components.newSelect();
 
@@ -77,9 +82,9 @@ public class FacilityEditContent extends FormContent
 		super();
 
 		this.facility = facility;
-		
+
 		removeChild(grid);
-		
+
 		tabbox.setHeight("100%");
 		tabbox.setWidth("100%");
 		tabbox.appendChild(new Tabs());
@@ -118,30 +123,30 @@ public class FacilityEditContent extends FormContent
 					facility.setName(name.getText());
 					facility.setNote(note.getText());
 					facility.getOrganizations().clear();
-					
+
 					for(Component com:orgs.getRows().getChildren())
 					{
 						Row row = (Row)com;
-						
+
 						FacilityOrganization organization = new FacilityOrganization();
 						organization.setEnabled(RowUtils.isChecked(row, 0));
 						organization.setFacility(facility);
 						organization.setOrganization(organizationService.findOne(RowUtils.string(row, 2)));
-						
+
 						facility.getOrganizations().add(organization);
 					}
-					
+
 					service.edit(facility);
 				}
 
-				Clients.showNotification("Data successfully updated.");
+				Flow.next(getParent().getParent().getParent(),new FacilityContent());
 			}
 		});
 
 		Toolbarbutton child = new Toolbarbutton("New Facility","/icons/new-warehouse.png");
 		toolbar.appendChild(child);
 		child.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-				{
+		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
@@ -208,31 +213,52 @@ public class FacilityEditContent extends FormContent
 		rows.appendChild(row3);
 		rows.appendChild(row4);
 	}
-	
+
 	public void initOrganization()
 	{
+		Checkbox all = Components.checkbox(false);
+		all.addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event arg0) throws Exception
+			{
+				if(all.isChecked())
+				{
+					for(Component com:orgs.getRows().getChildren())
+						RowUtils.checked((Row)com, 0);
+				}
+				else
+				{
+					for(Component com:orgs.getRows().getChildren())
+						RowUtils.unchecked((Row)com, 0);
+				}
+			}
+		});
+		
 		orgs.appendChild(new Columns());
 		orgs.appendChild(new Rows());
 		orgs.getColumns().appendChild(new Column(null,null,"25px"));
 		orgs.getColumns().appendChild(new Column("Organization",null,"150px"));
 		orgs.getColumns().appendChild(new Column(null,null,"0px"));
 		orgs.getColumns().getChildren().get(2).setVisible(false);
-		
+		orgs.setSpan("1");
+		orgs.getColumns().getChildren().get(0).appendChild(all);
+
 		Collection<Organization> fresh = new Vector<>();
-		for(Organization organization:utils.getOrganizations())
+		for(CompanyStructure com:companyStructureService.findAll())
 		{
 			boolean in = true;
 			for(FacilityOrganization org:facility.getOrganizations())
 			{
-				if(org.getOrganization() != null && org.getOrganization().getId().equals(organization.getId()))
+				if(org.getOrganization() != null && org.getOrganization().getId().equals(com.getOrganization().getId()))
 					in = false;
 			}
-		
+
 			if(in)
-				fresh.add(organization);
+				fresh.add(com.getOrganization());
 		}
-		
-		
+
+
 		for(FacilityOrganization organization:facility.getOrganizations())
 		{
 			if(organization.getOrganization() != null)
@@ -241,21 +267,21 @@ public class FacilityEditContent extends FormContent
 				row.appendChild(Components.checkbox(organization.isEnabled()));
 				row.appendChild(new Label(organization.getOrganization().getName()));
 				row.appendChild(new Label(organization.getOrganization().getId()));
-			
+
 				orgs.getRows().appendChild(row);
 			}
 		}
-		
+
 		for(Organization organization:fresh)
 		{
 			Row row = new Row();
 			row.appendChild(Components.checkbox(false));
 			row.appendChild(new Label(organization.getName()));
 			row.appendChild(new Label(organization.getId()));
-		
+
 			orgs.getRows().appendChild(row);
 		}
-		
+
 		tabbox.getTabpanels().getChildren().get(1).appendChild(orgs);
 	}
 

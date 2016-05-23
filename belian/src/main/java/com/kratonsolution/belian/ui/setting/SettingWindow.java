@@ -63,7 +63,7 @@ public class SettingWindow extends AbstractWindow
 	
 	private TaxService taxService = Springs.get(TaxService.class);
 	
-	private SessionUtils sessionUtils = Springs.get(SessionUtils.class);
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	private Vlayout layout = new Vlayout(); 
 	
@@ -113,15 +113,15 @@ public class SettingWindow extends AbstractWindow
 		for(PrinterType type:PrinterType.values())
 		{
 			Listitem listitem = printers.appendItem(type.name(),type.name());
-			if(sessionUtils.getPrinterType().equals(type))
+			if(utils.getPrinterType().equals(type))
 				printers.setSelectedItem(listitem);
 		}
 		
-		for(Organization organization:sessionUtils.getOrganizations())
+		for(Organization organization:utils.getOrganizations())
 		{
 			Listitem listitem = new Listitem(organization.getName(), organization.getId());
 			organizations.appendChild(listitem);
-			if(sessionUtils.getOrganization() != null && organization.getId().equals(sessionUtils.getOrganization().getId()))
+			if(utils.getOrganization() != null && organization.getId().equals(utils.getOrganization().getId()))
 				organizations.setSelectedItem(listitem);
 		}
 		
@@ -129,7 +129,7 @@ public class SettingWindow extends AbstractWindow
 		{
 			Listitem listitem = new Listitem(currency.getLabel(), currency.getValue());
 			currencys.appendChild(listitem);
-			if(sessionUtils.getCurrency() != null && currency.getId().equals(sessionUtils.getCurrency().getId()))
+			if(utils.getCurrency() != null && currency.getId().equals(utils.getCurrency().getId()))
 				currencys.setSelectedItem(listitem);
 		}
 
@@ -137,14 +137,14 @@ public class SettingWindow extends AbstractWindow
 		{
 			Listitem listitem = new Listitem(geographic.getLabel(),geographic.getValue());
 			locations.appendChild(listitem);
-			if(sessionUtils.getLocation() != null && 
-					sessionUtils.getLocation().getId() != null && sessionUtils.getLocation().getId().equals(geographic.getId()))
+			if(utils.getLocation() != null && 
+					utils.getLocation().getId() != null && utils.getLocation().getId().equals(geographic.getId()))
 				locations.setSelectedItem(listitem);
 		}
 		
 		for(Listitem listitem:taxes.getItems())
 		{
-			if(sessionUtils.getTax() != null && sessionUtils.getTax().getId().equals(listitem.getValue().toString()))
+			if(utils.getTax() != null && utils.getTax().getId().equals(listitem.getValue().toString()))
 			{
 				taxes.setSelectedItem(listitem);
 				break;
@@ -156,12 +156,12 @@ public class SettingWindow extends AbstractWindow
 		languanges.appendChild(new Listitem("English", "en_US"));
 		Components.setDefault(languanges);
 		
-		if("in_ID".equals(sessionUtils.getLanguage()))
+		if("in_ID".equals(utils.getLanguage()))
 			languanges.setSelectedIndex(0);
-		if("en_US".equals(sessionUtils.getLanguage()))
+		if("en_US".equals(utils.getLanguage()))
 			languanges.setSelectedIndex(1);
 		
-		rowPerPage.setValue(sessionUtils.getRowPerPage());
+		rowPerPage.setValue(utils.getRowPerPage());
 		
 		Tabpanel tabpanel = new Tabpanel();
 		
@@ -237,8 +237,8 @@ public class SettingWindow extends AbstractWindow
 	@Override
 	public void onClose()
 	{
-		User user = sessionUtils.getUser();
-		if(user != null)
+		User user = utils.getUser();
+		if(user != null && !user.isSysAdmin())
 		{
 			user.getSetting().setLanguage(Components.string(languanges));
 			user.getSetting().setRowPerPage(rowPerPage.intValue());
@@ -282,9 +282,7 @@ public class SettingWindow extends AbstractWindow
 				Locales.setThreadLocal(locale);
 				Executions.sendRedirect("/home");
 			} 
-			catch (Exception e)
-			{
-			}
+			catch (Exception e){}
 		}
 		
 		super.onClose();

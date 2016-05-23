@@ -3,23 +3,19 @@
  */
 package com.kratonsolution.belian.hr.dm;
 
-import java.io.Serializable;
-import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
-import com.kratonsolution.belian.general.dm.Person;
+import com.kratonsolution.belian.general.dm.PartyRole;
+import com.kratonsolution.belian.security.dm.User;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -32,24 +28,12 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="employee")
-public class Employee implements Serializable
+public class Employee extends PartyRole
 {
-	@Id
-	private String id = UUID.randomUUID().toString();
-
-	@Column(name="start")
-	private Date start;
+	@OneToOne(cascade=CascadeType.ALL,orphanRemoval=true,optional=true)
+	@JoinColumn(name="fk_user")
+	private User user;
 	
-	@Column(name="end")
-	private Date end;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_person")
-	private Person person;
-	
-	@Version
-	private Long version;
-	
-	@OneToMany(mappedBy="employee",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(mappedBy="employee",fetch=FetchType.EAGER)
 	private Set<Employment> employments = new HashSet<>();
 }

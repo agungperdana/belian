@@ -4,7 +4,6 @@
 package com.kratonsolution.belian.security.svc;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.global.dm.UserSetting;
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.security.dm.UserRepository;
 
@@ -36,18 +34,7 @@ public class UserService
 	@Secured({"ROLE_USER_READ","ROLE_SYSTEM_READ"})
 	public User findOne(String id)
 	{
-		User user = repository.findOne(id);
-		if(user != null && user.getSetting() == null)
-		{
-			UserSetting setting = new UserSetting();
-			setting.setId(UUID.randomUUID().toString());
-			
-			user.setSetting(setting);
-			
-			repository.save(user);
-		}
-		
-		return user;
+		return repository.findOne(id);
 	}
 	
 	@Secured("ROLE_USER_READ")
@@ -72,13 +59,6 @@ public class UserService
 	public void add(User user)
 	{
 		user.setPassword(encryptor.encryptPassword(user.getPassword()));
-		if(user.getSetting() == null)
-		{
-			UserSetting setting = new UserSetting();
-			setting.setLanguage("en_US");
-			user.setSetting(setting);
-		}
-		
 		repository.save(user);
 	}
 	
@@ -117,5 +97,5 @@ public class UserService
 			user.setPassword(encryptor.encryptPassword(newPassword));
 			repository.save(user);
 		}
-	}	
+	}
 }

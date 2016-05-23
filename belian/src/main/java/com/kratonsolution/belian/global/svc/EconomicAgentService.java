@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.general.dm.Party;
+import com.kratonsolution.belian.general.dm.PartyRepository;
 import com.kratonsolution.belian.general.dm.PartyRole;
-import com.kratonsolution.belian.global.dm.EconomicAgent;
-import com.kratonsolution.belian.global.dm.EconomicAgentRepository;
 import com.kratonsolution.belian.global.dm.EconomicAgentRoleEventListener;
 
 /**
@@ -27,25 +27,25 @@ import com.kratonsolution.belian.global.dm.EconomicAgentRoleEventListener;
 public class EconomicAgentService
 {
 	@Autowired
-	private EconomicAgentRepository repository;
+	private PartyRepository repository;
 	
 	@Autowired
 	private List<EconomicAgentRoleEventListener> listeners;
 	
 	@Secured("ROLE_PARTY_READ")
-	public EconomicAgent findOne(String id)
+	public Party findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 	
 	@Secured("ROLE_PARTY_READ")
-	public List<EconomicAgent> findAll()
+	public List<Party> findAll()
 	{
 		return repository.findAll();
 	}
 	
 	@Secured("ROLE_PARTY_READ")
-	public List<EconomicAgent> findAll(String name)
+	public List<Party> findAll(String name)
 	{
 		if(!Strings.isNullOrEmpty(name))
 			return repository.findAll(name);
@@ -54,25 +54,25 @@ public class EconomicAgentService
 	}
 	
 	@Secured("ROLE_PARTY_READ")
-	public List<EconomicAgent> findAllExcept(String id)
+	public List<Party> findAllExcept(String id)
 	{
 		return repository.findAllExcept(id);
 	}
 	
 	@Secured("ROLE_PARTY_READ")
-	public List<EconomicAgent> findAll(int pageIndex,int pageSize)
+	public List<Party> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
 	}
 	
 	@Secured("ROLE_PARTY_READ")
-	public List<EconomicAgent> findAllByRolesTypeName(String name)
+	public List<Party> findAllByRolesTypeName(String name)
 	{
 		return null;
 	}
 	
 	@Secured("ROLE_PARTY_READ")
-	public List<EconomicAgent> findByRoleAndParty(String name,String responsibleTo)
+	public List<Party> findByRoleAndParty(String name,String responsibleTo)
 	{
 //		return repository.findByRoleAndParty(name, responsibleTo);
 		return null;
@@ -85,7 +85,7 @@ public class EconomicAgentService
 	}
 	
 	@Secured("ROLE_PARTY_UPDATE")
-	public void edit(EconomicAgent party)
+	public void edit(Party party)
 	{
 		repository.saveAndFlush(party);
 	}
@@ -96,7 +96,7 @@ public class EconomicAgentService
 	}
 	
 	@Secured("ROLE_PARTY_UPDATE")
-	public void deleteRole(EconomicAgent agent,PartyRole partyRole)
+	public void deleteRole(Party agent,PartyRole partyRole)
 	{
 
 	}

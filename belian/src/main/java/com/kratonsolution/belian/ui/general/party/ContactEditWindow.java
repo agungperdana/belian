@@ -22,15 +22,17 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.general.dm.Contact;
-import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.general.dm.ContactType;
+import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class ContactEditWindow extends Window
 {
@@ -88,7 +90,7 @@ public class ContactEditWindow extends Window
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				EconomicAgent party = service.findOne(edited.getParty().getId());
+				Party party = service.findOne(edited.getParty().getId());
 				if(party != null)
 				{
 					Iterator<Contact> iterator = party.getContacts().iterator();
@@ -99,7 +101,7 @@ public class ContactEditWindow extends Window
 						{
 							contact.setContact(number.getText());
 							contact.setActive(status.isChecked());
-							contact.setType(Contact.Type.valueOf(type.getSelectedItem().getValue().toString()));
+							contact.setType(ContactType.valueOf(type.getSelectedItem().getValue().toString()));
 							break;
 						}
 					}
@@ -138,7 +140,7 @@ public class ContactEditWindow extends Window
 		row4.appendChild(new Label("Type"));
 		row4.appendChild(type);
 		
-		for(Contact.Type _type:Contact.Type.values())
+		for(ContactType _type:ContactType.values())
 		{
 			Listitem listitem = new Listitem(_type.name(),_type.name());
 			type.appendChild(listitem);

@@ -3,9 +3,11 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
-import java.util.Date;
+import java.io.Serializable;
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,16 +15,17 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
+
+import com.kratonsolution.belian.global.dm.Listable;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import com.kratonsolution.belian.global.dm.EconomicResource;
-import com.kratonsolution.belian.global.dm.Listable;
 
 /**
  * 
@@ -33,14 +36,21 @@ import com.kratonsolution.belian.global.dm.Listable;
 @Setter
 @Entity
 @Table(name="product")
-public class Product extends EconomicResource implements Listable
+public class Product implements Listable, Serializable
 {
-	public enum Type {SERVICE,FINISHGOOD,RAWMATERIAL,SUBASEMBLY}
+	@Id
+	private String id = UUID.randomUUID().toString();
 	
-	@Column(name="from_date")
+	@Column(name="code",unique=true,nullable=false)
+	private String code;
+	
+	@Column(name="name",unique=true,nullable=false)
+	private String name;
+	
+	@Column(name="start")
 	private Date start;
 	
-	@Column(name="to_date")
+	@Column(name="end")
 	private Date end;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
@@ -53,7 +63,10 @@ public class Product extends EconomicResource implements Listable
 	
 	@Column(name="type")
 	@Enumerated(EnumType.STRING)
-	private Type type = Type.FINISHGOOD;
+	private ProductType type = ProductType.FINISHGOOD;
+	
+	@Version
+	private Long version;
 	
 	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<ProductCode> codes = new HashSet<ProductCode>();

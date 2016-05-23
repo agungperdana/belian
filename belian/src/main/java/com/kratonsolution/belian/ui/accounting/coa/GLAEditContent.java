@@ -21,6 +21,7 @@ import org.zkoss.zul.Vlayout;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.GLAccount;
+import com.kratonsolution.belian.accounting.dm.GLAccountType;
 import com.kratonsolution.belian.accounting.svc.GLAccountService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
@@ -102,7 +103,7 @@ public class GLAEditContent extends AbstractWindow
 				edited.setNumber(number.getValue());
 				edited.setName(name.getText());
 				edited.setNote(note.getText());
-				edited.setType(GLAccount.Type.valueOf(types.getSelectedItem().getValue().toString()));
+				edited.setType(GLAccountType.valueOf(types.getSelectedItem().getValue().toString()));
 				
 				service.edit(edited);
 
@@ -139,7 +140,7 @@ public class GLAEditContent extends AbstractWindow
 			parents.setSelectedIndex(0);
 		}
 		
-		for(GLAccount.Type type:GLAccount.Type.values())
+		for(GLAccountType type:GLAccountType.values())
 		{
 			Listitem listitem = new Listitem(type.name(),type.name());
 			types.appendChild(listitem);

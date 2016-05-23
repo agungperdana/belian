@@ -18,6 +18,7 @@ import com.kratonsolution.belian.accounting.dm.GLAccountBalance;
 import com.kratonsolution.belian.accounting.dm.GLAccountBalanceRepository;
 import com.kratonsolution.belian.accounting.dm.JournalEntry;
 import com.kratonsolution.belian.accounting.dm.JournalEntryDetail;
+import com.kratonsolution.belian.accounting.dm.JournalEntryDetailType;
 import com.kratonsolution.belian.accounting.dm.JournalEntryRepository;
 import com.kratonsolution.belian.accounting.dm.JournalPosting;
 import com.kratonsolution.belian.accounting.dm.JournalPostingRepository;
@@ -110,7 +111,7 @@ public class JournalEntryService
 				balance.setCurrency(entry.getCurrency());
 			}
 
-			if(detail.getType().equals(JournalEntryDetail.Type.DEBET))
+			if(detail.getType().equals(JournalEntryDetailType.DEBET))
 				balance.setDebet(balance.getDebet().add(detail.getAmount()));
 			else 
 				balance.setCredit(balance.getCredit().add(detail.getAmount()));
@@ -141,7 +142,7 @@ public class JournalEntryService
 			GLAccountBalance balance = balanceRepository.findOneByPeriodIdAndAccountIdAndCurrencyId(entry.getPeriod().getId(), detail.getAccount().getId(), entry.getCurrency().getId());
 			if(balance != null)
 			{
-				if(detail.getType().equals(JournalEntryDetail.Type.DEBET))
+				if(detail.getType().equals(JournalEntryDetailType.DEBET))
 					balance.setDebet(balance.getDebet().subtract(detail.getAmount()));
 				else 
 					balance.setCredit(balance.getCredit().subtract(detail.getAmount()));

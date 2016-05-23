@@ -18,7 +18,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vlayout;
 
-import com.kratonsolution.belian.global.dm.EconomicAgentRepository;
+import com.kratonsolution.belian.general.dm.PartyRepository;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductSupplier;
@@ -27,6 +27,7 @@ import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.inventory.product.ProductEditContent;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -46,7 +47,7 @@ public class SupplierWindow extends AbstractWindow
 	
 	private ProductService service = Springs.get(ProductService.class);
 	
-	private EconomicAgentRepository partyRepository = Springs.get(EconomicAgentRepository.class);
+	private PartyRepository partyRepository = Springs.get(PartyRepository.class);
 	
 	private Product product;
 	
@@ -93,8 +94,8 @@ public class SupplierWindow extends AbstractWindow
 			public void onEvent(Event event) throws Exception
 			{
 				ProductSupplier supplier = new ProductSupplier();
-				supplier.setFrom(from.getValue());
-				supplier.setTo(to.getValue());
+				supplier.setFrom(Dates.sql(from.getValue()));
+				supplier.setTo(Dates.sql(to.getValue()));
 				supplier.setNote(note.getText());
 				supplier.setSupplier(partyRepository.findOne(suppliers.getSelectedItem().getValue().toString()));
 

@@ -30,6 +30,7 @@ import com.kratonsolution.belian.accounting.dm.AccountingPeriod;
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.dm.JournalEntry;
 import com.kratonsolution.belian.accounting.dm.JournalEntryDetail;
+import com.kratonsolution.belian.accounting.dm.JournalEntryDetailType;
 import com.kratonsolution.belian.accounting.dm.OGLAccount;
 import com.kratonsolution.belian.accounting.dm.OrganizationAccount;
 import com.kratonsolution.belian.accounting.svc.AccountingPeriodService;
@@ -138,7 +139,7 @@ public class JournalEntryFormContent extends FormContent
 					detail.setAmount(RowUtils.decimal(row, 3));
 					detail.setJournal(entry);
 					detail.setNote(RowUtils.string(row, 4));
-					detail.setType(JournalEntryDetail.Type.valueOf(RowUtils.string(row, 2)));
+					detail.setType(JournalEntryDetailType.valueOf(RowUtils.string(row, 2)));
 					
 					entry.getJournals().add(detail);
 				}

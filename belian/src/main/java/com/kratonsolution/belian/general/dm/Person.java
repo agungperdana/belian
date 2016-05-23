@@ -3,26 +3,16 @@
  */
 package com.kratonsolution.belian.general.dm;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import com.kratonsolution.belian.global.dm.EconomicAgent;
-import com.kratonsolution.belian.security.dm.User;
 
 /**
  * 
@@ -33,12 +23,9 @@ import com.kratonsolution.belian.security.dm.User;
 @Setter
 @Entity
 @Table(name="person")
-public class Person extends EconomicAgent
+@Cacheable
+public class Person extends Party
 {
-	public enum MaritalStatus {MARIED,DEFORCE,SINGLE}
-	
-	public enum Gender{MALE,FEMALE}
-
 	@Transient
 	public static final String ANONYMOUS = "ANONYMOUS";
 	
@@ -55,13 +42,6 @@ public class Person extends EconomicAgent
 	@Column(name="marital_status")
 	@Enumerated(EnumType.STRING)
 	private MaritalStatus maritalStatus = MaritalStatus.SINGLE;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_user")
-	private User user;
-	
-	@OneToMany(mappedBy="from",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
-	private Set<PersonRole> roles = new HashSet<>();
 	
 	public Person()
 	{

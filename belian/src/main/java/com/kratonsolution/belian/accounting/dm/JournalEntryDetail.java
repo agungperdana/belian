@@ -3,9 +3,11 @@
  */
 package com.kratonsolution.belian.accounting.dm;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -31,10 +33,9 @@ import org.hibernate.annotations.NotFoundAction;
 @Setter
 @Entity
 @Table(name="journal_entry_detail")
-public class JournalEntryDetail
+@Cacheable
+public class JournalEntryDetail implements Serializable
 {
-	public enum Type{DEBET,CREDIT}
-	
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
@@ -45,7 +46,7 @@ public class JournalEntryDetail
 
 	@Column(name="type")
 	@Enumerated(EnumType.STRING)
-	private Type type = Type.DEBET;
+	private JournalEntryDetailType type = JournalEntryDetailType.DEBET;
 	
 	@Column(name="amount")
 	private BigDecimal amount = BigDecimal.ZERO;
@@ -65,13 +66,15 @@ public class JournalEntryDetail
 	@Version
 	private Long version;
 	
+	public JournalEntryDetail(){}
+	
 	public static JournalEntryDetail DEBET(GLAccount account,BigDecimal amount,String note)
 	{
 		JournalEntryDetail detail = new JournalEntryDetail();
 		detail.setAccount(account);
 		detail.setAmount(amount);
 		detail.setNote(note);
-		detail.setType(Type.DEBET);
+		detail.setType(JournalEntryDetailType.DEBET);
 		
 		return detail;
 	}
@@ -82,7 +85,7 @@ public class JournalEntryDetail
 		detail.setAccount(account);
 		detail.setAmount(amount);
 		detail.setNote(note);
-		detail.setType(Type.CREDIT);
+		detail.setType(JournalEntryDetailType.CREDIT);
 		
 		return detail;
 	}

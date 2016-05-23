@@ -32,7 +32,7 @@ public class GoodsReceiveItem implements Serializable
 	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="quantity")
-	private BigDecimal quantity;
+	private BigDecimal quantity = BigDecimal.ONE;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_product")

@@ -11,17 +11,21 @@ import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 
+import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.InternalOrganization;
 import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.general.svc.PersonService;
-import com.kratonsolution.belian.hr.dm.EmploymentApplication;
-import com.kratonsolution.belian.hr.dm.EmploymentApplicationStatusType;
+import com.kratonsolution.belian.hr.dm.Employee;
+import com.kratonsolution.belian.hr.dm.Employment;
 import com.kratonsolution.belian.hr.svc.EmploymentApplicationService;
 import com.kratonsolution.belian.hr.svc.EmploymentService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.component.OrganizationList;
+import com.kratonsolution.belian.ui.component.PersonBox;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Dates;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -33,11 +37,11 @@ public class EmploymentFormContent extends FormContent
 {	
 	private EmploymentService service = Springs.get(EmploymentService.class);
 	
-	private PersonService personService = Springs.get(PersonService.class);
-	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 	
 	private EmploymentApplicationService applicationService = Springs.get(EmploymentApplicationService.class);
+	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	private Datebox start = Components.currentDatebox();
 	
@@ -45,9 +49,9 @@ public class EmploymentFormContent extends FormContent
 	
 	private Listbox applications = Components.newSelect();
 	
-	private Listbox employee = Components.newSelect();
+	private PersonBox persons = new PersonBox(true);
 	
-	private Listbox employer = Components.newSelect();
+	private OrganizationList employer = new OrganizationList();
 	
 	public EmploymentFormContent()
 	{
@@ -64,9 +68,7 @@ public class EmploymentFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				EmploymentWindow window = (EmploymentWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new EmploymentGridContent());
 			}
 		});
 		
@@ -75,29 +77,21 @@ public class EmploymentFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-//				Employment employment = new Employment();
-//				employment.setFrom(start.getValue());
-//				employment.setTo(end.getValue());
-//				employment.setType(PartyRelationship.Type.EMPLOYMENT);
-//				
-//				Employee person = new Employee();
-//				person.setFrom(start.getValue());
-//				person.setTo(end.getValue());
-//				person.setParty(personService.findOne(Components.string(employee)));
-//				
-//				Employer org = new Employer();
-//				org.setFrom(start.getValue());
-//				org.setTo(end.getValue());
-//				org.setParty(organizationService.findOne(Components.string(employer)));
-//				
-//				employment.setParent(org);
-//				employment.setChild(person);
-//				
-//				service.add(employment);
+				Employee employee = new Employee();
+				employee.setParty(persons.getPerson());
 				
-				EmploymentWindow window = (EmploymentWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				InternalOrganization employeer = new InternalOrganization();
+				employeer.setParty(employer.getOrganization());
+				
+				Employment employment = new Employment();
+				employment.setStart(Dates.sql(start.getValue()));
+				employment.setEnd(Dates.sql(end.getValue()));
+				employment.setEmployee(employee);
+				employment.setInternalOrganization(employeer);
+				
+				service.add(employment);
+				
+				Flow.next(getParent(), new EmploymentGridContent());
 			}
 		});
 	}
@@ -108,27 +102,6 @@ public class EmploymentFormContent extends FormContent
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.getColumns().appendChild(new Column());
-		
-		for(EmploymentApplication application:applicationService.findAllByStatusType(EmploymentApplicationStatusType.ACCEPTED))
-		{
-			applications.appendChild(
-					new Listitem(application.getApplicant().getLabel()+" - "+application.getPosition().getType().getLabel(),
-							application.getId()));
-		}
-		
-		applications.addEventListener(Events.ON_SELECT, new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				EmploymentApplication application = applicationService.findOne(Components.string(applications));
-				if(application != null)
-				{
-					employee.appendChild(new Listitem(application.getApplicant().getLabel(), application.getApplicant().getValue()));
-					employee.setSelectedIndex(0);
-				}
-			}
-		});
 			
 		Row row1 = new Row();
 		row1.appendChild(new Label("Start Date"));
@@ -143,12 +116,12 @@ public class EmploymentFormContent extends FormContent
 		row3.appendChild(employer);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Application"));
-		row4.appendChild(applications);
+		row4.appendChild(new Label("Person"));
+		row4.appendChild(persons);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Employee"));
-		row5.appendChild(employee);
+		row5.appendChild(new Label("Application"));
+		row5.appendChild(applications);
 
 		rows.appendChild(row1);
 		rows.appendChild(row2);

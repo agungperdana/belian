@@ -88,8 +88,11 @@ public class PersonBox extends Hbox implements PersonRegistrationListener
 	@Override
 	public void setPerson(Person person)
 	{
-		Comboitem item = identity.appendItem(person.getIdentity()+" - "+person.getName());
-		identity.setSelectedItem(item);
-		identity.getAttributes().put(person.getIdentity()+" - "+person.getName(), person.getId());
+		if(person != null)
+		{
+			Comboitem item = identity.appendItem(person.getIdentity()+" - "+person.getName());
+			identity.setSelectedItem(item);
+			identity.getAttributes().put(person.getIdentity()+" - "+person.getName(), person.getId());
+		}
 	}
 }

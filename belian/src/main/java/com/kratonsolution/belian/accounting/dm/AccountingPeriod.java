@@ -4,9 +4,12 @@
 package com.kratonsolution.belian.accounting.dm;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.io.Serializable;
+import java.sql.Date;
 import java.util.List;
+import java.util.UUID;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,19 +27,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
 @Table(name="accounting_period")
-public class AccountingPeriod
+@Cacheable
+public class AccountingPeriod implements Serializable
 {
-	public enum Month{January,February,March,April,May,June,July,August,September,October,November,December}
-	
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="number",nullable=false,unique=true)
 	private String number;

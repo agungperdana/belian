@@ -11,7 +11,8 @@ import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zk.ui.event.InputEvent;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Grid;
@@ -29,7 +30,8 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.dm.CompanyStructure;
+import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.inventory.dm.Facility;
 import com.kratonsolution.belian.inventory.dm.FacilityOrganization;
@@ -37,6 +39,7 @@ import com.kratonsolution.belian.inventory.dm.FacilityType;
 import com.kratonsolution.belian.inventory.svc.FacilityService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -49,17 +52,19 @@ public class FacilityFormContent extends FormContent
 {	
 	private FacilityService service = Springs.get(FacilityService.class);
 	
+	private CompanyStructureService companyStructureService = Springs.get(CompanyStructureService.class);
+	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 	
-	private Textbox code = new Textbox();
+	private Textbox code = Components.mandatoryTextBox(false);
 	
-	private Textbox name = new Textbox();
+	private Textbox name = Components.mandatoryTextBox(false);
 	
-	private Textbox note = new Textbox();
+	private Textbox note = Components.stdTextBox(null,false);
 	
-	private Listbox types = new Listbox();
+	private Listbox types = Components.newSelect();
 	
 	private Facility parent;
 	
@@ -108,13 +113,6 @@ public class FacilityFormContent extends FormContent
 			
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
-				
-				Facility out = service.findOneByCode(code.getText());
-				if(out != null)
-				{
-					Clients.showNotification("Facility with code "+code.getText()+" already exist.");
-					return;
-				}
 					
 				Facility facility = new Facility();
 				facility.setCode(code.getText());
@@ -139,10 +137,7 @@ public class FacilityFormContent extends FormContent
 				
 				service.add(facility);
 				
-				for(FacilityDataListener listener:listeners)
-					listener.fireDataAdded(facility);
-				
-				Clients.showNotification("Data successfully added.");
+				Flow.next(getParent().getParent().getParent(),new FacilityContent());
 			}
 		});
 	}
@@ -150,15 +145,34 @@ public class FacilityFormContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		code.setConstraint("no empty");
-		code.setWidth("200px");
+		code.addEventListener(Events.ON_CHANGING,new EventListener<InputEvent>()
+		{
+			@Override
+			public void onEvent(InputEvent input) throws Exception
+			{
+				if(!Strings.isNullOrEmpty(input.getValue()))
+				{
+					Facility out = service.findOneByCode(input.getValue());
+					if(out != null)
+						throw new WrongValueException(code,"Facility with code "+input.getValue()+" already exist.");
+				}
+			}
+		});
 		
-		name.setConstraint("no empty");
-		name.setWidth("300px");
+		name.addEventListener(Events.ON_CHANGING,new EventListener<InputEvent>()
+		{
+			@Override
+			public void onEvent(InputEvent input) throws Exception
+			{
+				if(!Strings.isNullOrEmpty(input.getValue()))
+				{
+					Facility out = service.findOneByName(input.getValue());
+					if(out != null)
+						throw new WrongValueException(name,"Facility with name "+input.getValue()+" already exist.");
+				}
+			}
+		});
 		
-		note.setWidth("350px");
-		
-		types.setMold("select");
 		for(FacilityType type:FacilityType.values())
 			types.appendChild(new Listitem(type.name(),type.name()));
 		
@@ -192,19 +206,41 @@ public class FacilityFormContent extends FormContent
 	
 	public void initOrganization()
 	{
+		Checkbox all = Components.checkbox(false);
+		all.addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event arg0) throws Exception
+			{
+				if(all.isChecked())
+				{
+					for(Component com:orgs.getRows().getChildren())
+						RowUtils.checked((Row)com, 0);
+				}
+				else
+				{
+					for(Component com:orgs.getRows().getChildren())
+						RowUtils.unchecked((Row)com, 0);
+				}
+			}
+		});
+		
+		
 		orgs.appendChild(new Columns());
 		orgs.appendChild(new Rows());
 		orgs.getColumns().appendChild(new Column(null,null,"25px"));
 		orgs.getColumns().appendChild(new Column("Organization",null,"150px"));
 		orgs.getColumns().appendChild(new Column(null,null,"0px"));
 		orgs.getColumns().getChildren().get(2).setVisible(false);
+		orgs.setSpan("1");
+		orgs.getColumns().getChildren().get(0).appendChild(all);
 		
-		for(Organization organization:utils.getOrganizations())
+		for(CompanyStructure com:companyStructureService.findAll())
 		{
 			Row row = new Row();
 			row.appendChild(Components.checkbox(false));
-			row.appendChild(new Label(organization.getName()));
-			row.appendChild(new Label(organization.getId()));
+			row.appendChild(new Label(com.getOrganization().getName()));
+			row.appendChild(new Label(com.getOrganization().getId()));
 		
 			orgs.getRows().appendChild(row);
 		}

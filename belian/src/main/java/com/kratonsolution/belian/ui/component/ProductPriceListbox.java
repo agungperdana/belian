@@ -9,7 +9,7 @@ import org.zkoss.zul.Listbox;
 
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Geographic;
-import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -22,12 +22,12 @@ public class ProductPriceListbox extends Listbox
 {
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
-	public static ProductPriceListbox newInstance(String productName,EconomicAgent customer,Geographic location,Date date)
+	public static ProductPriceListbox newInstance(String productName,Party customer,Geographic location,Date date)
 	{
 		return new ProductPriceListbox(productName, customer, location,date);
 	}
 	
-	private ProductPriceListbox(String product,EconomicAgent customer,Geographic location,Date date)
+	private ProductPriceListbox(String product,Party customer,Geographic location,Date date)
 	{
 		setWidth("100%");
 		setMold("select");
@@ -36,7 +36,7 @@ public class ProductPriceListbox extends Listbox
 		init(service.findOneByNameOrId(product), customer, location, date);
 	}
 
-	private void init(Product product,EconomicAgent customer,Geographic location,Date date)
+	private void init(Product product,Party customer,Geographic location,Date date)
 	{
 
 //		if(product != null)

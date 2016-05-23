@@ -41,6 +41,7 @@ public class CompanyStructureWindow extends AbstractWindow implements HasGrid,Ha
 	{
 		super();
 		setWidth("750px");
+		setHeight("480px");
 	}
 	
 	protected void init()

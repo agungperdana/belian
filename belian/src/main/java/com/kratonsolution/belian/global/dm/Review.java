@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.general.dm.Party;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -39,7 +41,7 @@ public abstract class Review implements Serializable
 	
 	@ManyToOne
 	@JoinColumn(name="fk_party")
-	protected EconomicAgent party;
+	protected Party party;
 	
 	@Column(name="result")
 	protected String result;

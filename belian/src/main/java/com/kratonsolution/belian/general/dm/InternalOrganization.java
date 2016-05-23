@@ -10,14 +10,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
-@Table(name="approver")
-public class BudgetApprover extends PersonRole
+@Table(name="internal_organization")
+public class InternalOrganization extends PartyRole
 {
+	public Organization getOrganization()
+	{
+		return (Organization)getParty();
+	}
 }

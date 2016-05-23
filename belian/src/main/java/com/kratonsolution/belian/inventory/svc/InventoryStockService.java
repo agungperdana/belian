@@ -13,6 +13,7 @@ import com.kratonsolution.belian.inventory.dm.FacilityOrganization;
 import com.kratonsolution.belian.inventory.dm.InventoryItem;
 import com.kratonsolution.belian.inventory.dm.InventoryItemRepository;
 import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.inventory.dm.ProductType;
 
 /**
  * @author Agung Dodi Perdana
@@ -29,7 +30,7 @@ public class InventoryStockService
 	
 	public void inventoryProccess(Product product,BigDecimal quantity)
 	{
-		if(!product.getType().equals(Product.Type.SERVICE))
+		if(!product.getType().equals(ProductType.SERVICE))
 		{
 			BigDecimal unissued = quantity;
 			

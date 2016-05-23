@@ -5,7 +5,7 @@ package com.kratonsolution.belian.hr.dm;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -40,10 +40,10 @@ public class PositionTypeRate implements Serializable
 	@Id
 	private String id = UUID.randomUUID().toString();
 
-	@Column(name="start_date")
+	@Column(name="start")
 	private Date start;
 
-	@Column(name="end_date")
+	@Column(name="end")
 	private Date end;
 
 	@Column(name="amount")

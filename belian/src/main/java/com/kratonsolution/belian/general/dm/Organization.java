@@ -6,7 +6,7 @@ package com.kratonsolution.belian.general.dm;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,11 +15,10 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.kratonsolution.belian.inventory.dm.FacilityOrganization;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import com.kratonsolution.belian.global.dm.EconomicAgent;
-import com.kratonsolution.belian.inventory.dm.FacilityOrganization;
 
 /**
  * 
@@ -30,7 +29,8 @@ import com.kratonsolution.belian.inventory.dm.FacilityOrganization;
 @Setter
 @Entity
 @Table(name="organization")
-public class Organization extends EconomicAgent
+@Cacheable
+public class Organization extends Party
 {
 	@Column(name="industry_type")
 	@Enumerated(EnumType.STRING)
@@ -38,7 +38,7 @@ public class Organization extends EconomicAgent
 	
 	@OneToMany(mappedBy="organization",fetch=FetchType.EAGER)
 	private Set<FacilityOrganization> facilitys = new HashSet<>();
-	
-	@OneToMany(mappedBy="from",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
-	private Set<OrganizationRole> roles = new HashSet<>();
+//	
+//	@OneToMany(mappedBy="from",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
+//	private Set<OrganizationRole> roles = new HashSet<>();
 }

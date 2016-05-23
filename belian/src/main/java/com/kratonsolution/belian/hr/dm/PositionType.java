@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.hr.dm;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,17 +28,19 @@ import lombok.Setter;
 public class PositionType implements Serializable, Listable
 {
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="title")
 	private String title;
 	
-	@Column(name="description")
+	@Column(name="note")
 	private String description;
 	
 	@Version
 	private Long version;
 
+	public PositionType(){}
+	
 	@Override
 	public String getLabel()
 	{

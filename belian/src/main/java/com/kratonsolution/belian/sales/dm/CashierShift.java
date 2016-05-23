@@ -10,9 +10,11 @@ import java.sql.Time;
 import java.util.UUID;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.kratonsolution.belian.asset.dm.Asset;
@@ -28,8 +30,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-//@Entity
-//@Table(name="cashier_shift")
+@Entity
+@Table(name="cashier_shift")
 public class CashierShift implements Serializable
 {
 	@Id
@@ -51,12 +53,12 @@ public class CashierShift implements Serializable
 	private Asset machine;
 	
 	@Column(name="capital")
-	private BigDecimal capital;
+	private BigDecimal capital = BigDecimal.ZERO;
 	
-	@Column(name="start_time")
+	@Column(name="start")
 	private Time start;
 	
-	@Column(name="end_time")
+	@Column(name="end")
 	private Time end;
 	
 	@Version

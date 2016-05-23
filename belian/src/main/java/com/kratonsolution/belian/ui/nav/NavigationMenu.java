@@ -112,9 +112,9 @@ public class NavigationMenu extends Window
 		
 		if(modules.containsKey("MODULE") && modules.get("MODULE"))
 			list.appendChild(new ModuleItem());
-		if(modules.containsKey("RLE") && modules.get("RLE"))
+		if(modules.containsKey("ACCESS_ROLE") && modules.get("ACCESS_ROLE"))
 			list.appendChild(new RoleItem());
-		if(modules.containsKey("USERMENU") && modules.get("USERMENU"))
+		if(modules.containsKey("USER") && modules.get("USER"))
 			list.appendChild(new UserItem());
 		
 		if(!list.getChildren().isEmpty())

@@ -22,6 +22,7 @@ public class InboxWindow extends AbstractWindow implements HasGrid
 	{
 		super();
 		setWidth("700px");
+		setHeight("475px");
 		init();
 	}
 	

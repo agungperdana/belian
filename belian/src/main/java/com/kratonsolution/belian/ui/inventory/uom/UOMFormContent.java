@@ -17,6 +17,8 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
 import com.kratonsolution.belian.inventory.svc.UnitOfMeasureService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -26,13 +28,13 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class UOMFormContent extends FormContent
 {	
-	private final UnitOfMeasureService service = Springs.get(UnitOfMeasureService.class);
+	private UnitOfMeasureService service = Springs.get(UnitOfMeasureService.class);
 	
-	private Textbox code = new Textbox();
+	private Textbox code = Components.mandatoryTextBox(false);
 	
-	private Textbox name = new Textbox();
+	private Textbox name = Components.mandatoryTextBox(false);
 	
-	private Textbox note = new Textbox();
+	private Textbox note = Components.stdTextBox(null,false);
 	
 	public UOMFormContent()
 	{
@@ -49,9 +51,7 @@ public class UOMFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				UOMWindow window = (UOMWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new UOMGridContent());
 			}
 		});
 		
@@ -73,9 +73,7 @@ public class UOMFormContent extends FormContent
 				
 				service.add(uom);
 				
-				UOMWindow window = (UOMWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new UOMGridContent());
 			}
 		});
 	}
@@ -83,12 +81,6 @@ public class UOMFormContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		code.setConstraint("no empty");
-		code.setWidth("200px");
-		
-		name.setConstraint("no empty");
-		name.setWidth("300px");
-		
 		note.setWidth("350px");
 		
 		grid.appendChild(new Columns());

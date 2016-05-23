@@ -28,6 +28,7 @@ import com.kratonsolution.belian.hr.svc.PositionTypeRateService;
 import com.kratonsolution.belian.hr.svc.PositionTypeService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -92,8 +93,8 @@ private PositionTypeRateService service = Springs.get(PositionTypeRateService.cl
 				PositionTypeRate rate = service.findOne(RowUtils.string(row, 7));
 				if(rate != null)
 				{
-					rate.setStart(start.getValue());
-					rate.setEnd(end.getValue());
+					rate.setStart(Dates.sql(start.getValue()));
+					rate.setEnd(Dates.sql(end.getValue()));
 					rate.setAmount(BigDecimal.valueOf(amount.doubleValue()));
 					rate.setComment(comment.getText());
 					rate.setCurrency(currencyService.findOne(Components.string(currencys)));

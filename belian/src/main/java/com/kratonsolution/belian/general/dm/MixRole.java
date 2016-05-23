@@ -11,8 +11,6 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-import com.kratonsolution.belian.global.dm.EconomicAgent;
-
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
@@ -25,9 +23,9 @@ public class MixRole extends PartyRole
 {
 	@ManyToOne
 	@JoinColumn(name="fk_party_from")
-	private EconomicAgent from;
+	private Party from;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_party_to")
-	private EconomicAgent to;
+	private Party to;
 }

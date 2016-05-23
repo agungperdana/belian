@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.ui.general.person;
 
-import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
@@ -25,14 +24,7 @@ public class PersonRowRenderer implements RowRenderer<Person>
 	{
 		if(data != null)
 		{
-			Checkbox box = null;
-			
-			if(!data.isDeleteadble())
-				box = Components.readOnlyCheckbox();
-			else
-				box = new Checkbox();
-			
-			row.appendChild(box);
+			row.appendChild(Components.checkbox(false));
 			row.appendChild(new Label(data.getIdentity()));
 			row.appendChild(new Label(data.getName()));
 			row.appendChild(new Label(Dates.format(data.getBirthDate())));

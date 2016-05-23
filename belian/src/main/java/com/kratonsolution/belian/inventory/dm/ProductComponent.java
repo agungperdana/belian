@@ -48,4 +48,6 @@ public class ProductComponent implements Serializable
 	
 	@Version
 	private Long version;
+	
+	public ProductComponent(){}
 }

@@ -65,6 +65,7 @@ public class Components
 	{
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");
+		listbox.setWidth("250px");
 		
 		return listbox;
 	}
@@ -74,6 +75,7 @@ public class Components
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");
 		listbox.setStyle("text-align:center;");
+		listbox.setWidth("250px");
 		listbox.appendChild(new Listitem(listable.getLabel(),listable.getValue()));
 		listbox.setSelectedIndex(0);
 		
@@ -96,6 +98,7 @@ public class Components
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");
 		listbox.setStyle("text-align:center;");
+		listbox.setWidth("250px");
 		
 		for(Listable object:collections)
 			listbox.appendChild(new Listitem(object.getLabel(), object.getValue()));
@@ -311,11 +314,32 @@ public class Components
 		return checkbox;
 	}
 	
+	public static final Checkbox checkbox(boolean readonly,boolean isChecked)
+	{
+		Checkbox checkbox = new Checkbox();
+		checkbox.setChecked(isChecked);
+		checkbox.setDisabled(readonly);
+		
+		return checkbox;
+	}
+	
 	public static final Textbox mandatoryTextBox()
 	{
 		Textbox textbox = new Textbox();
 		textbox.setWidth("100%");
 		textbox.setConstraint("no empty");
+		
+		return textbox;
+	}
+	
+	public static final Textbox mandatoryTextBox(boolean fullspan)
+	{
+		Textbox textbox = new Textbox();
+		textbox.setConstraint("no empty");
+		if(fullspan)
+			textbox.setWidth("100%");
+		else
+			textbox.setWidth("300px");
 		
 		return textbox;
 	}

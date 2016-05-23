@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.kratonsolution.belian.accounting.dm.GLAccount;
 import com.kratonsolution.belian.accounting.dm.GLAccountChangeEventListener;
 import com.kratonsolution.belian.accounting.dm.GLAccountRepository;
+import com.kratonsolution.belian.accounting.dm.GLAccountType;
 
 /**
  * 
@@ -74,7 +75,7 @@ public class GLAccountService
 	}
 	
 	@Secured("ROLE_COA_READ")
-	public long nextNumber(GLAccount.Type type)
+	public long nextNumber(GLAccountType type)
 	{
 		Long out = repository.lastNumber(type);
 		return (out.longValue()+1);

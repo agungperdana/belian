@@ -13,6 +13,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
+import org.zkoss.zul.Toolbarbutton;
 
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.hr.dm.EmploymentApplication;
@@ -21,7 +22,10 @@ import com.kratonsolution.belian.hr.dm.EmploymentApplicationStatusType;
 import com.kratonsolution.belian.hr.svc.EmploymentApplicationService;
 import com.kratonsolution.belian.hr.svc.PositionService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.component.PersonBox;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Dates;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -40,15 +44,13 @@ public class EmploymentApplicationEditContent extends FormContent
 	
 	private Datebox date = Components.currentDatebox();
 
-	private Listbox types = Components.newSelect();
-
 	private Listbox sources = Components.newSelect();
 
 	private Listbox positions = Components.newSelect(positionService.findAll(),true);
 
-	private Listbox applicants = Components.newSelect(personService.findAll(),true);
+	private PersonBox applicant = new PersonBox(false);
 	
-	private Listbox referals = Components.newSelect(personService.findAll(),false);
+	private PersonBox referals = new PersonBox(false);
 	
 	private Row row;
 	
@@ -68,9 +70,7 @@ public class EmploymentApplicationEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				EmploymentApplicationWindow window = (EmploymentApplicationWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new EmploymentApplicationGridContent());
 			}
 		});
 		
@@ -82,18 +82,16 @@ public class EmploymentApplicationEditContent extends FormContent
 				EmploymentApplication application = service.findOne(RowUtils.string(row, 6));
 				if(application != null)
 				{
-					application.setDate(date.getValue());
+					application.setDate(Dates.sql(date.getValue()));
 					application.setPosition(positionService.findOne(Components.string(positions)));
-					application.setApplicant(personService.findOne(Components.string(applicants)));
+					application.setApplicant(applicant.getPerson());
+					application.setReferal(referals.getPerson());
 					application.setSourceType(EmploymentApplicationSourceType.valueOf(Components.string(sources)));
-					application.setStatusType(EmploymentApplicationStatusType.valueOf(Components.string(types)));
 					
 					service.edit(application);
 				}
 				
-				EmploymentApplicationWindow window = (EmploymentApplicationWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new EmploymentApplicationGridContent());
 			}
 		});
 	}
@@ -101,15 +99,34 @@ public class EmploymentApplicationEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		EmploymentApplication application = service.findOne(RowUtils.string(row, 6));
+		EmploymentApplication application = service.findOne(RowUtils.id(row));
 		if(application != null)
 		{
-			for(EmploymentApplicationStatusType statusType:EmploymentApplicationStatusType.values())
+			if(application.getStatusType().equals(EmploymentApplicationStatusType.RECEIVED))
 			{
-				Listitem listitem = new Listitem(statusType.name(), statusType.name());
-				types.appendChild(listitem);
-				if(statusType.equals(application.getStatusType()))
-					types.setSelectedItem(listitem);
+				Toolbarbutton reviewed = new Toolbarbutton("Review");
+				Toolbarbutton accept = new Toolbarbutton("Accept");
+				Toolbarbutton reject = new Toolbarbutton("Reject");
+				
+				toolbar.appendChild(reviewed);
+				toolbar.appendChild(accept);
+				toolbar.appendChild(reject);
+				
+				accept.addEventListener(Events.ON_CLICK,new EventListener<Event>()
+				{
+					@Override
+					public void onEvent(Event arg0) throws Exception
+					{
+					}
+				});
+			}
+			else if(application.getStatusType().equals(EmploymentApplicationStatusType.REVIEWED))
+			{
+				Toolbarbutton accept = new Toolbarbutton("Accept");
+				Toolbarbutton reject = new Toolbarbutton("Reject");
+				
+				toolbar.appendChild(accept);
+				toolbar.appendChild(reject);
 			}
 			
 			for(EmploymentApplicationSourceType sourceType:EmploymentApplicationSourceType.values())
@@ -119,23 +136,14 @@ public class EmploymentApplicationEditContent extends FormContent
 				if(sourceType.equals(application.getSourceType()))
 					sources.setSelectedItem(listitem);
 			}
-			
-			positions.appendChild(new Listitem(application.getPosition().getLabel(), application.getPosition().getValue()));
-			applicants.appendChild(new Listitem(application.getApplicant().getLabel(), application.getApplicant().getValue()));
-			
-			if(application.getReferal() != null)
-			{
-				referals.appendChild(new Listitem(application.getReferal().getLabel(),application.getReferal().getValue()));
-				Components.setDefault(referals);
-			}
-			
-			Components.setDefault(positions);
-			Components.setDefault(applicants);
+
+			applicant.setPerson(application.getApplicant());
+			referals.setPerson(application.getReferal());
 			
 			date.setValue(application.getDate());
 			
 			grid.appendChild(new Columns());
-			grid.getColumns().appendChild(new Column(null,null,"125px"));
+			grid.getColumns().appendChild(new Column(null,null,"100px"));
 			grid.getColumns().appendChild(new Column());
 
 			Row row1 = new Row();
@@ -144,7 +152,7 @@ public class EmploymentApplicationEditContent extends FormContent
 
 			Row row2 = new Row();
 			row2.appendChild(new Label("Status"));
-			row2.appendChild(types);
+			row2.appendChild(new Label(application.getStatusType().name()));
 			
 			Row row3 = new Row();
 			row3.appendChild(new Label("Source"));
@@ -156,7 +164,7 @@ public class EmploymentApplicationEditContent extends FormContent
 			
 			Row row5 = new Row();
 			row5.appendChild(new Label("Applicant"));
-			row5.appendChild(applicants);
+			row5.appendChild(applicant);
 
 			Row row6 = new Row();
 			row6.appendChild(new Label("Referal"));

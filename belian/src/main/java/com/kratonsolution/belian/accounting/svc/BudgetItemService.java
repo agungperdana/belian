@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.accounting.svc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,6 +90,9 @@ public class BudgetItemService
 	@Secured("ROLE_BUDGETITEM_READ")
 	public List<BudgetItem> findAllByOwner()
 	{
-		return repository.findAllByOwner(utils.getOrganization().getId());
+		if(utils.hasDefaultOrganization())
+			return repository.findAllByOwner(utils.getOrganization().getId());
+		
+		return new ArrayList<>();
 	}
 }

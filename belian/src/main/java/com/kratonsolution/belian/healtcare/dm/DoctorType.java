@@ -31,10 +31,10 @@ public class DoctorType implements Serializable, Listable
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@Column(name="code")
+	@Column(name="code",unique=true)
 	private String code;
 	
-	@Column(name="name")
+	@Column(name="name",unique=true)
 	private String name;
 	
 	@Column(name="description")

@@ -25,6 +25,7 @@ import com.kratonsolution.belian.hr.svc.PositionService;
 import com.kratonsolution.belian.hr.svc.PositionTypeService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -50,19 +51,19 @@ public class PositionFormContent extends FormContent
 	
 	private Datebox actualEnd = Components.datebox();
 	
-	private Listbox worktimes = Components.fullSpanSelect();
+	private Listbox worktimes = Components.newSelect();
 	
-	private Listbox employmentstatuses = Components.fullSpanSelect();
+	private Listbox employmentstatuses = Components.newSelect();
 	
-	private Listbox salarys = Components.fullSpanSelect();
+	private Listbox salarys = Components.newSelect();
 	
-	private Listbox positionStatusTypes = Components.fullSpanSelect();
+	private Listbox positionStatusTypes = Components.newSelect();
 	
-	private Listbox budgetItems = Components.fullSpanSelect(budgetItemService.findAllByOwner(),false);
+	private Listbox budgetItems = Components.newSelect(budgetItemService.findAllByOwner(),false);
 		
-	private Listbox positionTypes = Components.fullSpanSelect(positionTypeService.findAll(),true);
+	private Listbox positionTypes = Components.newSelect(positionTypeService.findAll(),true);
 	
-	private Listbox hirings = Components.fullSpanSelect(utils.getOrganization());
+	private Listbox hirings = Components.newSelect(utils.getOrganizations(),true);
 	
 	public PositionFormContent()
 	{
@@ -91,12 +92,12 @@ public class PositionFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{				
 				Position position = new Position();
-				position.setActualEnd(actualEnd.getValue());
-				position.setActualStart(actualStart.getValue());
+				position.setActualEnd(Dates.sql(actualEnd.getValue()));
+				position.setActualStart(Dates.sql(actualStart.getValue()));
 				position.setBudgetItem(budgetItemService.findOne(Components.string(budgetItems)));
-				position.setEnd(end.getValue());
+				position.setEnd(Dates.sql(end.getValue()));
 				position.setSalaryStatus(SalaryStatus.valueOf(Components.string(salarys)));
-				position.setStart(start.getValue());
+				position.setStart(Dates.sql(start.getValue()));
 				position.setOrganization(utils.getOrganization());
 				position.setEmploymentStatus(EmploymentStatus.valueOf(Components.string(employmentstatuses)));
 				position.setType(positionTypeService.findOne(Components.string(positionTypes)));
@@ -139,45 +140,58 @@ public class PositionFormContent extends FormContent
 		Components.setDefault(salarys);
 		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"125px"));
-		grid.getColumns().appendChild(new Column());
-		grid.getColumns().appendChild(new Column(null,null,"125px"));
+		grid.getColumns().appendChild(new Column(null,null,"135px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
 		row1.appendChild(new Label("Start Date"));
 		row1.appendChild(start);
-		row1.appendChild(new Label("End Date"));
-		row1.appendChild(end);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Actual Start Date"));
-		row2.appendChild(actualStart);
-		row2.appendChild(new Label("Actual End Date"));
-		row2.appendChild(actualEnd);
+		row2.appendChild(new Label("End Date"));
+		row2.appendChild(end);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Worktime Type"));
-		row3.appendChild(worktimes);
-		row3.appendChild(new Label("Employment Type"));
-		row3.appendChild(employmentstatuses);
+		row3.appendChild(new Label("Actual Start Date"));
+		row3.appendChild(actualStart);
+		
+		Row row4 = new Row();
+		row4.appendChild(new Label("Actual End Date"));
+		row4.appendChild(actualEnd);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Budget Item"));
-		row5.appendChild(budgetItems);
-		row5.appendChild(new Label("Position Type"));
-		row5.appendChild(positionTypes);
+		row5.appendChild(new Label("Worktime Type"));
+		row5.appendChild(worktimes);
 		
 		Row row6 = new Row();
-		row6.appendChild(new Label("Hiring Organization"));
-		row6.appendChild(hirings);
-		row6.appendChild(new Label("Position Status Type"));
-		row6.appendChild(positionStatusTypes);
+		row6.appendChild(new Label("Employment Type"));
+		row6.appendChild(employmentstatuses);
+		
+		Row row7 = new Row();
+		row7.appendChild(new Label("Budget Item"));
+		row7.appendChild(budgetItems);
+		
+		Row row8 = new Row();
+		row8.appendChild(new Label("Position Type"));
+		row8.appendChild(positionTypes);
+		
+		Row row9 = new Row();
+		row9.appendChild(new Label("Hiring Organization"));
+		row9.appendChild(hirings);
+		
+		Row row10 = new Row();
+		row10.appendChild(new Label("Position Status Type"));
+		row10.appendChild(positionStatusTypes);
 		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
+		rows.appendChild(row4);
 		rows.appendChild(row5);
 		rows.appendChild(row6);
+		rows.appendChild(row7);
+		rows.appendChild(row8);
+		rows.appendChild(row9);
+		rows.appendChild(row10);
 	}
 }

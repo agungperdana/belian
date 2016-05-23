@@ -116,7 +116,7 @@ public class PersonService
 	@Secured("ROLE_PERSON_READ")
 	public List<Person> findAllByUserIsNull()
 	{
-		return repository.findAllWhereUserIsNull();
+		return new ArrayList<>();
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)

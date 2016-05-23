@@ -17,8 +17,9 @@ import com.kratonsolution.belian.hr.dm.Position;
 import com.kratonsolution.belian.hr.dm.PositionRepository;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
 @Transactional(rollbackFor=Exception.class)

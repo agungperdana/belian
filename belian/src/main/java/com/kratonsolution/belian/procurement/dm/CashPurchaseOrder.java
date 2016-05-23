@@ -17,8 +17,8 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.global.dm.Listable;
 import com.kratonsolution.belian.global.dm.ProductReceiveable;
 
@@ -36,7 +36,7 @@ public class CashPurchaseOrder extends ProductReceiveable implements Serializabl
 	
 	@ManyToOne
 	@JoinColumn(name="fk_party")
-	private EconomicAgent supplier;
+	private Party supplier;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_purchaser")

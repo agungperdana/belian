@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.inventory.dm;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,17 +29,15 @@ import lombok.Setter;
 @Table(name="product_feature")
 public class ProductFeature implements Serializable
 {
-	public enum Type{SIZE,WEIGH,HEIGH,COLOR,BPJS}
-
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="value")
 	private String value;
 	
 	@Column(name="type")
 	@Enumerated(EnumType.STRING)
-	private Type type = Type.WEIGH;
+	private ProductFeatureType type = ProductFeatureType.WEIGH;
 
 	@Column(name="note")
 	private String note;
@@ -49,4 +48,6 @@ public class ProductFeature implements Serializable
 	
 	@Version
 	private Long version;
+	
+	public ProductFeature(){}
 }

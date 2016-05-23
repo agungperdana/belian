@@ -103,7 +103,7 @@ public class BudgetFormContent extends FormContent
 				
 				BudgetStatus status = new BudgetStatus();
 				status.setBudget(budget);
-				status.setDate(start.getValue());
+				status.setDate(Dates.sql(start.getValue()));
 				status.setDescription("Just Created");
 				status.setType(StatusType.Created);
 				

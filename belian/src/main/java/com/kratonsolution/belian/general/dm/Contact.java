@@ -3,6 +3,9 @@
  */
 package com.kratonsolution.belian.general.dm;
 
+import java.io.Serializable;
+import java.util.UUID;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,39 +16,36 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.global.dm.EconomicAgent;
-
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Getter
 @Setter
 @Entity
 @Table(name="contact")
-public class Contact
+public class Contact implements Serializable
 {
-	public enum Type{CELLPHONE,HOMEPHONE,OFFICEPHONE,PAGER,EMAIL,POSTBOX}
-	
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="contact",nullable=false)
 	private String contact;
 
 	@Column(name="type",nullable=false)
 	@Enumerated(EnumType.STRING)
-	private Type type = Type.OFFICEPHONE;
+	private ContactType type = ContactType.OFFICEPHONE;
 	
-	@Column(name="active")
+	@Column(name="status")
 	private boolean active;
 
 	@ManyToOne
 	@JoinColumn(name="fk_party")
-	private EconomicAgent party;
+	private Party party;
 	
 	@Version
 	private Long version;

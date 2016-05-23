@@ -24,7 +24,7 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
-import com.kratonsolution.belian.inventory.dm.ProductPrice.Type;
+import com.kratonsolution.belian.inventory.dm.ProductPriceType;
 import com.kratonsolution.belian.inventory.dm.ProductPriceRepository;
 import com.kratonsolution.belian.inventory.dm.ProductRepository;
 import com.kratonsolution.belian.ui.util.Components;
@@ -339,37 +339,37 @@ public class MedicalProductRow extends Row
 			 */
 			if(!Strings.isNullOrEmpty(location) && !Strings.isNullOrEmpty(customer))
 			{
-				for(ProductPrice price:priceRepository.findAll(new Date(System.currentTimeMillis()),location,customer,currency,item.getId(),Type.BASE))
+				for(ProductPrice price:priceRepository.findAll(new Date(System.currentTimeMillis()),location,customer,currency,item.getId(),ProductPriceType.BASE))
 					prices.appendItem(price.getLabel(), price.getValue());
 
-				for(ProductPrice price:priceRepository.findAll(new Date(System.currentTimeMillis()),location,customer,currency,item.getId(),Type.DISCOUNT))
+				for(ProductPrice price:priceRepository.findAll(new Date(System.currentTimeMillis()),location,customer,currency,item.getId(),ProductPriceType.DISCOUNT))
 					discounts.appendItem(price.getLabel(), price.getValue());
 				
-				for(ProductPrice price:priceRepository.findAll(new Date(System.currentTimeMillis()),location,customer,currency,item.getId(),Type.CHARGE))
+				for(ProductPrice price:priceRepository.findAll(new Date(System.currentTimeMillis()),location,customer,currency,item.getId(),ProductPriceType.CHARGE))
 					charges.appendItem(price.getLabel(), price.getValue());
 			}
 			
 			if(!Strings.isNullOrEmpty(location))
 			{
-				for(ProductPrice price:priceRepository.findAllWithLocation(new Date(System.currentTimeMillis()),location,currency,item.getId(),Type.BASE))
+				for(ProductPrice price:priceRepository.findAllWithLocation(new Date(System.currentTimeMillis()),location,currency,item.getId(),ProductPriceType.BASE))
 					prices.appendItem(price.getLabel(), price.getValue());
 				
-				for(ProductPrice price:priceRepository.findAllWithLocation(new Date(System.currentTimeMillis()),location,currency,item.getId(),Type.DISCOUNT))
+				for(ProductPrice price:priceRepository.findAllWithLocation(new Date(System.currentTimeMillis()),location,currency,item.getId(),ProductPriceType.DISCOUNT))
 					discounts.appendItem(price.getLabel(), price.getValue());
 				
-				for(ProductPrice price:priceRepository.findAllWithLocation(new Date(System.currentTimeMillis()),location,currency,item.getId(),Type.CHARGE))
+				for(ProductPrice price:priceRepository.findAllWithLocation(new Date(System.currentTimeMillis()),location,currency,item.getId(),ProductPriceType.CHARGE))
 					charges.appendItem(price.getLabel(), price.getValue());
 			}
 			
 			if(!Strings.isNullOrEmpty(customer))
 			{
-				for(ProductPrice price:priceRepository.findAllWithCustomer(new Date(System.currentTimeMillis()),customer,currency,item.getId(),Type.BASE))
+				for(ProductPrice price:priceRepository.findAllWithCustomer(new Date(System.currentTimeMillis()),customer,currency,item.getId(),ProductPriceType.BASE))
 					prices.appendItem(price.getLabel(), price.getValue());
 				
-				for(ProductPrice price:priceRepository.findAllWithCustomer(new Date(System.currentTimeMillis()),customer,currency,item.getId(),Type.DISCOUNT))
+				for(ProductPrice price:priceRepository.findAllWithCustomer(new Date(System.currentTimeMillis()),customer,currency,item.getId(),ProductPriceType.DISCOUNT))
 					discounts.appendItem(price.getLabel(), price.getValue());
 				
-				for(ProductPrice price:priceRepository.findAllWithCustomer(new Date(System.currentTimeMillis()),customer,currency,item.getId(),Type.CHARGE))
+				for(ProductPrice price:priceRepository.findAllWithCustomer(new Date(System.currentTimeMillis()),customer,currency,item.getId(),ProductPriceType.CHARGE))
 					charges.appendItem(price.getLabel(), price.getValue());
 			}
 			
@@ -377,23 +377,23 @@ public class MedicalProductRow extends Row
 			{
 				if(bpjs)
 				{
-					for(ProductPrice price:priceRepository.findAll(new Date(System.currentTimeMillis()),currency,item.getId(),Type.BPJS))
+					for(ProductPrice price:priceRepository.findAll(new Date(System.currentTimeMillis()),currency,item.getId(),ProductPriceType.BPJS))
 						prices.appendItem("BPJS ("+price.getLabel()+")", price.getValue());
 				}
 				
-				for(ProductPrice price:priceRepository.findAll(new Date(System.currentTimeMillis()),currency,item.getId(),Type.BASE))
+				for(ProductPrice price:priceRepository.findAll(new Date(System.currentTimeMillis()),currency,item.getId(),ProductPriceType.BASE))
 					prices.appendItem("Reguler ("+price.getLabel()+")", price.getValue());
 			}
 			
 			if(discounts.getChildren().isEmpty())
 			{
-				for(ProductPrice price:priceRepository.findAll(new Date(System.currentTimeMillis()),currency,item.getId(),Type.DISCOUNT))
+				for(ProductPrice price:priceRepository.findAll(new Date(System.currentTimeMillis()),currency,item.getId(),ProductPriceType.DISCOUNT))
 					discounts.appendItem(price.getLabel(), price.getValue());
 			}
 			
 			if(charges.getChildren().isEmpty())
 			{
-				for(ProductPrice price:priceRepository.findAll(new Date(System.currentTimeMillis()),currency,item.getId(),Type.CHARGE))
+				for(ProductPrice price:priceRepository.findAll(new Date(System.currentTimeMillis()),currency,item.getId(),ProductPriceType.CHARGE))
 					charges.appendItem(price.getLabel(), price.getValue());
 			}
 			

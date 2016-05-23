@@ -18,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.general.dm.Party;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,7 +39,7 @@ public abstract class Roled implements Serializable
 	
 	@ManyToOne
 	@JoinColumn(name="fk_party")
-	protected EconomicAgent party;
+	protected Party party;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="role_type")

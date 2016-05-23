@@ -19,13 +19,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.general.dm.Geographic;
-import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.global.dm.Listable;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 
@@ -38,15 +38,13 @@ import com.kratonsolution.belian.global.dm.Listable;
 @Table(name="product_price")
 public class ProductPrice implements Serializable,Listable
 {
-	public enum Type {BASE,DISCOUNT,CHARGE,BPJS,CLINIC}
-	
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@Column(name="from_date")
+	@Column(name="start")
 	private Date from;
 	
-	@Column(name="to_date")
+	@Column(name="end")
 	private Date to;
 	
 	@Column(name="price")
@@ -58,7 +56,7 @@ public class ProductPrice implements Serializable,Listable
 	
 	@Column(name="type")
 	@Enumerated(EnumType.STRING)
-	private Type type = Type.BASE;
+	private ProductPriceType type = ProductPriceType.BASE;
 
 	@ManyToOne
 	@JoinColumn(name="fk_geographic")
@@ -66,7 +64,7 @@ public class ProductPrice implements Serializable,Listable
 	
 	@ManyToOne
 	@JoinColumn(name="fk_party")
-	private EconomicAgent party;
+	private Party party;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_product")
@@ -74,6 +72,8 @@ public class ProductPrice implements Serializable,Listable
 	
 	@Version
 	private Long version;
+	
+	public ProductPrice(){}
 
 	@Override
 	public String getLabel()

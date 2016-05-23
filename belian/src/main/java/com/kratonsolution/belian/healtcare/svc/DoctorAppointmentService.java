@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kratonsolution.belian.global.svc.SessionAware;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
-import com.kratonsolution.belian.healtcare.dm.DoctorAppointment.Status;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentRepository;
+import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentStatus;
 
 /**
  * 
@@ -123,7 +123,7 @@ public class DoctorAppointmentService extends SessionAware
 		DoctorAppointment appointment = findOne(id);
 		if(appointment != null)
 		{
-			appointment.setStatus(Status.PROGRESS);
+			appointment.setStatus(DoctorAppointmentStatus.PROGRESS);
 			edit(appointment);
 		}
 	}
@@ -134,7 +134,7 @@ public class DoctorAppointmentService extends SessionAware
 		DoctorAppointment appointment = findOne(id);
 		if(appointment != null)
 		{
-			appointment.setStatus(Status.CANCELED);
+			appointment.setStatus(DoctorAppointmentStatus.CANCELED);
 			edit(appointment);
 		}
 	}
@@ -145,7 +145,7 @@ public class DoctorAppointmentService extends SessionAware
 		DoctorAppointment appointment = findOne(id);
 		if(appointment != null)
 		{
-			appointment.setStatus(Status.ONHOLD);
+			appointment.setStatus(DoctorAppointmentStatus.ONHOLD);
 			edit(appointment);
 		}
 	}

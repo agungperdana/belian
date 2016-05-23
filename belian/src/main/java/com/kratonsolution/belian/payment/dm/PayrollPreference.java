@@ -40,10 +40,10 @@ public class PayrollPreference implements Serializable
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@Column(name="start_date",nullable=false)
+	@Column(name="start",nullable=false)
 	private Date start;
 	
-	@Column(name="end_date")
+	@Column(name="end")
 	private Date end;
 	
 	@ManyToOne

@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.UUID;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,6 +15,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
+import com.kratonsolution.belian.common.Dates;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +29,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="sequence_number")
+@Cacheable
 public class SequenceNumber implements Serializable
 {
 	public enum Code{BLDP,BLMED,BLLAB,LABREG,BLTRE}
@@ -34,7 +38,7 @@ public class SequenceNumber implements Serializable
 	private String id = UUID.randomUUID().toString();
 
 	@Column(name="date")
-	private Date date = new Date(System.currentTimeMillis());
+	private Date date = Dates.now();
 
 	@Column(name="person_id")
 	private String personId;

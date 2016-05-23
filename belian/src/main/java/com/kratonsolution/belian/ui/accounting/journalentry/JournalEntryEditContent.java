@@ -29,6 +29,7 @@ import org.zkoss.zul.Toolbarbutton;
 
 import com.kratonsolution.belian.accounting.dm.JournalEntry;
 import com.kratonsolution.belian.accounting.dm.JournalEntryDetail;
+import com.kratonsolution.belian.accounting.dm.JournalEntryDetailType;
 import com.kratonsolution.belian.accounting.dm.OGLAccount;
 import com.kratonsolution.belian.accounting.dm.OrganizationAccount;
 import com.kratonsolution.belian.accounting.svc.AccountingPeriodService;
@@ -136,7 +137,7 @@ public class JournalEntryEditContent extends FormContent
 						detail.setAmount(RowUtils.decimal(row, 3));
 						detail.setJournal(entry);
 						detail.setNote(RowUtils.string(row, 4));
-						detail.setType(JournalEntryDetail.Type.valueOf(RowUtils.string(row, 2)));
+						detail.setType(JournalEntryDetailType.valueOf(RowUtils.string(row, 2)));
 
 						entry.getJournals().add(detail);
 					}
@@ -384,7 +385,7 @@ public class JournalEntryEditContent extends FormContent
 				row.appendChild(accounts);
 
 				Listbox types = Components.newSelect();
-				for(JournalEntryDetail.Type type:JournalEntryDetail.Type.values())
+				for(JournalEntryDetailType type:JournalEntryDetailType.values())
 				{
 					Listitem listitem = new Listitem(type.toString(), type.toString());
 					types.appendChild(listitem);

@@ -23,7 +23,7 @@ import org.zkoss.zul.Textbox;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
-import com.kratonsolution.belian.healtcare.dm.DoctorAppointment.Status;
+import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentStatus;
 import com.kratonsolution.belian.healtcare.svc.AppointmentQueueGenerator;
 import com.kratonsolution.belian.healtcare.svc.DoctorAppointmentService;
 import com.kratonsolution.belian.healtcare.svc.DoctorService;
@@ -107,7 +107,7 @@ public class DoctorAppointmentFormContent extends FormContent
 				appointment.setDoctor(doctors.getDoctor());
 				appointment.setCompany(utils.getOrganization());
 				appointment.setNote(note.getText());
-				appointment.setStatus(Status.valueOf(Components.string(statuses)));
+				appointment.setStatus(DoctorAppointmentStatus.valueOf(Components.string(statuses)));
 				appointment.setPatient(patients.getPatient());
 				
 				service.add(appointment);
@@ -133,7 +133,7 @@ public class DoctorAppointmentFormContent extends FormContent
 		queue.setWidth("75px");
 		note.setWidth("300px");
 		
-		for(DoctorAppointment.Status status:DoctorAppointment.Status.values())
+		for(DoctorAppointmentStatus status:DoctorAppointmentStatus.values())
 			statuses.appendChild(new Listitem(status.toString(),status.toString()));
 		
 		Components.setDefault(statuses);

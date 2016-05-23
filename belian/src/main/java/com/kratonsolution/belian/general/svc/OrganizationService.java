@@ -55,7 +55,10 @@ public class OrganizationService
 	@Secured("ROLE_ORGANIZATION_READ")
 	public List<Organization> findAllNotIn(List<String> ids)
 	{
-		return repository.findAllNot(ids);
+		if(ids != null && !ids.isEmpty())
+			return repository.findAllNot(ids);
+		
+		return repository.findAll();
 	}
 
 	@Secured("ROLE_ORGANIZATION_READ")

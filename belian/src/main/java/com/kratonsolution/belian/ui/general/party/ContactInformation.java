@@ -15,7 +15,7 @@ import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
 
 import com.kratonsolution.belian.general.dm.Contact;
-import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -30,14 +30,14 @@ public class ContactInformation extends Treeitem
 	
 	private EconomicAgentService service = Springs.get(EconomicAgentService.class);
 	
-	public ContactInformation(Contact contact,EconomicAgent party)
+	public ContactInformation(Contact contact,Party party)
 	{
 		addDescription(contact, party);
 		addIcon(party, contact);
 		appendChild(row);
 	}
 	
-	protected void addDescription(final Contact contact,final EconomicAgent party)
+	protected void addDescription(final Contact contact,final Party party)
 	{
 		Treecell cell = new Treecell((contact.isActive()?"Active - ":"Inactive - ")+contact.getContact()+" - "+contact.getType());
 		cell.addEventListener(Events.ON_CLICK,new EventListener<Event>()
@@ -52,7 +52,7 @@ public class ContactInformation extends Treeitem
 		row.appendChild(cell);
 	}
 	
-	protected void addIcon(final EconomicAgent party,final Contact contact)
+	protected void addIcon(final Party party,final Contact contact)
 	{
 		Image remove = new Image("/icons/deletesmall.png");
 		Treecell delcell = new Treecell();
@@ -77,7 +77,7 @@ public class ContactInformation extends Treeitem
 		row.appendChild(delcell);
 	}
 	
-	protected void remove(final EconomicAgent party,final Contact contact)
+	protected void remove(final Party party,final Contact contact)
 	{
 		Iterator<Contact> iterator = party.getContacts().iterator();
 		while (iterator.hasNext())

@@ -45,6 +45,7 @@ import com.kratonsolution.belian.hr.svc.PositionTypeService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -159,13 +160,13 @@ public class EmploymentEditContent extends FormContent
 					if(budgetItems.getSelectedIndex() < 0)
 						throw new WrongValueException(budgetItems,"Budget Item cannot be empty");
 					
-					position.setActualEnd(actualEnd.getValue());
-					position.setActualStart(actualStart.getValue());
+					position.setActualEnd(Dates.sql(actualEnd.getValue()));
+					position.setActualStart(Dates.sql(actualStart.getValue()));
 					position.setBudgetItem(budgetItemService.findOne(Components.string(budgetItems)));
-					position.setEnd(end.getValue());
+					position.setEnd(Dates.sql(end.getValue()));
 					position.setOrganization(utils.getOrganization());
 					position.setSalaryStatus(SalaryStatus.valueOf(Components.string(salaryStatus)));
-					position.setStart(start.getValue());
+					position.setStart(Dates.sql(start.getValue()));
 					position.setEmploymentStatus(EmploymentStatus.valueOf(Components.string(employmentstatuses)));
 					position.setType(positionTypeService.findOne(Components.string(positionTypes)));
 					position.setWorktimeStatus(WorktimeStatus.valueOf(Components.string(worktimes)));
@@ -183,8 +184,8 @@ public class EmploymentEditContent extends FormContent
 						
 						PositionResponsibility responsibility = new PositionResponsibility();
 						responsibility.setDescription(RowUtils.string(row, 3));
-						responsibility.setEnd(RowUtils.date(row, 2));
-						responsibility.setStart(RowUtils.date(row, 1));
+						responsibility.setEnd(RowUtils.sql(row, 2));
+						responsibility.setStart(RowUtils.sql(row, 1));
 						responsibility.setId(RowUtils.string(row, 4));
 						responsibility.setPosition(position);
 						
@@ -198,9 +199,9 @@ public class EmploymentEditContent extends FormContent
 						PositionFulfillment fulfillment = new PositionFulfillment();
 						fulfillment.setDescription(RowUtils.string(row, 4));
 						fulfillment.setEmployee(personService.findOne(RowUtils.string(row, 3)));
-						fulfillment.setEnd(RowUtils.date(row, 2));
+						fulfillment.setEnd(RowUtils.sql(row, 2));
 						fulfillment.setPosition(position);
-						fulfillment.setStart(RowUtils.date(row, 1));
+						fulfillment.setStart(RowUtils.sql(row, 1));
 						fulfillment.setId(RowUtils.string(row, 5));
 						
 						position.getFulfillments().add(fulfillment);
@@ -213,10 +214,10 @@ public class EmploymentEditContent extends FormContent
 						PositionReportingStructure report = new PositionReportingStructure();
 						report.setId(RowUtils.string(row, 5));
 						report.setDescription(RowUtils.string(row, 4));
-						report.setEnd(RowUtils.date(row, 2));
+						report.setEnd(RowUtils.sql(row, 2));
 						report.setPrimary(false);
 						report.setReportTo(service.findOne(RowUtils.string(row, 3)));
-						report.setStart(RowUtils.date(row, 1));
+						report.setStart(RowUtils.sql(row, 1));
 						report.setPosition(position);
 						
 						position.getReportings().add(report);

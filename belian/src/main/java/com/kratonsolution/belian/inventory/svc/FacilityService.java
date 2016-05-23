@@ -58,14 +58,23 @@ public class FacilityService
 	}
 	
 	@Secured({"ROLE_FACILITY_READ","ROLE_SYSTEM_READ"})
+	public Facility findOneByName(String name)
+	{
+		return repository.findOneByName(name);
+	}
+	
+	@Secured({"ROLE_FACILITY_READ","ROLE_SYSTEM_READ"})
 	public List<Facility> findAllActive()
 	{
 		List<Facility> ins = new ArrayList<Facility>();
-		
-		for(FacilityOrganization organization:utils.getOrganization().getFacilitys())
+
+		if(utils.getOrganization() != null)
 		{
-			if(organization.isEnabled())
-				ins.add(organization.getFacility());
+			for(FacilityOrganization organization:utils.getOrganization().getFacilitys())
+			{
+				if(organization.isEnabled())
+					ins.add(organization.getFacility());
+			}
 		}
 	
 		return ins;

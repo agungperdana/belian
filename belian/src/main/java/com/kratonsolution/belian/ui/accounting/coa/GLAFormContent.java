@@ -21,6 +21,7 @@ import org.zkoss.zul.Vlayout;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.GLAccount;
+import com.kratonsolution.belian.accounting.dm.GLAccountType;
 import com.kratonsolution.belian.accounting.svc.GLAccountService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
@@ -106,7 +107,7 @@ public class GLAFormContent extends AbstractWindow
 					coa.setNumber(number.getValue());
 					coa.setName(name.getText());
 					coa.setNote(note.getText());
-					coa.setType(GLAccount.Type.valueOf(types.getSelectedItem().getValue().toString()));
+					coa.setType(GLAccountType.valueOf(types.getSelectedItem().getValue().toString()));
 					coa.setParent(parent);
 					
 					service.add(coa);
@@ -143,7 +144,7 @@ public class GLAFormContent extends AbstractWindow
 			parents.setSelectedIndex(0);
 		}
 		
-		for(GLAccount.Type type:GLAccount.Type.values())
+		for(GLAccountType type:GLAccountType.values())
 		{
 			Listitem listitem = new Listitem(type.name(),type.name());
 			

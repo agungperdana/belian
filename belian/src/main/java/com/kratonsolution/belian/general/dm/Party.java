@@ -1,17 +1,17 @@
 /**
  * 
  */
-package com.kratonsolution.belian.global.dm;
+package com.kratonsolution.belian.general.dm;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -23,16 +23,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
-import com.kratonsolution.belian.general.dm.Address;
-import com.kratonsolution.belian.general.dm.Contact;
-import com.kratonsolution.belian.general.dm.Geographic;
-import com.kratonsolution.belian.general.dm.MixRole;
+import com.kratonsolution.belian.global.dm.Listable;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Agung Dodi Perdana
@@ -41,10 +38,10 @@ import com.kratonsolution.belian.general.dm.MixRole;
 @Getter
 @Setter
 @Entity
+@Cacheable
 @Table(name="party")
 @Inheritance(strategy=InheritanceType.JOINED)
-@DiscriminatorColumn(name="agent_type")
-public class EconomicAgent implements Serializable, Listable
+public class Party implements Serializable, Listable
 {	
 	@Id
 	protected String id = UUID.randomUUID().toString();
@@ -72,11 +69,8 @@ public class EconomicAgent implements Serializable, Listable
 	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true)
 	protected Set<Contact> contacts = new HashSet<Contact>();
 	
-	@Column(name="is_deleteable")
-	protected boolean deleteadble = true;
-	
-	@OneToMany(mappedBy="from",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
-	private Set<MixRole> partyRoles = new HashSet<>();
+	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
+	private Set<PartyRole> partyRoles = new HashSet<>();
 	
 	@Override
 	public String getLabel()

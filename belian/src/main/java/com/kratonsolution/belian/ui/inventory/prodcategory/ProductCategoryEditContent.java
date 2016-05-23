@@ -111,12 +111,6 @@ public class ProductCategoryEditContent extends FormContent
 			note.setWidth("350px");
 			note.setText(category.getNote());
 			
-			if(!category.isDeleteable())
-			{
-				code.setReadonly(true);
-				name.setReadonly(true);
-			}
-			
 			for(IndustrySegmentation segmentation:IndustrySegmentation.values())
 			{
 				Listitem listitem = new Listitem(segmentation.name(), segmentation.name());

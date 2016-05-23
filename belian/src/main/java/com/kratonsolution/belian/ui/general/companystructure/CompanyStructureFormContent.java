@@ -9,7 +9,6 @@ import java.util.Collection;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
@@ -24,6 +23,8 @@ import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Dates;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -67,8 +68,8 @@ public class CompanyStructureFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				CompanyStructure structure = new CompanyStructure();
-				structure.setFrom(from.getValue());
-				structure.setTo(to.getValue());
+				structure.setFrom(Dates.sql(from.getValue()));
+				structure.setTo(Dates.sql(to.getValue()));
 				structure.setOrganization(organizationService.findOne(Components.string(organizations)));
 				structure.setType(CompanyStructureType.valueOf(Components.string(types)));
 				
@@ -77,13 +78,7 @@ public class CompanyStructureFormContent extends FormContent
 				
 				service.add(structure);
 				
-				for(CompanyStructureDataListener listener:listeners)
-					listener.fireDataAdded(structure);
-				
-				Clients.showNotification("Data successfully added.");
-				
-				organizations.setSelectedItem(null);
-				types.setSelectedItem(null);
+				Flow.next(getParent().getParent().getParent(),new CompanyStructureContent());
 			}
 		});
 	}

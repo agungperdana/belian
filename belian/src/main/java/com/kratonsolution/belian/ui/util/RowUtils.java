@@ -85,7 +85,16 @@ public class RowUtils
 		
 		return null;
 	}
-
+	
+	public static java.sql.Date sql(Row row,int index)
+	{
+		Date dt = date(row,index);
+		if(dt != null)
+			return Dates.sql(dt);
+		
+		return null;
+	}
+	
 	public static boolean isChecked(Row row,int idex)
 	{
 		Component component = row.getChildren().get(idex);

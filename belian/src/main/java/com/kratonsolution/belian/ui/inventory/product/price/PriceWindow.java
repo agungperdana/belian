@@ -6,7 +6,6 @@ package com.kratonsolution.belian.ui.inventory.product.price;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -26,11 +25,12 @@ import org.zkoss.zul.Vlayout;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Geographic;
+import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.svc.GeographicService;
-import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
+import com.kratonsolution.belian.inventory.dm.ProductPriceType;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
@@ -114,7 +114,7 @@ public class PriceWindow extends AbstractWindow
 				productPrice.setFrom(new java.sql.Date(from.getValue().getTime()));
 				productPrice.setTo(to.getValue()!=null?new java.sql.Date(to.getValue().getTime()):null);
 				productPrice.setPrice(BigDecimal.valueOf(price.getValue()));
-				productPrice.setType(ProductPrice.Type.valueOf(types.getSelectedItem().getValue().toString()));
+				productPrice.setType(ProductPriceType.valueOf(types.getSelectedItem().getValue().toString()));
 				productPrice.setCurrency(currencyService.findOne(currencys.getSelectedItem().getValue().toString()));
 				
 				if(geographics.getSelectedCount() > 0)
@@ -148,7 +148,7 @@ public class PriceWindow extends AbstractWindow
 		from.setConstraint("no empty");
 		price.setConstraint("no empty");
 		
-		for(ProductPrice.Type type:ProductPrice.Type.values())
+		for(ProductPriceType type:ProductPriceType.values())
 			types.appendChild(new Listitem(type.name(),type.name()));
 
 		types.setSelectedIndex(0);
@@ -160,15 +160,15 @@ public class PriceWindow extends AbstractWindow
 		for(Geographic geographic:geographicService.findAll())
 			geographics.appendChild(new Listitem(geographic.getName(),geographic.getId()));
 		
-		for(EconomicAgent party:partyService.findAll())
+		for(Party party:partyService.findAll())
 			partys.appendChild(new Listitem(party.getName(), party.getId()));
 		
-		for(Component com:currencys.getChildren())
-		{
-			Listitem item = (Listitem)com;
-			if(utils.getCurrency() != null && item.getValue().equals(utils.getCurrency().getId()))
-				currencys.setSelectedItem(item);
-		}
+//		for(Component com:currencys.getChildren())
+//		{
+//			Listitem item = (Listitem)com;
+//			if(utils.getCurrency() != null && item.getValue().equals(utils.getCurrency().getId()))
+//				currencys.setSelectedItem(item);
+//		}
 		
 		content.getColumns().appendChild(new Column(null,null,"100px"));
 		content.getColumns().appendChild(new Column());

@@ -53,13 +53,13 @@ public class Facility implements Serializable,Listable
 	@Column(name="type")
 	@Enumerated(EnumType.STRING)
 	private FacilityType type = FacilityType.WAREHOUSE;
-	
-	@Version
-	private Long version;
 
 	@ManyToOne
 	@JoinColumn(name="fk_facility_parent")
 	private Facility parent;
+	
+	@Version
+	private Long version;
 
 	@OneToMany(mappedBy="parent",cascade=CascadeType.ALL,orphanRemoval=true)
 	@OrderBy("code ASC")

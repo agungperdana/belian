@@ -32,8 +32,6 @@ import org.hibernate.annotations.NotFoundAction;
 @Table(name="family_member")
 public class FamilyMember implements Serializable
 {
-	public enum Type{FATHER,MOTHER,HEAD,WIFE,CHILD,BRODTHER,SISTER}
-	
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
@@ -44,7 +42,7 @@ public class FamilyMember implements Serializable
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="member_type")
-	private Type type = Type.HEAD;
+	private FamilyMemberType type = FamilyMemberType.HEAD;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_folder")

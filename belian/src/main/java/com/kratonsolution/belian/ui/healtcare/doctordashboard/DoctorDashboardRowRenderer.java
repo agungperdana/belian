@@ -13,7 +13,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
-import com.kratonsolution.belian.healtcare.dm.DoctorAppointment.Status;
+import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentStatus;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.RowUtils;
@@ -44,7 +44,7 @@ public class DoctorDashboardRowRenderer implements RowRenderer<DoctorAppointment
 				}
 			});
 			
-			if(data.getStatus().equals(Status.CANCELED) || data.getStatus().equals(Status.DONE))
+			if(data.getStatus().equals(DoctorAppointmentStatus.CANCELED) || data.getStatus().equals(DoctorAppointmentStatus.DONE))
 				handle.setDisabled(true);
 			
 			row.appendChild(new Checkbox());

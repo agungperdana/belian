@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.general.dm;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,10 +30,8 @@ import lombok.Setter;
 @Table(name="geographic")
 public class Geographic implements Serializable,Listable
 {
-	public enum Type{COUNTRY,CITY,PROVINCE,KECAMATAN,KELURAHAN,RW,RT}
-
 	@Id
-	private String id;
+	private String id = UUID.randomUUID().toString();
 
 	@Column(name="code",unique=true,nullable=false)
 	private String code;
@@ -42,7 +41,7 @@ public class Geographic implements Serializable,Listable
 	
 	@Column(name="type")
 	@Enumerated(EnumType.STRING)
-	private Type type = Type.COUNTRY;
+	private GeographicType type = GeographicType.COUNTRY;
 	
 	@Column(name="note")
 	private String note;

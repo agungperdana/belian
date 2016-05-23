@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.healtcare.dm;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -27,7 +28,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="family_folder")
-public class FamilyFolder
+public class FamilyFolder implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -35,7 +36,7 @@ public class FamilyFolder
 	@Column(name="name")
 	private String name;
 	
-	@Column(name="description")
+	@Column(name="note")
 	private String note;
 
 	@Version

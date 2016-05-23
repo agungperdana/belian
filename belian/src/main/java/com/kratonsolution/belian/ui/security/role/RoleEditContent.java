@@ -60,11 +60,11 @@ public class RoleEditContent extends FormContent
 	
 	private CompanyStructureService structureService = Springs.get(CompanyStructureService.class);
 
-	private Textbox code = new Textbox();
+	private Textbox code = Components.mandatoryTextBox(false);
 
-	private Textbox name = new Textbox();
+	private Textbox name = Components.mandatoryTextBox(false);
 
-	private Textbox note = new Textbox();
+	private Textbox note = Components.stdTextBox(null,false);
 
 	private Row row;
 

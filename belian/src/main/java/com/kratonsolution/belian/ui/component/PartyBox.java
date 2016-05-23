@@ -10,7 +10,7 @@ import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.global.dm.EconomicAgent;
+import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -35,7 +35,7 @@ public class PartyBox extends Combobox implements EventListener<InputEvent>
 	public void onEvent(InputEvent event) throws Exception
 	{
 		getChildren().clear();
-		for(EconomicAgent agent:service.findAll(event.getValue()))
+		for(Party agent:service.findAll(event.getValue()))
 		{
 			Comboitem item = new Comboitem();
 			item.setLabel(agent.getName());
@@ -46,7 +46,7 @@ public class PartyBox extends Combobox implements EventListener<InputEvent>
 		}
 	}
 	
-	public void setParty(EconomicAgent agent)
+	public void setParty(Party agent)
 	{
 		Comboitem item = new Comboitem();
 		item.setLabel(agent.getName());
@@ -55,7 +55,7 @@ public class PartyBox extends Combobox implements EventListener<InputEvent>
 		setSelectedItem(item);
 	}
 	
-	public EconomicAgent getParty()
+	public Party getParty()
 	{
 		try
 		{

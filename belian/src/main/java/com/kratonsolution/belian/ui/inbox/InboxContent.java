@@ -44,7 +44,7 @@ public class InboxContent extends Borderlayout implements Removeable
 	public InboxContent()
 	{
 		setWidth("100%");
-		setHeight("100%");
+		setVflex("1");
 		
 		setStyle("overflow:auto;");
 		

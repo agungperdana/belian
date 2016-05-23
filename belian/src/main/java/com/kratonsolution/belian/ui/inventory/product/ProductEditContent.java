@@ -22,6 +22,7 @@ import org.zkoss.zul.Textbox;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductCategory;
+import com.kratonsolution.belian.inventory.dm.ProductType;
 import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
 import com.kratonsolution.belian.inventory.svc.ProductCategoryService;
 import com.kratonsolution.belian.inventory.svc.ProductService;
@@ -35,6 +36,7 @@ import com.kratonsolution.belian.ui.inventory.product.feature.FeatureTab;
 import com.kratonsolution.belian.ui.inventory.product.price.PriceTab;
 import com.kratonsolution.belian.ui.inventory.product.supplier.SupplierTab;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -116,11 +118,11 @@ public class ProductEditContent extends FormContent implements Refreshable
 					throw new WrongValueException(categorys,"Please select product type first");
 				
 				Product product = service.findOne(RowUtils.string(row, 8));
-				product.setStart(start.getValue());
-				product.setEnd(end.getValue());
+				product.setStart(Dates.sql(start.getValue()));
+				product.setEnd(Dates.sql(end.getValue()));
 				product.setCode(code.getText());
 				product.setName(name.getText());
-				product.setType(Product.Type.valueOf(Components.string(types)));
+				product.setType(ProductType.valueOf(Components.string(types)));
 				product.setCategory(categoryService.findOne(Components.string(categorys)));
 				product.setUom(unitOfMeasureService.findOne(Components.string(uoms)));
 				
@@ -148,7 +150,7 @@ public class ProductEditContent extends FormContent implements Refreshable
 			code.setText(product.getCode());
 			name.setText(product.getName());
 			
-			for(Product.Type type:Product.Type.values())
+			for(ProductType type:ProductType.values())
 			{
 				Listitem listitem = new Listitem(type.name(),type.name());
 				types.appendChild(listitem);

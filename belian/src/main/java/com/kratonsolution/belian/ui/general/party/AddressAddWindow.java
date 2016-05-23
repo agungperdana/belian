@@ -22,17 +22,20 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.general.dm.Address;
+import com.kratonsolution.belian.general.dm.AddressType;
 import com.kratonsolution.belian.general.dm.Geographic;
+import com.kratonsolution.belian.general.dm.GeographicType;
+import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.svc.GeographicService;
-import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class AddressAddWindow extends Window
 {
@@ -103,7 +106,7 @@ public class AddressAddWindow extends Window
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				EconomicAgent party = service.findOne(partyId);
+				Party party = service.findOne(partyId);
 				if(party != null)
 				{
 					Address add = new Address();
@@ -112,7 +115,7 @@ public class AddressAddWindow extends Window
 					add.setAddress(address.getText());
 					add.setPostal(postal.getText());
 					add.setActive(status.isChecked());
-					add.setType(Address.Type.valueOf(type.getSelectedItem().getValue().toString()));
+					add.setType(AddressType.valueOf(type.getSelectedItem().getValue().toString()));
 					add.setCity(geographicService.findOne(city.getSelectedItem().getValue().toString()));
 					add.setProvince(geographicService.findOne(province.getSelectedItem().getValue().toString()));
 					add.setCountry(geographicService.findOne(country.getSelectedItem().getValue().toString()));
@@ -168,18 +171,18 @@ public class AddressAddWindow extends Window
 		row7.appendChild(new Label("Country"));
 		row7.appendChild(country);
 		
-		for(Address.Type _type:Address.Type.values())
+		for(AddressType _type:AddressType.values())
 			type.appendChild(new Listitem(_type.name(),_type.name()));
 		
 		for(Geographic geographic:geographicService.findAll())
 		{
-			if(geographic.getType().equals(Geographic.Type.CITY))
+			if(geographic.getType().equals(GeographicType.CITY))
 				city.appendChild(new Listitem(geographic.getName(), geographic.getId()));
 			
-			if(geographic.getType().equals(Geographic.Type.PROVINCE))
+			if(geographic.getType().equals(GeographicType.PROVINCE))
 				province.appendChild(new Listitem(geographic.getName(), geographic.getId()));
 			
-			if(geographic.getType().equals(Geographic.Type.COUNTRY))
+			if(geographic.getType().equals(GeographicType.COUNTRY))
 				country.appendChild(new Listitem(geographic.getName(), geographic.getId()));
 		}
 		

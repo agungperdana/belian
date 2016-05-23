@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.hr.dm;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -22,7 +23,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="benefit_type")
-public class BenefitType
+public class BenefitType implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();

@@ -10,7 +10,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
-import com.kratonsolution.belian.healtcare.dm.DoctorAppointment.Status;
+import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentStatus;
 import com.kratonsolution.belian.ui.util.Dates;
 
 /**
@@ -32,7 +32,7 @@ public class DoctorAppointmentRowRenderer implements RowRenderer<DoctorAppointme
 		if(data != null)
 		{
 			Checkbox checkbox = new Checkbox();
-			if(!data.getStatus().equals(Status.QUEUE) &&  !data.getStatus().equals(Status.CANCELED))
+			if(!data.getStatus().equals(DoctorAppointmentStatus.QUEUE) &&  !data.getStatus().equals(DoctorAppointmentStatus.CANCELED))
 				checkbox.setDisabled(true);
 
 			row.appendChild(checkbox);

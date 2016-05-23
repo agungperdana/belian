@@ -20,11 +20,13 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.inventory.dm.ProductType;
 import com.kratonsolution.belian.inventory.svc.ProductCategoryService;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.inventory.svc.UnitOfMeasureService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -99,11 +101,11 @@ public class ProductFormContent extends FormContent
 					throw new WrongValueException(categorys,"Please select product type first");
 				
 				Product product = new Product();
-				product.setStart(start.getValue());
-				product.setEnd(end.getValue());
+				product.setStart(Dates.sql(start.getValue()));
+				product.setEnd(Dates.sql(end.getValue()));
 				product.setCode(code.getText());
 				product.setName(name.getText());
-				product.setType(Product.Type.valueOf(Components.string(types)));
+				product.setType(ProductType.valueOf(Components.string(types)));
 				product.setCategory(categoryService.findOne(Components.string(categorys)));
 				product.setUom(unitOfMeasureService.findOne(Components.string(uoms)));
 				
@@ -132,7 +134,7 @@ public class ProductFormContent extends FormContent
 		categorys.setMold("select");
 		uoms.setMold("select");
 		
-		for(Product.Type type:Product.Type.values())
+		for(ProductType type:ProductType.values())
 			types.appendChild(new Listitem(type.name(),type.name()));
 		
 		if(!categorys.getItems().isEmpty())

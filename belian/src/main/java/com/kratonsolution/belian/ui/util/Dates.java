@@ -24,6 +24,14 @@ public class Dates
 		return format.format(date);
 	}
 	
+	public static final String format(java.sql.Date date)
+	{
+		if(date == null)
+			return "";
+		
+		return format.format(date);
+	}
+	
 	public static final String getAge(Date birthDate)
 	{
 		Period period = Period.between(new java.sql.Date(birthDate.getTime()).toLocalDate(), new java.sql.Date(System.currentTimeMillis()).toLocalDate());

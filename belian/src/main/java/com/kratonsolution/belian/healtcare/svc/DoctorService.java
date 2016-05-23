@@ -17,8 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.PartyRole;
 import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.dm.PersonRole;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.healtcare.dm.Doctor;
 import com.kratonsolution.belian.healtcare.dm.DoctorRepository;
@@ -106,11 +106,11 @@ public class DoctorService
 		Person person = repository.findPerson(id);
 		if(person != null)
 		{
-			Iterator<PersonRole> iterator = person.getRoles().iterator();
+			Iterator<PartyRole> iterator = person.getPartyRoles().iterator();
 			while (iterator.hasNext())
 			{
-				PersonRole personRole = (PersonRole) iterator.next();
-				if(personRole instanceof Doctor && personRole.getId().equals(id))
+				PartyRole role = (PartyRole) iterator.next();
+				if(role instanceof Doctor && role.getId().equals(id))
 				{
 					iterator.remove();
 					break;

@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,6 +33,7 @@ import com.kratonsolution.belian.general.dm.Organization;
 @Setter
 @Entity
 @Table(name="organization_account")
+@Cacheable
 public class OrganizationAccount implements Serializable
 {
 	@Id

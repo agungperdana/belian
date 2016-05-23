@@ -3,7 +3,9 @@
  */
 package com.kratonsolution.belian.ui.security.user;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
@@ -17,17 +19,16 @@ import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
-import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.security.dm.Role;
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.security.dm.UserRole;
+import com.kratonsolution.belian.security.svc.RoleService;
 import com.kratonsolution.belian.security.svc.UserService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
@@ -44,12 +45,10 @@ public class UserEditContent extends FormContent
 	private UserService service = Springs.get(UserService.class);
 
 	private PersonService personService = Springs.get(PersonService.class);
-
-	private Textbox name = new Textbox();
+	
+	private RoleService roleService = Springs.get(RoleService.class);
 
 	private Textbox email = new Textbox();
-
-	private Listbox employee = Components.newSelect();
 
 	private A link = new A("Change Password");
 
@@ -87,22 +86,14 @@ public class UserEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				if(employee.getChildren().size() <= 0)
-					throw new WrongValueException(employee,"Employee cannot be empty");
-				
-				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Code cannot be empty");
-
 				if(Strings.isNullOrEmpty(email.getText()))
 					throw new WrongValueException(email,"Name cannot be empty");
 
 				User user = service.findOne(RowUtils.string(row, 4));
 				if(user != null)
 				{
-					user.setName(name.getText());
 					user.setEmail(email.getText());
 					user.setEnabled(enabled.isChecked());
-					user.setPerson(personService.findOne(Components.string(employee)));
 
 					for(Object object:roles.getRows().getChildren())
 					{
@@ -134,20 +125,6 @@ public class UserEditContent extends FormContent
 		User user = service.findOne(RowUtils.string(row, 4));
 		if(user != null)
 		{
-			for(Person person:personService.findAll())
-			{
-				Listitem listitem = new Listitem(person.getLabel(), person.getValue());
-				employee.appendChild(listitem);
-				
-				if(user.getPerson() != null)
-				{
-					if(person.getId().equals(user.getPerson().getId()))
-						employee.setSelectedItem(listitem);
-				}
-				else
-					Components.setDefault(employee);
-			}
-			
 			link.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 			{
 				@Override
@@ -158,10 +135,6 @@ public class UserEditContent extends FormContent
 					window.appendChild(new ChangePassword(row));
 				}
 			});
-
-			name.setConstraint("no empty");
-			name.setText(user.getName());
-			name.setWidth("250px");
 
 			email.setConstraint("no empty");
 			email.setText(user.getEmail());
@@ -177,17 +150,9 @@ public class UserEditContent extends FormContent
 			grid.getColumns().appendChild(new Column());
 			grid.setSpan("2");
 
-			Row row1 = new Row();
-			row1.appendChild(new Label("Name"));
-			row1.appendChild(name);
-
 			Row row2 = new Row();
 			row2.appendChild(new Label("Email"));
 			row2.appendChild(email);
-			
-			Row row3 = new Row();
-			row3.appendChild(new Label("Employee"));
-			row3.appendChild(employee);
 
 			Row row4 = new Row();
 			row4.appendChild(new Label(""));
@@ -197,9 +162,7 @@ public class UserEditContent extends FormContent
 			row5.appendChild(new Label("Status"));
 			row5.appendChild(enabled);
 
-			rows.appendChild(row1);
 			rows.appendChild(row2);
-			rows.appendChild(row3);
 			rows.appendChild(row4);
 			rows.appendChild(row5);
 		}
@@ -251,9 +214,11 @@ public class UserEditContent extends FormContent
 		roles.appendChild(head);
 		roles.appendChild(columns);
 
-		User user = service.findOne(RowUtils.string(row, 4));
+		User user = service.findOne(RowUtils.id(row));
 		if(user != null)
 		{
+			Map<String,Boolean> already = new HashMap<>();
+			
 			Rows _rows = new Rows();
 			for(UserRole role:user.getRoles())
 			{
@@ -267,8 +232,23 @@ public class UserEditContent extends FormContent
 				row.appendChild(new Label(role.getId()));
 
 				_rows.appendChild(row);
+				
+				already.put(role.getRole().getId(), true);
 			}
 
+			for(Role role:roleService.findAll())
+			{
+				if(!already.containsKey(role.getId()))
+				{
+					Row row = new Row();
+					row.appendChild(new Label(role.getName()));
+					row.appendChild(Components.checkbox(false));
+					row.appendChild(new Label(role.getId()));
+
+					_rows.appendChild(row);
+				}
+			}
+			
 			roles.appendChild(_rows);
 		}
 

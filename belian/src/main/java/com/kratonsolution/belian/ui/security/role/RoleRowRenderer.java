@@ -3,12 +3,12 @@
  */
 package com.kratonsolution.belian.ui.security.role;
 
-import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
 import com.kratonsolution.belian.security.dm.Role;
+import com.kratonsolution.belian.ui.util.Components;
 
 /**
  * 
@@ -22,7 +22,7 @@ public class RoleRowRenderer implements RowRenderer<Role>
 	{
 		if(data != null)
 		{
-			row.appendChild(new Checkbox());
+			row.appendChild(Components.checkbox(data.isUndeleteable(),false));
 			row.appendChild(new Label(data.getCode()));
 			row.appendChild(new Label(data.getName()));
 			row.appendChild(new Label(data.getNote()));

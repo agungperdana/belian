@@ -22,12 +22,13 @@ import org.zkoss.zul.Vlayout;
 import org.zkoss.zul.Window;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.general.dm.Gender;
+import com.kratonsolution.belian.general.dm.MaritalStatus;
 import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.dm.Person.Gender;
-import com.kratonsolution.belian.general.dm.Person.MaritalStatus;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -117,7 +118,7 @@ public class PersonRegistration extends Window
 				
 				Person person = new Person();
 				person.setIdentity(identity.getText());
-				person.setBirthDate(date.getValue());
+				person.setBirthDate(Dates.sql(date.getValue()));
 				person.setName(name.getText());
 				person.setGender(Gender.valueOf(Components.string(genders)));
 				person.setMaritalStatus(MaritalStatus.valueOf(Components.string(maritals)));

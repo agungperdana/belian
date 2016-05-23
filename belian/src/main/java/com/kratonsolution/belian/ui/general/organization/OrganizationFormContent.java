@@ -21,6 +21,7 @@ import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -74,7 +75,7 @@ public class OrganizationFormContent extends FormContent
 			
 				Organization org = new Organization();
 				org.setName(name.getText());
-				org.setBirthDate(date.getValue());
+				org.setBirthDate(Dates.sql(date.getValue()));
 				org.setTaxCode(tax.getText());
 				org.setType(IndustrySegmentation.valueOf(types.getSelectedItem().getValue().toString()));
 				

@@ -41,7 +41,7 @@ public abstract class Approveable implements Serializable
 	@Id
 	protected String id = UUID.randomUUID().toString();
 	
-	@Column(name="number")
+	@Column(name="number",unique=true,nullable=true)
 	private String number;
 	
 	@Column(name="date")

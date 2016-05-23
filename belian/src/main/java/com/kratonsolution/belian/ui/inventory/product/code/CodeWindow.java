@@ -20,6 +20,7 @@ import org.zkoss.zul.Vlayout;
 
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductCode;
+import com.kratonsolution.belian.inventory.dm.ProductCodeType;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
@@ -27,8 +28,9 @@ import com.kratonsolution.belian.ui.inventory.product.ProductEditContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class CodeWindow extends AbstractWindow
 {
@@ -84,7 +86,7 @@ public class CodeWindow extends AbstractWindow
 				ProductCode productCode = new ProductCode();
 				productCode.setCode(code.getText());
 				productCode.setNote(note.getText());
-				productCode.setType(ProductCode.Type.valueOf(types.getSelectedItem().getValue().toString()));
+				productCode.setType(ProductCodeType.valueOf(types.getSelectedItem().getValue().toString()));
 				
 				service.addCode(product,productCode);
 				
@@ -113,7 +115,7 @@ public class CodeWindow extends AbstractWindow
 		
 		note.setWidth("300px");
 		
-		for(ProductCode.Type type:ProductCode.Type.values())
+		for(ProductCodeType type:ProductCodeType.values())
 			types.appendChild(new Listitem(type.name(),type.name()));
 		
 		types.setMold("select");

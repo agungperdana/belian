@@ -22,17 +22,20 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.general.dm.Address;
+import com.kratonsolution.belian.general.dm.AddressType;
 import com.kratonsolution.belian.general.dm.Geographic;
+import com.kratonsolution.belian.general.dm.GeographicType;
+import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.svc.GeographicService;
-import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class AddressEditWindow extends Window
 {
@@ -58,11 +61,11 @@ public class AddressEditWindow extends Window
 	
 	private EconomicAgentService service = Springs.get(EconomicAgentService.class);
 	
-	private EconomicAgent party;
+	private Party party;
 	
 	private Address edited;
 	
-	public AddressEditWindow(EconomicAgent party,Address edited)
+	public AddressEditWindow(Party party,Address edited)
 	{
 		this.party = party;
 		this.edited = edited;
@@ -115,7 +118,7 @@ public class AddressEditWindow extends Window
 						add.setAddress(address.getText());
 						add.setPostal(postal.getText());
 						add.setActive(status.isChecked());
-						add.setType(Address.Type.valueOf(type.getSelectedItem().getValue().toString()));
+						add.setType(AddressType.valueOf(type.getSelectedItem().getValue().toString()));
 						add.setCity(geographicController.findOne(city.getSelectedItem().getValue().toString()));
 						add.setProvince(geographicController.findOne(province.getSelectedItem().getValue().toString()));
 						add.setCountry(geographicController.findOne(country.getSelectedItem().getValue().toString()));
@@ -175,7 +178,7 @@ public class AddressEditWindow extends Window
 		row7.appendChild(new Label("Country"));
 		row7.appendChild(country);
 		
-		for(Address.Type _type:Address.Type.values())
+		for(AddressType _type:AddressType.values())
 		{
 			Listitem listitem = new Listitem(_type.name(),_type.name());
 			type.appendChild(listitem);
@@ -185,7 +188,7 @@ public class AddressEditWindow extends Window
 		
 		for(Geographic geographic:geographicController.findAll())
 		{
-			if(geographic.getType().equals(Geographic.Type.CITY))
+			if(geographic.getType().equals(GeographicType.CITY))
 			{
 				Listitem listitem = new Listitem(geographic.getName(), geographic.getId());
 				city.appendChild(listitem);
@@ -193,7 +196,7 @@ public class AddressEditWindow extends Window
 					city.setSelectedItem(listitem);
 			}
 			
-			if(geographic.getType().equals(Geographic.Type.PROVINCE))
+			if(geographic.getType().equals(GeographicType.PROVINCE))
 			{
 				Listitem listitem = new Listitem(geographic.getName(), geographic.getId());
 				province.appendChild(listitem);
@@ -201,7 +204,7 @@ public class AddressEditWindow extends Window
 					province.setSelectedItem(listitem);
 			}
 			
-			if(geographic.getType().equals(Geographic.Type.COUNTRY))
+			if(geographic.getType().equals(GeographicType.COUNTRY))
 			{
 				Listitem listitem = new Listitem(geographic.getName(), geographic.getId());
 				country.appendChild(listitem);

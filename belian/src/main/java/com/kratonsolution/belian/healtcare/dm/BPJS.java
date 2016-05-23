@@ -28,7 +28,7 @@ public class BPJS implements Serializable
 	@Id
 	private String id = UUID.randomUUID().toString();
 
-	@Column(name="card_number")
+	@Column(name="card_number",unique=true)
 	private String card;
 	
 	@Column(name="is_active")

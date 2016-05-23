@@ -30,6 +30,7 @@ import com.kratonsolution.belian.ui.general.party.ContactAddWindow;
 import com.kratonsolution.belian.ui.general.party.ContactInformation;
 import com.kratonsolution.belian.ui.general.party.PartyInformation;
 import com.kratonsolution.belian.ui.general.party.PartyToolbar;
+import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -40,7 +41,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class OrganizationEditContent extends FormContent implements Refreshable
 {	
-	private final OrganizationService service = Springs.get(OrganizationService.class);
+	private OrganizationService service = Springs.get(OrganizationService.class);
 
 	private Textbox name = new Textbox();
 
@@ -90,7 +91,7 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 
 				Organization org = service.findOne(RowUtils.string(row, 5));
 				org.setName(name.getText());
-				org.setBirthDate(date.getValue());
+				org.setBirthDate(Dates.sql(date.getValue()));
 				org.setTaxCode(tax.getText());
 				org.setType(IndustrySegmentation.valueOf(types.getSelectedItem().getValue().toString()));
 

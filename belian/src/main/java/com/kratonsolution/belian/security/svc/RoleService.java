@@ -34,31 +34,31 @@ public class RoleService
 	@Autowired
 	private List<RoleEventListener> listeners;
 	
-	@Secured("ROLE_RLE_READ")
+	@Secured("ROLE_ACCESS_ROLE_READ")
 	public Role findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 	
-	@Secured("ROLE_RLE_READ")
+	@Secured("ROLE_ACCESS_ROLE_READ")
 	public List<Role> findAll()
 	{
 		return repository.findAll();
 	}
 	
-	@Secured("ROLE_RLE_READ")
+	@Secured("ROLE_ACCESS_ROLE_READ")
 	public List<Role> findAll(int pageSize,int itemSize)
 	{
 		return repository.findAll(new PageRequest(pageSize, itemSize)).getContent();
 	}
 	
-	@Secured("ROLE_RLE_READ")
+	@Secured("ROLE_ACCESS_ROLE_READ")
 	public int size()
 	{
 		return Long.valueOf(repository.count()).intValue();
 	}
 	
-	@Secured("ROLE_RLE_CREATE")
+	@Secured("ROLE_ACCESS_ROLE_CREATE")
 	public void add(Role role)
 	{
 		repository.save(role);
@@ -67,18 +67,20 @@ public class RoleService
 			listener.fireRoleAdded(role);
 	}
 	
-	@Secured("ROLE_RLE_UPDATE")
+	@Secured("ROLE_ACCESS_ROLE_UPDATE")
 	public void edit(Role role)
 	{		
 		repository.saveAndFlush(role);
 	}
 	
-	@Secured("ROLE_RLE_DELETE")
+	@Secured("ROLE_ACCESS_ROLE_DELETE")
 	public void delete(String id)
 	{
 		for(RoleEventListener listener:listeners)
 			listener.fireRoleRemoved(id);
-		
-		repository.delete(id);
+
+		Role role = repository.findOne(id);
+		if(role != null && !role.isUndeleteable())
+			repository.delete(id);
 	}
 }

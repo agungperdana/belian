@@ -17,13 +17,11 @@ import org.zkoss.zul.Columns;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.security.dm.Role;
 import com.kratonsolution.belian.security.dm.User;
@@ -47,8 +45,6 @@ public class UserFormContent extends FormContent
 	private RoleService roleService = Springs.get(RoleService.class);
 	
 	private PersonService personService = Springs.get(PersonService.class);
-	
-	private Textbox name = new Textbox();
 	
 	private Textbox email = new Textbox();
 	
@@ -92,9 +88,6 @@ public class UserFormContent extends FormContent
 				if(employees.getChildren().size() <= 0)
 					throw new WrongValueException(employees,"Employee cannot be empty");
 				
-				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Code cannot be empty");
-			
 				if(Strings.isNullOrEmpty(email.getText()))
 					throw new WrongValueException(email,"Name cannot be empty");
 			
@@ -108,11 +101,9 @@ public class UserFormContent extends FormContent
 					throw new WrongValueException(repassword,"Re Password not equal");
 					
 				User user = new User();
-				user.setName(name.getText());
 				user.setEmail(email.getText());
 				user.setPassword(password.getText());
 				user.setEnabled(enabled.isChecked());
-				user.setPerson(personService.findOne(Components.string(employees)));
 				
 				service.add(user);
 				personService.edit(user.getPerson());
@@ -146,15 +137,7 @@ public class UserFormContent extends FormContent
 
 	@Override
 	public void initForm()
-	{
-		for(Person person:personService.findAllByUserIsNull())
-			employees.appendChild(new Listitem(person.getLabel(),person.getValue()));
-
-		Components.setDefault(employees);
-		
-		name.setConstraint("no empty");
-		name.setWidth("250px");
-		
+	{		
 		email.setConstraint("no empty");
 		email.setWidth("250px");
 		
@@ -172,10 +155,6 @@ public class UserFormContent extends FormContent
 		grid.getColumns().appendChild(new Column(null,null,"150px"));
 		grid.getColumns().appendChild(new Column());
 		grid.setSpan("1");
-		
-		Row row1 = new Row();
-		row1.appendChild(new Label("Name"));
-		row1.appendChild(name);
 		
 		Row row2 = new Row();
 		row2.appendChild(new Label("Email"));
@@ -201,7 +180,6 @@ public class UserFormContent extends FormContent
 		row7.appendChild(new Label("Employee"));
 		row7.appendChild(employees);
 		
-		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
 		rows.appendChild(row4);

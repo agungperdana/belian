@@ -11,6 +11,7 @@ import org.zkoss.zul.West;
 
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
+import com.kratonsolution.belian.ui.Removeable;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -18,7 +19,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class CompanyStructureContent extends Borderlayout implements Serializable
+public class CompanyStructureContent extends Borderlayout implements Serializable,Removeable
 {
 	private final CompanyStructureService controller = Springs.get(CompanyStructureService.class);
 	
@@ -32,10 +33,9 @@ public class CompanyStructureContent extends Borderlayout implements Serializabl
 	
 	public CompanyStructureContent()
 	{
-		setWidth("100%");
-		setHeight("100%");
-		
-		west.setWidth("45%");
+		setHflex("1");
+		setVflex("1");
+		west.setWidth("38%");
 		west.setStyle("overflow:auto");
 		
 		center.setStyle("overflow:auto");

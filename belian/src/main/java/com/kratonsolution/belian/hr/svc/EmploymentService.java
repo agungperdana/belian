@@ -3,16 +3,28 @@
  */
 package com.kratonsolution.belian.hr.svc;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.InternalOrganization;
+import com.kratonsolution.belian.general.dm.InternalOrganizationRepository;
+import com.kratonsolution.belian.global.dm.UserSetting;
+import com.kratonsolution.belian.hr.dm.Employee;
+import com.kratonsolution.belian.hr.dm.EmployeeRepository;
 import com.kratonsolution.belian.hr.dm.Employment;
 import com.kratonsolution.belian.hr.dm.EmploymentRepository;
+import com.kratonsolution.belian.security.dm.Role;
+import com.kratonsolution.belian.security.dm.User;
+import com.kratonsolution.belian.security.dm.UserRole;
+import com.kratonsolution.belian.security.svc.RoleService;
 
 /**
  * 
@@ -25,6 +37,18 @@ public class EmploymentService
 {
 	@Autowired
 	private EmploymentRepository repository;
+	
+	@Autowired
+	private EmployeeRepository employeeRepository;
+	
+	@Autowired
+	private InternalOrganizationRepository intOrgRepository;
+	
+	@Autowired
+	private RoleService roleService;
+	
+	@Autowired
+	private SessionUtils utils;
 		
 	@Secured("ROLE_EMPLOYMENT_READ")
 	public Employment findOne(String id)
@@ -41,19 +65,60 @@ public class EmploymentService
 	@Secured("ROLE_EMPLOYMENT_READ")
 	public int getSize()
 	{
-		return (int)repository.count();
+		if(utils.isSysAdmin())
+			return (int)repository.count();
+		
+		return repository.count(utils.getOrganization().getId()).intValue();
 	}
 	
 	@Secured("ROLE_EMPLOYMENT_CREATE")
-	public void add(Employment geographic)
+	public void add(Employment employment)
 	{
-		repository.save(geographic);
+		Employee employee = employeeRepository.findOneByPartyId(employment.getEmployee().getParty().getId());
+		if(employee != null)
+			employment.setEmployee(employee);
+		else
+		{
+			employment.getEmployee().setStart(employment.getStart());
+			employment.getEmployee().setEnd(employment.getEnd());
+			employment.getEmployee().setUser(new User());
+			employment.getEmployee().getUser().setDeleteable(false);
+			employment.getEmployee().getUser().setEnabled(true);
+			employment.getEmployee().getUser().setEmail(employment.getEmployee().getParty().getName());
+			employment.getEmployee().getUser().setSetting(new UserSetting());
+			employment.getEmployee().getUser().setPassword(new StrongPasswordEncryptor().encryptPassword(employment.getEmployee().getParty().getName()));
+			
+			for(Role role:roleService.findAll())
+			{
+				UserRole userRole = new UserRole();
+				userRole.setEnabled(role.isMandatory());
+				userRole.setRole(role);
+				userRole.setUser(employment.getEmployee().getUser());
+				
+				employment.getEmployee().getUser().getRoles().add(userRole);
+			}
+			
+			employeeRepository.save(employment.getEmployee());
+		}
+		
+		InternalOrganization organization = intOrgRepository.findOneByPartyId(employment.getInternalOrganization().getParty().getId());
+		if(organization != null)
+			employment.setInternalOrganization(organization);
+		else
+		{
+			employment.getInternalOrganization().setStart(employment.getStart());
+			employment.getInternalOrganization().setEnd(employment.getEnd());
+			
+			intOrgRepository.save(employment.getInternalOrganization());
+		}
+		
+		repository.save(employment);
 	}
 	
 	@Secured("ROLE_EMPLOYMENT_UPDATE")
-	public void edit(Employment geographic)
+	public void edit(Employment employment)
 	{
-		repository.saveAndFlush(geographic);
+		repository.saveAndFlush(employment);
 	}
 	
 	@Secured("ROLE_EMPLOYMENT_DELETE")
@@ -65,6 +130,12 @@ public class EmploymentService
 	@Secured("ROLE_EMPLOYMENT_READ")
 	public List<Employment> findAll(int pageIndex,int itemsSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, itemsSize)).getContent();
+		if(utils.isSysAdmin())
+			return repository.findAll(new PageRequest(pageIndex, itemsSize)).getContent();
+		
+		if(utils.getOrganization() != null)
+			return repository.findAll(new PageRequest(pageIndex, itemsSize),utils.getOrganization().getId());
+		else
+			return new ArrayList<>();
 	}
 }

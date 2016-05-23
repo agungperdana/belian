@@ -4,8 +4,8 @@
 package com.kratonsolution.belian.sales.dm;
 
 /**
- * @author agungdodiperdana
- *
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public enum PaymentType
 {

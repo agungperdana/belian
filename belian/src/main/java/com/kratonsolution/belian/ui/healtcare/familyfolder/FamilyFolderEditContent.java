@@ -22,6 +22,7 @@ import org.zkoss.zul.Textbox;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.healtcare.dm.FamilyFolder;
 import com.kratonsolution.belian.healtcare.dm.FamilyMember;
+import com.kratonsolution.belian.healtcare.dm.FamilyMemberType;
 import com.kratonsolution.belian.healtcare.svc.FamilyFolderService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
@@ -95,7 +96,7 @@ public class FamilyFolderEditContent extends FormContent
 					FamilyMember member = new FamilyMember();
 					member.setFolder(folder);
 					member.setPatient(box.getPatient());
-					member.setType(FamilyMember.Type.valueOf(RowUtils.string(_row, 2)));
+					member.setType(FamilyMemberType.valueOf(RowUtils.string(_row, 2)));
 					
 					folder.getMembers().add(member);
 				}
@@ -157,7 +158,7 @@ public class FamilyFolderEditContent extends FormContent
 			public void onEvent(Event arg0) throws Exception
 			{
 				Listbox roles = Components.fullSpanSelect();
-				for(FamilyMember.Type type:FamilyMember.Type.values())
+				for(FamilyMemberType type:FamilyMemberType.values())
 					roles.appendItem(type.name(),type.name());
 				
 				Components.setDefault(roles);
@@ -181,7 +182,7 @@ public class FamilyFolderEditContent extends FormContent
 				
 				Listbox listbox = Components.fullSpanSelect();
 				
-				for(FamilyMember.Type type:FamilyMember.Type.values())
+				for(FamilyMemberType type:FamilyMemberType.values())
 				{
 					Listitem item = listbox.appendItem(type.name(),type.name());
 					if(type.equals(member.getType()))

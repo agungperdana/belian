@@ -5,7 +5,7 @@ package com.kratonsolution.belian.inventory.dm;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -18,11 +18,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.general.dm.Geographic;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 
@@ -35,8 +35,6 @@ import com.kratonsolution.belian.general.dm.Geographic;
 @Table(name="product_cost")
 public class ProductCost implements Serializable
 {
-	public enum Type {PURCHASE,FREIGHT,ADMINISTRATIVE,BPJS}
-	
 	@Id
 	private String id = UUID.randomUUID().toString();
 
@@ -47,15 +45,15 @@ public class ProductCost implements Serializable
 	@JoinColumn(name="fk_geographic_for_area")
 	private Geographic geographic;
 	
-	@Column(name="from_date")
+	@Column(name="start")
 	private Date from;
 	
-	@Column(name="to_date")
+	@Column(name="end")
 	private Date to;
 	
 	@Column(name="type")
 	@Enumerated(EnumType.STRING)
-	private Type type = Type.PURCHASE;
+	private ProductCostType type = ProductCostType.PURCHASE;
 
 	@ManyToOne
 	@JoinColumn(name="fk_currency")
@@ -67,4 +65,6 @@ public class ProductCost implements Serializable
 	
 	@Version
 	private Long version;
+	
+	public ProductCost(){}
 }

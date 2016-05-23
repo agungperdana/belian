@@ -23,7 +23,7 @@ import org.zkoss.zul.Toolbarbutton;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.global.svc.CodeGenerator;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
-import com.kratonsolution.belian.healtcare.dm.DoctorAppointment.Status;
+import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentStatus;
 import com.kratonsolution.belian.healtcare.svc.DoctorAppointmentService;
 import com.kratonsolution.belian.healtcare.svc.MedicalRecordService;
 import com.kratonsolution.belian.sales.srv.BillingService;
@@ -97,7 +97,7 @@ public class CurrentAppointmentPanel extends Tabbox
 			@Override
 			public void onEvent(Event arg0) throws Exception
 			{
-				appointment.setStatus(Status.DONE);
+				appointment.setStatus(DoctorAppointmentStatus.DONE);
 				
 				result.store(appointment);
 				medication.store(appointment);
@@ -109,7 +109,7 @@ public class CurrentAppointmentPanel extends Tabbox
 				done.setDisabled(true);
 				cancel.setDisabled(true);
 				
-				status.setValue(Status.DONE.toString());
+				status.setValue(DoctorAppointmentStatus.DONE.toString());
 				
 				Clients.showNotification("Appointment finished", Clients.NOTIFICATION_TYPE_INFO, null, null, 25, true);
 			}
@@ -121,7 +121,7 @@ public class CurrentAppointmentPanel extends Tabbox
 			public void onEvent(Event arg0) throws Exception
 			{
 				service.cancel(appointment.getId());
-				status.setValue(Status.CANCELED.toString());
+				status.setValue(DoctorAppointmentStatus.CANCELED.toString());
 				
 				done.setDisabled(true);
 				cancel.setDisabled(true);

@@ -3,9 +3,6 @@
  */
 package com.kratonsolution.belian.ui.component;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -15,7 +12,10 @@ import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.Product.Type;
+import com.kratonsolution.belian.inventory.dm.ProductType;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Agung Dodi Perdana
@@ -43,12 +43,12 @@ public class MedicationProductBox extends Hbox implements ProductSelectionListen
 		return new MedicationProductBox(null,null,false);
 	}
 	
-	public static MedicationProductBox getInstance(IndustrySegmentation segmentation,Type type)
+	public static MedicationProductBox getInstance(IndustrySegmentation segmentation,ProductType type)
 	{
 		return new MedicationProductBox(segmentation,type,false);
 	}
 	
-	public static MedicationProductBox getInstance(IndustrySegmentation segmentation,Type type,boolean readOnly)
+	public static MedicationProductBox getInstance(IndustrySegmentation segmentation,ProductType type,boolean readOnly)
 	{
 		return new MedicationProductBox(segmentation,type,readOnly);
 	}
@@ -58,7 +58,7 @@ public class MedicationProductBox extends Hbox implements ProductSelectionListen
 		this(null,null,false);
 	}
 	
-	private MedicationProductBox(IndustrySegmentation segmentation,Type type,boolean readOnly)
+	private MedicationProductBox(IndustrySegmentation segmentation,ProductType type,boolean readOnly)
 	{
 		propopup = new ProductPoup(segmentation, type);
 		

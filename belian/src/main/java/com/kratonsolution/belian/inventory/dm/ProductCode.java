@@ -29,8 +29,6 @@ import lombok.Setter;
 @Table(name="product_code")
 public class ProductCode implements Serializable
 {
-	public enum Type{STANDARD,RFID,ISBN,BARCODE}
-	
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
@@ -39,7 +37,7 @@ public class ProductCode implements Serializable
 	
 	@Column(name="type")
 	@Enumerated(EnumType.STRING)
-	private Type type = Type.STANDARD;
+	private ProductCodeType type = ProductCodeType.STANDARD;
 	
 	@Column(name="note")
 	private String note;
@@ -50,4 +48,6 @@ public class ProductCode implements Serializable
 	
 	@Version
 	private Long version;
+	
+	public ProductCode(){}
 }

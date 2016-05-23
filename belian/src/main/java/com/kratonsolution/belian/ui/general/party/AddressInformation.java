@@ -16,10 +16,10 @@ import org.zkoss.zul.Treerow;
 
 import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.PersonService;
-import com.kratonsolution.belian.global.dm.EconomicAgent;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -31,14 +31,14 @@ public class AddressInformation extends Treeitem
 {
 	private Treerow row = new Treerow();
 	
-	public AddressInformation(Address address,EconomicAgent party)
+	public AddressInformation(Address address,Party party)
 	{
 		addDescription(address, party);
 		addIcon(party, address);
 		appendChild(row);
 	}
 	
-	protected void addDescription(final Address address,final EconomicAgent party)
+	protected void addDescription(final Address address,final Party party)
 	{
 		Treecell cell = new Treecell(address.getAddress()+", "+address.getCity().getName()+", "+address.getProvince().getName()+", "+address.getCountry().getName());
 		cell.addEventListener(Events.ON_CLICK,new EventListener<Event>()
@@ -53,7 +53,7 @@ public class AddressInformation extends Treeitem
 		row.appendChild(cell);
 	}
 	
-	protected void addIcon(final EconomicAgent party,final Address address)
+	protected void addIcon(final Party party,final Address address)
 	{
 		Image remove = new Image("/icons/deletesmall.png");
 		Treecell delcell = new Treecell();
@@ -78,7 +78,7 @@ public class AddressInformation extends Treeitem
 		row.appendChild(delcell);
 	}
 	
-	protected void remove(final EconomicAgent party,final Address address)
+	protected void remove(final Party party,final Address address)
 	{
 		Iterator<Address> iterator = party.getAddresses().iterator();
 		while (iterator.hasNext())

@@ -29,7 +29,7 @@ import lombok.Setter;
 @Table(name="laboratory")
 public class Laboratory extends Billable
 {
-	@Column(name="bpjs")
+	@Column(name="is_bpjs")
 	private boolean bpjs;
 	
 	@Enumerated(EnumType.STRING)

@@ -17,6 +17,7 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.Geographic;
+import com.kratonsolution.belian.general.dm.GeographicType;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -73,7 +74,7 @@ public class GeographicFormContent extends FormContent
 				Geographic geographic = new Geographic();
 				geographic.setCode(code.getText());
 				geographic.setName(name.getText());
-				geographic.setType(Geographic.Type.valueOf(type.getSelectedItem().getValue().toString()));
+				geographic.setType(GeographicType.valueOf(type.getSelectedItem().getValue().toString()));
 				geographic.setNote(note.getText());
 				
 				service.add(geographic);
@@ -96,7 +97,7 @@ public class GeographicFormContent extends FormContent
 		
 		note.setWidth("300px");
 		
-		for(Geographic.Type geo :Geographic.Type.values())
+		for(GeographicType geo :GeographicType.values())
 		{
 			Listitem listitem = new Listitem(geo.toString(),geo.toString());
 			type.appendChild(listitem);

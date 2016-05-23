@@ -6,6 +6,7 @@ package com.kratonsolution.belian.accounting.dm;
 import java.io.Serializable;
 import java.util.UUID;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -31,6 +32,7 @@ import com.kratonsolution.belian.global.dm.Listable;
 @Setter
 @Entity
 @Table(name="organization_gl_account")
+@Cacheable
 public class OGLAccount implements Serializable,Listable
 {
 	@Id

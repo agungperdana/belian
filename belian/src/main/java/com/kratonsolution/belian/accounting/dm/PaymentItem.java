@@ -3,13 +3,16 @@
  */
 package com.kratonsolution.belian.accounting.dm;
 
+import java.io.Serializable;
+import java.util.UUID;
+
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import com.kratonsolution.belian.global.dm.DecrementCommitment;
 
 /**
  * @author Agung Dodi Perdana
@@ -19,6 +22,11 @@ import com.kratonsolution.belian.global.dm.DecrementCommitment;
 @Setter
 @Entity
 @Table(name="payment_item")
-public class PaymentItem extends DecrementCommitment
+public class PaymentItem implements Serializable
 {
+	@Id
+	private String id = UUID.randomUUID().toString();
+	
+	@Version
+	private Long version;
 }

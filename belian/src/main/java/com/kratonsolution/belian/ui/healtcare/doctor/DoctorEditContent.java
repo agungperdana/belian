@@ -19,9 +19,9 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.Gender;
+import com.kratonsolution.belian.general.dm.MaritalStatus;
 import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.dm.Person.Gender;
-import com.kratonsolution.belian.general.dm.Person.MaritalStatus;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.PersonService;
@@ -30,6 +30,7 @@ import com.kratonsolution.belian.healtcare.svc.DoctorService;
 import com.kratonsolution.belian.healtcare.svc.DoctorTypeService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -115,7 +116,7 @@ public class DoctorEditContent extends FormContent
 				if(doctor != null)
 				{
 					Person person = doctor.getFrom();
-					person.setBirthDate(birthDate.getValue());
+					person.setBirthDate(Dates.sql(birthDate.getValue()));
 					person.setBirthPlace(geographicService.findOne(Components.string(birthPlace)));
 					person.setGender(Gender.valueOf(Components.string(genders)));
 					person.setIdentity(identity.getText());
@@ -125,7 +126,7 @@ public class DoctorEditContent extends FormContent
 
 					personService.edit(person);
 				
-					doctor.setEnd(end.getValue());
+					doctor.setEnd(Dates.sql(end.getValue()));
 					doctor.setTo(organizationService.findOne(Components.string(companys)));
 				
 					service.edit(doctor);

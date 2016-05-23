@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.UUID;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -21,8 +22,6 @@ import javax.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
-import com.kratonsolution.belian.accounting.dm.JournalEntryDetail.Type;
-
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
@@ -31,6 +30,7 @@ import com.kratonsolution.belian.accounting.dm.JournalEntryDetail.Type;
 @Setter
 @Entity
 @Table(name="journal_posting")
+@Cacheable
 public class JournalPosting implements Serializable
 {
 	@Id
@@ -41,7 +41,7 @@ public class JournalPosting implements Serializable
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="type")
-	private Type type = Type.DEBET;
+	private JournalEntryDetailType type = JournalEntryDetailType.DEBET;
 	
 	@Column(name="amount")
 	private BigDecimal amount = BigDecimal.ZERO;
