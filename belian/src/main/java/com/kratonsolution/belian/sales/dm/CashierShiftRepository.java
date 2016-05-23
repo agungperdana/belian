@@ -3,7 +3,11 @@
  */
 package com.kratonsolution.belian.sales.dm;
 
+import java.sql.Date;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 /**
  * @author Agung Dodi Perdana
@@ -11,5 +15,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface CashierShiftRepository extends JpaRepository<CashierShift, String>
 {
-
+	@Query("FROM CashierShift shift WHERE shift.date =:date AND shift.employee.id =:employee")
+	public CashierShift findOne(@Param("date")Date date,@Param("employee")String employee);
 }

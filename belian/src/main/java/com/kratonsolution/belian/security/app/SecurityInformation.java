@@ -5,12 +5,12 @@ package com.kratonsolution.belian.security.app;
 
 import java.util.Collection;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.kratonsolution.belian.security.dm.User;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 

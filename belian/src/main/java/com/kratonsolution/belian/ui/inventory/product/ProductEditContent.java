@@ -20,6 +20,7 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.common.Dates;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductCategory;
 import com.kratonsolution.belian.inventory.dm.ProductType;
@@ -36,7 +37,6 @@ import com.kratonsolution.belian.ui.inventory.product.feature.FeatureTab;
 import com.kratonsolution.belian.ui.inventory.product.price.PriceTab;
 import com.kratonsolution.belian.ui.inventory.product.supplier.SupplierTab;
 import com.kratonsolution.belian.ui.util.Components;
-import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 

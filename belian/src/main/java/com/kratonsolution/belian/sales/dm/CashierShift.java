@@ -61,6 +61,9 @@ public class CashierShift implements Serializable
 	@Column(name="end")
 	private Time end;
 	
+	@Column(name="is_closed")
+	private boolean closed;
+	
 	@Version
 	private Long version;
 	

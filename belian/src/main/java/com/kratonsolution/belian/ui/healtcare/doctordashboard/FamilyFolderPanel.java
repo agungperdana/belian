@@ -16,11 +16,11 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Vlayout;
 
+import com.kratonsolution.belian.common.Dates;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.FamilyFolder;
 import com.kratonsolution.belian.healtcare.dm.FamilyMember;
 import com.kratonsolution.belian.healtcare.dm.Patient;
-import com.kratonsolution.belian.ui.util.Dates;
 
 /**
  * @author Agung Dodi Perdana

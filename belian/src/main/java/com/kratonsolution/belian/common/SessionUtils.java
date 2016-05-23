@@ -23,6 +23,7 @@ import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.CompanyStructure;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.global.dm.PrinterType;
@@ -57,6 +58,16 @@ public class SessionUtils
 	
 	@Autowired
 	private TaxService taxService;
+	
+	public boolean isEmployee()
+	{
+		return getEmployee() != null;
+	}
+	
+	public Person getEmployee()
+	{
+		return getUser().getPerson();
+	}
 
 	public boolean isSysAdmin()
 	{

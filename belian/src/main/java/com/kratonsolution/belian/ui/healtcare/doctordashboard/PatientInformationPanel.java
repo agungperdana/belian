@@ -11,9 +11,9 @@ import org.zkoss.zul.Grid;
 import org.zkoss.zul.Rows;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.common.Dates;
 import com.kratonsolution.belian.healtcare.dm.Patient;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
-import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 

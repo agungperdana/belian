@@ -5,8 +5,8 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
+import com.kratonsolution.belian.common.Dates;
 import com.kratonsolution.belian.procurement.dm.CashPurchaseOrder;
-import com.kratonsolution.belian.ui.util.Dates;
 
 /**
  * 

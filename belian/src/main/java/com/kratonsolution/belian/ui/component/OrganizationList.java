@@ -6,6 +6,7 @@ package com.kratonsolution.belian.ui.component;
 import java.io.Serializable;
 
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Organization;
@@ -40,5 +41,21 @@ public class OrganizationList extends Listbox implements Serializable
 	
 	public Organization getOrganization()
 	{
-		return organizationService.findOne(Components.string(this));	}
+		return organizationService.findOne(Components.string(this));	
+	}
+	
+	public void setOrganization(Organization organization)
+	{
+		if(organization != null)
+		{
+			for(Listitem listitem:getItems())
+			{
+				if(listitem.getValue().toString().equals(organization.getId()))
+				{
+					setSelectedItem(listitem);
+					break;
+				}
+			}
+		}
+	}
 }

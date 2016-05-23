@@ -8,12 +8,13 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
+import com.kratonsolution.belian.common.Dates;
 import com.kratonsolution.belian.hr.dm.EmploymentApplication;
-import com.kratonsolution.belian.ui.util.Dates;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class EmploymentApplicationRowRenderer implements RowRenderer<EmploymentApplication>
 {

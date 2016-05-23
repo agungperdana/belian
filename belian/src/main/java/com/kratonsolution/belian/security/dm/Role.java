@@ -12,6 +12,7 @@ import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -51,7 +52,7 @@ public class Role implements Serializable
 	@Version
 	private Long version;
 	
-	@OneToMany(mappedBy="role",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(mappedBy="role",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
 	private Set<AccessRole> accesses = new HashSet<AccessRole>();
 	
 	@OneToMany(mappedBy="role",cascade=CascadeType.ALL,orphanRemoval=true)

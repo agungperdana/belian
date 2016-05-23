@@ -6,9 +6,6 @@ package com.kratonsolution.belian.ui.general.companystructure;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -17,6 +14,9 @@ import org.zkoss.zul.Treechildren;
 import org.zkoss.zul.Treeitem;
 
 import com.kratonsolution.belian.general.dm.CompanyStructure;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Agung Dodi Perdana

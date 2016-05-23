@@ -15,10 +15,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.kratonsolution.belian.general.dm.Geographic;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import com.kratonsolution.belian.general.dm.Geographic;
 
 /**
  * 
@@ -40,6 +40,10 @@ public class CashSales extends Billable
 	
 	@Column(name="note")
 	private String note;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_cashier_shift")
+	private CashierShift shift;
 	
 	@OneToMany(mappedBy="cashSales",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
 	private Set<CashSalesLine> items = new HashSet<CashSalesLine>();

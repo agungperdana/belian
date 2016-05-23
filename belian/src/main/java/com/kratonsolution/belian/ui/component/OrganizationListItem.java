@@ -3,12 +3,12 @@
  */
 package com.kratonsolution.belian.ui.component;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.general.dm.Organization;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Agung Dodi Perdana

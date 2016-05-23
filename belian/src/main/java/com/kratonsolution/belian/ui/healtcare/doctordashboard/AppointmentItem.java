@@ -10,12 +10,12 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Treechildren;
 import org.zkoss.zul.Treeitem;
 
+import com.kratonsolution.belian.common.Dates;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.DoctorType;
 import com.kratonsolution.belian.healtcare.dm.Patient;
 import com.kratonsolution.belian.healtcare.svc.DoctorAppointmentService;
 import com.kratonsolution.belian.healtcare.svc.DoctorTypeService;
-import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**

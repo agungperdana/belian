@@ -23,11 +23,12 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.asset.dm.Asset;
 import com.kratonsolution.belian.asset.svc.AssetService;
 import com.kratonsolution.belian.asset.svc.AssetTypeService;
+import com.kratonsolution.belian.common.Dates;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.Removeable;
+import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.util.Components;
-import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -61,6 +62,8 @@ public class AssetFormContent extends FormContent implements Removeable
 	private Checkbox disposed = new Checkbox("Disposed");
 	
 	private Listbox types = Components.newSelect(typeService.findAll(),false);
+	
+	private OrganizationList companys = new OrganizationList();
 	
 	private Textbox note = new Textbox();
 	
@@ -106,6 +109,7 @@ public class AssetFormContent extends FormContent implements Removeable
 				asset.setOrganization(utils.getOrganization());
 				asset.setPrice(BigDecimal.valueOf(price.doubleValue()));
 				asset.setType(typeService.findOne(Components.string(types)));
+				asset.setOrganization(companys.getOrganization());
 				
 				service.add(asset);
 				
@@ -128,6 +132,10 @@ public class AssetFormContent extends FormContent implements Removeable
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.getColumns().appendChild(new Column());
+		
+		Row row0 = new Row();
+		row0.appendChild(new Label("Owner "));
+		row0.appendChild(companys);
 		
 		Row row1 = new Row();
 		row1.appendChild(new Label("Code"));
@@ -169,6 +177,7 @@ public class AssetFormContent extends FormContent implements Removeable
 		row10.appendChild(new Label("Note"));
 		row10.appendChild(note);
 		
+		rows.appendChild(row0);
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);

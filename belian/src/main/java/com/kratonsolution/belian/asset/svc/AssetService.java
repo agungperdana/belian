@@ -53,6 +53,9 @@ public class AssetService
 	@Secured("ROLE_ASSET_READ")
 	public int size()
 	{
+		if(utils.isSysAdmin())
+			return (int)repository.count();
+		
 		if(utils.getOrganization() == null)
 			return 0;
 		
@@ -80,6 +83,9 @@ public class AssetService
 	@Secured("ROLE_ASSET_READ")
 	public List<Asset> findAll(int pageIndex,int itemsSize)
 	{
+		if(utils.isSysAdmin())
+			return repository.findAll(new PageRequest(pageIndex, itemsSize)).getContent();
+		
 		if(utils.getOrganization() == null)
 			return new ArrayList<>();
 		

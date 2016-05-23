@@ -12,10 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.global.dm.Listable;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import com.kratonsolution.belian.global.dm.Listable;
 
 /**
  * 

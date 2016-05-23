@@ -14,13 +14,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.global.dm.Listable;
 import com.kratonsolution.belian.global.dm.ProductReceiveable;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Agung Dodi Perdana

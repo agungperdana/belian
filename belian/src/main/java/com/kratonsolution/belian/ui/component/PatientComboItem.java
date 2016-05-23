@@ -3,11 +3,11 @@
  */
 package com.kratonsolution.belian.ui.component;
 
-import lombok.Getter;
-
 import org.zkoss.zul.Comboitem;
 
 import com.kratonsolution.belian.healtcare.dm.Patient;
+
+import lombok.Getter;
 
 /**
  * @author Agung Dodi Perdana

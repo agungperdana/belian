@@ -13,12 +13,12 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 
+import com.kratonsolution.belian.common.Dates;
 import com.kratonsolution.belian.healtcare.dm.LabHandlingStatus;
 import com.kratonsolution.belian.healtcare.dm.Laboratory;
 import com.kratonsolution.belian.healtcare.dm.LaboratoryItem;
 import com.kratonsolution.belian.healtcare.svc.LaboratoryRegistrationService;
 import com.kratonsolution.belian.ui.FormContent;
-import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 

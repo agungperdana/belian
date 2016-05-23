@@ -21,8 +21,8 @@ import javax.persistence.Version;
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.dm.PeriodType;
 
-import lombok.Setter;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Agung Dodi Perdana

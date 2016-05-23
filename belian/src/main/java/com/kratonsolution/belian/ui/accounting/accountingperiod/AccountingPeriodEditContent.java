@@ -26,9 +26,9 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.AccountingPeriod;
 import com.kratonsolution.belian.accounting.dm.Month;
 import com.kratonsolution.belian.accounting.svc.AccountingPeriodService;
+import com.kratonsolution.belian.common.Dates;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.Refreshable;
-import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**

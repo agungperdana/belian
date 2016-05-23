@@ -24,11 +24,12 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.asset.dm.Asset;
 import com.kratonsolution.belian.asset.svc.AssetService;
 import com.kratonsolution.belian.asset.svc.AssetTypeService;
+import com.kratonsolution.belian.common.Dates;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.Removeable;
+import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.util.Components;
-import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -63,6 +64,8 @@ public class AssetEditContent extends FormContent implements Removeable
 	private Checkbox disposed = new Checkbox("Disposed");
 
 	private Listbox types = Components.newSelect(typeService.findAll(),false);
+	
+	private OrganizationList companys = new OrganizationList();
 
 	private Textbox note = new Textbox();
 
@@ -99,7 +102,7 @@ public class AssetEditContent extends FormContent implements Removeable
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 				
-				Asset asset = service.findOne(RowUtils.string(row, 6));
+				Asset asset = service.findOne(RowUtils.id(row));
 				if(asset != null)
 				{
 					asset.setCode(code.getText());
@@ -125,8 +128,7 @@ public class AssetEditContent extends FormContent implements Removeable
 	@Override
 	public void initForm()
 	{
-		Asset asset = service.findOne(RowUtils.string(row, 6));
-		System.out.println(asset);
+		Asset asset = service.findOne(RowUtils.id(row));
 		if(asset != null)
 		{
 			code.setWidth("200px");
@@ -135,6 +137,7 @@ public class AssetEditContent extends FormContent implements Removeable
 			name.setWidth("300px");
 			name.setText(asset.getName());
 			
+			companys.setOrganization(asset.getOrganization());
 			acquired.setValue(asset.getAcquired());
 			lastServiced.setValue(asset.getLastServiced());
 			nextServiced.setValue(asset.getNextServiced());
@@ -158,6 +161,10 @@ public class AssetEditContent extends FormContent implements Removeable
 			grid.appendChild(new Columns());
 			grid.getColumns().appendChild(new Column(null,null,"125px"));
 			grid.getColumns().appendChild(new Column());
+			
+			Row row0 = new Row();
+			row0.appendChild(new Label("Owner "));
+			row0.appendChild(companys);
 			
 			Row row1 = new Row();
 			row1.appendChild(new Label("Code"));
@@ -199,6 +206,7 @@ public class AssetEditContent extends FormContent implements Removeable
 			row10.appendChild(new Label("Note"));
 			row10.appendChild(note);
 			
+			rows.appendChild(row0);
 			rows.appendChild(row1);
 			rows.appendChild(row2);
 			rows.appendChild(row3);

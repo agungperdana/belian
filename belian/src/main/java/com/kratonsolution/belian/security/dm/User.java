@@ -12,6 +12,7 @@ import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -19,11 +20,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.common.Dates;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.global.dm.Listable;
 import com.kratonsolution.belian.global.dm.UserSetting;
 import com.kratonsolution.belian.hr.dm.Employee;
-import com.kratonsolution.belian.ui.util.Dates;
 
 /**
  * 
@@ -60,7 +61,7 @@ public class User implements Listable
 	@Version
 	private Long version;
 	
-	@OneToMany(mappedBy="user",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(mappedBy="user",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
 	private Set<UserRole> roles = new HashSet<UserRole>();
 
 	public User(){}

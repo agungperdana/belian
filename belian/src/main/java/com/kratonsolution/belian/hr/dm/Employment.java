@@ -10,9 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.kratonsolution.belian.common.Dates;
 import com.kratonsolution.belian.general.dm.InternalOrganization;
 import com.kratonsolution.belian.general.dm.PartyRelationship;
-import com.kratonsolution.belian.ui.util.Dates;
 
 import lombok.Getter;
 import lombok.Setter;

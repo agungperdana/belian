@@ -9,8 +9,8 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
 import com.kratonsolution.belian.accounting.dm.JournalEntry;
+import com.kratonsolution.belian.common.Dates;
 import com.kratonsolution.belian.common.Strings;
-import com.kratonsolution.belian.ui.util.Dates;
 import com.kratonsolution.belian.ui.util.Numbers;
 
 /**

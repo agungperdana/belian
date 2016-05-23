@@ -3,11 +3,11 @@
  */
 package com.kratonsolution.belian.ui.general.party;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author agungdodiperdana

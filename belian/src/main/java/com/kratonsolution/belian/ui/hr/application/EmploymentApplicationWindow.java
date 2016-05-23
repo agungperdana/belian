@@ -18,8 +18,9 @@ import com.kratonsolution.belian.ui.HasGrid;
 import com.kratonsolution.belian.ui.nav.IconBar;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class EmploymentApplicationWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
