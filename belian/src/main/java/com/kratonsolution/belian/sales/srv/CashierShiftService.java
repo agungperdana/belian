@@ -86,6 +86,7 @@ public class CashierShiftService
 	{
 		CashierShift shift = findToday();
 		shift.setClosed(true);
+		shift.setEnd(DateTimes.currentTime());
 		repository.save(shift);
 		
 		Asset asset = assetRepo.findOne(shift.getMachine().getId());

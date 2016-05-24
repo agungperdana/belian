@@ -51,6 +51,10 @@
 			margin:0;
 			padding:0;
 		}
+		
+		th{
+			text-align: left;
+		}
 	</style>
 	<style type="text/css" media="print">
 		body{
@@ -86,9 +90,65 @@
 			cellspacing:0;
 			cellpadding:0;
 		}
+		
+		th{
+			text-align: left;
+		}
 	</style>
 </head>
 <body th:inline="text">
-	
+	<h2 style="text-align:center">Cashier Recapitulation</h2>
+	<table style="border:none;width=100%">
+	<thead>
+		<tr>
+			<th width="20%">Date</th>
+			<th width="1%">:</th>
+			<th width="55%" th:text="${date}"/>
+		</tr>
+		<tr>
+			<th>Start Time</th>
+			<th>:</th>
+			<th th:text="${start}"/>
+		</tr>
+		<tr>
+			<th>End Time</th>
+			<th>:</th>
+			<th th:text="${end}"/>
+		</tr>
+		<tr>
+			<th>Employee</th>
+			<th>:</th>
+			<th th:text="${employee}"/>
+		</tr>
+		<tr>
+			<th>Capital</th>
+			<th>:</th>
+			<th th:text="${capital}"/>
+		</tr>
+		<tr>
+			<th>Sales</th>
+			<th>:</th>
+			<th th:text="${sales}"/>
+		</tr>
+		<tr>
+			<th>Tax</th>
+			<th>:</th>
+			<th th:text="${tax}"/>
+		</tr>
+		<tr>
+			<th>Total</th>
+			<th>:</th>
+			<th th:text="${total}"/>
+		</tr>
+	</thead>
+	<tbody>
+		<tr><td colspan="3">&nbsp;</td></tr>
+		<tr>
+			<td align="center" colspan="3">
+				<img class="printspan" th:src="@{/icons/print.png}" alt="" onclick="onprint()"/>
+			</td>
+		</tr>
+	</tbody>	
+	</table>
 </body>
 </html>

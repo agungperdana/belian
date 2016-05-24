@@ -17,7 +17,9 @@ import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.sales.dm.Billable;
 import com.kratonsolution.belian.sales.srv.CashierShiftService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.PrintWindow;
 import com.kratonsolution.belian.ui.component.SearchBox;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -62,8 +64,13 @@ public class CashierGridContent extends GridContent
 				CashierShiftService service = Springs.get(CashierShiftService.class);
 				if(service != null)
 				{
-					service.close();
+					String id = service.close();
+					PrintWindow window = new PrintWindow("/cashiershiftprint.htm?id="+id,true);
+					window.setPage(getPage());
+					window.doModal();
 				}
+				
+				Flow.next(getParent(),new CashierShiftFormContent());
 			}
 		});
 		

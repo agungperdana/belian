@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -14,6 +16,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -62,5 +65,33 @@ public class CashierShift implements Serializable
 	@Version
 	private Long version;
 	
+	@OneToMany(mappedBy="shift")
+	private Set<Billable> billings = new HashSet<>();
+	
 	public CashierShift(){}
+	
+	public BigDecimal getAmount()
+	{
+		BigDecimal amount = BigDecimal.ZERO;
+				
+		for(Billable billable:billings)
+			amount = amount.add(billable.getBillingAmount());
+		
+		return amount;
+	}
+	
+	public BigDecimal getTax()
+	{
+		BigDecimal amount = BigDecimal.ZERO;
+				
+		for(Billable billable:billings)
+			amount = amount.add(billable.getTaxAmount());
+		
+		return amount;
+	}
+	
+	public BigDecimal getTotalAmount()
+	{
+		return capital.add(getAmount()).add(getTax());
+	}
 }
