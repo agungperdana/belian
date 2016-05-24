@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.global.dm.Listable;
 import com.kratonsolution.belian.global.dm.UserSetting;
@@ -33,7 +32,6 @@ import com.kratonsolution.belian.hr.dm.Employee;
  */
 @Entity
 @Table(name="user")
-@Cacheable
 public class User implements Listable
 {
 	@Id
@@ -133,7 +131,7 @@ public class User implements Listable
 		{
 			if(employee.getEnd() == null)
 				return true;
-			else if(employee.getEnd().compareTo(Dates.sql(new Date())) > 0)
+			else if(employee.getEnd().compareTo(DateTimes.sql(new Date())) > 0)
 				return true;
 			else
 				return false;

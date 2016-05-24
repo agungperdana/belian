@@ -8,7 +8,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.hr.dm.EmploymentApplication;
 
 /**
@@ -24,7 +24,7 @@ public class EmploymentApplicationRowRenderer implements RowRenderer<EmploymentA
 		if(data != null)
 		{
 			row.appendChild(new Checkbox());
-			row.appendChild(new Label(Dates.format(data.getDate())));
+			row.appendChild(new Label(DateTimes.format(data.getDate())));
 			row.appendChild(new Label(data.getApplicant().getName()));
 			row.appendChild(new Label(data.getPosition().getLabel()));
 			row.appendChild(new Label(data.getStatusType().toString()));

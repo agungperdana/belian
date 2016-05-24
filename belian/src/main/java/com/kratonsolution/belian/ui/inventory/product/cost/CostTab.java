@@ -22,7 +22,7 @@ import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Vlayout;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductCost;
 import com.kratonsolution.belian.inventory.svc.ProductService;
@@ -125,8 +125,8 @@ public class CostTab implements TabedDisplay
 
 			Row row = new Row();
 			row.appendChild(remove);
-			row.appendChild(new Label(Dates.format(cost.getFrom())));
-			row.appendChild(new Label(Dates.format(cost.getTo())));
+			row.appendChild(new Label(DateTimes.format(cost.getFrom())));
+			row.appendChild(new Label(DateTimes.format(cost.getTo())));
 			row.appendChild(new Label(Numbers.format(cost.getEstimated())));
 			row.appendChild(new Label(cost.getType().toString()));
 			row.appendChild(new Label(Objects.notNull(cost.getGeographic())?cost.getGeographic().getName():""));

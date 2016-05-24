@@ -24,7 +24,7 @@ import org.zkoss.zul.Vlayout;
 
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.inventory.dm.Product;
@@ -107,8 +107,8 @@ public class CostEditWindow extends AbstractWindow
 			public void onEvent(Event event) throws Exception
 			{
 				ProductCost productCost = service.findCost(product, costId);
-				productCost.setFrom(Dates.sql(from.getValue()));
-				productCost.setTo(Dates.sql(to.getValue()));
+				productCost.setFrom(DateTimes.sql(from.getValue()));
+				productCost.setTo(DateTimes.sql(to.getValue()));
 				productCost.setEstimated(BigDecimal.valueOf(cost.getValue()));
 				productCost.setType(ProductCostType.valueOf(types.getSelectedItem().getValue().toString()));
 				productCost.setCurrency(currencyService.findOne(currencys.getSelectedItem().getValue().toString()));

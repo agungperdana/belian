@@ -28,7 +28,7 @@ import com.kratonsolution.belian.accounting.dm.BudgetRole;
 import com.kratonsolution.belian.accounting.dm.BudgetStatus;
 import com.kratonsolution.belian.accounting.dm.BudgetType;
 import com.kratonsolution.belian.accounting.svc.BudgetService;
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.global.dm.RoledType;
@@ -97,13 +97,13 @@ public class BudgetFormContent extends FormContent
 				Budget budget = new Budget();
 				budget.setType(BudgetType.valueOf(Components.string(types)));
 				budget.setOrganization(sessionUtils.getOrganization());
-				budget.setStart(Dates.sql(start.getValue()));
-				budget.setEnd(Dates.sql(end.getValue()));
+				budget.setStart(DateTimes.sql(start.getValue()));
+				budget.setEnd(DateTimes.sql(end.getValue()));
 				budget.setComment(comment.getText());
 				
 				BudgetStatus status = new BudgetStatus();
 				status.setBudget(budget);
-				status.setDate(Dates.sql(start.getValue()));
+				status.setDate(DateTimes.sql(start.getValue()));
 				status.setDescription("Just Created");
 				status.setType(StatusType.Created);
 				

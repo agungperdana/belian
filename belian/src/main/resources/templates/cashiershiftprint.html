@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+	<meta charset="UTF-8"/>
+    <script type="text/javascript">
+    	function onprint()
+    	{
+    		window.print();
+    	}
+    </script>
+	<style type="text/css" media="screen">
+		body{
+			font-family:monospaced sans serif;
+			font-size:12px;
+			margin: 0;
+			padding: 0;
+		}
+		
+		.tclass{
+			border:0px;
+			width: 98%;
+			margin: 0;
+			padding: 2px;
+		}
+		
+		.tdheadclass{
+			border-top: solid black 1px;
+			border-bottom: solid black 1px;
+			font-weight: bold;
+		}
+		
+		.printspan{
+			cursor: pointer;
+		}
+		
+		table{
+			border:none;
+			padding:0;
+			margin:0;
+		}
+		
+		td{
+			height:8px;
+			margin:0;
+			padding:0;
+		}
+		
+		tr{
+			height:8px;
+			margin:0;
+			padding:0;
+		}
+	</style>
+	<style type="text/css" media="print">
+		body{
+			font-family:monospaced sans serif;
+			font-size:8pt;
+			background:white;
+			margin: 0;
+			padding: 0;
+		}
+		
+		.printspan{
+			display: none;
+		}
+		
+		table{
+			border:none;
+			padding:0;
+			margin:0;
+		}
+		
+		td{
+			height:8px;
+			margin:0;
+			padding:0;
+			cellspacing:0;
+			cellpadding:0;
+		}
+		
+		tr{
+			height:8px;
+			margin:0;
+			padding:0;
+			cellspacing:0;
+			cellpadding:0;
+		}
+	</style>
+</head>
+<body th:inline="text">
+	
+</body>
+</html>

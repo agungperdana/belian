@@ -22,7 +22,7 @@ import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Vlayout;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductSupplier;
 import com.kratonsolution.belian.inventory.svc.ProductService;
@@ -123,8 +123,8 @@ public class SupplierTab implements TabedDisplay
 
 			Row row = new Row();
 			row.appendChild(remove);
-			row.appendChild(new Label(Dates.format(supplier.getFrom())));
-			row.appendChild(new Label(Dates.format(supplier.getTo())));
+			row.appendChild(new Label(DateTimes.format(supplier.getFrom())));
+			row.appendChild(new Label(DateTimes.format(supplier.getTo())));
 			row.appendChild(new Label(supplier.getSupplier().getName()));
 			row.appendChild(new Label(supplier.getNote()));
 			row.appendChild(new Label(supplier.getId()));

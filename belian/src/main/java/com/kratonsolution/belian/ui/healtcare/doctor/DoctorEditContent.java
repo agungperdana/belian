@@ -18,7 +18,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Gender;
 import com.kratonsolution.belian.general.dm.MaritalStatus;
@@ -116,7 +116,7 @@ public class DoctorEditContent extends FormContent
 				if(doctor != null)
 				{
 					Person person = doctor.getFrom();
-					person.setBirthDate(Dates.sql(birthDate.getValue()));
+					person.setBirthDate(DateTimes.sql(birthDate.getValue()));
 					person.setBirthPlace(geographicService.findOne(Components.string(birthPlace)));
 					person.setGender(Gender.valueOf(Components.string(genders)));
 					person.setIdentity(identity.getText());
@@ -126,7 +126,7 @@ public class DoctorEditContent extends FormContent
 
 					personService.edit(person);
 				
-					doctor.setEnd(Dates.sql(end.getValue()));
+					doctor.setEnd(DateTimes.sql(end.getValue()));
 					doctor.setTo(organizationService.findOne(Components.string(companys)));
 				
 					service.edit(doctor);

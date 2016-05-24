@@ -18,7 +18,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.sales.dm.Billable;
 import com.kratonsolution.belian.sales.dm.BillableItem;
@@ -81,7 +81,7 @@ public class BillingEditContent extends FormContent
 			grid.setSpan("1");
 			grid.getRows().appendChild(RowUtils.row("Number", billing.getNumber()));
 			grid.getRows().appendChild(RowUtils.row("Company", billing.getOrganization().getName()));
-			grid.getRows().appendChild(RowUtils.row("Date", Dates.format(billing.getDate())));
+			grid.getRows().appendChild(RowUtils.row("Date", DateTimes.format(billing.getDate())));
 			grid.getRows().appendChild(RowUtils.row("Currency", billing.getCurrency().getCode()));
 			grid.getRows().appendChild(RowUtils.row("Sales", billing.getSales().getName()));
 			grid.getRows().appendChild(RowUtils.row("Customer", billing.getCustomer().getName()));

@@ -26,7 +26,7 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.AccountingPeriod;
 import com.kratonsolution.belian.accounting.dm.Month;
 import com.kratonsolution.belian.accounting.svc.AccountingPeriodService;
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -111,8 +111,8 @@ public class AccountingPeriodEditContent extends AbstractWindow
 			
 				edited.setNumber(number.getText());
 				edited.setName(name.getText());
-				edited.setFrom(Dates.sql(from.getValue()));
-				edited.setTo(Dates.sql(to.getValue()));
+				edited.setFrom(DateTimes.sql(from.getValue()));
+				edited.setTo(DateTimes.sql(to.getValue()));
 				edited.setMonth(Month.valueOf(months.getSelectedItem().getValue().toString()));
 				
 				service.edit(edited);

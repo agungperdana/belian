@@ -17,16 +17,19 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.sales.dm.Billable;
 import com.kratonsolution.belian.sales.dm.BillableItem;
+import com.kratonsolution.belian.sales.dm.CashierShift;
 import com.kratonsolution.belian.sales.srv.BillingService;
+import com.kratonsolution.belian.sales.srv.CashierShiftService;
 import com.kratonsolution.belian.sales.view.BillablePrint;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.PrintWindow;
 import com.kratonsolution.belian.ui.component.ProductRow;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Numbers;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -40,6 +43,8 @@ public class CashierEditContent extends FormContent
 {		
 	private BillingService service = Springs.get(BillingService.class);
 
+	private CashierShiftService cashierShiftService = Springs.get(CashierShiftService.class);
+	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 
 	private Grid billingItems = new Grid();
@@ -68,9 +73,7 @@ public class CashierEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				CashierWindow window = (CashierWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new CashierGridContent());
 			}
 		});
 
@@ -81,10 +84,14 @@ public class CashierEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Billable billing = service.findOne(RowUtils.string(row, 6));
-				if(billing != null)
+				Billable billing = service.findOne(RowUtils.id(row));
+				CashierShift shift = cashierShiftService.findToday();
+
+				if(billing != null && shift != null)
 				{
 					billing.setPaid(true);
+					billing.setShift(shift);
+
 					
 					for(Component com:billingItems.getRows().getChildren())
 					{
@@ -108,9 +115,7 @@ public class CashierEditContent extends FormContent
 					window.setVisible(true);
 				}
 				
-				CashierWindow window = (CashierWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new CashierGridContent());
 			}
 		});
 	}
@@ -141,7 +146,7 @@ public class CashierEditContent extends FormContent
 			
 			Row dts = new Row();
 			dts.appendChild(new Label("Date"));
-			dts.appendChild(new Label(Dates.format(billing.getDate())));
+			dts.appendChild(new Label(DateTimes.format(billing.getDate())));
 			dts.appendChild(new Label("Total Billing"));
 			dts.appendChild(total);
 			

@@ -12,6 +12,7 @@ import org.zkoss.zul.Caption;
 import org.zkoss.zul.Row;
 
 import com.kratonsolution.belian.common.Language;
+import com.kratonsolution.belian.sales.srv.CashierShiftService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.HasCreateForm;
 import com.kratonsolution.belian.ui.HasEditForm;
@@ -26,6 +27,8 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class CashierWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
+	private CashierShiftService cashierShiftService = Springs.get(CashierShiftService.class);
+	
 	private Language language = Springs.get(Language.class);
 	
 	private Caption caption = new Caption(language.get("navbar.menu.sales.cashier"));
@@ -126,7 +129,10 @@ public class CashierWindow extends AbstractWindow implements HasGrid,HasCreateFo
 	@Override
 	public void insertGrid()
 	{
-		appendChild(new CashierGridContent());
+		if(cashierShiftService.findToday() == null)
+			appendChild(new CashierShiftFormContent());
+		else
+			appendChild(new CashierGridContent());
 	}
 
 	@Override

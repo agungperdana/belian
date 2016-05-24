@@ -16,7 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -38,7 +38,7 @@ public class SequenceNumber implements Serializable
 	private String id = UUID.randomUUID().toString();
 
 	@Column(name="date")
-	private Date date = Dates.now();
+	private Date date = DateTimes.currentDate();
 
 	@Column(name="person_id")
 	private String personId;

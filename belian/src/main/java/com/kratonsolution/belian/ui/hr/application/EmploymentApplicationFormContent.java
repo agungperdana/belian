@@ -14,7 +14,7 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.hr.dm.EmploymentApplication;
 import com.kratonsolution.belian.hr.dm.EmploymentApplicationSourceType;
@@ -77,7 +77,7 @@ public class EmploymentApplicationFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				EmploymentApplication application = new EmploymentApplication();
-				application.setDate(Dates.sql(date.getValue()));
+				application.setDate(DateTimes.sql(date.getValue()));
 				application.setPosition(positionService.findOne(Components.string(positions)));
 				application.setSourceType(EmploymentApplicationSourceType.valueOf(Components.string(sources)));
 				application.setStatusType(EmploymentApplicationStatusType.valueOf(Components.string(types)));

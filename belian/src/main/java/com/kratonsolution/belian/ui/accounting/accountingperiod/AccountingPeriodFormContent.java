@@ -29,7 +29,7 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.AccountingPeriod;
 import com.kratonsolution.belian.accounting.dm.Month;
 import com.kratonsolution.belian.accounting.svc.AccountingPeriodService;
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -116,8 +116,8 @@ public class AccountingPeriodFormContent extends AbstractWindow
 				period.setId(UUID.randomUUID().toString());
 				period.setNumber(number.getText());
 				period.setName(name.getText());
-				period.setFrom(Dates.sql(from.getValue()));
-				period.setTo(Dates.sql(to.getValue()));
+				period.setFrom(DateTimes.sql(from.getValue()));
+				period.setTo(DateTimes.sql(to.getValue()));
 				period.setMonth(Month.valueOf(months.getSelectedItem().getValue().toString()));
 				period.setParent(parent);
 				

@@ -11,7 +11,7 @@ import org.zkoss.zul.Grid;
 import org.zkoss.zul.Rows;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.healtcare.dm.Patient;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
 import com.kratonsolution.belian.ui.util.RowUtils;
@@ -56,9 +56,9 @@ public class PatientInformationPanel extends Grid
 			setSpan("1");
 			getRows().appendChild(RowUtils.row("Identity",patient.getFrom().getIdentity()));
 			getRows().appendChild(RowUtils.row("Name",patient.getFrom().getName()));
-			getRows().appendChild(RowUtils.row("Age",Dates.getAge(patient.getFrom().getBirthDate())));
+			getRows().appendChild(RowUtils.row("Age",DateTimes.getAge(patient.getFrom().getBirthDate())));
 			getRows().appendChild(RowUtils.row("Birth Place",patient.getFrom().getBirthPlace().getName()));
-			getRows().appendChild(RowUtils.row("Birth Date",Dates.format(patient.getFrom().getBirthDate())));
+			getRows().appendChild(RowUtils.row("Birth Date",DateTimes.format(patient.getFrom().getBirthDate())));
 			getRows().appendChild(RowUtils.row("Gender",patient.getFrom().getGender().toString()));
 			getRows().appendChild(RowUtils.row("Status",patient.getFrom().getMaritalStatus().toString()));
 			getRows().appendChild(RowUtils.row("BPJS Information",""));

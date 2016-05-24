@@ -18,7 +18,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.general.dm.Gender;
 import com.kratonsolution.belian.general.dm.MaritalStatus;
 import com.kratonsolution.belian.general.dm.Person;
@@ -82,7 +82,7 @@ public class PersonFormContent extends FormContent
 				Person person = new Person();
 				person.setIdentity(identity.getText());
 				person.setName(name.getText());
-				person.setBirthDate(Dates.sql(date.getValue()));
+				person.setBirthDate(DateTimes.sql(date.getValue()));
 				person.setTaxCode(tax.getText());
 				person.setGender(Gender.valueOf(genders.getSelectedItem().getValue().toString()));
 				person.setMaritalStatus(MaritalStatus.valueOf(maritals.getSelectedItem().getValue().toString()));

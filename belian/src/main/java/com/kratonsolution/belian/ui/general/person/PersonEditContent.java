@@ -17,7 +17,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Contact;
 import com.kratonsolution.belian.general.dm.Gender;
@@ -97,7 +97,7 @@ public class PersonEditContent extends FormContent implements Refreshable
 				Person person = service.findOne(RowUtils.string(row, 7));
 				person.setIdentity(identity.getText());
 				person.setName(name.getText());
-				person.setBirthDate(Dates.sql(date.getValue()));
+				person.setBirthDate(DateTimes.sql(date.getValue()));
 				person.setTaxCode(tax.getText());
 				person.setGender(Gender.valueOf(genders.getSelectedItem().getValue().toString()));
 				person.setMaritalStatus(MaritalStatus.valueOf(maritals.getSelectedItem().getValue().toString()));

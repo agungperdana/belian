@@ -10,7 +10,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Treechildren;
 import org.zkoss.zul.Treeitem;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.DoctorType;
 import com.kratonsolution.belian.healtcare.dm.Patient;
@@ -50,7 +50,7 @@ public class AppointmentItem extends Treeitem
 			{
 				if(type.getId().equals(app.getDoctor().getCategory().getId()))
 				{
-					Treeitem treeitem = new Treeitem(Dates.format(app.getDate())+" "+app.getDoctor().getFrom().getName());
+					Treeitem treeitem = new Treeitem(DateTimes.format(app.getDate())+" "+app.getDoctor().getFrom().getName());
 					treeitem.setId(app.getId());
 					treeitem.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 					{

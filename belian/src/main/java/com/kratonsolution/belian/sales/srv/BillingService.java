@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.sales.dm.Billable;
 import com.kratonsolution.belian.sales.dm.BillableRepository;
@@ -31,6 +32,9 @@ public class BillingService
 {
 	@Autowired
 	private BillableRepository repository;
+	
+	@Autowired
+	private CashierShiftService cashierShiftService;
 	
 	@Autowired
 	private SessionUtils utils;
@@ -72,14 +76,20 @@ public class BillingService
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<Billable> forCashier()
 	{
-		return repository.forCashier(new Date(System.currentTimeMillis()), utils.getOrganization().getId());
+		if(cashierShiftService.findToday() != null)
+			return repository.forCashier(DateTimes.currentDate(), utils.getOrganization().getId());
+		
+		return new ArrayList<>();
 	}
 	
 	@Secured({"ROLE_BILLING_READ","ROLE_CASHIER_READ"})
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<Billable> forCashier(String key)
 	{
-		return repository.forCashier(new Date(System.currentTimeMillis()), utils.getOrganization().getId(),key);
+		if(cashierShiftService.findToday() != null)
+			return repository.forCashier(DateTimes.currentDate(), utils.getOrganization().getId(),key);
+	
+		return new ArrayList<>();
 	}
 	
 	@Secured("ROLE_BILLING_READ")

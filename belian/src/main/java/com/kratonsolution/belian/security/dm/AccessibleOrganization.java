@@ -6,7 +6,6 @@ package com.kratonsolution.belian.security.dm;
 import java.io.Serializable;
 import java.util.UUID;
 
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,7 +32,6 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="accessible_organization")
-@Cacheable
 public class AccessibleOrganization implements Serializable
 {
 	@Id

@@ -5,7 +5,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.global.dm.RoledType;
 import com.kratonsolution.belian.procurement.dm.PORRole;
 import com.kratonsolution.belian.procurement.dm.PurchaseOrderRequest;
@@ -34,7 +34,7 @@ public class PurchaseOrderRequestRowRenderer implements RowRenderer<PurchaseOrde
 			}
 			
 			row.appendChild(new Checkbox());
-			row.appendChild(new Label(Dates.format(data.getDate())));
+			row.appendChild(new Label(DateTimes.format(data.getDate())));
 			row.appendChild(new Label(data.getNumber()));
 			row.appendChild(new Label(requester));
 			row.appendChild(new Label(data.getLastStatus().getType().name()));

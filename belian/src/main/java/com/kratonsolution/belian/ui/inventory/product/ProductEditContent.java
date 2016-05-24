@@ -20,7 +20,7 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductCategory;
 import com.kratonsolution.belian.inventory.dm.ProductType;
@@ -118,8 +118,8 @@ public class ProductEditContent extends FormContent implements Refreshable
 					throw new WrongValueException(categorys,"Please select product type first");
 				
 				Product product = service.findOne(RowUtils.string(row, 8));
-				product.setStart(Dates.sql(start.getValue()));
-				product.setEnd(Dates.sql(end.getValue()));
+				product.setStart(DateTimes.sql(start.getValue()));
+				product.setEnd(DateTimes.sql(end.getValue()));
 				product.setCode(code.getText());
 				product.setName(name.getText());
 				product.setType(ProductType.valueOf(Components.string(types)));

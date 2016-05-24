@@ -13,7 +13,7 @@ import org.zkoss.zul.Tabpanel;
 
 import com.kratonsolution.belian.accounting.dm.Budget;
 import com.kratonsolution.belian.accounting.dm.BudgetRevision;
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.ui.util.Components;
 
 /**
@@ -52,7 +52,7 @@ public class BudgetRevisionPanel extends Tabpanel
 			Row row = new Row();
 			row.appendChild(Components.readOnlyCheckbox());
 			row.appendChild(Components.readOnlyDoubleBox(item.getSequence()));
-			row.appendChild(Components.readOnlyTextBox(Dates.format(item.getDate())));
+			row.appendChild(Components.readOnlyTextBox(DateTimes.format(item.getDate())));
 			row.appendChild(Components.textBox(item.getComment()));
 			row.appendChild(new Label(item.getId()));
 			

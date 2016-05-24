@@ -13,7 +13,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.healtcare.dm.LabHandlingStatus;
 import com.kratonsolution.belian.healtcare.dm.Laboratory;
 import com.kratonsolution.belian.healtcare.dm.LaboratoryItem;
@@ -87,7 +87,7 @@ public class LabScheduleEditContent extends FormContent
 			grid.setSpan("1");
 			grid.getRows().appendChild(RowUtils.row("Company", laboratory.getOrganization().getName()));
 			grid.getRows().appendChild(RowUtils.row("Number", laboratory.getNumber()));
-			grid.getRows().appendChild(RowUtils.row("Date", Dates.format(laboratory.getDate())));
+			grid.getRows().appendChild(RowUtils.row("Date", DateTimes.format(laboratory.getDate())));
 			grid.getRows().appendChild(RowUtils.row("Patient", laboratory.getCustomer().getName()));
 			grid.getRows().appendChild(RowUtils.row("Doctor/Initiator", laboratory.getSales().getName()));
 			grid.getRows().appendChild(RowUtils.row("Payment Status", laboratory.isPaid()?"Paid":"Unpaid"));

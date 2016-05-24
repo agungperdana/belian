@@ -26,7 +26,7 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 
 import com.kratonsolution.belian.accounting.svc.BudgetItemService;
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.hr.dm.EmploymentStatus;
@@ -144,12 +144,12 @@ public class PositioEditContent extends FormContent
 				Position position = service.findOne(RowUtils.string(row, 9));
 				if(position != null)
 				{
-					position.setActualEnd(Dates.sql(actualEnd.getValue()));
-					position.setActualStart(Dates.sql(actualStart.getValue()));
-					position.setEnd(Dates.sql(end.getValue()));
+					position.setActualEnd(DateTimes.sql(actualEnd.getValue()));
+					position.setActualStart(DateTimes.sql(actualStart.getValue()));
+					position.setEnd(DateTimes.sql(end.getValue()));
 					position.setOrganization(organizationService.findOne(Components.string(hirings)));
 					position.setSalaryStatus(SalaryStatus.valueOf(Components.string(salarys)));
-					position.setStart(Dates.sql(start.getValue()));
+					position.setStart(DateTimes.sql(start.getValue()));
 					position.setEmploymentStatus(EmploymentStatus.valueOf(Components.string(employmentstatuses)));
 					position.setType(positionTypeService.findOne(Components.string(positionTypes)));
 					position.setWorktimeStatus(WorktimeStatus.valueOf(Components.string(worktimes)));

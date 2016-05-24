@@ -15,7 +15,7 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 
 import com.kratonsolution.belian.accounting.svc.BudgetItemService;
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.hr.dm.EmploymentStatus;
 import com.kratonsolution.belian.hr.dm.Position;
@@ -92,12 +92,12 @@ public class PositionFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{				
 				Position position = new Position();
-				position.setActualEnd(Dates.sql(actualEnd.getValue()));
-				position.setActualStart(Dates.sql(actualStart.getValue()));
+				position.setActualEnd(DateTimes.sql(actualEnd.getValue()));
+				position.setActualStart(DateTimes.sql(actualStart.getValue()));
 				position.setBudgetItem(budgetItemService.findOne(Components.string(budgetItems)));
-				position.setEnd(Dates.sql(end.getValue()));
+				position.setEnd(DateTimes.sql(end.getValue()));
 				position.setSalaryStatus(SalaryStatus.valueOf(Components.string(salarys)));
-				position.setStart(Dates.sql(start.getValue()));
+				position.setStart(DateTimes.sql(start.getValue()));
 				position.setOrganization(utils.getOrganization());
 				position.setEmploymentStatus(EmploymentStatus.valueOf(Components.string(employmentstatuses)));
 				position.setType(positionTypeService.findOne(Components.string(positionTypes)));

@@ -19,7 +19,6 @@ import javax.persistence.Version;
 
 import com.kratonsolution.belian.asset.dm.Asset;
 import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.hr.dm.WorkingShift;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -43,10 +42,6 @@ public class CashierShift implements Serializable
 	@ManyToOne
 	@JoinColumn(name="employee")
 	private Person employee;
-	
-	@ManyToOne
-	@JoinColumn(name="working_shift")
-	private WorkingShift shift;
 	
 	@ManyToOne
 	@JoinColumn(name="asset")

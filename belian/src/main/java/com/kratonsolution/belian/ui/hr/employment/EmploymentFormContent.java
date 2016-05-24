@@ -13,7 +13,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Row;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.InternalOrganization;
 import com.kratonsolution.belian.general.svc.OrganizationService;
@@ -84,8 +84,8 @@ public class EmploymentFormContent extends FormContent
 				employeer.setParty(employer.getOrganization());
 				
 				Employment employment = new Employment();
-				employment.setStart(Dates.sql(start.getValue()));
-				employment.setEnd(Dates.sql(end.getValue()));
+				employment.setStart(DateTimes.sql(start.getValue()));
+				employment.setEnd(DateTimes.sql(end.getValue()));
 				employment.setEmployee(employee);
 				employment.setInternalOrganization(employeer);
 				

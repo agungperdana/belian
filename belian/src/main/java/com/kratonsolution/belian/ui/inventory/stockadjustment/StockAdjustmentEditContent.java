@@ -13,7 +13,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.inventory.dm.StockAdjustment;
 import com.kratonsolution.belian.inventory.dm.StockAdjustmentItem;
 import com.kratonsolution.belian.inventory.svc.StockAdjustmentService;
@@ -80,7 +80,7 @@ public class StockAdjustmentEditContent extends FormContent
 			grid.appendChild(new Columns());
 			grid.getColumns().appendChild(new Column(null,null,"125px"));
 			grid.getColumns().appendChild(new Column());
-			grid.getRows().appendChild(RowUtils.row("Date", Dates.format(stock.getDate())));
+			grid.getRows().appendChild(RowUtils.row("Date", DateTimes.format(stock.getDate())));
 			grid.getRows().appendChild(RowUtils.row("Company", stock.getOrganization().getName()));
 			grid.getRows().appendChild(RowUtils.row("Facility", stock.getFacility().getName()));
 		}

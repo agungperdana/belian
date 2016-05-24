@@ -70,6 +70,10 @@ public abstract class Billable implements Serializable
 	@JoinColumn(name="fk_tax")
 	protected Tax tax;
 	
+	@ManyToOne
+	@JoinColumn(name="fk_cashier_shift")
+	protected CashierShift shift;
+	
 	@Version
 	protected Long version;
 	

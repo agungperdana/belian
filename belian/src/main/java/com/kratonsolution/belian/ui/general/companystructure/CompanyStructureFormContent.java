@@ -17,7 +17,7 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.general.dm.CompanyStructure;
 import com.kratonsolution.belian.general.dm.CompanyStructureType;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
@@ -68,8 +68,8 @@ public class CompanyStructureFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				CompanyStructure structure = new CompanyStructure();
-				structure.setFrom(Dates.sql(from.getValue()));
-				structure.setTo(Dates.sql(to.getValue()));
+				structure.setFrom(DateTimes.sql(from.getValue()));
+				structure.setTo(DateTimes.sql(to.getValue()));
 				structure.setOrganization(organizationService.findOne(Components.string(organizations)));
 				structure.setType(CompanyStructureType.valueOf(Components.string(types)));
 				

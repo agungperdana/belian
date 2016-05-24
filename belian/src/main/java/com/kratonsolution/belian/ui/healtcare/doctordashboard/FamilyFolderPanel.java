@@ -16,7 +16,7 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Vlayout;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.FamilyFolder;
 import com.kratonsolution.belian.healtcare.dm.FamilyMember;
@@ -81,7 +81,7 @@ public class FamilyFolderPanel extends Vlayout
 					{
 						Row row = new Row();
 						row.appendChild(new Label(app.getId()));
-						row.appendChild(new Label(Dates.format(app.getDate())));
+						row.appendChild(new Label(DateTimes.format(app.getDate())));
 						row.appendChild(new Label(app.getCompany().getName()));
 						row.appendChild(new Label(app.getDoctor().getFrom().getName()));
 						row.appendChild(new Label(app.getRecord()!=null?app.getRecord().getDiagnosis():""));

@@ -17,7 +17,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.OrganizationService;
@@ -75,7 +75,7 @@ public class OrganizationFormContent extends FormContent
 			
 				Organization org = new Organization();
 				org.setName(name.getText());
-				org.setBirthDate(Dates.sql(date.getValue()));
+				org.setBirthDate(DateTimes.sql(date.getValue()));
 				org.setTaxCode(tax.getText());
 				org.setType(IndustrySegmentation.valueOf(types.getSelectedItem().getValue().toString()));
 				

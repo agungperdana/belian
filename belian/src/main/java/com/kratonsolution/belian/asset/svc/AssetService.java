@@ -32,7 +32,7 @@ public class AssetService
 	@Autowired
 	private SessionUtils utils;
 		
-	@Secured({"ROLE_ASSET_READ"})
+	@Secured({"ROLE_ASSET_READ","ROLE_CASHIER_READ"})
 	public Asset findOne(String id)
 	{
 		if(!Strings.isNullOrEmpty(id))
@@ -41,13 +41,25 @@ public class AssetService
 		return null;
 	}
 	
-	@Secured({"ROLE_ASSET_READ"})
+	@Secured({"ROLE_ASSET_READ","ROLE_CASHIER_READ"})
 	public List<Asset> findAll()
 	{
+		if(utils.isSysAdmin())
+			return repository.findAll();
+		
 		if(utils.getOrganization() == null)
 			return new ArrayList<>();
 		
 		return repository.findAll(utils.getOrganization().getId());
+	}
+	
+	@Secured({"ROLE_ASSET_READ","ROLE_CASHIER_READ"})
+	public List<Asset> findAllUnused()
+	{
+		if(utils.getOrganization() == null || utils.isSysAdmin())
+			return new ArrayList<>();
+		
+		return repository.findAllUnused(utils.getOrganization().getId());
 	}
 	
 	@Secured("ROLE_ASSET_READ")

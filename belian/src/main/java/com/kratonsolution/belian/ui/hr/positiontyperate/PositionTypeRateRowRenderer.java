@@ -8,7 +8,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.hr.dm.PositionTypeRate;
 import com.kratonsolution.belian.ui.util.Numbers;
 
@@ -26,8 +26,8 @@ public class PositionTypeRateRowRenderer implements RowRenderer<PositionTypeRate
 		if(data != null)
 		{
 			row.appendChild(new Checkbox());
-			row.appendChild(new Label(Dates.format(data.getStart())));
-			row.appendChild(new Label(Dates.format(data.getEnd())));
+			row.appendChild(new Label(DateTimes.format(data.getStart())));
+			row.appendChild(new Label(DateTimes.format(data.getEnd())));
 			row.appendChild(new Label(data.getPositionType().getLabel()));
 			row.appendChild(new Label(data.getRateType().display()));
 			row.appendChild(new Label(data.getPeriodType().display()));

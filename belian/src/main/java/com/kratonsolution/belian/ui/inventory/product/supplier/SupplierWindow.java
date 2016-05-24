@@ -18,7 +18,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vlayout;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.general.dm.PartyRepository;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.inventory.dm.Product;
@@ -94,8 +94,8 @@ public class SupplierWindow extends AbstractWindow
 			public void onEvent(Event event) throws Exception
 			{
 				ProductSupplier supplier = new ProductSupplier();
-				supplier.setFrom(Dates.sql(from.getValue()));
-				supplier.setTo(Dates.sql(to.getValue()));
+				supplier.setFrom(DateTimes.sql(from.getValue()));
+				supplier.setTo(DateTimes.sql(to.getValue()));
 				supplier.setNote(note.getText());
 				supplier.setSupplier(partyRepository.findOne(suppliers.getSelectedItem().getValue().toString()));
 

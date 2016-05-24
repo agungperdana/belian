@@ -23,7 +23,7 @@ import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Vlayout;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.global.dm.ApproveAndReviewableItem;
 import com.kratonsolution.belian.global.dm.Review;
 import com.kratonsolution.belian.global.dm.Roled;
@@ -122,7 +122,7 @@ public class ApproveAndReviewableForm extends Vlayout implements Removeable
 		grid.setSpan("1");
 
 		grid.getRows().appendChild(RowUtils.row("Number",roled.getDocument().getNumber()));
-		grid.getRows().appendChild(RowUtils.row("Date", Dates.format(roled.getDocument().getDate())));
+		grid.getRows().appendChild(RowUtils.row("Date", DateTimes.format(roled.getDocument().getDate())));
 		grid.getRows().appendChild(RowUtils.row("Company", roled.getDocument().getOrganization().getName()));
 		grid.getRows().appendChild(RowUtils.row("Result",note));
 		
@@ -187,7 +187,7 @@ public class ApproveAndReviewableForm extends Vlayout implements Removeable
 		for(Review item:roled.getDocument().getReviews())
 		{
 			Row row = new Row();
-			row.appendChild(new Label(Dates.format(item.getDate())));
+			row.appendChild(new Label(DateTimes.format(item.getDate())));
 			row.appendChild(new Label(item.getParty().getName()));
 			row.appendChild(new Label(item.getResult()));
 			

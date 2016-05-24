@@ -15,6 +15,6 @@ import org.springframework.data.repository.query.Param;
  */
 public interface CashierShiftRepository extends JpaRepository<CashierShift, String>
 {
-	@Query("FROM CashierShift shift WHERE shift.date =:date AND shift.employee.id =:employee")
+	@Query("FROM CashierShift shift WHERE shift.date =:date AND shift.employee.id =:employee AND shift.closed IS FALSE")
 	public CashierShift findOne(@Param("date")Date date,@Param("employee")String employee);
 }

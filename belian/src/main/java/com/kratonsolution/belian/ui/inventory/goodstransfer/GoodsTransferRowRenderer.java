@@ -8,7 +8,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.inventory.dm.GoodsTransfer;
 
 /**
@@ -25,7 +25,7 @@ public class GoodsTransferRowRenderer implements RowRenderer<GoodsTransfer>
 		if(data != null)
 		{
 			row.appendChild(new Checkbox());
-			row.appendChild(new Label(Dates.format(data.getDate())));
+			row.appendChild(new Label(DateTimes.format(data.getDate())));
 			row.appendChild(new Label(data.getNumber()));
 			row.appendChild(new Label(data.getSource().getName()));
 			row.appendChild(new Label(data.getFacilityFrom().getName()));

@@ -21,7 +21,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Gender;
 import com.kratonsolution.belian.general.dm.MaritalStatus;
@@ -109,7 +109,7 @@ public class PatientEditContent extends FormContent
 				Patient patient = service.findOne(RowUtils.string(row, 5));
 				if(patient != null)
 				{
-					patient.getFrom().setBirthDate(Dates.sql(birthDate.getValue()));
+					patient.getFrom().setBirthDate(DateTimes.sql(birthDate.getValue()));
 					patient.getFrom().setBirthPlace(geographicService.findOne(Components.string(birthPlace)));
 					patient.getFrom().setGender(Gender.valueOf(Components.string(genders)));
 					patient.getFrom().setIdentity(identity.getText());

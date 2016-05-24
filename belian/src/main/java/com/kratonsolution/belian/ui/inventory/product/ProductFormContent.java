@@ -19,7 +19,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductType;
 import com.kratonsolution.belian.inventory.svc.ProductCategoryService;
@@ -101,8 +101,8 @@ public class ProductFormContent extends FormContent
 					throw new WrongValueException(categorys,"Please select product type first");
 				
 				Product product = new Product();
-				product.setStart(Dates.sql(start.getValue()));
-				product.setEnd(Dates.sql(end.getValue()));
+				product.setStart(DateTimes.sql(start.getValue()));
+				product.setEnd(DateTimes.sql(end.getValue()));
 				product.setCode(code.getText());
 				product.setName(name.getText());
 				product.setType(ProductType.valueOf(Components.string(types)));

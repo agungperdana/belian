@@ -71,7 +71,7 @@ public class CashSalesFormContent extends FormContent implements ProductPriceSel
 	
 	private TaxService taxService = Springs.get(TaxService.class);
 	
-	private Listbox tableNumber = Components.newSelect();
+	private Listbox tableNumber = Components.newSelect("175px");
 	
 	private Textbox number = Components.readOnlyTextBox("BLG"+System.currentTimeMillis());
 	
@@ -254,7 +254,7 @@ public class CashSalesFormContent extends FormContent implements ProductPriceSel
 		grid.getColumns().appendChild(new Column());
 		
 		Row row0 = new Row();
-		row0.appendChild(new Label("Table Number"));
+		row0.appendChild(new Label("Sequence Number"));
 		row0.appendChild(tableNumber);
 		
 		Row row1 = new Row();

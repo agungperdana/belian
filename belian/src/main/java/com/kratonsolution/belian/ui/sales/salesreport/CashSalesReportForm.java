@@ -30,7 +30,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Vlayout;
 import org.zkoss.zul.Window;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.sales.dm.CashSales;
 import com.kratonsolution.belian.sales.dm.CashSalesLine;
@@ -216,7 +216,7 @@ public class CashSalesReportForm extends Window
 			else
 			{
 				Row row = new Row();
-				row.appendChild(new Label(Dates.format(cashSales.getDate())+" ["+cashSales.getNumber()+"]"));
+				row.appendChild(new Label(DateTimes.format(cashSales.getDate())+" ["+cashSales.getNumber()+"]"));
 				row.appendChild(new Label(cashSales.getItems().size()+""));
 				row.appendChild(new Label(""));
 				row.appendChild(new Label(decimalFormat.format(cashSales.getBillingAmount())));

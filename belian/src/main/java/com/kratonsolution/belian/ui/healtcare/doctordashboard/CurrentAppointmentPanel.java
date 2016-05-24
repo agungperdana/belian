@@ -20,7 +20,7 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.global.svc.CodeGenerator;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
@@ -139,7 +139,7 @@ public class CurrentAppointmentPanel extends Tabbox
 		grid.setSpan("1");
 		grid.getRows().appendChild(RowUtils.row("Queue",appointment.getQueue()+""));
 		grid.getRows().appendChild(RowUtils.row("Company",appointment.getCompany().getName()));
-		grid.getRows().appendChild(RowUtils.row("Date",Dates.format(appointment.getDate())));
+		grid.getRows().appendChild(RowUtils.row("Date",DateTimes.format(appointment.getDate())));
 		grid.getRows().appendChild(RowUtils.row("Progress Status",status));
 		grid.getRows().appendChild(RowUtils.row("Note",appointment.getNote()));
 		grid.getRows().appendChild(RowUtils.row("Billing Information",""));

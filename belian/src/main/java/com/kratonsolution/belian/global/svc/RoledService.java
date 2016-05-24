@@ -12,7 +12,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.global.dm.ApproveAndReviewableRepository;
 import com.kratonsolution.belian.global.dm.Review;
@@ -114,7 +114,7 @@ public class RoledService
 				if(role.getType().equals(RoledType.Approver))
 				{
 					Statuses statuses = role.getDocument().createStatus();
-					statuses.setDate(Dates.now());
+					statuses.setDate(DateTimes.currentDate());
 					statuses.setType(type);
 					statuses.setParty(role.getParty());
 					statuses.setDescription(note);
@@ -128,13 +128,13 @@ public class RoledService
 					if(!role.getDocument().isDone())
 					{
 						Statuses statuses = role.getDocument().createStatus();
-						statuses.setDate(Dates.now());
+						statuses.setDate(DateTimes.currentDate());
 						statuses.setType(type);
 						statuses.setParty(role.getParty());
 						statuses.setDescription(note);
 						
 						Review review = role.getDocument().createReview();
-						review.setDate(Dates.now());
+						review.setDate(DateTimes.currentDate());
 						review.setParty(role.getParty());
 						review.setResult(note);
 						

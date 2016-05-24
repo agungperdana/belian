@@ -15,7 +15,7 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Toolbarbutton;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.hr.dm.EmploymentApplication;
 import com.kratonsolution.belian.hr.dm.EmploymentApplicationSourceType;
@@ -82,7 +82,7 @@ public class EmploymentApplicationEditContent extends FormContent
 				EmploymentApplication application = service.findOne(RowUtils.string(row, 6));
 				if(application != null)
 				{
-					application.setDate(Dates.sql(date.getValue()));
+					application.setDate(DateTimes.sql(date.getValue()));
 					application.setPosition(positionService.findOne(Components.string(positions)));
 					application.setApplicant(applicant.getPerson());
 					application.setReferal(referals.getPerson());

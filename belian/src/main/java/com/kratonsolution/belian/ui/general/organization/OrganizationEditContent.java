@@ -17,7 +17,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Contact;
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
@@ -91,7 +91,7 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 
 				Organization org = service.findOne(RowUtils.string(row, 5));
 				org.setName(name.getText());
-				org.setBirthDate(Dates.sql(date.getValue()));
+				org.setBirthDate(DateTimes.sql(date.getValue()));
 				org.setTaxCode(tax.getText());
 				org.setType(IndustrySegmentation.valueOf(types.getSelectedItem().getValue().toString()));
 

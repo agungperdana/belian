@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.UUID;
 
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -19,6 +18,7 @@ import javax.persistence.Version;
 
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.global.dm.Listable;
+import com.kratonsolution.belian.sales.dm.CashierShift;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +31,6 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="asset")
-@Cacheable
 public class Asset implements Serializable,Listable
 {
 	@Id
@@ -71,6 +70,10 @@ public class Asset implements Serializable,Listable
 	@ManyToOne
 	@JoinColumn(name="fk_organization")
 	private Organization organization;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_cashier_shift")
+	private CashierShift usedBy;
 	
 	@Version
 	private Long version;

@@ -20,7 +20,7 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Toolbarbutton;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.general.dm.CompanyStructure;
 import com.kratonsolution.belian.general.dm.CompanyStructureType;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
@@ -74,8 +74,8 @@ private final CompanyStructureService service = Springs.get(CompanyStructureServ
 			{
 				if(structure != null)
 				{
-					structure.setFrom(Dates.sql(from.getValue()));
-					structure.setTo(Dates.sql(to.getValue()));
+					structure.setFrom(DateTimes.sql(from.getValue()));
+					structure.setTo(DateTimes.sql(to.getValue()));
 					service.edit(structure);
 				
 					for(CompanyStructureDataListener listener:listeners)

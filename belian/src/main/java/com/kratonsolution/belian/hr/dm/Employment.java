@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.general.dm.InternalOrganization;
 import com.kratonsolution.belian.general.dm.PartyRelationship;
 
@@ -39,10 +39,10 @@ public class Employment extends PartyRelationship
 	
 	public boolean isValid()
 	{
-		if(getStart().compareTo(Dates.sql(new Date())) <= 0 && getEnd() == null)
+		if(getStart().compareTo(DateTimes.sql(new Date())) <= 0 && getEnd() == null)
 			return true;
 		
-		if(getStart().compareTo(Dates.sql(new Date())) <= 0 && getEnd().compareTo(Dates.sql(new Date())) >= 0)
+		if(getStart().compareTo(DateTimes.sql(new Date())) <= 0 && getEnd().compareTo(DateTimes.sql(new Date())) >= 0)
 			return true;
 		
 		return false;

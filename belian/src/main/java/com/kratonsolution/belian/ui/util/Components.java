@@ -70,14 +70,31 @@ public class Components
 		return listbox;
 	}
 	
+	public static final Listbox newSelect(String width)
+	{
+		Listbox listbox = new Listbox();
+		listbox.setMold("select");
+		
+		if(!Strings.isNullOrEmpty(width))
+			listbox.setWidth(width);
+		else
+			listbox.setWidth("250px");
+		
+		return listbox;
+	}
+	
 	public static final Listbox newSelect(Listable listable)
 	{
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");
 		listbox.setStyle("text-align:center;");
 		listbox.setWidth("250px");
-		listbox.appendChild(new Listitem(listable.getLabel(),listable.getValue()));
-		listbox.setSelectedIndex(0);
+
+		if(listable != null)
+		{
+			listbox.appendChild(new Listitem(listable.getLabel(),listable.getValue()));
+			listbox.setSelectedIndex(0);
+		}
 		
 		return listbox;
 	}
@@ -404,6 +421,16 @@ public class Components
 		Datebox datebox = new Datebox(new Date());
 		datebox.setWidth("150px");
 		datebox.setConstraint("no empty");
+		
+		return datebox;
+	}
+	
+	public static final Datebox currentDatebox(boolean readonly)
+	{
+		Datebox datebox = new Datebox(new Date());
+		datebox.setWidth("150px");
+		datebox.setConstraint("no empty");
+		datebox.setReadonly(readonly);
 		
 		return datebox;
 	}

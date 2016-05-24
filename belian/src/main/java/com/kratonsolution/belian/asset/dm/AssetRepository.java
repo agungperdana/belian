@@ -19,6 +19,9 @@ public interface AssetRepository extends JpaRepository<Asset, String>
 	@Query("FROM Asset asset WHERE asset.organization.id =:company ORDER BY asset.code,asset.name ASC")
 	public List<Asset> findAll(@Param("company")String id);
 	
+	@Query("FROM Asset asset WHERE asset.organization.id =:company AND asset.usedBy IS NULL ORDER BY asset.code,asset.name ASC")
+	public List<Asset> findAllUnused(@Param("company")String id);
+	
 	@Query("FROM Asset asset WHERE asset.organization.id =:company ORDER BY asset.code,asset.name ASC")
 	public List<Asset> findAll(Pageable pageable,@Param("company")String id);
 	

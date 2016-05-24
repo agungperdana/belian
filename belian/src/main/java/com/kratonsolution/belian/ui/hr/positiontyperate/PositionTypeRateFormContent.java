@@ -21,7 +21,7 @@ import org.zkoss.zul.Textbox;
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.dm.PeriodType;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.hr.dm.PositionType;
 import com.kratonsolution.belian.hr.dm.PositionTypeRate;
 import com.kratonsolution.belian.hr.dm.RateType;
@@ -87,8 +87,8 @@ public class PositionTypeRateFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				PositionTypeRate rate = new PositionTypeRate();
-				rate.setStart(Dates.sql(start.getValue()));
-				rate.setEnd(Dates.sql(end.getValue()));
+				rate.setStart(DateTimes.sql(start.getValue()));
+				rate.setEnd(DateTimes.sql(end.getValue()));
 				rate.setAmount(BigDecimal.valueOf(amount.doubleValue()));
 				rate.setComment(comment.getText());
 				rate.setCurrency(currencyService.findOne(Components.string(currencys)));

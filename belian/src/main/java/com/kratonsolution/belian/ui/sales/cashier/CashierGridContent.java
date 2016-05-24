@@ -10,10 +10,12 @@ import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.ListModel;
+import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.sales.dm.Billable;
+import com.kratonsolution.belian.sales.srv.CashierShiftService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.component.SearchBox;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -51,6 +53,21 @@ public class CashierGridContent extends GridContent
 			}
 		});
 		
+		Toolbarbutton close = new Toolbarbutton("Close Cashier","/icons/cashier-shift.png");
+		close.addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				CashierShiftService service = Springs.get(CashierShiftService.class);
+				if(service != null)
+				{
+					service.close();
+				}
+			}
+		});
+		
+		gridToolbar.appendChild(close);
 		gridToolbar.removeChild(gridToolbar.getNew());
 		gridToolbar.removeChild(gridToolbar.getDelete());
 		gridToolbar.removeChild(gridToolbar.getSelect());
@@ -71,7 +88,7 @@ public class CashierGridContent extends GridContent
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column("Number",null,"150px"));
 		grid.getColumns().appendChild(new Column("Customer",null,"150px"));
-		grid.getColumns().appendChild(new Column("Table",null,"50px"));
+		grid.getColumns().appendChild(new Column("Sequence",null,"50px"));
 		grid.getColumns().appendChild(new Column("Amount",null,"100px"));
 		grid.getColumns().appendChild(new Column("Currency",null,"100px"));
 		grid.getColumns().appendChild(new Column("Type",null,"125px"));
@@ -106,6 +123,5 @@ public class CashierGridContent extends GridContent
 				grid.setModel(cm);
 			}
 		}
-		
 	}
 }

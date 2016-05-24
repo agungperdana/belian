@@ -6,7 +6,6 @@ package com.kratonsolution.belian.security.dm;
 import java.io.Serializable;
 import java.util.UUID;
 
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -27,7 +26,6 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="module")
-@Cacheable
 public class Module implements Serializable
 {
 	@Id

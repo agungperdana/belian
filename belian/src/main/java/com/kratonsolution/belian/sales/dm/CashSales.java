@@ -41,12 +41,11 @@ public class CashSales extends Billable
 	@Column(name="note")
 	private String note;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_cashier_shift")
-	private CashierShift shift;
-	
 	@OneToMany(mappedBy="cashSales",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
 	private Set<CashSalesLine> items = new HashSet<CashSalesLine>();
+	
+	@OneToMany(mappedBy="shift")
+	private Set<Billable> billings = new HashSet<>();
 	
 	public CashSales(){}
 

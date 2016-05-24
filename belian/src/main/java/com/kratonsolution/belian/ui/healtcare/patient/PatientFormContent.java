@@ -24,7 +24,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Gender;
 import com.kratonsolution.belian.general.dm.MaritalStatus;
@@ -111,7 +111,7 @@ public class PatientFormContent extends FormContent
 				if(person == null)
 				{
 					person = new Person();
-					person.setBirthDate(Dates.sql(birthDate.getValue()));
+					person.setBirthDate(DateTimes.sql(birthDate.getValue()));
 					person.setBirthPlace(geographicService.findOne(Components.string(birthPlace)));
 					person.setGender(Gender.valueOf(Components.string(genders)));
 					person.setIdentity(identity.getText());
@@ -121,7 +121,7 @@ public class PatientFormContent extends FormContent
 
 					Patient patient = new Patient();
 					patient.setTo(utils.getOrganization());
-					patient.setStart(Dates.sql(start.getValue()));
+					patient.setStart(DateTimes.sql(start.getValue()));
 					patient.setBpjs(new BPJS());
 					patient.setFrom(person);
 					patient.getBpjs().setCard(bpjsNumber.getText());
@@ -132,7 +132,7 @@ public class PatientFormContent extends FormContent
 				}
 				else
 				{
-					person.setBirthDate(Dates.sql(birthDate.getValue()));
+					person.setBirthDate(DateTimes.sql(birthDate.getValue()));
 					person.setBirthPlace(geographicService.findOne(Components.string(birthPlace)));
 					person.setGender(Gender.valueOf(Components.string(genders)));
 					person.setIdentity(identity.getText());
@@ -144,7 +144,7 @@ public class PatientFormContent extends FormContent
 					{
 						Patient patient = new Patient();
 						patient.setTo(utils.getOrganization());
-						patient.setStart(Dates.sql(start.getValue()));
+						patient.setStart(DateTimes.sql(start.getValue()));
 						patient.setBpjs(new BPJS());
 						patient.setFrom(person);
 						patient.getBpjs().setCard(bpjsNumber.getText());

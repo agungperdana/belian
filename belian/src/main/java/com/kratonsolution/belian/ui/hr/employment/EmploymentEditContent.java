@@ -27,7 +27,7 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 
 import com.kratonsolution.belian.accounting.svc.BudgetItemService;
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.PersonService;
@@ -160,13 +160,13 @@ public class EmploymentEditContent extends FormContent
 					if(budgetItems.getSelectedIndex() < 0)
 						throw new WrongValueException(budgetItems,"Budget Item cannot be empty");
 					
-					position.setActualEnd(Dates.sql(actualEnd.getValue()));
-					position.setActualStart(Dates.sql(actualStart.getValue()));
+					position.setActualEnd(DateTimes.sql(actualEnd.getValue()));
+					position.setActualStart(DateTimes.sql(actualStart.getValue()));
 					position.setBudgetItem(budgetItemService.findOne(Components.string(budgetItems)));
-					position.setEnd(Dates.sql(end.getValue()));
+					position.setEnd(DateTimes.sql(end.getValue()));
 					position.setOrganization(utils.getOrganization());
 					position.setSalaryStatus(SalaryStatus.valueOf(Components.string(salaryStatus)));
-					position.setStart(Dates.sql(start.getValue()));
+					position.setStart(DateTimes.sql(start.getValue()));
 					position.setEmploymentStatus(EmploymentStatus.valueOf(Components.string(employmentstatuses)));
 					position.setType(positionTypeService.findOne(Components.string(positionTypes)));
 					position.setWorktimeStatus(WorktimeStatus.valueOf(Components.string(worktimes)));

@@ -5,7 +5,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
-import com.kratonsolution.belian.common.Dates;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.sales.dm.CashSales;
 import com.kratonsolution.belian.sales.srv.CashSalesService;
@@ -30,7 +30,7 @@ public class CashSalesRowRenderer implements RowRenderer<CashSales>
 		{
 			row.appendChild(new Checkbox());
 			row.appendChild(new Label(data.getNumber()));
-			row.appendChild(new Label(Dates.format(data.getDate())));
+			row.appendChild(new Label(DateTimes.format(data.getDate())));
 			row.appendChild(new Label(data.getTable()+""));
 			row.appendChild(new Label(Numbers.format(data.getBillingAmount().add(data.getTaxAmount()))));
 			row.appendChild(new Label(data.isPaid()?"PAID":"UNPAID"));
