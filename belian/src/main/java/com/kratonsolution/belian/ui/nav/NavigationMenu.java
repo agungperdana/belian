@@ -85,13 +85,13 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
-		if(modules.containsKey("GEOGRAPHIC") && modules.get("GEOGRAPHIC"))
+		if(modules.containsKey("ROLE_GEOGRAPHIC_READ"))
 			list.appendChild(new GeographicItem());
-		if(modules.containsKey("ORGANIZATION") && modules.get("ORGANIZATION"))
+		if(modules.containsKey("ROLE_ORGANIZATION_READ"))
 			list.appendChild(new OrganizationItem());
-		if(modules.containsKey("PERSON") && modules.get("PERSON"))
+		if(modules.containsKey("ROLE_PERSON_READ"))
 			list.appendChild(new PersonItem());
-		if(modules.containsKey("COMPANY_STRUCTURE") && modules.get("COMPANY_STRUCTURE"))
+		if(modules.containsKey("ROLE_COMPANY_STRUCTURE_READ"))
 			list.appendChild(new CompanyStructureItem());
 		
 		if(!list.getChildren().isEmpty())
@@ -110,11 +110,11 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
-		if(modules.containsKey("MODULE") && modules.get("MODULE"))
+		if(modules.containsKey("ROLE_MODULE_READ"))
 			list.appendChild(new ModuleItem());
-		if(modules.containsKey("ACCESS_ROLE") && modules.get("ACCESS_ROLE"))
+		if(modules.containsKey("ROLE_ACCESS_ROLE_READ"))
 			list.appendChild(new RoleItem());
-		if(modules.containsKey("USER") && modules.get("USER"))
+		if(modules.containsKey("ROLE_USER_READ"))
 			list.appendChild(new UserItem());
 		
 		if(!list.getChildren().isEmpty())
@@ -131,21 +131,21 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
-		if(modules.containsKey("CURRENCY") && modules.get("CURRENCY"))
+		if(modules.containsKey("ROLE_CURRENCY_READ"))
 			list.appendChild(new CurrencyItem());
-		if(modules.containsKey("TAX") && modules.get("TAX"))
+		if(modules.containsKey("ROLE_TAX_READ"))
 			list.appendChild(new TaxItem());
-		if(modules.containsKey("COA") && modules.get("COA"))
+		if(modules.containsKey("ROLE_COA_READ"))
 			list.appendChild(new CoAItem());
-		if(modules.containsKey("ACCOUNTINGPERIOD") && modules.get("ACCOUNTINGPERIOD"))
+		if(modules.containsKey("ROLE_ACCOUNTINGPERIOD_READ"))
 			list.appendChild(new AccountingPeriodItem());
-		if(modules.containsKey("ORGANIZATIONACCOUNT") && modules.get("ORGANIZATIONACCOUNT"))
+		if(modules.containsKey("ROLE_ORGANIZATIONACCOUNT_READ"))
 			list.appendChild(new OrganizationAccountItem());
-		if(modules.containsKey("JOURNALSETTING") && modules.get("JOURNALSETTING"))
+		if(modules.containsKey("ROLE_JOURNALSETTING_READ"))
 			list.appendChild(new JournalSettingItem());
-		if(modules.containsKey("JOURNALENTRY") && modules.get("JOURNALENTRY"))
+		if(modules.containsKey("ROLE_JOURNALENTRY_READ"))
 			list.appendChild(new JournalEntryItem());
-		if(modules.containsKey("BUDGET") && modules.get("BUDGET"))
+		if(modules.containsKey("ROLE_BUDGET_READ"))
 			list.appendChild(new BudgetItem());
 		
 		if(!list.getChildren().isEmpty())
@@ -163,27 +163,27 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
-		if(modules.containsKey("UOM") && modules.get("UOM"))
+		if(modules.containsKey("ROLE_UOM_READ"))
 			list.appendChild(new UOMItem());
-		if(modules.containsKey("FACILITY") && modules.get("FACILITY"))
+		if(modules.containsKey("ROLE_FACILITY_READ"))
 			list.appendChild(new FacilityItem());
-		if(modules.containsKey("PRDCATEGORY") && modules.get("PRDCATEGORY"))
+		if(modules.containsKey("ROLE_PRDCATEGORY_READ"))
 			list.appendChild(new ProductCategoryItem());
-		if(modules.containsKey("PRODUCT") && modules.get("PRODUCT"))
+		if(modules.containsKey("ROLE_PRODUCT_READ"))
 			list.appendChild(new ProductItem());
-		if(modules.containsKey("INVITEM") && modules.get("INVITEM"))
+		if(modules.containsKey("ROLE_INVITEM_READ"))
 			list.appendChild(new InventoryItemItem());
-		if(modules.containsKey("TRN_ORDER_REQ") && modules.get("TRN_ORDER_REQ"))
+		if(modules.containsKey("ROLE_TRN_ORDER_REQ_READ"))
 			list.appendChild(new TransferOrderRequestItem());
-		if(modules.containsKey("GOODS_TRANSFER") && modules.get("GOODS_TRANSFER"))
+		if(modules.containsKey("ROLE_GOODS_TRANSFER_READ"))
 			list.appendChild(new GoodsTransferItem());
-		if(modules.containsKey("GOODS_ISSUE") && modules.get("GOODS_ISSUE"))
+		if(modules.containsKey("ROLE_GOODS_ISSUE_READ"))
 			list.appendChild(new GoodsIssueItem());
-		if(modules.containsKey("GOODS_RECEIVE") && modules.get("GOODS_RECEIVE"))
+		if(modules.containsKey("ROLE_GOODS_RECEIVE_READ"))
 			list.appendChild(new GoodsReceiveItem());
-		if(modules.containsKey("STOCK_ADJUSTMENT") && modules.get("STOCK_ADJUSTMENT"))
+		if(modules.containsKey("ROLE_STOCK_ADJUSTMENT_READ"))
 			list.appendChild(new StockAdjustmentMenu());
-		if(modules.containsKey("STOCK_OPNAME") && modules.get("STOCK_OPNAME"))
+		if(modules.containsKey("ROLE_STOCK_OPNAME_READ"))
 			list.appendChild(new StockOpnameMenu());
 		
 		if(!list.getChildren().isEmpty())
@@ -202,11 +202,11 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
-		if(modules.containsKey("CASHIER") && modules.get("CASHIER"))
+		if(modules.containsKey("ROLE_CASHIER_READ"))
 			list.appendChild(new CashierItem());
-		if(modules.containsKey("CASHSALES") && modules.get("CASHSALES"))
+		if(modules.containsKey("ROLE_CASHSALES_READ"))
 			list.appendChild(new CashSalesItem());
-		if(modules.containsKey("SALES_REPORT") && modules.get("SALES_REPORT"))
+		if(modules.containsKey("ROLE_SALES_REPORT_READ"))
 			list.appendChild(new SalesReportItem());
 		
 		if(!list.getChildren().isEmpty())
@@ -223,9 +223,9 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
-		if(modules.containsKey("PURCHASE_ORDER_REQUEST") && modules.get("PURCHASE_ORDER_REQUEST"))
+		if(modules.containsKey("ROLE_PURCHASE_ORDER_REQUEST_READ"))
 			list.appendChild(new PurchaseOrderRequestItem());
-		if(modules.containsKey("CASH_PURCHASE_ORDER") && modules.get("CASH_PURCHASE_ORDER"))
+		if(modules.containsKey("ROLE_CASH_PURCHASE_ORDER_READ"))
 			list.appendChild(new CashPurchaseOrderItem());
 		
 		if(!list.getChildren().isEmpty())
@@ -242,10 +242,10 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
-		if(modules.containsKey("DOCTORTYPE") && modules.get("DOCTORTYPE"))
+		if(modules.containsKey("ROLE_DOCTORTYPE_READ"))
 			list.appendChild(new DoctorTypeItem());
 		
-		if(modules.containsKey("DOCTOR") && modules.get("DOCTOR"))
+		if(modules.containsKey("ROLE_DOCTOR_READ"))
 			list.appendChild(new DoctorItem());
 
 		SessionUtils utils = Springs.get(SessionUtils.class);
@@ -256,25 +256,25 @@ public class NavigationMenu extends Window
 				list.appendChild(new DoctorDashboardItem());
 		}
 		
-		if(modules.containsKey("PATIENT") && modules.get("PATIENT"))
+		if(modules.containsKey("ROLE_PATIENT"))
 			list.appendChild(new PatientItem());
 		
-		if(modules.containsKey("DOCTOR_APPOINTMENT") && modules.get("DOCTOR_APPOINTMENT"))
+		if(modules.containsKey("ROLE_DOCTOR_APPOINTMENT_READ"))
 			list.appendChild(new DoctorAppointmentItem());
 		
-		if(modules.containsKey("LABS_REGISTRATION") && modules.get("LABS_REGISTRATION"))
+		if(modules.containsKey("ROLE_LABS_REGISTRATION_READ"))
 			list.appendChild(new LabScheduleItem());
 		
-		if(modules.containsKey("LABS_REGISTRATION") && modules.get("LABS_REGISTRATION"))
+		if(modules.containsKey("ROLE_LABS_REGISTRATION_READ"))
 			list.appendChild(new LabsRegistrationItem());
 		
-		if(modules.containsKey("MEDICATION") && modules.get("MEDICATION"))
+		if(modules.containsKey("ROLE_MEDICATION_READ"))
 			list.appendChild(new PharmacySalesItem());
 		
-		if(modules.containsKey("MEDICATION") && modules.get("MEDICATION"))
+		if(modules.containsKey("ROLE_MEDICATION_READ"))
 			list.appendChild(new PharmacyOrderItem());
 		
-		if(modules.containsKey("FAMILY_FOLDER") && modules.get("FAMILY_FOLDER"))
+		if(modules.containsKey("ROLE_FAMILY_FOLDER_READ"))
 			list.appendChild(new FamilyFolderItem());
 		
 		if(!list.getChildren().isEmpty())
@@ -293,17 +293,17 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
-		if(modules.containsKey("POSITIONTYPE") && modules.get("POSITIONTYPE"))
+		if(modules.containsKey("ROLE_POSITIONTYPE_READ"))
 			list.appendChild(new PositionTypeItem());
-		if(modules.containsKey("POSITIONTYPERATE") && modules.get("POSITIONTYPERATE"))
+		if(modules.containsKey("ROLE_POSITIONTYPERATE_READ"))
 			list.appendChild(new PositionTypeRateItem());
-		if(modules.containsKey("POSITION") && modules.get("POSITION"))
+		if(modules.containsKey("ROLE_POSITION_READ"))
 			list.appendChild(new PositionItem());
-		if(modules.containsKey("BENEFIT_TYPE") && modules.get("BENEFIT_TYPE"))
+		if(modules.containsKey("ROLE_BENEFIT_TYPE_READ"))
 			list.appendChild(new BenefitTypeItem());
-		if(modules.containsKey("EMPYAPP") && modules.get("EMPYAPP"))
+		if(modules.containsKey("ROLE_EMPYAPP_READ"))
 			list.appendChild(new EmploymentApplicationItem());
-		if(modules.containsKey("EMPLOYMENT") && modules.get("EMPLOYMENT"))
+		if(modules.containsKey("ROLE_EMPLOYMENT_READ"))
 			list.appendChild(new EmploymentItem());
 
 		if(!list.getChildren().isEmpty())
@@ -321,9 +321,9 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
-		if(modules.containsKey("ASSET_TYPE") && modules.get("ASSET_TYPE"))
+		if(modules.containsKey("ROLE_ASSET_TYPE_READ"))
 			list.appendChild(new AssetTypeItem());
-		if(modules.containsKey("ASSET") && modules.get("ASSET"))
+		if(modules.containsKey("ROLE_ASSET_READ"))
 			list.appendChild(new AssetItem());
 
 		if(!list.getChildren().isEmpty())
@@ -341,9 +341,9 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
-		if(modules.containsKey("DEDUCTION_TYPE") && modules.get("DEDUCTION_TYPE"))
+		if(modules.containsKey("ROLE_DEDUCTION_TYPE_READ"))
 			list.appendChild(new DeductionTypeItem());
-		if(modules.containsKey("PAYCHECK") && modules.get("PAYCHECK"))
+		if(modules.containsKey("ROLE_PAYCHECK_READ"))
 			list.appendChild(new PaycheckItem());
 
 		if(!list.getChildren().isEmpty())

@@ -28,10 +28,9 @@ import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.global.dm.PrinterType;
 import com.kratonsolution.belian.hr.dm.Employment;
+import com.kratonsolution.belian.security.app.Authority;
 import com.kratonsolution.belian.security.app.SecurityInformation;
-import com.kratonsolution.belian.security.dm.AccessRole;
 import com.kratonsolution.belian.security.dm.User;
-import com.kratonsolution.belian.security.dm.UserRole;
 import com.kratonsolution.belian.security.svc.UserService;
 
 
@@ -200,18 +199,13 @@ public class SessionUtils
 	{
 		Map<String,Boolean> modules = new HashMap<String,Boolean>();
 
-		for(UserRole role:getUser().getRoles())
+		SecurityInformation information = (SecurityInformation)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if(information != null)
 		{
-			if(role.isEnabled())
-			{
-				for(AccessRole accessRole:role.getRole().getAccesses())
-				{
-					if(!modules.containsKey(accessRole.getModule().getCode()))
-						modules.put(accessRole.getModule().getCode(),accessRole.isCanRead());
-				}
-			}
+			for(Authority authority:information.getAuthorities())
+				modules.put(authority.toString(),true);
 		}
-
+		
 		return modules;
 	}
 
