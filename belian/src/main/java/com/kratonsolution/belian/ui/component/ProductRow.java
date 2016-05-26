@@ -7,13 +7,13 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.InputEvent;
-import org.zkoss.zk.ui.event.KeyEvent;
-import org.zkoss.zk.ui.event.SelectEvent;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
@@ -25,6 +25,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
 import com.kratonsolution.belian.inventory.dm.ProductPriceRepository;
@@ -64,6 +65,8 @@ public class ProductRow extends Row
 	private EventListener<Event> onSelectEvent;
 	
 	private Collection<ProductPriceSelectionListener> listeners = new ArrayList<ProductPriceSelectionListener>();
+	
+	private Map<String,Product> maps = new HashMap<String, Product>();
 
 	public ProductRow(String geographic,String customer,String currency)
 	{
@@ -340,34 +343,23 @@ public class ProductRow extends Row
 				InputEvent input = (InputEvent)event;
 
 				products.getChildren().clear();
+				maps.clear();
 
-				for(Product product:repository.findAll(new Date(System.currentTimeMillis()),input.getValue()))
-					products.appendChild(new ProductComboItem(product));
-			}
-			else if(event instanceof SelectEvent)
-			{
-				if(products.getSelectedItem() != null)
+				for(Product product:repository.findAll(DateTimes.currentDate(),input.getValue()))
 				{
-					ProductComboItem item = (ProductComboItem)products.getSelectedItem();
-					initPrice(item.getProduct());
-					initUom(item.getProduct());
+					products.appendChild(new ProductComboItem(product));
+					maps.put(product.getName(), product);
+				}
+			}
+			else
+			{
+				if(!Strings.isNullOrEmpty(products.getValue()) && maps.containsKey(products.getValue()))
+				{
+					initPrice(maps.get(products.getValue()));
+					initUom(maps.get(products.getValue()));
 				}
 				else
 					Clients.showNotification("Please select product first.");
-				
-			}
-			else if(event instanceof KeyEvent)
-			{
-				KeyEvent key = (KeyEvent)event;
-				if(key.getName().equals("onOK"))
-				{
-					Product product = productRepository.findOneByName(products.getValue());
-					if(product != null)
-					{
-						initPrice(product);
-						initUom(product);
-					}
-				}
 			}
 		}
 

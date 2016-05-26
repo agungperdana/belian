@@ -200,7 +200,7 @@ public class CashSalesReportForm extends Window
 				for(CashSalesLine line:cashSales.getItems())
 				{
 					BigDecimal amount = line.getPrice().multiply(line.getQuantity());
-					BigDecimal tax = line.getPrice().multiply(line.getQuantity()).multiply(cashSales.getTax().getAmount());
+					BigDecimal tax = line.getPrice().multiply(line.getQuantity()).multiply(cashSales.getTax().getAmount()).divide(BigDecimal.valueOf(100));
 					
 					Row row1 = new Row();
 					row1.appendChild(new Label(line.getProduct().getName()));

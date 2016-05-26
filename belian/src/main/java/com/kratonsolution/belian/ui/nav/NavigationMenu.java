@@ -54,6 +54,7 @@ public class NavigationMenu extends Window
 		initPayment(modules);
 		initInventory(modules);
 		initAsset(modules);
+		initPOS(modules);
 		initSales(modules);
 		initProcurement(modules);
 		initHealtcare(modules);
@@ -192,6 +193,23 @@ public class NavigationMenu extends Window
 			Tabpanel panel = new Tabpanel();
 			panel.setStyle("overflow:auto");
 			panel.setParent(panels);
+			panel.appendChild(list);
+			panels.appendChild(panel);
+		}
+	}
+	
+	protected void initPOS(Map<String,Boolean> modules)
+	{
+		Listbox list = new Listbox();
+		list.setStyle("border:none");
+		
+		if(modules.containsKey("ROLE_DIRECT_SALES_READ"))
+			list.appendChild(new DirectSalesMenu());
+		
+		if(!list.getChildren().isEmpty())
+		{
+			tabs.appendChild(new Tab(language.get("navbar.menu.pos")));
+			Tabpanel panel = new Tabpanel();
 			panel.appendChild(list);
 			panels.appendChild(panel);
 		}

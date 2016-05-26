@@ -1,4 +1,4 @@
-package com.kratonsolution.belian.ui.sales.cashsales;
+package com.kratonsolution.belian.ui.sales.directsales;
 
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Label;
@@ -14,7 +14,7 @@ import com.kratonsolution.belian.ui.util.Numbers;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class CashSalesRowRenderer implements RowRenderer<CashSales>
+public class DirectSalesRowRenderer implements RowRenderer<CashSales>
 {
 	@Override
 	public void render(Row row, CashSales data, int index) throws Exception

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.sales.cashsales;
+package com.kratonsolution.belian.ui.sales.directsales;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -24,11 +24,11 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class CashSalesGridContent extends GridContent
+public class DirectSalesGridContent extends GridContent
 {
 	private CashSalesService service = Springs.get(CashSalesService.class);
 	
-	public CashSalesGridContent()
+	public DirectSalesGridContent()
 	{
 		super();
 		initToolbar();
@@ -44,8 +44,8 @@ public class CashSalesGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new CashSalesModel(utils.getRowPerPage()));
-				refresh(new CashSalesModel(utils.getRowPerPage()));
+				grid.setModel(new DirectSalesModel(utils.getRowPerPage()));
+				refresh(new DirectSalesModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -54,7 +54,7 @@ public class CashSalesGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				CashSalesWindow window = (CashSalesWindow)getParent();
+				DirectSalesWindow window = (DirectSalesWindow)getParent();
 				window.removeGrid();
 				window.insertCreateForm();
 			}
@@ -130,7 +130,7 @@ public class CashSalesGridContent extends GridContent
 								}
 							}
 							
-							refresh(new CashSalesModel(utils.getRowPerPage()));
+							refresh(new DirectSalesModel(utils.getRowPerPage()));
 						}
 					}
 				});
@@ -149,13 +149,13 @@ public class CashSalesGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final CashSalesModel model = new CashSalesModel(utils.getRowPerPage());
+		final DirectSalesModel model = new DirectSalesModel(utils.getRowPerPage());
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
 		grid.setEmptyMessage("No Cash Sales data exist.");
 		grid.setModel(model);
-		grid.setRowRenderer(new CashSalesRowRenderer());
+		grid.setRowRenderer(new DirectSalesRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(utils.getRowPerPage());
@@ -180,6 +180,6 @@ public class CashSalesGridContent extends GridContent
 			}
 		});
 		
-		refresh(new CashSalesModel(utils.getRowPerPage()));
+		refresh(new DirectSalesModel(utils.getRowPerPage()));
 	}
 }

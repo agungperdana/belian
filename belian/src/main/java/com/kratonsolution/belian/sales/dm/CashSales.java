@@ -9,6 +9,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -40,6 +42,10 @@ public class CashSales extends Billable
 	
 	@Column(name="note")
 	private String note;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="cash_sales_type")
+	private CashSalesType type = CashSalesType.SHORTTERM;
 	
 	@OneToMany(mappedBy="cashSales",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
 	private Set<CashSalesLine> items = new HashSet<CashSalesLine>();

@@ -14,8 +14,8 @@ public class CashSalesButton extends Toolbarbutton
 {
 	public CashSalesButton()
 	{
-		setImage("/icons/directsales.png");
-		setTooltip("Cash Sales Management");
+		setImage("/icons/cashsales.png");
+		setTooltiptext("Cash Sales Management");
 		setHeight("38px");
 	}
 }

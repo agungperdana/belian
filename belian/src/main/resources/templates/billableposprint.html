@@ -129,7 +129,6 @@
 		<td align="left" style="font-weight: bold;">Total</td>
 		<td align="right" style="border-bottom: solid black 1px;font-weight: bold;padding: 2px;'" th:text="${#numbers.formatDecimal(billable.billingAmount+billable.taxAmount,1,'COMMA',0,'POINT')}"/>
 	</tr>
-	<tr><td colspan="2" align="center">MELAYANI CATERING &#38; PESAN ANTAR.</td></tr>
 	<tr>
 		<td align="center" colspan="2">
 			<img class="printspan" th:src="@{/icons/print.png}" alt="" onclick="onprint()"/>

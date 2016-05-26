@@ -27,7 +27,7 @@ public class ReportToolbar extends Toolbar
 		excel.setDisabled(true);
 		
 		appendChild(generate);
-		appendChild(pdf);
-		appendChild(excel);
+//		appendChild(pdf);
+//		appendChild(excel);
 	}
 }

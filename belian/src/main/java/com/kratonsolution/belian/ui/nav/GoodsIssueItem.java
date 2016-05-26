@@ -7,9 +7,11 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.Language;
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.ui.inventory.goodsissue.GoodsIssueWindow;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -37,6 +39,13 @@ public class GoodsIssueItem extends Listitem
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
+				SessionUtils utils = Springs.get(SessionUtils.class);
+				if(utils.isSysAdmin())
+				{
+					Clients.showNotification("This module cannot be accessed using Sys Admin account.");
+					return;
+				}
+				
 				GoodsIssueWindow window = null;
 				
 				for(Component component:getPage().getRoots())
