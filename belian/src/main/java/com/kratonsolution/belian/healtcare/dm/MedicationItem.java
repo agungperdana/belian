@@ -82,7 +82,7 @@ public class MedicationItem implements BillableItem
 	@Override
 	public String getMeasure()
 	{
-		return getMedicine().getUom().getName();
+		return getMedicine().getUom().getCode();
 	}
 
 	@Override

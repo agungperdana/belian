@@ -11,11 +11,13 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Row;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.HasCreateForm;
 import com.kratonsolution.belian.ui.HasEditForm;
 import com.kratonsolution.belian.ui.HasGrid;
 import com.kratonsolution.belian.ui.nav.IconBar;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * 
@@ -24,7 +26,9 @@ import com.kratonsolution.belian.ui.nav.IconBar;
  */
 public class ProductWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption("Product");
+	private Language lang = Springs.get(Language.class); 
+	
+	private Caption caption = new Caption(lang.get("inventory.product.grid.column.caption"));
 	
 	private ProductButton status = new ProductButton();
 	
@@ -40,7 +44,7 @@ public class ProductWindow extends AbstractWindow implements HasGrid,HasCreateFo
 	private ProductWindow()
 	{
 		super();
-		setWidth("750px");
+		setWidth("775px");
 	}
 	
 	protected void init()

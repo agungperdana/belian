@@ -65,6 +65,9 @@ public class Product implements Listable, Serializable
 	@Enumerated(EnumType.STRING)
 	private ProductType type = ProductType.FINISHGOOD;
 	
+	@Column(name="minimal_stock")
+	private int minStok = 0;
+	
 	@Version
 	private Long version;
 	
@@ -80,7 +83,7 @@ public class Product implements Listable, Serializable
 	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<ProductSupplier> suppliers = new HashSet<ProductSupplier>();
 	
-	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
 	private Set<ProductPrice> prices = new HashSet<ProductPrice>();
 	
 	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true)

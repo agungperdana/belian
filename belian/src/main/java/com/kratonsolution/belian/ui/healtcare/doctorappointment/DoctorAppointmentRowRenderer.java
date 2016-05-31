@@ -37,8 +37,8 @@ public class DoctorAppointmentRowRenderer implements RowRenderer<DoctorAppointme
 
 			row.appendChild(checkbox);
 			row.appendChild(new Label(DateTimes.format(data.getDate())));
-			row.appendChild(new Label(data.getDoctor().getFrom().getName()));
-			row.appendChild(new Label(data.getPatient().getFrom().getName()));
+			row.appendChild(new Label(data.getDoctor().getName()));
+			row.appendChild(new Label(data.getPatient().getName()));
 			row.appendChild(new Label(data.getStatus().toString()));
 			row.appendChild(new Label(data.getNote()));
 			row.appendChild(new Label(data.getId()));

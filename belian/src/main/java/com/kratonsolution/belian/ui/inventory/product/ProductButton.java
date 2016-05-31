@@ -15,7 +15,7 @@ public class ProductButton extends Toolbarbutton
 	public ProductButton()
 	{
 		setImage("/icons/product.png");
-		setTooltip("Product Management");
+		setTooltiptext("Product Management");
 		setHeight("38px");
 	}
 }

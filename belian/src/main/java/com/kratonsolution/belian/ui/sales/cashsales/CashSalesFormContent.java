@@ -48,6 +48,7 @@ import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.component.ProductPriceSelectionListener;
 import com.kratonsolution.belian.ui.component.ProductRow;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -126,9 +127,7 @@ public class CashSalesFormContent extends FormContent implements ProductPriceSel
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				CashSalesWindow window = (CashSalesWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new CashSalesGridContent());
 			}
 		});
 		
@@ -174,9 +173,7 @@ public class CashSalesFormContent extends FormContent implements ProductPriceSel
 				
 				service.add(sales);
 				
-				CashSalesWindow window = (CashSalesWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new CashSalesGridContent());
 			}
 		});
 	}

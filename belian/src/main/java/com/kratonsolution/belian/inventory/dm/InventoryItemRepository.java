@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,4 +21,7 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, St
 	
 	@Query("FROM InventoryItem item WHERE item.product.id =:product AND item.facility.id =:facility ")
 	public InventoryItem findOne(@Param("product")String product,@Param("facility")String facility);
+	
+	@Query("FROM InventoryItem item WHERE item.product.id =:product AND item.facility.id =:facility AND item.expiredDate =:expired")
+	public InventoryItem findOne(@Param("product")String product,@Param("facility")String facility,@Param("expired")Date expired);
 }

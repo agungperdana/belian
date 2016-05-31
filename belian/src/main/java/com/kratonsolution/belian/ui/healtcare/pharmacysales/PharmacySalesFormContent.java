@@ -9,7 +9,6 @@ import java.text.NumberFormat;
 import java.util.Iterator;
 
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -32,7 +31,6 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 
-import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.global.dm.SequenceNumber.Code;
@@ -41,10 +39,11 @@ import com.kratonsolution.belian.healtcare.dm.Medication;
 import com.kratonsolution.belian.healtcare.dm.MedicationItem;
 import com.kratonsolution.belian.healtcare.svc.MedicationService;
 import com.kratonsolution.belian.ui.FormContent;
-import com.kratonsolution.belian.ui.component.MedicalProductRow;
-import com.kratonsolution.belian.ui.component.PatientBox;
+import com.kratonsolution.belian.ui.component.MedicationRow;
+import com.kratonsolution.belian.ui.component.PersonBox;
 import com.kratonsolution.belian.ui.component.ProductPriceSelectionListener;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -76,7 +75,7 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 	
 	private Listbox saleses = Components.fullSpanSelect(sessionUtils.getUser().getPerson());
 	
-	private PatientBox customers = new PatientBox();
+	private PersonBox customers = new PersonBox(false);
 	
 	private Listbox currencys = Components.fullSpanSelect(sessionUtils.getCurrency());
 	
@@ -113,9 +112,7 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PharmacySalesWindow window = (PharmacySalesWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(),new PharmacySalesGridContent());
 			}
 		});
 		
@@ -124,18 +121,10 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				if(Strings.isNullOrEmpty(number.getText()))
-					throw new WrongValueException(number,"Code cannot be empty");
-			
-				if(customers.getPatient() == null)
-					throw new WrongValueException(customers,"Customer cannot be empty");
-
-				if(taxes.getSelectedItem() == null)
-					throw new WrongValueException(taxes,"Tax cannot be empty");
-				
 				Medication medication = new Medication();
+				medication.setType("Apotek");
 				medication.setCurrency(sessionUtils.getCurrency());
-				medication.setCustomer(customers.getPatient().getFrom());
+				medication.setCustomer(customers.getPerson());
 				medication.setDate(new Date(date.getValue().getTime()));
 				medication.setNumber(number.getText());
 				medication.setOrganization(sessionUtils.getOrganization());
@@ -144,25 +133,15 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 				
 				for(Component com:saleItems.getRows().getChildren())
 				{
-					MedicalProductRow row = (MedicalProductRow)com;
-					
-					MedicationItem item = new MedicationItem();
-					item.setCharge(row.getCharge());
-					item.setDiscount(row.getDiscount());
+					MedicationRow row = (MedicationRow)com;
+					MedicationItem item = row.getItem();
 					item.setMedication(medication);
-					item.setMedicine(row.getProduct());
-					item.setNote(row.getNote());
-					item.setPrice(row.getPrice());
-					item.setQuantity(row.getQuantity());
-					
 					medication.getItems().add(item);
 				}
 				
 				service.add(medication);
 				
-				PharmacySalesWindow window = (PharmacySalesWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(),new PharmacySalesGridContent());
 			}
 		});
 	}
@@ -181,9 +160,9 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 		}
 		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"125px"));
+		grid.getColumns().appendChild(new Column(null,null,"85px"));
 		grid.getColumns().appendChild(new Column());
-		grid.getColumns().appendChild(new Column(null,null,"125px"));
+		grid.getColumns().appendChild(new Column(null,null,"80px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
@@ -193,7 +172,7 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 		row1.appendChild(bill);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Document Number"));
+		row2.appendChild(new Label("Doc Number"));
 		row2.appendChild(number);
 		row2.appendChild(new Label("Tax"));
 		row2.appendChild(tax);
@@ -217,7 +196,7 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 		row6.appendChild(customers);
 		
 		Row row8 = new Row();
-		row8.appendChild(new Label("Sales Location"));
+		row8.appendChild(new Label("Location"));
 		row8.appendChild(locations);
 		row8.appendChild(new Label("Note"));
 		row8.appendChild(note);
@@ -257,7 +236,7 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				MedicalProductRow row = new MedicalProductRow(Components.string(locations),customers.getPatient().getFrom().getId(),Components.string(currencys),customers.getPatient().isBpjs(),true);
+				MedicationRow row = new MedicationRow(false,false);
 				row.addProductPriceListener(PharmacySalesFormContent.this);
 				saleItems.getRows().appendChild(row);
 			}
@@ -308,8 +287,8 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 		
 		for(Component com:saleItems.getRows().getChildren())
 		{
-			MedicalProductRow row = (MedicalProductRow)com;
-			billAmount = billAmount.add(row.getQuantity().multiply(row.getPrice().subtract(row.getDiscount()).add(row.getCharge())));
+			MedicationRow row = (MedicationRow)com;
+			billAmount = billAmount.add(row.getAmount());
 		}
 		
 		Tax tx = sessionUtils.getTax();

@@ -23,6 +23,8 @@ import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Vlayout;
 
 import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.Language;
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
 import com.kratonsolution.belian.inventory.svc.ProductService;
@@ -39,6 +41,10 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PriceTab implements TabedDisplay
 {
+	private SessionUtils utils = Springs.get(SessionUtils.class);
+	
+	private Language lang = Springs.get(Language.class);
+	
 	private Product product;
 
 	private ProductEditContent parent;
@@ -53,7 +59,7 @@ public class PriceTab implements TabedDisplay
 
 	public Tab getHeader()
 	{
-		return new Tab("Price");
+		return new Tab(lang.get("inventory.product.detail.price"));
 	}
 
 	public Tabpanel getBody()
@@ -68,7 +74,7 @@ public class PriceTab implements TabedDisplay
 		panel.appendChild(layout);
 
 		Toolbar toolbar = new Toolbar();
-		Toolbarbutton create = new Toolbarbutton("New Price","/icons/new.png");
+		Toolbarbutton create = new Toolbarbutton(lang.get("label.component.button.new"),"/icons/new.png");
 		create.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
@@ -86,14 +92,14 @@ public class PriceTab implements TabedDisplay
 		grid.appendChild(new Columns());
 
 		grid.getColumns().appendChild(new Column(null,null,"35px"));
-		grid.getColumns().appendChild(new Column("From",null,"85px"));
-		grid.getColumns().appendChild(new Column("To",null,"85px"));
-		grid.getColumns().appendChild(new Column("Price",null,"125px"));
-		grid.getColumns().appendChild(new Column("Type",null,"50px"));
-		grid.getColumns().appendChild(new Column("Geographic",null,"100px"));
-		grid.getColumns().appendChild(new Column("Party",null,"135px"));
+		grid.getColumns().appendChild(new Column(lang.get("inventory.product.detail.price.grid.from"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("inventory.product.detail.price.grid.to"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("inventory.product.detail.price.grid.price"),null,"125px"));
+		grid.getColumns().appendChild(new Column(lang.get("inventory.product.detail.price.grid.type"),null,"100px"));
+		grid.getColumns().appendChild(new Column(lang.get("inventory.product.detail.price.grid.geo"),null,"100px"));
+		grid.getColumns().appendChild(new Column(lang.get("inventory.product.detail.price.grid.party"),null,"100px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(7).setVisible(false);
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("6");
 
 		final Iterator<ProductPrice> iterator = this.product.getPrices().iterator();
@@ -129,7 +135,7 @@ public class PriceTab implements TabedDisplay
 			row.appendChild(new Label(DateTimes.format(price.getFrom())));
 			row.appendChild(new Label(DateTimes.format(price.getTo())));
 			row.appendChild(new Label(Numbers.format(price.getPrice())));
-			row.appendChild(new Label(price.getType().toString()));
+			row.appendChild(new Label(price.getType().display(utils.getLanguage())));
 			row.appendChild(new Label(Objects.notNull(price.getGeographic())?price.getGeographic().getName():""));
 			row.appendChild(new Label(Objects.notNull(price.getParty())?price.getParty().getName():""));
 			row.appendChild(new Label(price.getId()));

@@ -3,10 +3,13 @@
  */
 package com.kratonsolution.belian.inventory.svc;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +49,15 @@ public class InventoryItemService
 	}
 	
 	@Secured("ROLE_INVITEM_READ")
+	public InventoryItem findOne(String product,String facility,Date expired)
+	{
+		if(expired == null)
+			findOne(product, facility);
+	
+		return repository.findOne(product, facility, expired);
+	}
+	
+	@Secured("ROLE_INVITEM_READ")
 	public List<InventoryItem> findAll()
 	{
 		return repository.findAll();
@@ -54,7 +66,7 @@ public class InventoryItemService
 	@Secured("ROLE_INVITEM_READ")
 	public List<InventoryItem> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		return repository.findAll(new PageRequest(pageIndex, pageSize,new Sort(Direction.ASC,"product.name"))).getContent();
 	}
 	
 	@Secured("ROLE_INVITEM_CREATE")

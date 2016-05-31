@@ -29,8 +29,8 @@ import com.kratonsolution.belian.healtcare.svc.DoctorAppointmentService;
 import com.kratonsolution.belian.healtcare.svc.DoctorService;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
 import com.kratonsolution.belian.ui.FormContent;
-import com.kratonsolution.belian.ui.component.DoctorBox;
-import com.kratonsolution.belian.ui.component.PatientBox;
+import com.kratonsolution.belian.ui.healtcare.doctor.DoctorBox;
+import com.kratonsolution.belian.ui.healtcare.patient.PatientBox;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -57,7 +57,7 @@ public class DoctorAppointmentFormContent extends FormContent
 	
 	private Textbox note = new Textbox();
 
-	private DoctorBox doctors = new DoctorBox();
+	private DoctorBox doctors = new DoctorBox(true);
 	
 	private PatientBox patients = new PatientBox();
 	

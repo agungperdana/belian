@@ -26,8 +26,9 @@ import com.kratonsolution.belian.healtcare.dm.Patient;
 import com.kratonsolution.belian.healtcare.svc.MedicationService;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
 import com.kratonsolution.belian.ui.FormContent;
-import com.kratonsolution.belian.ui.component.MedicalProductRow;
+import com.kratonsolution.belian.ui.component.MedicationRow;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Numbers;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -92,38 +93,26 @@ public class PharmacyOrderEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PharmacyOrderWindow window = (PharmacyOrderWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(),new PharmacyOrderGridContent());
 			}
 		});
 		
-		Medication medication = service.findOne(RowUtils.string(row, 6));
+		Medication medication = service.findOne(RowUtils.id(row));
 		if(medication != null && medication.isPaid())
 		{
-			if(medication.getStatus().equals(MedicationStatus.Registered))
-				toolbar.getSave().setLabel("Prepared");
-			else if(medication.getStatus().equals(MedicationStatus.Prepared))
-				toolbar.getSave().setLabel("Finish");
-			else 
+			if(medication.getStatus().equals(MedicationStatus.Finished))
 				toolbar.removeChild(toolbar.getSave());
 			
+			toolbar.getSave().setLabel("Finish");
 			toolbar.getSave().setImage("/icons/handled.png");
 			toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 			{
 				@Override
 				public void onEvent(Event event) throws Exception
 				{
-					if(medication.getStatus().equals(MedicationStatus.Registered))
-						medication.setStatus(MedicationStatus.Prepared);
-					else if(medication.getStatus().equals(MedicationStatus.Prepared))
-						medication.setStatus(MedicationStatus.Finished);
-
 					service.finish(medication);
 					
-					PharmacyOrderWindow window = (PharmacyOrderWindow)getParent();
-					window.removeEditForm();
-					window.insertGrid();
+					Flow.next(getParent(),new PharmacyOrderGridContent());
 				}
 			});
 		}
@@ -132,7 +121,7 @@ public class PharmacyOrderEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		Medication medication = service.findOne(RowUtils.string(row, 6));
+		Medication medication = service.findOne(RowUtils.id(row));
 		if(medication != null)
 		{
 			number.setText(medication.getNumber());
@@ -150,7 +139,7 @@ public class PharmacyOrderEditContent extends FormContent
 				taxes.setSelectedIndex(0);
 			}
 
-			customers.appendChild(new Listitem(medication.getCustomer().getLabel(),medication.getCustomer().getValue()));
+			customers.appendChild(new Listitem(medication.getCustomer()!=null?medication.getCustomer().getLabel():"Anonymous",medication.getCustomer()!=null?medication.getCustomer().getLabel():"Anonymous"));
 			customers.setSelectedIndex(0);
 
 			locations.appendChild(new Listitem(sessionUtils.getLocation().getLabel(),sessionUtils.getLocation().getValue()));
@@ -160,9 +149,9 @@ public class PharmacyOrderEditContent extends FormContent
 			totalBill.setText(Numbers.format(medication.getBillingAmount().add(medication.getTaxAmount())));
 
 			grid.appendChild(new Columns());
-			grid.getColumns().appendChild(new Column(null,null,"125px"));
+			grid.getColumns().appendChild(new Column(null,null,"100px"));
 			grid.getColumns().appendChild(new Column());
-			grid.getColumns().appendChild(new Column(null,null,"125px"));
+			grid.getColumns().appendChild(new Column(null,null,"100px"));
 			grid.getColumns().appendChild(new Column());
 
 			Row row1 = new Row();
@@ -172,7 +161,7 @@ public class PharmacyOrderEditContent extends FormContent
 			row1.appendChild(currencys);
 			
 			Row row2 = new Row();
-			row2.appendChild(new Label("Document Number"));
+			row2.appendChild(new Label("Doc Number"));
 			row2.appendChild(number);
 			row2.appendChild(new Label("Customer"));
 			row2.appendChild(customers);
@@ -190,7 +179,7 @@ public class PharmacyOrderEditContent extends FormContent
 			row5.appendChild(saleses);
 
 			Row row8 = new Row();
-			row8.appendChild(new Label("Sales Location"));
+			row8.appendChild(new Label("Location"));
 			row8.appendChild(locations);
 
 			rows.appendChild(row1);
@@ -210,27 +199,28 @@ public class PharmacyOrderEditContent extends FormContent
 		saleItems.getColumns().appendChild(new Column("Product",null,"200px"));
 		saleItems.getColumns().appendChild(new Column("Quantity",null,"70px"));
 		saleItems.getColumns().appendChild(new Column("UoM",null,"75px"));
+		saleItems.getColumns().appendChild(new Column("Price",null,"75px"));
+		saleItems.getColumns().appendChild(new Column("Discount",null,"75px"));
+		saleItems.getColumns().appendChild(new Column("Charge",null,"75px"));
 		saleItems.getColumns().appendChild(new Column("Note",null));
-		saleItems.setSpan("4");
+		saleItems.setSpan("1");
 
-		Medication medication = service.findOne(RowUtils.string(row, 6));
+		Medication medication = service.findOne(RowUtils.id(row));
 		if(medication != null)
 		{
 			boolean bpjs = false;
-			Patient patient = patientService.findOne(medication.getCustomer().getId(), medication.getOrganization().getId());
-			if(patient != null)
-				bpjs = patient.isBpjs();
+			
+			if(medication.getCustomer() != null)
+			{
+				Patient patient = patientService.findOne(medication.getCustomer().getId(), medication.getOrganization().getId());
+				if(patient != null)
+					bpjs = patient.isBpjs();
+			}
 			
 			for(MedicationItem item:medication.getItems())
 			{
-				MedicalProductRow row = new MedicalProductRow(sessionUtils.getLocation().getId(),medication.getCustomer().getId(), medication.getCurrency().getId(), bpjs);
-				row.setCharge(item.getCharge());
-				row.setDiscount(item.getDiscount());
-				row.setNote(item.getNote());
-				row.setPrice(item.getPrice());
-				row.setProduct(item.getMedicine());
-				row.setQuantity(item.getQuantity());
-				
+				MedicationRow row = new MedicationRow(bpjs,false);
+				row.setItem(item);
 				saleItems.getRows().appendChild(row);
 			}
 		}

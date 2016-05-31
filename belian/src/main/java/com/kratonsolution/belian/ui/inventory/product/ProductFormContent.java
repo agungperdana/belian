@@ -12,6 +12,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
@@ -20,6 +21,8 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.Language;
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductType;
 import com.kratonsolution.belian.inventory.svc.ProductCategoryService;
@@ -36,11 +39,15 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class ProductFormContent extends FormContent
 {	
-	private final ProductService service = Springs.get(ProductService.class);
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
-	private final UnitOfMeasureService unitOfMeasureService = Springs.get(UnitOfMeasureService.class);
+	private Language lang = Springs.get(Language.class);
 	
-	private final ProductCategoryService categoryService = Springs.get(ProductCategoryService.class);
+	private ProductService service = Springs.get(ProductService.class);
+	
+	private UnitOfMeasureService unitOfMeasureService = Springs.get(UnitOfMeasureService.class);
+	
+	private ProductCategoryService categoryService = Springs.get(ProductCategoryService.class);
 	
 	private Datebox start = Components.currentDatebox();
 	
@@ -49,6 +56,8 @@ public class ProductFormContent extends FormContent
 	private Textbox code = new Textbox();
 	
 	private Textbox name = new Textbox();
+	
+	private Doublebox min = Components.stdDoubleBox(0);
 	
 	private Listbox categorys = Components.newSelect(categoryService.findAll(), false);
 	
@@ -108,6 +117,7 @@ public class ProductFormContent extends FormContent
 				product.setType(ProductType.valueOf(Components.string(types)));
 				product.setCategory(categoryService.findOne(Components.string(categorys)));
 				product.setUom(unitOfMeasureService.findOne(Components.string(uoms)));
+				product.setMinStok(min.getValue().intValue());
 				
 				service.add(product);
 				
@@ -135,7 +145,7 @@ public class ProductFormContent extends FormContent
 		uoms.setMold("select");
 		
 		for(ProductType type:ProductType.values())
-			types.appendChild(new Listitem(type.name(),type.name()));
+			types.appendChild(new Listitem(type.display(utils.getLanguage()),type.name()));
 		
 		if(!categorys.getItems().isEmpty())
 			categorys.setSelectedIndex(0);
@@ -148,32 +158,36 @@ public class ProductFormContent extends FormContent
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Start"));
+		row1.appendChild(new Label(lang.get("inventory.product.form.start")));
 		row1.appendChild(start);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("End"));
+		row2.appendChild(new Label(lang.get("inventory.product.form.end")));
 		row2.appendChild(end);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Code"));
+		row3.appendChild(new Label(lang.get("inventory.product.form.code")));
 		row3.appendChild(code);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Name"));
+		row4.appendChild(new Label(lang.get("inventory.product.form.name")));
 		row4.appendChild(name);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Type"));
+		row5.appendChild(new Label(lang.get("inventory.product.form.type")));
 		row5.appendChild(types);
 		
 		Row row6 = new Row();
-		row6.appendChild(new Label("Category"));
+		row6.appendChild(new Label(lang.get("inventory.product.form.category")));
 		row6.appendChild(categorys);
 		
 		Row row7 = new Row();
-		row7.appendChild(new Label("Unit of Measure"));
+		row7.appendChild(new Label(lang.get("inventory.product.form.uom")));
 		row7.appendChild(uoms);
+		
+		Row row8 = new Row();
+		row8.appendChild(new Label(lang.get("inventory.product.form.minstock")));
+		row8.appendChild(min);
 		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
@@ -182,5 +196,6 @@ public class ProductFormContent extends FormContent
 		rows.appendChild(row5);
 		rows.appendChild(row6);
 		rows.appendChild(row7);
+		rows.appendChild(row8);
 	}
 }

@@ -24,6 +24,8 @@ import org.zkoss.zul.Vlayout;
 
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
+import com.kratonsolution.belian.common.Language;
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.svc.GeographicService;
@@ -44,6 +46,10 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PriceEditWindow extends AbstractWindow
 {
+	private SessionUtils utils = Springs.get(SessionUtils.class);
+	
+	private Language lang = Springs.get(Language.class);
+	
 	private Vlayout layout = new Vlayout();
 
 	private FormToolbar toolbar = new FormToolbar();
@@ -85,7 +91,7 @@ public class PriceEditWindow extends AbstractWindow
 
 		setMode(Mode.POPUP);
 
-		Caption caption = new Caption("Product Feature");
+		Caption caption = new Caption(lang.get("inventory.product.detail.price"));
 		caption.setImage("/icons/product.png");
 
 		appendChild(caption);
@@ -161,7 +167,7 @@ public class PriceEditWindow extends AbstractWindow
 
 		for(ProductPriceType type:ProductPriceType.values())
 		{
-			Listitem listitem = new Listitem(type.name(),type.name());
+			Listitem listitem = new Listitem(type.display(utils.getLanguage()),type.name());
 			types.appendChild(listitem);
 			if(type.equals(productPrice.getType()))
 				types.setSelectedItem(listitem);
@@ -198,31 +204,31 @@ public class PriceEditWindow extends AbstractWindow
 		content.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("From"));
+		row1.appendChild(new Label(lang.get("inventory.product.detail.price.grid.from")));
 		row1.appendChild(from);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("To"));
+		row2.appendChild(new Label(lang.get("inventory.product.detail.price.grid.to")));
 		row2.appendChild(to);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Price"));
+		row3.appendChild(new Label(lang.get("inventory.product.detail.price.grid.price")));
 		row3.appendChild(price);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Currency"));
+		row4.appendChild(new Label(lang.get("inventory.product.detail.price.grid.currency")));
 		row4.appendChild(currencys);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Type"));
+		row5.appendChild(new Label(lang.get("inventory.product.detail.price.grid.type")));
 		row5.appendChild(types);
 		
 		Row row6 = new Row();
-		row6.appendChild(new Label("For Area"));
+		row6.appendChild(new Label(lang.get("inventory.product.detail.price.grid.geo")));
 		row6.appendChild(geographics);
 		
 		Row row7 = new Row();
-		row7.appendChild(new Label("For Customer"));
+		row7.appendChild(new Label(lang.get("inventory.product.detail.price.grid.party")));
 		row7.appendChild(partys);
 		
 		content.setWidth("100%");

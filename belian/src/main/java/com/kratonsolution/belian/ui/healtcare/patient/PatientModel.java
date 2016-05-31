@@ -9,7 +9,7 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
-import com.kratonsolution.belian.healtcare.dm.Patient;
+import com.kratonsolution.belian.healtcare.dm.PatientRelationship;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -18,11 +18,11 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class PatientModel implements ListModel<Patient>
+public class PatientModel implements ListModel<PatientRelationship>
 {
 	private final PatientService service = Springs.get(PatientService.class);
 	
-	private List<Patient> data = new ArrayList<Patient>();
+	private List<PatientRelationship> data = new ArrayList<PatientRelationship>();
 	
 	public PatientModel(int itemSize)
 	{
@@ -30,7 +30,7 @@ public class PatientModel implements ListModel<Patient>
 	}
 	
 	@Override
-	public Patient getElementAt(int index)
+	public PatientRelationship getElementAt(int index)
 	{
 		if(index >= data.size())
 			return null;

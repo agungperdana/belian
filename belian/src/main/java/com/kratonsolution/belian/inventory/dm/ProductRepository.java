@@ -3,7 +3,7 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -78,6 +78,18 @@ public interface ProductRepository extends JpaRepository<Product, String>
 	public List<Product> findAll(@Param("date")Date date,
 								 @Param("name")String name,
 								 @Param("segmentation")IndustrySegmentation segmentation);
+
+	@Query("FROM Product prd WHERE "
+			+ "((:date BETWEEN prd.start AND prd.end) "
+			+ "OR (prd.start <= :date AND prd.end IS NULL)) "
+			+ "AND prd.name LIKE :name% "
+			+ "AND prd.category.segmentation =:segmentation "
+			+ "AND prd.type =:type "
+			+ "ORDER BY prd.name ASC")
+	public List<Product> findAllMedical(@Param("date")Date date,
+								 @Param("name")String name,
+								 @Param("segmentation")IndustrySegmentation segmentation,
+								 @Param("type")ProductType type);
 	
 	@Query("FROM Product prd WHERE "
 			+ "((:date BETWEEN prd.start AND prd.end) "

@@ -44,7 +44,7 @@ public class PharmacySalesWindow extends AbstractWindow implements HasGrid,HasCr
 	private PharmacySalesWindow()
 	{
 		super();
-		setWidth("750px");
+		setWidth("780px");
 		setHeight("520px");
 	}
 	

@@ -9,7 +9,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
 import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * 
@@ -18,7 +20,8 @@ import com.kratonsolution.belian.inventory.dm.Product;
  */
 public class ProductRowRenderer implements RowRenderer<Product>
 {
-
+	private SessionUtils utils = Springs.get(SessionUtils.class);
+	
 	@Override
 	public void render(Row row, Product data, int index) throws Exception
 	{
@@ -30,7 +33,7 @@ public class ProductRowRenderer implements RowRenderer<Product>
 			row.appendChild(new Label(data.getCode()));
 			row.appendChild(new Label(data.getName()));
 			row.appendChild(new Label(data.getCategory().getName()));
-			row.appendChild(new Label(data.getType().name()));
+			row.appendChild(new Label(data.getType().display(utils.getLanguage())));
 			row.appendChild(new Label(data.getUom().getCode()));
 			row.appendChild(new Label(data.getId()));
 		}

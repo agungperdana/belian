@@ -17,6 +17,20 @@ public class DateTimes implements Serializable
 {
 	private static final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 
+	public static final boolean inActiveState(java.sql.Date start,java.sql.Date end)
+	{
+		if(start == null)
+			return false;
+		
+		if(start.compareTo(currentDate()) <= 0 && end == null)
+			return true;
+		
+		if(start.compareTo(currentDate()) <= 0 && end.compareTo(currentDate()) >= 0)
+			return true;
+		
+		return false;
+	}
+	
 	public static final boolean inRange(Date target,Date rangeStart,Date rangeEnd)
 	{
 		return ((target.compareTo(rangeStart) >= 0) && (rangeEnd == null || target.compareTo(rangeEnd) <= 0));

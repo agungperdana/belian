@@ -30,9 +30,9 @@ import com.kratonsolution.belian.healtcare.dm.LaboratoryItem;
 import com.kratonsolution.belian.healtcare.svc.LaboratoryRegistrationService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
-import com.kratonsolution.belian.ui.component.DoctorBox;
-import com.kratonsolution.belian.ui.component.MedicalProductRow;
-import com.kratonsolution.belian.ui.component.PatientBox;
+import com.kratonsolution.belian.ui.component.MedicationRow;
+import com.kratonsolution.belian.ui.healtcare.doctor.DoctorBox;
+import com.kratonsolution.belian.ui.healtcare.patient.PatientBox;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -106,7 +106,7 @@ public class LabsRegistrationFormContent extends FormContent
 
 				for(Component com:details.getRows().getChildren())
 				{
-					MedicalProductRow row = (MedicalProductRow)com;
+					MedicationRow row = (MedicationRow)com;
 					
 					LaboratoryItem item = new LaboratoryItem();
 					item.setCharge(row.getCharge());
@@ -178,7 +178,7 @@ public class LabsRegistrationFormContent extends FormContent
 					return;
 				}
 					
-				details.getRows().appendChild(new MedicalProductRow(utils.getLocation().getId(),patient.getPatient().getFrom().getId(),utils.getCurrency().getId(),patient.getPatient().isBpjs()));
+				details.getRows().appendChild(new MedicationRow(utils.getLocation().getId(),patient.getPatient().getFrom().getId(),utils.getCurrency().getId(),patient.getPatient().isBpjs()));
 			}
 		});
 		

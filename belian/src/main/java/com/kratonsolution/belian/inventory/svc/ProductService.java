@@ -3,13 +3,15 @@
  */
 package com.kratonsolution.belian.inventory.svc;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -72,7 +74,7 @@ public class ProductService
 	@Secured("ROLE_PRODUCT_READ")
 	public List<Product> findAll()
 	{
-		return repository.findAll();
+		return repository.findAll(new Sort(Direction.ASC,"code","name"));
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -104,7 +106,7 @@ public class ProductService
 	@Secured("ROLE_PRODUCT_READ")
 	public List<Product> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		return repository.findAll(new PageRequest(pageIndex, pageSize,new Sort(Direction.ASC,"code","name"))).getContent();
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)

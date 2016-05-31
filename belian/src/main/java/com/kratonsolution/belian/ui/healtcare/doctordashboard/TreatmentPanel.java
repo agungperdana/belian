@@ -26,7 +26,7 @@ import com.kratonsolution.belian.healtcare.dm.TreatmentItem;
 import com.kratonsolution.belian.healtcare.svc.MedicalRecordService;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.NRCToolbar;
-import com.kratonsolution.belian.ui.component.MedicalProductRow;
+import com.kratonsolution.belian.ui.component.MedicationRow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -70,7 +70,7 @@ public class TreatmentPanel extends Tabpanel
 					return;
 				}
 					
-				grid.getRows().appendChild(new MedicalProductRow(utils.getLocation().getId(),appointment.getPatient().getFrom().getId(),utils.getCurrency().getId(),appointment.getPatient().isBpjs()));
+				grid.getRows().appendChild(new MedicationRow(utils.getLocation().getId(),appointment.getPatient().getFrom().getId(),utils.getCurrency().getId(),appointment.getPatient().isBpjs()));
 			}
 		});
 		
@@ -129,7 +129,7 @@ public class TreatmentPanel extends Tabpanel
 			
 			for(Component com:grid.getRows().getChildren())
 			{
-				MedicalProductRow row = (MedicalProductRow)com;
+				MedicationRow row = (MedicationRow)com;
 				
 				TreatmentItem item = new TreatmentItem();
 				item.setCharge(row.getCharge());

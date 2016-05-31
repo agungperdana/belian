@@ -9,8 +9,10 @@ import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
+import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
@@ -18,6 +20,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.inventory.dm.InventoryItem;
 import com.kratonsolution.belian.inventory.svc.FacilityService;
 import com.kratonsolution.belian.inventory.svc.InventoryItemService;
@@ -25,6 +28,7 @@ import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.component.ProductBox;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -48,6 +52,8 @@ public class InventoryItemFormContent extends FormContent
 	
 	private Doublebox onhand = new Doublebox(1d);
 	
+	private Datebox expired = Components.mandatoryDatebox("150px");
+	
 	public InventoryItemFormContent()
 	{
 		super();
@@ -63,9 +69,7 @@ public class InventoryItemFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				InventoryItemWindow window = (InventoryItemWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new InventoryItemGridContent());
 			}
 		});
 		
@@ -80,17 +84,23 @@ public class InventoryItemFormContent extends FormContent
 				if(products.getProduct() == null)
 					throw new WrongValueException(products,"Product cannot be empty");
 				
+				InventoryItem out = service.findOne(products.getProduct().getId(),Components.string(facilitys),DateTimes.sql(expired.getValue()));
+				if(out != null)
+				{
+					Clients.showNotification("Inventory Item already exist,please use Stock Adjustment instead.");
+					return;
+				}
+				
 				InventoryItem item = new InventoryItem();
 				item.setProduct(products.getProduct());
 				item.setFacility(facilityService.findOne(facilitys.getSelectedItem().getValue().toString()));
 				item.setOnhand(BigDecimal.valueOf(onhand.getValue()));
 				item.setSerialNumber(serial.getText());
+				item.setExpiredDate(DateTimes.sql(expired.getValue()));
 				
 				service.add(item);
 				
-				InventoryItemWindow window = (InventoryItemWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new InventoryItemGridContent());
 			}
 		});
 	}
@@ -123,9 +133,14 @@ public class InventoryItemFormContent extends FormContent
 		row5.appendChild(new Label("On Hand"));
 		row5.appendChild(onhand);
 		
+		Row row6 = new Row();
+		row6.appendChild(new Label("Expired Date"));
+		row6.appendChild(expired);
+		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row4);
 		rows.appendChild(row5);
+		rows.appendChild(row6);
 	}
 }

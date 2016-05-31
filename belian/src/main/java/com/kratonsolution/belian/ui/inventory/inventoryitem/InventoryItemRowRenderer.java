@@ -8,6 +8,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.inventory.dm.InventoryItem;
 import com.kratonsolution.belian.ui.util.Numbers;
 
@@ -29,6 +30,7 @@ public class InventoryItemRowRenderer implements RowRenderer<InventoryItem>
 			row.appendChild(new Label(data.getFacility().getName())); 
 			row.appendChild(new Label(data.getSerialNumber()));
 			row.appendChild(new Label(Numbers.format(data.getOnhand())));
+			row.appendChild(new Label(DateTimes.format(data.getExpiredDate())));
 			row.appendChild(new Label(data.getId()));
 		}
 	}

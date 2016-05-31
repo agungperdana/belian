@@ -26,6 +26,7 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
 import com.kratonsolution.belian.inventory.dm.ProductPriceRepository;
@@ -40,8 +41,10 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class ProductRow extends Row
+public class ProductRow extends Row implements HasAmount
 {
+	private SessionUtils utils = Springs.get(SessionUtils.class);
+	
 	private ProductRepository repository = Springs.get(ProductRepository.class);
 
 	private ProductRepository productRepository = Springs.get(ProductRepository.class);
@@ -129,7 +132,6 @@ public class ProductRow extends Row
 	
 	public void setBillable(BillableItem bill)
 	{
-		
 		products.appendChild(new ProductComboItem(bill.getProduct()));
 		products.setSelectedIndex(0);
 		products.setReadonly(true);
@@ -142,22 +144,34 @@ public class ProductRow extends Row
 		
 		for(ProductPrice price:bill.getProduct().getPrices())
 		{
-			if(!price.getType().equals(ProductPriceType.DISCOUNT) && !price.getType().equals(ProductPriceType.CHARGE))
+			if(DateTimes.inActiveState(price.getFrom(), price.getTo()))
 			{
-				Listitem itm = prices.appendItem(price.getLabel()+"("+price.getType().name()+")", price.getValue());
-				if(price.getType().equals(ProductPriceType.BASE))
-					prices.setSelectedItem(itm);
+				if(!price.getType().equals(ProductPriceType.DISCOUNT) && !price.getType().equals(ProductPriceType.CHARGE))
+				{
+					Listitem itm = prices.appendItem(price.getLabel()+"("+price.getType().name()+")", price.getValue());
+					if(price.getType().equals(ProductPriceType.BASE))
+						prices.setSelectedItem(itm);
+				}
 			}
 		}
 		
 		for(ProductPrice price:bill.getProduct().getPrices())
-			if(price.getType().equals(ProductPriceType.DISCOUNT))
-				discounts.appendItem(price.getLabel(), price.getValue());
+		{
+			if(DateTimes.inActiveState(price.getFrom(), price.getTo()))
+			{
+				if(price.getType().equals(ProductPriceType.DISCOUNT))
+					discounts.appendItem(price.getLabel(), price.getValue());
+			}
+		}
 		
 		for(ProductPrice price:bill.getProduct().getPrices())
-			if(price.getType().equals(ProductPriceType.CHARGE))
-				charges.appendItem(price.getLabel(), price.getValue());
-		
+		{
+			if(DateTimes.inActiveState(price.getFrom(), price.getTo()))
+			{
+				if(price.getType().equals(ProductPriceType.CHARGE))
+					charges.appendItem(price.getLabel(), price.getValue());
+			}
+		}
 		note.setText(bill.getNote());
 		
 		if(prices.getChildren().isEmpty())
@@ -269,6 +283,16 @@ public class ProductRow extends Row
 		prices.setWidth("100%");
 		discounts.setWidth("100%");
 
+		prices.addEventListener(Events.ON_SELECT,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event arg0) throws Exception
+			{
+				for(ProductPriceSelectionListener listener:listeners)
+					listener.fireSelectedPrice(BigDecimal.valueOf(Double.parseDouble(quantity.getText())), Components.decimal(prices), Components.decimal(discounts), Components.decimal(charges));
+			}
+		});
+		
 		quantity.setWidth("100%");
 		quantity.setConstraint("no empty");
 		quantity.addEventListener(Events.ON_CHANGE, new EventListener<Event>()
@@ -381,7 +405,10 @@ public class ProductRow extends Row
 			if(!Strings.isNullOrEmpty(location) && !Strings.isNullOrEmpty(customer))
 			{
 				for(ProductPrice price:priceRepository.findAll(new Date(System.currentTimeMillis()),location,customer,currency,item.getId(),ProductPriceType.BASE))
-					prices.appendItem(price.getLabel(), price.getValue());
+					prices.appendItem(price.getLabel()+"("+price.getType().display(utils.getLanguage())+")", price.getValue());
+				
+				for(ProductPrice price:priceRepository.findAll(new Date(System.currentTimeMillis()),location,customer,currency,item.getId(),ProductPriceType.REFERENCE))
+					prices.appendItem(price.getLabel()+"("+price.getType().display(utils.getLanguage())+")", price.getValue());
 
 				for(ProductPrice price:priceRepository.findAll(new Date(System.currentTimeMillis()),location,customer,currency,item.getId(),ProductPriceType.DISCOUNT))
 					discounts.appendItem(price.getLabel(), price.getValue());
@@ -393,7 +420,10 @@ public class ProductRow extends Row
 			if(!Strings.isNullOrEmpty(location))
 			{
 				for(ProductPrice price:priceRepository.findAllWithLocation(new Date(System.currentTimeMillis()),location,currency,item.getId(),ProductPriceType.BASE))
-					prices.appendItem(price.getLabel(), price.getValue());
+					prices.appendItem(price.getLabel()+"("+price.getType().display(utils.getLanguage())+")", price.getValue());
+				
+				for(ProductPrice price:priceRepository.findAllWithLocation(new Date(System.currentTimeMillis()),location,currency,item.getId(),ProductPriceType.REFERENCE))
+					prices.appendItem(price.getLabel()+"("+price.getType().display(utils.getLanguage())+")", price.getValue());
 				
 				for(ProductPrice price:priceRepository.findAllWithLocation(new Date(System.currentTimeMillis()),location,currency,item.getId(),ProductPriceType.DISCOUNT))
 					discounts.appendItem(price.getLabel(), price.getValue());
@@ -405,7 +435,10 @@ public class ProductRow extends Row
 			if(!Strings.isNullOrEmpty(customer))
 			{
 				for(ProductPrice price:priceRepository.findAllWithCustomer(new Date(System.currentTimeMillis()),customer,currency,item.getId(),ProductPriceType.BASE))
-					prices.appendItem(price.getLabel(), price.getValue());
+					prices.appendItem(price.getLabel()+"("+price.getType().display(utils.getLanguage())+")", price.getValue());
+				
+				for(ProductPrice price:priceRepository.findAllWithCustomer(new Date(System.currentTimeMillis()),customer,currency,item.getId(),ProductPriceType.REFERENCE))
+					prices.appendItem(price.getLabel()+"("+price.getType().display(utils.getLanguage())+")", price.getValue());
 				
 				for(ProductPrice price:priceRepository.findAllWithCustomer(new Date(System.currentTimeMillis()),customer,currency,item.getId(),ProductPriceType.DISCOUNT))
 					discounts.appendItem(price.getLabel(), price.getValue());
@@ -417,7 +450,10 @@ public class ProductRow extends Row
 			if(prices.getChildren().isEmpty())
 			{
 				for(ProductPrice price:priceRepository.findAll(new Date(System.currentTimeMillis()),currency,item.getId(),ProductPriceType.BASE))
-					prices.appendItem(price.getLabel(), price.getValue());
+					prices.appendItem(price.getLabel()+"("+price.getType().display(utils.getLanguage())+")", price.getValue());
+				
+				for(ProductPrice price:priceRepository.findAll(new Date(System.currentTimeMillis()),currency,item.getId(),ProductPriceType.REFERENCE))
+					prices.appendItem(price.getLabel()+"("+price.getType().display(utils.getLanguage())+")", price.getValue());
 			}
 			
 			if(discounts.getChildren().isEmpty())
@@ -447,5 +483,11 @@ public class ProductRow extends Row
 			for(ProductPriceSelectionListener listener:listeners)
 				listener.fireSelectedPrice(BigDecimal.valueOf(quantity.getValue()), Components.decimal(prices), Components.decimal(discounts), Components.decimal(charges));
 		}
+	}
+
+	@Override
+	public BigDecimal getAmount()
+	{
+		return Components.decimal(prices).multiply(BigDecimal.valueOf(quantity.doubleValue())).subtract(Components.decimal(discounts).add(Components.decimal(charges)));
 	}
 }

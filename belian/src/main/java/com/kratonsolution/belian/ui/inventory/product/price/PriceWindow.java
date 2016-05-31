@@ -23,6 +23,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Vlayout;
 
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.Party;
@@ -45,6 +46,8 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PriceWindow extends AbstractWindow
 {
+	private Language lang = Springs.get(Language.class);
+	
 	private Vlayout layout = new Vlayout();
 	
 	private FormToolbar toolbar = new FormToolbar();
@@ -84,7 +87,7 @@ public class PriceWindow extends AbstractWindow
 		
 		setMode(Mode.POPUP);
 		
-		Caption caption = new Caption("Product Price");
+		Caption caption = new Caption(lang.get("inventory.product.detail.price"));
 		caption.setImage("/icons/product.png");
 		
 		appendChild(caption);
@@ -149,7 +152,7 @@ public class PriceWindow extends AbstractWindow
 		price.setConstraint("no empty");
 		
 		for(ProductPriceType type:ProductPriceType.values())
-			types.appendChild(new Listitem(type.name(),type.name()));
+			types.appendChild(new Listitem(type.display(utils.getLanguage()),type.name()));
 
 		types.setSelectedIndex(0);
 		types.setMold("select");
@@ -162,13 +165,6 @@ public class PriceWindow extends AbstractWindow
 		
 		for(Party party:partyService.findAll())
 			partys.appendChild(new Listitem(party.getName(), party.getId()));
-		
-//		for(Component com:currencys.getChildren())
-//		{
-//			Listitem item = (Listitem)com;
-//			if(utils.getCurrency() != null && item.getValue().equals(utils.getCurrency().getId()))
-//				currencys.setSelectedItem(item);
-//		}
 		
 		content.getColumns().appendChild(new Column(null,null,"100px"));
 		content.getColumns().appendChild(new Column());

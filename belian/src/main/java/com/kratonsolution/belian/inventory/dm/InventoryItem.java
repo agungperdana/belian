@@ -5,6 +5,7 @@ package com.kratonsolution.belian.inventory.dm;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -31,6 +32,9 @@ public class InventoryItem implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
+	
+	@Column(name="expired_date")
+	private Date expiredDate;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_product")

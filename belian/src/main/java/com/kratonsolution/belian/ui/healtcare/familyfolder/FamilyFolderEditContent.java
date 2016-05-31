@@ -26,7 +26,7 @@ import com.kratonsolution.belian.healtcare.dm.FamilyMemberType;
 import com.kratonsolution.belian.healtcare.svc.FamilyFolderService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
-import com.kratonsolution.belian.ui.component.PatientBox;
+import com.kratonsolution.belian.ui.healtcare.patient.PatientBox;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -165,7 +165,7 @@ public class FamilyFolderEditContent extends FormContent
 				
 				Row row = new Row();
 				row.appendChild(new Checkbox());
-				row.appendChild(new PatientBox());
+				row.appendChild(new PatientBox(false));
 				row.appendChild(roles);
 				
 				members.getRows().appendChild(row);
@@ -177,7 +177,7 @@ public class FamilyFolderEditContent extends FormContent
 		{
 			for(FamilyMember member:folder.getMembers())
 			{
-				PatientBox box = new PatientBox();
+				PatientBox box = new PatientBox(false);
 				box.setPatient(member.getPatient());
 				
 				Listbox listbox = Components.fullSpanSelect();

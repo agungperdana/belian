@@ -11,6 +11,7 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
+import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
@@ -18,6 +19,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.inventory.dm.InventoryItem;
 import com.kratonsolution.belian.inventory.svc.FacilityService;
 import com.kratonsolution.belian.inventory.svc.InventoryItemService;
@@ -25,6 +27,7 @@ import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.component.ProductBox;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -48,6 +51,8 @@ public class InventoryItemEditContent extends FormContent
 	private Textbox serial = new Textbox();
 
 	private Doublebox onhand = new Doublebox(1d);
+	
+	private Datebox expired = Components.mandatoryDatebox("150px");
 
 	private Row row;
 
@@ -67,9 +72,7 @@ public class InventoryItemEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				InventoryItemWindow window = (InventoryItemWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new InventoryItemGridContent());
 			}
 		});
 
@@ -81,16 +84,15 @@ public class InventoryItemEditContent extends FormContent
 				if(Strings.isNullOrEmpty(onhand.getText()))
 					throw new WrongValueException(onhand,"On Hand cannot be empty");
 			
-				InventoryItem item = service.findOne(RowUtils.string(row, 5));
+				InventoryItem item = service.findOne(RowUtils.id(row));
 				if(item != null)
 				{
 					item.setOnhand(BigDecimal.valueOf(onhand.getValue()));
+					item.setExpiredDate(DateTimes.sql(expired.getValue()));
 					service.edit(item);
 				}
 
-				InventoryItemWindow window = (InventoryItemWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new InventoryItemGridContent());
 			}
 		});
 	}
@@ -98,7 +100,7 @@ public class InventoryItemEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		InventoryItem item = service.findOne(RowUtils.string(row,5));
+		InventoryItem item = service.findOne(RowUtils.id(row));
 		if(item != null)
 		{
 			products.setProduct(item.getProduct());
@@ -135,10 +137,15 @@ public class InventoryItemEditContent extends FormContent
 			row5.appendChild(new Label("On Hand"));
 			row5.appendChild(onhand);
 			
+			Row row6 = new Row();
+			row6.appendChild(new Label("Expired Date"));
+			row6.appendChild(expired);
+			
 			rows.appendChild(row1);
 			rows.appendChild(row2);
 			rows.appendChild(row4);
 			rows.appendChild(row5);
+			rows.appendChild(row6);
 		}
 	}
 }

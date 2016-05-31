@@ -407,6 +407,15 @@ public class Components
 		return datebox;
 	}
 	
+	public static final Datebox mandatoryDatebox(String width)
+	{
+		Datebox datebox = new Datebox(new Date());
+		datebox.setWidth(width);
+		datebox.setConstraint("no empty");
+		
+		return datebox;
+	}
+	
 	public static final Datebox mandatoryDatebox(Date date)
 	{
 		Datebox datebox = new Datebox(date);

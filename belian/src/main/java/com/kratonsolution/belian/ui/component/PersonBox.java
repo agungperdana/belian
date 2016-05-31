@@ -85,6 +85,14 @@ public class PersonBox extends Hbox implements PersonRegistrationListener
 		return null;
 	}
 
+	public String getPersonId()
+	{
+		if(getPerson() != null)
+			return getPerson().getId();
+		
+		return null;
+	}
+	
 	@Override
 	public void setPerson(Person person)
 	{

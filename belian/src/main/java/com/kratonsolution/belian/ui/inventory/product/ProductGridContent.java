@@ -15,6 +15,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.GridContent;
@@ -30,6 +31,8 @@ public class ProductGridContent extends GridContent
 	private ProductService service = Springs.get(ProductService.class);
 	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
+	
+	private Language lang = Springs.get(Language.class);
 	
 	public ProductGridContent()
 	{
@@ -155,7 +158,7 @@ public class ProductGridContent extends GridContent
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No Product data exist.");
+		grid.setEmptyMessage(lang.get("inventory.product.grid.column.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new ProductRowRenderer());
 		grid.setPagingPosition("both");
@@ -163,13 +166,13 @@ public class ProductGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Start",null,"85px"));
-		grid.getColumns().appendChild(new Column("End",null,"85px"));
-		grid.getColumns().appendChild(new Column("Code",null,"85px"));
-		grid.getColumns().appendChild(new Column("Name"));
-		grid.getColumns().appendChild(new Column("Category",null,"100px"));
-		grid.getColumns().appendChild(new Column("Type",null,"125px"));
-		grid.getColumns().appendChild(new Column("UoM",null,"75px"));
+		grid.getColumns().appendChild(new Column(lang.get("inventory.product.grid.column.start"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("inventory.product.grid.column.end"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("inventory.product.grid.column.code"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("inventory.product.grid.column.name")));
+		grid.getColumns().appendChild(new Column(lang.get("inventory.product.grid.column.category"),null,"100px"));
+		grid.getColumns().appendChild(new Column(lang.get("inventory.product.grid.column.type"),null,"125px"));
+		grid.getColumns().appendChild(new Column(lang.get("inventory.product.grid.column.uom"),null,"75px"));
 		grid.getColumns().appendChild(new Column("",null,"1px"));
 		grid.getColumns().getChildren().get(8).setVisible(false);
 		grid.setSpan("4");

@@ -31,7 +31,7 @@ public class PharmacyOrderRowRenderer implements RowRenderer<Medication>
 			row.appendChild(data.isPaid()?Components.readOnlyCheckbox():new Checkbox());
 			row.appendChild(new Label(data.getNumber()));
 			row.appendChild(new Label(DateTimes.format(data.getDate())));
-			row.appendChild(new Label(data.getCustomer().getName()));
+			row.appendChild(new Label(data.getCustomer()!=null?data.getCustomer().getName():"Anonymous"));
 			row.appendChild(new Label(data.getSales()!=null?data.getSales().getName():""));
 			row.appendChild(new Label(data.getStatus().name()));
 			row.appendChild(new Label(data.getId()));

@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.healtcare.dm.Medication;
 import com.kratonsolution.belian.healtcare.dm.MedicationItem;
@@ -42,7 +43,7 @@ public class MedicationService
 	private InventoryStockService stockService;
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_MEDICATION_READ")
+	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
 	public int size()
 	{
 		if(utils.getOrganization() == null)
@@ -52,14 +53,14 @@ public class MedicationService
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_MEDICATION_READ")
+	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
 	public Medication findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_MEDICATION_READ")
+	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
 	public List<Medication> findAll()
 	{
 		if(utils.getOrganization() == null)
@@ -69,7 +70,7 @@ public class MedicationService
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_MEDICATION_READ")
+	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
 	public List<Medication> findAllPaidRegistered()
 	{
 		if(utils.getOrganization() == null)
@@ -79,7 +80,7 @@ public class MedicationService
 	}
 			
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_MEDICATION_READ")
+	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
 	public List<Medication> findAll(int pageIndex,int pageSize)
 	{
 		if(utils.getOrganization() == null)
@@ -89,17 +90,17 @@ public class MedicationService
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_MEDICATION_READ")
+	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
 	public List<Medication> findAllPaid()
 	{
 		if(utils.getOrganization() == null)
 			return new ArrayList<Medication>();
 
-		return repository.findAllPaid(new Date(System.currentTimeMillis()),utils.getOrganization().getId());
+		return repository.findAllPaid(DateTimes.currentDate(),utils.getOrganization().getId());
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_MEDICATION_READ")
+	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
 	public int sizePaid()
 	{
 		if(utils.getOrganization() == null)
@@ -108,18 +109,19 @@ public class MedicationService
 		return repository.count(new Date(System.currentTimeMillis()),utils.getOrganization().getId()).intValue();
 	}
 	
-	@Secured("ROLE_MEDICATION_CREATE")
+	@Secured("ROLE_PHARMACY_SALES_CREATE")
 	public void add(Medication medication)
 	{
 		repository.save(medication);
 	}
 	
-	@Secured("ROLE_MEDICATION_UPDATE")
+	@Secured({"ROLE_PHARMACY_SALES_UPDATE","ROLE_PHARMACY_ORDER_UPDATE"})
 	public void finish(Medication medication)
 	{
 		if(utils.getOrganization() == null)
 			throw new RuntimeException("Default Organization not exist,please go to user setting.");
 		
+		medication.setStatus(MedicationStatus.Finished);
 		repository.saveAndFlush(medication);
 		
 		if(medication.getStatus().equals(MedicationStatus.Finished))
@@ -137,13 +139,13 @@ public class MedicationService
 		}
 	}
 
-	@Secured("ROLE_MEDICATION_UPDATE")
+	@Secured({"ROLE_PHARMACY_SALES_UPDATE","ROLE_PHARMACY_ORDER_UPDATE"})
 	public void edit(Medication medication)
 	{
 		repository.saveAndFlush(medication);
 	}
 	
-	@Secured("ROLE_MEDICATION_DELETE")
+	@Secured({"ROLE_PHARMACY_SALES_DELETE","ROLE_PHARMACY_ORDER_DELETE"})
 	public void delete(@PathVariable String id)
 	{
 		Medication medication = findOne(id);

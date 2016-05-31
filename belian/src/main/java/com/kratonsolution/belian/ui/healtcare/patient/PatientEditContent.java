@@ -3,12 +3,9 @@
  */
 package com.kratonsolution.belian.ui.healtcare.patient;
 
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Cell;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
@@ -16,21 +13,17 @@ import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
-import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.Gender;
-import com.kratonsolution.belian.general.dm.MaritalStatus;
-import com.kratonsolution.belian.general.svc.GeographicService;
-import com.kratonsolution.belian.general.svc.PersonService;
-import com.kratonsolution.belian.healtcare.dm.Patient;
+import com.kratonsolution.belian.healtcare.dm.PatientRelationship;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.component.PersonBox;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -44,30 +37,16 @@ public class PatientEditContent extends FormContent
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	private PatientService service = Springs.get(PatientService.class);
-	
-	private GeographicService geographicService = Springs.get(GeographicService.class);
-	
-	private PersonService personService = Springs.get(PersonService.class);
-
-	private Textbox identity = Components.mandatoryTextBox();
-
-	private Textbox name = Components.mandatoryTextBox();
-
-	private Textbox taxNumber = new Textbox();
-
-	private Listbox genders = Components.newSelect();
-
-	private Listbox statuses = Components.newSelect();
-	
-	private Listbox companys = Components.newSelect();
-
-	private Listbox birthPlace = Components.newSelect(geographicService.findAll(),true);
 
 	private Datebox start = Components.currentDatebox();
-
-	private Datebox birthDate = Components.currentDatebox();
-
+	
+	private Datebox end = Components.datebox();
+	
+	private PersonBox person = new PersonBox(false);
+	
 	private Textbox bpjsNumber = new Textbox();
+	
+	private Listbox companys = Components.newSelect(utils.getOrganization());
 	
 	private Checkbox bpjsStatus = new Checkbox("Active");
 	
@@ -89,9 +68,7 @@ public class PatientEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PatientWindow window = (PatientWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new PatientGridContent());
 			}
 		});
 
@@ -100,32 +77,14 @@ public class PatientEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				if(Strings.isNullOrEmpty(identity.getText()))
-					throw new WrongValueException(identity,"Identity cannot be empty");
-
-				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
-
-				Patient patient = service.findOne(RowUtils.string(row, 5));
-				if(patient != null)
+				PatientRelationship relationship = service.findRelationshi(RowUtils.id(row));
+				if(relationship != null)
 				{
-					patient.getFrom().setBirthDate(DateTimes.sql(birthDate.getValue()));
-					patient.getFrom().setBirthPlace(geographicService.findOne(Components.string(birthPlace)));
-					patient.getFrom().setGender(Gender.valueOf(Components.string(genders)));
-					patient.getFrom().setIdentity(identity.getText());
-					patient.getFrom().setMaritalStatus(MaritalStatus.valueOf(Components.string(statuses)));
-					patient.getFrom().setName(name.getText());
-					patient.getFrom().setTaxCode(taxNumber.getText());
-
-					patient.getBpjs().setCard(bpjsNumber.getText());
-					patient.getBpjs().setActive(bpjsStatus.isChecked());
-					
-					personService.edit(patient.getFrom());
+					relationship.setEnd(DateTimes.sql(end.getValue()));
+					service.edit(relationship);
 				}
-
-				PatientWindow window = (PatientWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				
+				Flow.next(getParent(), new PatientGridContent());
 			}
 		});
 	}
@@ -133,117 +92,50 @@ public class PatientEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		Patient patient = service.findOne(RowUtils.string(row, 5));
-		if(patient != null)
+		PatientRelationship relationship = service.findRelationshi(RowUtils.id(row));
+		if(relationship != null)
 		{
-			identity.setText(patient.getFrom().getIdentity());
-			identity.setWidth("300px");
+			start.setValue(relationship.getStart());
+			end.setValue(relationship.getEnd());
+			person.setPerson(relationship.getPatient().getPerson());
+			bpjsNumber.setText(relationship.getPatient().getBpjs().getCard());
+			bpjsStatus.setChecked(relationship.getPatient().getBpjs().isActive());
 			
-			name.setText(patient.getFrom().getName());
-			name.setWidth("300px");
-			
-			birthDate.setValue(patient.getFrom().getBirthDate());
-			taxNumber.setText(patient.getFrom().getTaxCode());
-			start.setValue(patient.getStart());
-			
-			bpjsNumber.setWidth("225px");
-			bpjsNumber.setText(patient.getBpjs().getCard());
-			bpjsStatus.setChecked(patient.getBpjs().isActive());
-			
-			if(patient.getTo() != null)
-			{
-				companys.appendItem(patient.getTo().getName(), patient.getTo().getId());
-				companys.setSelectedIndex(0);
-			}
-			else if(utils.getOrganization() != null)
-			{
-				companys.appendItem(utils.getOrganization().getName(),utils.getOrganization().getId());
-				companys.setSelectedIndex(0);
-			}
-			else
-				Clients.showNotification("Default organization does not exist,please go to setting to set it up.");
-
-			for(Gender gender:Gender.values())
-			{
-				Listitem listitem = new Listitem(gender.name(), gender.name());
-				genders.appendChild(listitem);
-
-				if(gender.equals(patient.getFrom().getGender()))
-					genders.setSelectedItem(listitem);
-			}
-
-			for(MaritalStatus status:MaritalStatus.values())
-			{
-				Listitem listitem = new Listitem(status.name(), status.name());
-				statuses.appendChild(listitem);
-				if(status.equals(patient.getFrom().getMaritalStatus()))
-					statuses.setSelectedItem(listitem);
-			}
-
-			for(Component component:birthPlace.getChildren())
-			{
-				Listitem listitem = (Listitem)component;
-				if(listitem.getValue().equals(patient.getFrom().getBirthPlace().getId()))
-					birthPlace.setSelectedItem(listitem);
-			}
-
 			grid.appendChild(new Columns());
-			grid.getColumns().appendChild(new Column(null,null,"20%"));
+			grid.getColumns().appendChild(new Column(null,null,"100px"));
 			grid.getColumns().appendChild(new Column());
-
-			Row row0012 = new Row();
-			row0012.appendChild(new Label("Company"));
-			row0012.appendChild(companys);
 			
-			Row row001 = new Row();
-			row001.appendChild(new Label("Start Date"));
-			row001.appendChild(start);
-
 			Row row1 = new Row();
-			row1.appendChild(new Label("Identity"));
-			row1.appendChild(identity);
-
+			row1.appendChild(new Label("Start"));
+			row1.appendChild(start);
+			
 			Row row2 = new Row();
-			row2.appendChild(new Label("Name"));
-			row2.appendChild(name);
+			row2.appendChild(new Label("End"));
+			row2.appendChild(end);
 
 			Row row3 = new Row();
-			row3.appendChild(new Label("Birth Place"));
-			row3.appendChild(birthPlace);
-
+			row3.appendChild(new Label("Company"));
+			row3.appendChild(companys);
+			
 			Row row4 = new Row();
-			row4.appendChild(new Label("Birth Date"));
-			row4.appendChild(birthDate);
-
-			Row row5 = new Row();
-			row5.appendChild(new Label("Tax Number"));
-			row5.appendChild(taxNumber);
-
-			Row row6 = new Row();
-			row6.appendChild(new Label("Gender"));
-			row6.appendChild(genders);
-
-			Row row7 = new Row();
-			row7.appendChild(new Label("Status"));
-			row7.appendChild(statuses);
-
+			row4.appendChild(new Label("Person"));
+			row4.appendChild(person);
+			
 			Cell cell = new Cell();
 			cell.appendChild(new Label("BPJS Information"));
 			cell.setColspan(2);
 			
-			Row row8 = new Row();
-			row8.appendChild(cell);
+			Row row5 = new Row();
+			row5.appendChild(cell);
 			
-			Row row9 = new Row();
-			row9.appendChild(new Label("Card Number"));
-			row9.appendChild(bpjsNumber);
+			Row row6 = new Row();
+			row6.appendChild(new Label("Card Number"));
+			row6.appendChild(bpjsNumber);
 			
-			Row row10 = new Row();
-			row10.appendChild(new Label("Status"));
-			row10.appendChild(bpjsStatus);
+			Row row7 = new Row();
+			row7.appendChild(new Label("Status"));
+			row7.appendChild(bpjsStatus);
 			
-			rows.appendChild(row0012);
-			rows.appendChild(row001);
 			rows.appendChild(row1);
 			rows.appendChild(row2);
 			rows.appendChild(row3);
@@ -251,9 +143,6 @@ public class PatientEditContent extends FormContent
 			rows.appendChild(row5);
 			rows.appendChild(row6);
 			rows.appendChild(row7);
-			rows.appendChild(row8);
-			rows.appendChild(row9);
-			rows.appendChild(row10);
 		}
 	}
 }

@@ -10,8 +10,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.kratonsolution.belian.general.dm.Person;
-
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
@@ -20,28 +18,30 @@ public interface PatientRepository extends JpaRepository<Patient, String>
 {
 	public Patient findOneByBpjsCard(String bpjsCardNumber);
 	
-	public Patient findOneByFromId(String id);
-	
-	@Query("FROM Patient pat WHERE pat.from.id =:person AND pat.to.id =:to")
-	public Patient findOne(@Param("person")String person,@Param("to")String to);
+	@Query("FROM Patient pat WHERE pat.party.id =:person")
+	public Patient findOne(@Param("person")String person);
 
-	@Query("FROM Patient pat WHERE pat.to.id =:to ORDER BY pat.from.name")
-	public List<Patient> findAll(Pageable pageable,@Param("to")String to);
+	@Query("SELECT rel.patient FROM PatientRelationship rel "
+			+ "WHERE rel.patient.party.id =:person "
+			+ "AND rel.organization.party.id =:company")
+	public Patient findOne(@Param("person")String person,@Param("company")String company);
 	
-	@Query("FROM Patient pat WHERE pat.to.id =:to ORDER BY pat.from.name")
-	public List<Patient> findAll(@Param("to")String to);
+	@Query("FROM PatientRelationship rel "
+			+ "WHERE rel.organization.party.id =:company "
+			+ "ORDER BY rel.patient.party.name ASC")
+	public List<PatientRelationship> findAll(Pageable pageable,@Param("company")String company);
 	
-	@Query("SELECT COUNT(pat) FROM Patient pat WHERE pat.to.id =:to")
-	public Long count(@Param("to")String to);
+	@Query("SELECT COUNT(rel) FROM PatientRelationship rel WHERE rel.organization.party.id =:company ")
+	public Long count(@Param("company")String company);
 	
-	@Query("FROM Patient pat WHERE pat.from.name LIKE :name% AND pat.to.id =:to ORDER BY pat.from.name ASC")
-	public List<Patient> findAll(@Param("name")String name,@Param("to")String to);
-	
-	@Query("FROM Patient pat WHERE pat.from.name LIKE %:name% OR pat.from.identity LIKE %:name% ORDER BY pat.from.name ASC")
-	public List<Patient> findAllWith(@Param("name")String name);
+	@Query("SELECT rel.patient FROM PatientRelationship rel WHERE "
+			+ "rel.patient.party.name LIKE :name% "
+			+ "AND rel.organization.party.id =:company "
+			+ "ORDER BY rel.patient.party.name ASC")
+	public List<Patient> findAll(@Param("name")String name,@Param("company")String company);
 
-	public Patient findOneByFromNameAndToId(String name,String to);
-	
-	@Query("SELECT pat.from FROM Patient pat WHERE pat.id =:id")
-	public Person findPerson(@Param("id")String id);
+	@Query("SELECT rel.patient FROM PatientRelationship rel WHERE "
+			+ "rel.organization.party.id =:company "
+			+ "ORDER BY rel.patient.party.name ASC")
+	public List<Patient> findAll(@Param("company")String company);
 }

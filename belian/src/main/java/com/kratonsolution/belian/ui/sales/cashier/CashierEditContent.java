@@ -19,6 +19,7 @@ import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.healtcare.dm.MedicationItem;
 import com.kratonsolution.belian.sales.dm.Billable;
 import com.kratonsolution.belian.sales.dm.BillableItem;
 import com.kratonsolution.belian.sales.dm.CashierShift;
@@ -27,6 +28,8 @@ import com.kratonsolution.belian.sales.srv.CashierShiftService;
 import com.kratonsolution.belian.sales.view.BillablePrint;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.PrintWindow;
+import com.kratonsolution.belian.ui.component.HasAmount;
+import com.kratonsolution.belian.ui.component.MedicationRow;
 import com.kratonsolution.belian.ui.component.ProductRow;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
@@ -91,23 +94,6 @@ public class CashierEditContent extends FormContent
 				{
 					billing.setPaid(true);
 					billing.setShift(shift);
-
-					
-					for(Component com:billingItems.getRows().getChildren())
-					{
-						ProductRow row = (ProductRow)com;
-						for(BillableItem item:billing.getItems())
-						{
-							if(item.getId().equals(row.getId()))
-							{
-								item.setPrice(row.getPrice());
-								item.setDiscount(row.getDiscount());
-								item.setCharge(row.getCharge());
-								break;
-							}
-						}
-					}
-					
 					service.edit(billing);
 					
 					PrintWindow window = new PrintWindow(BillablePrint.GEN(billing.getId(),utils.isPos()),true);
@@ -123,7 +109,7 @@ public class CashierEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		Billable billing = service.findOne(RowUtils.string(row, 6));
+		Billable billing = service.findOne(RowUtils.id(row));
 		if(billing != null)
 		{
 			grid.appendChild(new Columns());
@@ -160,7 +146,7 @@ public class CashierEditContent extends FormContent
 			cuss.appendChild(new Label("Type"));
 			cuss.appendChild(new Label(billing.getBillingType()));
 			cuss.appendChild(new Label("Customer"));
-			cuss.appendChild(new Label(billing.getCustomer().getName()));
+			cuss.appendChild(new Label(billing.getCustomer()!=null?billing.getCustomer().getName():"Anonymous"));
 			
 			grid.getRows().appendChild(numbers);
 			grid.getRows().appendChild(comps);
@@ -171,6 +157,7 @@ public class CashierEditContent extends FormContent
 			billingItems.setWidth("100%");
 			billingItems.appendChild(new Rows());
 			billingItems.appendChild(new Columns());
+			billingItems.getColumns().appendChild(new Column(null,null,"25px"));
 			billingItems.getColumns().appendChild(new Column("Name",null,"250px"));
 			billingItems.getColumns().appendChild(new Column("Qty",null,"65px"));
 			billingItems.getColumns().appendChild(new Column("UoM",null,"70px"));
@@ -179,11 +166,20 @@ public class CashierEditContent extends FormContent
 			billingItems.getColumns().appendChild(new Column("Charge",null,"100px"));
 			billingItems.getColumns().appendChild(new Column("Note",null,"100px"));
 			billingItems.getColumns().appendChild(new Column(null,null,"0px"));
-			billingItems.getColumns().getChildren().get(7).setVisible(false);
-			billingItems.setSpan("0");
+			billingItems.getColumns().getLastChild().setVisible(false);
+			billingItems.setSpan("1");
 
 			for(BillableItem item:billing.getItems())
-				billingItems.getRows().appendChild(new ProductRow(item,new OnSelectEvent()));
+			{
+				if(item instanceof MedicationItem)
+				{
+					MedicationRow row = new MedicationRow(false, false);
+					row.setItem((MedicationItem)item);
+					billingItems.getRows().appendChild(row);
+				}
+				else
+					billingItems.getRows().appendChild(new ProductRow(item,new OnSelectEvent()));
+			}
 
 			appendChild(billingItems);
 			
@@ -201,8 +197,8 @@ public class CashierEditContent extends FormContent
 			
 			for(Component com:billingItems.getRows().getChildren())
 			{
-				ProductRow row = (ProductRow)com;
-				_amount = _amount.add(row.getPrice().multiply(row.getQuantity()).subtract(row.getDiscount()).add(row.getCharge()));
+				HasAmount row = (HasAmount)com;
+				_amount = _amount.add(row.getAmount());
 			}
 			
 			_tax = billing.getTax().getAmount().multiply(_amount).divide(BigDecimal.valueOf(100));

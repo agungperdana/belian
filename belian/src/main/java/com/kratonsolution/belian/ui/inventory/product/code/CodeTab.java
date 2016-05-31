@@ -22,6 +22,7 @@ import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Vlayout;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductCode;
 import com.kratonsolution.belian.inventory.svc.ProductService;
@@ -36,6 +37,8 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class CodeTab implements TabedDisplay
 {
+	private Language lang = Springs.get(Language.class);
+	
 	private Product product;
 
 	private ProductEditContent parent;
@@ -50,7 +53,7 @@ public class CodeTab implements TabedDisplay
 
 	public Tab getHeader()
 	{
-		return new Tab("Code");
+		return new Tab(lang.get("inventory.product.detail.code"));
 	}
 
 	public Tabpanel getBody()
@@ -65,7 +68,7 @@ public class CodeTab implements TabedDisplay
 		panel.appendChild(layout);
 
 		Toolbar toolbar = new Toolbar();
-		Toolbarbutton create = new Toolbarbutton("New Code","/icons/new.png");
+		Toolbarbutton create = new Toolbarbutton(lang.get("label.component.button.new"),"/icons/new.png");
 		create.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
@@ -83,11 +86,11 @@ public class CodeTab implements TabedDisplay
 		grid.appendChild(new Columns());
 
 		grid.getColumns().appendChild(new Column(null,null,"35px"));
-		grid.getColumns().appendChild(new Column("Value",null,"150px"));
-		grid.getColumns().appendChild(new Column("Type",null,"100px"));
-		grid.getColumns().appendChild(new Column("Note"));
+		grid.getColumns().appendChild(new Column(lang.get("inventory.product.detail.code.grid.value"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("inventory.product.detail.code.grid.type"),null,"100px"));
+		grid.getColumns().appendChild(new Column(lang.get("inventory.product.detail.code.grid.note")));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(4).setVisible(false);
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("3");
 
 		final Iterator<ProductCode> iterator = this.product.getCodes().iterator();

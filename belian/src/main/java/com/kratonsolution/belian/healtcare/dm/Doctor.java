@@ -16,7 +16,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
-import com.kratonsolution.belian.general.dm.PersonRole;
+import com.kratonsolution.belian.general.dm.PartyRole;
+import com.kratonsolution.belian.general.dm.Person;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -29,7 +30,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="doctor")
-public class Doctor extends PersonRole
+public class Doctor extends PartyRole
 {
 	@ManyToOne
 	@JoinColumn(name="fk_doctor_type")
@@ -41,4 +42,9 @@ public class Doctor extends PersonRole
 	private Set<DoctorAppointment> appointments = new HashSet<DoctorAppointment>();
 	
 	public Doctor(){}
+	
+	public Person getPerson()
+	{
+		return (Person)getParty();
+	}
 }

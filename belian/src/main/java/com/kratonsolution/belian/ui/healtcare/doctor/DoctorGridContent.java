@@ -163,13 +163,15 @@ public class DoctorGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Start",null,"75px"));
-		grid.getColumns().appendChild(new Column("ID",null,"115px"));
-		grid.getColumns().appendChild(new Column("Classification",null,"115px"));
+		grid.getColumns().appendChild(new Column("Start",null,"85px"));
+		grid.getColumns().appendChild(new Column("End",null,"85px"));
+		grid.getColumns().appendChild(new Column("ID",null,"100px"));
 		grid.getColumns().appendChild(new Column("Name"));
+		grid.getColumns().appendChild(new Column("Classification",null,"115px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(5).setVisible(false);
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
+		grid.setSpan("4");
 
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{

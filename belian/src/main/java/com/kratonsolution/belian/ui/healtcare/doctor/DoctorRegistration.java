@@ -3,16 +3,22 @@
  */
 package com.kratonsolution.belian.ui.healtcare.doctor;
 
+import java.util.Collection;
+import java.util.Vector;
+
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Caption;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
-import org.zkoss.zul.Label;
+import org.zkoss.zul.Grid;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Row;
+import org.zkoss.zul.Rows;
+import org.zkoss.zul.Vlayout;
+import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
@@ -21,61 +27,84 @@ import com.kratonsolution.belian.healtcare.dm.Doctor;
 import com.kratonsolution.belian.healtcare.dm.DoctorRelationship;
 import com.kratonsolution.belian.healtcare.svc.DoctorService;
 import com.kratonsolution.belian.healtcare.svc.DoctorTypeService;
-import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.component.PersonBox;
 import com.kratonsolution.belian.ui.util.Components;
-import com.kratonsolution.belian.ui.util.Flow;
+import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class DoctorFormContent extends FormContent
-{	
+public class DoctorRegistration extends Window
+{
+	private Collection<DoctorRegistrationListener> listeners = new Vector<DoctorRegistrationListener>();
+
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	private DoctorService service = Springs.get(DoctorService.class);
 	
 	private DoctorTypeService doctorTypeService = Springs.get(DoctorTypeService.class);
 	
+	private Vlayout layout = new Vlayout();
+
+	private FormToolbar toolbar = new FormToolbar();
+
 	private Datebox start = Components.currentDatebox();
 	
 	private Datebox end = Components.datebox();
+
+	private PersonBox person = new PersonBox(true);
+
+	private Listbox types = Components.newSelect(doctorTypeService.findAll(),true);
 	
 	private Listbox companys = Components.newSelect(utils.getOrganization());
-	
-	private PersonBox person = new PersonBox(true);
-	
-	private Listbox classifications = Components.newSelect(doctorTypeService.findAll(), true);
-	
-	public DoctorFormContent()
+
+	public DoctorRegistration()
 	{
-		super();
-		initToolbar();
-		initForm();
+		setWidth("550px");
+		setHeight("450px");
+		setClosable(true);
+		setPosition("center");
+
+		init();
 	}
 
-	@Override
-	public void initToolbar()
+	private void init()
 	{
+		Caption caption = new Caption("Doctor Registration");
+		caption.setImage("/icons/doctor.png");
+		appendChild(caption);
+		
+		Grid grid = new Grid();
+		grid.appendChild(new Columns());
+		grid.appendChild(new Rows());
+		grid.getColumns().appendChild(new Column(null,null,"125px"));
+		grid.getColumns().appendChild(new Column(null,null,"125px"));
+		grid.setSpan("1");
+		grid.getRows().appendChild(RowUtils.row("Start", start));
+		grid.getRows().appendChild(RowUtils.row("End", end));
+		grid.getRows().appendChild(RowUtils.row("Company", companys));
+		grid.getRows().appendChild(RowUtils.row("Type", types));
+		grid.getRows().appendChild(RowUtils.row("Person", person));
+		
 		toolbar.getCancel().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
-			public void onEvent(Event event) throws Exception
+			public void onEvent(Event arg0) throws Exception
 			{
-				Flow.next(getParent(), new DoctorGridContent());
+				DoctorRegistration.this.detach();
 			}
 		});
 		
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
-			public void onEvent(Event event) throws Exception
+			public void onEvent(Event arg0) throws Exception
 			{
 				if(person.getPerson() == null)
-					throw new WrongValueException(person,"Person cannot be empty");
+					throw new WrongValueException(person,"Person box cannot be empty.");
 				
 				DoctorRelationship relationship = new DoctorRelationship();
 				relationship.setStart(DateTimes.sql(start.getValue()));
@@ -84,7 +113,7 @@ public class DoctorFormContent extends FormContent
 				Doctor doctor = new Doctor();
 				doctor.setStart(DateTimes.sql(start.getValue()));
 				doctor.setEnd(DateTimes.sql(end.getValue()));
-				doctor.setCategory(doctorTypeService.findOne(Components.string(classifications)));
+				doctor.setCategory(doctorTypeService.findOne(Components.string(types)));
 				doctor.setParty(person.getPerson());
 				
 				InternalOrganization organization = new InternalOrganization();
@@ -96,43 +125,21 @@ public class DoctorFormContent extends FormContent
 				
 				service.add(relationship);
 				
-				Flow.next(getParent(), new DoctorGridContent());
+				for(DoctorRegistrationListener listener:listeners)
+					listener.setDoctor(relationship.getDoctor());
+			
+				detach();
 			}
 		});
+		
+		layout.appendChild(toolbar);
+		layout.appendChild(grid);
+
+		appendChild(layout);
 	}
 
-	@Override
-	public void initForm()
+	public void addListener(DoctorRegistrationListener listener)
 	{
-		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"100px"));
-		grid.getColumns().appendChild(new Column());
-		grid.setSpan("1");
-		
-		Row row1 = new Row();
-		row1.appendChild(new Label("Start"));
-		row1.appendChild(start);
-		
-		Row row2 = new Row();
-		row2.appendChild(new Label("End"));
-		row2.appendChild(end);
-		
-		Row row3 = new Row();
-		row3.appendChild(new Label("Company"));
-		row3.appendChild(companys);
-		
-		Row row4 = new Row();
-		row4.appendChild(new Label("Person"));
-		row4.appendChild(person);
-		
-		Row row5 = new Row();
-		row5.appendChild(new Label("Classification"));
-		row5.appendChild(classifications);
-		
-		rows.appendChild(row1);
-		rows.appendChild(row2);
-		rows.appendChild(row3);
-		rows.appendChild(row4);
-		rows.appendChild(row5);
+		listeners.add(listener);
 	}
 }

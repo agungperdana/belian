@@ -13,6 +13,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.kratonsolution.belian.sales.dm.Billable;
 
@@ -42,11 +43,14 @@ public class Medication extends Billable
 	
 	@OneToMany(mappedBy="medication",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<MedicationItem> items = new HashSet<MedicationItem>();
+	
+	@Transient
+	private String type = "Pharmacy";
 
 	@Override
 	public String getBillingType()
 	{
-		return "Medication";
+		return type;
 	}
 
 	@Override

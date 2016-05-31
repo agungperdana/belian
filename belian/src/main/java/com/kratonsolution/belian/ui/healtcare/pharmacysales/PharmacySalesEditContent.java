@@ -42,9 +42,10 @@ import com.kratonsolution.belian.healtcare.svc.PatientService;
 import com.kratonsolution.belian.sales.view.BillablePrint;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.PrintWindow;
-import com.kratonsolution.belian.ui.component.MedicalProductRow;
+import com.kratonsolution.belian.ui.component.MedicationRow;
 import com.kratonsolution.belian.ui.component.ProductPriceSelectionListener;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Numbers;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -119,9 +120,7 @@ public class PharmacySalesEditContent extends FormContent implements ProductPric
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PharmacySalesWindow window = (PharmacySalesWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new PharmacySalesGridContent());
 			}
 		});
 
@@ -136,34 +135,32 @@ public class PharmacySalesEditContent extends FormContent implements ProductPric
 				if(taxes.getSelectedItem() == null)
 					throw new WrongValueException(taxes,"Tax cannot be empty");
 
-				Medication medication = service.findOne(RowUtils.string(row, 6));
+				Medication medication = service.findOne(RowUtils.id(row));
 				if(medication != null && !medication.isPaid())
 				{
 					medication.getItems().clear();
 					service.finish(medication);
 
-					for(Component com:saleItems.getRows().getChildren())
-					{
-						MedicalProductRow row = (MedicalProductRow)com;
-
-						MedicationItem item = new MedicationItem();
-						item.setCharge(row.getCharge());
-						item.setDiscount(row.getDiscount());
-						item.setMedication(medication);
-						item.setMedicine(row.getProduct());
-						item.setNote(row.getNote());
-						item.setPrice(row.getPrice());
-						item.setQuantity(row.getQuantity());
-
-						medication.getItems().add(item);
-					}
+//					for(Component com:saleItems.getRows().getChildren())
+//					{
+//						MedicationRow row = (MedicationRow)com;
+//
+//						MedicationItem item = new MedicationItem();
+//						item.setCharge(row.getCharge());
+//						item.setDiscount(row.getDiscount());
+//						item.setMedication(medication);
+//						item.setMedicine(row.getProduct());
+//						item.setNote(row.getNote());
+//						item.setPrice(row.getPrice());
+//						item.setQuantity(row.getQuantity());
+//
+//						medication.getItems().add(item);
+//					}
 
 					service.finish(medication);
 				}
 
-				PharmacySalesWindow window = (PharmacySalesWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new PharmacySalesGridContent());
 			}
 		});
 		
@@ -198,7 +195,7 @@ public class PharmacySalesEditContent extends FormContent implements ProductPric
 			taxes.appendChild(new Listitem(medication.getTax().getLabel(),medication.getTax().getValue()));
 			taxes.setSelectedIndex(0);
 
-			customers.appendChild(new Listitem(medication.getCustomer().getLabel(),medication.getCustomer().getValue()));
+			customers.appendChild(new Listitem(medication.getCustomer()!=null?medication.getCustomer().getLabel():"Anonymous",medication.getCustomer()!=null?medication.getCustomer().getLabel():"Anonymous"));
 			customers.setSelectedIndex(0);
 
 			locations.appendChild(new Listitem(utils.getLocation().getLabel(),utils.getLocation().getValue()));
@@ -266,33 +263,30 @@ public class PharmacySalesEditContent extends FormContent implements ProductPric
 		saleItems.appendChild(new Columns());
 		saleItems.getColumns().appendChild(new Column(null,null,"25px"));
 		saleItems.getColumns().appendChild(new Column("Product",null,"225px"));
-		saleItems.getColumns().appendChild(new Column("Quantity",null,"85px"));
+		saleItems.getColumns().appendChild(new Column("Quantity",null,"75px"));
 		saleItems.getColumns().appendChild(new Column("UoM",null,"85px"));
 		saleItems.getColumns().appendChild(new Column("Price",null,"95px"));
 		saleItems.getColumns().appendChild(new Column("Disc",null,"95px"));
 		saleItems.getColumns().appendChild(new Column("Charge",null,"95px"));
 		saleItems.getColumns().appendChild(new Column("Note",null));
 		saleItems.appendChild(new Rows());
-		saleItems.setSpan("4");
+		saleItems.setSpan("1");
 
-		Medication medication = service.findOne(RowUtils.string(row, 6));
+		Medication medication = service.findOne(RowUtils.id(row));
 		if(medication != null)
 		{
 			boolean bpjs = false;
-			Patient patient = patientService.findOne(medication.getCustomer().getId(), medication.getOrganization().getId());
-			if(patient != null)
-				bpjs = patient.isBpjs();
+			if(medication.getCustomer() != null)
+			{
+				Patient patient = patientService.findOne(medication.getCustomer().getId(), medication.getOrganization().getId());
+				if(patient != null)
+					bpjs = patient.isBpjs();
+			}
 			
 			for(MedicationItem item:medication.getItems())
 			{
-				MedicalProductRow row = new MedicalProductRow(utils.getLocation().getId(),medication.getCustomer().getId(), medication.getCurrency().getId(), bpjs,true);
-				row.setCharge(item.getCharge());
-				row.setDiscount(item.getDiscount());
-				row.setNote(item.getNote());
-				row.setPrice(item.getPrice());
-				row.setProduct(item.getMedicine());
-				row.setQuantity(item.getQuantity());
-				
+				MedicationRow row = new MedicationRow(bpjs,false);
+				row.setItem(item);
 				saleItems.getRows().appendChild(row);
 			}
 		}
@@ -312,7 +306,7 @@ public class PharmacySalesEditContent extends FormContent implements ProductPric
 				if(patient != null)
 					bpjs = patient.isBpjs();
 				
-				MedicalProductRow row = new MedicalProductRow(Components.string(locations),Components.string(customers),Components.string(currencys),bpjs);
+				MedicationRow row = new MedicationRow(bpjs,false);
 				row.addProductPriceListener(PharmacySalesEditContent.this);
 				saleItems.getRows().appendChild(row);
 			}
@@ -363,8 +357,8 @@ public class PharmacySalesEditContent extends FormContent implements ProductPric
 
 		for(Component com:saleItems.getRows().getChildren())
 		{
-			MedicalProductRow row = (MedicalProductRow)com;
-			billAmount = billAmount.add(row.getQuantity().multiply(row.getPrice().subtract(row.getDiscount()).add(row.getCharge())));
+			MedicationRow row = (MedicationRow)com;
+			billAmount = billAmount.add(row.getAmount());
 		}
 
 		Tax tx = utils.getTax();

@@ -3,7 +3,7 @@
  */
 package com.kratonsolution.belian.ui.component;
 
-import java.util.Date;
+import java.sql.Date;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -14,6 +14,7 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Listbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductType;
@@ -46,7 +47,7 @@ public class ProductBox extends Combobox implements EventListener<InputEvent>
 	
 	public ProductBox(String category,IndustrySegmentation segmentation,ProductType type)
 	{
-		this(new Date(),category,segmentation,type);
+		this(DateTimes.currentDate(),category,segmentation,type);
 	}
 	
 	public ProductBox(Date date,String category,IndustrySegmentation segmentation,ProductType type)
@@ -77,7 +78,7 @@ public class ProductBox extends Combobox implements EventListener<InputEvent>
 		getChildren().clear();
 		
 		if(date == null)
-			date = new Date();
+			date = DateTimes.currentDate();
 		
 		if(Strings.isNullOrEmpty(category) || segmentation == null || type == null)
 		{

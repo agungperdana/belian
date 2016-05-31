@@ -54,10 +54,11 @@ public class NavigationMenu extends Window
 		initPayment(modules);
 		initInventory(modules);
 		initAsset(modules);
-		initPOS(modules);
+//		initPOS(modules);
 		initSales(modules);
 		initProcurement(modules);
 		initHealtcare(modules);
+		initPharmacy(modules);
 		initHR(modules);
 	}
 
@@ -198,22 +199,22 @@ public class NavigationMenu extends Window
 		}
 	}
 	
-	protected void initPOS(Map<String,Boolean> modules)
-	{
-		Listbox list = new Listbox();
-		list.setStyle("border:none");
-		
-		if(modules.containsKey("ROLE_DIRECT_SALES_READ"))
-			list.appendChild(new DirectSalesMenu());
-		
-		if(!list.getChildren().isEmpty())
-		{
-			tabs.appendChild(new Tab(language.get("navbar.menu.pos")));
-			Tabpanel panel = new Tabpanel();
-			panel.appendChild(list);
-			panels.appendChild(panel);
-		}
-	}
+//	protected void initPOS(Map<String,Boolean> modules)
+//	{
+//		Listbox list = new Listbox();
+//		list.setStyle("border:none");
+//		
+//		if(modules.containsKey("ROLE_DIRECT_SALES_READ"))
+//			list.appendChild(new DirectSalesMenu());
+//		
+//		if(!list.getChildren().isEmpty())
+//		{
+//			tabs.appendChild(new Tab(language.get("navbar.menu.pos")));
+//			Tabpanel panel = new Tabpanel();
+//			panel.appendChild(list);
+//			panels.appendChild(panel);
+//		}
+//	}
 	
 	protected void initSales(Map<String,Boolean> modules)
 	{
@@ -266,6 +267,12 @@ public class NavigationMenu extends Window
 		if(modules.containsKey("ROLE_DOCTOR_READ"))
 			list.appendChild(new DoctorItem());
 
+		if(modules.containsKey("ROLE_PATIENT_READ"))
+			list.appendChild(new PatientItem());
+
+		if(modules.containsKey("ROLE_DOCTOR_APPOINTMENT_READ"))
+			list.appendChild(new DoctorAppointmentItem());
+		
 		SessionUtils utils = Springs.get(SessionUtils.class);
 		DoctorService service = Springs.get(DoctorService.class);
 		if(utils != null && service != null && utils.getUser().getPerson() != null)
@@ -273,12 +280,6 @@ public class NavigationMenu extends Window
 			if(!service.findAllByPerson(utils.getUser().getPerson().getId()).isEmpty())
 				list.appendChild(new DoctorDashboardItem());
 		}
-		
-		if(modules.containsKey("ROLE_PATIENT"))
-			list.appendChild(new PatientItem());
-		
-		if(modules.containsKey("ROLE_DOCTOR_APPOINTMENT_READ"))
-			list.appendChild(new DoctorAppointmentItem());
 		
 		if(modules.containsKey("ROLE_LABS_REGISTRATION_READ"))
 			list.appendChild(new LabScheduleItem());
@@ -302,6 +303,28 @@ public class NavigationMenu extends Window
 			healtcare.appendChild(list);
 
 			tabs.appendChild(new Tab(language.get("navbar.menu.healtcare")));
+			panels.appendChild(healtcare);
+		}
+	}
+	
+	protected void initPharmacy(Map<String,Boolean> modules)
+	{
+		Listbox list = new Listbox();
+		list.setStyle("border:none");
+		
+		if(modules.containsKey("ROLE_PHARMACY_SALES_READ"))
+			list.appendChild(new PharmacySalesItem());
+		
+		if(modules.containsKey("ROLE_PHARMACY_ORDER_READ"))
+			list.appendChild(new PharmacyOrderItem());
+		
+		if(!list.getChildren().isEmpty())
+		{
+			Tabpanel healtcare = new Tabpanel();
+			healtcare.setStyle("overflow:auto");
+			healtcare.appendChild(list);
+
+			tabs.appendChild(new Tab(language.get("navbar.menu.pharmacy")));
 			panels.appendChild(healtcare);
 		}
 	}

@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -56,7 +57,7 @@ public class MedicalRecord implements Serializable
 	@NotFound(action=NotFoundAction.IGNORE)
 	private Doctor doctor;
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name="fk_doctor_appointment")
 	@NotFound(action=NotFoundAction.IGNORE)
 	private DoctorAppointment appointment;

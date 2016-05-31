@@ -165,11 +165,12 @@ public class InventoryItemGridContent extends GridContent
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
 		grid.getColumns().appendChild(new Column("Product"));
-		grid.getColumns().appendChild(new Column("Facility",null,"150px"));
-		grid.getColumns().appendChild(new Column("Serial",null,"125px"));
-		grid.getColumns().appendChild(new Column("On Hand",null,"75px"));
+		grid.getColumns().appendChild(new Column("Facility",null,"145px"));
+		grid.getColumns().appendChild(new Column("Serial",null,"100px"));
+		grid.getColumns().appendChild(new Column("On Hand",null,"70px"));
+		grid.getColumns().appendChild(new Column("Expired",null,"85px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(5).setVisible(false);
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("1");
 
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()

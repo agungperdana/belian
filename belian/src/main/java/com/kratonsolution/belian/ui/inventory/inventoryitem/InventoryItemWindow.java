@@ -40,6 +40,8 @@ public class InventoryItemWindow extends AbstractWindow implements HasGrid,HasCr
 	private InventoryItemWindow()
 	{
 		super();
+		setWidth("650px");
+		setHeight("550px");
 	}
 	
 	protected void init()

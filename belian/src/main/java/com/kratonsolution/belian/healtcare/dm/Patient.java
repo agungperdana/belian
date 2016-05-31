@@ -16,7 +16,8 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.general.dm.PersonRole;
+import com.kratonsolution.belian.general.dm.PartyRole;
+import com.kratonsolution.belian.general.dm.Person;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -29,7 +30,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="patient")
-public class Patient extends PersonRole
+public class Patient extends PartyRole
 {
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="fk_bpjs")
@@ -42,8 +43,15 @@ public class Patient extends PersonRole
 	@OneToMany(mappedBy="patient",fetch=FetchType.EAGER)
 	private Set<FamilyMember> members = new HashSet<>();
 	
+	public Patient(){}
+	
 	public boolean isBpjs()
 	{
 		return (bpjs != null && !Strings.isNullOrEmpty(bpjs.getCard()) && bpjs.isActive());
+	}
+	
+	public Person getPerson()
+	{
+		return (Person)getParty();
 	}
 }
