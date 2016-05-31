@@ -44,4 +44,6 @@ public interface PatientRepository extends JpaRepository<Patient, String>
 			+ "rel.organization.party.id =:company "
 			+ "ORDER BY rel.patient.party.name ASC")
 	public List<Patient> findAll(@Param("company")String company);
+	
+	public Patient findOneByPartyId(String id);
 }

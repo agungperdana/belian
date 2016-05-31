@@ -26,7 +26,10 @@ import com.kratonsolution.belian.healtcare.svc.DoctorAppointmentService;
 import com.kratonsolution.belian.healtcare.svc.DoctorService;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.healtcare.doctor.DoctorBox;
+import com.kratonsolution.belian.ui.healtcare.patient.PatientBox;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -53,9 +56,9 @@ public class DoctorAppointmentEditContent extends FormContent
 
 	private Textbox note = new Textbox();
 
-	private Listbox doctors = Components.newSelect();
+	private DoctorBox doctors = new DoctorBox(false);
 
-	private Listbox patients = Components.newSelect();
+	private PatientBox patients = new PatientBox(false);
 
 	private Listbox statuses = Components.newSelect();
 
@@ -81,9 +84,7 @@ public class DoctorAppointmentEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				DoctorAppointmentWindow window = (DoctorAppointmentWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new DoctorAppointmentGridContent());
 			}
 		});
 
@@ -97,13 +98,10 @@ public class DoctorAppointmentEditContent extends FormContent
 				if(appointment != null)
 				{
 					appointment.setStatus(DoctorAppointmentStatus.valueOf(Components.string(statuses)));
-					
 					service.edit(appointment);
 				}
 
-				DoctorAppointmentWindow window = (DoctorAppointmentWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new DoctorAppointmentGridContent());
 			}
 		});
 		DoctorAppointment appointment = service.findOne(RowUtils.string(row, 6));
@@ -131,18 +129,19 @@ public class DoctorAppointmentEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		DoctorAppointment appointment = service.findOne(RowUtils.string(row, 6));
+		DoctorAppointment appointment = service.findOne(RowUtils.id(row));
 		if(appointment != null)
 		{
+			doctors.setDoctor(appointment.getDoctor());
+			patients.setPatient(appointment.getPatient());
+			companys.appendItem(appointment.getCompany().getName(), appointment.getCompany().getId());
+			companys.setSelectedIndex(0);
+			
 			queue.setWidth("75px");
 			queue.setValue(appointment.getQueue());
 			note.setWidth("300px");
 			note.setText(appointment.getNote());
 			date.setValue(appointment.getDate());
-			
-			companys.setWidth("225px");
-			doctors.setWidth("225px");
-			patients.setWidth("225px");
 			
 			for(DoctorAppointmentStatus status:DoctorAppointmentStatus.values())
 			{
@@ -151,15 +150,6 @@ public class DoctorAppointmentEditContent extends FormContent
 				if(status.equals(appointment.getStatus()))
 					statuses.setSelectedItem(listitem);
 			}
-			
-			companys.appendChild(new Listitem(appointment.getCompany().getLabel(), appointment.getCompany().getValue()));
-			doctors.appendChild(new Listitem(appointment.getDoctor().getFrom().getLabel(),appointment.getDoctor().getFrom().getValue()));
-			patients.appendChild(new Listitem(appointment.getPatient().getFrom().getLabel(),appointment.getPatient().getFrom().getValue()));
-			
-			Components.setDefault(companys);
-			Components.setDefault(doctors);
-			Components.setDefault(patients);
-			
 			
 			grid.appendChild(new Columns());
 			grid.getColumns().appendChild(new Column(null,null,"20%"));

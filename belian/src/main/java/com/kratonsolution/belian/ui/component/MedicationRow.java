@@ -24,6 +24,7 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
+import com.kratonsolution.belian.healtcare.dm.LaboratoryItem;
 import com.kratonsolution.belian.healtcare.dm.MedicationItem;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
@@ -74,9 +75,14 @@ public class MedicationRow extends Row implements HasAmount
 		appendChild(products);
 		appendChild(quantity);
 		appendChild(uoms);
-		appendChild(prices);
-		appendChild(discounts);
-		appendChild(charges);
+		
+		if(!isClinic)
+		{
+			appendChild(prices);
+			appendChild(discounts);
+			appendChild(charges);
+		}
+		
 		appendChild(note);
 
 		init(isBPJS, isClinic);
@@ -150,6 +156,22 @@ public class MedicationRow extends Row implements HasAmount
 	}
 	
 	public void setItem(MedicationItem item)
+	{
+		products.appendItem(item.getProduct().getName());
+		prices.appendItem(Numbers.format(item.getPrice()),item.getPrice().toString());
+		discounts.appendItem(Numbers.format(item.getDiscount()),item.getDiscount().toString());
+		charges.appendItem(Numbers.format(item.getCharge()),item.getCharge().toString());
+		quantity.setValue(item.getQuantity().doubleValue());
+		uoms.appendItem(item.getMeasure(), item.getMeasure());
+		
+		products.setSelectedIndex(0);
+		Components.setDefault(prices);
+		Components.setDefault(discounts);
+		Components.setDefault(charges);
+		Components.setDefault(uoms);
+	}
+	
+	public void setItem(LaboratoryItem item)
 	{
 		products.appendItem(item.getProduct().getName());
 		prices.appendItem(Numbers.format(item.getPrice()),item.getPrice().toString());

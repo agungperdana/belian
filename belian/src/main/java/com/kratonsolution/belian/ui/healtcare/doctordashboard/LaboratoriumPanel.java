@@ -70,7 +70,7 @@ public class LaboratoriumPanel extends Tabpanel
 					return;
 				}
 					
-				grid.getRows().appendChild(new MedicationRow(utils.getLocation().getId(),appointment.getPatient().getFrom().getId(),utils.getCurrency().getId(),appointment.getPatient().isBpjs()));
+				grid.getRows().appendChild(new MedicationRow(appointment.getPatient().isBpjs(),true));
 			}
 		});
 		
@@ -117,12 +117,12 @@ public class LaboratoriumPanel extends Tabpanel
 		{
 			Laboratory laboratory = new Laboratory();
 			laboratory.setCurrency(utils.getCurrency());
-			laboratory.setCustomer(appointment.getPatient().getFrom());
+			laboratory.setCustomer(appointment.getPatient().getPerson());
 			laboratory.setDate(appointment.getDate());
 			laboratory.setNumber(generator.generate(appointment.getDate(), appointment.getCompany(), Code.BLLAB));
 			laboratory.setOrganization(appointment.getCompany());
 			laboratory.setPaid(false);
-			laboratory.setSales(appointment.getDoctor().getFrom());
+			laboratory.setSales(appointment.getDoctor().getPerson());
 			laboratory.setTax(utils.getTax());
 			laboratory.setBpjs(appointment.getPatient().isBpjs());
 			laboratory.setPaid(laboratory.isBpjs());
@@ -132,13 +132,13 @@ public class LaboratoriumPanel extends Tabpanel
 				MedicationRow row = (MedicationRow)com;
 				
 				LaboratoryItem item = new LaboratoryItem();
-				item.setCharge(row.getCharge());
-				item.setDiscount(row.getDiscount());
+				item.setCharge(row.getItem().getCharge());
+				item.setDiscount(row.getItem().getDiscount());
 				item.setLaboratory(laboratory);
 				item.setService(row.getProduct());
-				item.setNote(row.getNote());
-				item.setPrice(row.getPrice());
-				item.setQuantity(row.getQuantity());
+				item.setNote(row.getItem().getNote());
+				item.setPrice(row.getItem().getPrice());
+				item.setQuantity(row.getItem().getQuantity());
 				
 				laboratory.getItems().add(item);
 			}

@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.ui.healtcare.doctordashboard;
 
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -20,6 +19,7 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.svc.DoctorAppointmentService;
 import com.kratonsolution.belian.healtcare.svc.DoctorTypeService;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -81,7 +81,7 @@ public class DoctorDashboardContent extends Borderlayout
 		if(appointment != null)
 		{
 			StringBuilder builder = new StringBuilder();
-			builder.append(appointment.getPatient().getFrom().getName());
+			builder.append(appointment.getPatient().getPerson().getName());
 			
 			if(appointment.getPatient().getBpjs() != null && !Strings.isNullOrEmpty(appointment.getPatient().getBpjs().getCard()))
 				builder.append(" (BPJS : "+appointment.getPatient().getBpjs().getCard()+")");
@@ -94,12 +94,7 @@ public class DoctorDashboardContent extends Borderlayout
 				@Override
 				public void onEvent(Event event) throws Exception
 				{
-					Component window = getParent();
-					if(window instanceof DoctorDashboardWindow)
-					{
-						((DoctorDashboardWindow)window).removeEditForm();
-						((DoctorDashboardWindow)window).insertGrid();
-					}
+					Flow.next(getParent(), new DoctorDashboardGridContent());
 				}
 			});
 			

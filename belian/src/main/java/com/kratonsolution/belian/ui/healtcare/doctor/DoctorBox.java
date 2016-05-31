@@ -17,9 +17,11 @@ import org.zkoss.zul.Hbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.healtcare.dm.Doctor;
 import com.kratonsolution.belian.healtcare.dm.DoctorRelationship;
 import com.kratonsolution.belian.healtcare.dm.DoctorRelationshipRepository;
+import com.kratonsolution.belian.healtcare.dm.DoctorRepository;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -31,6 +33,8 @@ public class DoctorBox extends Hbox implements DoctorRegistrationListener
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	private DoctorRelationshipRepository repository = Springs.get(DoctorRelationshipRepository.class);
+	
+	private DoctorRepository doctorRepository = Springs.get(DoctorRepository.class);
 	
 	private Combobox doctor = new Combobox();
 
@@ -109,6 +113,19 @@ public class DoctorBox extends Hbox implements DoctorRegistrationListener
 			
 			if(!maps.containsKey(dr.getPerson().getName()))
 				maps.put(dr.getPerson().getName(),dr);
+		}
+	}
+	
+	public void setDoctor(Person person)
+	{
+		if(person != null)
+		{
+			doctor.getItems().clear();
+			doctor.appendItem(person.getName());
+			doctor.setSelectedIndex(0);
+			
+			if(!maps.containsKey(person.getName()))
+				maps.put(person.getName(),doctorRepository.findOneByPartyId(person.getId()));
 		}
 	}
 }

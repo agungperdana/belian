@@ -33,6 +33,7 @@ import org.zkoss.zul.Toolbarbutton;
 
 import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.global.dm.SequenceNumber.Code;
 import com.kratonsolution.belian.global.svc.CodeGenerator;
 import com.kratonsolution.belian.healtcare.dm.Medication;
@@ -56,6 +57,8 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 	private CodeGenerator generator = Springs.get(CodeGenerator.class);
 	
 	private SessionUtils sessionUtils = Springs.get(SessionUtils.class);
+	
+	private PersonService personService = Springs.get(PersonService.class);
 	
 	private MedicationService service = Springs.get(MedicationService.class);
 	
@@ -149,6 +152,8 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 	@Override
 	public void initForm()
 	{
+		customers.setPerson(personService.anonymous());
+		
 		number.setText(generator.generate(new Date(System.currentTimeMillis()), sessionUtils.getOrganization(), Code.BLMED));
 		date.setConstraint("no empty");
 		note.setWidth("100%");

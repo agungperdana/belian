@@ -83,7 +83,7 @@ public class FamilyFolderPanel extends Vlayout
 						row.appendChild(new Label(app.getId()));
 						row.appendChild(new Label(DateTimes.format(app.getDate())));
 						row.appendChild(new Label(app.getCompany().getName()));
-						row.appendChild(new Label(app.getDoctor().getFrom().getName()));
+						row.appendChild(new Label(app.getDoctor().getPerson().getName()));
 						row.appendChild(new Label(app.getRecord()!=null?app.getRecord().getDiagnosis():""));
 						
 						grid.getRows().appendChild(row);
@@ -92,7 +92,7 @@ public class FamilyFolderPanel extends Vlayout
 					Tabpanel tabpanel = new Tabpanel();
 					tabpanel.appendChild(grid);
 					
-					box.getTabs().appendChild(new Tab(member.getPatient().getFrom().getName()));
+					box.getTabs().appendChild(new Tab(member.getPatient().getPerson().getName()));
 					box.getTabpanels().appendChild(tabpanel);
 				}
 			}

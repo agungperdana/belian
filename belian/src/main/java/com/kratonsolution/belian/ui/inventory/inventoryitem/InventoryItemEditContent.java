@@ -52,7 +52,7 @@ public class InventoryItemEditContent extends FormContent
 
 	private Doublebox onhand = new Doublebox(1d);
 	
-	private Datebox expired = Components.mandatoryDatebox("150px");
+	private Datebox expired = Components.datebox();
 
 	private Row row;
 
@@ -103,6 +103,7 @@ public class InventoryItemEditContent extends FormContent
 		InventoryItem item = service.findOne(RowUtils.id(row));
 		if(item != null)
 		{
+			expired.setValue(DateTimes.sql(item.getExpiredDate()));
 			products.setProduct(item.getProduct());
 			products.setDisabled(true);
 			

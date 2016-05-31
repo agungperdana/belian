@@ -32,6 +32,7 @@ import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.healtcare.doctor.DoctorBox;
 import com.kratonsolution.belian.ui.healtcare.patient.PatientBox;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -59,7 +60,7 @@ public class DoctorAppointmentFormContent extends FormContent
 
 	private DoctorBox doctors = new DoctorBox(true);
 	
-	private PatientBox patients = new PatientBox();
+	private PatientBox patients = new PatientBox(true);
 	
 	private Listbox statuses = Components.newSelect();
 	
@@ -82,9 +83,7 @@ public class DoctorAppointmentFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				DoctorAppointmentWindow window = (DoctorAppointmentWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new DoctorAppointmentGridContent());
 			}
 		});
 		
@@ -112,9 +111,7 @@ public class DoctorAppointmentFormContent extends FormContent
 				
 				service.add(appointment);
 				
-				DoctorAppointmentWindow window = (DoctorAppointmentWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new DoctorAppointmentGridContent());
 			}
 		});
 	}
@@ -125,9 +122,7 @@ public class DoctorAppointmentFormContent extends FormContent
 		if(utils.getOrganization() == null)
 		{
 			Clients.showNotification("Default organization does not exist,please go to user profile and set it.");
-			DoctorAppointmentWindow window = (DoctorAppointmentWindow)getParent();
-			window.removeCreateForm();
-			window.insertGrid();
+			Flow.next(getParent(), new DoctorAppointmentGridContent());
 		}
 		
 		queue.setWidth("75px");

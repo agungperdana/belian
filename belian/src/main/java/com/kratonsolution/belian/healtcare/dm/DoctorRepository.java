@@ -39,4 +39,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, String>
 		  + "doc.party.id =:person "
 		  + "AND ((:date BETWEEN doc.start AND doc.end) OR (doc.start <= :date AND doc.end IS NULL))")
 	public Doctor findOne(@Param("person")String person,@Param("date")Date date);
+	
+	public Doctor findOneByPartyId(String id);
 }

@@ -50,7 +50,7 @@ public class AppointmentItem extends Treeitem
 			{
 				if(type.getId().equals(app.getDoctor().getCategory().getId()))
 				{
-					Treeitem treeitem = new Treeitem(DateTimes.format(app.getDate())+" "+app.getDoctor().getFrom().getName());
+					Treeitem treeitem = new Treeitem(DateTimes.format(app.getDate())+" "+app.getDoctor().getPerson().getName());
 					treeitem.setId(app.getId());
 					treeitem.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 					{

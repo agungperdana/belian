@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.inventory.svc;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,23 +37,29 @@ public class InventoryStockService
 			
 			for(FacilityOrganization facility:utils.getOrganization().getFacilitys())
 			{
-				InventoryItem out = itemRepository.findOne(product.getId(), facility.getFacility().getId());
-				if(out != null && out.getOnhand().compareTo(BigDecimal.ZERO) > 0)
+				List<InventoryItem> outs = itemRepository.findAll(product.getId(), facility.getFacility().getId());
+				for(InventoryItem out: outs)
 				{
-					if(out.getOnhand().compareTo(unissued) >= 0)
+					if(out.getOnhand().compareTo(BigDecimal.ZERO) > 0)
 					{
-						out.setOnhand(out.getOnhand().subtract(unissued));
-						unissued = BigDecimal.ZERO;
-					}
-					else
-					{
-						out.setOnhand(BigDecimal.ZERO);
-						unissued = unissued.subtract(out.getOnhand());
+						if(out.getOnhand().compareTo(unissued) >= 0)
+						{
+							out.setOnhand(out.getOnhand().subtract(unissued));
+							unissued = BigDecimal.ZERO;
+						}
+						else
+						{
+							unissued = unissued.subtract(out.getOnhand());
+							out.setOnhand(BigDecimal.ZERO);
+						}
+						
+						itemRepository.save(out);
 					}
 					
-					itemRepository.save(out);
+					if(unissued.intValue() == 0)
+						break;
 				}
-				
+
 				if(unissued.intValue() == 0)
 					break;
 			}

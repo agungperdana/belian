@@ -28,9 +28,7 @@ import com.kratonsolution.belian.healtcare.svc.LaboratoryRegistrationService;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
-import com.kratonsolution.belian.ui.component.DoctorComboItem;
 import com.kratonsolution.belian.ui.component.MedicationRow;
-import com.kratonsolution.belian.ui.component.PatientComboItem;
 import com.kratonsolution.belian.ui.healtcare.doctor.DoctorBox;
 import com.kratonsolution.belian.ui.healtcare.patient.PatientBox;
 import com.kratonsolution.belian.ui.util.Components;
@@ -56,9 +54,9 @@ public class LabsRegistrationEditContent extends FormContent
 
 	private Datebox date = Components.datebox();
 
-	private DoctorBox doctor = new DoctorBox();
+	private DoctorBox doctor = new DoctorBox(false);
 
-	private PatientBox patient = new PatientBox();
+	private PatientBox patient = new PatientBox(false);
 
 	private Textbox note = new Textbox();
 	
@@ -110,13 +108,13 @@ public class LabsRegistrationEditContent extends FormContent
 						MedicationRow row = (MedicationRow)com;
 						
 						LaboratoryItem item = new LaboratoryItem();
-						item.setCharge(row.getCharge());
-						item.setDiscount(row.getDiscount());
+						item.setCharge(row.getItem().getCharge());
+						item.setDiscount(row.getItem().getDiscount());
 						item.setLaboratory(laboratory);
 						item.setService(row.getProduct());
-						item.setNote(row.getNote());
-						item.setPrice(row.getPrice());
-						item.setQuantity(row.getQuantity());
+						item.setNote(row.getItem().getNote());
+						item.setPrice(row.getItem().getPrice());
+						item.setQuantity(row.getItem().getQuantity());
 						
 						laboratory.getItems().add(item);
 					}
@@ -144,12 +142,8 @@ public class LabsRegistrationEditContent extends FormContent
 			companys.setSelectedIndex(0);
 			
 			date.setValue(lab.getDate());
-			
-			doctor.appendChild(new DoctorComboItem(doctorService.findOne(lab.getSales().getId(), lab.getOrganization().getId())));
-			doctor.setSelectedIndex(0);
-
-			patient.appendChild(new PatientComboItem(patientService.findOne(lab.getCustomer().getId(), lab.getOrganization().getId())));
-			patient.setSelectedIndex(0);
+			doctor.setDoctor(lab.getSales());
+			patient.setPatient(lab.getCustomer());
 			
 			grid.appendChild(new Columns());
 			grid.getColumns().appendChild(new Column(null,null,"75px"));
@@ -206,7 +200,7 @@ public class LabsRegistrationEditContent extends FormContent
 						return;
 					}
 						
-					details.getRows().appendChild(new MedicationRow(utils.getLocation().getId(),patient.getPatient().getFrom().getId(),utils.getCurrency().getId(),patient.getPatient().isBpjs()));
+					details.getRows().appendChild(new MedicationRow(patient.getPatient().isBpjs(),true));
 				}
 			});
 			
@@ -256,13 +250,8 @@ public class LabsRegistrationEditContent extends FormContent
 		{
 			for(LaboratoryItem item:lab.getItems())
 			{
-				MedicationRow row = new MedicationRow(utils.getLocation().getId(), lab.getCustomer().getId(), utils.getCurrency().getId(), patient.getPatient().isBpjs());
-				row.setCharge(item.getCharge());
-				row.setDiscount(item.getDiscount());
-				row.setPrice(item.getPrice());
-				row.setQuantity(item.getQuantity());
-				row.setProduct(item.getService());
-				row.setNote(item.getNote());
+				MedicationRow row = new MedicationRow(patient.getPatient().isBpjs(),true);
+				row.setItem(item);
 				
 				details.getRows().appendChild(row);
 			}

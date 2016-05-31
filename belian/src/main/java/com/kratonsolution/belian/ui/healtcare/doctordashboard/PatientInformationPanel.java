@@ -54,13 +54,13 @@ public class PatientInformationPanel extends Grid
 			getColumns().appendChild(new Column(null,null,"125px"));
 			getColumns().appendChild(new Column());
 			setSpan("1");
-			getRows().appendChild(RowUtils.row("Identity",patient.getFrom().getIdentity()));
-			getRows().appendChild(RowUtils.row("Name",patient.getFrom().getName()));
-			getRows().appendChild(RowUtils.row("Age",DateTimes.getAge(patient.getFrom().getBirthDate())));
-			getRows().appendChild(RowUtils.row("Birth Place",patient.getFrom().getBirthPlace().getName()));
-			getRows().appendChild(RowUtils.row("Birth Date",DateTimes.format(patient.getFrom().getBirthDate())));
-			getRows().appendChild(RowUtils.row("Gender",patient.getFrom().getGender().toString()));
-			getRows().appendChild(RowUtils.row("Status",patient.getFrom().getMaritalStatus().toString()));
+			getRows().appendChild(RowUtils.row("Identity",patient.getPerson().getIdentity()));
+			getRows().appendChild(RowUtils.row("Name",patient.getPerson().getName()));
+			getRows().appendChild(RowUtils.row("Age",DateTimes.getAge(patient.getPerson().getBirthDate())));
+			getRows().appendChild(RowUtils.row("Birth Place",patient.getPerson().getBirthPlace().getName()));
+			getRows().appendChild(RowUtils.row("Birth Date",DateTimes.format(patient.getPerson().getBirthDate())));
+			getRows().appendChild(RowUtils.row("Gender",patient.getPerson().getGender().toString()));
+			getRows().appendChild(RowUtils.row("Status",patient.getPerson().getMaritalStatus().toString()));
 			getRows().appendChild(RowUtils.row("BPJS Information",""));
 			getRows().appendChild(RowUtils.row("Number",patient.getBpjs().getCard()));
 		}

@@ -52,7 +52,7 @@ public class InventoryItemFormContent extends FormContent
 	
 	private Doublebox onhand = new Doublebox(1d);
 	
-	private Datebox expired = Components.mandatoryDatebox("150px");
+	private Datebox expired = Components.datebox();
 	
 	public InventoryItemFormContent()
 	{

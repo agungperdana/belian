@@ -70,7 +70,7 @@ public class MedicationPanel extends Tabpanel
 					return;
 				}
 					
-				grid.getRows().appendChild(new MedicationRow(utils.getLocation().getId(),appointment.getPatient().getFrom().getId(),utils.getCurrency().getId(),appointment.getPatient().isBpjs()));
+				grid.getRows().appendChild(new MedicationRow(appointment.getPatient().isBpjs(),true));
 			}
 		});
 		
@@ -117,12 +117,12 @@ public class MedicationPanel extends Tabpanel
 		{
 			Medication medication = new Medication();
 			medication.setCurrency(utils.getCurrency());
-			medication.setCustomer(appointment.getPatient().getFrom());
+			medication.setCustomer(appointment.getPatient().getPerson());
 			medication.setDate(appointment.getDate());
 			medication.setNumber(generator.generate(appointment.getDate(), appointment.getCompany(), Code.BLMED));
 			medication.setOrganization(appointment.getCompany());
 			medication.setPaid(false);
-			medication.setSales(appointment.getDoctor().getFrom());
+			medication.setSales(appointment.getDoctor().getPerson());
 			medication.setTax(utils.getTax());
 			medication.setBpjs(appointment.getPatient().isBpjs());
 			medication.setPaid(medication.isBpjs());
@@ -132,13 +132,13 @@ public class MedicationPanel extends Tabpanel
 				MedicationRow row = (MedicationRow)com;
 				
 				MedicationItem item = new MedicationItem();
-				item.setCharge(row.getCharge());
-				item.setDiscount(row.getDiscount());
+				item.setCharge(row.getItem().getCharge());
+				item.setDiscount(row.getItem().getDiscount());
 				item.setMedication(medication);
 				item.setMedicine(row.getProduct());
-				item.setNote(row.getNote());
-				item.setPrice(row.getPrice());
-				item.setQuantity(row.getQuantity());
+				item.setNote(row.getItem().getNote());
+				item.setPrice(row.getItem().getPrice());
+				item.setQuantity(row.getItem().getQuantity());
 				
 				medication.getItems().add(item);
 			}

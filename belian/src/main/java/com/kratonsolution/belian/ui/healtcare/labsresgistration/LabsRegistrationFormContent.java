@@ -54,9 +54,9 @@ public class LabsRegistrationFormContent extends FormContent
 	
 	private Datebox date = Components.currentDatebox();
 	
-	private DoctorBox doctor = new DoctorBox();
+	private DoctorBox doctor = new DoctorBox(true);
 	
-	private PatientBox patient = new PatientBox();
+	private PatientBox patient = new PatientBox(true);
 	
 	private Textbox note = new Textbox();
 	
@@ -97,11 +97,11 @@ public class LabsRegistrationFormContent extends FormContent
 				
 				Laboratory laboratory = new Laboratory();
 				laboratory.setCurrency(utils.getCurrency());
-				laboratory.setCustomer(patient.getPatient().getFrom());
+				laboratory.setCustomer(patient.getPatient().getPerson());
 				laboratory.setDate(new Date(date.getValue().getTime()));
 				laboratory.setNumber(generator.generate(laboratory.getDate(), utils.getOrganization(), Code.BLLAB));
 				laboratory.setOrganization(utils.getOrganization());
-				laboratory.setSales(doctor.getDoctor().getFrom());
+				laboratory.setSales(doctor.getDoctor().getPerson());
 				laboratory.setTax(utils.getTax());
 
 				for(Component com:details.getRows().getChildren())
@@ -109,13 +109,13 @@ public class LabsRegistrationFormContent extends FormContent
 					MedicationRow row = (MedicationRow)com;
 					
 					LaboratoryItem item = new LaboratoryItem();
-					item.setCharge(row.getCharge());
-					item.setDiscount(row.getDiscount());
+					item.setCharge(row.getItem().getCharge());
+					item.setDiscount(row.getItem().getDiscount());
 					item.setLaboratory(laboratory);
 					item.setService(row.getProduct());
-					item.setNote(row.getNote());
-					item.setPrice(row.getPrice());
-					item.setQuantity(row.getQuantity());
+					item.setNote(row.getItem().getNote());
+					item.setPrice(row.getItem().getPrice());
+					item.setQuantity(row.getItem().getQuantity());
 					
 					laboratory.getItems().add(item);
 				}
@@ -178,7 +178,7 @@ public class LabsRegistrationFormContent extends FormContent
 					return;
 				}
 					
-				details.getRows().appendChild(new MedicationRow(utils.getLocation().getId(),patient.getPatient().getFrom().getId(),utils.getCurrency().getId(),patient.getPatient().isBpjs()));
+				details.getRows().appendChild(new MedicationRow(patient.getPatient().isBpjs(),true));
 			}
 		});
 		

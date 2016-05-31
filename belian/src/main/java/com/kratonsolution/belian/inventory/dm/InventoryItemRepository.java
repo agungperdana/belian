@@ -19,7 +19,10 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, St
 {
 	public List<InventoryItem> findAllByFacilityId(String facilityId);
 	
-	@Query("FROM InventoryItem item WHERE item.product.id =:product AND item.facility.id =:facility ")
+	@Query("FROM InventoryItem item WHERE item.product.id =:product AND item.facility.id =:facility ORDER BY item.expiredDate ASC")
+	public List<InventoryItem> findAll(@Param("product")String product,@Param("facility")String facility);
+	
+	@Query("FROM InventoryItem item WHERE item.product.id =:product AND item.facility.id =:facility AND item.expiredDate IS NULL")
 	public InventoryItem findOne(@Param("product")String product,@Param("facility")String facility);
 	
 	@Query("FROM InventoryItem item WHERE item.product.id =:product AND item.facility.id =:facility AND item.expiredDate =:expired")

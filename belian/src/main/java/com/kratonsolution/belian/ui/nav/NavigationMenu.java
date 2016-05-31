@@ -54,11 +54,11 @@ public class NavigationMenu extends Window
 		initPayment(modules);
 		initInventory(modules);
 		initAsset(modules);
-//		initPOS(modules);
 		initSales(modules);
 		initProcurement(modules);
-		initHealtcare(modules);
 		initPharmacy(modules);
+		initClinic(modules);
+		initMedicalLab(modules);
 		initHR(modules);
 	}
 
@@ -256,7 +256,51 @@ public class NavigationMenu extends Window
 		}
 	}
 	
-	protected void initHealtcare(Map<String,Boolean> modules)
+	protected void initMedicalLab(Map<String,Boolean> modules)
+	{
+		Listbox list = new Listbox();
+		list.setStyle("border:none");
+				
+		if(modules.containsKey("ROLE_LABS_REGISTRATION_READ"))
+			list.appendChild(new LabScheduleItem());
+		
+		if(modules.containsKey("ROLE_LABS_REGISTRATION_READ"))
+			list.appendChild(new LabsRegistrationItem());
+		
+		if(!list.getChildren().isEmpty())
+		{
+			Tabpanel healtcare = new Tabpanel();
+			healtcare.setStyle("overflow:auto");
+			healtcare.appendChild(list);
+
+			tabs.appendChild(new Tab(language.get("navbar.menu.medicallab")));
+			panels.appendChild(healtcare);
+		}
+	}
+	
+	protected void initPharmacy(Map<String,Boolean> modules)
+	{
+		Listbox list = new Listbox();
+		list.setStyle("border:none");
+		
+		if(modules.containsKey("ROLE_PHARMACY_SALES_READ"))
+			list.appendChild(new PharmacySalesItem());
+		
+		if(modules.containsKey("ROLE_PHARMACY_ORDER_READ"))
+			list.appendChild(new PharmacyOrderItem());
+		
+		if(!list.getChildren().isEmpty())
+		{
+			Tabpanel healtcare = new Tabpanel();
+			healtcare.setStyle("overflow:auto");
+			healtcare.appendChild(list);
+
+			tabs.appendChild(new Tab(language.get("navbar.menu.pharmacy")));
+			panels.appendChild(healtcare);
+		}
+	}
+	
+	protected void initClinic(Map<String,Boolean> modules)
 	{
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
@@ -280,19 +324,7 @@ public class NavigationMenu extends Window
 			if(!service.findAllByPerson(utils.getUser().getPerson().getId()).isEmpty())
 				list.appendChild(new DoctorDashboardItem());
 		}
-		
-		if(modules.containsKey("ROLE_LABS_REGISTRATION_READ"))
-			list.appendChild(new LabScheduleItem());
-		
-		if(modules.containsKey("ROLE_LABS_REGISTRATION_READ"))
-			list.appendChild(new LabsRegistrationItem());
-		
-		if(modules.containsKey("ROLE_MEDICATION_READ"))
-			list.appendChild(new PharmacySalesItem());
-		
-		if(modules.containsKey("ROLE_MEDICATION_READ"))
-			list.appendChild(new PharmacyOrderItem());
-		
+				
 		if(modules.containsKey("ROLE_FAMILY_FOLDER_READ"))
 			list.appendChild(new FamilyFolderItem());
 		
@@ -302,29 +334,7 @@ public class NavigationMenu extends Window
 			healtcare.setStyle("overflow:auto");
 			healtcare.appendChild(list);
 
-			tabs.appendChild(new Tab(language.get("navbar.menu.healtcare")));
-			panels.appendChild(healtcare);
-		}
-	}
-	
-	protected void initPharmacy(Map<String,Boolean> modules)
-	{
-		Listbox list = new Listbox();
-		list.setStyle("border:none");
-		
-		if(modules.containsKey("ROLE_PHARMACY_SALES_READ"))
-			list.appendChild(new PharmacySalesItem());
-		
-		if(modules.containsKey("ROLE_PHARMACY_ORDER_READ"))
-			list.appendChild(new PharmacyOrderItem());
-		
-		if(!list.getChildren().isEmpty())
-		{
-			Tabpanel healtcare = new Tabpanel();
-			healtcare.setStyle("overflow:auto");
-			healtcare.appendChild(list);
-
-			tabs.appendChild(new Tab(language.get("navbar.menu.pharmacy")));
+			tabs.appendChild(new Tab(language.get("navbar.menu.clinic")));
 			panels.appendChild(healtcare);
 		}
 	}

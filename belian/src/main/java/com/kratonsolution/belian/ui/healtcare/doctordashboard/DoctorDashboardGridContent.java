@@ -171,7 +171,7 @@ public class DoctorDashboardGridContent extends GridContent
 		grid.getColumns().appendChild(new Column("Note",null,"125px"));
 		grid.getColumns().appendChild(new Column(null,null,"70px"));
 		grid.getColumns().appendChild(new Column(null,null,"0px"));
-		grid.getColumns().getChildren().get(6).setVisible(false);
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
 
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
