@@ -3,14 +3,11 @@
  */
 package com.kratonsolution.belian.hr.dm;
 
-import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.general.dm.InternalOrganization;
 import com.kratonsolution.belian.general.dm.PartyRelationship;
 
@@ -36,15 +33,4 @@ public class Employment extends PartyRelationship
 	private InternalOrganization internalOrganization;
 	
 	public Employment(){}
-	
-	public boolean isValid()
-	{
-		if(getStart().compareTo(DateTimes.sql(new Date())) <= 0 && getEnd() == null)
-			return true;
-		
-		if(getStart().compareTo(DateTimes.sql(new Date())) <= 0 && getEnd().compareTo(DateTimes.sql(new Date())) >= 0)
-			return true;
-		
-		return false;
-	}
 }

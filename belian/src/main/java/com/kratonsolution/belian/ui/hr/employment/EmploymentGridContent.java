@@ -17,6 +17,7 @@ import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.hr.svc.EmploymentService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -166,7 +167,7 @@ public class EmploymentGridContent extends GridContent
 		grid.getColumns().appendChild(new Column("Name",null,"150px"));
 		grid.getColumns().appendChild(new Column("Company",null,"150px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(5).setVisible(false);
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("4");
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
@@ -188,9 +189,7 @@ public class EmploymentGridContent extends GridContent
 				@Override
 				public void onEvent(Event event) throws Exception
 				{
-					EmploymentWindow window = (EmploymentWindow)getParent();
-					window.removeGrid();
-					window.insertEditForm(row);
+					Flow.next(getParent(), new EmploymentEditContent(row));
 				}
 			});
 		}

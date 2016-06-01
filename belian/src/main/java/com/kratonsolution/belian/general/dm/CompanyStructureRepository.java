@@ -19,4 +19,6 @@ public interface CompanyStructureRepository extends JpaRepository<CompanyStructu
 	
 	@Query("SELECT com.organization.id FROM CompanyStructure com")
 	public List<String> findAllOrganizationId(); 
+	
+	public CompanyStructure findOneByOrganizationId(String id);
 }

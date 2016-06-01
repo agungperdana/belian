@@ -76,55 +76,89 @@ public class SessionUtils
 	public User getUser()
 	{
 		SecurityInformation information = (SecurityInformation)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return service.findOne(information.getUser().getId());
+		return information.getUser();
 	}
 
 	public List<Organization> getOrganizations()
 	{
-		List<Organization> list = new ArrayList<Organization>();
+		Map<String,Organization> maps = new HashMap<String,Organization>();
 		
 		if(getUser() != null)
 		{
 			if(getUser().getEmail().equals("admin@belian.com"))
 			{
 				for(CompanyStructure com:companyStructureService.findAll())
-					list.add(com.getOrganization());
+					maps.put(com.getOrganization().getName(),com.getOrganization());
 			}
 			else
 			{
 				for(Employment employment:getUser().getEmployee().getEmployments())
 				{
-					if(employment.isValid())
-						list.add(employment.getInternalOrganization().getOrganization());
+					if(DateTimes.inActiveState(employment.getStart(),employment.getEnd()))
+					{
+						System.out.println(employment.getInternalOrganization().getOrganization().getName());
+						
+						CompanyStructure structure = companyStructureService.byOrganization(employment.getInternalOrganization().getOrganization().getId());
+						extractStructure(maps, structure);
+					}
 				}
 			}
 		}
 
-		return list;
+		return new ArrayList<Organization>(maps.values());
+	}
+
+	private void extractStructure(Map<String, Organization> maps,CompanyStructure structure)
+	{
+		if(structure != null && !maps.containsKey(structure.getOrganization().getName()))
+		{
+			maps.put(structure.getOrganization().getName(), structure.getOrganization());
+			if(!structure.getChilds().isEmpty())
+			{
+				for(CompanyStructure com:structure.getChilds())
+					extractStructure(maps, com);
+			}
+		}
 	}
 
 	public List<String> getOrganizationIds()
 	{
-		List<String> list = new ArrayList<String>();
+		Map<String,String> maps = new HashMap<String,String>();
 
 		if(getUser() != null)
 		{
 			if(getUser().getEmail().equals("admin@belian.com"))
 			{
 				for(CompanyStructure com:companyStructureService.findAll())
-					list.add(com.getOrganization().getId());
+					maps.put(com.getOrganization().getName(),com.getOrganization().getId());
 			}
 			else
 			{
 				for(Employment employment:getUser().getEmployee().getEmployments())
 				{
-					if(employment.isValid())
-						list.add(employment.getInternalOrganization().getOrganization().getId());
+					if(DateTimes.inActiveState(employment.getStart(), employment.getEnd()))
+					{				
+						CompanyStructure structure = companyStructureService.byOrganization(employment.getInternalOrganization().getOrganization().getId());
+						extractOrganizationId(maps, structure);
+					}
 				}
 			}
 		}
 
-		return list;
+		return new ArrayList<String>(maps.values());
+	}
+
+	private void extractOrganizationId(Map<String, String> maps,CompanyStructure structure)
+	{
+		if(structure != null && !maps.containsKey(structure.getOrganization().getName()))
+		{
+			maps.put(structure.getOrganization().getName(),structure.getOrganization().getId());
+			if(!structure.getChilds().isEmpty())
+			{
+				for(CompanyStructure com:structure.getChilds())
+					extractOrganizationId(maps,com);
+			}
+		}
 	}
 
 	public boolean hasDefaultOrganization()

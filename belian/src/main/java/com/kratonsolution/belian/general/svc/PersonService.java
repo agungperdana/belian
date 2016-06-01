@@ -51,7 +51,7 @@ public class PersonService
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_PERSON_READ")
+	@Secured({"ROLE_PERSON_READ","ROLE_PHARMACY_SALES_READ"})
 	public List<Person> findAll(String identityOrName)
 	{
 		if(Strings.isNullOrEmpty(identityOrName))

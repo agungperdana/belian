@@ -119,7 +119,7 @@ public class PositionTypeRateGridContent extends GridContent
 								Row row = (Row)object;
 
 								if(RowUtils.isChecked(row,0))
-									service.delete(RowUtils.string(row, 4));
+									service.delete(RowUtils.id(row));
 							}
 							
 							PositionTypeRateWindow window = (PositionTypeRateWindow)getParent();

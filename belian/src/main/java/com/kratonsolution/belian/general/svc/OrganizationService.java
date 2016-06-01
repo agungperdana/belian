@@ -107,6 +107,12 @@ public class OrganizationService
 	@Secured("ROLE_ORGANIZATION_DELETE")
 	public void delete(String id)
 	{
-		repository.delete(id);
+		try
+		{
+			repository.delete(id);
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

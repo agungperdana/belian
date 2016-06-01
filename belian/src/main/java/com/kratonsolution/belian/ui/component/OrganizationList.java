@@ -4,14 +4,16 @@
 package com.kratonsolution.belian.ui.component;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -24,6 +26,8 @@ public class OrganizationList extends Listbox implements Serializable
 	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 	
+	private Map<String,Organization> maps = new HashMap<>();
+	
 	public OrganizationList()
 	{
 		setWidth("300px");
@@ -31,17 +35,27 @@ public class OrganizationList extends Listbox implements Serializable
 		
 		for(Organization organization:utils.getOrganizations())
 		{
-			appendItem(organization.getName(),organization.getId());
-			getAttributes().put(organization.getId(),organization);
+			Listitem item = appendItem(organization.getName(),organization.getId());
+			if(!maps.containsKey(organization.getId()))
+				maps.put(organization.getId(),organization);
+		
+			if(utils.getOrganization() != null && organization.getId().equals(utils.getOrganization().getId()))
+				setSelectedItem(item);
 		}
 		
-		if(getItems().size() > 0)
+		if(getSelectedItem() == null && !getItems().isEmpty())
 			setSelectedIndex(0);
 	}
 	
 	public Organization getOrganization()
 	{
-		return organizationService.findOne(Components.string(this));	
+		if(getSelectedItem() == null)
+		{
+			Clients.showNotification("Please select organization first.");
+			return null;
+		}
+			
+		return maps.get(getSelectedItem().getValue().toString());	
 	}
 	
 	public void setOrganization(Organization organization)

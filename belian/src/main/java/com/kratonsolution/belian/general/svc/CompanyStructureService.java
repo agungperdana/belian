@@ -33,6 +33,12 @@ public class CompanyStructureService
 	{
 		return repository.findOne(id);
 	}
+	
+	@Secured({"ROLE_COMPANY_STRUCTURE_READ","ROLE_SYSTEM_READ"})
+	public CompanyStructure byOrganization(String organization)
+	{
+		return repository.findOneByOrganizationId(organization);
+	}
 
 	@Secured("ROLE_COMPANY_STRUCTURE_READ")
 	public List<CompanyStructure> findAll()

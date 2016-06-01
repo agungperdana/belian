@@ -38,7 +38,4 @@ public class Organization extends Party
 	
 	@OneToMany(mappedBy="organization",fetch=FetchType.EAGER)
 	private Set<FacilityOrganization> facilitys = new HashSet<>();
-//	
-//	@OneToMany(mappedBy="from",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
-//	private Set<OrganizationRole> roles = new HashSet<>();
 }

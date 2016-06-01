@@ -9,7 +9,6 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
-import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
@@ -18,6 +17,8 @@ import org.zkoss.zul.event.PagingEvent;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
+import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -125,16 +126,11 @@ public class OrganizationGridContent extends GridContent
 								{
 									Checkbox check = (Checkbox)row.getFirstChild();
 									if(check.isChecked())
-									{
-										Label label = (Label)row.getLastChild();
-										controller.delete(label.getValue());
-									}
+										controller.delete(RowUtils.id(row));
 								}
 							}
 							
-							OrganizationWindow window = (OrganizationWindow)getParent();
-							window.removeGrid();
-							window.insertGrid();
+							Flow.next(getParent(), new OrganizationGridContent());
 						}
 					}
 				});
@@ -170,7 +166,7 @@ public class OrganizationGridContent extends GridContent
 		grid.getColumns().appendChild(new Column("Tax",null,"100px"));
 		grid.getColumns().appendChild(new Column("Industry",null,"100px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(5).setVisible(false);
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
 
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()

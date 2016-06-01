@@ -236,52 +236,52 @@ public class EmploymentEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		Position position = service.findOne(RowUtils.string(row, 9));
-		
-		for(WorktimeStatus status:WorktimeStatus.values())
-		{
-			Listitem listitem = new Listitem(status.name(), status.name());
-			worktimes.appendChild(listitem);
-			if(position.getWorktimeStatus().equals(status))
-				worktimes.setSelectedItem(listitem);
-		}
-		
-		for(EmploymentStatus status:EmploymentStatus.values())
-		{
-			Listitem listitem = new Listitem(status.name(), status.name());
-			employmentstatuses.appendChild(listitem);
-			if(position.getEmploymentStatus().equals(status))
-				employmentstatuses.setSelectedItem(listitem);
-		}
-		
-		for(SalaryStatus status:SalaryStatus.values())
-		{
-			Listitem listitem = new Listitem(status.name(), status.name());
-			salaryStatus.appendChild(listitem);
-			if(position.getSalaryStatus().equals(status))
-				salaryStatus.setSelectedItem(listitem);
-		}
-		
-		for(PositionStatus status:PositionStatus.values())
-		{
-			Listitem listitem = new Listitem(status.name(), status.name());
-			positionStatusTypes.appendChild(listitem);
-			if(status.equals(position.getPositionStatusType()))
-				positionStatusTypes.setSelectedItem(listitem);
-		}
-
-		for(PositionType type:positionTypeService.findAll())
-		{
-			Listitem listitem = new Listitem(type.getTitle(),type.getId());
-			positionTypes.appendChild(listitem);
-			if(type.getId().equals(position.getType().getId()))
-				positionTypes.setSelectedItem(listitem);
-		}
-		
-		start.setValue(position.getStart());
-		end.setValue(position.getEnd());
-		actualStart.setValue(position.getActualStart());
-		actualEnd.setValue(position.getActualEnd());
+//		Position position = service.findOne(RowUtils.id(row));
+//		
+//		for(WorktimeStatus status:WorktimeStatus.values())
+//		{
+//			Listitem listitem = new Listitem(status.name(), status.name());
+//			worktimes.appendChild(listitem);
+//			if(position.getWorktimeStatus().equals(status))
+//				worktimes.setSelectedItem(listitem);
+//		}
+//		
+//		for(EmploymentStatus status:EmploymentStatus.values())
+//		{
+//			Listitem listitem = new Listitem(status.name(), status.name());
+//			employmentstatuses.appendChild(listitem);
+//			if(position.getEmploymentStatus().equals(status))
+//				employmentstatuses.setSelectedItem(listitem);
+//		}
+//		
+//		for(SalaryStatus status:SalaryStatus.values())
+//		{
+//			Listitem listitem = new Listitem(status.name(), status.name());
+//			salaryStatus.appendChild(listitem);
+//			if(position.getSalaryStatus().equals(status))
+//				salaryStatus.setSelectedItem(listitem);
+//		}
+//		
+//		for(PositionStatus status:PositionStatus.values())
+//		{
+//			Listitem listitem = new Listitem(status.name(), status.name());
+//			positionStatusTypes.appendChild(listitem);
+//			if(status.equals(position.getPositionStatusType()))
+//				positionStatusTypes.setSelectedItem(listitem);
+//		}
+//
+//		for(PositionType type:positionTypeService.findAll())
+//		{
+//			Listitem listitem = new Listitem(type.getTitle(),type.getId());
+//			positionTypes.appendChild(listitem);
+//			if(type.getId().equals(position.getType().getId()))
+//				positionTypes.setSelectedItem(listitem);
+//		}
+//		
+//		start.setValue(position.getStart());
+//		end.setValue(position.getEnd());
+//		actualStart.setValue(position.getActualStart());
+//		actualEnd.setValue(position.getActualEnd());
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
