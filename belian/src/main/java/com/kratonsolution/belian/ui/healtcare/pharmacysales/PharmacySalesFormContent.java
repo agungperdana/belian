@@ -12,6 +12,7 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
@@ -32,15 +33,16 @@ import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 
 import com.kratonsolution.belian.accounting.dm.Tax;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.global.dm.SequenceNumber.Code;
 import com.kratonsolution.belian.global.svc.CodeGenerator;
-import com.kratonsolution.belian.healtcare.dm.Medication;
-import com.kratonsolution.belian.healtcare.dm.MedicationItem;
-import com.kratonsolution.belian.healtcare.svc.MedicationService;
+import com.kratonsolution.belian.healtcare.dm.PharmacySales;
+import com.kratonsolution.belian.healtcare.dm.PharmacySalesItem;
+import com.kratonsolution.belian.healtcare.svc.PharmacySalesService;
 import com.kratonsolution.belian.ui.FormContent;
-import com.kratonsolution.belian.ui.component.MedicationRow;
+import com.kratonsolution.belian.ui.component.MedicalSalesRow;
 import com.kratonsolution.belian.ui.component.PersonBox;
 import com.kratonsolution.belian.ui.component.ProductPriceSelectionListener;
 import com.kratonsolution.belian.ui.util.Components;
@@ -60,11 +62,13 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 	
 	private PersonService personService = Springs.get(PersonService.class);
 	
-	private MedicationService service = Springs.get(MedicationService.class);
+	private PharmacySalesService service = Springs.get(PharmacySalesService.class);
 	
 	private Textbox number = Components.readOnlyTextBox();
 	
 	private Datebox date = Components.mandatoryDatebox();
+	
+	private Checkbox ref = new Checkbox();
 	
 	private Doublebox term = Components.readOnlyDoubleBox(0);
 	
@@ -124,25 +128,25 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Medication medication = new Medication();
-				medication.setType("Apotek");
-				medication.setCurrency(sessionUtils.getCurrency());
-				medication.setCustomer(customers.getPerson());
-				medication.setDate(new Date(date.getValue().getTime()));
-				medication.setNumber(number.getText());
-				medication.setOrganization(sessionUtils.getOrganization());
-				medication.setSales(sessionUtils.getUser().getPerson());
-				medication.setTax(sessionUtils.getTax());
+				PharmacySales pharmacy = new PharmacySales();
+				pharmacy.setCurrency(sessionUtils.getCurrency());
+				pharmacy.setCustomer(customers.getPerson());
+				pharmacy.setDate(new Date(date.getValue().getTime()));
+				pharmacy.setNumber(number.getText());
+				pharmacy.setOrganization(sessionUtils.getOrganization());
+				pharmacy.setSales(sessionUtils.getUser().getPerson());
+				pharmacy.setTax(sessionUtils.getTax());
+				pharmacy.setReference(ref.isChecked());
 				
 				for(Component com:saleItems.getRows().getChildren())
 				{
-					MedicationRow row = (MedicationRow)com;
-					MedicationItem item = row.getItem();
-					item.setMedication(medication);
-					medication.getItems().add(item);
+					MedicalSalesRow row = (MedicalSalesRow)com;
+					PharmacySalesItem item = row.getItem();
+					item.setPharmacySales(pharmacy);
+					pharmacy.getItems().add(item);
 				}
 				
-				service.add(medication);
+				service.add(pharmacy);
 				
 				Flow.next(getParent(),new PharmacySalesGridContent());
 			}
@@ -163,6 +167,9 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 			saleses.appendChild(new Listitem(sessionUtils.getUser().getPerson().getLabel(), sessionUtils.getUser().getPerson().getValue()));
 			saleses.setSelectedIndex(0);
 		}
+		
+		String code = generator.generate(DateTimes.currentDate(), sessionUtils.getOrganization(),Code.PHS);
+		number.setText(code);
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"85px"));
@@ -206,12 +213,17 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 		row8.appendChild(new Label("Note"));
 		row8.appendChild(note);
 		
+		Row row9 = new Row();
+		row9.appendChild(new Label("Reference"));
+		row9.appendChild(ref);
+		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
 		rows.appendChild(row5);
 		rows.appendChild(row6);
 		rows.appendChild(row8);
+		rows.appendChild(row9);
 	}
 	
 	private void initItems()
@@ -241,7 +253,7 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				MedicationRow row = new MedicationRow(false,false);
+				MedicalSalesRow row = new MedicalSalesRow(false,false,ref.isChecked());
 				row.addProductPriceListener(PharmacySalesFormContent.this);
 				saleItems.getRows().appendChild(row);
 			}
@@ -292,7 +304,7 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 		
 		for(Component com:saleItems.getRows().getChildren())
 		{
-			MedicationRow row = (MedicationRow)com;
+			MedicalSalesRow row = (MedicalSalesRow)com;
 			billAmount = billAmount.add(row.getAmount());
 		}
 		

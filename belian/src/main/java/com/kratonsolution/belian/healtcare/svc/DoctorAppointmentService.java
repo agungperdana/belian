@@ -19,6 +19,7 @@ import com.kratonsolution.belian.global.svc.SessionAware;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentRepository;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentStatus;
+import com.kratonsolution.belian.healtcare.dm.MedicalRecordRepository;
 
 /**
  * 
@@ -33,7 +34,7 @@ public class DoctorAppointmentService extends SessionAware
 	private DoctorAppointmentRepository repository;
 	
 	@Autowired
-	private MedicalRecordService service;
+	private MedicalRecordRepository medicalRecordRepository;
 	
 	@Autowired
 	private MedicationService medicationService;
@@ -101,13 +102,23 @@ public class DoctorAppointmentService extends SessionAware
 	@Secured("ROLE_DOCTOR_APPOINTMENT_UPDATE")
 	public void edit(DoctorAppointment appointment)
 	{
+		
+	}
+	
+	@Secured("ROLE_DOCTOR_APPOINTMENT_UPDATE")
+	public void done(DoctorAppointment appointment)
+	{
 		if(appointment.getRecord() != null)
 			medicationService.add(appointment.getRecord().getMedication());
 		if(appointment.getRecord().getTreatment() != null)
 			treatmentService.add(appointment.getRecord().getTreatment());
 		if(appointment.getRecord().getLaboratory() != null)
 			labService.add(appointment.getRecord().getLaboratory());
-		
+
+		appointment.setStatus(DoctorAppointmentStatus.DONE);
+		appointment.getRecord().setAppointment(appointment);
+
+		medicalRecordRepository.save(appointment.getRecord());
 		repository.save(appointment);
 	}
 	

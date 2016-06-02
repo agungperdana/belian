@@ -24,8 +24,8 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
-import com.kratonsolution.belian.healtcare.dm.LaboratoryItem;
-import com.kratonsolution.belian.healtcare.dm.MedicationItem;
+import com.kratonsolution.belian.healtcare.dm.MedicalSalesItem;
+import com.kratonsolution.belian.healtcare.dm.PharmacySalesItem;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
 import com.kratonsolution.belian.inventory.dm.ProductPriceRepository;
@@ -40,7 +40,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class MedicationRow extends Row implements HasAmount
+public class MedicalSalesRow extends Row implements HasAmount
 {
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 
@@ -70,33 +70,38 @@ public class MedicationRow extends Row implements HasAmount
 
 	private Collection<ProductPriceSelectionListener> listeners = new ArrayList<ProductPriceSelectionListener>();
 
-	public MedicationRow(boolean isBPJS,boolean isClinic)
+	public MedicalSalesRow(boolean isBPJS,boolean isClinic,boolean isReference)
 	{
 		appendChild(deleteable);
 		appendChild(products);
 		appendChild(quantity);
 		appendChild(uoms);
-
+		
 		if(!isClinic)
 		{
 			appendChild(prices);
 			appendChild(discounts);
 			appendChild(charges);
 		}
-
+		
 		appendChild(note);
 
-		init(isBPJS, isClinic);
+		init(isBPJS, isClinic,isReference);
+	}
+	
+	public MedicalSalesRow(boolean isBPJS,boolean isClinic)
+	{
+		this(isBPJS,isClinic,false);
 	}
 
-	private void init(boolean isBPJS,boolean isClinic)
+	private void init(boolean isBPJS,boolean isClinic,boolean isReference)
 	{
 		products.setWidth("100%");
 		products.setAutocomplete(true);
 		products.setAutodrop(true);
-		products.addEventListener(Events.ON_CHANGING,new Listener(isBPJS, isClinic));
-		products.addEventListener(Events.ON_BLUR,new Listener(isBPJS, isClinic));
-		products.addEventListener(Events.ON_SELECT,new Listener(isBPJS, isClinic));
+		products.addEventListener(Events.ON_CHANGING,new Listener(isBPJS, isClinic,isReference));
+		products.addEventListener(Events.ON_BLUR,new Listener(isBPJS, isClinic,isReference));
+		products.addEventListener(Events.ON_SELECT,new Listener(isBPJS, isClinic,isReference));
 
 		quantity.addEventListener(Events.ON_CHANGE, new EventListener<Event>()
 		{
@@ -143,44 +148,28 @@ public class MedicationRow extends Row implements HasAmount
 			listeners.add(listener);
 	}
 
-	public MedicationItem getItem()
+	public PharmacySalesItem getItem()
 	{
-		MedicationItem item = new MedicationItem();
+		PharmacySalesItem item = new PharmacySalesItem();
 		item.setCharge(Components.decimal(charges));
 		item.setDiscount(Components.decimal(discounts));
 		item.setPrice(Components.decimal(prices));
-		item.setMedicine(getProduct());
+		item.setProduct(getProduct());
 		item.setNote(note.getText());
 		item.setQuantity(BigDecimal.valueOf(quantity.doubleValue()));
 
 		return item;
 	}
-
-	public void setItem(MedicationItem item)
+	
+	public void setItem(MedicalSalesItem item)
 	{
-		products.appendItem(item.getProduct().getName());
+		products.appendItem(item.getResource());
 		prices.appendItem(Numbers.format(item.getPrice()),item.getPrice().toString());
 		discounts.appendItem(Numbers.format(item.getDiscount()),item.getDiscount().toString());
 		charges.appendItem(Numbers.format(item.getCharge()),item.getCharge().toString());
 		quantity.setValue(item.getQuantity().doubleValue());
 		uoms.appendItem(item.getMeasure(), item.getMeasure());
-
-		products.setSelectedIndex(0);
-		Components.setDefault(prices);
-		Components.setDefault(discounts);
-		Components.setDefault(charges);
-		Components.setDefault(uoms);
-	}
-
-	public void setItem(LaboratoryItem item)
-	{
-		products.appendItem(item.getProduct().getName());
-		prices.appendItem(Numbers.format(item.getPrice()),item.getPrice().toString());
-		discounts.appendItem(Numbers.format(item.getDiscount()),item.getDiscount().toString());
-		charges.appendItem(Numbers.format(item.getCharge()),item.getCharge().toString());
-		quantity.setValue(item.getQuantity().doubleValue());
-		uoms.appendItem(item.getMeasure(), item.getMeasure());
-
+		
 		products.setSelectedIndex(0);
 		Components.setDefault(prices);
 		Components.setDefault(discounts);
@@ -199,10 +188,13 @@ public class MedicationRow extends Row implements HasAmount
 
 		private boolean isClinic;
 
-		public Listener(boolean isBPJS,boolean isClinic)
+		private boolean isReference;
+		
+		public Listener(boolean isBPJS,boolean isClinic,boolean isReference)
 		{
 			this.isBPJS = isBPJS;
 			this.isClinic = isClinic;
+			this.isReference = isReference;
 		}
 
 		@Override
@@ -239,6 +231,10 @@ public class MedicationRow extends Row implements HasAmount
 							else if(price.getType().equals(ProductPriceType.BPJS) && isBPJS && isClinic)
 								prices.appendItem(Numbers.format(price.getPrice()), price.getPrice().toString());
 							else if(price.getType().equals(ProductPriceType.CLINIC) && !isBPJS && isClinic)
+								prices.appendItem(Numbers.format(price.getPrice()), price.getPrice().toString());
+							else if(price.getType().equals(ProductPriceType.REFERENCE) && !isClinic && isReference)
+								prices.appendItem(Numbers.format(price.getPrice()), price.getPrice().toString());
+							else if(price.getType().equals(ProductPriceType.BASE) && !isClinic && !isReference)
 								prices.appendItem(Numbers.format(price.getPrice()), price.getPrice().toString());
 						}
 					}

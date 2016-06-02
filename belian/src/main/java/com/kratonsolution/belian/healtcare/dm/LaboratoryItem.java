@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.inventory.dm.ProductPriceType;
 import com.kratonsolution.belian.sales.dm.BillableItem;
 
 import lombok.Getter;
@@ -89,5 +90,11 @@ public class LaboratoryItem implements BillableItem
 	public Product getProduct()
 	{
 		return getService();
+	}
+
+	@Override
+	public ProductPriceType getPriceType()
+	{
+		return ProductPriceType.CLINIC;
 	}
 }

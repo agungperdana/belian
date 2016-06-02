@@ -25,6 +25,7 @@ import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.global.svc.CodeGenerator;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentStatus;
+import com.kratonsolution.belian.healtcare.dm.MedicalRecord;
 import com.kratonsolution.belian.healtcare.svc.DoctorAppointmentService;
 import com.kratonsolution.belian.healtcare.svc.MedicalRecordService;
 import com.kratonsolution.belian.sales.srv.BillingService;
@@ -99,12 +100,16 @@ public class CurrentAppointmentPanel extends Tabbox
 			{
 				appointment.setStatus(DoctorAppointmentStatus.DONE);
 				
+				MedicalRecord record = new MedicalRecord();
+				record.setDoctor(appointment.getDoctor());
+				record.setPatient(appointment.getPatient());
+				
 				result.store(appointment);
 				medication.store(appointment);
 				treatment.store(appointment);
 				laboratory.store(appointment);
 				
-				service.edit(appointment);
+				service.done(appointment);
 				
 				done.setDisabled(true);
 				cancel.setDisabled(true);

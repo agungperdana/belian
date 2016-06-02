@@ -38,7 +38,7 @@ public class DoctorBox extends Hbox implements DoctorRegistrationListener
 	
 	private Combobox doctor = new Combobox();
 
-	private A link = new A("New Person");
+	private A link = new A("New Doctor");
 	
 	private Map<String,Doctor> maps = new HashMap<String, Doctor>(); 
 

@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.inventory.dm.ProductPriceType;
 import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
 
 import lombok.Getter;
@@ -88,5 +89,11 @@ public class CashSalesLine implements BillableItem
 	public String getMeasure()
 	{
 		return this.uom.getName();
+	}
+
+	@Override
+	public ProductPriceType getPriceType()
+	{
+		return ProductPriceType.BASE;
 	}
 }

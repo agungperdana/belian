@@ -27,15 +27,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="medication_item")
-public class MedicationItem implements MedicalSalesItem
+@Table(name="pharmacy_sales_item")
+public class PharmacySalesItem implements MedicalSalesItem
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
 	@ManyToOne
-	@JoinColumn(name="fk_product_medicine")
-	private Product medicine;
+	@JoinColumn(name="fk_product")
+	private Product product;
 	
 	@Column(name="quantity")
 	private BigDecimal quantity = BigDecimal.ONE;
@@ -53,50 +53,44 @@ public class MedicationItem implements MedicalSalesItem
 	private String note;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_medication")
-	private Medication medication;
-	
+	@JoinColumn(name="fk_pharmacy_sales")
+	private PharmacySales pharmacySales;
+
 	@Version
 	private Long version;
 	
-	public MedicationItem(){}
+	public PharmacySalesItem(){}
 
 	@Override
 	public String getResource()
 	{
-		return medicine.getName();
-	}
-
-	@Override
-	public BigDecimal getUnitPrice()
-	{
-		return price.subtract(discount).add(charge);
-	}
-
-	@Override
-	public String getCategory()
-	{
-		return "Medicine";
+		return product.getName();
 	}
 
 	@Override
 	public String getMeasure()
 	{
-		return getMedicine().getUom().getCode();
+		return product.getUom().getName();
 	}
 
 	@Override
-	public Product getProduct()
+	public BigDecimal getUnitPrice()
 	{
-		return getMedicine();
+		return price;
+	}
+
+	@Override
+	public String getCategory()
+	{
+		return product.getCategory().getName();
 	}
 
 	@Override
 	public ProductPriceType getPriceType()
 	{
-		if(medication.isBpjs())
-			return ProductPriceType.BPJS;
+		if(pharmacySales.isReference())
+			return ProductPriceType.REFERENCE;
 		else
-			return ProductPriceType.CLINIC;
+			return ProductPriceType.BASE;
 	}
 }

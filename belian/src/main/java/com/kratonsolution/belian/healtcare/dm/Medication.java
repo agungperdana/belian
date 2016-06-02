@@ -15,8 +15,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.kratonsolution.belian.sales.dm.Billable;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,7 +26,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="medication")
-public class Medication extends Billable
+public class Medication extends MedicalSales
 {
 	@Column(name="is_bpjs")
 	private boolean bpjs;
@@ -36,10 +34,6 @@ public class Medication extends Billable
 	@Enumerated(EnumType.STRING)
 	@Column(name="bpjs_payment_status")
 	private BPJSPaymentStatus bpjsStatus = BPJSPaymentStatus.UNPAID;
-	
-	@Enumerated(EnumType.STRING)
-	@Column(name="medication_status")
-	private MedicationStatus status = MedicationStatus.Registered;
 	
 	@OneToMany(mappedBy="medication",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<MedicationItem> items = new HashSet<MedicationItem>();
@@ -50,12 +44,6 @@ public class Medication extends Billable
 	@Override
 	public String getBillingType()
 	{
-		return type;
-	}
-
-	@Override
-	public int getTableNumber()
-	{
-		return 0;
+		return "Clinic";
 	}
 }

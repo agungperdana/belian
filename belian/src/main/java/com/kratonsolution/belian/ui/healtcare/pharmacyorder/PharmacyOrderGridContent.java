@@ -157,7 +157,7 @@ public class PharmacyOrderGridContent extends GridContent
 		grid.getColumns().appendChild(new Column("Doctor",null,"150px"));
 		grid.getColumns().appendChild(new Column("Status",null,"85px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(6).setVisible(false);
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("3");
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()

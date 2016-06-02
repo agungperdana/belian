@@ -149,7 +149,7 @@ public class ProductRow extends Row implements HasAmount
 				if(!price.getType().equals(ProductPriceType.DISCOUNT) && !price.getType().equals(ProductPriceType.CHARGE))
 				{
 					Listitem itm = prices.appendItem(price.getLabel()+"("+price.getType().name()+")", price.getValue());
-					if(price.getType().equals(ProductPriceType.BASE))
+					if(price.getType().equals(bill.getPriceType()))
 						prices.setSelectedItem(itm);
 				}
 			}

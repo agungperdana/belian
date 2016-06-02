@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.inventory.dm.ProductPriceType;
 
 /**
  * @author Agung Dodi Perdana
@@ -35,4 +36,6 @@ public interface BillableItem extends Serializable
 	public void setDiscount(BigDecimal price);
 	
 	public void setCharge(BigDecimal price);
+	
+	public ProductPriceType getPriceType();
 }

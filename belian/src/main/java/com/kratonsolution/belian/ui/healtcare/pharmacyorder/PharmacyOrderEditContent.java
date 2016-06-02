@@ -19,14 +19,13 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.healtcare.dm.Medication;
-import com.kratonsolution.belian.healtcare.dm.MedicationItem;
-import com.kratonsolution.belian.healtcare.dm.MedicationStatus;
-import com.kratonsolution.belian.healtcare.dm.Patient;
-import com.kratonsolution.belian.healtcare.svc.MedicationService;
+import com.kratonsolution.belian.healtcare.dm.MedicalSales;
+import com.kratonsolution.belian.healtcare.dm.MedicalSalesItem;
+import com.kratonsolution.belian.healtcare.dm.MedicalSalesStatus;
+import com.kratonsolution.belian.healtcare.svc.MedicalSalesService;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
 import com.kratonsolution.belian.ui.FormContent;
-import com.kratonsolution.belian.ui.component.MedicationRow;
+import com.kratonsolution.belian.ui.component.PharmacyOrderRow;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Numbers;
@@ -44,7 +43,7 @@ public class PharmacyOrderEditContent extends FormContent
 
 	private SessionUtils sessionUtils = Springs.get(SessionUtils.class);
 
-	private MedicationService service = Springs.get(MedicationService.class);
+	private MedicalSalesService service = Springs.get(MedicalSalesService.class);
 
 	private Textbox number = Components.readOnlyTextBox();
 
@@ -97,10 +96,10 @@ public class PharmacyOrderEditContent extends FormContent
 			}
 		});
 		
-		Medication medication = service.findOne(RowUtils.id(row));
-		if(medication != null && medication.isPaid())
+		MedicalSales medical = service.findOne(RowUtils.id(row));
+		if(medical != null && medical.isPaid())
 		{
-			if(medication.getStatus().equals(MedicationStatus.Finished))
+			if(medical.getStatus().equals(MedicalSalesStatus.Finished))
 				toolbar.removeChild(toolbar.getSave());
 			
 			toolbar.getSave().setLabel("Finish");
@@ -110,7 +109,7 @@ public class PharmacyOrderEditContent extends FormContent
 				@Override
 				public void onEvent(Event event) throws Exception
 				{
-					service.finish(medication);
+					service.finish(medical);
 					
 					Flow.next(getParent(),new PharmacyOrderGridContent());
 				}
@@ -121,32 +120,32 @@ public class PharmacyOrderEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		Medication medication = service.findOne(RowUtils.id(row));
-		if(medication != null)
+		MedicalSales medical = service.findOne(RowUtils.id(row));
+		if(medical != null)
 		{
-			number.setText(medication.getNumber());
-			date.setValue(medication.getDate());
+			number.setText(medical.getNumber());
+			date.setValue(medical.getDate());
 
-			organizations.appendChild(new Listitem(medication.getOrganization().getLabel(),medication.getOrganization().getValue()));
+			organizations.appendChild(new Listitem(medical.getOrganization().getLabel(),medical.getOrganization().getValue()));
 			organizations.setSelectedIndex(0);
 
-			saleses.appendChild(new Listitem(medication.getSales().getLabel(),medication.getSales().getValue()));
+			saleses.appendChild(new Listitem(medical.getSales().getLabel(),medical.getSales().getValue()));
 			saleses.setSelectedIndex(0);
 
-			if(medication.getTax() != null)
+			if(medical.getTax() != null)
 			{
-				taxes.appendChild(new Listitem(medication.getTax().getLabel(),medication.getTax().getValue()));
+				taxes.appendChild(new Listitem(medical.getTax().getLabel(),medical.getTax().getValue()));
 				taxes.setSelectedIndex(0);
 			}
 
-			customers.appendChild(new Listitem(medication.getCustomer()!=null?medication.getCustomer().getLabel():"Anonymous",medication.getCustomer()!=null?medication.getCustomer().getLabel():"Anonymous"));
+			customers.appendChild(new Listitem(medical.getCustomer()!=null?medical.getCustomer().getLabel():"Anonymous",medical.getCustomer()!=null?medical.getCustomer().getLabel():"Anonymous"));
 			customers.setSelectedIndex(0);
 
 			locations.appendChild(new Listitem(sessionUtils.getLocation().getLabel(),sessionUtils.getLocation().getValue()));
 
-			bill.setText(Numbers.format(medication.getBillingAmount()));
-			tax.setText(Numbers.format(medication.getTaxAmount()));
-			totalBill.setText(Numbers.format(medication.getBillingAmount().add(medication.getTaxAmount())));
+			bill.setText(Numbers.format(medical.getBillingAmount()));
+			tax.setText(Numbers.format(medical.getTaxAmount()));
+			totalBill.setText(Numbers.format(medical.getBillingAmount().add(medical.getTaxAmount())));
 
 			grid.appendChild(new Columns());
 			grid.getColumns().appendChild(new Column(null,null,"100px"));
@@ -195,34 +194,17 @@ public class PharmacyOrderEditContent extends FormContent
 		Grid saleItems = new Grid();
 		saleItems.appendChild(new Columns());
 		saleItems.appendChild(new Rows());
-		saleItems.getColumns().appendChild(new Column(null,null,"25px"));
 		saleItems.getColumns().appendChild(new Column("Product",null,"200px"));
 		saleItems.getColumns().appendChild(new Column("Quantity",null,"70px"));
 		saleItems.getColumns().appendChild(new Column("UoM",null,"75px"));
-		saleItems.getColumns().appendChild(new Column("Price",null,"75px"));
-		saleItems.getColumns().appendChild(new Column("Discount",null,"75px"));
-		saleItems.getColumns().appendChild(new Column("Charge",null,"75px"));
 		saleItems.getColumns().appendChild(new Column("Note",null));
-		saleItems.setSpan("1");
+		saleItems.setSpan("3");
 
-		Medication medication = service.findOne(RowUtils.id(row));
-		if(medication != null)
+		MedicalSales medical = service.findOne(RowUtils.id(row));
+		if(medical != null)
 		{
-			boolean bpjs = false;
-			
-			if(medication.getCustomer() != null)
-			{
-				Patient patient = patientService.findOne(medication.getCustomer().getId(), medication.getOrganization().getId());
-				if(patient != null)
-					bpjs = patient.isBpjs();
-			}
-			
-			for(MedicationItem item:medication.getItems())
-			{
-				MedicationRow row = new MedicationRow(bpjs,false);
-				row.setItem(item);
-				saleItems.getRows().appendChild(row);
-			}
+			for(MedicalSalesItem item:medical.getItems())
+				saleItems.getRows().appendChild(new PharmacyOrderRow(item));
 		}
 		
 		appendChild(saleItems);

@@ -28,7 +28,7 @@ public class CodeGenerator
 	public String generate(Date date,Organization organization,Code code)
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.append(code.toString().toUpperCase()).append(System.currentTimeMillis());
+		builder.append(code.toString().toUpperCase());
 		
 		SequenceNumber number = repository.findOneByCompanyIdAndDateAndCode(organization.getId(),date,code);
 		if(number == null)

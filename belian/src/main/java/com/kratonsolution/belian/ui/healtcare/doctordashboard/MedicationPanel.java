@@ -119,7 +119,7 @@ public class MedicationPanel extends Tabpanel
 			medication.setCurrency(utils.getCurrency());
 			medication.setCustomer(appointment.getPatient().getPerson());
 			medication.setDate(appointment.getDate());
-			medication.setNumber(generator.generate(appointment.getDate(), appointment.getCompany(), Code.BLMED));
+			medication.setNumber(generator.generate(appointment.getDate(), appointment.getCompany(), Code.CLS));
 			medication.setOrganization(appointment.getCompany());
 			medication.setPaid(false);
 			medication.setSales(appointment.getDoctor().getPerson());

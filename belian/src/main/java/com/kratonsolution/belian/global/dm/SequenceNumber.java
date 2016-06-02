@@ -32,7 +32,7 @@ import lombok.Setter;
 @Cacheable
 public class SequenceNumber implements Serializable
 {
-	public enum Code{BLDP,BLMED,BLLAB,LABREG,BLTRE}
+	public enum Code{BLDP,BLMED,BLLAB,LABREG,BLTRE,PHS,CLS}
 	
 	@Id
 	private String id = UUID.randomUUID().toString();

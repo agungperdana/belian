@@ -9,8 +9,8 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
-import com.kratonsolution.belian.healtcare.dm.Medication;
-import com.kratonsolution.belian.healtcare.svc.MedicationService;
+import com.kratonsolution.belian.healtcare.dm.MedicalSales;
+import com.kratonsolution.belian.healtcare.svc.MedicalSalesService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -18,11 +18,11 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class PharmacyOrderModel implements ListModel<Medication>
+public class PharmacyOrderModel implements ListModel<MedicalSales>
 {
-	private MedicationService service = Springs.get(MedicationService.class);
+	private MedicalSalesService service = Springs.get(MedicalSalesService.class);
 	
-	private List<Medication> data = new ArrayList<Medication>();
+	private List<MedicalSales> data = new ArrayList<MedicalSales>();
 	
 	public PharmacyOrderModel(int itemSize)
 	{
@@ -30,7 +30,7 @@ public class PharmacyOrderModel implements ListModel<Medication>
 	}
 	
 	@Override
-	public Medication getElementAt(int index)
+	public MedicalSales getElementAt(int index)
 	{
 		if(index >= data.size())
 			return null;

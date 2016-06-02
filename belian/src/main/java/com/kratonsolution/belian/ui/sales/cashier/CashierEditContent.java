@@ -19,7 +19,6 @@ import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.healtcare.dm.MedicationItem;
 import com.kratonsolution.belian.sales.dm.Billable;
 import com.kratonsolution.belian.sales.dm.BillableItem;
 import com.kratonsolution.belian.sales.dm.CashierShift;
@@ -29,7 +28,6 @@ import com.kratonsolution.belian.sales.view.BillablePrint;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.PrintWindow;
 import com.kratonsolution.belian.ui.component.HasAmount;
-import com.kratonsolution.belian.ui.component.MedicationRow;
 import com.kratonsolution.belian.ui.component.ProductRow;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
@@ -157,7 +155,6 @@ public class CashierEditContent extends FormContent
 			billingItems.setWidth("100%");
 			billingItems.appendChild(new Rows());
 			billingItems.appendChild(new Columns());
-			billingItems.getColumns().appendChild(new Column(null,null,"25px"));
 			billingItems.getColumns().appendChild(new Column("Name",null,"250px"));
 			billingItems.getColumns().appendChild(new Column("Qty",null,"65px"));
 			billingItems.getColumns().appendChild(new Column("UoM",null,"70px"));
@@ -170,16 +167,7 @@ public class CashierEditContent extends FormContent
 			billingItems.setSpan("1");
 
 			for(BillableItem item:billing.getItems())
-			{
-				if(item instanceof MedicationItem)
-				{
-					MedicationRow row = new MedicationRow(false, false);
-					row.setItem((MedicationItem)item);
-					billingItems.getRows().appendChild(row);
-				}
-				else
 					billingItems.getRows().appendChild(new ProductRow(item,new OnSelectEvent()));
-			}
 
 			appendChild(billingItems);
 			
