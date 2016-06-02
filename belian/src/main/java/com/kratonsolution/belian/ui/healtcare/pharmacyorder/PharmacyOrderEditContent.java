@@ -110,7 +110,6 @@ public class PharmacyOrderEditContent extends FormContent
 				public void onEvent(Event event) throws Exception
 				{
 					service.finish(medical);
-					
 					Flow.next(getParent(),new PharmacyOrderGridContent());
 				}
 			});

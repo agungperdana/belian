@@ -54,12 +54,12 @@ public class NavigationMenu extends Window
 		initPayment(modules);
 		initInventory(modules);
 		initAsset(modules);
-		initSales(modules);
+		initHR(modules);
 		initProcurement(modules);
+		initSales(modules);
 		initPharmacy(modules);
 		initClinic(modules);
 		initMedicalLab(modules);
-		initHR(modules);
 	}
 
 	protected void init()
@@ -260,12 +260,12 @@ public class NavigationMenu extends Window
 	{
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
-				
-		if(modules.containsKey("ROLE_LABS_REGISTRATION_READ"))
-			list.appendChild(new LabScheduleItem());
-		
+
 		if(modules.containsKey("ROLE_LABS_REGISTRATION_READ"))
 			list.appendChild(new LabsRegistrationItem());
+		
+		if(modules.containsKey("ROLE_LABS_REGISTRATION_READ"))
+			list.appendChild(new LabScheduleItem());
 		
 		if(!list.getChildren().isEmpty())
 		{
@@ -392,6 +392,8 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
+		if(modules.containsKey("ROLE_PAYMENT_METHOD_TYPE_READ"))
+			list.appendChild(new PaymentMethodTypeMenu());
 		if(modules.containsKey("ROLE_DEDUCTION_TYPE_READ"))
 			list.appendChild(new DeductionTypeItem());
 		if(modules.containsKey("ROLE_PAYCHECK_READ"))

@@ -88,6 +88,9 @@ public class Product implements Listable, Serializable
 	
 	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<ProductCost> costs = new HashSet<ProductCost>();
+	
+	@OneToMany(mappedBy="product")
+	private Set<InventoryItem> inventorys = new HashSet<>();
 
 	@Override
 	public String getLabel()

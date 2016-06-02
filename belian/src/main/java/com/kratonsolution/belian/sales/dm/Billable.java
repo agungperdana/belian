@@ -6,9 +6,11 @@ package com.kratonsolution.belian.sales.dm;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -16,6 +18,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -23,6 +26,7 @@ import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Person;
+import com.kratonsolution.belian.payment.dm.Receipt;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -76,6 +80,9 @@ public abstract class Billable implements Serializable
 	
 	@Version
 	protected Long version;
+
+	@OneToMany(mappedBy="billable",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<Receipt> receipts = new HashSet<>();
 	
 	public Billable(){}
 	

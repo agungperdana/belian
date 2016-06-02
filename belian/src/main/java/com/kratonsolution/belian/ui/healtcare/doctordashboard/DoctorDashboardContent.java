@@ -77,7 +77,7 @@ public class DoctorDashboardContent extends Borderlayout
 		tree.appendChild(treecols);
 		tree.appendChild(children);
 		
-		DoctorAppointment appointment = service.findOne(RowUtils.string(row, 6));
+		DoctorAppointment appointment = service.findOne(RowUtils.id(row));
 		if(appointment != null)
 		{
 			StringBuilder builder = new StringBuilder();

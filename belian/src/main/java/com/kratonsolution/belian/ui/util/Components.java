@@ -356,7 +356,7 @@ public class Components
 		if(fullspan)
 			textbox.setWidth("100%");
 		else
-			textbox.setWidth("300px");
+			textbox.setWidth("250px");
 		
 		return textbox;
 	}

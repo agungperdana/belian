@@ -53,4 +53,6 @@ public abstract class Payment implements Serializable
 	
 	@Version
 	protected Long version;
+	
+	public Payment(){}
 }
