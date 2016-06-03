@@ -9,12 +9,18 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
+import org.zkoss.zul.Tab;
+import org.zkoss.zul.Tabbox;
+import org.zkoss.zul.Tabpanel;
+import org.zkoss.zul.Tabpanels;
+import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.DateTimes;
@@ -26,8 +32,10 @@ import com.kratonsolution.belian.sales.srv.BillingService;
 import com.kratonsolution.belian.sales.srv.CashierShiftService;
 import com.kratonsolution.belian.sales.view.BillablePrint;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.PrintWindow;
 import com.kratonsolution.belian.ui.component.HasAmount;
+import com.kratonsolution.belian.ui.component.MedicalReceiptRow;
 import com.kratonsolution.belian.ui.component.ProductRow;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
@@ -50,11 +58,15 @@ public class CashierEditContent extends FormContent
 
 	private Grid billingItems = new Grid();
 	
+	private Grid payments = new Grid();
+	
 	private Textbox amount = Components.readOnlyMoneyBox(BigDecimal.ZERO);
 	
 	private Textbox tax = Components.readOnlyMoneyBox(BigDecimal.ZERO);
 	
 	private Textbox total = Components.readOnlyMoneyBox(BigDecimal.ZERO);
+	
+	private Tabbox tabbox = new Tabbox();
 	
 	private Row row;
 
@@ -90,6 +102,18 @@ public class CashierEditContent extends FormContent
 
 				if(billing != null && shift != null)
 				{
+					for(Component row:payments.getRows().getChildren())
+					{
+						MedicalReceiptRow receipt = (MedicalReceiptRow)row;
+						receipt.create(billing);
+					}
+					
+					if(!billing.match())
+					{
+						Clients.alert("Payment amount not equals billed amount");
+						return;
+					}
+					
 					billing.setPaid(true);
 					billing.setShift(shift);
 					service.edit(billing);
@@ -151,28 +175,71 @@ public class CashierEditContent extends FormContent
 			grid.getRows().appendChild(dts);
 			grid.getRows().appendChild(currs);
 			grid.getRows().appendChild(cuss);
+			
+			tabbox.setWidth("100%");
+			tabbox.appendChild(new Tabs());
+			tabbox.appendChild(new Tabpanels());
+			tabbox.getTabs().appendChild(new Tab("Item(s)"));
+			tabbox.getTabs().appendChild(new Tab("Payment(s)"));
+			tabbox.getTabpanels().appendChild(new Tabpanel());
+			tabbox.getTabpanels().appendChild(new Tabpanel());
 
-			billingItems.setWidth("100%");
-			billingItems.appendChild(new Rows());
-			billingItems.appendChild(new Columns());
-			billingItems.getColumns().appendChild(new Column("Name",null,"250px"));
-			billingItems.getColumns().appendChild(new Column("Qty",null,"65px"));
-			billingItems.getColumns().appendChild(new Column("UoM",null,"70px"));
-			billingItems.getColumns().appendChild(new Column("Price",null,"100px"));
-			billingItems.getColumns().appendChild(new Column("Disc",null,"100px"));
-			billingItems.getColumns().appendChild(new Column("Charge",null,"100px"));
-			billingItems.getColumns().appendChild(new Column("Note",null,"100px"));
-			billingItems.getColumns().appendChild(new Column(null,null,"0px"));
-			billingItems.getColumns().getLastChild().setVisible(false);
-			billingItems.setSpan("1");
-
-			for(BillableItem item:billing.getItems())
-					billingItems.getRows().appendChild(new ProductRow(item,new OnSelectEvent()));
-
-			appendChild(billingItems);
+			appendChild(tabbox);
+			
+			initItems(billing);
+			initPayments(billing);
 			
 			display();
 		}
+	}
+	
+	private void initItems(Billable billing)
+	{
+		billingItems.setWidth("100%");
+		billingItems.appendChild(new Rows());
+		billingItems.appendChild(new Columns());
+		billingItems.getColumns().appendChild(new Column("Name",null,"250px"));
+		billingItems.getColumns().appendChild(new Column("Qty",null,"65px"));
+		billingItems.getColumns().appendChild(new Column("UoM",null,"70px"));
+		billingItems.getColumns().appendChild(new Column("Price",null,"100px"));
+		billingItems.getColumns().appendChild(new Column("Disc",null,"100px"));
+		billingItems.getColumns().appendChild(new Column("Charge",null,"100px"));
+		billingItems.getColumns().appendChild(new Column("Note",null,"100px"));
+		billingItems.getColumns().appendChild(new Column(null,null,"0px"));
+		billingItems.getColumns().getLastChild().setVisible(false);
+		billingItems.setSpan("1");
+
+		for(BillableItem item:billing.getItems())
+				billingItems.getRows().appendChild(new ProductRow(item,new OnSelectEvent()));
+		
+		tabbox.getTabpanels().getFirstChild().appendChild(billingItems);
+	}
+	
+	private void initPayments(Billable billing)
+	{
+		NRCToolbar toolbar = new NRCToolbar(payments);
+		
+		payments.setWidth("100%");
+		payments.appendChild(new Rows());
+		payments.appendChild(new Columns());
+		payments.getColumns().appendChild(new Column("Type",null,"200px"));
+		payments.getColumns().appendChild(new Column("Amount",null,"105px"));
+		payments.getColumns().appendChild(new Column("Reference",null,null));
+		payments.setSpan("2");
+		
+		tabbox.getTabpanels().getLastChild().appendChild(toolbar);
+		tabbox.getTabpanels().getLastChild().appendChild(payments);
+		
+		payments.getRows().appendChild(new MedicalReceiptRow(billing.getBillingAmount().add(billing.getTaxAmount())));
+		
+		toolbar.getNew().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event arg0) throws Exception
+			{
+				payments.getRows().appendChild(new MedicalReceiptRow(billing.getBillingAmount().add(billing.getTaxAmount())));
+			}
+		});
 	}
 	
 	private void display()

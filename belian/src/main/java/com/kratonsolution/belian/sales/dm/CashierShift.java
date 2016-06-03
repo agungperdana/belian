@@ -22,6 +22,7 @@ import javax.persistence.Version;
 
 import com.kratonsolution.belian.asset.dm.Asset;
 import com.kratonsolution.belian.general.dm.Person;
+import com.kratonsolution.belian.payment.dm.Receipt;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -75,7 +76,13 @@ public class CashierShift implements Serializable
 		BigDecimal amount = BigDecimal.ZERO;
 				
 		for(Billable billable:billings)
-			amount = amount.add(billable.getBillingAmount());
+		{
+			for(Receipt receipt:billable.getReceipts())
+			{
+				if(receipt.getType().getName().equals("Cash"))
+					amount = amount.add(receipt.getAmount());
+			}
+		}
 		
 		return amount;
 	}

@@ -109,4 +109,13 @@ public abstract class Billable implements Serializable
 		
 		return BigDecimal.ZERO;
 	}
+	
+	public boolean match()
+	{
+		BigDecimal paids = BigDecimal.ZERO;
+		for(Receipt receipt:receipts)
+			paids = paids.add(receipt.getAmount());
+		
+		return(paids.compareTo(getBillingAmount().add(getTaxAmount())) == 0);
+	}
 }
