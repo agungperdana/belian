@@ -187,6 +187,8 @@ public class NavigationMenu extends Window
 			list.appendChild(new StockAdjustmentMenu());
 		if(modules.containsKey("ROLE_STOCK_OPNAME_READ"))
 			list.appendChild(new StockOpnameMenu());
+		if(modules.containsKey("ROLE_STOCK_ADMIN_READ"))
+			list.appendChild(new StockAdminMenu());
 		
 		if(!list.getChildren().isEmpty())
 		{

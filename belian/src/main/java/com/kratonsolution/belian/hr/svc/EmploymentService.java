@@ -63,6 +63,15 @@ public class EmploymentService
 	}
 	
 	@Secured("ROLE_EMPLOYMENT_READ")
+	public List<Employment> byCompany()
+	{
+		if(utils.getOrganization() == null)
+			return new ArrayList<>();
+		
+		return repository.findAll(utils.getOrganization().getId());
+	}
+	
+	@Secured("ROLE_EMPLOYMENT_READ")
 	public int getSize()
 	{
 		if(utils.isSysAdmin())

@@ -22,4 +22,7 @@ public interface EmploymentRepository extends JpaRepository<Employment, String>
 	
 	@Query("SELECT COUNT(emp) FROM Employment emp WHERE emp.internalOrganization.party.id =:company")
 	public Long count(@Param("company")String id);
+	
+	@Query("FROM Employment emp WHERE emp.internalOrganization.party.id =:company ORDER BY emp.employee.party.name ASC")
+	public List<Employment> findAll(@Param("company")String company);
 }
