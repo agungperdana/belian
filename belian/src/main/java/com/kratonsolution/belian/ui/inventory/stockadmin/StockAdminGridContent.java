@@ -16,7 +16,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.payment.svc.PaymentMethodTypeService;
+import com.kratonsolution.belian.payment.svc.StockAdminService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -27,7 +27,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class StockAdminGridContent extends GridContent
 {
-	private PaymentMethodTypeService service = Springs.get(PaymentMethodTypeService.class);
+	private StockAdminService service = Springs.get(StockAdminService.class);
 	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	

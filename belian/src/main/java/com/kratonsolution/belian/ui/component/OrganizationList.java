@@ -12,6 +12,8 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.InternalOrganization;
+import com.kratonsolution.belian.general.dm.InternalOrganizationRepository;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -25,6 +27,8 @@ public class OrganizationList extends Listbox implements Serializable
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
+	
+	private InternalOrganizationRepository repository = Springs.get(InternalOrganizationRepository.class);
 	
 	private Map<String,Organization> maps = new HashMap<>();
 	
@@ -56,6 +60,19 @@ public class OrganizationList extends Listbox implements Serializable
 		}
 			
 		return maps.get(getSelectedItem().getValue().toString());	
+	}
+	
+	public InternalOrganization getAsRole()
+	{
+		if(getSelectedItem() == null)
+		{
+			Clients.showNotification("Please select organization first.");
+			return null;
+		}
+		
+		Organization org = maps.get(getSelectedItem().getValue().toString());
+	
+		return repository.findOneByPartyId(org.getId());
 	}
 	
 	public void setOrganization(Organization organization)

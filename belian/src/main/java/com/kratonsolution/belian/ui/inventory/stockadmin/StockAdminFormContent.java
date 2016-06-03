@@ -15,7 +15,7 @@ import com.kratonsolution.belian.inventory.dm.StockAdmin;
 import com.kratonsolution.belian.payment.svc.StockAdminService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.component.EmployeeBox;
-import com.kratonsolution.belian.ui.component.InternalOrganizationBox;
+import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -30,7 +30,7 @@ public class StockAdminFormContent extends FormContent
 	
 	private EmployeeBox employee = new EmployeeBox(false);
 	
-	private InternalOrganizationBox companys = new InternalOrganizationBox(false);
+	private OrganizationList companys = new OrganizationList();
 	
 	public StockAdminFormContent()
 	{
@@ -59,7 +59,7 @@ public class StockAdminFormContent extends FormContent
 			
 				StockAdmin admin = new StockAdmin();
 				admin.setEmployee(employee.getEmployee());
-				admin.setOrganization(companys.getOrganization());
+				admin.setOrganization(companys.getAsRole());
 				
 				service.add(admin);
 				
@@ -76,12 +76,12 @@ public class StockAdminFormContent extends FormContent
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Employee"));
-		row1.appendChild(employee);
+		row1.appendChild(new Label("Companys"));
+		row1.appendChild(companys);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Company"));
-		row2.appendChild(companys);
+		row2.appendChild(new Label("Employee"));
+		row2.appendChild(employee);
 		
 		rows.appendChild(row1);
 		rows.appendChild(row2);

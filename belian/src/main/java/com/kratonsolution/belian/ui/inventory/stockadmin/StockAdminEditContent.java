@@ -10,12 +10,12 @@ import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
-import org.zkoss.zul.Textbox;
 
-import com.kratonsolution.belian.payment.dm.PaymentMethodType;
-import com.kratonsolution.belian.payment.svc.PaymentMethodTypeService;
+import com.kratonsolution.belian.inventory.dm.StockAdmin;
+import com.kratonsolution.belian.payment.svc.StockAdminService;
 import com.kratonsolution.belian.ui.FormContent;
-import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.component.EmployeeBox;
+import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -27,11 +27,11 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class StockAdminEditContent extends FormContent
 {	
-	private PaymentMethodTypeService service = Springs.get(PaymentMethodTypeService.class);
+	private StockAdminService service = Springs.get(StockAdminService.class);
 
-	private Textbox note = Components.stdTextBox(null,false);
+	private EmployeeBox employee = new EmployeeBox(false);
 
-	private Textbox name = Components.mandatoryTextBox(false);
+	private OrganizationList companys = new OrganizationList();
 
 	private Row row;
 
@@ -60,12 +60,12 @@ public class StockAdminEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PaymentMethodType type = service.findOne(RowUtils.id(row));
-				type.setName(name.getText());
-				type.setNote(note.getText());
-
-				service.edit(type);
-
+				StockAdmin admin = new StockAdmin();
+				admin.setEmployee(employee.getEmployee());
+				admin.setOrganization(companys.getAsRole());
+				
+				service.add(admin);
+				
 				Flow.next(getParent(), new StockAdminGridContent());
 			}
 		});
@@ -74,23 +74,23 @@ public class StockAdminEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		PaymentMethodType type = service.findOne(RowUtils.id(row));
+		StockAdmin type = service.findOne(RowUtils.id(row));
 		if(type != null)
 		{
-			name.setText(type.getName());
-			note.setText(type.getNote());
+			employee.setEmployee(type.getEmployee());
+			companys.setOrganization(type.getOrganization().getOrganization());
 			
 			grid.appendChild(new Columns());
 			grid.getColumns().appendChild(new Column(null,null,"75px"));
 			grid.getColumns().appendChild(new Column());
 			
 			Row row1 = new Row();
-			row1.appendChild(new Label("Name"));
-			row1.appendChild(name);
+			row1.appendChild(new Label("Companys"));
+			row1.appendChild(companys);
 			
 			Row row2 = new Row();
-			row2.appendChild(new Label("Note"));
-			row2.appendChild(note);
+			row2.appendChild(new Label("Employee"));
+			row2.appendChild(employee);
 			
 			rows.appendChild(row1);
 			rows.appendChild(row2);

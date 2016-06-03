@@ -12,7 +12,7 @@ import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.ui.asset.asset.AssetWindow;
+import com.kratonsolution.belian.ui.inventory.stockadmin.StockAdminWindow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -46,16 +46,16 @@ public class StockAdminMenu extends Listitem
 					return;
 				}
 				
-				AssetWindow window = null;
+				StockAdminWindow window = null;
 				
 				for(Component component:getPage().getRoots())
 				{
-					if(component instanceof AssetWindow)
-						window = (AssetWindow)component;
+					if(component instanceof StockAdminWindow)
+						window = (StockAdminWindow)component;
 				}
 				
 				if(window == null)
-					window = AssetWindow.injectInto(getPage());
+					window = StockAdminWindow.injectInto(getPage());
 				
 				else if(!window.isVisible())
 				{
