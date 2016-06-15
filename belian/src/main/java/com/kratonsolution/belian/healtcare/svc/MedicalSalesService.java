@@ -129,10 +129,10 @@ public class MedicalSalesService
 				if(!item.getProduct().getComponents().isEmpty())
 				{
 					for(ProductComponent com:item.getProduct().getComponents())
-						stockService.inventoryProccess(com.getProduct(), com.getQuantity().multiply(item.getQuantity()));
+						stockService.issue(com.getProduct(), com.getQuantity().multiply(item.getQuantity()));
 				}
 				else
-					stockService.inventoryProccess(item.getProduct(),item.getQuantity());
+					stockService.issue(item.getProduct(),item.getQuantity());
 			}
 		}
 	}

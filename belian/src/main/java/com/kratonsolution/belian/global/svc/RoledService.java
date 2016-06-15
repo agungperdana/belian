@@ -102,7 +102,7 @@ public class RoledService
 		repository.saveAndFlush(roled);
 	}
 	
-	@Secured("ROLE_ROLED_UPDATE")
+	@Secured({"ROLE_ROLED_UPDATE","ROLE_PURCHASE_ORDER_APPROVER_UPDATE","ROLE_BUDGET_APPROVER_UPDATE"})
 	public void done(Roled roled,StatusType type,String note)
 	{
 		for(Roled role:roled.getDocument().getRoles())

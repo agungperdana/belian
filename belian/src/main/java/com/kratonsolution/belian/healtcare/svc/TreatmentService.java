@@ -69,7 +69,7 @@ public class TreatmentService
 		return null;
 	}
 	
-	@Secured("ROLE_TREATMENT_CREATE")
+	@Secured({"ROLE_TREATMENT_CREATE","ROLE_DOCTOR_APPOINTMENT_UPDATE"})
 	public void add(Treatment treatment)
 	{
 		repository.save(treatment);
@@ -81,10 +81,10 @@ public class TreatmentService
 				if(!item.getService().getComponents().isEmpty())
 				{
 					for(ProductComponent com:item.getService().getComponents())
-						stockService.inventoryProccess(com.getProduct(), com.getQuantity().multiply(item.getQuantity()));
+						stockService.issue(com.getProduct(), com.getQuantity().multiply(item.getQuantity()));
 				}
 				else
-					stockService.inventoryProccess(item.getService(),item.getQuantity());
+					stockService.issue(item.getService(),item.getQuantity());
 			}
 		}
 	}
@@ -104,11 +104,11 @@ public class TreatmentService
 				for(ProductComponent com:item.getService().getComponents())
 				{
 					System.out.println(com.getProduct().getName());
-					stockService.inventoryProccess(com.getProduct(), com.getQuantity().multiply(item.getQuantity()));
+					stockService.issue(com.getProduct(), com.getQuantity().multiply(item.getQuantity()));
 				}
 			}
 			else
-				stockService.inventoryProccess(item.getService(),item.getQuantity());
+				stockService.issue(item.getService(),item.getQuantity());
 		}
 	}
 	

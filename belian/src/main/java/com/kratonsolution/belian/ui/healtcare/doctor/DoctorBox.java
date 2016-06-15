@@ -16,9 +16,9 @@ import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Hbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.healtcare.dm.Doctor;
 import com.kratonsolution.belian.healtcare.dm.DoctorRelationship;
 import com.kratonsolution.belian.healtcare.dm.DoctorRelationshipRepository;
 import com.kratonsolution.belian.healtcare.dm.DoctorRepository;
@@ -40,7 +40,7 @@ public class DoctorBox extends Hbox implements DoctorRegistrationListener
 
 	private A link = new A("New Doctor");
 	
-	private Map<String,Doctor> maps = new HashMap<String, Doctor>(); 
+	private Map<String,DoctorRelationship> maps = new HashMap<String, DoctorRelationship>(); 
 
 	public DoctorBox(boolean showCreateLink)
 	{
@@ -73,9 +73,11 @@ public class DoctorBox extends Hbox implements DoctorRegistrationListener
 				{
 					for(DoctorRelationship relationship:repository.findAll(input.getValue(),utils.getOrganization().getId()))
 					{
-						doctor.appendItem(relationship.getDoctor().getPerson().getName());
-						if(!maps.containsKey(relationship.getDoctor().getPerson().getName()))
-							maps.put(relationship.getDoctor().getPerson().getName(),relationship.getDoctor());
+						String key = relationship.getCategory().getCode()+"."+relationship.getDoctor().getPerson().getName();
+						
+						doctor.appendItem(key);
+						if(!maps.containsKey(key))
+							maps.put(key,relationship);
 					}
 				}
 			}
@@ -94,7 +96,7 @@ public class DoctorBox extends Hbox implements DoctorRegistrationListener
 		});
 	}
 	
-	public Doctor getDoctor()
+	public DoctorRelationship getDoctor()
 	{
 		if(!Strings.isNullOrEmpty(doctor.getValue()) && maps.containsKey(doctor.getValue()))
 			return maps.get(doctor.getValue());
@@ -103,29 +105,35 @@ public class DoctorBox extends Hbox implements DoctorRegistrationListener
 	}
 
 	@Override
-	public void setDoctor(Doctor dr)
+	public void setDoctor(DoctorRelationship dr)
 	{
 		if(dr != null)
 		{
+			String key = dr.getCategory().getCode()+"."+dr.getDoctor().getParty().getName();
+			
 			doctor.getItems().clear();
-			doctor.appendItem(dr.getPerson().getName());
+			doctor.appendItem(key);
 			doctor.setSelectedIndex(0);
 			
-			if(!maps.containsKey(dr.getPerson().getName()))
-				maps.put(dr.getPerson().getName(),dr);
+			if(!maps.containsKey(key))
+				maps.put(key,dr);
 		}
 	}
 	
 	public void setDoctor(Person person)
 	{
-		if(person != null)
+		DoctorRelationship doc = repository.findOne(person.getId(),utils.getOrganization().getId(),DateTimes.currentDate());
+		
+		if(person != null && doc != null)
 		{
+			String key = doc.getCategory().getCode()+"."+doc.getDoctor().getPerson().getName();
+			
 			doctor.getItems().clear();
-			doctor.appendItem(person.getName());
+			doctor.appendItem(key);
 			doctor.setSelectedIndex(0);
 			
-			if(!maps.containsKey(person.getName()))
-				maps.put(person.getName(),doctorRepository.findOneByPartyId(person.getId()));
+			if(!maps.containsKey(key))
+				maps.put(key,doc);
 		}
 	}
 }

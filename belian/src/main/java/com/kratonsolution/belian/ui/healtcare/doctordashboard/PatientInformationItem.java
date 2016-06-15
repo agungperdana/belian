@@ -29,7 +29,7 @@ public class PatientInformationItem extends Treeitem
 			public void onEvent(Event arg0) throws Exception
 			{
 				layout.getChildren().clear();
-				layout.appendChild(new PatientInformationPanel(appointment.getPatient().getId()));
+				layout.appendChild(new PatientInformationPanel(appointment.getPatient()));
 			}
 		});
 	}

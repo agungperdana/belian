@@ -9,7 +9,6 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Grid;
@@ -26,7 +25,7 @@ import com.kratonsolution.belian.healtcare.dm.LaboratoryItem;
 import com.kratonsolution.belian.healtcare.svc.MedicalRecordService;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.NRCToolbar;
-import com.kratonsolution.belian.ui.component.MedicationRow;
+import com.kratonsolution.belian.ui.component.MedicalServiceRow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -64,13 +63,7 @@ public class LaboratoriumPanel extends Tabpanel
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				if(utils.getLocation() == null || utils.getCurrency() == null)
-				{
-					Clients.showNotification("Default Location & Currency not exist,Please go to setting to set it up.");
-					return;
-				}
-					
-				grid.getRows().appendChild(new MedicationRow(appointment.getPatient().isBpjs(),true));
+				grid.getRows().appendChild(new MedicalServiceRow());
 			}
 		});
 		
@@ -129,16 +122,16 @@ public class LaboratoriumPanel extends Tabpanel
 			
 			for(Component com:grid.getRows().getChildren())
 			{
-				MedicationRow row = (MedicationRow)com;
+				MedicalServiceRow row = (MedicalServiceRow)com;
 				
 				LaboratoryItem item = new LaboratoryItem();
-				item.setCharge(row.getItem().getCharge());
-				item.setDiscount(row.getItem().getDiscount());
-				item.setLaboratory(laboratory);
 				item.setService(row.getProduct());
-				item.setNote(row.getItem().getNote());
-				item.setPrice(row.getItem().getPrice());
-				item.setQuantity(row.getItem().getQuantity());
+				item.setCharge(row.getCharge());
+				item.setDiscount(row.getDiscount());
+				item.setLaboratory(laboratory);
+				item.setNote(row.getNote());
+				item.setPrice(row.getPrice(appointment.getPatient().isBpjs(),true));
+				item.setQuantity(row.getQuantity());
 				
 				laboratory.getItems().add(item);
 			}

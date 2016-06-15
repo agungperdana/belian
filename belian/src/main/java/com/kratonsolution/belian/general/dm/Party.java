@@ -46,6 +46,9 @@ public class Party implements Serializable, Listable
 	@Id
 	protected String id = UUID.randomUUID().toString();
 
+	@Column(name="identity",unique=true)
+	protected String identity;
+	
 	@Column(name="name")
 	protected String name;
 	

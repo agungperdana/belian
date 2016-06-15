@@ -92,7 +92,7 @@ public class DoctorService
 		if(utils.getOrganization() == null)
 			return new ArrayList<Doctor>();
 
-		return doctorRepo.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId());
+		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId());
 	}
 	
 	@Secured("ROLE_DOCTOR_CREATE")
@@ -104,19 +104,15 @@ public class DoctorService
 	@Secured("ROLE_DOCTOR_CREATE")
 	public void add(DoctorRelationship relationship)
 	{
-		
 		Doctor doctor = repository.findOne(relationship.getDoctor().getPerson().getId(),relationship.getDoctor().getStart());
 		if(doctor == null)
 			repository.save(relationship.getDoctor());
 		else
 			relationship.setDoctor(doctor);
 		
-		InternalOrganization organization = internalRepository.findOneByPartyId(utils.getOrganization().getId());
+		InternalOrganization organization = internalRepository.findOneByPartyId(relationship.getOrganization().getParty().getId());
 		if(organization == null)
-		{
-			relationship.getOrganization().setParty(utils.getOrganization());
 			internalRepository.save(relationship.getOrganization());
-		}
 		else
 			relationship.setOrganization(organization);
 		
@@ -137,6 +133,7 @@ public class DoctorService
 	@Secured("ROLE_DOCTOR_DELETE")
 	public void delete(String id)
 	{
+		repository.delete(id);
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)

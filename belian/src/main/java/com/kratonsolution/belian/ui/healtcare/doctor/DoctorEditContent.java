@@ -11,12 +11,13 @@ import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.healtcare.dm.Doctor;
-import com.kratonsolution.belian.healtcare.svc.DoctorService;
+import com.kratonsolution.belian.healtcare.dm.DoctorRelationship;
+import com.kratonsolution.belian.healtcare.svc.DoctorRelationshipService;
 import com.kratonsolution.belian.healtcare.svc.DoctorTypeService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.component.PersonBox;
@@ -34,7 +35,7 @@ public class DoctorEditContent extends FormContent
 {	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
-	private DoctorService service = Springs.get(DoctorService.class);
+	private DoctorRelationshipService service = Springs.get(DoctorRelationshipService.class);
 
 	private DoctorTypeService doctorTypeService = Springs.get(DoctorTypeService.class);
 
@@ -46,7 +47,7 @@ public class DoctorEditContent extends FormContent
 
 	private PersonBox person = new PersonBox(false);
 
-	private Listbox classifications = Components.newSelect();
+	private Listbox classifications = Components.newSelect(doctorTypeService.findAll(),true);
 
 	private Row row;
 
@@ -77,10 +78,11 @@ public class DoctorEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Doctor doctor = service.findOne(RowUtils.id(row));
+				DoctorRelationship doctor = service.findOne(RowUtils.id(row));
 				if(doctor != null)
 				{
 					doctor.setEnd(DateTimes.sql(end.getValue()));
+					doctor.setCategory(doctorTypeService.findOne(Components.string(classifications)));
 					service.edit(doctor);
 				}
 				
@@ -92,16 +94,23 @@ public class DoctorEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		Doctor doctor = service.findOne(RowUtils.id(row));
+		DoctorRelationship doctor = service.findOne(RowUtils.id(row));
 		if(doctor != null)
 		{
 			start.setValue(doctor.getStart());
 			end.setValue(doctor.getEnd());
 			companys.appendItem(utils.getOrganization().getName(),utils.getOrganization().getId());
 			companys.setSelectedIndex(0);
-			person.setPerson(doctor.getPerson());
-			classifications.appendItem(doctor.getCategory().getName(), doctor.getCategory().getId());
-			classifications.setSelectedIndex(0);
+			person.setPerson(doctor.getDoctor().getPerson());
+
+			if(doctor.getCategory() != null)
+			{
+				for(Listitem item:classifications.getItems())
+				{
+					if(item.getValue().toString().equals(doctor.getCategory().getId()))
+						classifications.setSelectedItem(item);
+				}
+			}
 			
 			grid.appendChild(new Columns());
 			grid.getColumns().appendChild(new Column(null,null,"100px"));

@@ -155,7 +155,7 @@ public class FamilyFolderGridContent extends GridContent
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No Family Folder data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new FamilyFolderRowRenderer());
 		grid.setPagingPosition("both");
@@ -163,10 +163,10 @@ public class FamilyFolderGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Name"));
-		grid.getColumns().appendChild(new Column("Description",null,"135px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.name")));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.note"),null,"135px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(3).setVisible(false);
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("1");
 		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
 

@@ -27,4 +27,15 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, St
 	
 	@Query("FROM InventoryItem item WHERE item.product.id =:product AND item.facility.id =:facility AND item.expiredDate =:expired")
 	public InventoryItem findOne(@Param("product")String product,@Param("facility")String facility,@Param("expired")Date expired);
+
+	@Query("FROM InventoryItem item WHERE "
+			+ "item.facility.id IN(:warehouse) "
+			+ "AND item.onhand <= item.product.minStok")
+	public List<InventoryItem> findAllOutOfStock(@Param("warehouse")List<String> facilitys);
+	
+	@Query("FROM InventoryItem item WHERE "
+			+ "item.facility.id IN(:warehouse) "
+			+ "AND item.onhand > 0 "
+			+ "AND item.expiredDate <=:expired")
+	public List<InventoryItem> findAllExpired(@Param("warehouse")List<String> facilitys,@Param("expired")Date date);
 }

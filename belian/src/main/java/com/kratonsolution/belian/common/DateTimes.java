@@ -6,6 +6,7 @@ package com.kratonsolution.belian.common;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.Period;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -74,5 +75,14 @@ public class DateTimes implements Serializable
 			return new java.sql.Date(date.getTime());
 
 		return null;
+	}
+	
+	public static final java.sql.Date nextMonth(java.sql.Date date)
+	{
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.MONTH, 1);
+		
+		return sql(calendar.getTime());
 	}
 }

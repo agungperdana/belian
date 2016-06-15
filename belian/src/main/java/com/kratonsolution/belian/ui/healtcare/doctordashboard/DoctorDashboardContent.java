@@ -19,6 +19,7 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.svc.DoctorAppointmentService;
 import com.kratonsolution.belian.healtcare.svc.DoctorTypeService;
+import com.kratonsolution.belian.ui.Removeable;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -28,7 +29,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class DoctorDashboardContent extends Borderlayout
+public class DoctorDashboardContent extends Borderlayout implements Removeable
 {	
 	private DoctorAppointmentService service = Springs.get(DoctorAppointmentService.class);
 	

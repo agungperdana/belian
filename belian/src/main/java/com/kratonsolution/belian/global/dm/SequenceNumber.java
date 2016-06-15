@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.UUID;
 
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -29,10 +28,9 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="sequence_number")
-@Cacheable
 public class SequenceNumber implements Serializable
 {
-	public enum Code{BLDP,BLMED,BLLAB,LABREG,BLTRE,PHS,CLS}
+	public enum Code{BLDP,BLMED,BLLAB,LABREG,BLTRE,PHS,CLS,CsPO,StPO}
 	
 	@Id
 	private String id = UUID.randomUUID().toString();

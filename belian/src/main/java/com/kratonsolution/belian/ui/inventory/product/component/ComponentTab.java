@@ -68,7 +68,7 @@ public class ComponentTab implements TabedDisplay
 		panel.appendChild(layout);
 
 		Toolbar toolbar = new Toolbar();
-		Toolbarbutton create = new Toolbarbutton("label.component.button.new","/icons/new.png");
+		Toolbarbutton create = new Toolbarbutton(lang.get("label.component.button.new"),"/icons/new.png");
 		create.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override

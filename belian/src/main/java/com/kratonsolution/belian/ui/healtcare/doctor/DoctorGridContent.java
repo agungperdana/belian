@@ -16,7 +16,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.healtcare.svc.DoctorService;
+import com.kratonsolution.belian.healtcare.svc.DoctorRelationshipService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -27,7 +27,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class DoctorGridContent extends GridContent
 {
-	private DoctorService service = Springs.get(DoctorService.class);
+	private DoctorRelationshipService service = Springs.get(DoctorRelationshipService.class);
 	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
@@ -155,7 +155,7 @@ public class DoctorGridContent extends GridContent
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No doctor data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new DoctorRowRenderer());
 		grid.setPagingPosition("both");
@@ -163,11 +163,11 @@ public class DoctorGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Start",null,"85px"));
-		grid.getColumns().appendChild(new Column("End",null,"85px"));
-		grid.getColumns().appendChild(new Column("ID",null,"100px"));
-		grid.getColumns().appendChild(new Column("Name"));
-		grid.getColumns().appendChild(new Column("Classification",null,"115px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.start"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.end"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.nik"),null,"100px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.name")));
+		grid.getColumns().appendChild(new Column(lang.get("healtcare.grid.column.drtitle"),null,"115px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
 		grid.getColumns().getLastChild().setVisible(false);
 		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));

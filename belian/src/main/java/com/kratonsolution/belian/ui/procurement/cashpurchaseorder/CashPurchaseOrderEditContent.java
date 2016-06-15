@@ -24,8 +24,10 @@ import com.kratonsolution.belian.procurement.dm.CashPurchaseOrderItem;
 import com.kratonsolution.belian.procurement.svc.CashPurchaseOrderService;
 import com.kratonsolution.belian.procurement.svc.PurchaseOrderRequestService;
 import com.kratonsolution.belian.ui.FormContent;
-import com.kratonsolution.belian.ui.component.PartyBox;
+import com.kratonsolution.belian.ui.component.OrganizationList;
+import com.kratonsolution.belian.ui.component.SupplierBox;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -46,7 +48,7 @@ public class CashPurchaseOrderEditContent extends FormContent
 
 	private Textbox number = Components.readOnlyTextBox();
 
-	private Listbox companys = Components.newSelect(utils.getOrganization());
+	private OrganizationList companys = new OrganizationList();
 
 	private Datebox date = Components.currentDatebox();
 
@@ -54,7 +56,7 @@ public class CashPurchaseOrderEditContent extends FormContent
 
 	private Listbox requests = Components.newSelect(requestService.findAllIncomplete(),true);
 
-	private PartyBox suppliers = new PartyBox();
+	private SupplierBox suppliers = new SupplierBox(false);
 
 	private Grid items = new Grid();
 
@@ -78,9 +80,7 @@ public class CashPurchaseOrderEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				CashPurchaseOrderWindow window = (CashPurchaseOrderWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new CashPurchaseOrderGridContent());
 			}
 		});
 
@@ -89,9 +89,7 @@ public class CashPurchaseOrderEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				CashPurchaseOrderWindow window = (CashPurchaseOrderWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new CashPurchaseOrderGridContent());
 			}
 		});
 	}
@@ -105,7 +103,7 @@ public class CashPurchaseOrderEditContent extends FormContent
 			date.setValue(order.getDate());
 			number.setText(order.getNumber());
 			companys.appendChild(new Listitem(order.getOrganization().getName(), order.getOrganization().getId()));
-			suppliers.setParty(order.getSupplier());
+			suppliers.setSupplier(order.getSupplier());
 			purchaser.appendChild(new Listitem(order.getPurchaser().getName(), order.getPurchaser().getId()));
 			requests.appendChild(new Listitem(order.getRequest().getNumber(), order.getRequest().getId()));
 
@@ -156,24 +154,17 @@ public class CashPurchaseOrderEditContent extends FormContent
 		items.appendChild(new Rows());
 		items.appendChild(new Columns());
 		items.getColumns().appendChild(new Column("Product",null,"150px"));
+		items.getColumns().appendChild(new Column("Requested",null,"100px"));
 		items.getColumns().appendChild(new Column("Buying",null,"100px"));
 		items.getColumns().appendChild(new Column("UoM",null,"100px"));
-		items.getColumns().appendChild(new Column("Note",null,"150px"));
+		items.getColumns().appendChild(new Column("Expired",null,"150px"));
 		items.setSpan("0");
 		
-		CashPurchaseOrder order = service.findOne(RowUtils.string(row, 7));
+		CashPurchaseOrder order = service.findOne(RowUtils.id(row));
 		if(order != null)
 		{
 			for(CashPurchaseOrderItem item:order.getItems())
-			{
-				Row row = new Row();
-				row.appendChild(new Label(item.getProduct().getName()));
-				row.appendChild(Components.label(item.getQuantity()));
-				row.appendChild(new Label(item.getProduct().getUom().getName()));
-				row.appendChild(new Label(item.getNote()));
-				
-				items.getRows().appendChild(row);
-			}
+				items.getRows().appendChild(new PurchaseOrderRequestItemRow(item));
 		}
 		
 		

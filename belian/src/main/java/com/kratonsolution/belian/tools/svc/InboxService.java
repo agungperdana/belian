@@ -13,17 +13,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.tools.dm.Inbox;
 import com.kratonsolution.belian.tools.dm.InboxRepository;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
 public class InboxService
 {
+	@Autowired
+	private SessionUtils utils;
+	
 	@Autowired
 	private InboxRepository repository;
 	
@@ -45,20 +50,13 @@ public class InboxService
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<Inbox> findAll(int pageindex,int itemSize)
 	{
-		return repository.findAll(new PageRequest(pageindex, itemSize)).getContent();
-	}
-	
-	@Secured("ROLE_INBOX_READ")
-	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
-	public List<Inbox> findAllByOwnerId(String owner,int pageindex,int itemSize)
-	{
-		return repository.findAllByOwnerId(owner,new PageRequest(pageindex, itemSize));
+		return repository.findAll(new PageRequest(pageindex, itemSize),utils.getEmployee().getId());
 	}
 	
 	@Secured("ROLE_INBOX_READ")
 	public int size()
 	{
-		return Long.valueOf(repository.count()).intValue();
+		return repository.count(utils.getEmployee().getId()).intValue();
 	}
 	
 	@Secured("ROLE_INBOX_CREATE")

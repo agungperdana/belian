@@ -87,4 +87,15 @@ public class PurchaseOrderRequest extends ApproveAndReviewable implements Listab
 		this.getReviews().add(review);
 		return review;
 	}
+	
+	public boolean isCompleted()
+	{
+		for(PurchaseOrderRequestItem item:items)
+		{
+			if(item.isOpen())
+				return false;
+		}
+		
+		return true;
+	}
 }

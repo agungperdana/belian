@@ -132,10 +132,10 @@ public class MedicationService
 				if(!item.getMedicine().getComponents().isEmpty())
 				{
 					for(ProductComponent com:item.getMedicine().getComponents())
-						stockService.inventoryProccess(com.getProduct(), com.getQuantity().multiply(item.getQuantity()));
+						stockService.issue(com.getProduct(), com.getQuantity().multiply(item.getQuantity()));
 				}
 				else
-					stockService.inventoryProccess(item.getMedicine(),item.getQuantity());
+					stockService.issue(item.getMedicine(),item.getQuantity());
 			}
 		}
 	}

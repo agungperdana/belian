@@ -6,8 +6,10 @@ package com.kratonsolution.belian.ui.inbox;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Caption;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.HasGrid;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * 
@@ -16,7 +18,9 @@ import com.kratonsolution.belian.ui.HasGrid;
  */
 public class InboxWindow extends AbstractWindow implements HasGrid
 {
-	private final Caption caption = new Caption("Inbox");
+	private Language lang = Springs.get(Language.class);
+	
+	private Caption caption = new Caption(lang.get("navbar.menu.tools.employeecommunication"));
 
 	public InboxWindow()
 	{

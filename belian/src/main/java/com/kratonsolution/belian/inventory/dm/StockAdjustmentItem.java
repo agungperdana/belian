@@ -5,6 +5,7 @@ package com.kratonsolution.belian.inventory.dm;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -30,6 +31,9 @@ public class StockAdjustmentItem implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
+	
+	@Column(name="expired_date")
+	private Date expiredDate;
 	
 	@Column(name="quantity")
 	private BigDecimal quantity;

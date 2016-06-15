@@ -19,7 +19,6 @@ import org.zkoss.zul.West;
 
 import com.kratonsolution.belian.global.dm.Roled;
 import com.kratonsolution.belian.global.svc.RoledService;
-import com.kratonsolution.belian.tools.svc.InboxService;
 import com.kratonsolution.belian.ui.Removeable;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -31,8 +30,6 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class InboxContent extends Borderlayout implements Removeable
 {
-	private InboxService service = Springs.get(InboxService.class);
-	
 	private RoledService roledService = Springs.get(RoledService.class);
 	
 	private West west = new West();
@@ -130,6 +127,8 @@ public class InboxContent extends Borderlayout implements Removeable
 	{
 		Tab tab = new Tab("Message", "/icons/message.png");
 		Tabpanel panel = new Tabpanel();
+	
+		panel.appendChild(new MessageTree(center));
 		
 		menu.getTabs().appendChild(tab);
 		menu.getTabpanels().appendChild(panel);

@@ -156,7 +156,7 @@ public class LabScheduleGridContent extends GridContent
 		
 		appendChild(grid);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No laboratory data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new LabScheduleRowRenderer());
 		grid.setPagingPosition("both");
@@ -169,7 +169,7 @@ public class LabScheduleGridContent extends GridContent
 		grid.getColumns().appendChild(new Column(language.get("healtcare.grid.column.patient"),null,"150px"));
 		grid.getColumns().appendChild(new Column(language.get("healtcare.grid.column.doctor"),null,"150px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(4).setVisible(false);
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("0");
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()

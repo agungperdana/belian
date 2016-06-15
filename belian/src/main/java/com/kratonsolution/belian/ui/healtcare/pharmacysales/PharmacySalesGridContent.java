@@ -153,7 +153,7 @@ public class PharmacySalesGridContent extends GridContent
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No Pharmacy Sales data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new PharmacySalesRowRenderer());
 		grid.setPagingPosition("both");
@@ -161,13 +161,13 @@ public class PharmacySalesGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Number",null,"150px"));
-		grid.getColumns().appendChild(new Column("Date",null,"85px"));
-		grid.getColumns().appendChild(new Column("Patient",null,"150px"));
-		grid.getColumns().appendChild(new Column("Doctor",null,"150px"));
-		grid.getColumns().appendChild(new Column("Status",null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("healtcare.grid.column.number"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("healtcare.grid.column.date"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("healtcare.grid.column.patient"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("healtcare.grid.column.doctor"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("healtcare.grid.column.status"),null,"85px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(6).setVisible(false);
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("3");
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()

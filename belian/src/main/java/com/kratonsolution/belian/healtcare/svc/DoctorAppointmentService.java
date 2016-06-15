@@ -162,9 +162,9 @@ public class DoctorAppointmentService extends SessionAware
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_DOCTOR_APPOINTMENT_READ")
-	public List<DoctorAppointment> findAllTodayByDoctor(Date date,String companyId,String doctorId)
+	@Secured({"ROLE_DOCTOR_APPOINTMENT_READ","ROLE_STOCK_ADMIN_READ"})
+	public List<DoctorAppointment> findAllTodayByDoctor(Date date,String companyId,String person)
 	{
-		return repository.findAllTodayByDoctor(date, companyId, doctorId);
+		return repository.findAllTodayByDoctor(date, companyId, person);
 	}
 }

@@ -143,6 +143,7 @@ public class StockAdjustmentFormContent extends FormContent
 		items.getColumns().appendChild(new Column("Product",null, "150px"));
 		items.getColumns().appendChild(new Column("Quantity",null, "90px"));
 		items.getColumns().appendChild(new Column("UoM",null, "100px"));
+		items.getColumns().appendChild(new Column("Expired",null, "125px"));
 		items.getColumns().appendChild(new Column("Note",null, "150px"));
 		items.setSpan("0");
 		

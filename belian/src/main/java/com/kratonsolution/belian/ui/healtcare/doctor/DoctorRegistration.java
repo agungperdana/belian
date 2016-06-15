@@ -109,16 +109,17 @@ public class DoctorRegistration extends Window
 				DoctorRelationship relationship = new DoctorRelationship();
 				relationship.setStart(DateTimes.sql(start.getValue()));
 				relationship.setEnd(DateTimes.sql(end.getValue()));
+				relationship.setCategory(doctorTypeService.findOne(Components.string(types)));
 				
 				Doctor doctor = new Doctor();
 				doctor.setStart(DateTimes.sql(start.getValue()));
 				doctor.setEnd(DateTimes.sql(end.getValue()));
-				doctor.setCategory(doctorTypeService.findOne(Components.string(types)));
 				doctor.setParty(person.getPerson());
 				
 				InternalOrganization organization = new InternalOrganization();
 				organization.setStart(DateTimes.sql(start.getValue()));
 				organization.setEnd(DateTimes.sql(end.getValue()));
+				organization.setParty(utils.getOrganization());
 				
 				relationship.setDoctor(doctor);
 				relationship.setOrganization(organization);
@@ -126,7 +127,7 @@ public class DoctorRegistration extends Window
 				service.add(relationship);
 				
 				for(DoctorRegistrationListener listener:listeners)
-					listener.setDoctor(relationship.getDoctor());
+					listener.setDoctor(relationship);
 			
 				detach();
 			}

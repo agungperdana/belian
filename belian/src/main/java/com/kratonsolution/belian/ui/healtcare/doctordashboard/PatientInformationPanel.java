@@ -10,7 +10,6 @@ import org.zkoss.zul.Columns;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Rows;
 
-import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.healtcare.dm.Patient;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
@@ -25,13 +24,8 @@ public class PatientInformationPanel extends Grid
 {
 	private PatientService service = Springs.get(PatientService.class);
 	
-	private Patient patient;
-	
-	public PatientInformationPanel(String patientId)
+	public PatientInformationPanel(Patient patient)
 	{
-		if(!Strings.isNullOrEmpty(patientId))
-			this.patient = service.findOne(patientId);
-		
 		setWidth("100%");
 		
 		Auxhead auxhead = new Auxhead();
@@ -44,12 +38,12 @@ public class PatientInformationPanel extends Grid
 		appendChild(new Columns());
 		appendChild(auxhead);
 		
-		init();
+		init(patient);
 	}
 	
-	private void init()
+	private void init(Patient patient)
 	{
-		if(this.patient != null)
+		if(patient != null)
 		{
 			getColumns().appendChild(new Column(null,null,"125px"));
 			getColumns().appendChild(new Column());
@@ -57,12 +51,13 @@ public class PatientInformationPanel extends Grid
 			getRows().appendChild(RowUtils.row("Identity",patient.getPerson().getIdentity()));
 			getRows().appendChild(RowUtils.row("Name",patient.getPerson().getName()));
 			getRows().appendChild(RowUtils.row("Age",DateTimes.getAge(patient.getPerson().getBirthDate())));
-			getRows().appendChild(RowUtils.row("Birth Place",patient.getPerson().getBirthPlace().getName()));
+			getRows().appendChild(RowUtils.row("Birth Place",patient.getPerson().getBirthPlace()!=null?patient.getPerson().getBirthPlace().getName():""));
 			getRows().appendChild(RowUtils.row("Birth Date",DateTimes.format(patient.getPerson().getBirthDate())));
 			getRows().appendChild(RowUtils.row("Gender",patient.getPerson().getGender().toString()));
 			getRows().appendChild(RowUtils.row("Status",patient.getPerson().getMaritalStatus().toString()));
 			getRows().appendChild(RowUtils.row("BPJS Information",""));
 			getRows().appendChild(RowUtils.row("Number",patient.getBpjs().getCard()));
+			getRows().appendChild(RowUtils.row("Status",patient.getBpjs().isActive()?"Active":"Inactive"));
 		}
 	}
 }

@@ -14,10 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.kratonsolution.belian.general.dm.Party;
-import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.global.dm.Listable;
-import com.kratonsolution.belian.global.dm.ProductReceiveable;
+import com.kratonsolution.belian.inventory.dm.Facility;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -30,48 +28,26 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="cash_purchase_order")
-public class CashPurchaseOrder extends ProductReceiveable implements Serializable, Listable
-{
-	public static final String NCODE = "CSPO";
-	
+public class CashPurchaseOrder extends PurchaseOrder implements Serializable, Listable
+{	
 	@ManyToOne
-	@JoinColumn(name="fk_party")
-	private Party supplier;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_purchaser")
-	private Person purchaser;
-
-	@ManyToOne
-	@JoinColumn(name="fk_purchaser_order_request")
-	private PurchaseOrderRequest request;
+	@JoinColumn(name="fk_facility")
+	private Facility facility;
 	
 	@OneToMany(mappedBy="purchaseOrder",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<CashPurchaseOrderItem> items = new HashSet<>();
 	
 	public CashPurchaseOrder(){}
 	
-	/* (non-Javadoc)
-	 * @see com.kratonsolution.belian.global.dm.Listable#getLabel()
-	 */
 	@Override
 	public String getLabel()
 	{
 		return getNumber();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.kratonsolution.belian.global.dm.Listable#getValue()
-	 */
 	@Override
 	public String getValue()
 	{
 		return getId();
-	}
-
-	@Override
-	public String getType()
-	{
-		return "Cash Purchase Order";
 	}
 }

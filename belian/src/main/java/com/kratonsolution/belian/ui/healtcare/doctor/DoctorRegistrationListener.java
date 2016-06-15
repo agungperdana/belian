@@ -5,7 +5,7 @@ package com.kratonsolution.belian.ui.healtcare.doctor;
 
 import java.io.Serializable;
 
-import com.kratonsolution.belian.healtcare.dm.Doctor;
+import com.kratonsolution.belian.healtcare.dm.DoctorRelationship;
 
 /**
  * @author Agung Dodi Perdana
@@ -13,5 +13,5 @@ import com.kratonsolution.belian.healtcare.dm.Doctor;
  */
 public interface DoctorRegistrationListener extends Serializable
 {
-	public void setDoctor(Doctor doctor);
+	public void setDoctor(DoctorRelationship doctor);
 }

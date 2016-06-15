@@ -155,7 +155,7 @@ public class PatientGridContent extends GridContent
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No patient data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new PatientRowRenderer());
 		grid.setPagingPosition("both");
@@ -163,11 +163,11 @@ public class PatientGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Start",null,"75px"));
-		grid.getColumns().appendChild(new Column("End",null,"75px"));
-		grid.getColumns().appendChild(new Column("ID",null,"115px"));
-		grid.getColumns().appendChild(new Column("Name"));
-		grid.getColumns().appendChild(new Column("BPJS",null,"115px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.start"),null,"75px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.end"),null,"75px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.nik"),null,"115px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.name")));
+		grid.getColumns().appendChild(new Column(lang.get("healtcare.grid.column.bpjs"),null,"115px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
 		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("4");

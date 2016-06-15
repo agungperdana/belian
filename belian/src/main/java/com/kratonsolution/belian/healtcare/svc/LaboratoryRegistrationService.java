@@ -108,10 +108,10 @@ public class LaboratoryRegistrationService
 			if(!item.getService().getComponents().isEmpty())
 			{
 				for(ProductComponent com:item.getService().getComponents())
-					stockService.inventoryProccess(com.getProduct(), item.getQuantity().multiply(com.getQuantity()));
+					stockService.issue(com.getProduct(), item.getQuantity().multiply(com.getQuantity()));
 			}
 			else
-				stockService.inventoryProccess(item.getService(), item.getQuantity());
+				stockService.issue(item.getService(), item.getQuantity());
 		}		
 		
 	}

@@ -105,4 +105,12 @@ public interface ProductRepository extends JpaRepository<Product, String>
 			+ "OR (sup.product.start <= :date AND sup.product.end IS NULL)) "
 			+ "ORDER BY sup.product.name ASC ")
 	public List<Product> findAllBySupplier(@Param("supplier")String supplierId,@Param("date")java.sql.Date date);
+	
+	@Query("FROM Product prod WHERE "
+			+ "prod.name LIKE %:name% "
+			+ "AND prod.type = 'SERVICE' "
+			+ "AND prod.category.segmentation = 'MEDICAL' "
+			+ "AND ((:date BETWEEN prod.start AND prod.end) OR (prod.start <= :date AND prod.end IS NULL)) "
+			+ "ORDER BY prod.name ASC")
+	public List<Product> findAllMedicalTreatment(@Param("name")String name,@Param("date")Date date);
 }

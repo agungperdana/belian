@@ -155,7 +155,7 @@ public class DoctorAppointmentGridContent extends GridContent
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No appointment data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new DoctorAppointmentRowRenderer(getParent()));
 		grid.setPagingPosition("both");
@@ -163,13 +163,13 @@ public class DoctorAppointmentGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Date",null,"75px"));
-		grid.getColumns().appendChild(new Column("Doctor",null,"115px"));
-		grid.getColumns().appendChild(new Column("Patient"));
-		grid.getColumns().appendChild(new Column("Status",null,"85px"));
-		grid.getColumns().appendChild(new Column("Note",null,"125px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.date"),null,"75px"));
+		grid.getColumns().appendChild(new Column(lang.get("healtcare.grid.column.doctor"),null,"115px"));
+		grid.getColumns().appendChild(new Column(lang.get("healtcare.grid.column.patient")));
+		grid.getColumns().appendChild(new Column(lang.get("healtcare.grid.column.status"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.note"),null,"125px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(6).setVisible(false);
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
 
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()

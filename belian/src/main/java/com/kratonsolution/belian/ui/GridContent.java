@@ -15,6 +15,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Vlayout;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -27,9 +28,11 @@ public abstract class GridContent extends Vlayout implements Removeable
 {
 	protected SessionUtils utils = Springs.get(SessionUtils.class);
 	
-	protected final GridToolbar gridToolbar = new GridToolbar();
+	protected Language lang = Springs.get(Language.class);
 	
-	protected final Grid grid = new Grid();
+	protected GridToolbar gridToolbar = new GridToolbar();
+	
+	protected Grid grid = new Grid();
 
 	public GridContent()
 	{

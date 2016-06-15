@@ -19,7 +19,7 @@ import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.InternalOrganization;
 import com.kratonsolution.belian.healtcare.dm.Doctor;
 import com.kratonsolution.belian.healtcare.dm.DoctorRelationship;
-import com.kratonsolution.belian.healtcare.svc.DoctorService;
+import com.kratonsolution.belian.healtcare.svc.DoctorRelationshipService;
 import com.kratonsolution.belian.healtcare.svc.DoctorTypeService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.component.PersonBox;
@@ -36,7 +36,7 @@ public class DoctorFormContent extends FormContent
 {	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
-	private DoctorService service = Springs.get(DoctorService.class);
+	private DoctorRelationshipService service = Springs.get(DoctorRelationshipService.class);
 	
 	private DoctorTypeService doctorTypeService = Springs.get(DoctorTypeService.class);
 	
@@ -44,7 +44,7 @@ public class DoctorFormContent extends FormContent
 	
 	private Datebox end = Components.datebox();
 	
-	private Listbox companys = Components.newSelect(utils.getOrganization());
+	private Listbox companys = Components.newSelect(utils.getCurrentOrganizations(),true);
 	
 	private PersonBox person = new PersonBox(true);
 	
@@ -80,16 +80,18 @@ public class DoctorFormContent extends FormContent
 				DoctorRelationship relationship = new DoctorRelationship();
 				relationship.setStart(DateTimes.sql(start.getValue()));
 				relationship.setEnd(DateTimes.sql(end.getValue()));
+				relationship.setCategory(doctorTypeService.findOne(Components.string(classifications)));
 				
 				Doctor doctor = new Doctor();
 				doctor.setStart(DateTimes.sql(start.getValue()));
 				doctor.setEnd(DateTimes.sql(end.getValue()));
-				doctor.setCategory(doctorTypeService.findOne(Components.string(classifications)));
+				
 				doctor.setParty(person.getPerson());
 				
 				InternalOrganization organization = new InternalOrganization();
 				organization.setStart(DateTimes.sql(start.getValue()));
 				organization.setEnd(DateTimes.sql(end.getValue()));
+				organization.setParty(utils.getOrganization());
 				
 				relationship.setDoctor(doctor);
 				relationship.setOrganization(organization);

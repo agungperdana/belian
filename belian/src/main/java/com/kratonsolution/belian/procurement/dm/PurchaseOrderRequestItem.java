@@ -4,6 +4,8 @@
 package com.kratonsolution.belian.procurement.dm;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -11,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -34,7 +37,7 @@ public class PurchaseOrderRequestItem implements ApproveAndReviewableItem
 	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="quantity")
-	private BigDecimal quantity;
+	private BigDecimal quantity = BigDecimal.ZERO;
 
 	@Column(name="note")
 	private String note;
@@ -50,6 +53,9 @@ public class PurchaseOrderRequestItem implements ApproveAndReviewableItem
 	@Version
 	private Long version;
 	
+	@OneToMany(mappedBy="requestItem")
+	private Set<PurchaseOrderItem> orderItems = new HashSet<>();
+	
 	public PurchaseOrderRequestItem(){}
 
 	@Override
@@ -62,5 +68,20 @@ public class PurchaseOrderRequestItem implements ApproveAndReviewableItem
 	public String getUom()
 	{
 		return getProduct().getUom().getName();
+	}
+	
+	public BigDecimal getOrdered()
+	{
+		BigDecimal ordered = BigDecimal.ZERO;
+		
+		for(PurchaseOrderItem item:orderItems)
+			ordered = ordered.add(item.getQuantity());
+		
+		return ordered;
+	}
+	
+	public boolean isOpen()
+	{
+		return getOrdered().compareTo(quantity) < 0;
 	}
 }

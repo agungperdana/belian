@@ -3,73 +3,102 @@
  */
 package com.kratonsolution.belian.ui.component;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.InputEvent;
+import org.zkoss.zul.A;
 import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Hbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Party;
-import com.kratonsolution.belian.global.svc.EconomicAgentService;
+import com.kratonsolution.belian.general.dm.PartyRepository;
 import com.kratonsolution.belian.ui.util.Springs;
+
+import lombok.Getter;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class PartyBox extends Combobox implements EventListener<InputEvent>
+@Getter
+public class PartyBox extends Hbox implements PartyRegistrationListener
 {
-	private EconomicAgentService service = Springs.get(EconomicAgentService.class);
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
-	public PartyBox()
-	{
-		setAutocomplete(true);
-		setAutodrop(true);
-		setConstraint("no empty");
-		setWidth("300px");
-		addEventListener(Events.ON_CHANGING,this);
-	}
+	private PartyRepository service = Springs.get(PartyRepository.class);
 	
-	@Override
-	public void onEvent(InputEvent event) throws Exception
+	private Combobox identity = new Combobox();
+	
+	private A link = new A("New Party");
+	
+	private Map<String,Party> maps = new HashMap<>();
+	
+	public PartyBox(boolean showCreateLink)
 	{
-		getChildren().clear();
-		for(Party agent:service.findAll(event.getValue()))
+		setWidth("400px");
+		
+		identity.setPlaceholder("Identity Number or Name");
+		identity.setAutodrop(true);
+		identity.setAutocomplete(false);
+		identity.setWidth("290px");
+		
+		appendChild(identity);
+		
+		if(showCreateLink)
+			appendChild(link);
+		
+		identity.addEventListener(Events.ON_CHANGING, new EventListener<InputEvent>()
 		{
-			Comboitem item = new Comboitem();
-			item.setLabel(agent.getName());
-			item.setValue(agent.getName());
-			item.setId(agent.getId());
-
-			appendChild(item);
-		}
-	}
-	
-	public void setParty(Party agent)
-	{
-		Comboitem item = new Comboitem();
-		item.setLabel(agent.getName());
-		item.setId(agent.getId());
-		appendChild(item);
-		setSelectedItem(item);
+			@Override
+			public void onEvent(InputEvent input) throws Exception
+			{
+				identity.getChildren().clear();
+				
+				for(Party party:service.findAll(input.getValue()))
+				{
+					identity.appendItem(party.getName());
+					if(!maps.containsKey(party.getName()))
+						maps.put(party.getName(), party);
+				}
+			}
+		});
+		
+		link.addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event arg0) throws Exception
+			{
+				PartyRegistration registration = new PartyRegistration();
+				registration.addListener(PartyBox.this);
+				registration.setPage(getPage());
+				registration.doModal();
+			}
+		});
 	}
 	
 	public Party getParty()
 	{
-		try
-		{
-			if(!Strings.isNullOrEmpty(getValue()))
-			{
-				for(Comboitem item:getItems())
-				{
-					if(item.getValue().equals(getValue()))
-						return service.findOne(item.getId());
-				}
-			}
-		} 
-		catch (Exception e){}
+		if(!Strings.isNullOrEmpty(identity.getValue()))
+			return maps.get(identity.getValue());
 		
 		return null;
+	}
+
+	@Override
+	public void setParty(Party party)
+	{
+		if(party != null)
+		{
+			identity.appendItem(party.getName());
+			identity.setSelectedIndex(0);
+			if(!maps.containsKey(party.getName()))
+				maps.put(party.getName(), party);
+		}
 	}
 }

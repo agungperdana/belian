@@ -18,6 +18,7 @@ import org.zkoss.zul.event.PagingEvent;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.healtcare.svc.DoctorAppointmentService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.Removeable;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -25,7 +26,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class DoctorDashboardGridContent extends GridContent
+public class DoctorDashboardGridContent extends GridContent implements Removeable
 {
 	private DoctorAppointmentService service = Springs.get(DoctorAppointmentService.class);
 	

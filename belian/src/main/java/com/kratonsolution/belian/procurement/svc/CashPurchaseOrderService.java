@@ -10,12 +10,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.inventory.dm.InventoryItemRepository;
+import com.kratonsolution.belian.inventory.dm.ProductComponent;
 import com.kratonsolution.belian.inventory.dm.TransferOrderRequestRepository;
+import com.kratonsolution.belian.inventory.svc.InventoryStockService;
 import com.kratonsolution.belian.procurement.dm.CashPurchaseOrder;
+import com.kratonsolution.belian.procurement.dm.CashPurchaseOrderItem;
 import com.kratonsolution.belian.procurement.dm.CashPurchaseOrderRepository;
 
 /**
@@ -34,7 +35,7 @@ public class CashPurchaseOrderService
 	private TransferOrderRequestRepository requestRepository;
 	
 	@Autowired
-	private InventoryItemRepository itemRepository;
+	private InventoryStockService stockService;
 	
 	@Autowired
 	private SessionUtils utils;
@@ -66,7 +67,21 @@ public class CashPurchaseOrderService
 	@Secured("ROLE_CASH_PURCHASE_ORDER_CREATE")
 	public void add(CashPurchaseOrder order)
 	{
+		if(order.getFacility() == null)
+			throw new RuntimeException("Please choose facility first.");
+		
 		repository.save(order);
+	
+		for(CashPurchaseOrderItem item:order.getItems())
+		{
+			if(item.getProduct().getComponents().isEmpty())
+				stockService.receive(order.getFacility(), item.getProduct(), item.getQuantity(), item.getExpiredDate());
+			else
+			{
+				for(ProductComponent com:item.getProduct().getComponents())
+					stockService.receive(order.getFacility(), com.getProduct(), com.getQuantity().multiply(item.getQuantity()), item.getExpiredDate());
+			}
+		}
 	}
 	
 	@Secured("ROLE_CASH_PURCHASE_ORDER_UPDATE")
@@ -76,8 +91,15 @@ public class CashPurchaseOrderService
 	}
 	
 	@Secured("ROLE_CASH_PURCHASE_ORDER_DELETE")
-	public void delete(@PathVariable String id)
+	public void delete(String id)
 	{
-		repository.delete(id);
+		CashPurchaseOrder order = findOne(id);
+		if(order != null)
+		{
+			for(CashPurchaseOrderItem item:order.getItems())
+				stockService.issue(order.getFacility(), item.getProduct(), item.getQuantity(), item.getExpiredDate());
+		
+			repository.delete(order);
+		}
 	}
 }

@@ -492,6 +492,14 @@ public class Components
 		
 		return label;
 	}
+	
+	public static Label label(String id)
+	{
+		Label label = new Label();
+		label.setValue(id);
+		
+		return label;
+	}
 
 	public static final Listitem newListitem(BigDecimal decimal)
 	{

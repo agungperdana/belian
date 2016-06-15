@@ -6,6 +6,9 @@ package com.kratonsolution.belian.ui;
 import org.zkoss.zk.ui.GenericRichlet;
 import org.zkoss.zk.ui.Page;
 
+import com.kratonsolution.belian.ui.healtcare.doctorappointment.DoctorAppointmentTimer;
+import com.kratonsolution.belian.ui.inventory.stockadmin.StockExpiredReminder;
+import com.kratonsolution.belian.ui.inventory.stockadmin.StockReminder;
 import com.kratonsolution.belian.ui.nav.IconBar;
 import com.kratonsolution.belian.ui.nav.NavigationMenu;
 
@@ -24,5 +27,9 @@ public class Desktop extends GenericRichlet
 	{
 		IconBar.injectInto(page);
 		NavigationMenu.injectInto(page);
+		
+		new DoctorAppointmentTimer().setPage(page);
+		new StockReminder().setPage(page);
+		new StockExpiredReminder().setPage(page);
 	}
 }

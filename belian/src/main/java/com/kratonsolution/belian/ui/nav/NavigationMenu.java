@@ -17,7 +17,6 @@ import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.healtcare.svc.DoctorService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -88,13 +87,13 @@ public class NavigationMenu extends Window
 		list.setStyle("border:none");
 		
 		if(modules.containsKey("ROLE_GEOGRAPHIC_READ"))
-			list.appendChild(new GeographicItem());
+			list.appendChild(new GeographicMenu());
 		if(modules.containsKey("ROLE_ORGANIZATION_READ"))
-			list.appendChild(new OrganizationItem());
+			list.appendChild(new OrganizationMenu());
 		if(modules.containsKey("ROLE_PERSON_READ"))
-			list.appendChild(new PersonItem());
+			list.appendChild(new PersonMenu());
 		if(modules.containsKey("ROLE_COMPANY_STRUCTURE_READ"))
-			list.appendChild(new CompanyStructureItem());
+			list.appendChild(new CompanyStructureMenu());
 		
 		if(!list.getChildren().isEmpty())
 		{
@@ -113,11 +112,11 @@ public class NavigationMenu extends Window
 		list.setStyle("border:none");
 		
 		if(modules.containsKey("ROLE_MODULE_READ"))
-			list.appendChild(new ModuleItem());
+			list.appendChild(new ModuleMenu());
 		if(modules.containsKey("ROLE_ACCESS_ROLE_READ"))
-			list.appendChild(new RoleItem());
+			list.appendChild(new RoleMenu());
 		if(modules.containsKey("ROLE_USER_READ"))
-			list.appendChild(new UserItem());
+			list.appendChild(new UserMenu());
 		
 		if(!list.getChildren().isEmpty())
 		{
@@ -134,21 +133,21 @@ public class NavigationMenu extends Window
 		list.setStyle("border:none");
 		
 		if(modules.containsKey("ROLE_CURRENCY_READ"))
-			list.appendChild(new CurrencyItem());
+			list.appendChild(new CurrencyMenu());
 		if(modules.containsKey("ROLE_TAX_READ"))
-			list.appendChild(new TaxItem());
+			list.appendChild(new TaxMenu());
 		if(modules.containsKey("ROLE_COA_READ"))
-			list.appendChild(new CoAItem());
+			list.appendChild(new CoAMenu());
 		if(modules.containsKey("ROLE_ACCOUNTINGPERIOD_READ"))
-			list.appendChild(new AccountingPeriodItem());
+			list.appendChild(new AccountingPeriodMenu());
 		if(modules.containsKey("ROLE_ORGANIZATIONACCOUNT_READ"))
-			list.appendChild(new OrganizationAccountItem());
+			list.appendChild(new OrganizationAccountMenu());
 		if(modules.containsKey("ROLE_JOURNALSETTING_READ"))
-			list.appendChild(new JournalSettingItem());
+			list.appendChild(new JournalSettingMenu());
 		if(modules.containsKey("ROLE_JOURNALENTRY_READ"))
-			list.appendChild(new JournalEntryItem());
+			list.appendChild(new JournalEntryMenu());
 		if(modules.containsKey("ROLE_BUDGET_READ"))
-			list.appendChild(new BudgetItem());
+			list.appendChild(new BudgetMenu());
 		
 		if(!list.getChildren().isEmpty())
 		{
@@ -166,29 +165,31 @@ public class NavigationMenu extends Window
 		list.setStyle("border:none");
 		
 		if(modules.containsKey("ROLE_UOM_READ"))
-			list.appendChild(new UOMItem());
+			list.appendChild(new UOMMenu());
 		if(modules.containsKey("ROLE_FACILITY_READ"))
-			list.appendChild(new FacilityItem());
+			list.appendChild(new FacilityMenu());
 		if(modules.containsKey("ROLE_PRDCATEGORY_READ"))
-			list.appendChild(new ProductCategoryItem());
+			list.appendChild(new ProductCategoryMenu());
 		if(modules.containsKey("ROLE_PRODUCT_READ"))
-			list.appendChild(new ProductItem());
+			list.appendChild(new ProductMenu());
 		if(modules.containsKey("ROLE_INVITEM_READ"))
-			list.appendChild(new InventoryItemItem());
+			list.appendChild(new InventoryItemMenu());
 		if(modules.containsKey("ROLE_TRN_ORDER_REQ_READ"))
-			list.appendChild(new TransferOrderRequestItem());
+			list.appendChild(new TransferOrderRequestMenu());
 		if(modules.containsKey("ROLE_GOODS_TRANSFER_READ"))
-			list.appendChild(new GoodsTransferItem());
+			list.appendChild(new GoodsTransferMenu());
 		if(modules.containsKey("ROLE_GOODS_ISSUE_READ"))
-			list.appendChild(new GoodsIssueItem());
+			list.appendChild(new GoodsIssueMenu());
 		if(modules.containsKey("ROLE_GOODS_RECEIVE_READ"))
-			list.appendChild(new GoodsReceiveItem());
+			list.appendChild(new GoodsReceiveMenu());
 		if(modules.containsKey("ROLE_STOCK_ADJUSTMENT_READ"))
 			list.appendChild(new StockAdjustmentMenu());
 		if(modules.containsKey("ROLE_STOCK_OPNAME_READ"))
 			list.appendChild(new StockOpnameMenu());
 		if(modules.containsKey("ROLE_STOCK_ADMIN_READ"))
 			list.appendChild(new StockAdminMenu());
+		if(modules.containsKey("ROLE_PRODUCT_RETUR_READ"))
+			list.appendChild(new ProductReturMenu());
 		
 		if(!list.getChildren().isEmpty())
 		{
@@ -224,11 +225,11 @@ public class NavigationMenu extends Window
 		list.setStyle("border:none");
 		
 		if(modules.containsKey("ROLE_CASHIER_READ"))
-			list.appendChild(new CashierItem());
+			list.appendChild(new CashierMenu());
 		if(modules.containsKey("ROLE_CASHSALES_READ"))
-			list.appendChild(new CashSalesItem());
+			list.appendChild(new CashSalesMenu());
 		if(modules.containsKey("ROLE_SALES_REPORT_READ"))
-			list.appendChild(new SalesReportItem());
+			list.appendChild(new SalesReportMenu());
 		
 		if(!list.getChildren().isEmpty())
 		{
@@ -244,10 +245,12 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
+		if(modules.containsKey("ROLE_SUPPLIER_READ"))
+			list.appendChild(new SupplierMenu());
 		if(modules.containsKey("ROLE_PURCHASE_ORDER_REQUEST_READ"))
-			list.appendChild(new PurchaseOrderRequestItem());
+			list.appendChild(new PurchaseOrderRequestMenu());
 		if(modules.containsKey("ROLE_CASH_PURCHASE_ORDER_READ"))
-			list.appendChild(new CashPurchaseOrderItem());
+			list.appendChild(new CashPurchaseOrderMenu());
 		
 		if(!list.getChildren().isEmpty())
 		{
@@ -264,10 +267,10 @@ public class NavigationMenu extends Window
 		list.setStyle("border:none");
 
 		if(modules.containsKey("ROLE_LABS_REGISTRATION_READ"))
-			list.appendChild(new LabsRegistrationItem());
+			list.appendChild(new LabsRegistrationMenu());
 		
 		if(modules.containsKey("ROLE_LABS_REGISTRATION_READ"))
-			list.appendChild(new LabScheduleItem());
+			list.appendChild(new LabScheduleMenu());
 		
 		if(!list.getChildren().isEmpty())
 		{
@@ -289,7 +292,7 @@ public class NavigationMenu extends Window
 			list.appendChild(new PharmacySalesItem());
 		
 		if(modules.containsKey("ROLE_PHARMACY_ORDER_READ"))
-			list.appendChild(new PharmacyOrderItem());
+			list.appendChild(new PharmacyOrderMenu());
 		
 		if(!list.getChildren().isEmpty())
 		{
@@ -308,27 +311,23 @@ public class NavigationMenu extends Window
 		list.setStyle("border:none");
 		
 		if(modules.containsKey("ROLE_DOCTORTYPE_READ"))
-			list.appendChild(new DoctorTypeItem());
+			list.appendChild(new DoctorTypeMenu());
 		
 		if(modules.containsKey("ROLE_DOCTOR_READ"))
-			list.appendChild(new DoctorItem());
+			list.appendChild(new DoctorMenu());
 
 		if(modules.containsKey("ROLE_PATIENT_READ"))
-			list.appendChild(new PatientItem());
+			list.appendChild(new PatientMenu());
 
 		if(modules.containsKey("ROLE_DOCTOR_APPOINTMENT_READ"))
-			list.appendChild(new DoctorAppointmentItem());
+			list.appendChild(new DoctorAppointmentMenu());
 		
 		SessionUtils utils = Springs.get(SessionUtils.class);
-		DoctorService service = Springs.get(DoctorService.class);
-		if(utils != null && service != null && utils.getUser().getPerson() != null)
-		{
-			if(!service.findAllByPerson(utils.getUser().getPerson().getId()).isEmpty())
-				list.appendChild(new DoctorDashboardItem());
-		}
+		if(utils.isDoctor())
+			list.appendChild(new DoctorDashboardMenu());
 				
 		if(modules.containsKey("ROLE_FAMILY_FOLDER_READ"))
-			list.appendChild(new FamilyFolderItem());
+			list.appendChild(new FamilyFolderMenu());
 		
 		if(!list.getChildren().isEmpty())
 		{
@@ -347,17 +346,17 @@ public class NavigationMenu extends Window
 		list.setStyle("border:none");
 		
 		if(modules.containsKey("ROLE_POSITIONTYPE_READ"))
-			list.appendChild(new PositionTypeItem());
+			list.appendChild(new PositionTypeMenu());
 		if(modules.containsKey("ROLE_POSITIONTYPERATE_READ"))
-			list.appendChild(new PositionTypeRateItem());
+			list.appendChild(new PositionTypeRateMenu());
 		if(modules.containsKey("ROLE_POSITION_READ"))
-			list.appendChild(new PositionItem());
+			list.appendChild(new PositionMenu());
 		if(modules.containsKey("ROLE_BENEFIT_TYPE_READ"))
-			list.appendChild(new BenefitTypeItem());
+			list.appendChild(new BenefitTypeMenu());
 		if(modules.containsKey("ROLE_EMPYAPP_READ"))
-			list.appendChild(new EmploymentApplicationItem());
+			list.appendChild(new EmploymentApplicationMenu());
 		if(modules.containsKey("ROLE_EMPLOYMENT_READ"))
-			list.appendChild(new EmploymentItem());
+			list.appendChild(new EmploymentMenu());
 
 		if(!list.getChildren().isEmpty())
 		{
@@ -375,9 +374,9 @@ public class NavigationMenu extends Window
 		list.setStyle("border:none");
 		
 		if(modules.containsKey("ROLE_ASSET_TYPE_READ"))
-			list.appendChild(new AssetTypeItem());
+			list.appendChild(new AssetTypeMenu());
 		if(modules.containsKey("ROLE_ASSET_READ"))
-			list.appendChild(new AssetItem());
+			list.appendChild(new AssetMenu());
 
 		if(!list.getChildren().isEmpty())
 		{
@@ -397,9 +396,9 @@ public class NavigationMenu extends Window
 		if(modules.containsKey("ROLE_PAYMENT_METHOD_TYPE_READ"))
 			list.appendChild(new PaymentMethodTypeMenu());
 		if(modules.containsKey("ROLE_DEDUCTION_TYPE_READ"))
-			list.appendChild(new DeductionTypeItem());
+			list.appendChild(new DeductionTypeMenu());
 		if(modules.containsKey("ROLE_PAYCHECK_READ"))
-			list.appendChild(new PaycheckItem());
+			list.appendChild(new PaycheckMenu());
 
 		if(!list.getChildren().isEmpty())
 		{

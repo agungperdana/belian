@@ -17,6 +17,7 @@ import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.procurement.svc.CashPurchaseOrderService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -54,9 +55,7 @@ public class CashPurchaseOrderGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				CashPurchaseOrderWindow window = (CashPurchaseOrderWindow)getParent();
-				window.removeGrid();
-				window.insertCreateForm();
+				Flow.next(getParent(), new CashPurchaseOrderFormContent());
 			}
 		});
 		
@@ -168,7 +167,7 @@ public class CashPurchaseOrderGridContent extends GridContent
 		grid.getColumns().appendChild(new Column("Purchaser",null,"150px"));
 		grid.getColumns().appendChild(new Column("Request No",null,"150px"));
 		grid.getColumns().appendChild(new Column(null,null,"0px"));
-		grid.getColumns().getChildren().get(7).setVisible(false);
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("3");
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()

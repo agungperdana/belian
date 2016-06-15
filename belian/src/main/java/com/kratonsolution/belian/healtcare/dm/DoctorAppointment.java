@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -56,9 +57,9 @@ public class DoctorAppointment implements Serializable
 	
 	@ManyToOne
 	@JoinColumn(name="fk_doctor")
-	private Doctor doctor;
+	private DoctorRelationship doctor;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="fk_patient")
 	private Patient patient;
 	
