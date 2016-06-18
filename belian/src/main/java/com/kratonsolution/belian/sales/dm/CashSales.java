@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.Geographic;
 
 import lombok.Getter;
@@ -56,9 +57,12 @@ public class CashSales extends Billable
 	public CashSales(){}
 
 	@Override
-	public String getBillingType()
+	public String getBillingType(String lang)
 	{
-		return "Cash Sales";
+		if(Strings.isNullOrEmpty(lang) || lang.equals("in_ID"))
+			return "Tunai";
+		else
+			return "Cash Sales";
 	}
 
 	@Override

@@ -5,6 +5,9 @@ package com.kratonsolution.belian.ui;
 
 import org.zkoss.zul.Window;
 
+import com.kratonsolution.belian.common.Language;
+import com.kratonsolution.belian.ui.util.Springs;
+
 /**
  * 
  * @author Agung Dodi Perdana
@@ -12,6 +15,8 @@ import org.zkoss.zul.Window;
  */
 public abstract class AbstractWindow extends Window implements HasStatus
 {	
+	protected Language lang = Springs.get(Language.class);
+	
 	public AbstractWindow()
 	{
 		setWidth("500px");

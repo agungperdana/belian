@@ -7,6 +7,10 @@ import org.zkoss.zul.Grid;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Vlayout;
 
+import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.global.svc.CodeGenerator;
+import com.kratonsolution.belian.ui.util.Springs;
+
 /**
  * 
  * @author Agung Dodi Perdana
@@ -19,6 +23,10 @@ public abstract class FormContent extends Vlayout implements Removeable
 	protected Grid grid = new Grid();
 	
 	protected Rows rows = new Rows();
+	
+	protected SessionUtils utils = Springs.get(SessionUtils.class);
+	
+	protected CodeGenerator generator = Springs.get(CodeGenerator.class);
 	
 	public FormContent()
 	{

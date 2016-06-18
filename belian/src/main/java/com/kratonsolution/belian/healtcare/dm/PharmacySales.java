@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.google.common.base.Strings;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,8 +36,11 @@ public class PharmacySales extends MedicalSales
 	public PharmacySales(){}
 
 	@Override
-	public String getBillingType()
+	public String getBillingType(String lang)
 	{
-		return "Apotek";
+		if(Strings.isNullOrEmpty(lang) || lang.equals("in_ID"))
+			return "Apotik";
+		else
+			return "Apotek";
 	}
 }

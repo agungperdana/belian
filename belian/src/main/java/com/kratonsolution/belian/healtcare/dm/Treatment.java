@@ -14,6 +14,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.sales.dm.Billable;
 
 import lombok.Getter;
@@ -43,9 +44,12 @@ public class Treatment extends Billable
 	 * @see com.kratonsolution.belian.sales.dm.Billable#getBillingType()
 	 */
 	@Override
-	public String getBillingType()
+	public String getBillingType(String lang)
 	{
-		return "Medical Treatment";
+		if(Strings.isNullOrEmpty(lang) || lang.equals("in_ID"))
+			return "Periksa";
+		else
+			return "Clinic Treatment";
 	}
 
 	@Override

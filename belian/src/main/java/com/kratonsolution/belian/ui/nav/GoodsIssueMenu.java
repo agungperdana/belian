@@ -7,11 +7,8 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.Language;
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.ui.inventory.goodsissue.GoodsIssueWindow;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -20,7 +17,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class GoodsIssueMenu extends Listitem
+public class GoodsIssueMenu extends Menu
 {
 	private Language language = Springs.get(Language.class);
 	
@@ -39,12 +36,7 @@ public class GoodsIssueMenu extends Listitem
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				SessionUtils utils = Springs.get(SessionUtils.class);
-				if(utils.isSysAdmin())
-				{
-					Clients.showNotification("This module cannot be accessed using Sys Admin account.");
-					return;
-				}
+				showSysadminBlockMessage();
 				
 				GoodsIssueWindow window = null;
 				

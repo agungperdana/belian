@@ -24,7 +24,6 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.sales.dm.Billable;
 import com.kratonsolution.belian.sales.dm.BillableItem;
 import com.kratonsolution.belian.sales.dm.CashierShift;
@@ -54,8 +53,6 @@ public class CashierEditContent extends FormContent
 
 	private CashierShiftService cashierShiftService = Springs.get(CashierShiftService.class);
 	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
-
 	private Grid billingItems = new Grid();
 	
 	private Grid payments = new Grid();
@@ -166,7 +163,7 @@ public class CashierEditContent extends FormContent
 			
 			Row cuss = new Row();
 			cuss.appendChild(new Label("Type"));
-			cuss.appendChild(new Label(billing.getBillingType()));
+			cuss.appendChild(new Label(billing.getBillingType(utils.getLanguage())));
 			cuss.appendChild(new Label("Customer"));
 			cuss.appendChild(new Label(billing.getCustomer()!=null?billing.getCustomer().getName():"Anonymous"));
 			

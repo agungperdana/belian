@@ -42,7 +42,7 @@ public abstract class MedicalSales extends Billable
 	@Override
 	public int getTableNumber()
 	{
-		return 1;
+		return queue;
 	}
 
 	public abstract Set<? extends MedicalSalesItem> getItems();

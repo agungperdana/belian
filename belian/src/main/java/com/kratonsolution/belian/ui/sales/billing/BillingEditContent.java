@@ -19,7 +19,6 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 
 import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.sales.dm.Billable;
 import com.kratonsolution.belian.sales.dm.BillableItem;
 import com.kratonsolution.belian.sales.srv.BillingService;
@@ -37,8 +36,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class BillingEditContent extends FormContent
 {		
 	private BillingService service = Springs.get(BillingService.class);
-
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 
 	private Grid billingItems = new Grid();
 
@@ -85,7 +82,7 @@ public class BillingEditContent extends FormContent
 			grid.getRows().appendChild(RowUtils.row("Currency", billing.getCurrency().getCode()));
 			grid.getRows().appendChild(RowUtils.row("Sales", billing.getSales().getName()));
 			grid.getRows().appendChild(RowUtils.row("Customer", billing.getCustomer().getName()));
-			grid.getRows().appendChild(RowUtils.row("Type", billing.getBillingType()));
+			grid.getRows().appendChild(RowUtils.row("Type", billing.getBillingType(utils.getLanguage())));
 
 			billingItems.setWidth("100%");
 			billingItems.appendChild(new Rows());

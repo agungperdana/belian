@@ -63,4 +63,31 @@ public class CodeGenerator
 	{
 		return generate(DateTimes.currentDate(),utils.getOrganization(),code);
 	}
+	
+	public int nextQueue(Code code)
+	{
+		if(code == null || utils.getOrganization() == null)
+			return 0;
+		
+		SequenceNumber sequence = repository.findOneByCompanyIdAndDateAndCode(utils.getOrganization().getId(), DateTimes.currentDate(), code);
+		if(sequence == null)
+		{
+			sequence = new SequenceNumber();
+			sequence.setCode(code);
+			sequence.setCompanyId(utils.getOrganization().getId());
+			sequence.setDate(DateTimes.currentDate());
+			sequence.setSequence(1);
+			
+			repository.save(sequence);
+			return 1;
+		}
+		else
+		{
+			int number = sequence.getSequence()+1;
+			sequence.setSequence(number);
+			repository.save(sequence);
+			
+			return number;
+		}
+	}
 }

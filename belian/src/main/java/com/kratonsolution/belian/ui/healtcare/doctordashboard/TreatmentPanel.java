@@ -17,8 +17,6 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Tabpanel;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.global.dm.SequenceNumber.Code;
-import com.kratonsolution.belian.global.svc.CodeGenerator;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.Treatment;
 import com.kratonsolution.belian.healtcare.dm.TreatmentItem;
@@ -35,8 +33,6 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class TreatmentPanel extends Tabpanel
 {
-	private CodeGenerator generator = Springs.get(CodeGenerator.class);
-	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	private MedicalRecordService service = Springs.get(MedicalRecordService.class);
@@ -112,7 +108,6 @@ public class TreatmentPanel extends Tabpanel
 			treatment.setCurrency(utils.getCurrency());
 			treatment.setCustomer(appointment.getPatient().getPerson());
 			treatment.setDate(appointment.getDate());
-			treatment.setNumber(generator.generate(appointment.getDate(), appointment.getCompany(), Code.BLTRE));
 			treatment.setOrganization(appointment.getCompany());
 			treatment.setPaid(false);
 			treatment.setSales(appointment.getDoctor().getPerson());

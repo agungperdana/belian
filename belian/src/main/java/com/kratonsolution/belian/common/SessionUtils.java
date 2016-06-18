@@ -321,7 +321,7 @@ public class SessionUtils
 	
 	public boolean isDoctor()
 	{
-		if(getUser() != null && getUser().getPerson() != null)
+		if(getUser() != null && getUser().getPerson() != null && getOrganization() != null)
 		{
 			DoctorRelationshipRepository repository = Springs.get(DoctorRelationshipRepository.class);
 			List<DoctorRelationship> doc = repository.findAll(getUser().getPerson().getId(), getOrganization().getId(),DateTimes.currentDate());

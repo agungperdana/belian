@@ -17,8 +17,6 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Tabpanel;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.global.dm.SequenceNumber.Code;
-import com.kratonsolution.belian.global.svc.CodeGenerator;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.Laboratory;
 import com.kratonsolution.belian.healtcare.dm.LaboratoryItem;
@@ -35,8 +33,6 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class LaboratoriumPanel extends Tabpanel
 {
-	private CodeGenerator generator = Springs.get(CodeGenerator.class);
-	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	private MedicalRecordService service = Springs.get(MedicalRecordService.class);
@@ -109,10 +105,10 @@ public class LaboratoriumPanel extends Tabpanel
 		if(!grid.getRows().getChildren().isEmpty())
 		{
 			Laboratory laboratory = new Laboratory();
+			laboratory.setPersonal(false);
 			laboratory.setCurrency(utils.getCurrency());
 			laboratory.setCustomer(appointment.getPatient().getPerson());
 			laboratory.setDate(appointment.getDate());
-			laboratory.setNumber(generator.generate(appointment.getDate(), appointment.getCompany(), Code.BLLAB));
 			laboratory.setOrganization(appointment.getCompany());
 			laboratory.setPaid(false);
 			laboratory.setSales(appointment.getDoctor().getPerson());

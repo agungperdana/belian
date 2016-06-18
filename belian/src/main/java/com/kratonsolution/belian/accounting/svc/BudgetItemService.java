@@ -32,13 +32,13 @@ public class BudgetItemService
 	@Autowired
 	private SessionUtils utils;
 	
-	@Secured("ROLE_BUDGETITEM_READ")
+	@Secured("ROLE_BUDGET_READ")
 	public int size()
 	{
 		return Long.valueOf(repository.count()).intValue();
 	}
 	
-	@Secured("ROLE_BUDGETITEM_READ")
+	@Secured("ROLE_BUDGET_READ")
 	public int sequence(String budget)
 	{
 		Integer last = repository.lastSequence(budget);
@@ -48,7 +48,7 @@ public class BudgetItemService
 		return last+1;
 	}
 	
-	@Secured("ROLE_BUDGETITEM_READ")
+	@Secured("ROLE_BUDGET_READ")
 	public BudgetItem findOne(String id)
 	{
 		if(!Strings.isNullOrEmpty(id))
@@ -57,37 +57,37 @@ public class BudgetItemService
 		return null;
 	}
 	
-	@Secured("ROLE_BUDGETITEM_READ")
+	@Secured("ROLE_BUDGET_READ")
 	public List<BudgetItem> findAll()
 	{
 		return repository.findAll();
 	}
 	
-	@Secured("ROLE_BUDGETITEM_READ")
+	@Secured("ROLE_BUDGET_READ")
 	public List<BudgetItem> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
 	}
 	
-	@Secured("ROLE_BUDGETITEM_CREATE")
+	@Secured("ROLE_BUDGET_CREATE")
 	public void add(BudgetItem item)
 	{
 		repository.save(item);
 	}
 	
-	@Secured("ROLE_BUDGETITEM_UPDATE")
+	@Secured("ROLE_BUDGET_UPDATE")
 	public void edit(BudgetItem item)
 	{
 		repository.saveAndFlush(item);
 	}
 	
-	@Secured("ROLE_BUDGETITEM_DELETE")
+	@Secured("ROLE_BUDGET_DELETE")
 	public void delete(String id)
 	{
 		repository.delete(id);
 	}
 	
-	@Secured("ROLE_BUDGETITEM_READ")
+	@Secured("ROLE_BUDGET_READ")
 	public List<BudgetItem> findAllByOwner()
 	{
 		if(utils.hasDefaultOrganization())

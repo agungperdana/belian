@@ -18,8 +18,6 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Tabpanel;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.global.dm.SequenceNumber.Code;
-import com.kratonsolution.belian.global.svc.CodeGenerator;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.Medication;
 import com.kratonsolution.belian.healtcare.dm.MedicationItem;
@@ -41,8 +39,6 @@ public class MedicationPanel extends Tabpanel
 	private MedicalRecordService service = Springs.get(MedicalRecordService.class);
 	
 	private ProductService productService = Springs.get(ProductService.class);
-	
-	private CodeGenerator generator = Springs.get(CodeGenerator.class);
 	
 	private NRCToolbar toolbar = new NRCToolbar();
 	
@@ -119,7 +115,6 @@ public class MedicationPanel extends Tabpanel
 			medication.setCurrency(utils.getCurrency());
 			medication.setCustomer(appointment.getPatient().getPerson());
 			medication.setDate(appointment.getDate());
-			medication.setNumber(generator.generate(appointment.getDate(), appointment.getCompany(), Code.CLS));
 			medication.setOrganization(appointment.getCompany());
 			medication.setPaid(false);
 			medication.setSales(appointment.getDoctor().getPerson());

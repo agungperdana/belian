@@ -14,7 +14,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.tools.dm.Inbox;
+import com.kratonsolution.belian.tools.dm.InboxRepository;
+import com.kratonsolution.belian.tools.dm.InboxType;
 import com.kratonsolution.belian.tools.dm.Message;
+import com.kratonsolution.belian.tools.dm.MessageReceiver;
 import com.kratonsolution.belian.tools.dm.SendRepository;
 
 /**
@@ -31,6 +35,9 @@ public class SendService
 	
 	@Autowired
 	private SendRepository repository;
+	
+	@Autowired
+	private InboxRepository inboxRepository;
 	
 	@Secured("ROLE_MESSAGE_READ")
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
@@ -63,6 +70,20 @@ public class SendService
 	public void add(Message message)
 	{
 		repository.save(message);
+		
+		for(MessageReceiver receiver:message.getReceivers())
+		{
+			Inbox inbox = new Inbox();
+			inbox.setContent(message.getContent());
+			inbox.setDate(message.getDate());
+			inbox.setOpen(false);
+			inbox.setReceiver(receiver.getReceiver());
+			inbox.setSender(message.getSender());
+			inbox.setTitle(message.getTitle());
+			inbox.setType(InboxType.Standard);
+		
+			inboxRepository.save(inbox);
+		}
 	}
 	
 	@Secured("ROLE_MESSAGE_UPDATE")

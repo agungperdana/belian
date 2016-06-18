@@ -21,7 +21,6 @@ import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentStatus;
-import com.kratonsolution.belian.healtcare.svc.AppointmentQueueGenerator;
 import com.kratonsolution.belian.healtcare.svc.DoctorAppointmentService;
 import com.kratonsolution.belian.healtcare.svc.DoctorService;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
@@ -41,8 +40,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class DoctorAppointmentEditContent extends FormContent
 {	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
-
-	private AppointmentQueueGenerator generator = Springs.get(AppointmentQueueGenerator.class);
 
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 

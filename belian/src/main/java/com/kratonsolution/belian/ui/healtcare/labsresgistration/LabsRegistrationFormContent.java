@@ -22,9 +22,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.global.dm.SequenceNumber.Code;
-import com.kratonsolution.belian.global.svc.CodeGenerator;
 import com.kratonsolution.belian.healtcare.dm.Laboratory;
 import com.kratonsolution.belian.healtcare.dm.LaboratoryItem;
 import com.kratonsolution.belian.healtcare.svc.LaboratoryRegistrationService;
@@ -44,10 +42,6 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class LabsRegistrationFormContent extends FormContent
 {	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
-	
-	private CodeGenerator generator = Springs.get(CodeGenerator.class);
-	
 	private LaboratoryRegistrationService service = Springs.get(LaboratoryRegistrationService.class);
 	
 	private Listbox companys = Components.newSelect(utils.getOrganization());
@@ -96,6 +90,7 @@ public class LabsRegistrationFormContent extends FormContent
 					throw new WrongValueException(patient,"Patient cannot be empty");
 				
 				Laboratory laboratory = new Laboratory();
+				laboratory.setPersonal(true);
 				laboratory.setCurrency(utils.getCurrency());
 				laboratory.setCustomer(patient.getPatient().getPerson());
 				laboratory.setDate(new Date(date.getValue().getTime()));

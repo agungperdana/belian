@@ -18,6 +18,7 @@ import com.kratonsolution.belian.ui.inbox.draft.DraftGridContent;
 import com.kratonsolution.belian.ui.inbox.draft.DraftItem;
 import com.kratonsolution.belian.ui.inbox.important.ImportantGridContent;
 import com.kratonsolution.belian.ui.inbox.inbox.InboxGridContent;
+import com.kratonsolution.belian.ui.inbox.inbox.InboxItem;
 import com.kratonsolution.belian.ui.inbox.send.SendGridContent;
 import com.kratonsolution.belian.ui.inbox.send.SendItem;
 import com.kratonsolution.belian.ui.util.Flow;
@@ -29,7 +30,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class MessageTree extends Tree
 {
-	private Treeitem inbox = new Treeitem("Inbox");
+	private InboxItem inbox = new InboxItem();
 	
 	private Treeitem important = new Treeitem("Inportant");
 	
@@ -68,6 +69,7 @@ public class MessageTree extends Tree
 				InboxGridContent content = new InboxGridContent();
 				content.addMessageListener(draft);
 				content.addMessageListener(send);
+				content.addMessageListener(inbox);
 				
 				Flow.next(center, content);
 			}

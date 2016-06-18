@@ -29,22 +29,26 @@ public class DoctorAppointmentTimer extends Timer
 	
 	public DoctorAppointmentTimer()
 	{
-		showNotification();
-		
-		setDelay(600000);
-		setRepeats(true);
-		
-		addEventListener(Events.ON_TIMER, new EventListener<Event>()
+		if(!utils.isSysAdmin())
 		{
-			@Override
-			public void onEvent(Event arg0) throws Exception
+			setDelay(600000);
+			setRepeats(true);
+			
+			addEventListener(Events.ON_TIMER, new EventListener<Event>()
+			{
+				@Override
+				public void onEvent(Event arg0) throws Exception
+				{
+					showNotification();
+				}
+			});
+			
+			if(utils.isDoctor())
 			{
 				showNotification();
+				start();
 			}
-		});
-		
-		if(utils.isDoctor())
-			start();
+		}
 	}
 	
 	private void showNotification()

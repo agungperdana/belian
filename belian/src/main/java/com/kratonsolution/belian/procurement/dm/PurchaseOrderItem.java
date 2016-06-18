@@ -41,7 +41,7 @@ public abstract class PurchaseOrderItem implements Serializable
 	@JoinColumn(name="fk_product")
 	protected Product product;
 	
-	@JoinColumn(name="fk_quantity")
+	@JoinColumn(name="quantity")
 	protected BigDecimal quantity;
 	
 	@Column(name="note")

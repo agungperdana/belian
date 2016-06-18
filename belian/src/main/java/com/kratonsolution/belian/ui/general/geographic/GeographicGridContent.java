@@ -15,7 +15,6 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -28,8 +27,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class GeographicGridContent extends GridContent
 {
 	private GeographicService controller = Springs.get(GeographicService.class);
-
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public GeographicGridContent()
 	{
@@ -164,12 +161,12 @@ public class GeographicGridContent extends GridContent
 		grid.appendChild(new Columns());
 		
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Code",null,"75px"));
-		grid.getColumns().appendChild(new Column("Name",null,"150px"));
-		grid.getColumns().appendChild(new Column("Type",null,"75px"));
-		grid.getColumns().appendChild(new Column("Note"));
-		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(5).setVisible(false);
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.code"),null,"75px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.name"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.type"),null,"75px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.note")));
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("4");
 		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
 

@@ -10,7 +10,7 @@ import org.zkforge.ckez.CKeditor;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Grid;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
@@ -18,7 +18,11 @@ import org.zkoss.zul.Vlayout;
 
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.Party;
+import com.kratonsolution.belian.general.dm.Person;
+import com.kratonsolution.belian.hr.dm.EmployeeRepository;
 import com.kratonsolution.belian.tools.dm.Message;
+import com.kratonsolution.belian.tools.dm.MessageReceiver;
 import com.kratonsolution.belian.tools.dm.MessageType;
 import com.kratonsolution.belian.tools.svc.DraftService;
 import com.kratonsolution.belian.tools.svc.SendService;
@@ -40,29 +44,30 @@ public class MessageForm extends Vlayout implements Removeable
 	
 	private SendService sendService = Springs.get(SendService.class);
 	
+	private EmployeeRepository employeeRepository = Springs.get(EmployeeRepository.class);
+	
 	private Toolbar toolbar = new Toolbar();
 	
 	private Textbox title = Components.mandatoryTextBox();
 	
-	private Combobox receiver = new Combobox();
+	private ReceiverBox receiver = new ReceiverBox();
 	
 	private CKeditor content = new CKeditor();
+	
+	private Grid grid = new Grid();
 	
 	private Collection<MessageListener> listeners = new Vector<>();
 	
 	public MessageForm()
 	{
 		title.setPlaceholder("Tittle");
-		receiver.setPlaceholder("Sender(s)");
-		receiver.setAutocomplete(true);
-		receiver.setAutodrop(true);
+		
 		content.setHflex("1");
 		content.setVflex("1");
 		
 		setWidth("100%");
 		
 		toolbar.setWidth("100%");
-		receiver.setWidth("100%");
 		
 		appendChild(toolbar);
 		appendChild(title);
@@ -74,12 +79,12 @@ public class MessageForm extends Vlayout implements Removeable
 	
 	private void initToolbar()
 	{
-		Toolbarbutton send = new Toolbarbutton("Send");
-		Toolbarbutton close = new Toolbarbutton("Close");
-		Toolbarbutton delete = new Toolbarbutton("Cancel");
+		Toolbarbutton send = new Toolbarbutton("Send","/icons/inbox-send.png");
+		Toolbarbutton draft = new Toolbarbutton("Draft","/icons/inbox-draft.png");
+		Toolbarbutton delete = new Toolbarbutton("Cancel","/icons/inbox-cancel.png");
 		
 		toolbar.appendChild(send);
-		toolbar.appendChild(close);
+		toolbar.appendChild(draft);
 		toolbar.appendChild(delete);
 		
 		send.addEventListener(Events.ON_CLICK,new EventListener<Event>()
@@ -92,6 +97,16 @@ public class MessageForm extends Vlayout implements Removeable
 				message.setSender(utils.getEmployee());
 				message.setTitle(title.getText());
 				message.setType(MessageType.Send);
+				message.setContent(content.getValue());
+				
+				for(Party party:receiver.getReceivers())
+				{
+					MessageReceiver receiver = new MessageReceiver();
+					receiver.setMessage(message);
+					receiver.setReceiver((Person)party);
+					
+					message.getReceivers().add(receiver);
+				}
 				
 				sendService.add(message);
 				
@@ -102,7 +117,7 @@ public class MessageForm extends Vlayout implements Removeable
 			}
 		});
 		
-		close.addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		draft.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception

@@ -20,6 +20,8 @@ import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.GeographicType;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -32,13 +34,13 @@ public class GeographicEditContent extends FormContent
 {	
 	private final GeographicService service = Springs.get(GeographicService.class);
 	
-	private Textbox code = new Textbox();
+	private Textbox code = Components.mandatoryTextBox(false);
 	
-	private Textbox name = new Textbox();
+	private Textbox name = Components.mandatoryTextBox(false);
 	
 	private Listbox type = new Listbox();
 	
-	private Textbox note = new Textbox();
+	private Textbox note = Components.mandatoryTextBox();
 	
 	private Row row;
 	
@@ -58,9 +60,7 @@ public class GeographicEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				GeographicWindow window = (GeographicWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new GeographicGridContent());
 			}
 		});
 		
@@ -75,8 +75,7 @@ public class GeographicEditContent extends FormContent
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 			
-				Geographic geographic = new Geographic();
-				geographic.setId(RowUtils.string(row, 4));
+				Geographic geographic = service.findOne(RowUtils.id(row));
 				geographic.setCode(code.getText());
 				geographic.setName(name.getText());
 				geographic.setType(GeographicType.valueOf(type.getSelectedItem().getValue().toString()));
@@ -84,9 +83,7 @@ public class GeographicEditContent extends FormContent
 				
 				service.edit(geographic);
 				
-				GeographicWindow window = (GeographicWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new GeographicGridContent());
 			}
 		});
 	}

@@ -22,9 +22,10 @@ import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.global.dm.SequenceNumber.Code;
+import com.kratonsolution.belian.global.svc.CodeGenerator;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentStatus;
-import com.kratonsolution.belian.healtcare.svc.AppointmentQueueGenerator;
 import com.kratonsolution.belian.healtcare.svc.DoctorAppointmentService;
 import com.kratonsolution.belian.healtcare.svc.DoctorService;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
@@ -44,7 +45,7 @@ public class DoctorAppointmentFormContent extends FormContent
 {	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
-	private AppointmentQueueGenerator generator = Springs.get(AppointmentQueueGenerator.class);
+	private CodeGenerator generator = Springs.get(CodeGenerator.class);
 	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 	
@@ -109,6 +110,11 @@ public class DoctorAppointmentFormContent extends FormContent
 				appointment.setStatus(DoctorAppointmentStatus.valueOf(Components.string(statuses)));
 				appointment.setPatient(patients.getPatient());
 				
+				if(queue.getText().equals("0"))
+					appointment.setQueue(generator.nextQueue(Code.DrApt));
+				else
+					appointment.setQueue(Integer.parseInt(queue.getText()));
+				
 				service.add(appointment);
 				
 				Flow.next(getParent(), new DoctorAppointmentGridContent());
@@ -127,6 +133,8 @@ public class DoctorAppointmentFormContent extends FormContent
 		
 		queue.setWidth("75px");
 		note.setWidth("300px");
+		
+		queue.setText(generator.nextQueue(Code.DrApt)+"");
 		
 		for(DoctorAppointmentStatus status:DoctorAppointmentStatus.values())
 			statuses.appendChild(new Listitem(status.toString(),status.toString()));

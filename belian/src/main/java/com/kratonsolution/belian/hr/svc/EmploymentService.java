@@ -88,23 +88,32 @@ public class EmploymentService
 			employment.setEmployee(employee);
 		else
 		{
+			User user = new User();
+			user.setDeleteable(false);
+			user.setEnabled(true);
+			user.setEmail(employment.getEmployee().getParty().getName());
+			user.setPassword(new StrongPasswordEncryptor().encryptPassword(employment.getEmployee().getParty().getName()));
+
+			UserSetting setting = new UserSetting();
+			setting.setOrganizationId(employment.getInternalOrganization().getParty().getId());
+			setting.setOrganizationName(employment.getInternalOrganization().getParty().getName());
+			setting.setLanguage("in_ID");
+			
+			user.setSetting(setting);
+			
 			employment.getEmployee().setStart(employment.getStart());
 			employment.getEmployee().setEnd(employment.getEnd());
-			employment.getEmployee().setUser(new User());
-			employment.getEmployee().getUser().setDeleteable(false);
-			employment.getEmployee().getUser().setEnabled(true);
-			employment.getEmployee().getUser().setEmail(employment.getEmployee().getParty().getName());
-			employment.getEmployee().getUser().setSetting(new UserSetting());
-			employment.getEmployee().getUser().setPassword(new StrongPasswordEncryptor().encryptPassword(employment.getEmployee().getParty().getName()));
+			employment.getEmployee().setUser(user);
+			
 			
 			for(Role role:roleService.findAll())
 			{
 				UserRole userRole = new UserRole();
 				userRole.setEnabled(role.isMandatory());
 				userRole.setRole(role);
-				userRole.setUser(employment.getEmployee().getUser());
+				userRole.setUser(user);
 				
-				employment.getEmployee().getUser().getRoles().add(userRole);
+				user.getRoles().add(userRole);
 			}
 			
 			employeeRepository.save(employment.getEmployee());

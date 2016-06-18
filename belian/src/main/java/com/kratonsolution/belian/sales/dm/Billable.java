@@ -88,7 +88,7 @@ public abstract class Billable implements Serializable
 	
 	public abstract Set<? extends BillableItem> getItems();
 
-	public abstract String getBillingType();
+	public abstract String getBillingType(String lang);
 	
 	public abstract int getTableNumber();
 	

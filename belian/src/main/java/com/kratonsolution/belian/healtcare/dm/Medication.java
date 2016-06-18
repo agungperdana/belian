@@ -13,7 +13,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import com.google.common.base.Strings;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -38,12 +39,12 @@ public class Medication extends MedicalSales
 	@OneToMany(mappedBy="medication",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<MedicationItem> items = new HashSet<MedicationItem>();
 	
-	@Transient
-	private String type = "Pharmacy";
-
 	@Override
-	public String getBillingType()
+	public String getBillingType(String lang)
 	{
-		return "Clinic";
+		if(Strings.isNullOrEmpty(lang) || lang.equals("in_ID"))
+			return "Obat Klinik";
+		else
+			return "Clinic Medication";
 	}
 }
