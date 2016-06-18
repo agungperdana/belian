@@ -38,7 +38,7 @@ public class EconomicAgentService
 		return repository.findOne(id);
 	}
 	
-	@Secured("ROLE_PARTY_READ")
+	@Secured({"ROLE_PARTY_READ","ROLE_PRODUCT_UPDATE"})
 	public List<Party> findAll()
 	{
 		return repository.findAll();

@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.sales.srv;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import com.kratonsolution.belian.asset.dm.Asset;
 import com.kratonsolution.belian.asset.dm.AssetRepository;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.sales.dm.CashierShift;
 import com.kratonsolution.belian.sales.dm.CashierShiftRepository;
 
@@ -50,6 +52,14 @@ public class CashierShiftService
 		return null;
 	}
 	
+	public CashierShift findToday(Date date,Person employee)
+	{
+		if(date != null && employee != null)
+			return repository.findOne(date, employee.getId());
+		
+		return null;
+	}
+	
 	@Secured("ROLE_CASHIER_READ")
 	public CashierShift findOne(String id)
 	{
@@ -63,20 +73,23 @@ public class CashierShiftService
 	}
 	
 	@Secured("ROLE_CASHIER_CREATE")
-	public void add(CashierShift sales)
+	public void add(CashierShift shift)
 	{
-		repository.save(sales);
+		if(findToday(shift.getDate(),shift.getEmployee()) != null)
+			throw new RuntimeException("Shift already created and active.");
+		
+		repository.save(shift);
 	}
 	
 	@Secured("ROLE_CASHIER_CREATE")
-	public void open(CashierShift sales)
+	public void open(CashierShift shift)
 	{
-		repository.save(sales);
+		repository.save(shift);
 		
-		Asset asset = assetRepo.findOne(sales.getMachine().getId());
+		Asset asset = assetRepo.findOne(shift.getMachine().getId());
 		if(asset != null)
 		{
-			asset.setUsedBy(sales);
+			asset.setUsedBy(shift);
 			assetRepo.save(asset);
 		}
 	}
@@ -100,9 +113,9 @@ public class CashierShiftService
 	}
 	
 	@Secured("ROLE_CASHIER_UPDATE")
-	public void edit(CashierShift sales)
+	public void edit(CashierShift shift)
 	{
-		repository.saveAndFlush(sales);
+		repository.saveAndFlush(shift);
 	}
 	
 	@Secured("ROLE_CASHIER_DELETE")

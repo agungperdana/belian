@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -53,7 +54,7 @@ public class PurchaseOrderRequestItem implements ApproveAndReviewableItem
 	@Version
 	private Long version;
 	
-	@OneToMany(mappedBy="requestItem")
+	@OneToMany(mappedBy="requestItem",fetch=FetchType.EAGER)
 	private Set<PurchaseOrderItem> orderItems = new HashSet<>();
 	
 	public PurchaseOrderRequestItem(){}
