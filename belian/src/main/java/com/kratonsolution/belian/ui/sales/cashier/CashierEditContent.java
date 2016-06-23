@@ -207,7 +207,7 @@ public class CashierEditContent extends FormContent
 		billingItems.setSpan("1");
 
 		for(BillableItem item:billing.getItems())
-				billingItems.getRows().appendChild(new ProductRow(item,new OnSelectEvent()));
+			billingItems.getRows().appendChild(new ProductRow(item,new OnSelectEvent()));
 		
 		tabbox.getTabpanels().getFirstChild().appendChild(billingItems);
 	}
@@ -241,7 +241,7 @@ public class CashierEditContent extends FormContent
 	
 	private void display()
 	{
-		Billable billing = service.findOne(RowUtils.string(row, 6));
+		Billable billing = service.findOne(RowUtils.id(row));
 		if(billing != null)
 		{
 			BigDecimal _amount = BigDecimal.ZERO;

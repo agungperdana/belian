@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.accounting.svc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,10 @@ public class JournalSettingService
 	@Secured("ROLE_JOURNALSETTING_READ")
 	public int count(@Param("companys")List<String> companys)
 	{
-		return repository.count(companys);
+		if(companys != null && !companys.isEmpty())
+			return repository.count(companys);
+		
+		return 0;
 	}
 
 	@Secured("ROLE_JOURNALSETTING_READ")
@@ -55,7 +59,10 @@ public class JournalSettingService
 	@Secured("ROLE_JOURNALSETTING_READ")
 	public List<JournalSetting> findAll(int pageIndex,int pageSize,List<String> companys)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize),companys);
+		if(companys != null && !companys.isEmpty())
+			return repository.findAll(new PageRequest(pageIndex, pageSize),companys);
+	
+		return new ArrayList<JournalSetting>();
 	}
 
 	@Secured("ROLE_JOURNALSETTING_CREATE")

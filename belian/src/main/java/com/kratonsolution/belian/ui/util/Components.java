@@ -44,7 +44,8 @@ public class Components
 		if(component != null && (component instanceof Listbox) && !component.getChildren().isEmpty())
 		{
 			Listbox listbox = (Listbox)component;
-			return new BigDecimal(listbox.getSelectedItem().getValue().toString());
+			if(listbox.getSelectedItem() != null)
+				return new BigDecimal(listbox.getSelectedItem().getValue().toString());
 		}
 		else if(component != null && (component instanceof Doublebox))
 		{

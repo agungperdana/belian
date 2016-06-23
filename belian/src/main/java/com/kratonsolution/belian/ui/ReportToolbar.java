@@ -6,6 +6,9 @@ package com.kratonsolution.belian.ui;
 import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 
+import com.kratonsolution.belian.common.Language;
+import com.kratonsolution.belian.ui.util.Springs;
+
 import lombok.Getter;
 
 /**
@@ -15,14 +18,18 @@ import lombok.Getter;
 @Getter
 public class ReportToolbar extends Toolbar
 {
-	private Toolbarbutton generate = new Toolbarbutton("Generate","/icons/generate-report.png");
+	private Language lang = Springs.get(Language.class);
 	
-	private Toolbarbutton pdf = new Toolbarbutton("Export Pdf","/icons/exportpdf.png");
+	private Toolbarbutton generate = new Toolbarbutton(lang.get("label.component.button.generate"),"/icons/generate-report.png");
 	
-	private Toolbarbutton excel = new Toolbarbutton("Export Xls","/icons/exportexcel.png");
+	private Toolbarbutton pdf = new Toolbarbutton(lang.get("label.component.button.pdf"),"/icons/exportpdf.png");
+	
+	private Toolbarbutton excel = new Toolbarbutton(lang.get("label.component.button.excel"),"/icons/exportexcel.png");
 
 	public ReportToolbar()
 	{
+		setWidth("100%");
+		
 		pdf.setDisabled(true);
 		excel.setDisabled(true);
 		

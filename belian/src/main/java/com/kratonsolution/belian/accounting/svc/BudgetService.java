@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.accounting.svc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,10 @@ public class BudgetService
 	@Secured("ROLE_BUDGET_READ")
 	public int count(List<String> companys)
 	{
-		return repository.count(companys);
+		if(companys != null && !companys.isEmpty())
+			return repository.count(companys);
+		
+		return 0;
 	}
 	
 	@Secured("ROLE_BUDGET_READ")
@@ -54,7 +58,10 @@ public class BudgetService
 	@Secured("ROLE_BUDGET_READ")
 	public List<Budget> findAll(int pageIndex,int pageSize,List<String> companys)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize),companys);
+		if(companys != null && !companys.isEmpty())
+			return repository.findAll(new PageRequest(pageIndex, pageSize),companys);
+
+		return new ArrayList<>();
 	}
 	
 	@Secured("ROLE_BUDGET_CREATE")

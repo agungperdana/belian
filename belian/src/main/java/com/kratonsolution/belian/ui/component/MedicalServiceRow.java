@@ -30,7 +30,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class MedicalServiceRow extends Row
+public class MedicalServiceRow extends Row implements HasAmount
 {
 	private Checkbox checkbox = Components.checkbox(false);
 
@@ -160,5 +160,11 @@ public class MedicalServiceRow extends Row
 	public BigDecimal getQuantity()
 	{
 		return BigDecimal.valueOf(quantity.doubleValue());
+	}
+
+	@Override
+	public BigDecimal getAmount()
+	{
+		return (getQuantity().multiply(getPrice(false,false))).subtract(getDiscount()).add(getCharge());
 	}
 }

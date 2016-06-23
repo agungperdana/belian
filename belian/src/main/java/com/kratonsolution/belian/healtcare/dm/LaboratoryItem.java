@@ -95,6 +95,9 @@ public class LaboratoryItem implements BillableItem
 	@Override
 	public ProductPriceType getPriceType()
 	{
-		return ProductPriceType.CLINIC;
+		if(getLaboratory().isPersonal())
+			return ProductPriceType.BASE;
+		else
+			return ProductPriceType.CLINIC;
 	}
 }

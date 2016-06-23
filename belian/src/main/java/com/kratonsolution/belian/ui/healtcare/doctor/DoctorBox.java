@@ -48,6 +48,7 @@ public class DoctorBox extends Hbox implements DoctorRegistrationListener
 		doctor.setAutodrop(true);
 		doctor.setConstraint("no empty");
 		doctor.setWidth("290px");
+		doctor.setPlaceholder("Type doctor identity/name.");
 		
 		setWidth("400px");
 

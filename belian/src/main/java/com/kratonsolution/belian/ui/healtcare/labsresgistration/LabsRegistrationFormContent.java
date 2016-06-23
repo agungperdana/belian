@@ -4,14 +4,12 @@
 package com.kratonsolution.belian.ui.healtcare.labsresgistration;
 
 import java.sql.Date;
-import java.util.Iterator;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
@@ -28,11 +26,11 @@ import com.kratonsolution.belian.healtcare.dm.LaboratoryItem;
 import com.kratonsolution.belian.healtcare.svc.LaboratoryRegistrationService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
-import com.kratonsolution.belian.ui.component.MedicationRow;
+import com.kratonsolution.belian.ui.component.MedicalServiceRow;
 import com.kratonsolution.belian.ui.healtcare.doctor.DoctorBox;
 import com.kratonsolution.belian.ui.healtcare.patient.PatientBox;
 import com.kratonsolution.belian.ui.util.Components;
-import com.kratonsolution.belian.ui.util.RowUtils;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -56,14 +54,11 @@ public class LabsRegistrationFormContent extends FormContent
 	
 	private Grid details = new Grid();
 	
-	private NRCToolbar nrc = new NRCToolbar();
-	
 	public LabsRegistrationFormContent()
 	{
 		super();
 		initToolbar();
 		initForm();
-		initNRC();
 		initDetails();
 	}
 
@@ -75,9 +70,7 @@ public class LabsRegistrationFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				LabsRegistrationWindow window = (LabsRegistrationWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new LabsRegistrationGridContent());
 			}
 		});
 		
@@ -101,25 +94,23 @@ public class LabsRegistrationFormContent extends FormContent
 
 				for(Component com:details.getRows().getChildren())
 				{
-					MedicationRow row = (MedicationRow)com;
+					MedicalServiceRow row = (MedicalServiceRow)com;
 					
 					LaboratoryItem item = new LaboratoryItem();
-					item.setCharge(row.getItem().getCharge());
-					item.setDiscount(row.getItem().getDiscount());
+					item.setCharge(row.getCharge());
+					item.setDiscount(row.getDiscount());
 					item.setLaboratory(laboratory);
 					item.setService(row.getProduct());
-					item.setNote(row.getItem().getNote());
-					item.setPrice(row.getItem().getPrice());
-					item.setQuantity(row.getItem().getQuantity());
+					item.setNote(row.getNote());
+					item.setPrice(row.getPrice(false,false));
+					item.setQuantity(row.getQuantity());
 					
 					laboratory.getItems().add(item);
 				}
 				
 				service.add(laboratory);
 				
-				LabsRegistrationWindow window = (LabsRegistrationWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new LabsRegistrationGridContent());
 			}
 		});
 	}
@@ -153,68 +144,29 @@ public class LabsRegistrationFormContent extends FormContent
 		rows.appendChild(row4);
 	}
 	
-	private void initNRC()
-	{
-		appendChild(nrc);
-		nrc.getNew().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				if(utils.getLocation() == null || utils.getCurrency() == null)
-				{
-					Clients.showNotification("Default Location & Currency not exist,Please go to setting to set it up.");
-					return;
-				}
-				
-				if(patient.getPatient() == null)
-				{
-					Clients.showNotification("Patient cannot be empty.");
-					return;
-				}
-					
-				details.getRows().appendChild(new MedicationRow(patient.getPatient().isBpjs(),true));
-			}
-		});
-		
-		nrc.getRemove().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				Iterator<Component> iterator = details.getRows().getChildren().iterator();
-				while (iterator.hasNext())
-				{
-					Row row = (Row) iterator.next();
-					if(RowUtils.isChecked(row, 0))
-						iterator.remove();
-				}
-			}
-		});
-		
-		nrc.getClear().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				details.getRows().getChildren().clear();
-			}
-		});
-	}
-	
 	private void initDetails()
 	{
-		appendChild(details);
+		NRCToolbar nrc = new NRCToolbar(details);
+		
 		details.appendChild(new Columns());
 		details.appendChild(new Rows());
 		details.getColumns().appendChild(new Column(null,null,"25px"));
 		details.getColumns().appendChild(new Column("Product",null,"225px"));
 		details.getColumns().appendChild(new Column("Quantity",null,"85px"));
 		details.getColumns().appendChild(new Column("UoM",null,"85px"));
-		details.getColumns().appendChild(new Column("Price",null,"135px"));
-		details.getColumns().appendChild(new Column("Disc",null,"95px"));
-		details.getColumns().appendChild(new Column("Charge",null,"95px"));
 		details.getColumns().appendChild(new Column("Note",null));
 		details.setSpan("1");
+	
+		nrc.getNew().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event arg0) throws Exception
+			{
+				details.getRows().appendChild(new MedicalServiceRow());
+			}
+		});
+		
+		appendChild(nrc);
+		appendChild(details);
 	}
 }

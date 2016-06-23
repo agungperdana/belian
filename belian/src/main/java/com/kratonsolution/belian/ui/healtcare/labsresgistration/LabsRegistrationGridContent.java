@@ -15,7 +15,6 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.healtcare.svc.LaboratoryRegistrationService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -28,8 +27,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class LabsRegistrationGridContent extends GridContent
 {
 	private LaboratoryRegistrationService service = Springs.get(LaboratoryRegistrationService.class);
-	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public LabsRegistrationGridContent()
 	{
@@ -167,7 +164,7 @@ public class LabsRegistrationGridContent extends GridContent
 		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.date"),null,"85px"));
 		grid.getColumns().appendChild(new Column(lang.get("healtcare.grid.column.patient"),null,"150px"));
 		grid.getColumns().appendChild(new Column(lang.get("healtcare.grid.column.doctor"),null,"150px"));
-		grid.getColumns().appendChild(new Column(lang.get("healtcare.grid.column.status"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.status"),null,"85px"));
 		grid.getColumns().appendChild(new Column());
 		grid.getColumns().getLastChild().setVisible(false);
 		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));

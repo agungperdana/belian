@@ -40,6 +40,9 @@ public interface DoctorRelationshipRepository extends JpaRepository<DoctorRelati
 			+ "AND ((:date BETWEEN doc.start AND doc.end) OR (doc.start <= :date AND doc.end IS NULL))")
 	public List<DoctorRelationship> findAll(@Param("person")String person,@Param("company")String company,@Param("date")Date date);
 
-	@Query("FROM DoctorRelationship rel WHERE rel.doctor.party.name LIKE :name% AND rel.organization.party.id =:company")
+	@Query("FROM DoctorRelationship rel WHERE "
+			+ "rel.doctor.party.name LIKE %:name% "
+			+ "OR rel.doctor.party.identity LIKE %:name% "
+			+ "AND rel.organization.party.id =:company")
 	public List<DoctorRelationship> findAll(@Param("name")String name,@Param("company")String company);
 }

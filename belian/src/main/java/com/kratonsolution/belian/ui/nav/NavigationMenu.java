@@ -118,6 +118,10 @@ public class NavigationMenu extends Window
 		if(modules.containsKey("ROLE_USER_READ"))
 			list.appendChild(new UserMenu());
 		
+		SessionUtils utils = Springs.get(SessionUtils.class);
+		if(utils.isSysAdmin())
+			list.appendChild(new ImportToolMenu());
+		
 		if(!list.getChildren().isEmpty())
 		{
 			tabs.appendChild(new Tab(language.get("navbar.menu.security")));
@@ -328,6 +332,9 @@ public class NavigationMenu extends Window
 				
 		if(modules.containsKey("ROLE_FAMILY_FOLDER_READ"))
 			list.appendChild(new FamilyFolderMenu());
+		
+		if(modules.containsKey("ROLE_CLINIC_REPORT_READ"))
+			list.appendChild(new ClinicReportMenu());
 		
 		if(!list.getChildren().isEmpty())
 		{

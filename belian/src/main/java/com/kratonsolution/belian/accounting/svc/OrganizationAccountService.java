@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.accounting.svc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,10 @@ public class OrganizationAccountService
 	@Secured("ROLE_ORGANIZATIONACCOUNT_READ")
 	public List<OrganizationAccount> findAll(int pageIndex,int pageSize,List<String> companys)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize),companys);
+		if(companys != null && !companys.isEmpty())
+			return repository.findAll(new PageRequest(pageIndex, pageSize),companys);
+		
+		return new ArrayList<>();
 	}
 	
 	@Secured("ROLE_ORGANIZATIONACCOUNT_READ")

@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.accounting.svc;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,7 +51,10 @@ public class JournalEntryService
 	@Secured("ROLE_JOURNALENTRY_READ")
 	public int count(@Param("companys")List<String> companys)
 	{
-		return repository.count(companys);
+		if(companys != null && !companys.isEmpty())
+			return repository.count(companys);
+	
+		return 0;
 	}
 	
 	@Secured("ROLE_JOURNALENTRY_READ")
@@ -68,7 +72,10 @@ public class JournalEntryService
 	@Secured("ROLE_JOURNALENTRY_READ")
 	public List<JournalEntry> findAll(int pageIndex,int pageSize,List<String> companys)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize,new Sort(Sort.Direction.DESC,"date")),companys);
+		if(companys != null && !companys.isEmpty())
+			return repository.findAll(new PageRequest(pageIndex, pageSize,new Sort(Sort.Direction.DESC,"date")),companys);
+		
+		return new ArrayList<JournalEntry>();
 	}
 	
 	@Secured("ROLE_JOURNALENTRY_CREATE")

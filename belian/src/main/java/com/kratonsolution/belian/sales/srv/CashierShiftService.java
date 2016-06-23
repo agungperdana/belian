@@ -17,6 +17,7 @@ import com.kratonsolution.belian.asset.dm.AssetRepository;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Person;
+import com.kratonsolution.belian.global.svc.AuditTrailService;
 import com.kratonsolution.belian.sales.dm.CashierShift;
 import com.kratonsolution.belian.sales.dm.CashierShiftRepository;
 
@@ -37,6 +38,9 @@ public class CashierShiftService
 	
 	@Autowired
 	private AssetRepository assetRepo;
+	
+	@Autowired
+	private AuditTrailService audit;
 	
 	@Secured("ROLE_CASHIER_READ")
 	public int size()
@@ -79,12 +83,13 @@ public class CashierShiftService
 			throw new RuntimeException("Shift already created and active.");
 		
 		repository.save(shift);
+		audit.create("Cashier Shift", "Open new shift for cashier on "+shift.getMachine().getName());
 	}
 	
 	@Secured("ROLE_CASHIER_CREATE")
 	public void open(CashierShift shift)
 	{
-		repository.save(shift);
+		add(shift);
 		
 		Asset asset = assetRepo.findOne(shift.getMachine().getId());
 		if(asset != null)
@@ -94,7 +99,7 @@ public class CashierShiftService
 		}
 	}
 	
-	@Secured("ROLE_CASHIER_CREATE")
+	@Secured("ROLE_CASHIER_UPDATE")
 	public String close()
 	{
 		CashierShift shift = findToday();
@@ -108,6 +113,8 @@ public class CashierShiftService
 			asset.setUsedBy(null);
 			assetRepo.save(asset);
 		}
+
+		audit.create("Cashier Shift", "Closed shift session for cashier on "+shift.getMachine().getName());
 		
 		return shift.getId();
 	}
