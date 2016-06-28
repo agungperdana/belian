@@ -12,6 +12,9 @@ import org.zkoss.zul.Hlayout;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Window;
 
+import com.kratonsolution.belian.tools.svc.DataImportService;
+import com.kratonsolution.belian.ui.util.Springs;
+
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
@@ -40,12 +43,10 @@ public class ImportWindow extends Window
 			@Override
 			public void onEvent(UploadEvent event) throws Exception
 			{
-				System.out.println(event.getMedia().getName());
-				System.out.println(event.getMedia().getContentType());
+				DataImportService service = Springs.get(DataImportService.class);
+				service.insert(event.getMedia().getStreamData());
 			}
 		});
-		
-		
 		
 		setWidth("550px");
 		setHeight("450px");

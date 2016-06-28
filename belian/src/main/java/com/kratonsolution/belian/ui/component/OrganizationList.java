@@ -34,7 +34,7 @@ public class OrganizationList extends Listbox implements Serializable
 	
 	public OrganizationList()
 	{
-		setWidth("300px");
+		setWidth("290px");
 		setMold("select");
 		
 		for(Organization organization:utils.getOrganizations())

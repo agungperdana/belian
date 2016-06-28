@@ -206,23 +206,6 @@ public class NavigationMenu extends Window
 		}
 	}
 	
-//	protected void initPOS(Map<String,Boolean> modules)
-//	{
-//		Listbox list = new Listbox();
-//		list.setStyle("border:none");
-//		
-//		if(modules.containsKey("ROLE_DIRECT_SALES_READ"))
-//			list.appendChild(new DirectSalesMenu());
-//		
-//		if(!list.getChildren().isEmpty())
-//		{
-//			tabs.appendChild(new Tab(language.get("navbar.menu.pos")));
-//			Tabpanel panel = new Tabpanel();
-//			panel.appendChild(list);
-//			panels.appendChild(panel);
-//		}
-//	}
-	
 	protected void initSales(Map<String,Boolean> modules)
 	{
 		Listbox list = new Listbox();
@@ -333,8 +316,8 @@ public class NavigationMenu extends Window
 		if(modules.containsKey("ROLE_FAMILY_FOLDER_READ"))
 			list.appendChild(new FamilyFolderMenu());
 		
-		if(modules.containsKey("ROLE_CLINIC_REPORT_READ"))
-			list.appendChild(new ClinicReportMenu());
+//		if(modules.containsKey("ROLE_CLINIC_REPORT_READ"))
+//			list.appendChild(new ClinicReportMenu());
 		
 		if(!list.getChildren().isEmpty())
 		{
