@@ -44,14 +44,14 @@ public class PersonService
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_PERSON_READ")
+	@Secured({"ROLE_PERSON_READ","ROLE_SYSTEM_READ"})
 	public List<Person> findAll()
 	{
 		return repository.findAll();
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured({"ROLE_PERSON_READ","ROLE_PHARMACY_SALES_READ"})
+	@Secured({"ROLE_PERSON_READ","ROLE_SYSTEM_READ"})
 	public List<Person> findAll(String identityOrName)
 	{
 		if(Strings.isNullOrEmpty(identityOrName))
@@ -61,7 +61,7 @@ public class PersonService
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_PERSON_READ")
+	@Secured({"ROLE_PERSON_READ","ROLE_SYSTEM_READ"})
 	public List<Person> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
@@ -73,7 +73,7 @@ public class PersonService
 		return Long.valueOf(repository.count()).intValue();
 	}
 	
-	@Secured("ROLE_PERSON_CREATE")
+	@Secured({"ROLE_PERSON_CREATE","ROLE_DOCTOR_CREATE"})
 	public void add(Person person)
 	{
 		repository.save(person);

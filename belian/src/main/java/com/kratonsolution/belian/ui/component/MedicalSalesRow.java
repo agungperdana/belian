@@ -25,6 +25,7 @@ import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.healtcare.dm.MedicalSalesItem;
+import com.kratonsolution.belian.healtcare.dm.MedicationItem;
 import com.kratonsolution.belian.healtcare.dm.PharmacySalesItem;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
@@ -155,6 +156,19 @@ public class MedicalSalesRow extends Row implements HasAmount
 		item.setDiscount(Components.decimal(discounts));
 		item.setPrice(Components.decimal(prices));
 		item.setProduct(getProduct());
+		item.setNote(note.getText());
+		item.setQuantity(BigDecimal.valueOf(quantity.doubleValue()));
+
+		return item;
+	}
+	
+	public MedicationItem getMedicationItem()
+	{
+		MedicationItem item = new MedicationItem();
+		item.setCharge(Components.decimal(charges));
+		item.setDiscount(Components.decimal(discounts));
+		item.setPrice(Components.decimal(prices));
+		item.setMedicine(getProduct());
 		item.setNote(note.getText());
 		item.setQuantity(BigDecimal.valueOf(quantity.doubleValue()));
 

@@ -31,8 +31,10 @@ public interface PatientRepository extends JpaRepository<Patient, String>
 			+ "ORDER BY rel.patient.party.name ASC")
 	public List<PatientRelationship> findAll(Pageable pageable,@Param("company")String company);
 	
-	@Query("SELECT COUNT(rel) FROM PatientRelationship rel WHERE rel.organization.party.id =:company ")
-	public Long count(@Param("company")String company);
+	@Query("SELECT COUNT(rel) FROM "
+			+ "PatientRelationship rel "
+			+ "WHERE rel.organization.party.id IN(:company) ")
+	public Long count(@Param("company")List<String> company);
 	
 	@Query("SELECT rel.patient FROM PatientRelationship rel WHERE "
 			+ "rel.patient.party.name LIKE :name% "

@@ -51,7 +51,20 @@ public class PatientService
 	@Secured("ROLE_PATIENT_READ")
 	public int size()
 	{
-		return repository.count(utils.getOrganization().getId()).intValue();
+		if(utils.getOrganizationIds() == null || utils.getOrganizationIds().isEmpty())
+			return 0;
+		
+		return relRepo.count(utils.getOrganizationIds()).intValue();
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_PATIENT_READ")
+	public int size(String key)
+	{
+		if(!Strings.isNullOrEmpty(key))
+			return relRepo.count(utils.getOrganizationIds(), key).intValue();
+		else
+			return size();
 	}
 
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -82,10 +95,20 @@ public class PatientService
 	@Secured("ROLE_PATIENT_READ")
 	public List<PatientRelationship> findAll(int pageIndex,int pageSize)
 	{
-		if(utils.getOrganization() == null)
+		if(utils.getOrganizationIds() == null || utils.getOrganizationIds().isEmpty())
 			return new ArrayList<>();
 
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId());
+		return relRepo.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganizationIds());
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_PATIENT_READ")
+	public List<PatientRelationship> findAll(int pageIndex,int pageSize,String key)
+	{
+		if(!Strings.isNullOrEmpty(key))
+			return relRepo.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganizationIds(),key);
+		else
+			return findAll(pageIndex, pageSize);
 	}
 
 	@Secured("ROLE_PATIENT_CREATE")

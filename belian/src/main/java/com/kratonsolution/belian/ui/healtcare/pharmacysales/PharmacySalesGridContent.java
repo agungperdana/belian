@@ -15,7 +15,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.sales.srv.CashSalesService;
+import com.kratonsolution.belian.healtcare.svc.PharmacySalesService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -26,7 +26,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PharmacySalesGridContent extends GridContent
 {
-	private CashSalesService service = Springs.get(CashSalesService.class);
+	private PharmacySalesService service = Springs.get(PharmacySalesService.class);
 	
 	public PharmacySalesGridContent()
 	{

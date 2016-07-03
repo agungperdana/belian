@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -36,7 +37,7 @@ public class Medication extends MedicalSales
 	@Column(name="bpjs_payment_status")
 	private BPJSPaymentStatus bpjsStatus = BPJSPaymentStatus.UNPAID;
 	
-	@OneToMany(mappedBy="medication",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(mappedBy="medication",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
 	private Set<MedicationItem> items = new HashSet<MedicationItem>();
 	
 	@Override

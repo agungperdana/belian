@@ -46,10 +46,10 @@ public class PharmacySalesService
 	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
 	public int size()
 	{
-		if(utils.getOrganization() == null)
+		if(utils.getOrganizationIds() == null || utils.getOrganizationIds().isEmpty())
 			return 0;
 		
-		return repository.count(utils.getOrganization().getId()).intValue();
+		return repository.count(utils.getOrganizationIds()).intValue();
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -73,40 +73,40 @@ public class PharmacySalesService
 	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
 	public List<PharmacySales> findAllPaidRegistered()
 	{
-		if(utils.getOrganization() == null)
+		if(utils.getOrganizationIds() == null || utils.getOrganizationIds().isEmpty())
 			return new ArrayList<PharmacySales>();
 
-		return repository.findAllPaidRegistered(DateTimes.currentDate(),utils.getOrganization().getId());
+		return repository.findAllPaidRegistered(DateTimes.currentDate(),utils.getOrganizationIds());
 	}
 			
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
 	public List<PharmacySales> findAll(int pageIndex,int pageSize)
 	{
-		if(utils.getOrganization() == null)
+		if(utils.getOrganizationIds() == null || utils.getOrganizationIds().isEmpty())
 			return new ArrayList<PharmacySales>();
 
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId());
+		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganizationIds());
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
 	public List<PharmacySales> findAllPaid()
 	{
-		if(utils.getOrganization() == null)
+		if(utils.getOrganizationIds() == null || utils.getOrganizationIds().isEmpty())
 			return new ArrayList<PharmacySales>();
 
-		return repository.findAllPaid(DateTimes.currentDate(),utils.getOrganization().getId());
+		return repository.findAllPaid(DateTimes.currentDate(),utils.getOrganizationIds());
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
 	public int sizePaid()
 	{
-		if(utils.getOrganization() == null)
+		if(utils.getOrganizationIds() == null || utils.getOrganizationIds().isEmpty())
 			return 0;
 		
-		return repository.count(new Date(System.currentTimeMillis()),utils.getOrganization().getId()).intValue();
+		return repository.count(new Date(System.currentTimeMillis()),utils.getOrganizationIds()).intValue();
 	}
 	
 	@Secured("ROLE_PHARMACY_SALES_CREATE")

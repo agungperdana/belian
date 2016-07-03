@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.healtcare.dm.MedicalSalesStatus;
@@ -43,24 +44,37 @@ public class MedicationService
 	private InventoryStockService stockService;
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
+	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ","ROLE_CLINIC_SALES_READ"})
 	public int size()
 	{
-		if(utils.getOrganization() == null)
+		if(utils.getOrganizationIds() == null || utils.getOrganizationIds().isEmpty())
 			return 0;
 		
-		return repository.count(utils.getOrganization().getId()).intValue();
+		return repository.count(utils.getOrganizationIds()).intValue();
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
+	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ","ROLE_CLINIC_SALES_READ"})
+	public int size(String key)
+	{
+		if(utils.getOrganizationIds() == null || utils.getOrganizationIds().isEmpty())
+			return 0;
+		
+		if(!Strings.isNullOrEmpty(key))
+			return repository.count(utils.getOrganizationIds(), key).intValue();
+		else
+			return size();
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ","ROLE_CLINIC_SALES_READ"})
 	public Medication findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
+	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ","ROLE_CLINIC_SALES_READ"})
 	public List<Medication> findAll()
 	{
 		if(utils.getOrganization() == null)
@@ -70,7 +84,7 @@ public class MedicationService
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
+	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ","ROLE_CLINIC_SALES_READ"})
 	public List<Medication> findAllPaidRegistered()
 	{
 		if(utils.getOrganization() == null)
@@ -80,17 +94,30 @@ public class MedicationService
 	}
 			
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
+	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ","ROLE_CLINIC_SALES_READ"})
 	public List<Medication> findAll(int pageIndex,int pageSize)
 	{
-		if(utils.getOrganization() == null)
+		if(utils.getOrganizationIds() == null || utils.getOrganizationIds().isEmpty())
 			return new ArrayList<Medication>();
 
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId());
+		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganizationIds());
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
+	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ","ROLE_CLINIC_SALES_READ"})
+	public List<Medication> findAll(int pageIndex,int pageSize,String key)
+	{
+		if(utils.getOrganizationIds() == null || utils.getOrganizationIds().isEmpty())
+			return new ArrayList<>();
+
+		if(!Strings.isNullOrEmpty(key))
+			return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganizationIds(),key);
+		else
+			return findAll(pageIndex, pageSize);
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ","ROLE_CLINIC_SALES_READ"})
 	public List<Medication> findAllPaid()
 	{
 		if(utils.getOrganization() == null)
@@ -100,7 +127,7 @@ public class MedicationService
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
+	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ","ROLE_CLINIC_SALES_READ"})
 	public int sizePaid()
 	{
 		if(utils.getOrganization() == null)

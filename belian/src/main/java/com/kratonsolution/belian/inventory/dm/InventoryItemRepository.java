@@ -3,9 +3,11 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,7 +21,21 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, St
 {
 	public List<InventoryItem> findAllByFacilityId(String facilityId);
 	
-	@Query("FROM InventoryItem item WHERE item.product.id =:product AND item.facility.id =:facility ORDER BY item.expiredDate ASC")
+	@Query("FROM InventoryItem item WHERE "
+			+ "item.product.code LIKE %:key% "
+			+ "OR item.product.name LIKE %:key% "
+			+ "ORDER BY item.product.code ASC,item.product.name ASC ")
+	public List<InventoryItem> findAll(Pageable pageable,@Param("key")String key);
+	
+	@Query("SELECT COUNT(item) FROM InventoryItem item WHERE "
+			+ "item.product.code LIKE %:key% "
+			+ "OR item.product.name LIKE %:key% ")
+	public Long count(@Param("key")String key);
+	
+	@Query("FROM InventoryItem item WHERE "
+			+ "item.product.id =:product "
+			+ "AND item.facility.id =:facility "
+			+ "ORDER BY item.expiredDate ASC")
 	public List<InventoryItem> findAll(@Param("product")String product,@Param("facility")String facility);
 	
 	@Query("FROM InventoryItem item WHERE item.product.id =:product AND item.facility.id =:facility AND item.expiredDate IS NULL")
@@ -38,4 +54,9 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, St
 			+ "AND item.onhand > 0 "
 			+ "AND item.expiredDate <=:expired")
 	public List<InventoryItem> findAllExpired(@Param("warehouse")List<String> facilitys,@Param("expired")Date date);
+
+	@Query("SELECT SUM(itm.onhand) FROM InventoryItem itm WHERE "
+			+ "itm.facility.id IN(:warehouse) "
+			+ "AND itm.product.id =:product ")
+	public BigDecimal onHand(@Param("product")String product,@Param("warehouse")List<String> warehouse);
 }

@@ -52,7 +52,7 @@ public class OrganizationService
 		return repository.findAll();
 	}
 	
-	@Secured("ROLE_ORGANIZATION_READ")
+	@Secured({"ROLE_ORGANIZATION_READ","ROLE_SYSTEM_READ"})
 	public List<Organization> findAllNotIn(List<String> ids)
 	{
 		if(ids != null && !ids.isEmpty())
@@ -61,7 +61,7 @@ public class OrganizationService
 		return repository.findAll();
 	}
 
-	@Secured("ROLE_ORGANIZATION_READ")
+	@Secured({"ROLE_ORGANIZATION_READ","ROLE_SYSTEM_READ"})
 	public List<Organization> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
@@ -85,7 +85,7 @@ public class OrganizationService
 		return null;
 	}
 
-	@Secured("ROLE_ORGANIZATION_READ")
+	@Secured({"ROLE_ORGANIZATION_READ","ROLE_SYSTEM_READ"})
 	public int size()
 	{
 		return Long.valueOf(repository.count()).intValue();
@@ -107,12 +107,6 @@ public class OrganizationService
 	@Secured("ROLE_ORGANIZATION_DELETE")
 	public void delete(String id)
 	{
-		try
-		{
-			repository.delete(id);
-		} catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		repository.delete(id);
 	}
 }

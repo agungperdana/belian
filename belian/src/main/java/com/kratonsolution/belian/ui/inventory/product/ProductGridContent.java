@@ -6,6 +6,7 @@ package com.kratonsolution.belian.ui.inventory.product;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
@@ -43,7 +44,8 @@ public class ProductGridContent extends GridContent
 	
 	protected void initToolbar()
 	{
-		gridToolbar.setParent(this);
+		appendChild(gridToolbar);
+		
 		gridToolbar.getRefresh().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
@@ -154,9 +156,22 @@ public class ProductGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final ProductModel model = new ProductModel(utils.getRowPerPage());
+		filter.setPlaceholder("Type product code/name to filter");
 		
-		grid.setParent(this);
+		appendChild(filter);
+		appendChild(grid);
+		
+		filter.addEventListener(Events.ON_CHANGING, new EventListener<InputEvent>()
+		{
+			@Override
+			public void onEvent(InputEvent input) throws Exception
+			{
+				refresh(new ProductModel(utils.getRowPerPage(),input.getValue()));
+			}
+		});
+		
+		final ProductModel model = new ProductModel(utils.getRowPerPage(),filter.getText());
+		
 		grid.setHeight("80%");
 		grid.setEmptyMessage(lang.get("inventory.product.grid.column.empty"));
 		grid.setModel(model);
@@ -182,12 +197,12 @@ public class ProductGridContent extends GridContent
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), utils.getRowPerPage());
+				model.next(event.getActivePage(), utils.getRowPerPage(),filter.getText());
 				grid.setModel(model);
 				refresh(model);
 			}
 		});
 		
-		refresh(new ProductModel(utils.getRowPerPage()));
+		refresh(new ProductModel(utils.getRowPerPage(),filter.getText()));
 	}
 }

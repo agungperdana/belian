@@ -93,6 +93,12 @@ public class CurrentAppointmentPanel extends Tabbox
 		toolbar.appendChild(done);
 		toolbar.appendChild(cancel);
 		
+		if(appointment.getStatus().equals(DoctorAppointmentStatus.DONE))
+		{
+			done.setDisabled(true);
+			cancel.setDisabled(true);
+		}
+		
 		done.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override

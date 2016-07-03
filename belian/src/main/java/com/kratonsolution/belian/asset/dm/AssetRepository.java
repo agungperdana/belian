@@ -16,15 +16,15 @@ import org.springframework.data.repository.query.Param;
  */
 public interface AssetRepository extends JpaRepository<Asset, String>
 {
-	@Query("FROM Asset asset WHERE asset.organization.id =:company ORDER BY asset.code,asset.name ASC")
-	public List<Asset> findAll(@Param("company")String id);
+	@Query("FROM Asset asset WHERE asset.organization.id IN(:company) ORDER BY asset.code,asset.name ASC")
+	public List<Asset> findAll(Pageable pageable,@Param("company")List<String> id);
 	
-	@Query("FROM Asset asset WHERE asset.organization.id =:company AND asset.usedBy IS NULL ORDER BY asset.code,asset.name ASC")
-	public List<Asset> findAllUnused(@Param("company")String id);
+	@Query("FROM Asset asset WHERE asset.organization.id IN(:company) AND asset.usedBy IS NULL ORDER BY asset.code,asset.name ASC")
+	public List<Asset> findAllUnused(@Param("company")List<String> id);
 	
 	@Query("FROM Asset asset WHERE asset.organization.id =:company ORDER BY asset.code,asset.name ASC")
 	public List<Asset> findAll(Pageable pageable,@Param("company")String id);
 	
-	@Query("SELECT COUNT(asset) FROM Asset asset WHERE asset.organization.id =:company")
-	public Long count(@Param("company")String id);
+	@Query("SELECT COUNT(asset) FROM Asset asset WHERE asset.organization.id IN(:company)")
+	public Long count(@Param("company")List<String> id);
 }

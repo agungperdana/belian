@@ -17,8 +17,25 @@ import org.springframework.data.repository.query.Param;
  */
 public interface MedicationRepository extends JpaRepository<Medication, String>
 {
-	@Query("FROM Medication med WHERE med.organization.id =:company ORDER BY med.date DESC")
-	public List<Medication> findAll(Pageable pageable,@Param("company")String company);
+	@Query("FROM Medication med WHERE "
+			+ "(med.sales.identity LIKE %:key% "
+			+ "OR med.sales.name LIKE %:key% "
+			+ "OR med.customer.identity LIKE %:key% "
+			+ "OR med.customer.name LIKE %:key%) "
+			+ "AND med.organization.id IN(:company)"
+			+ "ORDER BY med.date DESC")
+	public List<Medication> findAll(Pageable pageable,@Param("company")List<String> company,@Param("key")String key);
+	
+	@Query("SELECT COUNT(med) FROM Medication med WHERE "
+			+ "(med.sales.identity LIKE %:key% "
+			+ "OR med.sales.name LIKE %:key% "
+			+ "OR med.customer.identity LIKE %:key% "
+			+ "OR med.customer.name LIKE %:key%) "
+			+ "AND med.organization.id IN(:company)")
+	public Long count(@Param("company")List<String> company,@Param("key")String key);
+	
+	@Query("FROM Medication med WHERE med.organization.id IN(:company) ORDER BY med.date DESC")
+	public List<Medication> findAll(Pageable pageable,@Param("company")List<String> company);
 	
 	@Query("FROM Medication med WHERE "
 			+ "med.organization.id =:company "
@@ -36,8 +53,8 @@ public interface MedicationRepository extends JpaRepository<Medication, String>
 			+ "ORDER BY med.date DESC")
 	public Long count(@Param("date")Date date,@Param("company")String company);
 	
-	@Query("SELECT COUNT(med) FROM Medication med WHERE med.organization.id =:company")
-	public Long count(@Param("company")String company);
+	@Query("SELECT COUNT(med) FROM Medication med WHERE med.organization.id IN(:company)")
+	public Long count(@Param("company")List<String> company);
 	
 	@Query("FROM Medication med WHERE "
 			+ "med.organization.id =:company AND "

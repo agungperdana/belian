@@ -5,6 +5,7 @@ package com.kratonsolution.belian.ui.sales.cashier;
 
 import java.math.BigDecimal;
 
+import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -41,7 +42,7 @@ public class CashierShiftFormContent extends FormContent
 	
 	private Datebox date = Components.currentDatebox(true);
 	
-	private Listbox assets = Components.newSelect(assetService.findAll(),true);
+	private Listbox assets = Components.newSelect(assetService.findAllUnused(),true);
 	
 	private Listbox employee = Components.newSelect(utils.getEmployee());
 	
@@ -71,6 +72,9 @@ public class CashierShiftFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
+				if(assets.getSelectedCount() != 1)
+					throw new WrongValueException(assets, "All cashier machine already in use,close one before registering for new user.");
+				
 				CashierShift shift = new CashierShift();
 				shift.setCapital(BigDecimal.valueOf(capital.doubleValue()));
 				shift.setClosed(false);

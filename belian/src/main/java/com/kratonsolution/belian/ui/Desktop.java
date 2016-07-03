@@ -25,6 +25,8 @@ public class Desktop extends GenericRichlet
 	@Override
 	public void service(Page page) throws Exception
 	{
+		page.setTitle("BelianERP - 1.0");
+		
 		IconBar.injectInto(page);
 		NavigationMenu.injectInto(page);
 		

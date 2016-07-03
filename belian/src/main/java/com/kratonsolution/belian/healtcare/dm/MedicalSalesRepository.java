@@ -21,20 +21,20 @@ public interface MedicalSalesRepository extends JpaRepository<MedicalSales, Stri
 	public List<MedicalSales> findAll(Pageable pageable,@Param("company")String company);
 	
 	@Query("FROM MedicalSales med WHERE "
-			+ "med.organization.id =:company "
+			+ "med.organization.id IN(:company) "
 			+ "AND med.date =:date "
 			+ "AND med.paid IS true "
 			+ "AND med.status != 'Finished' "
 			+ "ORDER BY med.date ASC,med.time ASC")
-	public List<MedicalSales> findAllPaid(@Param("date")Date date,@Param("company")String company);
+	public List<MedicalSales> findAllPaid(@Param("date")Date date,@Param("company")List<String> company);
 	
 	@Query("SELECT COUNT(med) FROM MedicalSales med WHERE "
-			+ "med.organization.id =:company "
+			+ "med.organization.id IN(:company) "
 			+ "AND med.date =:date "
 			+ "AND med.paid IS true "
 			+ "AND med.status != 'Finished' "
 			+ "ORDER BY med.date DESC")
-	public Long count(@Param("date")Date date,@Param("company")String company);
+	public Long count(@Param("date")Date date,@Param("company")List<String> company);
 	
 	@Query("SELECT COUNT(med) FROM MedicalSales med WHERE med.organization.id =:company")
 	public Long count(@Param("company")String company);

@@ -24,9 +24,17 @@ public class InventoryItemModel implements ListModel<InventoryItem>
 	
 	private List<InventoryItem> data = new ArrayList<InventoryItem>();
 	
+	private String key;
+	
 	public InventoryItemModel(int itemSize)
 	{
-		next(0, itemSize);
+		next(0, itemSize,null);
+	}
+	
+	public InventoryItemModel(int itemSize,String key)
+	{
+		this.key = key;
+		next(0, itemSize,key);
 	}
 	
 	@Override
@@ -41,7 +49,7 @@ public class InventoryItemModel implements ListModel<InventoryItem>
 	@Override
 	public int getSize()
 	{
-		return service.size();
+		return service.size(this.key);
 	}
 
 	@Override
@@ -58,9 +66,9 @@ public class InventoryItemModel implements ListModel<InventoryItem>
 		
 	}
 
-	public void next(int pageIndex,int itemSize)
+	public void next(int pageIndex,int itemSize,String key)
 	{
 		data.clear();
-		data.addAll(service.findAll(0, (itemSize*pageIndex)+itemSize));
+		data.addAll(service.findAll(0, (itemSize*pageIndex)+itemSize,key));
 	}
 }

@@ -3,9 +3,11 @@
  */
 package com.kratonsolution.belian.ui.healtcare.doctordashboard;
 
+import java.math.BigDecimal;
 import java.util.Iterator;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -18,6 +20,7 @@ import org.zkoss.zul.Tabpanel;
 
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
+import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentStatus;
 import com.kratonsolution.belian.healtcare.dm.Treatment;
 import com.kratonsolution.belian.healtcare.dm.TreatmentItem;
 import com.kratonsolution.belian.healtcare.svc.MedicalRecordService;
@@ -54,6 +57,9 @@ public class TreatmentPanel extends Tabpanel
 	
 	private void initToolbar(DoctorAppointment appointment)
 	{
+		if(appointment.getStatus().equals(DoctorAppointmentStatus.DONE))
+			toolbar.disabled();
+		
 		toolbar.getNew().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
@@ -98,6 +104,17 @@ public class TreatmentPanel extends Tabpanel
 		grid.getColumns().appendChild(new Column("UoM",null,"75px"));
 		grid.getColumns().appendChild(new Column("Note",null));
 		grid.setSpan("4");
+	
+		if(appointment.getRecord() != null && appointment.getRecord().getTreatment() != null)
+		{
+			for(TreatmentItem item:appointment.getRecord().getTreatment().getItems())
+			{
+				MedicalServiceRow row = new MedicalServiceRow();
+				row.setItem(item);
+				
+				grid.getRows().appendChild(row);
+			}
+		}
 	}
 	
 	public void store(DoctorAppointment appointment)
@@ -117,7 +134,16 @@ public class TreatmentPanel extends Tabpanel
 			
 			for(Component com:grid.getRows().getChildren())
 			{
+				
 				MedicalServiceRow row = (MedicalServiceRow)com;
+				
+				if(row.getProduct() == null)
+					throw new WrongValueException(com,"Product cannot be empty.");
+				
+				if(row.getQuantity().compareTo(BigDecimal.ZERO) <= 0)
+					throw new WrongValueException(com,"Quantity cannot be 0 or less.");
+				
+				productService.checkStock(row.getProduct(), row.getQuantity());
 				
 				TreatmentItem item = new TreatmentItem();
 				item.setService(row.getProduct());
@@ -125,7 +151,7 @@ public class TreatmentPanel extends Tabpanel
 				item.setDiscount(row.getDiscount());
 				item.setTreatment(treatment);
 				item.setNote(row.getNote());
-				item.setPrice(row.getPrice(appointment.getPatient().isBpjs(),true));
+				item.setPrice(row.getPrice(appointment.getPatient().isBpjs(),true,false));
 				item.setQuantity(row.getQuantity());
 				
 				treatment.getItems().add(item);

@@ -71,6 +71,15 @@ public class TreatmentItem implements BillableItem
 	@Override
 	public BigDecimal getUnitPrice()
 	{
+		if(price == null)
+			return BigDecimal.ZERO;
+		
+		if(discount == null)
+			this.discount = BigDecimal.ZERO;
+		
+		if(charge == null)
+			this.charge = BigDecimal.ZERO;
+		
 		return price.subtract(discount).add(charge);
 	}
 

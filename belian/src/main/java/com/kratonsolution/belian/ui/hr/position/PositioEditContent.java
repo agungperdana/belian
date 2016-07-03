@@ -82,7 +82,7 @@ public class PositioEditContent extends FormContent
 
 	private Listbox positionTypes = Components.fullSpanSelect(positionTypeService.findAll(),true);
 
-	private Listbox hirings = Components.fullSpanSelect();
+	private Listbox hirings = Components.fullSpanSelect(utils.getOrganizations(),true);
 
 	private Row row;
 
@@ -221,6 +221,18 @@ public class PositioEditContent extends FormContent
 		Position position = service.findOne(RowUtils.id(row));
 		if(position != null)
 		{
+			if(position.getOrganization() != null)
+			{
+				for(Listitem listitem:hirings.getItems())
+				{
+					if(listitem.getValue().toString().equals(position.getOrganization().getId()))
+					{
+						hirings.setSelectedItem(listitem);
+						break;
+					}
+				}
+			}
+			
 			if(position.getBudgetItem() != null)
 			{
 				budgetItems.appendItem(position.getBudgetItem().getLabel(),position.getBudgetItem().getValue());

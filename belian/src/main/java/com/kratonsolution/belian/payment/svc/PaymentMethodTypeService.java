@@ -27,25 +27,25 @@ public class PaymentMethodTypeService
 	@Autowired
 	private PaymentMethodTypeRepository repository;
 	
-	@Secured("ROLE_PAYMENT_METHOD_TYPE_READ")
+	@Secured({"ROLE_PAYMENT_METHOD_TYPE_READ","ROLE_CASHIER_READ"})
 	public int size()
 	{
 		return (int)repository.count();
 	}
 	
-	@Secured("ROLE_PAYMENT_METHOD_TYPE_READ")
+	@Secured({"ROLE_PAYMENT_METHOD_TYPE_READ","ROLE_CASHIER_READ"})
 	public PaymentMethodType findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 	
-	@Secured("ROLE_PAYMENT_METHOD_TYPE_READ")
+	@Secured({"ROLE_PAYMENT_METHOD_TYPE_READ","ROLE_CASHIER_READ"})
 	public List<PaymentMethodType> findAll()
 	{
 		return repository.findAll();
 	}
 	
-	@Secured("ROLE_PAYMENT_METHOD_TYPE_READ")
+	@Secured({"ROLE_PAYMENT_METHOD_TYPE_READ","ROLE_CASHIER_READ"})
 	public List<PaymentMethodType> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();

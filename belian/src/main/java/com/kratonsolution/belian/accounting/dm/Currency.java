@@ -39,6 +39,9 @@ public class Currency implements Serializable,Listable
 	@Column(name="name",nullable=false,unique=true)
 	private String name;
 	
+	@Column(name="is_default")
+	private boolean base;
+	
 	@Version
 	private Long version;
 

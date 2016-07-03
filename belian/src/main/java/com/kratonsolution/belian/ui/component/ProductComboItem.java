@@ -21,6 +21,7 @@ public class ProductComboItem extends Comboitem
 	public ProductComboItem(Product product)
 	{
 		this.product = product;
-		setLabel(product.getName());
+		if(product != null)
+			setLabel(product.getName());
 	}
 }

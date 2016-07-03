@@ -77,7 +77,7 @@ public class BillingService
 	public List<Billable> forCashier()
 	{
 		if(cashierShiftService.findToday() != null)
-			return repository.forCashier(DateTimes.currentDate(), utils.getOrganization().getId());
+			return repository.forCashier(DateTimes.currentDate(), utils.getOrganizationIds());
 		
 		return new ArrayList<>();
 	}
@@ -87,7 +87,7 @@ public class BillingService
 	public List<Billable> forCashier(String key)
 	{
 		if(cashierShiftService.findToday() != null)
-			return repository.forCashier(DateTimes.currentDate(), utils.getOrganization().getId(),key);
+			return repository.forCashier(DateTimes.currentDate(), utils.getOrganizationIds(),key);
 	
 		return new ArrayList<>();
 	}

@@ -55,7 +55,7 @@ public class CashierGridContent extends GridContent
 			}
 		});
 		
-		Toolbarbutton close = new Toolbarbutton("Close Cashier","/icons/cashier-shift.png");
+		Toolbarbutton close = new Toolbarbutton(lang.get("generic.grid.column.cashierclose"),"/icons/cashier-shift.png");
 		close.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
@@ -86,19 +86,19 @@ public class CashierGridContent extends GridContent
 		final CashierModel model = new CashierModel(utils.getRowPerPage(),utils.getOrganization().getId());
 
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No billing data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new CashierRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column("Number",null,"150px"));
-		grid.getColumns().appendChild(new Column("Customer",null,"120px"));
-		grid.getColumns().appendChild(new Column("Seq",null,"50px"));
-		grid.getColumns().appendChild(new Column("Amount",null,"100px"));
-		grid.getColumns().appendChild(new Column("Currency",null,"100px"));
-		grid.getColumns().appendChild(new Column("Type",null,"125px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.number"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.customer"),null,"120px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.seq"),null,"50px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.amount"),null,"100px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.currency"),null,"100px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.dept"),null,"125px"));
 		grid.getColumns().appendChild(new Column(null,null,"0px"));
 		grid.getColumns().getLastChild().setVisible(false);
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()

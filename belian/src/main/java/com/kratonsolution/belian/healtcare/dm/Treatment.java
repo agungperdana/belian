@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -37,7 +38,7 @@ public class Treatment extends Billable
 	@Column(name="bpjs_payment_status")
 	private BPJSPaymentStatus bpjsStatus = BPJSPaymentStatus.UNPAID;
 	
-	@OneToMany(mappedBy="treatment",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(mappedBy="treatment",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
 	private Set<TreatmentItem> items = new HashSet<TreatmentItem>(); 
 	
 	/* (non-Javadoc)

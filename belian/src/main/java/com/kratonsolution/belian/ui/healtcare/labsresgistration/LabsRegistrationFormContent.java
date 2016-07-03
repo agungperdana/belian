@@ -10,6 +10,7 @@ import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
@@ -49,6 +50,8 @@ public class LabsRegistrationFormContent extends FormContent
 	private DoctorBox doctor = new DoctorBox(true);
 	
 	private PatientBox patient = new PatientBox(true);
+	
+	private Checkbox ref = new Checkbox();
 	
 	private Textbox note = new Textbox();
 	
@@ -91,6 +94,7 @@ public class LabsRegistrationFormContent extends FormContent
 				laboratory.setOrganization(utils.getOrganization());
 				laboratory.setSales(doctor.getDoctor().getPerson());
 				laboratory.setTax(utils.getTax());
+				laboratory.setPersonal(ref.isChecked());
 
 				for(Component com:details.getRows().getChildren())
 				{
@@ -102,7 +106,7 @@ public class LabsRegistrationFormContent extends FormContent
 					item.setLaboratory(laboratory);
 					item.setService(row.getProduct());
 					item.setNote(row.getNote());
-					item.setPrice(row.getPrice(false,false));
+					item.setPrice(row.getPrice(false,false,!laboratory.isPersonal()));
 					item.setQuantity(row.getQuantity());
 					
 					laboratory.getItems().add(item);
@@ -138,10 +142,15 @@ public class LabsRegistrationFormContent extends FormContent
 		row4.appendChild(new Label("Patient"));
 		row4.appendChild(patient);
 		
+		Row row5 = new Row();
+		row5.appendChild(new Label("Personal"));
+		row5.appendChild(ref);
+		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
 		rows.appendChild(row4);
+		rows.appendChild(row5);
 	}
 	
 	private void initDetails()

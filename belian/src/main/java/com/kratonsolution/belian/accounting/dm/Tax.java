@@ -45,6 +45,9 @@ public class Tax implements Serializable,Listable
 	
 	@Column(name="amount",nullable=false)
 	private BigDecimal amount = BigDecimal.ZERO;
+	
+	@Column(name="is_default")
+	private boolean base;
 
 	@Version
 	private Long version;

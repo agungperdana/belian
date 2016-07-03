@@ -32,7 +32,7 @@ public class StockAdminService
 	@Autowired
 	private StockAdminRepository repository;
 		
-	@Secured("ROLE_STOCK_ADMIN_READ")
+	@Secured({"ROLE_STOCK_ADMIN_READ","ROLE_SYSTEM_READ"})
 	public int size()
 	{
 		if(utils.getOrganization() == null)
@@ -41,13 +41,13 @@ public class StockAdminService
 		return repository.count(utils.getOrganization().getId()).intValue();
 	}
 	
-	@Secured("ROLE_STOCK_ADMIN_READ")
+	@Secured({"ROLE_STOCK_ADMIN_READ","ROLE_SYSTEM_READ"})
 	public StockAdmin findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 	
-	@Secured("ROLE_STOCK_ADMIN_READ")
+	@Secured({"ROLE_STOCK_ADMIN_READ","ROLE_SYSTEM_READ"})
 	public StockAdmin findOne()
 	{
 		if(utils.getOrganization() == null || utils.getEmployee() == null)
@@ -56,13 +56,13 @@ public class StockAdminService
 		return repository.findOne(DateTimes.currentDate(), utils.getEmployee().getId(), utils.getOrganization().getId());
 	}
 	
-	@Secured("ROLE_STOCK_ADMIN_READ")
+	@Secured({"ROLE_STOCK_ADMIN_READ","ROLE_SYSTEM_READ"})
 	public List<StockAdmin> findAll()
 	{
 		return repository.findAll();
 	}
 	
-	@Secured("ROLE_STOCK_ADMIN_READ")
+	@Secured({"ROLE_STOCK_ADMIN_READ","ROLE_SYSTEM_READ"})
 	public List<StockAdmin> findAll(int pageIndex,int pageSize)
 	{
 		if(utils.getOrganization() == null)

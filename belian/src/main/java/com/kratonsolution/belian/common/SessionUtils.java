@@ -180,6 +180,24 @@ public class SessionUtils
 
 		return new ArrayList<String>(maps.values());
 	}
+	
+	public List<String> getOrgChild()
+	{
+		Map<String,String> maps = new HashMap<String,String>();
+		
+		for(Employment employment:getUser().getEmployee().getEmployments())
+		{
+			if(DateTimes.inActiveState(employment.getStart(), employment.getEnd()) &&
+					getOrganization() != null && 
+					employment.getInternalOrganization().getOrganization().getId().equals(getOrganization().getId()))
+			{				
+				CompanyStructure structure = companyStructureService.byOrganization(employment.getInternalOrganization().getOrganization().getId());
+				extractOrganizationId(maps, structure);
+			}
+		}
+		
+		return new ArrayList<>(maps.values());
+	}
 
 	private void extractOrganizationId(Map<String, String> maps,CompanyStructure structure)
 	{

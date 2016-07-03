@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.accounting.dm;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  * 
@@ -13,4 +14,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CurrencyRepository extends JpaRepository<Currency, String>
 {
 	public Currency findOneByCode(String code);
+
+	@Query("FROM Currency cur WHERE cur.base IS TRUE")
+	public Currency findDefault();
 }

@@ -91,20 +91,20 @@ public class MedicalSalesService
 	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
 	public List<MedicalSales> findAllPaid()
 	{
-		if(utils.getOrganization() == null)
+		if(utils.getOrganizationIds() == null || utils.getOrganizationIds().isEmpty())
 			return new ArrayList<MedicalSales>();
 
-		return repository.findAllPaid(DateTimes.currentDate(),utils.getOrganization().getId());
+		return repository.findAllPaid(DateTimes.currentDate(),utils.getOrganizationIds());
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
 	public int sizePaid()
 	{
-		if(utils.getOrganization() == null)
+		if(utils.getOrganizationIds() == null || utils.getOrganizationIds().isEmpty())
 			return 0;
 		
-		return repository.count(DateTimes.currentDate(),utils.getOrganization().getId()).intValue();
+		return repository.count(DateTimes.currentDate(),utils.getOrganizationIds()).intValue();
 	}
 	
 	@Secured("ROLE_PHARMACY_SALES_CREATE")

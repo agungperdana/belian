@@ -21,6 +21,8 @@ public interface BillableItem extends Serializable
 	
 	public BigDecimal getQuantity();
 	
+	public void setQuantity(BigDecimal quantity);
+	
 	public String getMeasure();
 	
 	public BigDecimal getUnitPrice();

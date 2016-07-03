@@ -82,7 +82,7 @@ public class FamilyFolderEditContent extends FormContent
 				if(Strings.isNullOrEmpty(description.getText()))
 					throw new WrongValueException(description,"Value cannot be empty");
 			
-				FamilyFolder folder = service.findOne(RowUtils.string(row, 4));
+				FamilyFolder folder = service.findOne(RowUtils.id(row));
 				folder.setName(name.getText());
 				folder.setNote(description.getText());
 				folder.getMembers().clear();

@@ -20,7 +20,7 @@ public enum ProductType
 			switch (this)
 			{
 				case SERVICE:
-					return "Tindakan";
+					return "Pelayanan";
 				case FINISHGOOD:
 					return "Barang Jadi";
 				case RAWMATERIAL:

@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.ui.healtcare.patient;
 
+import java.util.Vector;
+
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -15,13 +17,16 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Toolbarbutton;
 
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.PatientRelationship;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.component.PersonBox;
+import com.kratonsolution.belian.ui.healtcare.doctordashboard.DoctorDashboardWindow;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
@@ -87,6 +92,31 @@ public class PatientEditContent extends FormContent
 				Flow.next(getParent(), new PatientGridContent());
 			}
 		});
+		
+		if(utils.isDoctor())
+		{
+			Toolbarbutton record = new Toolbarbutton("Medical Record", "/icons/medical-record.png");
+			toolbar.appendChild(record);
+			
+			record.addEventListener(Events.ON_CLICK, new EventListener<Event>()
+			{
+				@Override
+				public void onEvent(Event event) throws Exception
+				{
+					PatientRelationship relationship = service.findRelationshi(RowUtils.id(row));
+					if(relationship != null && !relationship.getPatient().getAppointments().isEmpty())
+					{
+						Vector<DoctorAppointment> vector = new Vector<>(relationship.getPatient().getAppointments());
+						
+						DoctorDashboardWindow window = new DoctorDashboardWindow();
+						window.setPage(getPage());
+						window.removeGrid();
+						window.insertEditForm(RowUtils.shield(vector.get(0).getId()));
+						window.doOverlapped();
+					}
+				}
+			});
+		}
 	}
 
 	@Override

@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.inventory.svc;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -19,7 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
+import com.kratonsolution.belian.inventory.dm.InventoryItemRepository;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductCode;
 import com.kratonsolution.belian.inventory.dm.ProductComponent;
@@ -42,18 +45,59 @@ public class ProductService
 	@Autowired
 	private ProductRepository repository;
 	
-	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Autowired
+	private InventoryItemRepository itemRepo;
+	
+	@Autowired
+	private SessionUtils utils;
+	
 	@Secured("ROLE_PRODUCT_READ")
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	public int size()
 	{
 		return Long.valueOf(repository.count()).intValue();
 	}
 	
-	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PRODUCT_READ")
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	public int size(String key)
+	{
+		if(!Strings.isNullOrEmpty(key))
+			return repository.count(key).intValue();
+		else
+			return size();
+	}
+	
+	@Secured("ROLE_PRODUCT_READ")
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	public Product findOne(String id)
 	{
 		return repository.findOne(id);
+	}
+	
+	@Secured("ROLE_PRODUCT_READ")
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	public void checkStock(Product product,BigDecimal quantity)
+	{
+		if(product == null)
+			throw new RuntimeException("Stock doesnot exist.");
+		
+		if(product.getType().equals(ProductType.SERVICE) && product.getComponents().isEmpty())
+			return;
+		
+		if(product.getComponents().isEmpty())
+		{
+			BigDecimal onhand = itemRepo.onHand(product.getId(), utils.getFacilitys());
+			if(onhand == null)
+				throw new RuntimeException("Stock doesnot exist.");
+			else if(onhand.compareTo(quantity) < 0)
+				throw new RuntimeException("Stock for product "+product.getCode()+" less than required quantity");
+		}
+		else
+		{
+			for(ProductComponent component:product.getComponents())
+				checkStock(component.getProduct(), component.getQuantity().multiply(quantity));
+		}
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -107,6 +151,16 @@ public class ProductService
 	public List<Product> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize,new Sort(Direction.ASC,"code","name"))).getContent();
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_PRODUCT_READ")
+	public List<Product> findAll(int pageIndex,int pageSize,String key)
+	{
+		if(!Strings.isNullOrEmpty(key))
+			return repository.findAll(new PageRequest(pageIndex, pageSize),key);
+		else
+			return findAll(pageIndex, pageSize);
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)

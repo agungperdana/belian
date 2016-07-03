@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.healtcare.pharmacysales;
+package com.kratonsolution.belian.ui.healtcare.clinicsales;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -55,7 +55,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class PharmacySalesFormContent extends FormContent implements ProductPriceSelectionListener
+public class ClinicSalesFormContent extends FormContent implements ProductPriceSelectionListener
 {	
 	private CodeGenerator generator = Springs.get(CodeGenerator.class);
 	
@@ -97,7 +97,7 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 	
 	private Grid saleItems = new Grid();
 	
-	public PharmacySalesFormContent()
+	public ClinicSalesFormContent()
 	{
 		super();
 		initToolbar();
@@ -120,7 +120,7 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Flow.next(getParent(),new PharmacySalesGridContent());
+				Flow.next(getParent(),new ClinicSalesGridContent());
 			}
 		});
 		
@@ -152,7 +152,7 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 				
 				service.add(pharmacy);
 				
-				Flow.next(getParent(),new PharmacySalesGridContent());
+				Flow.next(getParent(),new ClinicSalesGridContent());
 			}
 		});
 	}
@@ -258,7 +258,7 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 			public void onEvent(Event event) throws Exception
 			{
 				MedicalSalesRow row = new MedicalSalesRow(false,false,ref.isChecked());
-				row.addProductPriceListener(PharmacySalesFormContent.this);
+				row.addProductPriceListener(ClinicSalesFormContent.this);
 				saleItems.getRows().appendChild(row);
 			}
 		});

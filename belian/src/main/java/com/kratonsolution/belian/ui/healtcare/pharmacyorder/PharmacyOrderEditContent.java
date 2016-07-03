@@ -65,7 +65,7 @@ public class PharmacyOrderEditContent extends FormContent
 
 	private Listbox currencys = Components.fullSpanSelect(sessionUtils.getCurrency());
 
-	private Listbox organizations = Components.fullSpanSelect(sessionUtils.getOrganization());
+	private Listbox organizations = Components.fullSpanSelect();
 
 	private Listbox locations = Components.fullSpanSelect(sessionUtils.getLocation());
 

@@ -19,11 +19,18 @@ public interface BillableRepository extends JpaRepository<Billable, String>
 {
 	public List<Billable> findAllByDateAndOrganizationIdAndPaid(Date date,String companyId,boolean paid);
 	
-	@Query("FROM Billable bil WHERE bil.organization.id =:company AND bil.date =:date AND bil.paid IS FALSE ORDER BY bil.number ASC")
-	public List<Billable> forCashier(@Param("date")Date date,@Param("company")String companyId);
+	@Query("FROM Billable bil WHERE bil.organization.id IN(:company) "
+			+ "AND bil.date =:date "
+			+ "AND bil.paid IS FALSE "
+			+ "ORDER BY bil.number ASC")
+	public List<Billable> forCashier(@Param("date")Date date,@Param("company")List<String> companyId);
 	
-	@Query("FROM Billable bil WHERE bil.organization.id =:company AND bil.date =:date AND bil.paid IS FALSE AND (bil.number LIKE :key% OR bil.customer.name LIKE :key%)  ORDER BY bil.number ASC")
-	public List<Billable> forCashier(@Param("date")Date date,@Param("company")String companyId,@Param("key")String key);
+	@Query("FROM Billable bil WHERE bil.organization.id IN(:company) "
+			+ "AND bil.date =:date "
+			+ "AND bil.paid IS FALSE "
+			+ "AND (bil.number LIKE %:key% OR bil.customer.name LIKE %:key%)  "
+			+ "ORDER BY bil.number ASC")
+	public List<Billable> forCashier(@Param("date")Date date,@Param("company")List<String> companyId,@Param("key")String key);
 	
 	@Query("SELECT COUNT(billing) FROM Billable billing WHERE billing.date =:date AND billing.organization.id =:companyId AND billing.paid is false ORDER BY billing.number ASC")
 	public Long getUnpaodCount(@Param("date")Date date,@Param("company")String companyId);

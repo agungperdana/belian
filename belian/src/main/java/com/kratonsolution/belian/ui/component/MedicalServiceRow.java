@@ -23,6 +23,7 @@ import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
 import com.kratonsolution.belian.inventory.dm.ProductPriceType;
 import com.kratonsolution.belian.inventory.dm.ProductRepository;
+import com.kratonsolution.belian.sales.dm.BillableItem;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -63,57 +64,21 @@ public class MedicalServiceRow extends Row implements HasAmount
 
 	private void init()
 	{
-		products.addEventListener(Events.ON_CHANGING,new EventListener<InputEvent>()
-		{
-			@Override
-			public void onEvent(InputEvent input) throws Exception
-			{
-				if(!Strings.isNullOrEmpty(input.getValue()))
-				{
-					products.getItems().clear();
-					ProductRepository repository = Springs.get(ProductRepository.class);
-					for(Product product:repository.findAllMedicalTreatment(input.getValue(),DateTimes.currentDate()))
-					{
-						products.appendItem(product.getName());
-						if(!maps.containsKey(product.getName()))
-							maps.put(product.getName(), product);
-					}
-				}
-			}
-		});
-
-		products.addEventListener(Events.ON_BLUR,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				if(!Strings.isNullOrEmpty(products.getValue()) && maps.containsKey(products.getValue()))
-				{
-					uoms.setText(maps.get(products.getValue()).getUom().getCode());
-					prices.clear();
-
-					for(ProductPrice price:maps.get(products.getValue()).getPrices())
-						prices.put(price.getType(), price.getPrice());
-				}
-			}
-		});
-
-		products.addEventListener(Events.ON_SELECT,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				if(!Strings.isNullOrEmpty(products.getValue()) && maps.containsKey(products.getValue()))
-				{
-					uoms.setText(maps.get(products.getValue()).getUom().getCode());
-
-					prices.clear();
-
-					for(ProductPrice price:maps.get(products.getValue()).getPrices())
-						prices.put(price.getType(), price.getPrice());
-				}
-			}
-		});
+		products.addEventListener(Events.ON_CHANGING,new PriceEvent());
+		products.addEventListener(Events.ON_BLUR,new PriceEvent());
+		products.addEventListener(Events.ON_SELECT,new PriceEvent());
+	}
+	
+	public void setItem(BillableItem item)
+	{
+		products.appendItem(item.getProduct().getName());
+		products.setSelectedIndex(0);
+		if(!maps.containsKey(item.getProduct().getName()))
+			maps.put(item.getProduct().getName(), item.getProduct());
+		
+		quantity.setValue(item.getQuantity().doubleValue());
+		uoms.setText(item.getMeasure());
+		note.setText(item.getNote());
 	}
 
 	public Product getProduct()
@@ -124,16 +89,33 @@ public class MedicalServiceRow extends Row implements HasAmount
 		return maps.get(products.getValue());
 	}
 
-	public BigDecimal getPrice(boolean isBPJS,boolean isClinic)
+	public BigDecimal getPrice(boolean isBPJS,boolean isClinic,boolean isRef)
 	{
-		if(isBPJS && isClinic)
-			return prices.get(ProductPriceType.BPJS);
-		else if(!isBPJS && isClinic)
-			return prices.get(ProductPriceType.CLINIC);
-		else if(!isBPJS && !isClinic)
-			return prices.get(ProductPriceType.BASE);
-		else
-			return BigDecimal.ZERO;
+		if(Strings.isNullOrEmpty(products.getValue()) || !maps.containsKey(products.getValue()))
+			throw new RuntimeException("Please select product first");
+		
+		for(ProductPrice pro:maps.get(products.getValue()).getPrices())
+		{
+			switch (pro.getType())
+			{
+				case BPJS:
+					if(isBPJS && isClinic)
+						return pro.getPrice();
+				case CLINIC:
+					if(!isBPJS && isClinic)
+						return pro.getPrice();
+				case REFERENCE:
+					if(!isBPJS && !isClinic && isRef)
+						return pro.getPrice();
+				case BASE:
+					if(!isBPJS && !isClinic && !isRef)
+						return pro.getPrice();
+				default:
+					break;
+			}
+		}
+		
+		return BigDecimal.ZERO;
 	}
 	
 	public BigDecimal getCharge()
@@ -165,6 +147,37 @@ public class MedicalServiceRow extends Row implements HasAmount
 	@Override
 	public BigDecimal getAmount()
 	{
-		return (getQuantity().multiply(getPrice(false,false))).subtract(getDiscount()).add(getCharge());
+		return (getQuantity().multiply(getPrice(false,false,false))).subtract(getDiscount()).add(getCharge());
+	}
+	
+	private class PriceEvent implements EventListener<Event>
+	{
+
+		@Override
+		public void onEvent(Event event) throws Exception
+		{
+			if(event instanceof InputEvent)
+			{
+				InputEvent input = (InputEvent)event;
+				
+				if(!Strings.isNullOrEmpty(input.getValue()))
+				{
+					products.getItems().clear();
+					
+					ProductRepository repository = Springs.get(ProductRepository.class);
+					for(Product product:repository.findAllMedicalService(input.getValue(),DateTimes.currentDate()))
+					{
+						products.appendItem(product.getName());
+						if(!maps.containsKey(product.getName()))
+							maps.put(product.getName(), product);
+					}
+				}
+			}
+			else
+			{
+				uoms.setText(maps.get(products.getValue()).getUom().getCode());
+			}
+		}
+		
 	}
 }

@@ -35,7 +35,6 @@ import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.PrintWindow;
 import com.kratonsolution.belian.ui.component.HasAmount;
 import com.kratonsolution.belian.ui.component.MedicalReceiptRow;
-import com.kratonsolution.belian.ui.component.ProductRow;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Numbers;
@@ -99,6 +98,15 @@ public class CashierEditContent extends FormContent
 
 				if(billing != null && shift != null)
 				{
+					for(BillableItem item:billing.getItems())
+					{
+						for(Component com:billingItems.getRows().getChildren())
+						{
+							BillableitemRow row = (BillableitemRow)com;
+							row.updateItem(item);
+						}
+					}
+					
 					for(Component row:payments.getRows().getChildren())
 					{
 						MedicalReceiptRow receipt = (MedicalReceiptRow)row;
@@ -113,6 +121,7 @@ public class CashierEditContent extends FormContent
 					
 					billing.setPaid(true);
 					billing.setShift(shift);
+					
 					service.edit(billing);
 					
 					PrintWindow window = new PrintWindow(BillablePrint.GEN(billing.getId(),utils.isPos()),true);
@@ -202,12 +211,16 @@ public class CashierEditContent extends FormContent
 		billingItems.getColumns().appendChild(new Column("Disc",null,"100px"));
 		billingItems.getColumns().appendChild(new Column("Charge",null,"100px"));
 		billingItems.getColumns().appendChild(new Column("Note",null,"100px"));
-		billingItems.getColumns().appendChild(new Column(null,null,"0px"));
-		billingItems.getColumns().getLastChild().setVisible(false);
 		billingItems.setSpan("1");
 
 		for(BillableItem item:billing.getItems())
-			billingItems.getRows().appendChild(new ProductRow(item,new OnSelectEvent()));
+		{
+			BillableitemRow row = new BillableitemRow();
+			row.setItem(item);
+			row.setEventListener(new OnSelectEvent());
+			
+			billingItems.getRows().appendChild(row);
+		}
 		
 		tabbox.getTabpanels().getFirstChild().appendChild(billingItems);
 	}
@@ -239,7 +252,7 @@ public class CashierEditContent extends FormContent
 		});
 	}
 	
-	private void display()
+	private BigDecimal display()
 	{
 		Billable billing = service.findOne(RowUtils.id(row));
 		if(billing != null)
@@ -258,7 +271,11 @@ public class CashierEditContent extends FormContent
 			amount.setText(Numbers.format(_amount));
 			tax.setText(Numbers.format(_tax));
 			total.setText(Numbers.format(_amount.add(_tax)));
+			
+			return _amount.add(_tax);
 		}
+		
+		return BigDecimal.ZERO;
 	}
 	
 	private class OnSelectEvent implements EventListener<Event>
@@ -266,7 +283,9 @@ public class CashierEditContent extends FormContent
 		@Override
 		public void onEvent(Event arg0) throws Exception
 		{
-			display();
+			BigDecimal amt = display();
+			payments.getRows().getChildren().clear();
+			payments.getRows().appendChild(new MedicalReceiptRow(amt));
 		}
 	}
 }

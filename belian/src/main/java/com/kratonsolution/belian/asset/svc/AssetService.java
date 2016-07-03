@@ -47,10 +47,10 @@ public class AssetService
 		if(utils.isSysAdmin())
 			return repository.findAll();
 		
-		if(utils.getOrganization() == null)
+		if(utils.getOrganizationIds() == null && !utils.getOrganizationIds().isEmpty())
 			return new ArrayList<>();
 		
-		return repository.findAll(utils.getOrganization().getId());
+		return repository.findAll(utils.getOrganizationIds());
 	}
 	
 	@Secured({"ROLE_ASSET_READ","ROLE_CASHIER_READ"})
@@ -59,7 +59,7 @@ public class AssetService
 		if(utils.getOrganization() == null || utils.isSysAdmin())
 			return new ArrayList<>();
 		
-		return repository.findAllUnused(utils.getOrganization().getId());
+		return repository.findAllUnused(utils.getOrganizationIds());
 	}
 	
 	@Secured("ROLE_ASSET_READ")
@@ -71,7 +71,7 @@ public class AssetService
 		if(utils.getOrganization() == null)
 			return 0;
 		
-		return repository.count(utils.getOrganization().getId()).intValue();
+		return repository.count(utils.getOrganizationIds()).intValue();
 	}
 	
 	@Secured("ROLE_ASSET_CREATE")
@@ -98,9 +98,9 @@ public class AssetService
 		if(utils.isSysAdmin())
 			return repository.findAll(new PageRequest(pageIndex, itemsSize)).getContent();
 		
-		if(utils.getOrganization() == null)
+		if(utils.getOrganizationIds() == null || utils.getOrganizationIds().isEmpty())
 			return new ArrayList<>();
 		
-		return repository.findAll(new PageRequest(pageIndex, itemsSize),utils.getOrganization().getId());
+		return repository.findAll(new PageRequest(pageIndex, itemsSize),utils.getOrganizationIds());
 	}
 }

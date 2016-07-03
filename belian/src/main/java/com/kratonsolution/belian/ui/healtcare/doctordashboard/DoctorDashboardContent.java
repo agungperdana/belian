@@ -104,8 +104,10 @@ public class DoctorDashboardContent extends Borderlayout implements Removeable
 			children.appendChild(new CurrentAppointmentItem(appointment, center));
 			children.appendChild(new PatientInformationItem(appointment, center));
 			children.appendChild(new AppointmentItem(appointment,center));
-			children.appendChild(new MedicalRecordItem(appointment, center));
+//			children.appendChild(new MedicalRecordItem(appointment, center));
 			children.appendChild(new FamiliFolderItem(appointment, center));
+		
+			center.appendChild(new CurrentAppointmentPanel(appointment));
 		}
 		
 		west.appendChild(tree);

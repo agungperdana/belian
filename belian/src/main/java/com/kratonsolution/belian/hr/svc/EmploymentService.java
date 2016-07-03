@@ -13,6 +13,10 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kratonsolution.belian.accounting.dm.Currency;
+import com.kratonsolution.belian.accounting.dm.CurrencyRepository;
+import com.kratonsolution.belian.accounting.dm.Tax;
+import com.kratonsolution.belian.accounting.dm.TaxRepository;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.InternalOrganization;
 import com.kratonsolution.belian.general.dm.InternalOrganizationRepository;
@@ -43,6 +47,12 @@ public class EmploymentService
 	
 	@Autowired
 	private InternalOrganizationRepository intOrgRepository;
+	
+	@Autowired
+	private TaxRepository taxRepository;
+
+	@Autowired
+	private CurrencyRepository currencyRepository;
 	
 	@Autowired
 	private RoleService roleService;
@@ -98,6 +108,20 @@ public class EmploymentService
 			setting.setOrganizationId(employment.getInternalOrganization().getParty().getId());
 			setting.setOrganizationName(employment.getInternalOrganization().getParty().getName());
 			setting.setLanguage("in_ID");
+			
+			Tax tax = taxRepository.findDefault();
+			if(tax != null)
+			{
+				setting.setTaxId(tax.getId());
+				setting.setTaxName(tax.getName());
+			}
+			
+			Currency currency = currencyRepository.findDefault();
+			if(currency != null)
+			{
+				setting.setCurrencyId(currency.getId());
+				setting.setCurrencyName(currency.getName());
+			}
 			
 			user.setSetting(setting);
 			

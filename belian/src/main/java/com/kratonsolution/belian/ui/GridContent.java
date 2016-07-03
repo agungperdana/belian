@@ -13,10 +13,12 @@ import org.zkoss.zul.Grid;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
+import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vlayout;
 
 import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -32,14 +34,18 @@ public abstract class GridContent extends Vlayout implements Removeable
 	
 	protected GridToolbar gridToolbar = new GridToolbar();
 	
+	protected Textbox filter = Components.textBox(null);
+	
 	protected Grid grid = new Grid();
-
+	
 	public GridContent()
 	{
 		setSpacing("3px");
 		setWidth("100%");
 		setHeight("100%");
 		setStyle("overflow:auto");
+		
+		filter.setHeight("30px");
 	}
 	
 	protected abstract void initToolbar();

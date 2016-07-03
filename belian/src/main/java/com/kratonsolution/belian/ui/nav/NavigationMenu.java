@@ -276,7 +276,7 @@ public class NavigationMenu extends Window
 		list.setStyle("border:none");
 		
 		if(modules.containsKey("ROLE_PHARMACY_SALES_READ"))
-			list.appendChild(new PharmacySalesItem());
+			list.appendChild(new PharmacySalesMenu());
 		
 		if(modules.containsKey("ROLE_PHARMACY_ORDER_READ"))
 			list.appendChild(new PharmacyOrderMenu());
@@ -316,8 +316,8 @@ public class NavigationMenu extends Window
 		if(modules.containsKey("ROLE_FAMILY_FOLDER_READ"))
 			list.appendChild(new FamilyFolderMenu());
 		
-//		if(modules.containsKey("ROLE_CLINIC_REPORT_READ"))
-//			list.appendChild(new ClinicReportMenu());
+		if(modules.containsKey("ROLE_CLINIC_SALES_READ"))
+			list.appendChild(new ClinicSalesMenu());
 		
 		if(!list.getChildren().isEmpty())
 		{

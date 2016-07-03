@@ -28,6 +28,28 @@ import com.kratonsolution.belian.ui.HasEditForm;
  */
 public class RowUtils
 {
+	public static Row shield(String value)
+	{
+		if(Strings.isNullOrEmpty(value))
+			return null;
+		
+		Row row = new Row();
+		row.appendChild(new Label(value));
+		
+		return row;
+	}
+	
+	public static Row shield(Object value)
+	{
+		if(value instanceof String && Strings.isNullOrEmpty(value.toString()))
+			return null;
+		
+		Row row = new Row();
+		row.appendChild(new Label(value.toString()));
+		
+		return row;
+	}
+	
 	public static String string(Row row,int index)
 	{
 		Object object = row.getChildren().get(index);

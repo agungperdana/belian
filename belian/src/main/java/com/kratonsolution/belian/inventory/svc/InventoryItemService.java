@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.inventory.dm.InventoryItem;
 import com.kratonsolution.belian.inventory.dm.InventoryItemRepository;
 
@@ -34,6 +35,15 @@ public class InventoryItemService
 	public int size()
 	{
 		return Long.valueOf(repository.count()).intValue();
+	}
+	
+	@Secured("ROLE_INVITEM_READ")
+	public int size(String key)
+	{
+		if(!Strings.isNullOrEmpty(key))
+			return repository.count(key).intValue();
+		else
+			return size();
 	}
 	
 	@Secured("ROLE_INVITEM_READ")
@@ -67,6 +77,15 @@ public class InventoryItemService
 	public List<InventoryItem> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize,new Sort(Direction.ASC,"product.name"))).getContent();
+	}
+	
+	@Secured("ROLE_INVITEM_READ")
+	public List<InventoryItem> findAll(int pageIndex,int pageSize,String key)
+	{
+		if(!Strings.isNullOrEmpty(key))
+			return repository.findAll(new PageRequest(pageIndex, pageSize),key);
+		else
+			return findAll(pageIndex, pageSize);
 	}
 	
 	@Secured("ROLE_INVITEM_CREATE")
