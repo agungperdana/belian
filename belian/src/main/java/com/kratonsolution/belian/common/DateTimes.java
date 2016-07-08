@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.common;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.time.Period;
 import java.util.Calendar;
@@ -17,6 +18,8 @@ import java.util.Date;
 public class DateTimes implements Serializable
 {
 	private static final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+	
+	private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
 	public static final boolean inActiveState(java.sql.Date start,java.sql.Date end)
 	{
@@ -47,6 +50,14 @@ public class DateTimes implements Serializable
 		return new java.sql.Time(System.currentTimeMillis());
 	}
 
+	public static final String format(Time time)
+	{
+		if(time == null)
+			return "";
+
+		return timeFormat.format(time);
+	}
+	
 	public static final String format(Date date)
 	{
 		if(date == null)
@@ -73,6 +84,14 @@ public class DateTimes implements Serializable
 	{
 		if(date != null)
 			return new java.sql.Date(date.getTime());
+
+		return null;
+	}
+	
+	public static java.sql.Time time(Date date)
+	{
+		if(date != null)
+			return new java.sql.Time(date.getTime());
 
 		return null;
 	}

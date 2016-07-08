@@ -6,6 +6,7 @@ package com.kratonsolution.belian.ui.security.module;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
@@ -14,7 +15,6 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.security.svc.ModuleService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.RowUtils;
@@ -27,9 +27,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class ModuleGridContent extends GridContent
 {
-	private final ModuleService service = Springs.get(ModuleService.class);
-	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
+	private ModuleService service = Springs.get(ModuleService.class);
 	
 	public ModuleGridContent()
 	{
@@ -146,9 +144,21 @@ public class ModuleGridContent extends GridContent
 	{
 		final ModuleModel model = new ModuleModel(utils.getRowPerPage());
 		
-		grid.setParent(this);
+		filter.setPlaceholder("type code/name/group to filter.");
+		filter.addEventListener(Events.ON_CHANGING,new EventListener<InputEvent>()
+		{
+			@Override
+			public void onEvent(InputEvent input) throws Exception
+			{
+				refresh(new ModuleModel(utils.getRowPerPage(),input.getValue()));
+			}
+		});
+		
+		appendChild(filter);
+		appendChild(grid);
+		
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No Module data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new ModuleRowRenderer());
 		grid.setPagingPosition("both");
@@ -156,11 +166,11 @@ public class ModuleGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Code",null,"200px"));
-		grid.getColumns().appendChild(new Column("Name",null,"150px"));
-		grid.getColumns().appendChild(new Column("Group"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.code"),null,"200px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.name"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.group")));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(4).setVisible(false);
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
 		grid.setSpan("2");
 		
@@ -169,7 +179,7 @@ public class ModuleGridContent extends GridContent
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), utils.getRowPerPage());
+				model.next(event.getActivePage(), utils.getRowPerPage(),filter.getText());
 				grid.setModel(model);
 				refresh(model);
 			}

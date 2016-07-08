@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.ui.general.person;
 
+import java.util.Vector;
+
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -24,8 +26,11 @@ import com.kratonsolution.belian.general.dm.MaritalStatus;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.component.Listenable;
+import com.kratonsolution.belian.ui.component.ModelListener;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
+import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -33,9 +38,9 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class PersonFormContent extends FormContent
+public class PersonFormContent extends FormContent implements Listenable<ModelListener<Person>>
 {	
-	private final PersonService controller = Springs.get(PersonService.class);
+	private PersonService controller = Springs.get(PersonService.class);
 	
 	private Textbox identity = Components.mandatoryTextBox(false);
 	
@@ -48,6 +53,8 @@ public class PersonFormContent extends FormContent
 	private Listbox genders = Components.newSelect();
 	
 	private Listbox maritals = Components.newSelect();
+
+	private Vector<ModelListener<Person>> listeners = new Vector<>();
 	
 	public PersonFormContent()
 	{
@@ -89,7 +96,10 @@ public class PersonFormContent extends FormContent
 				
 				controller.add(person);
 				
-				Flow.next(getParent(), new PersonGridContent());
+				for(ModelListener<Person> listener:listeners)
+					listener.fireEvent(person);
+				
+				Flow.next(getParent(), new PersonEditContent(RowUtils.shield(person.getId())));
 			}
 		});
 	}
@@ -142,31 +152,31 @@ public class PersonFormContent extends FormContent
 		maritals.setSelectedIndex(0);
 		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
+		grid.getColumns().appendChild(new Column(null,null,"110px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row0 = new Row();
-		row0.appendChild(new Label("Identity"));
+		row0.appendChild(new Label(lang.get("person.grid.column.identity")));
 		row0.appendChild(identity);
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Name"));
+		row1.appendChild(new Label(lang.get("person.grid.column.name")));
 		row1.appendChild(name);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Birth Date"));
+		row2.appendChild(new Label(lang.get("person.grid.column.birthdate")));
 		row2.appendChild(date);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Tax Number"));
+		row3.appendChild(new Label(lang.get("person.grid.column.tax")));
 		row3.appendChild(tax);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Gender"));
+		row4.appendChild(new Label(lang.get("person.grid.column.gender")));
 		row4.appendChild(genders);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Status"));
+		row5.appendChild(new Label(lang.get("person.grid.column.marital")));
 		row5.appendChild(maritals);
 		
 		rows.appendChild(row0);
@@ -175,5 +185,12 @@ public class PersonFormContent extends FormContent
 		rows.appendChild(row3);
 		rows.appendChild(row4);
 		rows.appendChild(row5);
+	}
+
+	@Override
+	public void addListener(ModelListener<Person> listener)
+	{
+		if(listener != null)
+			listeners.add(listener);
 	}
 }

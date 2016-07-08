@@ -153,7 +153,7 @@ public class OrganizationGridContent extends GridContent
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No organization data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new OrganizationRowRenderer());
 		grid.setPagingPosition("both");
@@ -161,10 +161,11 @@ public class OrganizationGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Name"));
-		grid.getColumns().appendChild(new Column("Birth Date",null,"75px"));
-		grid.getColumns().appendChild(new Column("Tax",null,"100px"));
-		grid.getColumns().appendChild(new Column("Industry",null,"100px"));
+		grid.getColumns().appendChild(new Column(lang.get("organization.grid.column.code"),null,"75px"));
+		grid.getColumns().appendChild(new Column(lang.get("organization.grid.column.name")));
+		grid.getColumns().appendChild(new Column(lang.get("organization.grid.column.birthdate"),null,"75px"));
+		grid.getColumns().appendChild(new Column(lang.get("organization.grid.column.tax"),null,"100px"));
+		grid.getColumns().appendChild(new Column(lang.get("organization.grid.column.industry"),null,"100px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
 		grid.getColumns().getLastChild().setVisible(false);
 		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));

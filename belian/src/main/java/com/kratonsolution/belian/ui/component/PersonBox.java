@@ -15,6 +15,8 @@ import org.zkoss.zul.Hbox;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.ui.general.person.PersonFormContent;
+import com.kratonsolution.belian.ui.general.person.PersonWindow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 import lombok.Getter;
@@ -66,10 +68,13 @@ public class PersonBox extends Hbox implements PersonRegistrationListener
 			@Override
 			public void onEvent(Event arg0) throws Exception
 			{
-				PersonRegistration registration = new PersonRegistration();
-				registration.addListener(PersonBox.this);
-				registration.setPage(getPage());
-				registration.doModal();
+				PersonFormContent content = new PersonFormContent();
+				content.addListener(PersonBox.this);
+				
+				PersonWindow window = PersonWindow.injectInto(getPage());
+				window.removeGrid();
+				window.appendChild(content);
+				window.doModal();
 			}
 		});
 	}
@@ -102,5 +107,11 @@ public class PersonBox extends Hbox implements PersonRegistrationListener
 			identity.setSelectedItem(item);
 			identity.getAttributes().put(person.getIdentity()+" - "+person.getName(), person.getId());
 		}
+	}
+
+	@Override
+	public void fireEvent(Person model)
+	{
+		setPerson(model);
 	}
 }

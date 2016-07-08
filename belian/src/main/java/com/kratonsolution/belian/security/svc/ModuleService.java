@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.security.dm.Module;
 import com.kratonsolution.belian.security.dm.ModuleEventListener;
 import com.kratonsolution.belian.security.dm.ModuleRepository;
@@ -61,9 +62,28 @@ public class ModuleService
 	}
 	
 	@Secured("ROLE_MODULE_READ")
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
+	public List<Module> findAll(int pageindex,int itemSize,String key)
+	{
+		if(Strings.isNullOrEmpty(key))
+			return findAll(pageindex, itemSize);
+		else
+			return repository.findAll(new PageRequest(pageindex, itemSize),key);
+	}
+	
+	@Secured("ROLE_MODULE_READ")
 	public int size()
 	{
 		return Long.valueOf(repository.count()).intValue();
+	}
+	
+	@Secured("ROLE_MODULE_READ")
+	public int size(String key)
+	{
+		if(Strings.isNullOrEmpty(key))
+			return size();
+		else
+			return repository.count(key).intValue();
 	}
 	
 	@Secured("ROLE_MODULE_CREATE")

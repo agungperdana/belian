@@ -12,7 +12,6 @@ import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
@@ -31,6 +30,8 @@ import com.kratonsolution.belian.ui.general.party.ContactAddWindow;
 import com.kratonsolution.belian.ui.general.party.ContactInformation;
 import com.kratonsolution.belian.ui.general.party.PartyInformation;
 import com.kratonsolution.belian.ui.general.party.PartyToolbar;
+import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -43,13 +44,15 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 {	
 	private OrganizationService service = Springs.get(OrganizationService.class);
 
-	private Textbox name = new Textbox();
+	private Textbox code = Components.mandatoryTextBox(false);
 
-	private Datebox date = new Datebox();
+	private Textbox name = Components.mandatoryTextBox(false);
+
+	private Datebox date = Components.currentDatebox();
 
 	private Textbox tax = new Textbox();
-	
-	private Listbox types = new Listbox();
+
+	private Listbox types = Components.newSelect();
 
 	private Row row;
 
@@ -75,9 +78,7 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				OrganizationWindow window = (OrganizationWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new OrganizationGridContent());
 			}
 		});
 
@@ -89,7 +90,8 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 
-				Organization org = service.findOne(RowUtils.string(row, 5));
+				Organization org = service.findOne(RowUtils.id(row));
+				org.setIdentity(code.getText());
 				org.setName(name.getText());
 				org.setBirthDate(DateTimes.sql(date.getValue()));
 				org.setTaxCode(tax.getText());
@@ -97,9 +99,7 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 
 				service.edit(org);
 
-				OrganizationWindow window = (OrganizationWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new OrganizationGridContent());
 			}
 		});
 	}
@@ -107,85 +107,76 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 	@Override
 	public void initForm()
 	{
-		Organization organization = service.findOne(RowUtils.string(row, 5));
+		Organization organization = service.findOne(RowUtils.id(row));
 		if(organization != null)
 		{
-			name.setConstraint("no empty");
+			code.setText(organization.getIdentity());
 			name.setText(organization.getName());
-			name.setWidth("300px");
-
-			date.setConstraint("no empty");
 			date.setValue(organization.getBirthDate());
-			date.setWidth("250px");
-
 			tax.setText(organization.getTaxCode());
-			tax.setWidth("300px");
+			types.appendItem(organization.getType().name(), organization.getType().name());
+			types.setSelectedIndex(0);
 			
-			types.setMold("select");
-			
-			for(IndustrySegmentation type:IndustrySegmentation.values())
-			{
-				Listitem listitem = new Listitem(type.name(),type.name());
-				types.appendChild(listitem);
-				if(type.name().equals(RowUtils.string(row, 4)))
-					types.setSelectedItem(listitem);
-			}
-
 			grid.appendChild(new Columns());
 			grid.getColumns().appendChild(new Column(null,null,"75px"));
 			grid.getColumns().appendChild(new Column());
 
+			Row row0 = new Row();
+			row0.appendChild(new Label(lang.get("organization.grid.column.code")));
+			row0.appendChild(code);
+			
 			Row row1 = new Row();
-			row1.appendChild(new Label("Name"));
+			row1.appendChild(new Label(lang.get("organization.grid.column.name")));
 			row1.appendChild(name);
-
+			
 			Row row2 = new Row();
-			row2.appendChild(new Label("Birth Date"));
+			row2.appendChild(new Label(lang.get("organization.grid.column.birthdate")));
 			row2.appendChild(date);
-
+			
 			Row row3 = new Row();
-			row3.appendChild(new Label("Tax Number"));
+			row3.appendChild(new Label(lang.get("organization.grid.column.tax")));
 			row3.appendChild(tax);
 			
 			Row row4 = new Row();
-			row4.appendChild(new Label("Industry"));
+			row4.appendChild(new Label(lang.get("organization.grid.column.industry")));
 			row4.appendChild(types);
-
+			
+			rows.appendChild(row0);
 			rows.appendChild(row1);
 			rows.appendChild(row2);
 			rows.appendChild(row3);
 			rows.appendChild(row4);
 		}
 	}
-	
+
 	public void initInformation()
 	{
 		appendChild(partyToolbar);
-		
+
 		partyToolbar.getAddress().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				appendChild(new AddressAddWindow(RowUtils.string(row,5)));
+				appendChild(new AddressAddWindow(RowUtils.id(row)));
 			}
 		});
-		
+
 		partyToolbar.getContact().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				appendChild(new ContactAddWindow(RowUtils.string(row,5)));
+				appendChild(new ContactAddWindow(RowUtils.id(row)));
 			}
 		});
 	}
-	
+
 	protected void initTree()
 	{
 		information = new PartyInformation("Organization Information");
 
-		final Organization organization = service.findOne(RowUtils.string(row, 5));
+		final Organization organization = service.findOne(RowUtils.id(row));
 		if(organization != null)
 		{
 			if(!organization.getAddresses().isEmpty())
@@ -193,17 +184,17 @@ public class OrganizationEditContent extends FormContent implements Refreshable
 				for(final Address address:organization.getAddresses())
 					information.addAddress(new AddressInformation(address, organization));
 			}
-		
+
 			if(!organization.getContacts().isEmpty())
 			{
 				for(final Contact contact:organization.getContacts())
 					information.addContact(new ContactInformation(contact, organization));
 			}
 		}
-		
+
 		appendChild(information);
 	}
-	
+
 	public void refresh()
 	{
 		removeChild(information);

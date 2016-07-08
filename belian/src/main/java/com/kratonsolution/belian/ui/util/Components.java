@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.ui.util;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Collection;
@@ -18,8 +19,11 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Timebox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.global.dm.Listable;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.ui.component.ProductBox;
@@ -29,8 +33,8 @@ import com.kratonsolution.belian.ui.component.ProductBox;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class Components
-{
+public class Components implements Serializable
+{	
 	public static final String string(Listbox listbox)
 	{
 		if(listbox != null && !listbox.getChildren().isEmpty() && listbox.getSelectedCount() > 0)
@@ -127,6 +131,26 @@ public class Components
 		return listbox;
 	}
 	
+	public static final Listbox companys()
+	{
+		Listbox listbox = new Listbox();
+		listbox.setMold("select");
+		listbox.setStyle("text-align:center;");
+		listbox.setWidth("300px");
+		
+		if(Springs.get(SessionUtils.class) != null)
+		{
+			for(Organization organization:Springs.get(SessionUtils.class).getOrganizations())
+			{
+				Listitem item = listbox.appendItem(organization.getLabel(), organization.getValue());
+				if(Springs.get(SessionUtils.class).getOrganization() != null && organization.getId().equals(Springs.get(SessionUtils.class).getOrganization().getId()))
+					listbox.setSelectedItem(item);
+			}
+		}
+			
+		return listbox;
+	}
+	
 	public static final Listbox fullSpanSelect(Collection<? extends Listable> collections,boolean setDefault)
 	{
 		Listbox listbox = new Listbox();
@@ -208,6 +232,18 @@ public class Components
 		Textbox textbox = new Textbox(text);
 		textbox.setWidth("100%");
 		textbox.setReadonly(true);
+		return textbox;
+	}
+	
+	public static final Textbox readOnlyTextBox(String text,boolean fullspan)
+	{
+		Textbox textbox = new Textbox(text);
+		textbox.setReadonly(true);
+		if(fullspan)
+			textbox.setWidth("100%");
+		else
+			textbox.setWidth("300px");
+		
 		return textbox;
 	}
 	
@@ -424,6 +460,25 @@ public class Components
 		datebox.setConstraint("no empty");
 		
 		return datebox;
+	}
+	
+	public static final Timebox currentTimebox()
+	{
+		Timebox time = new Timebox(new Date());
+		time.setWidth("150px");
+		time.setConstraint("no empty");
+		time.setFormat("HH:mm");
+		
+		return time;
+	}
+	
+	public static final Timebox timebox()
+	{
+		Timebox time = new Timebox();
+		time.setWidth("150px");
+		time.setFormat("HH:mm");
+		
+		return time;
 	}
 	
 	public static final Datebox currentDatebox()

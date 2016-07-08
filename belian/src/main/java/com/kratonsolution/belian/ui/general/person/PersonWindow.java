@@ -24,7 +24,7 @@ import com.kratonsolution.belian.ui.nav.IconBar;
  */
 public class PersonWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption("Person");
+	private final Caption caption = new Caption(lang.get("navbar.menu.general.person"));
 	
 	private PersonButton status = new PersonButton();
 	
@@ -40,7 +40,7 @@ public class PersonWindow extends AbstractWindow implements HasGrid,HasCreateFor
 	private PersonWindow()
 	{
 		super();
-		setWidth("600px");
+		setWidth("650px");
 	}
 	
 	protected void init()

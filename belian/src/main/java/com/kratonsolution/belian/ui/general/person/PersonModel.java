@@ -20,13 +20,21 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PersonModel implements ListModel<Person>
 {
-	private final PersonService controller = Springs.get(PersonService.class);
+	private PersonService controller = Springs.get(PersonService.class);
 	
 	private List<Person> data = new ArrayList<Person>();
 	
+	private String key;
+	
 	public PersonModel(int itemSize)
 	{
-		next(0, itemSize);
+		next(0, itemSize,null);
+	}
+	
+	public PersonModel(int itemSize,String key)
+	{
+		this.key = key;
+		next(0, itemSize,key);
 	}
 	
 	@Override
@@ -41,7 +49,7 @@ public class PersonModel implements ListModel<Person>
 	@Override
 	public int getSize()
 	{
-		return controller.size();
+		return controller.size(this.key);
 	}
 
 	@Override
@@ -58,9 +66,9 @@ public class PersonModel implements ListModel<Person>
 		
 	}
 
-	public void next(int pageIndex,int itemSize)
+	public void next(int pageIndex,int itemSize,String key)
 	{
 		data.clear();
-		data.addAll(controller.findAll(0, (itemSize*pageIndex)+itemSize));
+		data.addAll(controller.findAll(0, (itemSize*pageIndex)+itemSize,key));
 	}
 }

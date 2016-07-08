@@ -4,12 +4,12 @@
 package com.kratonsolution.belian.ui.inventory.product.price;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Caption;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
@@ -22,21 +22,20 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Vlayout;
 
-import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.Geographic;
-import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.inventory.dm.ProductFeature;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
 import com.kratonsolution.belian.inventory.dm.ProductPriceType;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.inventory.product.ProductEditContent;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -47,9 +46,9 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class PriceEditWindow extends AbstractWindow
 {
 	private SessionUtils utils = Springs.get(SessionUtils.class);
-	
+
 	private Language lang = Springs.get(Language.class);
-	
+
 	private Vlayout layout = new Vlayout();
 
 	private FormToolbar toolbar = new FormToolbar();
@@ -66,19 +65,23 @@ public class PriceEditWindow extends AbstractWindow
 
 	private Product product;
 
-	private Datebox from = new Datebox(new Date());
+	private Datebox from = Components.currentDatebox();
 
-	private Datebox to = new Datebox();
+	private Datebox to = Components.datebox();
 
-	private Doublebox price = new Doublebox();
+	private Doublebox price = Components.stdDoubleBox(0);
 
-	private Listbox currencys = new Listbox();
+	private Listbox currencys = Components.newSelect(currencyService.findAll(), true);
 
-	private Listbox types = new Listbox();
+	private Listbox types = Components.newSelect();
 
-	private Listbox geographics = new Listbox();
+	private Listbox geographics = Components.newSelect(geographicService.findAll(),false);
 
-	private Listbox partys = new Listbox();
+	private Listbox partys = Components.newSelect(partyService.findAll(),false);
+
+	private Listbox features = Components.newSelect();
+	
+	private Checkbox percent = Components.checkbox(false);
 
 	private String priceId;
 
@@ -123,19 +126,19 @@ public class PriceEditWindow extends AbstractWindow
 				productPrice.setPrice(BigDecimal.valueOf(price.getValue()));
 				productPrice.setType(ProductPriceType.valueOf(types.getSelectedItem().getValue().toString()));
 				productPrice.setCurrency(currencyService.findOne(currencys.getSelectedItem().getValue().toString()));
-				
+
 				if(geographics.getSelectedCount() > 0)
 					productPrice.setGeographic(geographicService.findOne(geographics.getSelectedItem().getValue().toString()));
-				
+
 				if(partys.getSelectedCount() > 0)
 					productPrice.setParty(partyService.findOne(partys.getSelectedItem().getValue().toString()));
-				
+
 				service.editPrice(productPrice);
-				
+
 				ProductEditContent parent = (ProductEditContent)getParent();
 				parent.refresh();
 				parent.setSelectedTab(4);
-				
+
 				onClose();
 			}
 		});
@@ -153,17 +156,14 @@ public class PriceEditWindow extends AbstractWindow
 	protected void initContent()
 	{
 		ProductPrice productPrice = service.findPrice(product, priceId);
-		
-		from.setConstraint("no empty");
+
+		for(ProductFeature feature:productPrice.getProduct().getFeatures())
+			features.appendItem(feature.getValue(), feature.getId());
+			
 		from.setValue(productPrice.getFrom());
 		to.setValue(productPrice.getTo());
-		price.setConstraint("no empty");
 		price.setValue(productPrice.getPrice().doubleValue());
-
-		types.setMold("select");
-		geographics.setMold("select");
-		currencys.setMold("select");
-		partys.setMold("select");
+		percent.setChecked(productPrice.isPercent());
 
 		for(ProductPriceType type:ProductPriceType.values())
 		{
@@ -172,64 +172,93 @@ public class PriceEditWindow extends AbstractWindow
 			if(type.equals(productPrice.getType()))
 				types.setSelectedItem(listitem);
 		}
-		
-		for(Geographic geographic:geographicService.findAll())
+
+		if(productPrice.getGeographic() != null)
 		{
-			Listitem listitem = new Listitem(geographic.getName(),geographic.getId());
-			geographics.appendChild(listitem);
-			
-			if(productPrice.getGeographic() != null && geographic.getId().equals(productPrice.getGeographic().getId()))
-				geographics.setSelectedItem(listitem);
+			for(Listitem item:geographics.getItems())
+			{
+				if(item.getValue().toString().equals(productPrice.getGeographic().getId()))
+				{
+					geographics.setSelectedItem(item);
+					break;
+				}
+			}
 		}
 		
-		for(Party party:partyService.findAll())
+		if(productPrice.getParty() != null)
 		{
-			Listitem listitem = new Listitem(party.getName(), party.getId());
-			partys.appendChild(listitem);
-			
-			if(productPrice.getParty() != null && productPrice.getParty().getId().equals(party.getId()))
-				partys.setSelectedItem(listitem);
+			for(Listitem item:partys.getItems())
+			{
+				if(item.getValue().toString().equals(productPrice.getParty().getId()))
+				{
+					partys.setSelectedItem(item);
+					break;
+				}
+			}
+		}
+
+		if(productPrice.getCurrency() != null)
+		{
+			for(Listitem item:currencys.getItems())
+			{
+				if(item.getValue().toString().equals(productPrice.getCurrency().getId()))
+				{
+					currencys.setSelectedItem(item);
+					break;
+				}
+			}
 		}
 		
-		for(Currency currency:currencyService.findAll())
+		if(productPrice.getFeature() != null)
 		{
-			Listitem listitem = new Listitem(currency.getCode(),currency.getId());
-			currencys.appendChild(listitem);
-			
-			if(currency.getId().equals(productPrice.getCurrency().getId()))
-				currencys.setSelectedItem(listitem);
+			for(Listitem item:features.getItems())
+			{
+				if(item.getValue().toString().equals(productPrice.getFeature().getId()))
+				{
+					features.setSelectedItem(item);
+					break;
+				}
+			}
 		}
-		
+
 		content.getColumns().appendChild(new Column(null,null,"100px"));
 		content.getColumns().appendChild(new Column());
-		
+
 		Row row1 = new Row();
-		row1.appendChild(new Label(lang.get("inventory.product.detail.price.grid.from")));
+		row1.appendChild(new Label(lang.get("generic.grid.column.start")));
 		row1.appendChild(from);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label(lang.get("inventory.product.detail.price.grid.to")));
+		row2.appendChild(new Label(lang.get("generic.grid.column.end")));
 		row2.appendChild(to);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label(lang.get("inventory.product.detail.price.grid.price")));
+		row3.appendChild(new Label(lang.get("generic.grid.column.sellingprice")));
 		row3.appendChild(price);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label(lang.get("inventory.product.detail.price.grid.currency")));
-		row4.appendChild(currencys);
+		row4.appendChild(new Label(lang.get("generic.grid.column.persent")));
+		row4.appendChild(percent);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label(lang.get("inventory.product.detail.price.grid.type")));
-		row5.appendChild(types);
+		row5.appendChild(new Label(lang.get("generic.grid.column.currency")));
+		row5.appendChild(currencys);
 		
 		Row row6 = new Row();
-		row6.appendChild(new Label(lang.get("inventory.product.detail.price.grid.geo")));
-		row6.appendChild(geographics);
+		row6.appendChild(new Label(lang.get("generic.grid.column.type")));
+		row6.appendChild(types);
 		
 		Row row7 = new Row();
-		row7.appendChild(new Label(lang.get("inventory.product.detail.price.grid.party")));
-		row7.appendChild(partys);
+		row7.appendChild(new Label(lang.get("generic.grid.column.feature")));
+		row7.appendChild(features);
+		
+		Row row8 = new Row();
+		row8.appendChild(new Label(lang.get("generic.grid.column.geographic")));
+		row8.appendChild(geographics);
+		
+		Row row9 = new Row();
+		row9.appendChild(new Label(lang.get("generic.grid.column.customer")));
+		row9.appendChild(partys);
 		
 		content.setWidth("100%");
 		content.getRows().appendChild(row1);
@@ -239,7 +268,8 @@ public class PriceEditWindow extends AbstractWindow
 		content.getRows().appendChild(row5);
 		content.getRows().appendChild(row6);
 		content.getRows().appendChild(row7);
-
+		content.getRows().appendChild(row8);
+		content.getRows().appendChild(row9);
 	}
 
 	@Override

@@ -9,5 +9,5 @@ package com.kratonsolution.belian.inventory.dm;
  */
 public enum ProductFeatureType
 {
-	SIZE,WEIGH,HEIGH,COLOR,BPJS
+	SIZE,WEIGH,HEIGH,COLOR,BPJS,Program
 }

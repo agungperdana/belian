@@ -70,6 +70,13 @@ public class ProductPrice implements Serializable,Listable
 	@JoinColumn(name="fk_product")
 	private Product product;
 	
+	@ManyToOne
+	@JoinColumn(name="fk_product_feature")
+	private ProductFeature feature;
+	
+	@Column(name="is_percent")
+	private boolean percent;
+	
 	@Version
 	private Long version;
 	

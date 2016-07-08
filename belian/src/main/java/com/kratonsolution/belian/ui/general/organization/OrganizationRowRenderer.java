@@ -28,6 +28,7 @@ public class OrganizationRowRenderer implements RowRenderer<Organization>
 			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 			
 			row.appendChild(new Checkbox());
+			row.appendChild(new Label(data.getIdentity()));
 			row.appendChild(new Label(data.getName()));
 			row.appendChild(new Label(format.format(data.getBirthDate())));
 			row.appendChild(new Label(data.getTaxCode()));

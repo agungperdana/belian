@@ -7,6 +7,7 @@ import org.zkoss.zul.Grid;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Vlayout;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.global.svc.CodeGenerator;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -18,6 +19,8 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public abstract class FormContent extends Vlayout implements Removeable
 {
+	protected Language lang = Springs.get(Language.class);
+	
 	protected FormToolbar toolbar = new FormToolbar();
 	
 	protected Grid grid = new Grid();

@@ -3,8 +3,6 @@
  */
 package com.kratonsolution.belian.ui.general.party;
 
-import java.util.UUID;
-
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -110,7 +108,6 @@ public class AddressAddWindow extends Window
 				if(party != null)
 				{
 					Address add = new Address();
-					add.setId(UUID.randomUUID().toString());
 					add.setParty(party);
 					add.setAddress(address.getText());
 					add.setPostal(postal.getText());

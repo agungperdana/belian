@@ -3,8 +3,6 @@
  */
 package com.kratonsolution.belian.ui.inventory.product.feature;
 
-import java.util.Iterator;
-
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -87,15 +85,13 @@ public class FeatureTab implements TabedDisplay
 		grid.getColumns().appendChild(new Column("Type",null,"100px"));
 		grid.getColumns().appendChild(new Column("Note"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(4).setVisible(false);
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("3");
 
-		final Iterator<ProductFeature> iterator = this.product.getFeatures().iterator();
-		while (iterator.hasNext())
+		for(ProductFeature feature:this.product.getFeatures())
 		{
-			final ProductFeature feature = (ProductFeature) iterator.next();
-
 			Image remove = new Image("/icons/deletesmall.png");
+			remove.setAttribute("featureId",feature.getId());
 			remove.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 			{
 				@Override
@@ -108,8 +104,7 @@ public class FeatureTab implements TabedDisplay
 						{
 							if(event.getName().equals("onOK"))
 							{
-								iterator.remove();
-								service.edit(product);
+								service.removeFeature(product,remove.getAttribute("featureId").toString());
 								parent.refresh();
 								parent.setSelectedTab(1);
 							}

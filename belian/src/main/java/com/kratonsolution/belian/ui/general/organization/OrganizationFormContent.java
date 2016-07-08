@@ -22,6 +22,8 @@ import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -31,11 +33,13 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class OrganizationFormContent extends FormContent
 {	
-	private final OrganizationService service = Springs.get(OrganizationService.class);
+	private OrganizationService service = Springs.get(OrganizationService.class);
 		
-	private Textbox name = new Textbox();
+	private Textbox code = Components.mandatoryTextBox(false);
 	
-	private Datebox date = new Datebox();
+	private Textbox name = Components.mandatoryTextBox(false);
+	
+	private Datebox date = Components.currentDatebox();
 	
 	private Textbox tax = new Textbox();
 	
@@ -56,9 +60,7 @@ public class OrganizationFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				OrganizationWindow window = (OrganizationWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new OrganizationGridContent());
 			}
 		});
 		
@@ -74,6 +76,7 @@ public class OrganizationFormContent extends FormContent
 					throw new WrongValueException(date,"Date cannot be empty");
 			
 				Organization org = new Organization();
+				org.setIdentity(code.getText());
 				org.setName(name.getText());
 				org.setBirthDate(DateTimes.sql(date.getValue()));
 				org.setTaxCode(tax.getText());
@@ -81,9 +84,7 @@ public class OrganizationFormContent extends FormContent
 				
 				service.add(org);
 				
-				OrganizationWindow window = (OrganizationWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new OrganizationGridContent());
 			}
 		});
 	}
@@ -109,22 +110,27 @@ public class OrganizationFormContent extends FormContent
 		grid.getColumns().appendChild(new Column(null,null,"75px"));
 		grid.getColumns().appendChild(new Column());
 		
+		Row row0 = new Row();
+		row0.appendChild(new Label(lang.get("organization.grid.column.code")));
+		row0.appendChild(code);
+		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Name"));
+		row1.appendChild(new Label(lang.get("organization.grid.column.name")));
 		row1.appendChild(name);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Birth Date"));
+		row2.appendChild(new Label(lang.get("organization.grid.column.birthdate")));
 		row2.appendChild(date);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Tax Number"));
+		row3.appendChild(new Label(lang.get("organization.grid.column.tax")));
 		row3.appendChild(tax);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Industry"));
+		row4.appendChild(new Label(lang.get("organization.grid.column.industry")));
 		row4.appendChild(types);
 		
+		rows.appendChild(row0);
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);

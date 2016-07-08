@@ -5,6 +5,7 @@ package com.kratonsolution.belian.general.dm;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,6 +29,14 @@ public interface PersonRepository extends JpaRepository<Person, String>
 	@Query("FROM Person person WHERE person.identity LIKE :identity%")
 	public List<Person> findAllByIdentity(@Param("identity")String identity);
 	
-	@Query("FROM Person person WHERE person.identity LIKE %:name% OR person.name LIKE %:name% ORDER By person.name ASC")
-	public List<Person> findAll(@Param("name")String identityOrName);
+	@Query("FROM Person person WHERE "
+			+ "person.identity LIKE %:key% "
+			+ "OR person.name LIKE %:key% "
+			+ "ORDER By person.identity ASC,person.name ASC")
+	public List<Person> findAll(Pageable pageable,@Param("key")String key);
+	
+	@Query("SELECT COUNT(person) FROM Person person WHERE "
+			+ "person.identity LIKE %:key% "
+			+ "OR person.name LIKE %:key% ")
+	public Long count(@Param("key")String key);
 }

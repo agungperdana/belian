@@ -25,7 +25,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class NavigationMenu extends Window
 {	
-	private final Tabbox accordion = new Tabbox();
+	private Tabbox accordion = new Tabbox();
 
 	private Tabs tabs = new Tabs();
 
@@ -47,6 +47,7 @@ public class NavigationMenu extends Window
 		Map<String,Boolean> modules = utils.getAccessibleModules();
 		
 		init();
+			
 		initGeneral(modules);
 		initSecurity(modules);
 		initAccounting(modules);
@@ -56,9 +57,10 @@ public class NavigationMenu extends Window
 		initHR(modules);
 		initProcurement(modules);
 		initSales(modules);
-		initPharmacy(modules);
-		initClinic(modules);
-		initMedicalLab(modules);
+//		initPharmacy(modules);
+//		initClinic(modules);
+//		initMedicalLab(modules);
+		initEducation(modules);
 	}
 
 	protected void init()
@@ -383,6 +385,8 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
+		if(modules.containsKey("ROLE_DISCOUNT_READ"))
+			list.appendChild(new DiscountMenu());
 		if(modules.containsKey("ROLE_PAYMENT_METHOD_TYPE_READ"))
 			list.appendChild(new PaymentMethodTypeMenu());
 		if(modules.containsKey("ROLE_DEDUCTION_TYPE_READ"))
@@ -393,6 +397,34 @@ public class NavigationMenu extends Window
 		if(!list.getChildren().isEmpty())
 		{
 			tabs.appendChild(new Tab(language.get("navbar.menu.payment")));
+			Tabpanel hr = new Tabpanel();
+			hr.setStyle("overflow:auto");
+			hr.appendChild(list);
+			panels.appendChild(hr);
+		}
+	}
+	
+	protected void initEducation(Map<String,Boolean> modules)
+	{
+		Listbox list = new Listbox();
+		list.setStyle("border:none");
+		
+		if(modules.containsKey("ROLE_STUDY_TIME_READ"))
+			list.appendChild(new StudyTimeMenu());
+		if(modules.containsKey("ROLE_STUDY_DAY_READ"))
+			list.appendChild(new StudyDayMenu());
+		if(modules.containsKey("ROLE_STUDENT_READ"))
+			list.appendChild(new StudentMenu());
+		if(modules.containsKey("ROLE_STUDENT_REGISTRATION_READ"))
+			list.appendChild(new PaycheckMenu());
+		if(modules.containsKey("ROLE_STUDENT_ATTENDANCE_READ"))
+			list.appendChild(new PaycheckMenu());
+		if(modules.containsKey("ROLE_COURSE_SCHEDULE_READ"))
+			list.appendChild(new PaycheckMenu());
+
+		if(!list.getChildren().isEmpty())
+		{
+			tabs.appendChild(new Tab(language.get("navbar.menu.education")));
 			Tabpanel hr = new Tabpanel();
 			hr.setStyle("overflow:auto");
 			hr.appendChild(list);

@@ -40,6 +40,7 @@ import com.kratonsolution.belian.ui.inventory.product.feature.FeatureTab;
 import com.kratonsolution.belian.ui.inventory.product.price.PriceTab;
 import com.kratonsolution.belian.ui.inventory.product.supplier.SupplierTab;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -84,6 +85,10 @@ public class ProductEditContent extends FormContent implements Refreshable
 	{
 		super();
 		this.row = row;
+		this.tabbox = new Tabbox();
+		this.tabbox.appendChild(new Tabs());
+		this.tabbox.appendChild(new Tabpanels());
+		
 		initToolbar();
 		initForm();
 		initTab();
@@ -97,9 +102,7 @@ public class ProductEditContent extends FormContent implements Refreshable
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				ProductWindow window = (ProductWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new ProductGridContent());
 			}
 		});
 
@@ -138,9 +141,7 @@ public class ProductEditContent extends FormContent implements Refreshable
 
 				service.edit(product);
 
-				ProductWindow window = (ProductWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new ProductGridContent());
 			}
 		});
 	}
@@ -225,7 +226,7 @@ public class ProductEditContent extends FormContent implements Refreshable
 
 	protected void initTab()
 	{
-		Product product = service.findOne(RowUtils.string(row, 8));
+		Product product = service.findOne(RowUtils.id(row));
 
 		tabbox = new Tabbox();
 		tabbox.appendChild(new Tabs());

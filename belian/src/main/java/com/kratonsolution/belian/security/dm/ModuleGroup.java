@@ -22,5 +22,6 @@ public enum ModuleGroup
 	PHARMACY,
 	POS,
 	CLINIC,
-	MEDICALLAB
+	MEDICALLAB,
+	EDUCATION
 }

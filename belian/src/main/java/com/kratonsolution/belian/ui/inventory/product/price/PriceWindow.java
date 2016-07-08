@@ -4,12 +4,12 @@
 package com.kratonsolution.belian.ui.inventory.product.price;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Caption;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
@@ -25,11 +25,10 @@ import org.zkoss.zul.Vlayout;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.Geographic;
-import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.inventory.dm.ProductFeature;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
 import com.kratonsolution.belian.inventory.dm.ProductPriceType;
 import com.kratonsolution.belian.inventory.svc.ProductService;
@@ -66,19 +65,23 @@ public class PriceWindow extends AbstractWindow
 	
 	private Product product;
 	
-	private Datebox from = new Datebox(new Date());
+	private Datebox from = Components.currentDatebox();
 	
-	private Datebox to = new Datebox();
+	private Datebox to = Components.datebox();
 	
-	private Doublebox price = new Doublebox();
+	private Doublebox price = Components.stdDoubleBox(0);
 	
 	private Listbox currencys = Components.newSelect(currencyService.findAll(), true);
 	
-	private Listbox types = new Listbox();
+	private Listbox types = Components.newSelect();
 	
-	private Listbox geographics = new Listbox();
+	private Listbox geographics = Components.newSelect(geographicService.findAll(),false);
 	
-	private Listbox partys = new Listbox();
+	private Listbox partys = Components.newSelect(partyService.findAll(),false);
+	
+	private Listbox features = Components.newSelect();
+	
+	private Checkbox percent = Components.checkbox(false);
 	
 	public PriceWindow(Product product)
 	{
@@ -120,6 +123,16 @@ public class PriceWindow extends AbstractWindow
 				productPrice.setType(ProductPriceType.valueOf(types.getSelectedItem().getValue().toString()));
 				productPrice.setCurrency(currencyService.findOne(currencys.getSelectedItem().getValue().toString()));
 				
+				for(ProductFeature feature:product.getFeatures())
+				{
+					if(feature.getId().equals(Components.string(features)))
+					{
+						productPrice.setFeature(feature);
+						break;
+					}
+				}
+				
+				
 				if(geographics.getSelectedCount() > 0)
 					productPrice.setGeographic(geographicService.findOne(geographics.getSelectedItem().getValue().toString()));
 				
@@ -147,55 +160,57 @@ public class PriceWindow extends AbstractWindow
 	}
 	
 	protected void initContent()
-	{
-		from.setConstraint("no empty");
-		price.setConstraint("no empty");
+	{		
+		if(this.product != null)
+		{
+			for(ProductFeature feature:this.product.getFeatures())
+				features.appendItem(feature.getValue(), feature.getId());
+		}
 		
 		for(ProductPriceType type:ProductPriceType.values())
+		{
 			types.appendChild(new Listitem(type.display(utils.getLanguage()),type.name()));
-
-		types.setSelectedIndex(0);
-		types.setMold("select");
-		geographics.setMold("select");
-		currencys.setMold("select");
-		partys.setMold("select");
-		
-		for(Geographic geographic:geographicService.findAll())
-			geographics.appendChild(new Listitem(geographic.getName(),geographic.getId()));
-		
-		for(Party party:partyService.findAll())
-			partys.appendChild(new Listitem(party.getName(), party.getId()));
+			types.setSelectedIndex(0);
+		}
 		
 		content.getColumns().appendChild(new Column(null,null,"100px"));
 		content.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("From"));
+		row1.appendChild(new Label(lang.get("generic.grid.column.start")));
 		row1.appendChild(from);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("To"));
+		row2.appendChild(new Label(lang.get("generic.grid.column.end")));
 		row2.appendChild(to);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Price"));
+		row3.appendChild(new Label(lang.get("generic.grid.column.sellingprice")));
 		row3.appendChild(price);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Currency"));
-		row4.appendChild(currencys);
+		row4.appendChild(new Label(lang.get("generic.grid.column.persent")));
+		row4.appendChild(percent);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Type"));
-		row5.appendChild(types);
+		row5.appendChild(new Label(lang.get("generic.grid.column.currency")));
+		row5.appendChild(currencys);
 		
 		Row row6 = new Row();
-		row6.appendChild(new Label("For Area"));
-		row6.appendChild(geographics);
+		row6.appendChild(new Label(lang.get("generic.grid.column.type")));
+		row6.appendChild(types);
 		
 		Row row7 = new Row();
-		row7.appendChild(new Label("For Customer"));
-		row7.appendChild(partys);
+		row7.appendChild(new Label(lang.get("generic.grid.column.feature")));
+		row7.appendChild(features);
+		
+		Row row8 = new Row();
+		row8.appendChild(new Label(lang.get("generic.grid.column.geographic")));
+		row8.appendChild(geographics);
+		
+		Row row9 = new Row();
+		row9.appendChild(new Label(lang.get("generic.grid.column.customer")));
+		row9.appendChild(partys);
 		
 		content.setWidth("100%");
 		content.getRows().appendChild(row1);
@@ -205,6 +220,8 @@ public class PriceWindow extends AbstractWindow
 		content.getRows().appendChild(row5);
 		content.getRows().appendChild(row6);
 		content.getRows().appendChild(row7);
+		content.getRows().appendChild(row8);
+		content.getRows().appendChild(row9);
 	}
 	
 	@Override

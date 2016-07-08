@@ -6,6 +6,7 @@ package com.kratonsolution.belian.ui.general.person;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
@@ -15,9 +16,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -27,9 +28,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PersonGridContent extends GridContent
 {
-	private final PersonService service = Springs.get(PersonService.class);
-	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
+	private PersonService service = Springs.get(PersonService.class);
 	
 	public PersonGridContent()
 	{
@@ -40,14 +39,14 @@ public class PersonGridContent extends GridContent
 	
 	protected void initToolbar()
 	{
-		gridToolbar.setParent(this);
+		appendChild(gridToolbar);
+		
 		gridToolbar.getRefresh().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				refresh(new PersonModel(utils.getRowPerPage()));
+				Flow.next(getParent(), new PersonGridContent());
 			}
 		});
 		
@@ -153,11 +152,23 @@ public class PersonGridContent extends GridContent
 	
 	protected void initGrid()
 	{
+		filter.setPlaceholder("Type identity or name to filter");
+		filter.addEventListener(Events.ON_CHANGING, new EventListener<InputEvent>()
+		{
+			@Override
+			public void onEvent(InputEvent input) throws Exception
+			{
+				refresh(new PersonModel(utils.getRowPerPage(),input.getValue()));
+			}
+		});
+		
+		appendChild(filter);
+		appendChild(grid);
+		
 		final PersonModel model = new PersonModel(utils.getRowPerPage());
 		
-		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No person data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new PersonRowRenderer());
 		grid.setPagingPosition("both");
@@ -166,14 +177,14 @@ public class PersonGridContent extends GridContent
 		grid.appendChild(new Columns());
 		
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Identity",null,"85px"));
-		grid.getColumns().appendChild(new Column("Name",null,"125px"));
-		grid.getColumns().appendChild(new Column("Birth Date",null,"75px"));
-		grid.getColumns().appendChild(new Column("Gender",null,"75px"));
-		grid.getColumns().appendChild(new Column("Status",null,"75px"));
-		grid.getColumns().appendChild(new Column("Tax",null,"100px"));
+		grid.getColumns().appendChild(new Column(lang.get("person.grid.column.identity"),null,"125px"));
+		grid.getColumns().appendChild(new Column(lang.get("person.grid.column.name"),null,"125px"));
+		grid.getColumns().appendChild(new Column(lang.get("person.grid.column.birthdate"),null,"75px"));
+		grid.getColumns().appendChild(new Column(lang.get("person.grid.column.gender"),null,"75px"));
+		grid.getColumns().appendChild(new Column(lang.get("person.grid.column.marital"),null,"75px"));
+		grid.getColumns().appendChild(new Column(lang.get("person.grid.column.tax"),null,"100px"));
 		grid.getColumns().appendChild(new Column(null,null,"0px"));
-		grid.getColumns().getChildren().get(7).setVisible(false);
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("2");
 		grid.appendChild(getFoot(8));
 		
@@ -182,7 +193,7 @@ public class PersonGridContent extends GridContent
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), 8);
+				model.next(event.getActivePage(), utils.getRowPerPage(),filter.getText());
 				grid.setModel(model);
 				refresh(model);
 			}

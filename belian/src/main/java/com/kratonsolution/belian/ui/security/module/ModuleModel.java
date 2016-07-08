@@ -24,9 +24,17 @@ public class ModuleModel implements ListModel<Module>
 	
 	private List<Module> data = new ArrayList<Module>();
 	
+	private String key;
+	
 	public ModuleModel(int itemSize)
 	{
-		next(0, itemSize);
+		next(0, itemSize,null);
+	}
+	
+	public ModuleModel(int itemSize,String key)
+	{
+		this.key = key;
+		next(0, itemSize,key);
 	}
 	
 	@Override
@@ -41,7 +49,7 @@ public class ModuleModel implements ListModel<Module>
 	@Override
 	public int getSize()
 	{
-		return controller.size();
+		return controller.size(this.key);
 	}
 
 	@Override
@@ -54,9 +62,9 @@ public class ModuleModel implements ListModel<Module>
 	{
 	}
 
-	public void next(int pageIndex,int itemSize)
+	public void next(int pageIndex,int itemSize,String key)
 	{
 		data.clear();
-		data.addAll(controller.findAll(0, (itemSize*pageIndex)+itemSize));
+		data.addAll(controller.findAll(0, (itemSize*pageIndex)+itemSize,this.key));
 	}
 }

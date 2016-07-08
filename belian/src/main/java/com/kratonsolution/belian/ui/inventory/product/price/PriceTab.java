@@ -96,11 +96,12 @@ public class PriceTab implements TabedDisplay
 		grid.getColumns().appendChild(new Column(lang.get("inventory.product.detail.price.grid.to"),null,"85px"));
 		grid.getColumns().appendChild(new Column(lang.get("inventory.product.detail.price.grid.price"),null,"125px"));
 		grid.getColumns().appendChild(new Column(lang.get("inventory.product.detail.price.grid.type"),null,"100px"));
+		grid.getColumns().appendChild(new Column(lang.get("inventory.product.detail.price.grid.feature"),null,"100px"));
 		grid.getColumns().appendChild(new Column(lang.get("inventory.product.detail.price.grid.geo"),null,"100px"));
 		grid.getColumns().appendChild(new Column(lang.get("inventory.product.detail.price.grid.party"),null,"100px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
 		grid.getColumns().getLastChild().setVisible(false);
-		grid.setSpan("6");
+		grid.setSpan("4");
 
 		final Iterator<ProductPrice> iterator = this.product.getPrices().iterator();
 		while (iterator.hasNext())
@@ -134,8 +135,9 @@ public class PriceTab implements TabedDisplay
 			row.appendChild(remove);
 			row.appendChild(new Label(DateTimes.format(price.getFrom())));
 			row.appendChild(new Label(DateTimes.format(price.getTo())));
-			row.appendChild(new Label(Numbers.format(price.getPrice())));
+			row.appendChild(new Label(Numbers.format(price.getPrice())+(price.isPercent()?"%":"")));
 			row.appendChild(new Label(price.getType().display(utils.getLanguage())));
+			row.appendChild(new Label(Objects.notNull(price.getFeature())?price.getFeature().getValue():""));
 			row.appendChild(new Label(Objects.notNull(price.getGeographic())?price.getGeographic().getName():""));
 			row.appendChild(new Label(Objects.notNull(price.getParty())?price.getParty().getName():""));
 			row.appendChild(new Label(price.getId()));

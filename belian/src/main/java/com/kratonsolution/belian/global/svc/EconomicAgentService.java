@@ -32,19 +32,19 @@ public class EconomicAgentService
 	@Autowired
 	private List<EconomicAgentRoleEventListener> listeners;
 	
-	@Secured("ROLE_PARTY_READ")
+	@Secured({"ROLE_PARTY_READ","ROLE_ORGANIZATION_READ","ROLE_PERSON_READ"})
 	public Party findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 	
-	@Secured({"ROLE_PARTY_READ","ROLE_PRODUCT_UPDATE"})
+	@Secured({"ROLE_PARTY_READ","ROLE_ORGANIZATION_READ","ROLE_PERSON_READ","ROLE_PRODUCT_UPDATE"})
 	public List<Party> findAll()
 	{
 		return repository.findAll();
 	}
 	
-	@Secured("ROLE_PARTY_READ")
+	@Secured({"ROLE_PARTY_READ","ROLE_ORGANIZATION_READ","ROLE_PERSON_READ"})
 	public List<Party> findAll(String name)
 	{
 		if(!Strings.isNullOrEmpty(name))
@@ -53,55 +53,54 @@ public class EconomicAgentService
 			return repository.findAll();
 	}
 	
-	@Secured("ROLE_PARTY_READ")
+	@Secured({"ROLE_PARTY_READ","ROLE_ORGANIZATION_READ","ROLE_PERSON_READ"})
 	public List<Party> findAllExcept(String id)
 	{
 		return repository.findAllExcept(id);
 	}
 	
-	@Secured("ROLE_PARTY_READ")
+	@Secured({"ROLE_PARTY_READ","ROLE_ORGANIZATION_READ","ROLE_PERSON_READ"})
 	public List<Party> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
 	}
 	
-	@Secured("ROLE_PARTY_READ")
+	@Secured({"ROLE_PARTY_READ","ROLE_ORGANIZATION_READ","ROLE_PERSON_READ"})
 	public List<Party> findAllByRolesTypeName(String name)
 	{
 		return null;
 	}
 	
-	@Secured("ROLE_PARTY_READ")
+	@Secured({"ROLE_PARTY_READ","ROLE_ORGANIZATION_READ","ROLE_PERSON_READ"})
 	public List<Party> findByRoleAndParty(String name,String responsibleTo)
 	{
-//		return repository.findByRoleAndParty(name, responsibleTo);
 		return null;
 	}
 	
-	@Secured("ROLE_PARTY_READ")
+	@Secured({"ROLE_PARTY_READ","ROLE_ORGANIZATION_READ","ROLE_PERSON_READ"})
 	public int size()
 	{
 		return Long.valueOf(repository.count()).intValue();
 	}
 	
-	@Secured("ROLE_PARTY_UPDATE")
+	@Secured({"ROLE_PARTY_UPDATE","ROLE_ORGANIZATION_UPDATE","ROLE_PERSON_UPDATE"})
 	public void edit(Party party)
 	{
-		repository.saveAndFlush(party);
+		repository.save(party);
 	}
 	
-	@Secured("ROLE_PARTY_UPDATE")
+	@Secured({"ROLE_PARTY_UPDATE","ROLE_ORGANIZATION_UPDATE","ROLE_PERSON_UPDATE"})
 	public void addRole(PartyRole role)
 	{
 	}
 	
-	@Secured("ROLE_PARTY_UPDATE")
+	@Secured({"ROLE_PARTY_UPDATE","ROLE_ORGANIZATION_UPDATE","ROLE_PERSON_UPDATE"})
 	public void deleteRole(Party agent,PartyRole partyRole)
 	{
 
 	}
 	
-	@Secured("ROLE_PARTY_DELETE")
+	@Secured({"ROLE_PARTY_DELETE","ROLE_ORGANIZATION_DELETE","ROLE_PERSON_DELETE"})
 	public void delete(String id)
 	{
 		repository.delete(id);

@@ -94,15 +94,18 @@ public class PersonEditContent extends FormContent implements Refreshable
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,"Name cannot be empty");
 
-				Person person = service.findOne(RowUtils.string(row, 7));
-				person.setIdentity(identity.getText());
-				person.setName(name.getText());
-				person.setBirthDate(DateTimes.sql(date.getValue()));
-				person.setTaxCode(tax.getText());
-				person.setGender(Gender.valueOf(genders.getSelectedItem().getValue().toString()));
-				person.setMaritalStatus(MaritalStatus.valueOf(maritals.getSelectedItem().getValue().toString()));
+				Person person = service.findOne(RowUtils.id(row));
+				if(person != null)
+				{
+					person.setIdentity(identity.getText());
+					person.setName(name.getText());
+					person.setBirthDate(DateTimes.sql(date.getValue()));
+					person.setTaxCode(tax.getText());
+					person.setGender(Gender.valueOf(genders.getSelectedItem().getValue().toString()));
+					person.setMaritalStatus(MaritalStatus.valueOf(maritals.getSelectedItem().getValue().toString()));
 
-				service.edit(person);
+					service.edit(person);
+				}
 
 				Flow.next(getParent(), new PersonGridContent());
 			}
@@ -112,7 +115,7 @@ public class PersonEditContent extends FormContent implements Refreshable
 	@Override
 	public void initForm()
 	{
-		Person person = service.findOne(RowUtils.string(row, 7));
+		Person person = service.findOne(RowUtils.id(row));
 		if(person != null)
 		{
 			identity.setText(person.getIdentity());
@@ -148,42 +151,42 @@ public class PersonEditContent extends FormContent implements Refreshable
 				maritals.setSelectedIndex(1);
 			else
 				maritals.setSelectedIndex(2);
-				
-			grid.appendChild(new Columns());
-			grid.getColumns().appendChild(new Column(null,null,"75px"));
-			grid.getColumns().appendChild(new Column());
-
-			Row row0 = new Row();
-			row0.appendChild(new Label("Identity"));
-			row0.appendChild(identity);
-			
-			Row row1 = new Row();
-			row1.appendChild(new Label("Name"));
-			row1.appendChild(name);
-			
-			Row row2 = new Row();
-			row2.appendChild(new Label("Birth Date"));
-			row2.appendChild(date);
-			
-			Row row3 = new Row();
-			row3.appendChild(new Label("Tax Number"));
-			row3.appendChild(tax);
-			
-			Row row4 = new Row();
-			row4.appendChild(new Label("Gender"));
-			row4.appendChild(genders);
-			
-			Row row5 = new Row();
-			row5.appendChild(new Label("Status"));
-			row5.appendChild(maritals);
-			
-			rows.appendChild(row0);
-			rows.appendChild(row1);
-			rows.appendChild(row2);
-			rows.appendChild(row3);
-			rows.appendChild(row4);
-			rows.appendChild(row5);
 		}
+		
+		grid.appendChild(new Columns());
+		grid.getColumns().appendChild(new Column(null,null,"110px"));
+		grid.getColumns().appendChild(new Column());
+
+		Row row0 = new Row();
+		row0.appendChild(new Label(lang.get("person.grid.column.identity")));
+		row0.appendChild(identity);
+		
+		Row row1 = new Row();
+		row1.appendChild(new Label(lang.get("person.grid.column.name")));
+		row1.appendChild(name);
+		
+		Row row2 = new Row();
+		row2.appendChild(new Label(lang.get("person.grid.column.birthdate")));
+		row2.appendChild(date);
+		
+		Row row3 = new Row();
+		row3.appendChild(new Label(lang.get("person.grid.column.tax")));
+		row3.appendChild(tax);
+		
+		Row row4 = new Row();
+		row4.appendChild(new Label(lang.get("person.grid.column.gender")));
+		row4.appendChild(genders);
+		
+		Row row5 = new Row();
+		row5.appendChild(new Label(lang.get("person.grid.column.marital")));
+		row5.appendChild(maritals);
+		
+		rows.appendChild(row0);
+		rows.appendChild(row1);
+		rows.appendChild(row2);
+		rows.appendChild(row3);
+		rows.appendChild(row4);
+		rows.appendChild(row5);
 	}
 
 	public void initInformation()
@@ -195,7 +198,7 @@ public class PersonEditContent extends FormContent implements Refreshable
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				appendChild(new AddressAddWindow(RowUtils.string(row,6)));
+				appendChild(new AddressAddWindow(RowUtils.id(row)));
 			}
 		});
 
@@ -204,7 +207,7 @@ public class PersonEditContent extends FormContent implements Refreshable
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				appendChild(new ContactAddWindow(RowUtils.string(row,6)));
+				appendChild(new ContactAddWindow(RowUtils.id(row)));
 			}
 		});
 	}
@@ -213,7 +216,7 @@ public class PersonEditContent extends FormContent implements Refreshable
 	{
 		information = new PartyInformation("Person Information");
 
-		final Person person = service.findOne(RowUtils.string(row, 7));
+		final Person person = service.findOne(RowUtils.id(row));
 		if(person != null)
 		{
 			if(!person.getAddresses().isEmpty())

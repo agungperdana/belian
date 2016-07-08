@@ -5,6 +5,7 @@ package com.kratonsolution.belian.inventory.svc;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -189,6 +190,25 @@ public class ProductService
 		repository.saveAndFlush(product);
 	}
 	
+	@Secured("ROLE_PRODUCT_UPDATE")
+	public void edit(Product product,
+					 Collection<ProductCode> codes,
+					 Collection<ProductFeature> features,
+					 Collection<ProductComponent> components,
+					 Collection<ProductPrice> prices,
+					 Collection<ProductCost> costs,
+					 Collection<ProductSupplier> suppliers)
+	{
+		product.getCodes().clear();
+		product.getFeatures().clear();
+		product.getComponents().clear();
+		product.getPrices().clear();
+		product.getCosts().clear();
+		product.getSuppliers().clear();
+		
+		repository.saveAndFlush(product);
+	}
+	
 	@Secured("ROLE_PRODUCT_DELETE")
 	public void delete(@PathVariable String id)
 	{
@@ -261,6 +281,22 @@ public class ProductService
 		}
 		
 		return null;
+	}
+	
+	public void removeFeature(Product product,String feature)
+	{
+		Iterator<ProductFeature> iterator = product.getFeatures().iterator();
+		while (iterator.hasNext())
+		{
+			ProductFeature productFeature = (ProductFeature) iterator.next();
+			if(productFeature.getId().equals(feature))
+			{
+				iterator.remove();
+				break;
+			}
+		}
+		
+		edit(product);
 	}
 	
 	@Secured("ROLE_PRODUCT_UPDATE")
