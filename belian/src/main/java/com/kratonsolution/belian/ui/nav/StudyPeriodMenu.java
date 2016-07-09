@@ -10,7 +10,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.Language;
-import com.kratonsolution.belian.ui.education.studytime.StudyTimeWindow;
+import com.kratonsolution.belian.ui.education.studyperiod.StudyPeriodWindow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -18,35 +18,35 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class StudyTimeMenu extends Listitem
+public class StudyPeriodMenu extends Listitem
 {
 	private Language language = Springs.get(Language.class);
 	
-	public StudyTimeMenu()
+	public StudyPeriodMenu()
 	{
 		init();
 	}
 	
 	public void init()
 	{
-		setLabel(language.get("navbar.menu.education.time"));
-		setImage("/icons/studytime.png");
+		setLabel(language.get("navbar.menu.education.period"));
+		setImage("/icons/studyperiod.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
-			{
-				StudyTimeWindow window = null;
+			{				
+				StudyPeriodWindow window = null;
 				
 				for(Component component:getPage().getRoots())
 				{
-					if(component instanceof StudyTimeWindow)
-						window = (StudyTimeWindow)component;
+					if(component instanceof StudyPeriodWindow)
+						window = (StudyPeriodWindow)component;
 				}
 				
 				if(window == null)
-					window = StudyTimeWindow.injectInto(getPage());
+					window = StudyPeriodWindow.injectInto(getPage());
 				
 				else if(!window.isVisible())
 				{

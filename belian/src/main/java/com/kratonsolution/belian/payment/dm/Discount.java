@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.payment.dm;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.UUID;
@@ -13,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
+import com.kratonsolution.belian.global.dm.Listable;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +26,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="discount")
-public class Discount implements Serializable
+public class Discount implements Listable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -40,7 +41,7 @@ public class Discount implements Serializable
 	private String name;
 	
 	@Column(name="value")
-	private BigDecimal value;
+	private BigDecimal amount;
 
 	@Column(name="is_percent")
 	private boolean percent;
@@ -49,4 +50,16 @@ public class Discount implements Serializable
 	private Long version;
 
 	public Discount(){}
+
+	@Override
+	public String getLabel()
+	{
+		return getName();
+	}
+
+	@Override
+	public String getValue()
+	{
+		return getId();
+	}
 }

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.education.studyday;
+package com.kratonsolution.belian.ui.education.studyperiod;
 
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
@@ -11,11 +11,11 @@ import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
-import org.zkoss.zul.Timebox;
+import org.zkoss.zul.Textbox;
 
-import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.education.dm.StudyTime;
-import com.kratonsolution.belian.education.svc.StudyTimeService;
+import com.google.common.base.Strings;
+import com.kratonsolution.belian.education.dm.StudyPeriod;
+import com.kratonsolution.belian.education.svc.StudyPeriodService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
@@ -27,17 +27,17 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class StudyTimeEditContent extends FormContent
+public class StudyPeriodEditContent extends FormContent
 {	
-	private StudyTimeService service = Springs.get(StudyTimeService.class);
+	private StudyPeriodService service = Springs.get(StudyPeriodService.class);
 
-	private Timebox start = Components.currentTimebox();
+private Textbox name = Components.mandatoryTextBox(false);
 	
-	private Timebox end = Components.timebox();
+	private Textbox note = Components.stdTextBox(null,false);
 
 	private Row row;
 
-	public StudyTimeEditContent(Row row)
+	public StudyPeriodEditContent(Row row)
 	{
 		super();
 		this.row = row;
@@ -53,7 +53,7 @@ public class StudyTimeEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Flow.next(getParent(),new StudyTimeGridContent());
+				Flow.next(getParent(),new StudyPeriodGridContent());
 			}
 		});
 
@@ -62,22 +62,19 @@ public class StudyTimeEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				if(start.getValue() == null)
-					throw new WrongValueException(start,"start cannot be empty");
+				if(Strings.isNullOrEmpty(name.getText()))
+					throw new WrongValueException(name,"Name cannot be empty");
 				
-				if(end.getValue() == null)
-					throw new WrongValueException(end,"start cannot be empty");
-				
-				StudyTime time = service.findOne(RowUtils.id(row));
-				if(time != null)
+				StudyPeriod period = service.findOne(RowUtils.id(row));
+				if(period != null)
 				{				
-					time.setStart(DateTimes.time(start.getValue()));
-					time.setEnd(DateTimes.time(end.getValue()));
+					period.setName(name.getText());
+					period.setNote(note.getText());
 					
-					service.edit(time);
+					service.edit(period);
 				}
 
-				Flow.next(getParent(),new StudyTimeGridContent());
+				Flow.next(getParent(),new StudyPeriodGridContent());
 			}
 		});
 	}
@@ -85,11 +82,11 @@ public class StudyTimeEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		StudyTime time = service.findOne(RowUtils.id(row));
-		if(time != null)
+		StudyPeriod period = service.findOne(RowUtils.id(row));
+		if(period != null)
 		{
-			start.setValue(time.getStart());
-			end.setValue(time.getEnd());
+			name.setText(period.getName());
+			note.setText(period.getNote());
 		}
 
 		grid.appendChild(new Columns());
@@ -97,12 +94,12 @@ public class StudyTimeEditContent extends FormContent
 		grid.getColumns().appendChild(new Column());
 
 		Row row1 = new Row();
-		row1.appendChild(new Label(lang.get("generic.grid.column.start")));
-		row1.appendChild(start);
+		row1.appendChild(new Label(lang.get("generic.grid.column.name")));
+		row1.appendChild(name);
 
 		Row row2 = new Row();
-		row2.appendChild(new Label(lang.get("generic.grid.column.end")));
-		row2.appendChild(end);
+		row2.appendChild(new Label(lang.get("generic.grid.column.note")));
+		row2.appendChild(note);
 
 		rows.appendChild(row1);
 		rows.appendChild(row2);

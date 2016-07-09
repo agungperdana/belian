@@ -3,17 +3,14 @@
  */
 package com.kratonsolution.belian.education.dm;
 
-import java.sql.Time;
 import java.util.UUID;
 
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.global.dm.Listable;
 
 import lombok.Getter;
@@ -26,28 +23,29 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="study_time")
-@Cacheable
-public class StudyTime implements Listable
+@Table(name="study_period")
+public class StudyPeriod implements Listable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 
-	@Column(name="start")
-	private Time start;
-	
-	@Column(name="end")
-	private Time end;
-	
+	@Column(name="name",unique=true,nullable=false)
+	private String name;
+
+	@Column(name="note")
+	private String note;
+
 	@Version
 	private Long version;
-	
-	public StudyTime(){}
+
+	public StudyPeriod()
+	{
+	}
 
 	@Override
 	public String getLabel()
 	{
-		return DateTimes.format(start)+"-"+DateTimes.format(end);
+		return getName();
 	}
 
 	@Override

@@ -78,7 +78,7 @@ public class DiscountFormContent extends FormContent
 				discount.setStart(DateTimes.sql(start.getValue()));
 				discount.setEnd(DateTimes.sql(end.getValue()));
 				discount.setName(name.getText());
-				discount.setValue(BigDecimal.valueOf(value.doubleValue()));
+				discount.setAmount(BigDecimal.valueOf(value.doubleValue()));
 				discount.setPercent(percent.isChecked());
 				
 				service.add(discount);

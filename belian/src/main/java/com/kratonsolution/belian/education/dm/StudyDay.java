@@ -3,14 +3,15 @@
  */
 package com.kratonsolution.belian.education.dm;
 
-import java.io.Serializable;
 import java.util.UUID;
 
-import javax.persistence.Table;
-import javax.persistence.Version;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
+import com.kratonsolution.belian.global.dm.Listable;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +24,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="study_day")
-public class StudyDay implements Serializable
+public class StudyDay implements Listable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -53,4 +54,31 @@ public class StudyDay implements Serializable
 	private Long version;
 	
 	public StudyDay(){}
+
+	@Override
+	public String getLabel()
+	{
+		StringBuilder builder = new StringBuilder();
+		
+		if(isMonday())
+			builder.append("Senin,");
+		if(isTuesday())
+			builder.append("Selasa,");
+		if(isWednesday())
+			builder.append("Rabu,");
+		if(isThursday())
+			builder.append("Kamis,");
+		if(isFriday())
+			builder.append("Jum'at,");
+		if(isSaturday())
+			builder.append("Sabtu");
+	
+		return builder.toString();
+	}
+
+	@Override
+	public String getValue()
+	{
+		return getId();
+	}
 }

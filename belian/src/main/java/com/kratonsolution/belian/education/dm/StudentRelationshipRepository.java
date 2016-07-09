@@ -43,4 +43,11 @@ public interface StudentRelationshipRepository extends JpaRepository<StudentRela
 			+ "stu.student.party.id =:person "
 			+ "AND stu.organization.party.id =:company")
 	public StudentRelationship findOne(@Param("person")String person,@Param("company")String company);
+	
+
+	@Query("FROM StudentRelationship ship WHERE "
+			+ "(ship.student.party.identity LIKE %:key% "
+			+ "OR ship.student.party.name LIKE %:key%) "
+			+ "AND ship.organization.party.id IN(:company) ")
+	public List<StudentRelationship> findAll(@Param("company")List<String> company,@Param("key")String key);
 }

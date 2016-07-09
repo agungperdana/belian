@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.education.studytime;
+package com.kratonsolution.belian.ui.education.studyday;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,11 +1,12 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.education.studytime;
+package com.kratonsolution.belian.ui.education.courseregistration;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
@@ -15,7 +16,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.education.svc.StudyDayService;
+import com.kratonsolution.belian.education.svc.CourseRegistrationService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -24,11 +25,11 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class StudyDayGridContent extends GridContent
+public class CourseRegistrationGridContent extends GridContent
 {
-	private StudyDayService service = Springs.get(StudyDayService.class);
+	private CourseRegistrationService service = Springs.get(CourseRegistrationService.class);
 	
-	public StudyDayGridContent()
+	public CourseRegistrationGridContent()
 	{
 		super();
 		initToolbar();
@@ -44,7 +45,7 @@ public class StudyDayGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				refresh(new StudyDayModel(utils.getRowPerPage()));
+				refresh(new CourseRegistrationModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -53,7 +54,7 @@ public class StudyDayGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				StudyDayWindow window = (StudyDayWindow)getParent();
+				CourseRegistrationWindow window = (CourseRegistrationWindow)getParent();
 				window.removeGrid();
 				window.insertCreateForm();
 			}
@@ -129,7 +130,7 @@ public class StudyDayGridContent extends GridContent
 								}
 							}
 							
-							refresh(new StudyDayModel(utils.getRowPerPage()));
+							refresh(new CourseRegistrationModel(utils.getRowPerPage()));
 						}
 					}
 				});
@@ -148,35 +149,51 @@ public class StudyDayGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final StudyDayModel model = new StudyDayModel(utils.getRowPerPage());
+		filter.setPlaceholder("Type student identity/name or period to filter");
+		filter.addEventListener(Events.ON_CHANGING,new EventListener<InputEvent>()
+		{
+			@Override
+			public void onEvent(InputEvent input) throws Exception
+			{
+				refresh(new CourseRegistrationModel(utils.getRowPerPage(), input.getValue()));
+			}
+		});
 		
-		grid.setParent(this);
+		appendChild(filter);
+		appendChild(grid);
+		
+		final CourseRegistrationModel model = new CourseRegistrationModel(utils.getRowPerPage());
+		
 		grid.setHeight("80%");
 		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
-		grid.setRowRenderer(new StudyDayRowRenderer());
+		grid.setRowRenderer(new CourseRegistrationRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column(lang.get("navbar.menu.education.day"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.date"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("navbar.menu.education.student"),null,"135px"));
+		grid.getColumns().appendChild(new Column(lang.get("navbar.menu.education.period"),null,"100px"));
+		grid.getColumns().appendChild(new Column(lang.get("navbar.menu.education.day"),null,"100px"));
+		grid.getColumns().appendChild(new Column(lang.get("navbar.menu.education.time"),null,"100px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
 		grid.getColumns().getLastChild().setVisible(false);
-		grid.setSpan("1");
 		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
+		grid.setSpan("2");
 
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), utils.getRowPerPage());
+				model.next(event.getActivePage(), utils.getRowPerPage(),filter.getText());
 				grid.setModel(model);
 				refresh(model);
 			}
 		});
 		
-		refresh(new StudyDayModel(utils.getRowPerPage()));
+		refresh(new CourseRegistrationModel(utils.getRowPerPage()));
 	}
 }

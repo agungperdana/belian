@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.education.studytime;
+package com.kratonsolution.belian.ui.education.studyday;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -16,7 +16,6 @@ import com.kratonsolution.belian.education.dm.StudyDay;
 import com.kratonsolution.belian.education.svc.StudyDayService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Flow;
-import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -24,28 +23,25 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class StudyDayEditContent extends FormContent
+public class StudyDayFormContent extends FormContent
 {	
 	private StudyDayService service = Springs.get(StudyDayService.class);
-
+	
 	private Checkbox monday = new Checkbox();
-
+	
 	private Checkbox tuesday = new Checkbox();
-
+	
 	private Checkbox wednesday = new Checkbox();
-
+	
 	private Checkbox thursday = new Checkbox();
-
+	
 	private Checkbox friday = new Checkbox();
-
+	
 	private Checkbox saturday = new Checkbox();
-
-	private Row row;
-
-	public StudyDayEditContent(Row row)
+	
+	public StudyDayFormContent()
 	{
 		super();
-		this.row = row;
 		initToolbar();
 		initForm();
 	}
@@ -61,25 +57,23 @@ public class StudyDayEditContent extends FormContent
 				Flow.next(getParent(),new StudyDayGridContent());
 			}
 		});
-
+		
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				StudyDay day = service.findOne(RowUtils.id(row));
-				if(day != null)
-				{
-					day.setMonday(monday.isChecked());
-					day.setTuesday(tuesday.isChecked());
-					day.setWednesday(wednesday.isChecked());
-					day.setThursday(thursday.isChecked());
-					day.setFriday(friday.isChecked());
-					day.setSaturday(saturday.isChecked());
-					
-					service.add(day);
-				}
-
+				
+				StudyDay day = new StudyDay();
+				day.setMonday(monday.isChecked());
+				day.setTuesday(tuesday.isChecked());
+				day.setWednesday(wednesday.isChecked());
+				day.setThursday(thursday.isChecked());
+				day.setFriday(friday.isChecked());
+				day.setSaturday(saturday.isChecked());
+				
+				service.add(day);
+				
 				Flow.next(getParent(),new StudyDayGridContent());
 			}
 		});
@@ -88,21 +82,10 @@ public class StudyDayEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		StudyDay day = service.findOne(RowUtils.id(row));
-		if(day != null)
-		{
-			monday.setChecked(day.isMonday());
-			tuesday.setChecked(day.isTuesday());
-			wednesday.setChecked(day.isWednesday());
-			thursday.setChecked(day.isThursday());
-			friday.setChecked(day.isFriday());
-			saturday.setChecked(day.isSaturday());
-		}
-
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
-
+		
 		Row row1 = new Row();
 		row1.appendChild(new Label(lang.get("generic.grid.column.monday")));
 		row1.appendChild(monday);

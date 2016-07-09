@@ -22,29 +22,29 @@ import com.kratonsolution.belian.ui.nav.IconBar;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class StudyDayWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
+public class StudyTimeWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private Caption caption = new Caption(lang.get("navbar.menu.education.day"));
+	private Caption caption = new Caption(lang.get("navbar.menu.education.time"));
 	
-	private StudyDayButton status = new StudyDayButton();
+	private StudyTimeButton status = new StudyTimeButton();
 	
-	public static StudyDayWindow injectInto(Page page)
+	public static StudyTimeWindow injectInto(Page page)
 	{
-		StudyDayWindow window = new StudyDayWindow();
+		StudyTimeWindow window = new StudyTimeWindow();
 		window.setPage(page);
 		window.init();
 		
 		return window;
 	}
 	
-	private StudyDayWindow()
+	private StudyTimeWindow()
 	{
 		super();
 	}
 	
 	protected void init()
 	{
-		caption.setImage("/icons/studyday.png");
+		caption.setImage("/icons/studytime.png");
 		appendChild(caption);
 		insertGrid();
 		insertStatus();
@@ -92,7 +92,7 @@ public class StudyDayWindow extends AbstractWindow implements HasGrid,HasCreateF
 	@Override
 	public void insertEditForm(Row row)
 	{
-		appendChild(new StudyDayEditContent(row));
+		appendChild(new StudyTimeEditContent(row));
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class StudyDayWindow extends AbstractWindow implements HasGrid,HasCreateF
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof StudyDayEditContent)
+			if(component instanceof StudyTimeEditContent)
 			{
 				removeChild(component);
 				break;
@@ -111,7 +111,7 @@ public class StudyDayWindow extends AbstractWindow implements HasGrid,HasCreateF
 	@Override
 	public void insertCreateForm()
 	{
-		appendChild(new StudyDayFormContent());
+		appendChild(new StudyTimeFormContent());
 	}
 
 	@Override
@@ -119,7 +119,7 @@ public class StudyDayWindow extends AbstractWindow implements HasGrid,HasCreateF
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof StudyDayFormContent)
+			if(component instanceof StudyTimeFormContent)
 			{
 				removeChild(component);
 				break;
@@ -130,7 +130,7 @@ public class StudyDayWindow extends AbstractWindow implements HasGrid,HasCreateF
 	@Override
 	public void insertGrid()
 	{
-		appendChild(new StudyDayGridContent());
+		appendChild(new StudyTimeGridContent());
 	}
 
 	@Override
@@ -138,7 +138,7 @@ public class StudyDayWindow extends AbstractWindow implements HasGrid,HasCreateF
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof StudyDayGridContent)
+			if(component instanceof StudyTimeGridContent)
 			{
 				removeChild(component);
 				break;

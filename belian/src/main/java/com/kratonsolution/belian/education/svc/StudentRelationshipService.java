@@ -83,6 +83,15 @@ public class StudentRelationshipService
 		return repository.findAll(new PageRequest(pageIndex, pageSize), utils.getOrganizationIds(),key);
 	}
 	
+	@Secured({"ROLE_STUDENT_READ","ROLE_SYSTEM_READ"})
+	public List<StudentRelationship> findAll(String key)
+	{
+		if(Strings.isNullOrEmpty(key))
+			return findAll();
+		
+		return repository.findAll(utils.getOrganizationIds(),key);
+	}
+	
 	@Secured({"ROLE_STUDENT_READ"})
 	public int getSize()
 	{

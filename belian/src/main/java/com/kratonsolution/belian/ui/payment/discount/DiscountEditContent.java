@@ -83,7 +83,7 @@ public class DiscountEditContent extends FormContent
 					discount.setStart(DateTimes.sql(start.getValue()));
 					discount.setEnd(DateTimes.sql(end.getValue()));
 					discount.setName(name.getText());
-					discount.setValue(BigDecimal.valueOf(value.doubleValue()));
+					discount.setAmount(BigDecimal.valueOf(value.doubleValue()));
 					discount.setPercent(percent.isChecked());
 					
 					service.add(discount);
@@ -103,7 +103,8 @@ public class DiscountEditContent extends FormContent
 			start.setValue(discount.getStart());
 			end.setValue(discount.getEnd());
 			name.setText(discount.getName());
-			value.setValue(discount.getValue().doubleValue());
+			value.setValue(discount.getAmount().doubleValue());
+			percent.setChecked(discount.isPercent());
 		}
 		
 		grid.appendChild(new Columns());

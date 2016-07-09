@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.ui.education.student;
 
+import java.util.Vector;
+
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -24,6 +26,8 @@ import com.kratonsolution.belian.education.svc.StudentRelationshipService;
 import com.kratonsolution.belian.general.dm.InternalOrganization;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.component.Listenable;
+import com.kratonsolution.belian.ui.component.ModelListener;
 import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.component.PersonBox;
 import com.kratonsolution.belian.ui.util.Components;
@@ -35,7 +39,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class StudentFormContent extends FormContent
+public class StudentFormContent extends FormContent implements Listenable<ModelListener<Student>>
 {	
 	private StudentRelationshipService service = Springs.get(StudentRelationshipService.class);
 
@@ -54,6 +58,8 @@ public class StudentFormContent extends FormContent
 	private Textbox school = Components.mandatoryTextBox(false);
 	
 	private Listbox sources = Components.newSelect();
+	
+	private Vector<ModelListener<Student>> listeners = new Vector<>();
 
 	public StudentFormContent()
 	{
@@ -109,6 +115,9 @@ public class StudentFormContent extends FormContent
 
 				service.add(relationship);
 				
+				for(ModelListener<Student> listener:listeners)
+					listener.fireEvent(student);
+				
 				Flow.next(getParent(),new StudentGridContent());
 			}
 		});
@@ -162,5 +171,11 @@ public class StudentFormContent extends FormContent
 		rows.appendChild(row5);
 		rows.appendChild(row6);
 		rows.appendChild(row7);
+	}
+
+	@Override
+	public void addListener(ModelListener<Student> listener)
+	{
+		listeners.add(listener);
 	}
 }

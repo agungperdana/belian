@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.education.studyday;
+package com.kratonsolution.belian.ui.education.courseregistration;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Page;
@@ -22,29 +22,31 @@ import com.kratonsolution.belian.ui.nav.IconBar;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class StudyTimeWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
+public class CourseRegistrationWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private Caption caption = new Caption(lang.get("navbar.menu.education.time"));
+	private Caption caption = new Caption(lang.get("navbar.menu.education.courseregistration"));
 	
-	private StudyTimeButton status = new StudyTimeButton();
+	private CourseRegistrationButton status = new CourseRegistrationButton();
 	
-	public static StudyTimeWindow injectInto(Page page)
+	public static CourseRegistrationWindow injectInto(Page page)
 	{
-		StudyTimeWindow window = new StudyTimeWindow();
+		CourseRegistrationWindow window = new CourseRegistrationWindow();
 		window.setPage(page);
 		window.init();
 		
 		return window;
 	}
 	
-	private StudyTimeWindow()
+	private CourseRegistrationWindow()
 	{
 		super();
+		setWidth("650px");
+		setHeight("575px");
 	}
 	
 	protected void init()
 	{
-		caption.setImage("/icons/studytime.png");
+		caption.setImage("/icons/course-registration.png");
 		appendChild(caption);
 		insertGrid();
 		insertStatus();
@@ -92,7 +94,7 @@ public class StudyTimeWindow extends AbstractWindow implements HasGrid,HasCreate
 	@Override
 	public void insertEditForm(Row row)
 	{
-		appendChild(new StudyTimeEditContent(row));
+		appendChild(new CourseRegistrationEditContent(row));
 	}
 
 	@Override
@@ -100,7 +102,7 @@ public class StudyTimeWindow extends AbstractWindow implements HasGrid,HasCreate
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof StudyTimeEditContent)
+			if(component instanceof CourseRegistrationEditContent)
 			{
 				removeChild(component);
 				break;
@@ -111,7 +113,7 @@ public class StudyTimeWindow extends AbstractWindow implements HasGrid,HasCreate
 	@Override
 	public void insertCreateForm()
 	{
-		appendChild(new StudyTimeFormContent());
+		appendChild(new CourseRegistrationFormContent());
 	}
 
 	@Override
@@ -119,7 +121,7 @@ public class StudyTimeWindow extends AbstractWindow implements HasGrid,HasCreate
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof StudyTimeFormContent)
+			if(component instanceof CourseRegistrationFormContent)
 			{
 				removeChild(component);
 				break;
@@ -130,7 +132,7 @@ public class StudyTimeWindow extends AbstractWindow implements HasGrid,HasCreate
 	@Override
 	public void insertGrid()
 	{
-		appendChild(new StudyTimeGridContent());
+		appendChild(new CourseRegistrationGridContent());
 	}
 
 	@Override
@@ -138,7 +140,7 @@ public class StudyTimeWindow extends AbstractWindow implements HasGrid,HasCreate
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof StudyTimeGridContent)
+			if(component instanceof CourseRegistrationGridContent)
 			{
 				removeChild(component);
 				break;

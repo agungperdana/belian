@@ -29,7 +29,7 @@ public class DiscountRowRenderer implements RowRenderer<Discount>
 			row.appendChild(new Label(DateTimes.format(data.getStart())));
 			row.appendChild(new Label(DateTimes.format(data.getEnd())));
 			row.appendChild(new Label(data.getName()));
-			row.appendChild(new Label(Numbers.format(data.getValue())+(data.isPercent()?"%":"")));
+			row.appendChild(new Label(Numbers.format(data.getAmount())+(data.isPercent()?"%":"")));
 			row.appendChild(new Label(data.getId()));
 		}
 	}

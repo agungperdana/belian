@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.education.studyday;
+package com.kratonsolution.belian.ui.education.studyperiod;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -15,7 +15,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.education.svc.StudyTimeService;
+import com.kratonsolution.belian.education.svc.StudyPeriodService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -24,11 +24,11 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class StudyTimeGridContent extends GridContent
+public class StudyPeriodGridContent extends GridContent
 {
-	private StudyTimeService service = Springs.get(StudyTimeService.class);
+	private StudyPeriodService service = Springs.get(StudyPeriodService.class);
 	
-	public StudyTimeGridContent()
+	public StudyPeriodGridContent()
 	{
 		super();
 		initToolbar();
@@ -44,7 +44,7 @@ public class StudyTimeGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				refresh(new StudyTimeModel(utils.getRowPerPage()));
+				refresh(new StudyPeriodModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -53,7 +53,7 @@ public class StudyTimeGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				StudyTimeWindow window = (StudyTimeWindow)getParent();
+				StudyPeriodWindow window = (StudyPeriodWindow)getParent();
 				window.removeGrid();
 				window.insertCreateForm();
 			}
@@ -129,7 +129,7 @@ public class StudyTimeGridContent extends GridContent
 								}
 							}
 							
-							refresh(new StudyTimeModel(utils.getRowPerPage()));
+							refresh(new StudyPeriodModel(utils.getRowPerPage()));
 						}
 					}
 				});
@@ -148,23 +148,24 @@ public class StudyTimeGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final StudyTimeModel model = new StudyTimeModel(utils.getRowPerPage());
+		final StudyPeriodModel model = new StudyPeriodModel(utils.getRowPerPage());
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
 		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
-		grid.setRowRenderer(new StudyTimeRowRenderer());
+		grid.setRowRenderer(new StudyPeriodRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.start"),null,"85px"));
-		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.end"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.name"),null,"185px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.note"),null,"85px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
 		grid.getColumns().getLastChild().setVisible(false);
 		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
+		grid.setSpan("2");
 
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
@@ -177,6 +178,6 @@ public class StudyTimeGridContent extends GridContent
 			}
 		});
 		
-		refresh(new StudyTimeModel(utils.getRowPerPage()));
+		refresh(new StudyPeriodModel(utils.getRowPerPage()));
 	}
 }

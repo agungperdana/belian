@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.education.studyday;
+package com.kratonsolution.belian.ui.education.studytime;
 
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Label;

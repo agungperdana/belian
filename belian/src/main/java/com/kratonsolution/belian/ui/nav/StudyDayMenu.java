@@ -10,7 +10,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.Language;
-import com.kratonsolution.belian.ui.education.studytime.StudyDayWindow;
+import com.kratonsolution.belian.ui.education.studyday.StudyDayWindow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**

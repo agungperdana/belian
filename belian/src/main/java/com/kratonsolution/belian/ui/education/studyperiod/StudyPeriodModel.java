@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.education.studyday;
+package com.kratonsolution.belian.ui.education.studyperiod;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +9,8 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
-import com.kratonsolution.belian.education.dm.StudyTime;
-import com.kratonsolution.belian.education.svc.StudyTimeService;
+import com.kratonsolution.belian.education.dm.StudyPeriod;
+import com.kratonsolution.belian.education.svc.StudyPeriodService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -18,19 +18,19 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class StudyTimeModel implements ListModel<StudyTime>
+public class StudyPeriodModel implements ListModel<StudyPeriod>
 {
-	private StudyTimeService service = Springs.get(StudyTimeService.class);
+	private StudyPeriodService service = Springs.get(StudyPeriodService.class);
 	
-	private List<StudyTime> data = new ArrayList<StudyTime>();
+	private List<StudyPeriod> data = new ArrayList<StudyPeriod>();
 	
-	public StudyTimeModel(int itemSize)
+	public StudyPeriodModel(int itemSize)
 	{
 		next(0, itemSize);
 	}
 	
 	@Override
-	public StudyTime getElementAt(int index)
+	public StudyPeriod getElementAt(int index)
 	{
 		if(index >= data.size())
 			return null;
