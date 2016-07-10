@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -14,6 +15,7 @@ import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
@@ -26,16 +28,23 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
+import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.education.dm.CourseDiscount;
+import com.kratonsolution.belian.education.dm.CourseInstallment;
+import com.kratonsolution.belian.education.dm.CourseItem;
 import com.kratonsolution.belian.education.dm.CourseRegistration;
 import com.kratonsolution.belian.education.svc.CourseRegistrationService;
 import com.kratonsolution.belian.education.svc.StudyDayService;
 import com.kratonsolution.belian.education.svc.StudyPeriodService;
 import com.kratonsolution.belian.education.svc.StudyTimeService;
+import com.kratonsolution.belian.global.dm.SequenceNumber.Code;
+import com.kratonsolution.belian.global.svc.CodeGenerator;
 import com.kratonsolution.belian.payment.dm.Discount;
 import com.kratonsolution.belian.payment.svc.DiscountService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.component.CurrencyList;
+import com.kratonsolution.belian.ui.component.DisplayListener;
 import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.component.ProductServiceRow;
 import com.kratonsolution.belian.ui.component.TaxList;
@@ -43,6 +52,7 @@ import com.kratonsolution.belian.ui.education.student.StudentBox;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Numbers;
+import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -50,7 +60,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class CourseRegistrationFormContent extends FormContent
+public class CourseRegistrationFormContent extends FormContent implements DisplayListener
 {	
 	private CourseRegistrationService service = Springs.get(CourseRegistrationService.class);
 	
@@ -63,6 +73,8 @@ public class CourseRegistrationFormContent extends FormContent
 	private DiscountService discountService = Springs.get(DiscountService.class);
 	
 	private OrganizationList companys = new OrganizationList();
+	
+	private CodeGenerator generator = Springs.get(CodeGenerator.class);
 	
 	private CurrencyList currencys = new CurrencyList();
 	
@@ -85,7 +97,17 @@ public class CourseRegistrationFormContent extends FormContent
 	private Grid discounts = new Grid();
 	
 	private Grid installments = new Grid();
+	
+	private Textbox billed = Components.readOnlyMoneyBox(BigDecimal.ZERO);
+	
+	private Textbox disc = Components.readOnlyMoneyBox(BigDecimal.ZERO);
 		
+	private Textbox total = Components.readOnlyMoneyBox(BigDecimal.ZERO);
+	
+	private Textbox paid = Components.readOnlyMoneyBox(BigDecimal.ZERO);
+	
+	private Textbox unpaid = Components.readOnlyMoneyBox(BigDecimal.ZERO);
+	
 	public CourseRegistrationFormContent()
 	{
 		super();
@@ -112,6 +134,70 @@ public class CourseRegistrationFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				CourseRegistration reg = new CourseRegistration();
+				reg.setCurrency(currencys.getCurrency());
+				reg.setDate(DateTimes.sql(date.getValue()));
+				reg.setDay(dayService.findOne(Components.string(days)));
+				reg.setOrganization(companys.getOrganization());
+				reg.setPeriod(periodService.findOne(Components.string(periods)));
+				reg.setStaff(utils.getEmployee());
+				reg.setStudent(studentBox.getStudent());
+				reg.setTax(taxs.getTax());
+				reg.setTime(timeService.findOne(Components.string(times)));
+				reg.setNumber(generator.generate(reg.getDate(),reg.getOrganization(),Code.CRS));
+				
+				for(Component com:items.getRows().getChildren())
+				{
+					ProductServiceRow row = (ProductServiceRow)com;
+					
+					CourseItem item = new CourseItem();
+					item.setFeature(row.getFeature());
+					item.setPrice(row.getPrice());
+					item.setProduct(row.getProduct());
+					item.setQuantity(row.getQuantity());
+					item.setRegistration(reg);
+					
+					reg.getItems().add(item);
+				}
+				
+				for(Component com:discounts.getRows().getChildren())
+				{
+					Row row = (Row)com;
+					
+					CourseDiscount discount = new CourseDiscount();
+					discount.setAmount(RowUtils.decimal(row, 2));
+					discount.setDiscount(discountService.findOne(RowUtils.string(row, 1)));
+					discount.setRegistration(reg);
+					
+					reg.getDiscounts().add(discount);
+				}
+				
+				BigDecimal iAmount = BigDecimal.ZERO;
+				
+				for(Component com:installments.getRows().getChildren())
+				{
+					Row row = (Row)com;
+					
+					CourseInstallment installment = new CourseInstallment();
+					installment.setRegistration(reg);
+					installment.setAmount(RowUtils.decimal(row, 3));
+					installment.setCurrency(reg.getCurrency());
+					installment.setCustomer(reg.getStudent());
+					installment.setDate(RowUtils.sql(row, 2));
+					installment.setName(RowUtils.string(row, 1));
+					installment.setNumber(generator.generate(installment.getDate(), reg.getOrganization(), Code.INV));
+					installment.setOrganization(reg.getOrganization());
+					installment.setPaid(false);
+					installment.setRegistration(reg);
+					installment.setSales(reg.getStaff());
+					installment.setTax(reg.getTax());
+					
+					reg.getInstallments().add(installment);
+				
+					iAmount = iAmount.add(installment.getAmount());
+				}
+				
+				if((reg.getBilledAmount().subtract(reg.getDiscountAmount())).compareTo(iAmount) != 0)
+					throw new WrongValueException("Installment amount not equal billed amount");
 				
 				service.add(reg);
 				
@@ -126,26 +212,40 @@ public class CourseRegistrationFormContent extends FormContent
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
+		grid.getColumns().appendChild(new Column(null,null,"90px"));
+		grid.getColumns().appendChild(new Column(null,null,"135px"));
+		grid.setSpan("1");
 		
 		Row row1 = new Row();
 		row1.appendChild(new Label(lang.get("generic.grid.column.company")));
 		row1.appendChild(companys);
+		row1.appendChild(new Label(lang.get("course.grid.billed")));
+		row1.appendChild(billed);
+		
 		
 		Row row2 = new Row();
 		row2.appendChild(new Label(lang.get("generic.grid.column.student")));
 		row2.appendChild(studentBox);
+		row2.appendChild(new Label(lang.get("course.grid.discount")));
+		row2.appendChild(disc);
 		
 		Row row3 = new Row();
 		row3.appendChild(new Label(lang.get("generic.grid.column.date")));
 		row3.appendChild(date);
+		row3.appendChild(new Label(lang.get("course.grid.total")));
+		row3.appendChild(total);
 		
 		Row row4 = new Row();
 		row4.appendChild(new Label(lang.get("generic.grid.column.currency")));
 		row4.appendChild(currencys);
+//		row4.appendChild(new Label(lang.get("course.grid.paid")));
+//		row4.appendChild(paid);
 		
 		Row row5 = new Row();
 		row5.appendChild(new Label(lang.get("generic.grid.column.tax")));
 		row5.appendChild(taxs);
+//		row5.appendChild(new Label(lang.get("course.grid.unpaid")));
+//		row5.appendChild(unpaid);
 		
 		Row row6 = new Row();
 		row6.appendChild(new Label(lang.get("navbar.menu.education.period")));
@@ -229,7 +329,10 @@ public class CourseRegistrationFormContent extends FormContent
 			@Override
 			public void onEvent(Event arg0) throws Exception
 			{
-				items.getRows().appendChild(new ProductServiceRow());
+				ProductServiceRow row = new ProductServiceRow();
+				row.addDisplayListener(CourseRegistrationFormContent.this);
+				
+				items.getRows().appendChild(row);
 			}
 		});
 	
@@ -246,7 +349,7 @@ public class CourseRegistrationFormContent extends FormContent
 			@Override
 			public void onEvent(Event arg0) throws Exception
 			{
-				Textbox amount = Components.readOnlyTextBox(null, true);
+				Doublebox amount = Components.readOnlyDoubleBox();
 				
 				Listbox discs = Components.fullSpanSelect(discountService.findAll(),true);
 				discs.setSelectedItem(discs.appendItem("","000"));
@@ -266,6 +369,8 @@ public class CourseRegistrationFormContent extends FormContent
 							}
 							else
 								amount.setText(Numbers.format(discount.getAmount()));
+							
+							display();
 						}
 					}
 				});
@@ -317,8 +422,28 @@ public class CourseRegistrationFormContent extends FormContent
 			cost = cost.add(row.getPrice().multiply(row.getQuantity()));
 		}
 		
-		System.out.println("cost "+cost);
-		
 		return cost;
+	}
+	
+	public void display()
+	{
+		BigDecimal bAmt = BigDecimal.ZERO;
+		BigDecimal dAmt = BigDecimal.ZERO;
+		
+		for(Component com:items.getRows().getChildren())
+		{
+			ProductServiceRow row = (ProductServiceRow)com;
+			bAmt = bAmt.add(row.getPrice().multiply(row.getQuantity()));
+		}
+		
+		for(Component com:discounts.getRows().getChildren())
+		{
+			Row row = (Row)com;
+			dAmt = dAmt.add(RowUtils.decimal(row, 2));
+		}
+		
+		billed.setText(Numbers.format(bAmt));
+		disc.setText(Numbers.format(dAmt));
+		total.setText(Numbers.format(bAmt.subtract(dAmt)));
 	}
 }

@@ -176,7 +176,7 @@ public class CourseRegistrationGridContent extends GridContent
 		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.date"),null,"85px"));
 		grid.getColumns().appendChild(new Column(lang.get("navbar.menu.education.student"),null,"135px"));
 		grid.getColumns().appendChild(new Column(lang.get("navbar.menu.education.period"),null,"100px"));
-		grid.getColumns().appendChild(new Column(lang.get("navbar.menu.education.day"),null,"100px"));
+		grid.getColumns().appendChild(new Column(lang.get("navbar.menu.education.day"),null,"150px"));
 		grid.getColumns().appendChild(new Column(lang.get("navbar.menu.education.time"),null,"100px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
 		grid.getColumns().getLastChild().setVisible(false);

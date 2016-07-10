@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Vector;
 
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
@@ -25,6 +26,7 @@ import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductFeature;
+import com.kratonsolution.belian.inventory.dm.ProductFeatureRepository;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
 import com.kratonsolution.belian.inventory.dm.ProductPriceType;
 import com.kratonsolution.belian.inventory.svc.ProductService;
@@ -42,6 +44,8 @@ public class ProductServiceRow extends Row
 	
 	private ProductService service = Springs.get(ProductService.class);
 	
+	private ProductFeatureRepository featureRepository = Springs.get(ProductFeatureRepository.class);
+	
 	private Combobox products = new Combobox();
 	
 	private Listbox features = Components.fullSpanSelect();
@@ -51,6 +55,8 @@ public class ProductServiceRow extends Row
 	private Listbox prices = Components.fullSpanSelect();
 	
 	private Map<String,Product> maps = new HashMap<>();
+	
+	private Vector<DisplayListener> listeners = new Vector<>();
 	
 	public ProductServiceRow()
 	{
@@ -105,6 +111,9 @@ public class ProductServiceRow extends Row
 
 				if(prices.getItemCount() > 0)
 					prices.setSelectedIndex(0);
+				
+				for(DisplayListener listener:listeners)
+					listener.display();
 			}
 		});
 	}
@@ -177,7 +186,16 @@ public class ProductServiceRow extends Row
 				maps.put(product.getName(), product);
 			
 			products.appendItem(product.getName());
+			products.setSelectedIndex(0);
 		}
+	}
+	
+	public Product getProduct()
+	{
+		if(Strings.isNullOrEmpty(products.getValue()) || !maps.containsKey(products.getValue()))
+			throw new WrongValueException(lang.get("message.field.empty"));
+		
+		return maps.get(products.getValue());
 	}
 	
 	public void setFeature(ProductFeature feature)
@@ -198,5 +216,19 @@ public class ProductServiceRow extends Row
 			prices.appendItem(Numbers.format(price),price.toString());
 			prices.setSelectedIndex(0);
 		}
+	}
+	
+	public ProductFeature getFeature()
+	{
+		if(features.getSelectedCount() > 0)
+			return featureRepository.findOne(Components.string(features));
+		
+		return null;
+	}
+	
+	public void addDisplayListener(DisplayListener listener)
+	{
+		if(listener != null)
+			listeners.add(listener);
 	}
 }

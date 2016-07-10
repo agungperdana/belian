@@ -57,4 +57,17 @@ public class CurrencyList extends Listbox
 		
 		return maps.get(getSelectedItem().getValue().toString());
 	}
+	
+	public void setCurrency(Currency currency)
+	{
+		if(currency != null)
+		{
+			getItems().clear();
+			appendItem(currency.getLabel(), currency.getValue());
+			setSelectedIndex(0);
+			
+			if(!maps.containsKey(currency.getId()))
+				maps.put(currency.getId(), currency);
+		}
+	}
 }

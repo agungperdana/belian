@@ -56,4 +56,17 @@ public class TaxList extends Listbox
 		
 		return maps.get(getSelectedItem().getValue().toString());
 	}
+	
+	public void setTax(Tax tax)
+	{
+		if(tax != null)
+		{
+			getItems().clear();
+			appendItem(tax.getLabel(), tax.getValue());
+			setSelectedIndex(0);
+			
+			if(!maps.containsKey(tax.getId()))
+				maps.put(tax.getId(), tax);
+		}
+	}
 }

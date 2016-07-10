@@ -101,5 +101,6 @@ public class CourseItem implements BillableItem
 	@Override
 	public void setPrice(BigDecimal price)
 	{
+		setUnitPrice(price);
 	}
 }

@@ -40,7 +40,7 @@ public class CourseRegistrationWindow extends AbstractWindow implements HasGrid,
 	private CourseRegistrationWindow()
 	{
 		super();
-		setWidth("650px");
+		setWidth("730px");
 		setHeight("575px");
 	}
 	
