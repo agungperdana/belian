@@ -44,7 +44,7 @@ public class CourseRegistrationRowRenderer implements RowRenderer<CourseRegistra
 
 			row.appendChild(new Checkbox());
 			row.appendChild(new Label(DateTimes.format(data.getDate())));
-			row.appendChild(new Label(data.getCustomer().getName()));
+			row.appendChild(new Label(data.getStudent().getName()));
 			row.appendChild(new Label(data.getPeriod().getName()));
 			row.appendChild(new Label(builder.toString()));
 			row.appendChild(new Label(DateTimes.format(data.getTime().getStart())+"-"+DateTimes.format(data.getTime().getEnd())));

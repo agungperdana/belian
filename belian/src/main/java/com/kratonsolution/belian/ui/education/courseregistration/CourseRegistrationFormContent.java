@@ -83,6 +83,8 @@ public class CourseRegistrationFormContent extends FormContent
 	private Grid items = new Grid();
 	
 	private Grid discounts = new Grid();
+	
+	private Grid installments = new Grid();
 		
 	public CourseRegistrationFormContent()
 	{
@@ -122,7 +124,7 @@ public class CourseRegistrationFormContent extends FormContent
 	public void initForm()
 	{
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"125px"));
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
@@ -172,8 +174,10 @@ public class CourseRegistrationFormContent extends FormContent
 		tabbox.setWidth("100%");
 		tabbox.appendChild(new Tabs());
 		tabbox.appendChild(new Tabpanels());
-		tabbox.getTabs().appendChild(new Tab("Item(s)"));
-		tabbox.getTabs().appendChild(new Tab("Discount(s)"));
+		tabbox.getTabs().appendChild(new Tab(lang.get("label.component.generic.items")));
+		tabbox.getTabs().appendChild(new Tab(lang.get("label.component.generic.discounts")));
+		tabbox.getTabs().appendChild(new Tab(lang.get("label.component.generic.installments")));
+		tabbox.getTabpanels().appendChild(new Tabpanel());
 		tabbox.getTabpanels().appendChild(new Tabpanel());
 		tabbox.getTabpanels().appendChild(new Tabpanel());
 		
@@ -199,10 +203,22 @@ public class CourseRegistrationFormContent extends FormContent
 		discounts.setSpan("1");
 		discounts.getColumns().getLastChild().setVisible(false);
 		
+		installments.setWidth("100%");
+		installments.appendChild(new Rows());
+		installments.appendChild(new Columns());
+		installments.getColumns().appendChild(new Column(null,null,"25px"));
+		installments.getColumns().appendChild(new Column(lang.get("installment.grid.name"),null,"150px"));
+		installments.getColumns().appendChild(new Column(lang.get("installment.grid.duedate"),null,"135px"));
+		installments.getColumns().appendChild(new Column(lang.get("installment.grid.amount"),null,"125px"));
+		installments.getColumns().appendChild(new Column());
+		installments.setSpan("1");
+		installments.getColumns().getLastChild().setVisible(false);
+		
 		appendChild(tabbox);
 		
 		initItems();
 		initDiscounts();
+		initInstallments();
 	}
 	
 	private void initItems()
@@ -243,20 +259,10 @@ public class CourseRegistrationFormContent extends FormContent
 						Discount discount = discountService.findOne(Components.string(discs));
 						if(discount != null)
 						{
-							System.out.println(discount.getName()+" "+discount.isPercent()+" "+discount.getAmount());
 							if(discount.isPercent())
 							{
-								System.out.println("is percent "+discount.isPercent());
-								
-								try
-								{
-									BigDecimal amt = discount.getAmount().divide(BigDecimal.valueOf(100)).multiply(getCost());
-									System.out.println("amt"+amt);
-									amount.setText(Numbers.format(amt));
-								} catch (Exception e)
-								{
-									e.printStackTrace();
-								}
+								BigDecimal amt = discount.getAmount().divide(BigDecimal.valueOf(100)).multiply(getCost());
+								amount.setText(Numbers.format(amt));
 							}
 							else
 								amount.setText(Numbers.format(discount.getAmount()));
@@ -273,8 +279,32 @@ public class CourseRegistrationFormContent extends FormContent
 			}
 		});
 		
+		tabbox.getTabpanels().getChildren().get(1).appendChild(nrc);
+		tabbox.getTabpanels().getChildren().get(1).appendChild(discounts);
+	}
+	
+	private void initInstallments()
+	{
+		NRCToolbar nrc = new NRCToolbar(items);
+		nrc.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event arg0) throws Exception
+			{
+				Row row = new Row();
+				row.appendChild(new Checkbox());
+				row.appendChild(Components.mandatoryTextBox(true));
+				row.appendChild(Components.mandatoryDatebox());
+				row.appendChild(Components.doubleBox(0));
+				row.appendChild(new Label(UUID.randomUUID().toString()));
+				
+				installments.getRows().appendChild(row);
+			}
+		});
+	
 		tabbox.getTabpanels().getLastChild().appendChild(nrc);
-		tabbox.getTabpanels().getLastChild().appendChild(discounts);
+		tabbox.getTabpanels().getLastChild().appendChild(installments);
+		
 	}
 	
 	private BigDecimal getCost()

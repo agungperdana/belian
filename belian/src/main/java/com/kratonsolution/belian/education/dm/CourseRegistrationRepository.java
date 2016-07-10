@@ -18,16 +18,16 @@ public interface CourseRegistrationRepository extends JpaRepository<CourseRegist
 {
 	@Query("FROM CourseRegistration reg WHERE "
 			+ "reg.organization.id IN(:company) "
-			+ "AND (reg.customer.identity LIKE %:key% "
-			+ "OR reg.customer.name LIKE %:key% "
+			+ "AND (reg.student.identity LIKE %:key% "
+			+ "OR reg.student.name LIKE %:key% "
 			+ "OR reg.number LIKE %:key%) "
 			+ "ORDER BY reg.date DESC")
 	public List<CourseRegistration> findAll(Pageable pageable,@Param("company")List<String> company,@Param("key")String key);
 	
 	@Query("SELECT COUNT(reg) FROM CourseRegistration reg WHERE "
 			+ "reg.organization.id IN(:company) "
-			+ "AND (reg.customer.identity LIKE %:key% "
-			+ "OR reg.customer.name LIKE %:key% "
+			+ "AND (reg.student.identity LIKE %:key% "
+			+ "OR reg.student.name LIKE %:key% "
 			+ "OR reg.number LIKE %:key%) ")
 	public Long count(@Param("company")List<String> company,@Param("key")String key);
 	
@@ -38,13 +38,4 @@ public interface CourseRegistrationRepository extends JpaRepository<CourseRegist
 	
 	@Query("SELECT COUNT(reg) FROM CourseRegistration reg WHERE reg.organization.id IN(:company) ")
 	public Long count(@Param("company")List<String> company);
-	
-	@Query("FROM CourseRegistration reg WHERE "
-			+ "reg.organization.id IN(:company) "
-			+ "AND reg.paid IS FALSE "
-			+ "AND (reg.customer.identity LIKE %:key% "
-			+ "OR reg.customer.name LIKE %:key% "
-			+ "OR reg.number LIKE %:key%) "
-			+ "ORDER BY reg.date DESC")
-	public List<CourseRegistration> findAllUnpaid(@Param("company")List<String> company,@Param("key")String key);
 }
