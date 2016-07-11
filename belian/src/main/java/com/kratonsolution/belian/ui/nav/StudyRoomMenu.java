@@ -10,7 +10,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.Language;
-import com.kratonsolution.belian.ui.asset.asset.AssetWindow;
+import com.kratonsolution.belian.ui.education.studyroom.StudyRoomWindow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -37,16 +37,16 @@ public class StudyRoomMenu extends Listitem
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				AssetWindow window = null;
+				StudyRoomWindow window = null;
 				
 				for(Component component:getPage().getRoots())
 				{
-					if(component instanceof AssetWindow)
-						window = (AssetWindow)component;
+					if(component instanceof StudyRoomWindow)
+						window = (StudyRoomWindow)component;
 				}
 				
 				if(window == null)
-					window = AssetWindow.injectInto(getPage());
+					window = StudyRoomWindow.injectInto(getPage());
 				
 				else if(!window.isVisible())
 				{

@@ -9,6 +9,7 @@ import java.util.Map;
 import org.zkoss.zul.Listbox;
 
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.inventory.dm.Facility;
 import com.kratonsolution.belian.inventory.dm.FacilityOrganization;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -28,16 +29,16 @@ public class FacilityList extends Listbox
 		setMold("select");
 		setWidth("300px");
 		
-		if(utils.getOrganization() == null)
-			throw new RuntimeException("Please select default working company first.");
-		
-		for(FacilityOrganization org:utils.getOrganization().getFacilitys())
+		for(Organization organization:utils.getOrganizations())
 		{
-			if(org.isEnabled())
+			for(FacilityOrganization org:organization.getFacilitys())
 			{
-				appendItem(org.getFacility().getLabel(),org.getFacility().getValue());
-				if(!maps.containsKey(org.getFacility().getId()))
-					maps.put(org.getFacility().getValue(), org.getFacility());
+				if(org.isEnabled())
+				{
+					appendItem(org.getFacility().getLabel(),org.getFacility().getValue());
+					if(!maps.containsKey(org.getFacility().getId()))
+						maps.put(org.getFacility().getValue(), org.getFacility());
+				}
 			}
 		}
 		

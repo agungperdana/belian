@@ -32,25 +32,35 @@ public class CourseRegistrationService
 {
 	@Autowired
 	private SessionUtils utils;
-	
+
 	@Autowired
 	private CourseRegistrationRepository repository;
-		
+
 	@Secured({"ROLE_COURSE_REGISTRATION_READ","ROLE_SYSTEM_READ"})
 	public CourseRegistration findOne(String id)
 	{
 		if(!Strings.isNullOrEmpty(id))
 			return repository.findOne(id);
-	
+
 		return null;
 	}
-	
+
 	@Secured({"ROLE_COURSE_REGISTRATION_READ","ROLE_SYSTEM_READ"})
 	public List<CourseRegistration> findAll()
 	{
 		return repository.findAll();
 	}
-	
+
+	@Secured({"ROLE_COURSE_REGISTRATION_READ","ROLE_SYSTEM_READ"})
+	public List<CourseRegistration> findAll(String product,String period,String day,String time,String feature)
+	{
+		if(utils.getOrganizationIds() != null && !utils.getOrganizationIds().isEmpty())
+			return repository.findAll(product,period,day,time,feature,utils.getOrganizationIds());
+
+		return new ArrayList<>();
+	}
+
+
 	@Secured({"ROLE_COURSE_REGISTRATION_READ"})
 	public int getSize()
 	{
@@ -59,38 +69,38 @@ public class CourseRegistrationService
 
 		return 0;
 	}
-	
+
 	@Secured({"ROLE_COURSE_REGISTRATION_READ"})
 	public int getSize(String key)
 	{
 		if(Strings.isNullOrEmpty(key))
 			return getSize();
-		
+
 		return repository.count(utils.getOrganizationIds(), key).intValue();
 	}
-	
+
 	@Secured("ROLE_COURSE_REGISTRATION_CREATE")
 	public void add(CourseRegistration reg)
 	{
 		repository.save(reg);
 	}
-	
+
 	@Secured("ROLE_COURSE_REGISTRATION_UPDATE")
 	public void edit(CourseRegistration reg,Collection<CourseItem> items,Collection<CourseDiscount> discounts,Collection<CourseInstallment> installments)
 	{
 		reg.getItems().clear();
 		reg.getDiscounts().clear();
 		reg.getInstallments().clear();
-		
+
 		repository.saveAndFlush(reg);
-		
+
 		reg.getItems().addAll(items);
 		reg.getDiscounts().addAll(discounts);
 		reg.getInstallments().addAll(installments);
-		
+
 		repository.saveAndFlush(reg);
 	}
-	
+
 	@Secured("ROLE_COURSE_REGISTRATION_DELETE")
 	public void delete(String id)
 	{
@@ -104,7 +114,7 @@ public class CourseRegistrationService
 			repository.delete(reg);
 		}
 	}
-	
+
 	@Secured("ROLE_COURSE_REGISTRATION_READ")
 	public List<CourseRegistration> findAll(int pageIndex,int itemsSize)
 	{
@@ -113,13 +123,13 @@ public class CourseRegistrationService
 
 		return new ArrayList<>();
 	}
-	
+
 	@Secured("ROLE_COURSE_REGISTRATION_READ")
 	public List<CourseRegistration> findAll(int pageIndex,int itemsSize,String key)
 	{
 		if(Strings.isNullOrEmpty(key))
 			return findAll(pageIndex, itemsSize);
-		
+
 		return repository.findAll(new PageRequest(pageIndex, itemsSize), utils.getOrganizationIds(),key);
 	}
 }

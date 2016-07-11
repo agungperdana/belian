@@ -40,6 +40,8 @@ public class StudyRoomWindow extends AbstractWindow implements HasGrid,HasCreate
 	private StudyRoomWindow()
 	{
 		super();
+		setWidth("700px");
+		setHeight("600px");
 	}
 	
 	protected void init()

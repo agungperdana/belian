@@ -47,12 +47,16 @@ public class CourseClassBox extends Hbox implements Listenable<ModelListener<Pro
 
 	public CourseClassBox(boolean showCreateLink)
 	{
+		Handler handler = new Handler();
+		
 		products.setAutocomplete(true);
 		products.setAutodrop(true);
 		products.setConstraint("no empty");
 		products.setWidth("290px");
 		products.setPlaceholder(lang.get("message.field.iden"));
-		products.addEventListener(Events.ON_CHANGING, new Handler());
+		products.addEventListener(Events.ON_CHANGING,handler);
+		products.addEventListener(Events.ON_SELECT, handler);
+		products.addEventListener(Events.ON_BLUR, handler);
 		
 		setWidth("400px");
 
