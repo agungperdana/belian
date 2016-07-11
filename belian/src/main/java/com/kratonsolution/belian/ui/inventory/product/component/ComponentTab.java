@@ -124,7 +124,7 @@ public class ComponentTab implements TabedDisplay
 
 			Row row = new Row();
 			row.appendChild(remove);
-			row.appendChild(new Label(component.getProduct().getName()));
+			row.appendChild(new Label(component.getProduct().getName()+" ("+component.getProduct().getCode()+")"));
 			row.appendChild(new Label(component.getQuantity().toPlainString()));
 			row.appendChild(new Label(component.getNote()));
 			row.appendChild(new Label(component.getId()));

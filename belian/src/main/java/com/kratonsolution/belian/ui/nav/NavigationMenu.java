@@ -419,8 +419,10 @@ public class NavigationMenu extends Window
 			list.appendChild(new StudentMenu());
 		if(modules.containsKey("ROLE_COURSE_REGISTRATION_READ"))
 			list.appendChild(new CourseRegistrationMenu());
+		if(modules.containsKey("ROLE_STUDY_ROOM_READ"))
+			list.appendChild(new StudyRoomMenu());
 		if(modules.containsKey("ROLE_STUDENT_ATTENDANCE_READ"))
-			list.appendChild(new PaycheckMenu());
+			list.appendChild(new StudentAttendanceMenu());
 		if(modules.containsKey("ROLE_COURSE_SCHEDULE_READ"))
 			list.appendChild(new PaycheckMenu());
 
