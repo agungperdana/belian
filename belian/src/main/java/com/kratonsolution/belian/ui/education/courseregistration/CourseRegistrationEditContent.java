@@ -5,8 +5,10 @@ package com.kratonsolution.belian.ui.education.courseregistration;
 
 import java.math.BigDecimal;
 import java.util.UUID;
+import java.util.Vector;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -27,6 +29,7 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.education.dm.CourseDiscount;
 import com.kratonsolution.belian.education.dm.CourseInstallment;
 import com.kratonsolution.belian.education.dm.CourseItem;
@@ -35,6 +38,7 @@ import com.kratonsolution.belian.education.svc.CourseRegistrationService;
 import com.kratonsolution.belian.education.svc.StudyDayService;
 import com.kratonsolution.belian.education.svc.StudyPeriodService;
 import com.kratonsolution.belian.education.svc.StudyTimeService;
+import com.kratonsolution.belian.global.dm.SequenceNumber.Code;
 import com.kratonsolution.belian.global.svc.CodeGenerator;
 import com.kratonsolution.belian.payment.dm.Discount;
 import com.kratonsolution.belian.payment.svc.DiscountService;
@@ -133,7 +137,82 @@ public class CourseRegistrationEditContent extends FormContent implements Displa
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-
+				CourseRegistration reg = service.findOne(RowUtils.id(row));
+				if(reg != null)
+				{
+					Vector<CourseItem> vItems = new Vector<>();
+					Vector<CourseDiscount> vDiscounts = new Vector<>();
+					Vector<CourseInstallment> vInstallments = new Vector<>();
+					
+					reg.setCurrency(currencys.getCurrency());
+					reg.setDate(DateTimes.sql(date.getValue()));
+					reg.setDay(dayService.findOne(Components.string(days)));
+					reg.setOrganization(companys.getOrganization());
+					reg.setPeriod(periodService.findOne(Components.string(periods)));
+					reg.setStaff(utils.getEmployee());
+					reg.setStudent(studentBox.getStudent());
+					reg.setTax(taxs.getTax());
+					reg.setTime(timeService.findOne(Components.string(times)));
+					reg.setNumber(generator.generate(reg.getDate(),reg.getOrganization(),Code.CRS));
+					
+					for(Component com:items.getRows().getChildren())
+					{
+						ProductServiceRow row = (ProductServiceRow)com;
+						
+						CourseItem item = new CourseItem();
+						item.setFeature(row.getFeature());
+						item.setPrice(row.getPrice());
+						item.setProduct(row.getProduct());
+						item.setQuantity(row.getQuantity());
+						item.setRegistration(reg);
+						
+						vItems.add(item);
+					}
+					
+					for(Component com:discounts.getRows().getChildren())
+					{
+						Row row = (Row)com;
+						
+						CourseDiscount discount = new CourseDiscount();
+						discount.setAmount(RowUtils.decimal(row, 2));
+						discount.setDiscount(discountService.findOne(RowUtils.string(row, 1)));
+						discount.setRegistration(reg);
+						
+						vDiscounts.add(discount);
+					}
+					
+					BigDecimal iAmount = BigDecimal.ZERO;
+					
+					for(Component com:installments.getRows().getChildren())
+					{
+						Row row = (Row)com;
+						
+						CourseInstallment installment = new CourseInstallment();
+						installment.setId(RowUtils.id(row));
+						installment.setRegistration(reg);
+						installment.setAmount(RowUtils.decimal(row, 3));
+						installment.setCurrency(reg.getCurrency());
+						installment.setCustomer(reg.getStudent());
+						installment.setDate(RowUtils.sql(row, 2));
+						installment.setName(RowUtils.string(row, 1));
+						installment.setNumber(generator.generate(installment.getDate(), reg.getOrganization(), Code.INV));
+						installment.setOrganization(reg.getOrganization());
+						installment.setPaid(false);
+						installment.setRegistration(reg);
+						installment.setSales(reg.getStaff());
+						installment.setTax(reg.getTax());
+						
+						vInstallments.add(installment);
+					
+						iAmount = iAmount.add(installment.getAmount());
+					}
+					
+					if((reg.getBilledAmount().subtract(reg.getDiscountAmount())).compareTo(iAmount) != 0)
+						throw new WrongValueException("Installment amount not equal billed amount");
+				
+					service.edit(reg,vItems,vDiscounts,vInstallments);
+				}
+				
 				Flow.next(getParent(),new CourseRegistrationGridContent());
 			}
 		});
@@ -406,12 +485,13 @@ public class CourseRegistrationEditContent extends FormContent implements Displa
 			{
 				Textbox name = Components.mandatoryTextBox(true);
 				name.setText(ins.getName());
-
+				name.setReadonly(ins.isPaid());
+				
 				Row row = new Row();
-				row.appendChild(new Checkbox());
+				row.appendChild(ins.isPaid()?Components.readOnlyCheckbox():Components.checkbox(false));
 				row.appendChild(name);
 				row.appendChild(Components.mandatoryDatebox(ins.getDate()));
-				row.appendChild(Components.doubleBox(ins.getAmount().doubleValue()));
+				row.appendChild(ins.isPaid()?Components.readOnlyDoubleBox(ins.getAmount().doubleValue()):Components.doubleBox(ins.getAmount().doubleValue()));
 				row.appendChild(new Label(ins.getId()));
 
 				installments.getRows().appendChild(row);

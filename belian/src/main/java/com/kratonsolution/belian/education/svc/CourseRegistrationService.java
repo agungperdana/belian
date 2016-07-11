@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.education.svc;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.education.dm.CourseDiscount;
+import com.kratonsolution.belian.education.dm.CourseInstallment;
+import com.kratonsolution.belian.education.dm.CourseItem;
 import com.kratonsolution.belian.education.dm.CourseRegistration;
 import com.kratonsolution.belian.education.dm.CourseRegistrationRepository;
 
@@ -72,15 +76,33 @@ public class CourseRegistrationService
 	}
 	
 	@Secured("ROLE_COURSE_REGISTRATION_UPDATE")
-	public void edit(CourseRegistration reg)
+	public void edit(CourseRegistration reg,Collection<CourseItem> items,Collection<CourseDiscount> discounts,Collection<CourseInstallment> installments)
 	{
+		reg.getItems().clear();
+		reg.getDiscounts().clear();
+		reg.getInstallments().clear();
+		
+		repository.saveAndFlush(reg);
+		
+		reg.getItems().addAll(items);
+		reg.getDiscounts().addAll(discounts);
+		reg.getInstallments().addAll(installments);
+		
 		repository.saveAndFlush(reg);
 	}
 	
 	@Secured("ROLE_COURSE_REGISTRATION_DELETE")
 	public void delete(String id)
 	{
-		repository.delete(id);
+		CourseRegistration reg = repository.findOne(id);
+		if(reg != null)
+		{
+			for(CourseInstallment installment:reg.getInstallments())
+				if(installment.isPaid())
+					throw new RuntimeException("Course already paid or installment,cannot be deleted");
+
+			repository.delete(reg);
+		}
 	}
 	
 	@Secured("ROLE_COURSE_REGISTRATION_READ")
