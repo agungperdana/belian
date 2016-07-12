@@ -5,6 +5,7 @@ package com.kratonsolution.belian.ui.util;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.Date;
@@ -460,6 +461,17 @@ public class Components implements Serializable
 		datebox.setConstraint("no empty");
 		
 		return datebox;
+	}
+	
+	public static final Timebox fullspanTimebox(Time tm)
+	{
+		Timebox time = new Timebox(new Date());
+		time.setWidth("100%");
+		time.setConstraint("no empty");
+		time.setFormat("HH:mm");
+		time.setValue(tm);
+		
+		return time;
 	}
 	
 	public static final Timebox currentTimebox()

@@ -4,10 +4,13 @@
 package com.kratonsolution.belian.education.dm;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -26,25 +29,29 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="student_attendance_item")
-public class StudentAttendanceItem implements Serializable
+@Table(name="course_attendance")
+public class CourseAttendance implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 
-	@Column(name="status")
-	private AttendanceStatus status = AttendanceStatus.LEAVE;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_student")
-	private Person student;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_attendance")
-	private CourseAttendance attendance;
+	@Column(name="date")
+	private Date date;
 
+	@Column(name="status")
+	@Enumerated(EnumType.STRING)
+	private AttendanceStatus status = AttendanceStatus.IN;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_Schedule")
+	private CourseSchedule schedule;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_person")
+	private Person person;
+	
 	@Version
 	private Long version;
-	
-	public StudentAttendanceItem(){}
+
+	public CourseAttendance(){}
 }

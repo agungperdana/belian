@@ -9,7 +9,7 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
-import com.kratonsolution.belian.education.dm.StudentAttendance;
+import com.kratonsolution.belian.education.dm.CourseAttendance;
 import com.kratonsolution.belian.education.svc.StudentAttendanceService;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -18,11 +18,11 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class StudentAttendanceModel implements ListModel<StudentAttendance>
+public class StudentAttendanceModel implements ListModel<CourseAttendance>
 {
 	private StudentAttendanceService service = Springs.get(StudentAttendanceService.class);
 	
-	private List<StudentAttendance> data = new ArrayList<StudentAttendance>();
+	private List<CourseAttendance> data = new ArrayList<CourseAttendance>();
 	
 	private String key;
 	
@@ -38,7 +38,7 @@ public class StudentAttendanceModel implements ListModel<StudentAttendance>
 	}
 	
 	@Override
-	public StudentAttendance getElementAt(int index)
+	public CourseAttendance getElementAt(int index)
 	{
 		if(index >= data.size())
 			return null;

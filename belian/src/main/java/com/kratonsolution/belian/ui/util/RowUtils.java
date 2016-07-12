@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.ui.util;
 
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.util.Date;
 
 import org.zkoss.zk.ui.Component;
@@ -15,6 +16,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Timebox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.DateTimes;
@@ -28,6 +30,21 @@ import com.kratonsolution.belian.ui.HasEditForm;
  */
 public class RowUtils
 {
+	public static Time time(Row row,int index)
+	{
+		if(row == null)
+			return null;
+		
+		Component com = row.getChildren().get(index);
+		if(com != null && com instanceof Timebox)
+		{
+			Timebox timebox = (Timebox)com;
+			return DateTimes.time(timebox.getValue());
+		}
+		
+		return null;
+	}
+	
 	public static Row shield(String value)
 	{
 		if(Strings.isNullOrEmpty(value))

@@ -69,6 +69,9 @@ public class EmploymentService
 	@Secured("ROLE_EMPLOYMENT_READ")
 	public List<Employment> findAll()
 	{
+		if(utils.getOrganizationIds() != null && !utils.getOrganizationIds().isEmpty())
+			return repository.findAll(utils.getOrganizationIds());
+			
 		return repository.findAll();
 	}
 	

@@ -10,6 +10,7 @@ import javax.persistence.Table;
 
 import com.kratonsolution.belian.general.dm.InternalOrganization;
 import com.kratonsolution.belian.general.dm.PartyRelationship;
+import com.kratonsolution.belian.global.dm.Listable;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +23,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="employment")
-public class Employment extends PartyRelationship
+public class Employment extends PartyRelationship implements Listable
 {
 	@ManyToOne
 	@JoinColumn(name="fk_employee")
@@ -33,4 +34,16 @@ public class Employment extends PartyRelationship
 	private InternalOrganization internalOrganization;
 	
 	public Employment(){}
+
+	@Override
+	public String getLabel()
+	{
+		return employee.getParty().getLabel();
+	}
+
+	@Override
+	public String getValue()
+	{
+		return employee.getParty().getValue();
+	}
 }

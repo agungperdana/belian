@@ -7,15 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.education.dm.StudentAttendance;
-import com.kratonsolution.belian.education.dm.StudentAttendanceRepository;
+import com.kratonsolution.belian.education.dm.CourseAttendance;
+import com.kratonsolution.belian.education.dm.CourseAttendanceRepository;
 
 /**
  * 
@@ -30,10 +29,10 @@ public class StudentAttendanceService
 	private SessionUtils utils;
 
 	@Autowired
-	private StudentAttendanceRepository repository;
+	private CourseAttendanceRepository repository;
 
 	@Secured({"ROLE_STUDENT_ATTENDANCE_READ","ROLE_SYSTEM_READ"})
-	public StudentAttendance findOne(String id)
+	public CourseAttendance findOne(String id)
 	{
 		if(!Strings.isNullOrEmpty(id))
 			return repository.findOne(id);
@@ -42,7 +41,7 @@ public class StudentAttendanceService
 	}
 
 	@Secured({"ROLE_STUDENT_ATTENDANCE_READ","ROLE_SYSTEM_READ"})
-	public List<StudentAttendance> findAll()
+	public List<CourseAttendance> findAll()
 	{
 		return repository.findAll();
 	}
@@ -50,8 +49,8 @@ public class StudentAttendanceService
 	@Secured({"ROLE_STUDENT_ATTENDANCE_READ"})
 	public int getSize()
 	{
-		if(utils.getOrganizationIds() != null && !utils.getOrganizationIds().isEmpty())
-			return repository.count(utils.getOrganizationIds()).intValue();
+//		if(utils.getOrganizationIds() != null && !utils.getOrganizationIds().isEmpty())
+//			return repository.count(utils.getOrganizationIds()).intValue();
 
 		return 0;
 	}
@@ -59,20 +58,21 @@ public class StudentAttendanceService
 	@Secured({"ROLE_STUDENT_ATTENDANCE_READ"})
 	public int getSize(String key)
 	{
-		if(Strings.isNullOrEmpty(key))
-			return getSize();
-
-		return repository.count(utils.getOrganizationIds(), key).intValue();
+//		if(Strings.isNullOrEmpty(key))
+//			return getSize();
+//
+//		return repository.count(utils.getOrganizationIds(), key).intValue();
+		return 0;
 	}
 
 	@Secured("ROLE_STUDENT_ATTENDANCE_CREATE")
-	public void add(StudentAttendance reg)
+	public void add(CourseAttendance reg)
 	{
 		repository.save(reg);
 	}
 
 	@Secured("ROLE_STUDENT_ATTENDANCE_UPDATE")
-	public void edit(StudentAttendance reg)
+	public void edit(CourseAttendance reg)
 	{
 		repository.saveAndFlush(reg);
 	}
@@ -84,20 +84,22 @@ public class StudentAttendanceService
 	}
 
 	@Secured("ROLE_STUDENT_ATTENDANCE_READ")
-	public List<StudentAttendance> findAll(int pageIndex,int itemsSize)
+	public List<CourseAttendance> findAll(int pageIndex,int itemsSize)
 	{
-		if(utils.getOrganizationIds() != null && !utils.getOrganizationIds().isEmpty())
-			return repository.findAll(new PageRequest(pageIndex, itemsSize),utils.getOrganizationIds());
+//		if(utils.getOrganizationIds() != null && !utils.getOrganizationIds().isEmpty())
+//			return repository.findAll(new PageRequest(pageIndex, itemsSize),utils.getOrganizationIds());
 
 		return new ArrayList<>();
 	}
 
 	@Secured("ROLE_STUDENT_ATTENDANCE_READ")
-	public List<StudentAttendance> findAll(int pageIndex,int itemsSize,String key)
+	public List<CourseAttendance> findAll(int pageIndex,int itemsSize,String key)
 	{
-		if(Strings.isNullOrEmpty(key))
-			return findAll(pageIndex, itemsSize);
-
-		return repository.findAll(new PageRequest(pageIndex, itemsSize), utils.getOrganizationIds(),key);
+//		if(Strings.isNullOrEmpty(key))
+//			return findAll(pageIndex, itemsSize);
+//
+//		return repository.findAll(new PageRequest(pageIndex, itemsSize), utils.getOrganizationIds(),key);
+		
+		return new ArrayList<>();
 	}
 }

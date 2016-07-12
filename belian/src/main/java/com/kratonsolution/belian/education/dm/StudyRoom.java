@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -79,6 +80,9 @@ public class StudyRoom implements Serializable
 	
 	@OneToMany(mappedBy="room")
 	private Set<CourseRegistration> registrations = new HashSet<>();
+	
+	@OneToMany(mappedBy="room",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<CourseSchedule> schedules = new HashSet<>();
 	
 	public StudyRoom(){}
 }

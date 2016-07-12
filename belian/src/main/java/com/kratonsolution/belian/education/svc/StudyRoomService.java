@@ -5,6 +5,7 @@ package com.kratonsolution.belian.education.svc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +17,7 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.education.dm.CourseRegistration;
 import com.kratonsolution.belian.education.dm.CourseRegistrationRepository;
+import com.kratonsolution.belian.education.dm.CourseSchedule;
 import com.kratonsolution.belian.education.dm.StudyRoom;
 import com.kratonsolution.belian.education.dm.StudyRoomRepository;
 
@@ -98,10 +100,16 @@ public class StudyRoomService
 	}
 	
 	@Secured("ROLE_STUDY_ROOM_UPDATE")
-	public void edit(StudyRoom room)
-	{
+	public void edit(StudyRoom room,Vector<CourseSchedule> schedules)
+	{	
+		room.getSchedules().clear();
+		
 		for(CourseRegistration registration:room.getRegistrations())
 			registrationRepo.save(registration);
+		
+		repository.saveAndFlush(room);
+	
+		room.getSchedules().addAll(schedules);
 		
 		repository.saveAndFlush(room);
 	}

@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -14,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
+import com.kratonsolution.belian.global.dm.Listable;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,7 +28,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="product_component")
-public class ProductComponent implements Serializable
+public class ProductComponent implements Listable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -50,4 +51,16 @@ public class ProductComponent implements Serializable
 	private Long version;
 	
 	public ProductComponent(){}
+
+	@Override
+	public String getLabel()
+	{
+		return product.getLabel();
+	}
+
+	@Override
+	public String getValue()
+	{
+		return product.getValue();
+	}
 }

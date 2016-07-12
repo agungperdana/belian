@@ -69,7 +69,7 @@ public class StudyDay implements Listable
 		if(isThursday())
 			builder.append("Kamis,");
 		if(isFriday())
-			builder.append("Jum'at,");
+			builder.append("Jum'at");
 		if(isSaturday())
 			builder.append("Sabtu");
 	
