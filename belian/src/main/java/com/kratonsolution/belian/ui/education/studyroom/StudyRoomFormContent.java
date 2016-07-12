@@ -5,6 +5,7 @@ package com.kratonsolution.belian.ui.education.studyroom;
 
 import java.util.List;
 
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -98,10 +99,49 @@ public class StudyRoomFormContent extends FormContent implements ModelListener<P
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
+				if(periods.getSelectedCount() == 0)
+					throw new WrongValueException(periods,"message.field.empty");
 				
-				StudyRoom day = new StudyRoom();
+				if(days.getSelectedCount() == 0)
+					throw new WrongValueException(days,"message.field.empty");
 				
-				service.add(day);
+				if(times.getSelectedCount() == 0)
+					throw new WrongValueException(times,"message.field.empty");
+				
+				if(courses.getProduct() == null)
+					throw new WrongValueException(courses,"message.field.empty");
+				
+				if(feature.getSelectedCount() == 0)
+					throw new WrongValueException(feature,"message.field.empty");
+				
+				StudyRoom room = new StudyRoom();
+				room.setCourse(courses.getProduct());
+				room.setDay(dayService.findOne(Components.string(days)));
+				room.setName(name.getText());
+				room.setOrganization(companys.getOrganization());
+				room.setPeriod(periodService.findOne(Components.string(periods)));
+				room.setRoom(rooms.getFacility());
+				room.setTime(timeService.findOne(Components.string(times)));
+				room.setStaff(utils.getEmployee());
+
+				for(Component com:items.getRows().getChildren())
+				{
+					Row row = (Row)com;
+					
+					Checkbox check = (Checkbox)row.getFirstChild();
+					if(check.isChecked() && check.getAttributes().containsKey("prim"))
+					{
+						CourseRegistration reg = registrationService.findOne(check.getAttribute("prim").toString());
+						if(reg != null)
+						{
+							reg.setRoom(room);
+							room.getRegistrations().add(reg);
+						}
+					}
+				}
+				
+				if(!room.getRegistrations().isEmpty())
+					service.add(room);
 				
 				Flow.next(getParent(),new StudyRoomGridContent());
 			}
@@ -133,7 +173,7 @@ public class StudyRoomFormContent extends FormContent implements ModelListener<P
 			
 				items.getRows().getChildren().clear();
 				
-				List<CourseRegistration> list = registrationService.findAll(courses.getProduct().getId(),
+				List<CourseRegistration> list = registrationService.findAllNoRoom(courses.getProduct().getId(),
 												Components.string(periods),Components.string(days),
 												Components.string(times),Components.string(feature));
 				
@@ -210,10 +250,6 @@ public class StudyRoomFormContent extends FormContent implements ModelListener<P
 		items.setWidth("100%");
 		items.appendChild(new Columns());
 		items.appendChild(new Rows());
-		items.getColumns().appendChild(new Column());
-		items.getColumns().appendChild(new Column());
-		items.getColumns().appendChild(new Column());
-		items.getColumns().appendChild(new Column());
 		items.getColumns().appendChild(new Column());
 		
 		appendChild(items);

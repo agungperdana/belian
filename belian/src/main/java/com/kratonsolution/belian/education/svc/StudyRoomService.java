@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.education.dm.CourseRegistration;
+import com.kratonsolution.belian.education.dm.CourseRegistrationRepository;
 import com.kratonsolution.belian.education.dm.StudyRoom;
 import com.kratonsolution.belian.education.dm.StudyRoomRepository;
 
@@ -28,6 +30,9 @@ public class StudyRoomService
 {
 	@Autowired
 	private StudyRoomRepository repository;
+	
+	@Autowired
+	private CourseRegistrationRepository registrationRepo;
 	
 	@Autowired
 	private SessionUtils utils;
@@ -86,11 +91,18 @@ public class StudyRoomService
 	@Secured("ROLE_STUDY_ROOM_CREATE")
 	public void add(StudyRoom room)
 	{
+		repository.save(room);
+		
+		for(CourseRegistration registration:room.getRegistrations())
+			registrationRepo.save(registration);
 	}
 	
 	@Secured("ROLE_STUDY_ROOM_UPDATE")
 	public void edit(StudyRoom room)
 	{
+		for(CourseRegistration registration:room.getRegistrations())
+			registrationRepo.save(registration);
+		
 		repository.saveAndFlush(room);
 	}
 	

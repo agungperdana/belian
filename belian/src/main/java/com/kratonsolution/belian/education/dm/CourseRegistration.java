@@ -20,6 +20,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.general.dm.Organization;
@@ -78,6 +81,11 @@ public class CourseRegistration implements Serializable
 	@ManyToOne
 	@JoinColumn(name="fk_study_period")
 	private StudyPeriod period;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_room")
+	@NotFound(action=NotFoundAction.IGNORE)
+	private StudyRoom room;
 	
 	@Version
 	private Long version;

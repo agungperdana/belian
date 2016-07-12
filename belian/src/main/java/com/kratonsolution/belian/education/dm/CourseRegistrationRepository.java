@@ -46,9 +46,11 @@ public interface CourseRegistrationRepository extends JpaRepository<CourseRegist
 			+ "AND itm.registration.day.id=:day "
 			+ "AND itm.registration.time.id=:time "
 			+ "AND itm.registration.organization.id IN(:company) "
+			+ "AND itm.registration.room IS NULL "
 			+ "ORDER BY itm.registration.student.name ASC ")
-	public List<CourseRegistration> findAll(@Param("product")String product,@Param("period")String period,
-											@Param("day")String day,@Param("time")String time,
-											@Param("feature")String feature,
-											@Param("company")List<String> company);
+	public List<CourseRegistration> findAllWithoutRoom(@Param("product")String product,
+													   @Param("period")String period,
+													   @Param("day")String day,@Param("time")String time,
+													   @Param("feature")String feature,
+													   @Param("company")List<String> company);
 }

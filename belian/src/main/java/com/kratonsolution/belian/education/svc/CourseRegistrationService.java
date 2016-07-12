@@ -52,10 +52,10 @@ public class CourseRegistrationService
 	}
 
 	@Secured({"ROLE_COURSE_REGISTRATION_READ","ROLE_SYSTEM_READ"})
-	public List<CourseRegistration> findAll(String product,String period,String day,String time,String feature)
+	public List<CourseRegistration> findAllNoRoom(String product,String period,String day,String time,String feature)
 	{
 		if(utils.getOrganizationIds() != null && !utils.getOrganizationIds().isEmpty())
-			return repository.findAll(product,period,day,time,feature,utils.getOrganizationIds());
+			return repository.findAllWithoutRoom(product,period,day,time,feature,utils.getOrganizationIds());
 
 		return new ArrayList<>();
 	}

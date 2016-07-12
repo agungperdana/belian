@@ -4,6 +4,8 @@
 package com.kratonsolution.belian.education.dm;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -11,12 +13,15 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.inventory.dm.Facility;
 import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.inventory.dm.ProductFeature;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -61,8 +66,19 @@ public class StudyRoom implements Serializable
 	@JoinColumn(name="fk_course")
 	private Product course;
 	
+	@ManyToOne
+	@JoinColumn(name="fk_feature")
+	private ProductFeature feature;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_staff")
+	private Person staff;
+	
 	@Version
 	private Long version;
+	
+	@OneToMany(mappedBy="room")
+	private Set<CourseRegistration> registrations = new HashSet<>();
 	
 	public StudyRoom(){}
 }

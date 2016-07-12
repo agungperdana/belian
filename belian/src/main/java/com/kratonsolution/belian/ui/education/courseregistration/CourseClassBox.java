@@ -112,6 +112,20 @@ public class CourseClassBox extends Hbox implements Listenable<ModelListener<Pro
 		
 		throw new RuntimeException(lang.get("message.field.empty"));
 	}
+	
+	public void setProduct(Product product)
+	{
+		if(product != null)
+		{
+			String key = product.getCode()+" "+product.getName();
+			if(!maps.containsKey(key))
+				maps.put(key, product);
+		
+			products.getItems().clear();
+			products.appendItem(key);
+			products.setSelectedIndex(0);
+		}
+	}
 
 	@Override
 	public void addListener(ModelListener<Product> listener)
