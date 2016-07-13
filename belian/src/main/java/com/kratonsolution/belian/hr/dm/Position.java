@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.hr.dm;
 
-import java.io.Serializable;
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,7 +36,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="position")
-public class Position implements Serializable,Listable
+public class Position implements Listable
 {	
 	@Id
 	private String id = UUID.randomUUID().toString();

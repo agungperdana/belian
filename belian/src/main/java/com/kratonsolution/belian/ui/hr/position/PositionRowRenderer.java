@@ -12,8 +12,9 @@ import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.hr.dm.Position;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class PositionRowRenderer implements RowRenderer<Position>
 {

@@ -26,6 +26,7 @@ import com.kratonsolution.belian.hr.svc.PositionService;
 import com.kratonsolution.belian.hr.svc.PositionTypeService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -80,9 +81,7 @@ public class PositionFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PositionWindow window = (PositionWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new PositionGridContent());
 			}
 		});
 		
@@ -106,9 +105,7 @@ public class PositionFormContent extends FormContent
 				
 				service.add(position);
 				
-				PositionWindow window = (PositionWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new PositionGridContent());
 			}
 		});
 	}

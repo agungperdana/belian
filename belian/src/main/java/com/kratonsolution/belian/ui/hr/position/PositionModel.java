@@ -20,13 +20,21 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PositionModel implements ListModel<Position>
 {
-	private final PositionService service = Springs.get(PositionService.class);
+	private PositionService service = Springs.get(PositionService.class);
 	
 	private List<Position> data = new ArrayList<Position>();
 	
+	private String key;
+	
 	public PositionModel(int itemSize)
 	{
-		next(0, itemSize);
+		next(0, itemSize,null);
+	}
+	
+	public PositionModel(int itemSize,String param)
+	{
+		this.key = param;
+		next(0, itemSize,param);
 	}
 
 	@Override
@@ -41,7 +49,7 @@ public class PositionModel implements ListModel<Position>
 	@Override
 	public int getSize()
 	{
-		return data.size();
+		return service.size(this.key);
 	}
 
 	@Override
@@ -58,9 +66,9 @@ public class PositionModel implements ListModel<Position>
 		
 	}
 
-	public void next(int pageIndex,int itemSize)
+	public void next(int pageIndex,int itemSize,String key)
 	{
 		data.clear();
-		data.addAll(service.findAll(0, (itemSize*pageIndex)+itemSize));
+		data.addAll(service.findAll(0, (itemSize*pageIndex)+itemSize,key));
 	}
 }

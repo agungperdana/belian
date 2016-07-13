@@ -6,6 +6,7 @@ package com.kratonsolution.belian.ui.hr.position;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
@@ -20,12 +21,13 @@ import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class PositionGridContent extends GridContent
 {
-	private final PositionService service = Springs.get(PositionService.class);
+	private PositionService service = Springs.get(PositionService.class);
 	
 	public PositionGridContent()
 	{
@@ -147,16 +149,28 @@ public class PositionGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final PositionModel model = new PositionModel(8);
+		filter.setPlaceholder(lang.get("message.filter.placeholder"));
+		filter.addEventListener(Events.ON_CHANGING, new EventListener<InputEvent>()
+		{
+			@Override
+			public void onEvent(InputEvent event) throws Exception
+			{
+				refresh(new PositionModel(utils.getRowPerPage(), event.getValue()));
+			}
+		});
 		
-		grid.setParent(this);
+		appendChild(filter);
+		appendChild(grid);
+		
+		final PositionModel model = new PositionModel(utils.getRowPerPage());
+		
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No position data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new PositionRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
-		grid.setPageSize(8);
+		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
@@ -177,7 +191,7 @@ public class PositionGridContent extends GridContent
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), 8);
+				model.next(event.getActivePage(), utils.getRowPerPage(),filter.getText());
 				grid.setModel(model);
 			}
 		});
