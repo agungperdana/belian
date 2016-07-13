@@ -5,6 +5,7 @@ package com.kratonsolution.belian.education.svc;
 
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.education.dm.CourseAttendance;
+import com.kratonsolution.belian.education.dm.CourseAttendanceItem;
 import com.kratonsolution.belian.education.dm.CourseAttendanceRepository;
 import com.kratonsolution.belian.education.dm.CourseSchedule;
 
@@ -68,15 +70,17 @@ public class CourseAttendanceService
 	}
 
 	@Secured("ROLE_COURSE_ATTENDANCE_CREATE")
-	public void add(CourseAttendance reg)
+	public void add(CourseAttendance attendance)
 	{
-		repository.save(reg);
+		repository.save(attendance);
 	}
 
 	@Secured("ROLE_COURSE_ATTENDANCE_UPDATE")
-	public void edit(CourseAttendance reg)
+	public void edit(CourseAttendance attendance,Collection<CourseAttendanceItem> items)
 	{
-		repository.saveAndFlush(reg);
+		attendance.getItems().clear();
+		attendance.getItems().addAll(items);
+		repository.saveAndFlush(attendance);
 	}
 
 	@Secured("ROLE_COURSE_ATTENDANCE_DELETE")

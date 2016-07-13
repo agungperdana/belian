@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.ui.education.courseattendance;
 
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -17,6 +19,8 @@ import org.zkoss.zul.Rows;
 
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.education.dm.AttendanceStatus;
+import com.kratonsolution.belian.education.dm.CourseAttendance;
+import com.kratonsolution.belian.education.dm.CourseAttendanceItem;
 import com.kratonsolution.belian.education.dm.CourseRegistration;
 import com.kratonsolution.belian.education.dm.CourseSchedule;
 import com.kratonsolution.belian.education.dm.StudyRoom;
@@ -24,10 +28,12 @@ import com.kratonsolution.belian.education.svc.CourseAttendanceService;
 import com.kratonsolution.belian.education.svc.CourseScheduleService;
 import com.kratonsolution.belian.education.svc.StudyPeriodService;
 import com.kratonsolution.belian.education.svc.StudyRoomService;
+import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
+import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -44,6 +50,8 @@ public class CourseAttendanceFormContent extends FormContent
 	private StudyPeriodService periodService = Springs.get(StudyPeriodService.class);
 	
 	private CourseScheduleService scheduleService = Springs.get(CourseScheduleService.class);
+	
+	private PersonService personService = Springs.get(PersonService.class);
 	
 	private OrganizationList companys = new OrganizationList();
 	
@@ -82,6 +90,28 @@ public class CourseAttendanceFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
+				if(schedules.getSelectedCount() == 0)
+					throw new WrongValueException(schedules,lang.get("message.field.empty"));
+				
+				CourseAttendance attendance = new CourseAttendance();
+				attendance.setDate(DateTimes.sql(date.getValue()));
+				attendance.setOrganization(companys.getOrganization());
+				attendance.setSchedule(scheduleService.findOne(Components.string(schedules)));
+				
+				for(Component com:items.getRows().getChildren())
+				{
+					Row row = (Row)com;
+					
+					CourseAttendanceItem item = new CourseAttendanceItem();
+					item.setAttendance(attendance);
+					item.setPerson(personService.findOne(RowUtils.string(row,0)));
+					item.setStatus(AttendanceStatus.valueOf(RowUtils.string(row, 1)));
+					
+					attendance.getItems().add(item);
+				}
+				
+				service.add(attendance);
+				
 				Flow.next(getParent(),new CourseAttendanceGridContent());
 			}
 		});
@@ -175,6 +205,7 @@ public class CourseAttendanceFormContent extends FormContent
 		items.appendChild(new Rows());
 		items.getColumns().appendChild(new Column(lang.get("generic.grid.column.person"),null,"225px"));
 		items.getColumns().appendChild(new Column(lang.get("generic.grid.column.status"),null,"100px"));
+		items.setSpan("0");
 	
 		appendChild(items);
 	}
@@ -189,7 +220,12 @@ public class CourseAttendanceFormContent extends FormContent
 			if(schedule != null)
 			{
 				Row row = new Row();
-				row.appendChild(new Label(schedule.getTeacher().getName()+" [Mentor]"));
+
+				Listbox person = Components.fullSpanSelect();
+				person.setSelectedItem(person.appendItem(schedule.getTeacher().getName()+" [Mentor]",schedule.getTeacher().getId()));
+				person.setStyle("font-weight:bold;color:blue;");
+				
+				row.appendChild(person);
 				
 				Listbox _listbox = Components.fullSpanSelect();
 				for(AttendanceStatus status:AttendanceStatus.values())
@@ -198,14 +234,17 @@ public class CourseAttendanceFormContent extends FormContent
 				row.appendChild(_listbox);
 				
 				items.getRows().appendChild(row);
-				items.getRows().appendChild(new Row());
 			}
 		}
 
 		for(CourseRegistration registered:room.getRegistrations())
 		{
 			Row row = new Row();
-			row.appendChild(new Label(registered.getStudent().getName()));
+			
+			Listbox person = Components.fullSpanSelect();
+			person.setSelectedItem(person.appendItem(registered.getStudent().getName(),registered.getStudent().getId()));
+			
+			row.appendChild(person);
 			
 			Listbox listbox = Components.fullSpanSelect();
 			for(AttendanceStatus status:AttendanceStatus.values())

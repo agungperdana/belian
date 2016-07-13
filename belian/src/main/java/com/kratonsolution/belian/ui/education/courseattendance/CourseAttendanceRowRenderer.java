@@ -31,7 +31,7 @@ public class CourseAttendanceRowRenderer implements RowRenderer<CourseAttendance
 			row.appendChild(new Label(DateTimes.format(data.getDate())));
 			row.appendChild(new Label(data.getSchedule().getRoom().getName()));
 			row.appendChild(new Label(data.getSchedule().getRoom().getPeriod().getName()));
-			row.appendChild(new Label(data.getSchedule().getRoom().getDay().getLabel()));
+			row.appendChild(new Label(data.getSchedule().getDay()));
 			row.appendChild(new Label(data.getSchedule().getRoom().getTime().getLabel()));
 			row.appendChild(new Label(data.getId()));
 		}
