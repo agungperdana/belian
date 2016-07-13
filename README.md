@@ -1,4 +1,4 @@
-belian
+BelianERP
 ======
 
 Simple application for business
