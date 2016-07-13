@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.education.studentattendance;
+package com.kratonsolution.belian.ui.education.courseattendance;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
 import com.kratonsolution.belian.education.dm.CourseAttendance;
-import com.kratonsolution.belian.education.svc.StudentAttendanceService;
+import com.kratonsolution.belian.education.svc.CourseAttendanceService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -18,20 +18,20 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class StudentAttendanceModel implements ListModel<CourseAttendance>
+public class CourseAttendanceModel implements ListModel<CourseAttendance>
 {
-	private StudentAttendanceService service = Springs.get(StudentAttendanceService.class);
+	private CourseAttendanceService service = Springs.get(CourseAttendanceService.class);
 	
 	private List<CourseAttendance> data = new ArrayList<CourseAttendance>();
 	
 	private String key;
 	
-	public StudentAttendanceModel(int itemSize)
+	public CourseAttendanceModel(int itemSize)
 	{
 		next(0, itemSize,null);
 	}
 	
-	public StudentAttendanceModel(int itemSize,String key)
+	public CourseAttendanceModel(int itemSize,String key)
 	{
 		this.key = key;
 		next(0, itemSize,key);

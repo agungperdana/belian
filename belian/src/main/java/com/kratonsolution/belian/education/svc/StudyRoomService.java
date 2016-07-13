@@ -55,6 +55,15 @@ public class StudyRoomService
 	}
 	
 	@Secured({"ROLE_STUDY_ROOM_READ","ROLE_SYSTEM_READ"})
+	public List<StudyRoom> findAll(String period)
+	{
+		if(utils.getOrganizationIds() == null || utils.getOrganizationIds().isEmpty())
+			return new ArrayList<>();
+		
+		return repository.findAll(utils.getOrganizationIds(),period);
+	}
+	
+	@Secured({"ROLE_STUDY_ROOM_READ","ROLE_SYSTEM_READ"})
 	public List<StudyRoom> findAll(int pageIndex,int pageSize)
 	{
 		if(utils.getOrganizationIds() == null || utils.getOrganizationIds().isEmpty())

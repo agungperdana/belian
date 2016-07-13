@@ -152,6 +152,23 @@ public class Components implements Serializable
 		return listbox;
 	}
 	
+	public static final Listbox fullSpanSelect(Collection<? extends Listable> collections,Listable setDefault)
+	{
+		Listbox listbox = new Listbox();
+		listbox.setMold("select");
+		listbox.setStyle("text-align:center;");
+		listbox.setWidth("100%");
+		
+		for(Listable object:collections)
+		{
+			Listitem listitem = listbox.appendItem(object.getLabel(), object.getValue());
+			if(object.getValue().equals(setDefault.getValue()))
+				listbox.setSelectedItem(listitem);
+		}
+		
+		return listbox;
+	}
+	
 	public static final Listbox fullSpanSelect(Collection<? extends Listable> collections,boolean setDefault)
 	{
 		Listbox listbox = new Listbox();

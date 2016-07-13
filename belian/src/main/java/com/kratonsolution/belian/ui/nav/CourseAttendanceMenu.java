@@ -10,7 +10,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.Language;
-import com.kratonsolution.belian.ui.education.studentattendance.StudentAttendanceWindow;
+import com.kratonsolution.belian.ui.education.courseattendance.CourseAttendanceWindow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -18,18 +18,18 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class StudentAttendanceMenu extends Listitem
+public class CourseAttendanceMenu extends Listitem
 {
 	private Language language = Springs.get(Language.class);
 	
-	public StudentAttendanceMenu()
+	public CourseAttendanceMenu()
 	{
 		init();
 	}
 	
 	public void init()
 	{
-		setLabel(language.get("navbar.menu.education.studentattendance"));
+		setLabel(language.get("navbar.menu.education.courseattendance"));
 		setImage("/icons/student-attendance.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()
@@ -37,16 +37,16 @@ public class StudentAttendanceMenu extends Listitem
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				StudentAttendanceWindow window = null;
+				CourseAttendanceWindow window = null;
 				
 				for(Component component:getPage().getRoots())
 				{
-					if(component instanceof StudentAttendanceWindow)
-						window = (StudentAttendanceWindow)component;
+					if(component instanceof CourseAttendanceWindow)
+						window = (CourseAttendanceWindow)component;
 				}
 				
 				if(window == null)
-					window = StudentAttendanceWindow.injectInto(getPage());
+					window = CourseAttendanceWindow.injectInto(getPage());
 				
 				else if(!window.isVisible())
 				{

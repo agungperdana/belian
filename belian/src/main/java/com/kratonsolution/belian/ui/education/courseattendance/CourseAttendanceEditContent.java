@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.education.studentattendance;
+package com.kratonsolution.belian.ui.education.courseattendance;
 
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
@@ -34,7 +34,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class StudentAttendanceEditContent extends FormContent
+public class CourseAttendanceEditContent extends FormContent
 {	
 	private StudentRelationshipService service = Springs.get(StudentRelationshipService.class);
 
@@ -56,7 +56,7 @@ public class StudentAttendanceEditContent extends FormContent
 
 	private Row row;
 
-	public StudentAttendanceEditContent(Row row)
+	public CourseAttendanceEditContent(Row row)
 	{
 		super();
 		this.row = row;
@@ -72,7 +72,7 @@ public class StudentAttendanceEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Flow.next(getParent(),new StudentAttendanceGridContent());
+				Flow.next(getParent(),new CourseAttendanceGridContent());
 			}
 		});
 
@@ -97,7 +97,7 @@ public class StudentAttendanceEditContent extends FormContent
 					service.add(relationship);
 				}
 
-				Flow.next(getParent(),new StudentAttendanceGridContent());
+				Flow.next(getParent(),new CourseAttendanceGridContent());
 			}
 		});
 	}

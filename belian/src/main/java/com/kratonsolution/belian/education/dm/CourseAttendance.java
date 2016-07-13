@@ -5,19 +5,21 @@ package com.kratonsolution.belian.education.dm;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.general.dm.Person;
+import com.kratonsolution.belian.general.dm.Organization;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -37,21 +39,20 @@ public class CourseAttendance implements Serializable
 
 	@Column(name="date")
 	private Date date;
-
-	@Column(name="status")
-	@Enumerated(EnumType.STRING)
-	private AttendanceStatus status = AttendanceStatus.IN;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_organization")
+	private Organization organization;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_Schedule")
 	private CourseSchedule schedule;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_person")
-	private Person person;
-	
 	@Version
 	private Long version;
 
+	@OneToMany(mappedBy="attendance",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<CourseAttendanceItem> items = new HashSet<>();
+	
 	public CourseAttendance(){}
 }

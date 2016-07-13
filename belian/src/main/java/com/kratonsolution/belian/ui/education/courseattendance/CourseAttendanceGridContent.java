@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.education.studentattendance;
+package com.kratonsolution.belian.ui.education.courseattendance;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -16,7 +16,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.education.svc.StudentAttendanceService;
+import com.kratonsolution.belian.education.svc.CourseAttendanceService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -26,11 +26,11 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class StudentAttendanceGridContent extends GridContent
+public class CourseAttendanceGridContent extends GridContent
 {
-	private StudentAttendanceService service = Springs.get(StudentAttendanceService.class);
+	private CourseAttendanceService service = Springs.get(CourseAttendanceService.class);
 	
-	public StudentAttendanceGridContent()
+	public CourseAttendanceGridContent()
 	{
 		super();
 		initToolbar();
@@ -46,7 +46,7 @@ public class StudentAttendanceGridContent extends GridContent
 			public void onEvent(Event event) throws Exception
 			{
 				grid.getPagingChild().setActivePage(0);
-				refresh(new StudentAttendanceModel(utils.getRowPerPage()));
+				refresh(new CourseAttendanceModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -55,7 +55,7 @@ public class StudentAttendanceGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Flow.next(getParent(), new StudentAttendanceFormContent());
+				Flow.next(getParent(), new CourseAttendanceFormContent());
 			}
 		});
 		
@@ -107,7 +107,7 @@ public class StudentAttendanceGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -129,7 +129,7 @@ public class StudentAttendanceGridContent extends GridContent
 								}
 							}
 							
-							refresh(new StudentAttendanceModel(utils.getRowPerPage()));
+							refresh(new CourseAttendanceModel(utils.getRowPerPage()));
 						}
 					}
 				});
@@ -154,32 +154,32 @@ public class StudentAttendanceGridContent extends GridContent
 			@Override
 			public void onEvent(InputEvent input) throws Exception
 			{
-				refresh(new StudentAttendanceModel(utils.getRowPerPage(), input.getValue()));
+				refresh(new CourseAttendanceModel(utils.getRowPerPage(), input.getValue()));
 			}
 		});
 		
 		appendChild(filter);
 		appendChild(grid);
 		
-		final StudentAttendanceModel model = new StudentAttendanceModel(utils.getRowPerPage());
+		final CourseAttendanceModel model = new CourseAttendanceModel(utils.getRowPerPage());
 		
 		grid.setHeight("80%");
 		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
-		grid.setRowRenderer(new StudentAttendanceRowRenderer());
+		grid.setRowRenderer(new CourseAttendanceRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column(lang.get("studentattendance.grid.column.period"),null,"125px"));
-		grid.getColumns().appendChild(new Column(lang.get("studentattendance.grid.column.day"),null,"150px"));
-		grid.getColumns().appendChild(new Column(lang.get("studentattendance.grid.column.time"),null,"150px"));
-		grid.getColumns().appendChild(new Column(lang.get("studentattendance.grid.column.class"),null,"150px"));
-		grid.getColumns().appendChild(new Column(lang.get("studentattendance.grid.column.room"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("courseattendance.grid.column.date"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("courseattendance.grid.column.class"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("courseattendance.grid.column.period"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("courseattendance.grid.column.day"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("courseattendance.grid.column.time"),null,"150px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
 		grid.getColumns().getLastChild().setVisible(false);
-		grid.setSpan("4");
+		grid.setSpan("2");
 		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
 
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
@@ -193,6 +193,6 @@ public class StudentAttendanceGridContent extends GridContent
 			}
 		});
 		
-		refresh(new StudentAttendanceModel(utils.getRowPerPage()));
+		refresh(new CourseAttendanceModel(utils.getRowPerPage()));
 	}
 }

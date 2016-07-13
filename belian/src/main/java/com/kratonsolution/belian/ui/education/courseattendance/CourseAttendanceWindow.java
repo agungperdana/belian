@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.education.studentattendance;
+package com.kratonsolution.belian.ui.education.courseattendance;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Page;
@@ -22,22 +22,22 @@ import com.kratonsolution.belian.ui.nav.IconBar;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class StudentAttendanceWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
+public class CourseAttendanceWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private Caption caption = new Caption(lang.get("navbar.menu.education.studentattendance"));
+	private Caption caption = new Caption(lang.get("navbar.menu.education.courseattendance"));
 	
-	private StudentAttendanceButton status = new StudentAttendanceButton();
+	private CourseAttendanceButton status = new CourseAttendanceButton();
 	
-	public static StudentAttendanceWindow injectInto(Page page)
+	public static CourseAttendanceWindow injectInto(Page page)
 	{
-		StudentAttendanceWindow window = new StudentAttendanceWindow();
+		CourseAttendanceWindow window = new CourseAttendanceWindow();
 		window.setPage(page);
 		window.init();
 		
 		return window;
 	}
 	
-	private StudentAttendanceWindow()
+	private CourseAttendanceWindow()
 	{
 		super();
 		setWidth("650px");
@@ -94,7 +94,7 @@ public class StudentAttendanceWindow extends AbstractWindow implements HasGrid,H
 	@Override
 	public void insertEditForm(Row row)
 	{
-		appendChild(new StudentAttendanceEditContent(row));
+		appendChild(new CourseAttendanceEditContent(row));
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class StudentAttendanceWindow extends AbstractWindow implements HasGrid,H
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof StudentAttendanceEditContent)
+			if(component instanceof CourseAttendanceEditContent)
 			{
 				removeChild(component);
 				break;
@@ -113,7 +113,7 @@ public class StudentAttendanceWindow extends AbstractWindow implements HasGrid,H
 	@Override
 	public void insertCreateForm()
 	{
-		appendChild(new StudentAttendanceFormContent());
+		appendChild(new CourseAttendanceFormContent());
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class StudentAttendanceWindow extends AbstractWindow implements HasGrid,H
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof StudentAttendanceFormContent)
+			if(component instanceof CourseAttendanceFormContent)
 			{
 				removeChild(component);
 				break;
@@ -132,7 +132,7 @@ public class StudentAttendanceWindow extends AbstractWindow implements HasGrid,H
 	@Override
 	public void insertGrid()
 	{
-		appendChild(new StudentAttendanceGridContent());
+		appendChild(new CourseAttendanceGridContent());
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class StudentAttendanceWindow extends AbstractWindow implements HasGrid,H
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof StudentAttendanceGridContent)
+			if(component instanceof CourseAttendanceGridContent)
 			{
 				removeChild(component);
 				break;

@@ -40,6 +40,7 @@ import com.kratonsolution.belian.education.svc.StudyTimeService;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.hr.svc.EmploymentService;
 import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.component.FacilityList;
@@ -71,6 +72,8 @@ public class StudyRoomEditContent extends FormContent
 
 	private StudyTimeService timeService = Springs.get(StudyTimeService.class);
 
+	private ProductService productService = Springs.get(ProductService.class);
+	
 	private Textbox name = Components.mandatoryTextBox(false);
 
 	private OrganizationList companys = new OrganizationList();
@@ -155,14 +158,12 @@ public class StudyRoomEditContent extends FormContent
 					{
 						Row row = (Row)com;
 						
-						CourseClassBox box = (CourseClassBox)row.getChildren().get(4);
-						
 						CourseSchedule crs = new CourseSchedule();
 						crs.setId(RowUtils.id(row));
 						crs.setDay(RowUtils.string(row, 1));
 						crs.setStart(RowUtils.time(row, 2));
 						crs.setEnd(RowUtils.time(row, 3));
-						crs.setProduct(box.getProduct());
+						crs.setProduct(productService.findOne(RowUtils.string(row, 4)));
 						crs.setRoom(room);
 						crs.setTeacher(personService.findOne(RowUtils.string(row, 5)));
 						
@@ -332,7 +333,7 @@ public class StudyRoomEditContent extends FormContent
 				row.appendChild(listbox);
 				row.appendChild(Components.fullspanTimebox(schedule.getStart()));
 				row.appendChild(Components.fullspanTimebox(schedule.getEnd()));
-				row.appendChild(box);
+				row.appendChild(Components.fullSpanSelect(rm.getCourse().getComponents(),schedule.getProduct()));
 				row.appendChild(Components.fullSpanSelect(schedule.getTeacher()));
 				row.appendChild(Components.label(schedule.getId()));
 			

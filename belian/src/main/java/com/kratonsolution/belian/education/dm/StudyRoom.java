@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -82,6 +83,7 @@ public class StudyRoom implements Serializable
 	private Set<CourseRegistration> registrations = new HashSet<>();
 	
 	@OneToMany(mappedBy="room",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OrderBy("day")
 	private Set<CourseSchedule> schedules = new HashSet<>();
 	
 	public StudyRoom(){}

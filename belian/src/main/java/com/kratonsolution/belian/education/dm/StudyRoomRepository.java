@@ -47,4 +47,10 @@ public interface StudyRoomRepository extends JpaRepository<StudyRoom, String>
 	@Query("SELECT COUNT(room) FROM StudyRoom room WHERE "
 			+ "room.organization.id IN(:company) ")
 	public Long count(@Param("company")List<String> company);
+	
+	@Query("FROM StudyRoom room WHERE "
+			+ "room.organization.id IN(:company) "
+			+ "AND room.period.id =:period "
+			+ "ORDER BY room.name ASC ")
+	public List<StudyRoom> findAll(@Param("company")List<String> company,@Param("period")String period);
 }

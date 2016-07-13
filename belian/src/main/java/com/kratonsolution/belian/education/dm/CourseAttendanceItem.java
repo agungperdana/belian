@@ -27,7 +27,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="student_attendance_item")
-public class StudentAttendanceItem implements Serializable
+public class CourseAttendanceItem implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -36,8 +36,8 @@ public class StudentAttendanceItem implements Serializable
 	private AttendanceStatus status = AttendanceStatus.LEAVE;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_student")
-	private Person student;
+	@JoinColumn(name="fk_person")
+	private Person person;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_attendance")
@@ -46,5 +46,5 @@ public class StudentAttendanceItem implements Serializable
 	@Version
 	private Long version;
 	
-	public StudentAttendanceItem(){}
+	public CourseAttendanceItem(){}
 }
