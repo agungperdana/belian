@@ -20,10 +20,14 @@ public interface PositionRepository extends JpaRepository<Position, String>
 	@Query("FROM Position pos WHERE pos.id != :id")
 	public List<Position> findAllNotEqual(@Param("id")String positionId);
 
-	@Query("FROM Position pos WHERE pos.organization.id IN(:company) ORDER BY pos.start DESC,pos.type.name ASC")
+	@Query("FROM Position pos WHERE "
+			+ "pos.organization.id IN(:company) "
+			+ "ORDER BY pos.start DESC,pos.type.title ASC")
 	public List<Position> findAll(@Param("company")List<String> company);
 	
-	@Query("FROM Position pos WHERE pos.organization.id IN(:company) ORDER BY pos.start DESC,pos.type.name ASC")
+	@Query("FROM Position pos WHERE "
+			+ "pos.organization.id IN(:company) "
+			+ "ORDER BY pos.start DESC,pos.type.title ASC")
 	public List<Position> findAll(Pageable pageable,@Param("company")List<String> company);
 	
 	@Query("SELECT COUNT(pos) FROM Position pos WHERE "
@@ -32,14 +36,14 @@ public interface PositionRepository extends JpaRepository<Position, String>
 	
 	@Query("FROM Position pos WHERE "
 			+ "pos.organization.id IN(:company) "
-			+ "AND pos.type.name LIKE %:key% "
-			+ "ORDER BY pos.start DESC,pos.type.name ASC")
+			+ "AND pos.type.title LIKE %:key% "
+			+ "ORDER BY pos.start DESC,pos.type.title ASC")
 	public List<Position> findAll(Pageable pageable,@Param("company")List<String> company,@Param("key")String key);
 	
 	@Query("SELECT COUNT(pos) FROM Position pos WHERE "
 			+ "pos.organization.id IN(:company) "
-			+ "AND pos.type.name LIKE %:key% "
-			+ "ORDER BY pos.start DESC,pos.type.name ASC")
+			+ "AND pos.type.title LIKE %:key% "
+			+ "ORDER BY pos.start DESC,pos.type.title ASC")
 	public Long count(@Param("company")List<String> company,@Param("key")String key);
 	
 	

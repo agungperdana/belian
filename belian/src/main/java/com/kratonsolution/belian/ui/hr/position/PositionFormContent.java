@@ -25,6 +25,7 @@ import com.kratonsolution.belian.hr.dm.WorktimeStatus;
 import com.kratonsolution.belian.hr.svc.PositionService;
 import com.kratonsolution.belian.hr.svc.PositionTypeService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -64,7 +65,7 @@ public class PositionFormContent extends FormContent
 		
 	private Listbox positionTypes = Components.newSelect(positionTypeService.findAll(),true);
 	
-	private Listbox hirings = Components.newSelect(utils.getOrganizations(),true);
+	private OrganizationList companys = new OrganizationList();
 	
 	public PositionFormContent()
 	{
@@ -97,7 +98,7 @@ public class PositionFormContent extends FormContent
 				position.setEnd(DateTimes.sql(end.getValue()));
 				position.setSalaryStatus(SalaryStatus.valueOf(Components.string(salarys)));
 				position.setStart(DateTimes.sql(start.getValue()));
-				position.setOrganization(utils.getOrganization());
+				position.setOrganization(companys.getOrganization());
 				position.setEmploymentStatus(EmploymentStatus.valueOf(Components.string(employmentstatuses)));
 				position.setType(positionTypeService.findOne(Components.string(positionTypes)));
 				position.setWorktimeStatus(WorktimeStatus.valueOf(Components.string(worktimes)));
@@ -131,7 +132,7 @@ public class PositionFormContent extends FormContent
 				positionStatusTypes.setSelectedItem(listitem);
 		}
 		
-		Components.setDefault(hirings);
+		Components.setDefault(companys);
 		Components.setDefault(worktimes);
 		Components.setDefault(employmentstatuses);
 		Components.setDefault(salarys);
@@ -141,43 +142,43 @@ public class PositionFormContent extends FormContent
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Start Date"));
-		row1.appendChild(start);
+		row1.appendChild(new Label(lang.get("position.grid.column.company")));
+		row1.appendChild(companys);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("End Date"));
-		row2.appendChild(end);
+		row2.appendChild(new Label(lang.get("position.grid.column.start")));
+		row2.appendChild(start);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Actual Start Date"));
-		row3.appendChild(actualStart);
+		row3.appendChild(new Label(lang.get("position.grid.column.end")));
+		row3.appendChild(end);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Actual End Date"));
-		row4.appendChild(actualEnd);
+		row4.appendChild(new Label(lang.get("position.grid.column.actualstart")));
+		row4.appendChild(actualStart);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Worktime Type"));
-		row5.appendChild(worktimes);
+		row5.appendChild(new Label(lang.get("position.grid.column.actualend")));
+		row5.appendChild(actualEnd);
 		
 		Row row6 = new Row();
-		row6.appendChild(new Label("Employment Type"));
-		row6.appendChild(employmentstatuses);
+		row6.appendChild(new Label(lang.get("position.grid.column.worktype")));
+		row6.appendChild(worktimes);
 		
 		Row row7 = new Row();
-		row7.appendChild(new Label("Budget Item"));
-		row7.appendChild(budgetItems);
+		row7.appendChild(new Label(lang.get("position.grid.column.employtype")));
+		row7.appendChild(employmentstatuses);
 		
 		Row row8 = new Row();
-		row8.appendChild(new Label("Position Type"));
-		row8.appendChild(positionTypes);
+		row8.appendChild(new Label(lang.get("position.grid.column.budget")));
+		row8.appendChild(budgetItems);
 		
 		Row row9 = new Row();
-		row9.appendChild(new Label("Hiring Organization"));
-		row9.appendChild(hirings);
+		row9.appendChild(new Label(lang.get("position.grid.column.positiontype")));
+		row9.appendChild(positionTypes);
 		
 		Row row10 = new Row();
-		row10.appendChild(new Label("Position Status Type"));
+		row10.appendChild(new Label(lang.get("position.grid.column.status")));
 		row10.appendChild(positionStatusTypes);
 		
 		rows.appendChild(row1);

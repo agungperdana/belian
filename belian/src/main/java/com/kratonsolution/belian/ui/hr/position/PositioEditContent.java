@@ -41,6 +41,7 @@ import com.kratonsolution.belian.hr.svc.PositionService;
 import com.kratonsolution.belian.hr.svc.PositionTypeService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
+import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
@@ -82,7 +83,7 @@ public class PositioEditContent extends FormContent
 
 	private Listbox positionTypes = Components.fullSpanSelect(positionTypeService.findAll(),true);
 
-	private Listbox hirings = Components.fullSpanSelect(utils.getOrganizations(),true);
+	private OrganizationList companys = new OrganizationList();
 
 	private Row row;
 
@@ -147,7 +148,7 @@ public class PositioEditContent extends FormContent
 					position.setActualEnd(DateTimes.sql(actualEnd.getValue()));
 					position.setActualStart(DateTimes.sql(actualStart.getValue()));
 					position.setEnd(DateTimes.sql(end.getValue()));
-					position.setOrganization(organizationService.findOne(Components.string(hirings)));
+					position.setOrganization(companys.getOrganization());
 					position.setSalaryStatus(SalaryStatus.valueOf(Components.string(salarys)));
 					position.setStart(DateTimes.sql(start.getValue()));
 					position.setEmploymentStatus(EmploymentStatus.valueOf(Components.string(employmentstatuses)));
@@ -221,17 +222,7 @@ public class PositioEditContent extends FormContent
 		Position position = service.findOne(RowUtils.id(row));
 		if(position != null)
 		{
-			if(position.getOrganization() != null)
-			{
-				for(Listitem listitem:hirings.getItems())
-				{
-					if(listitem.getValue().toString().equals(position.getOrganization().getId()))
-					{
-						hirings.setSelectedItem(listitem);
-						break;
-					}
-				}
-			}
+			companys.setOrganization(position.getOrganization());
 			
 			if(position.getBudgetItem() != null)
 			{
@@ -280,40 +271,40 @@ public class PositioEditContent extends FormContent
 			grid.getColumns().appendChild(new Column());
 
 			Row row1 = new Row();
-			row1.appendChild(new Label("Start Date"));
+			row1.appendChild(new Label(lang.get("position.grid.column.company")));
+			row1.appendChild(companys);
+			row1.appendChild(new Label(lang.get("position.grid.column.start")));
 			row1.appendChild(start);
-			row1.appendChild(new Label("End Date"));
-			row1.appendChild(end);
-
+			
 			Row row2 = new Row();
-			row2.appendChild(new Label("Actual Start Date"));
+			row2.appendChild(new Label(lang.get("position.grid.column.end")));
+			row2.appendChild(end);
+			row2.appendChild(new Label(lang.get("position.grid.column.actualstart")));
 			row2.appendChild(actualStart);
-			row2.appendChild(new Label("Actual End Date"));
-			row2.appendChild(actualEnd);
-
+			
 			Row row3 = new Row();
-			row3.appendChild(new Label("Worktime Type"));
+			row3.appendChild(new Label(lang.get("position.grid.column.actualend")));
+			row3.appendChild(actualEnd);
+			row3.appendChild(new Label(lang.get("position.grid.column.worktype")));
 			row3.appendChild(worktimes);
-			row3.appendChild(new Label("Employment Type"));
-			row3.appendChild(employmentstatuses);
-
+			
+			Row row4 = new Row();
+			row4.appendChild(new Label(lang.get("position.grid.column.employtype")));
+			row4.appendChild(employmentstatuses);
+			row4.appendChild(new Label(lang.get("position.grid.column.budget")));
+			row4.appendChild(budgetItems);
+			
 			Row row5 = new Row();
-			row5.appendChild(new Label("Budget Item"));
-			row5.appendChild(budgetItems);
-			row5.appendChild(new Label("Position Type"));
+			row5.appendChild(new Label(lang.get("position.grid.column.positiontype")));
 			row5.appendChild(positionTypes);
-
-			Row row6 = new Row();
-			row6.appendChild(new Label("Hiring Organization"));
-			row6.appendChild(hirings);
-			row6.appendChild(new Label("Position Status Type"));
-			row6.appendChild(positionStatusTypes);
-
+			row5.appendChild(new Label(lang.get("position.grid.column.status")));
+			row5.appendChild(positionStatusTypes);
+			
 			rows.appendChild(row1);
 			rows.appendChild(row2);
 			rows.appendChild(row3);
+			rows.appendChild(row4);
 			rows.appendChild(row5);
-			rows.appendChild(row6);
 		}
 	}
 
