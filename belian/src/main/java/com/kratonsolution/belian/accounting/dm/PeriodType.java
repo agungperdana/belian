@@ -9,7 +9,7 @@ package com.kratonsolution.belian.accounting.dm;
  */
 public enum PeriodType
 {
-	PER_YEAR("Per Year"),PER_MONTH("Per Month"),PER_WEEK("Per Week"),PER_DAY("Per Day"),PER_HOUR("Per Hour");
+	Yearly("Per Year"),Monthly("Per Month"),Weekly("Per Week"),Daily("Per Day"),Hourly("Per Hour");
 	
 	private String display;
 	

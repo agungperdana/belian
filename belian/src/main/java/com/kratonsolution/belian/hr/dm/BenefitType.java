@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.hr.dm;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -11,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
+import com.kratonsolution.belian.global.dm.Listable;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +24,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="benefit_type")
-public class BenefitType implements Serializable
+public class BenefitType implements Listable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -41,4 +42,16 @@ public class BenefitType implements Serializable
 	private Long version;
 	
 	public BenefitType(){}
+
+	@Override
+	public String getLabel()
+	{
+		return getName();
+	}
+
+	@Override
+	public String getValue()
+	{
+		return getId();
+	}
 }

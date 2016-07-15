@@ -63,7 +63,7 @@ public class PositionTypeRate implements Serializable
 
 	@Enumerated(EnumType.STRING)
 	@Column(name="period_type")
-	private PeriodType periodType = PeriodType.PER_MONTH;
+	private PeriodType periodType = PeriodType.Monthly;
 	
 	@Column(name="comment")
 	private String comment;

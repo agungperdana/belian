@@ -4,8 +4,10 @@
 package com.kratonsolution.belian.common;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.Period;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,6 +23,24 @@ public class DateTimes implements Serializable
 	
 	private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
+	public static final java.sql.Date firstDay(java.sql.Date date)
+	{
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		
+		return sql(calendar.getTime());
+	}
+	
+	public static final java.sql.Date lastDay(java.sql.Date date)
+	{
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.set(Calendar.DAY_OF_MONTH, calendar.getMaximum(Calendar.DAY_OF_MONTH));
+		
+		return sql(calendar.getTime());
+	}
+	
 	public static final boolean inActiveState(java.sql.Date start,java.sql.Date end)
 	{
 		if(start == null)
@@ -33,6 +53,25 @@ public class DateTimes implements Serializable
 			return true;
 		
 		return false;
+	}
+	
+	public static final BigDecimal toHours(Time start,Time end)
+	{
+		if(start == null || end == null)
+			return BigDecimal.ZERO;
+
+		return toHours(start.getTime(), end.getTime());
+	}
+	
+	public static final BigDecimal toHours(long start,long end)
+	{
+		if(start == 0 || end == 0)
+			return BigDecimal.ZERO;
+		
+		Duration d1 = Duration.ofMillis(start);
+		Duration d2 = Duration.ofMillis(end);
+	
+		return BigDecimal.valueOf(d2.minus(d1).toMinutes()).divide(BigDecimal.valueOf(60));
 	}
 	
 	public static final boolean inRange(Date target,Date rangeStart,Date rangeEnd)

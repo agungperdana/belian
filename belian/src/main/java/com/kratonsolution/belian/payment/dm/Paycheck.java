@@ -13,7 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.hr.dm.Employee;
 
 import lombok.Getter;
@@ -35,10 +34,6 @@ public class Paycheck extends Disbursement
 	@ManyToOne
 	@JoinColumn(name="fk_employee")
 	private Employee employee;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_employer")
-	private Organization employer;
 	
 	@OneToMany(mappedBy="paycheck",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<Deduction> deductions = new HashSet<>();

@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.kratonsolution.belian.general.dm.Person;
+import com.kratonsolution.belian.production.dm.TimeEntry;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -43,6 +44,10 @@ public class CourseAttendanceItem implements Serializable
 	@JoinColumn(name="fk_attendance")
 	private CourseAttendance attendance;
 
+	@ManyToOne
+	@JoinColumn(name="fk_time_entry")
+	private TimeEntry timeEntry;
+	
 	@Version
 	private Long version;
 	

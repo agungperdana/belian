@@ -15,11 +15,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.accounting.dm.AccountingPeriodRepository;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.education.dm.AttendanceStatus;
 import com.kratonsolution.belian.education.dm.CourseAttendance;
 import com.kratonsolution.belian.education.dm.CourseAttendanceItem;
 import com.kratonsolution.belian.education.dm.CourseAttendanceRepository;
 import com.kratonsolution.belian.education.dm.CourseSchedule;
+import com.kratonsolution.belian.education.dm.TimeEntryRepository;
+import com.kratonsolution.belian.hr.dm.Employee;
+import com.kratonsolution.belian.hr.dm.EmployeeRepository;
+import com.kratonsolution.belian.production.dm.TimeEntry;
+import com.kratonsolution.belian.production.dm.Timesheet;
+import com.kratonsolution.belian.production.dm.TimesheetRepository;
 
 /**
  * 
@@ -33,6 +42,18 @@ public class CourseAttendanceService
 	@Autowired
 	private SessionUtils utils;
 
+	@Autowired
+	private AccountingPeriodRepository periodRepo;
+	
+	@Autowired
+	private TimesheetRepository timesheetRepo;
+	
+	@Autowired
+	private TimeEntryRepository entryRepo;
+	
+	@Autowired
+	private EmployeeRepository employeeRepo;
+	
 	@Autowired
 	private CourseAttendanceRepository repository;
 
@@ -73,14 +94,64 @@ public class CourseAttendanceService
 	public void add(CourseAttendance attendance)
 	{
 		repository.save(attendance);
+		writeTimesheet(attendance);
+	}
+
+	private void writeTimesheet(CourseAttendance attendance)
+	{
+		for(CourseAttendanceItem attend:attendance.getItems())
+		{
+			if(attend.getAttendance().getSchedule().getTeacher().getId().equals(attend.getPerson().getId()) && attend.getStatus().equals(AttendanceStatus.IN))
+			{
+				Timesheet timesheet = timesheetRepo.findOne(attendance.getDate(), attend.getPerson().getId());
+				if(timesheet == null)
+				{
+					Employee employee = employeeRepo.findOneByPartyId(attend.getPerson().getId());
+					if(employee == null)
+						throw new RuntimeException(attend.getPerson().getName()+" not an employee.");
+					
+					timesheet = new Timesheet();
+					timesheet.setStart(DateTimes.firstDay(attendance.getDate()));
+					timesheet.setEnd(DateTimes.lastDay(attendance.getDate()));
+					timesheet.setEmployee(employee);
+					
+					timesheetRepo.save(timesheet);
+				}
+				
+				TimeEntry entry = new TimeEntry();
+				entry.setComment("Teaching task");
+				entry.setDate(attendance.getDate());
+				entry.setStart(attend.getAttendance().getSchedule().getStart());
+				entry.setEnd(attend.getAttendance().getSchedule().getEnd());
+				entry.setTimesheet(timesheet);
+				entry.setHour(DateTimes.toHours(entry.getStart(), entry.getEnd()));
+				
+				timesheet.getTimeEntrys().add(entry);
+				timesheetRepo.saveAndFlush(timesheet);
+
+				attend.setTimeEntry(entry);
+			}
+		}
+		
+		repository.saveAndFlush(attendance);
 	}
 
 	@Secured("ROLE_COURSE_ATTENDANCE_UPDATE")
 	public void edit(CourseAttendance attendance,Collection<CourseAttendanceItem> items)
 	{
+		for(CourseAttendanceItem item:attendance.getItems())
+		{
+			if(item.getTimeEntry() != null)
+				entryRepo.delete(item.getTimeEntry());
+		}
+		
 		attendance.getItems().clear();
+		repository.saveAndFlush(attendance);
+		
 		attendance.getItems().addAll(items);
 		repository.saveAndFlush(attendance);
+		
+		writeTimesheet(attendance);
 	}
 
 	@Secured("ROLE_COURSE_ATTENDANCE_DELETE")

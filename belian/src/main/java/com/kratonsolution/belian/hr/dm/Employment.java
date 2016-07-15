@@ -3,9 +3,14 @@
  */
 package com.kratonsolution.belian.hr.dm;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.kratonsolution.belian.general.dm.InternalOrganization;
@@ -32,6 +37,12 @@ public class Employment extends PartyRelationship implements Listable
 	@ManyToOne
 	@JoinColumn(name="fk_internal_organization")
 	private InternalOrganization internalOrganization;
+	
+	@OneToMany(mappedBy="employment",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<PayHistory> salarys = new HashSet<>();
+	
+	@OneToMany(mappedBy="employment",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<Benefit> benefits = new HashSet<>();
 	
 	public Employment(){}
 

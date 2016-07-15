@@ -27,7 +27,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class EmploymentGridContent extends GridContent
 {
-	private final EmploymentService service = Springs.get(EmploymentService.class);
+	private EmploymentService service = Springs.get(EmploymentService.class);
 	
 	public EmploymentGridContent()
 	{

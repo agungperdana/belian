@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.kratonsolution.belian.accounting.dm.PeriodType;
+import com.kratonsolution.belian.hr.dm.Employee;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -65,6 +66,10 @@ public class PayrollPreference implements Serializable
 	@Enumerated(EnumType.STRING)
 	@Column(name="period_type")
 	private PeriodType periodType;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_employee")
+	private Employee employee;
 	
 	@Version
 	private Long version;

@@ -1,24 +1,21 @@
 /**
  * 
  */
-package com.kratonsolution.belian.hr.dm;
+package com.kratonsolution.belian.production.dm;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Time;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
-import com.kratonsolution.belian.accounting.dm.PeriodType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -30,28 +27,34 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="pay_history")
-public class PayHistory implements Serializable
+@Table(name="time_entry")
+public class TimeEntry implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
-	
+
+	@Column(name="date")
+	private Date date;
+
 	@Column(name="start")
-	private Date start;
+	private Time start;
 	
 	@Column(name="end")
-	private Date end;
+	private Time end;
 	
-	@Column(name="amount")
-	private BigDecimal amount = BigDecimal.ZERO;
+	@Column(name="hour")
+	private BigDecimal hour = BigDecimal.ZERO;
 	
-	@Enumerated(EnumType.STRING)
-	@Column(name="period_type")
-	private PeriodType periodType = PeriodType.Monthly;
+	@Column(name="comment")
+	private String comment;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_employment")
-	private Employment employment;
+	@JoinColumn(name="fk_timesheet")
+	private Timesheet timesheet;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_work_effort")
+	private WorkEffort effort;
 	
 	@Version
 	private Long version;

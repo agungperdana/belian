@@ -15,6 +15,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.kratonsolution.belian.general.dm.PartyRole;
+import com.kratonsolution.belian.payment.dm.PayrollPreference;
+import com.kratonsolution.belian.production.dm.Timesheet;
 import com.kratonsolution.belian.security.dm.User;
 
 import lombok.Getter;
@@ -36,4 +38,12 @@ public class Employee extends PartyRole
 	
 	@OneToMany(mappedBy="employee",fetch=FetchType.EAGER)
 	private Set<Employment> employments = new HashSet<>();
+	
+	@OneToMany(mappedBy="employee",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<PayrollPreference> preferences = new HashSet<>();
+	
+	@OneToMany(mappedBy="employee",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<Timesheet> timesheet = new HashSet<>();
+	
+	public Employee(){}
 }

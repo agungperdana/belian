@@ -26,6 +26,7 @@ import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.component.PersonBox;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
+import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -91,7 +92,7 @@ public class EmploymentFormContent extends FormContent
 				
 				service.add(employment);
 				
-				Flow.next(getParent(), new EmploymentGridContent());
+				Flow.next(getParent(), new EmploymentEditContent(RowUtils.shield(employee.getId())));
 			}
 		});
 	}
@@ -104,23 +105,23 @@ public class EmploymentFormContent extends FormContent
 		grid.getColumns().appendChild(new Column());
 			
 		Row row1 = new Row();
-		row1.appendChild(new Label("Start Date"));
+		row1.appendChild(new Label(lang.get("employment.grid.column.start")));
 		row1.appendChild(start);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("End Date"));
+		row2.appendChild(new Label(lang.get("employment.grid.column.end")));
 		row2.appendChild(end);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Employer"));
+		row3.appendChild(new Label(lang.get("employment.grid.column.employer")));
 		row3.appendChild(employer);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Person"));
+		row4.appendChild(new Label(lang.get("employment.grid.column.employee")));
 		row4.appendChild(persons);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Application"));
+		row5.appendChild(new Label(lang.get("employment.grid.column.application")));
 		row5.appendChild(applications);
 
 		rows.appendChild(row1);

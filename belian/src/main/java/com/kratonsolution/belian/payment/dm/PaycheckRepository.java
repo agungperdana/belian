@@ -15,9 +15,11 @@ import org.springframework.data.repository.query.Param;
  */
 public interface PaycheckRepository extends JpaRepository<Paycheck, String>
 {
-	@Query("FROM Paycheck pay WHERE pay.employer.id =:company ORDER BY pay.date DESC")
+	@Query("FROM Paycheck pay WHERE "
+			+ "pay.organization.id =:company "
+			+ "ORDER BY pay.date DESC")
 	public List<Paycheck> findAll(@Param("company")String company);
 	
-	@Query("SELECT COUNT(pay) FROM Paycheck pay WHERE pay.employer.id =:company")
+	@Query("SELECT COUNT(pay) FROM Paycheck pay WHERE pay.organization.id =:company")
 	public List<Paycheck> count(@Param("company")String company);
 }

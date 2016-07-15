@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.hr.svc;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.jasypt.util.password.StrongPasswordEncryptor;
@@ -21,10 +22,12 @@ import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.InternalOrganization;
 import com.kratonsolution.belian.general.dm.InternalOrganizationRepository;
 import com.kratonsolution.belian.global.dm.UserSetting;
+import com.kratonsolution.belian.hr.dm.Benefit;
 import com.kratonsolution.belian.hr.dm.Employee;
 import com.kratonsolution.belian.hr.dm.EmployeeRepository;
 import com.kratonsolution.belian.hr.dm.Employment;
 import com.kratonsolution.belian.hr.dm.EmploymentRepository;
+import com.kratonsolution.belian.hr.dm.PayHistory;
 import com.kratonsolution.belian.security.dm.Role;
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.security.dm.UserRole;
@@ -161,8 +164,16 @@ public class EmploymentService
 	}
 	
 	@Secured("ROLE_EMPLOYMENT_UPDATE")
-	public void edit(Employment employment)
+	public void edit(Employment employment,Collection<PayHistory> salarys,Collection<Benefit> benefits)
 	{
+		employment.getSalarys().clear();
+		employment.getBenefits().clear();
+		
+		repository.saveAndFlush(employment);
+		
+		employment.getSalarys().addAll(salarys);
+		employment.getBenefits().addAll(benefits);
+		
 		repository.saveAndFlush(employment);
 	}
 	

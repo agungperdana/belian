@@ -539,8 +539,10 @@ public class Components implements Serializable
 	
 	public static final Datebox fullSpanDatebox(Date date)
 	{
-		Datebox datebox = new Datebox(date);
+		Datebox datebox = new Datebox();
 		datebox.setWidth("100%");
+		if(date != null)
+			datebox.setValue(date);
 		
 		return datebox;
 	}

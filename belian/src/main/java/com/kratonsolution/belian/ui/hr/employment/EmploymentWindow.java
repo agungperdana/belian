@@ -18,12 +18,13 @@ import com.kratonsolution.belian.ui.HasGrid;
 import com.kratonsolution.belian.ui.nav.IconBar;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class EmploymentWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption("Employment");
+	private final Caption caption = new Caption(lang.get("navbar.menu.hr.employment"));
 	
 	private EmploymentButton status = new EmploymentButton();
 
@@ -39,7 +40,7 @@ public class EmploymentWindow extends AbstractWindow implements HasGrid,HasCreat
 	private EmploymentWindow()
 	{
 		super();
-		setWidth("700px");
+		setWidth("750px");
 		setHeight("525px");
 	}
 	
