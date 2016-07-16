@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -38,10 +39,10 @@ public class Employment extends PartyRelationship implements Listable
 	@JoinColumn(name="fk_internal_organization")
 	private InternalOrganization internalOrganization;
 	
-	@OneToMany(mappedBy="employment",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(mappedBy="employment",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
 	private Set<PayHistory> salarys = new HashSet<>();
 	
-	@OneToMany(mappedBy="employment",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(mappedBy="employment",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
 	private Set<Benefit> benefits = new HashSet<>();
 	
 	public Employment(){}

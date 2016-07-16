@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.payment.dm;
+package com.kratonsolution.belian.hr.dm;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -19,7 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.kratonsolution.belian.accounting.dm.PeriodType;
-import com.kratonsolution.belian.hr.dm.Employee;
+import com.kratonsolution.belian.payment.dm.PaymentMethodType;
 
 import lombok.Getter;
 import lombok.Setter;

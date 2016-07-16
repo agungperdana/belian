@@ -162,7 +162,7 @@ public class Components implements Serializable
 		for(Listable object:collections)
 		{
 			Listitem listitem = listbox.appendItem(object.getLabel(), object.getValue());
-			if(object.getValue().equals(setDefault.getValue()))
+			if(setDefault != null && object.getValue().equals(setDefault.getValue()))
 				listbox.setSelectedItem(listitem);
 		}
 		
@@ -346,6 +346,18 @@ public class Components implements Serializable
 		return box;
 	}
 	
+	public static final Doublebox doubleBox(BigDecimal value)
+	{
+		Doublebox box = new Doublebox(0d);
+		box.setWidth("100%");
+		box.setStyle("text-align:right;display:block;");
+
+		if(value != null)
+			box.setValue(value.doubleValue());
+		
+		return box;
+	}
+	
 	public static final Doublebox stdDoubleBox(double value)
 	{
 		Doublebox box = new Doublebox(0d);
@@ -458,6 +470,7 @@ public class Components implements Serializable
 		Datebox datebox = new Datebox(new Date());
 		datebox.setWidth("100%");
 		datebox.setConstraint("no empty");
+		datebox.setFormat("dd/MM/yyyy");
 		
 		return datebox;
 	}
@@ -467,6 +480,7 @@ public class Components implements Serializable
 		Datebox datebox = new Datebox(new Date());
 		datebox.setWidth(width);
 		datebox.setConstraint("no empty");
+		datebox.setFormat("dd/MM/yyyy");
 		
 		return datebox;
 	}
@@ -476,6 +490,7 @@ public class Components implements Serializable
 		Datebox datebox = new Datebox(date);
 		datebox.setWidth("100%");
 		datebox.setConstraint("no empty");
+		datebox.setFormat("dd/MM/yyyy");
 		
 		return datebox;
 	}

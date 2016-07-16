@@ -33,9 +33,11 @@ import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.hr.dm.Benefit;
 import com.kratonsolution.belian.hr.dm.Employment;
 import com.kratonsolution.belian.hr.dm.PayHistory;
+import com.kratonsolution.belian.hr.dm.PayrollPreference;
 import com.kratonsolution.belian.hr.svc.BenefitTypeService;
 import com.kratonsolution.belian.hr.svc.EmploymentApplicationService;
 import com.kratonsolution.belian.hr.svc.EmploymentService;
+import com.kratonsolution.belian.payment.svc.PaymentMethodTypeService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.component.OrganizationList;
@@ -60,6 +62,8 @@ public class EmploymentEditContent extends FormContent
 	
 	private BenefitTypeService benefitTypeService = Springs.get(BenefitTypeService.class);
 	
+	private PaymentMethodTypeService methodTypeService = Springs.get(PaymentMethodTypeService.class);
+	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	private Datebox start = Components.currentDatebox();
@@ -76,6 +80,8 @@ public class EmploymentEditContent extends FormContent
 	
 	private Grid benefits = new Grid();
 	
+	private Grid payrolls = new Grid();
+	
 	private Tabbox tabbox = new Tabbox();
 	
 	private Row row;
@@ -89,6 +95,7 @@ public class EmploymentEditContent extends FormContent
 		initTabs();
 		initSalarys();
 		initBenefits();
+		initPayrolls();
 	}
 
 	@Override
@@ -116,6 +123,7 @@ public class EmploymentEditContent extends FormContent
 				
 					Vector<PayHistory> vector = new Vector<>();
 					Vector<Benefit> bVector = new Vector<>();
+					Vector<PayrollPreference> pVector = new Vector<>();
 					
 					for(Component com:salarys.getRows().getChildren())
 					{
@@ -150,7 +158,34 @@ public class EmploymentEditContent extends FormContent
 						bVector.add(benefit);
 					}
 					
-					service.edit(employment,vector,bVector);
+					for(Component com:payrolls.getRows().getChildren())
+					{
+						Row prow = (Row)com;
+						
+						PayrollPreference preference = new PayrollPreference();
+						preference.setId(RowUtils.id(prow));
+						preference.setStart(RowUtils.sql(prow, 1));
+						preference.setEnd(RowUtils.sql(prow, 2));
+						try
+						{
+							preference.setPaymentType(methodTypeService.findOne(RowUtils.string(prow, 3)));
+						} catch (Exception e)
+						{
+							e.printStackTrace();
+						}
+						preference.setPercent(RowUtils.decimal(prow, 4));
+						preference.setAmount(RowUtils.decimal(prow, 5));
+						preference.setBankNumber(RowUtils.string(prow, 6));
+						preference.setBankName(RowUtils.string(prow, 7));
+						preference.setPeriodType(PeriodType.valueOf(RowUtils.string(prow, 8)));
+						preference.setEmployee(employment.getEmployee());
+					
+						employment.getEmployee().getPreferences().add(preference);
+					
+						pVector.add(preference);
+					}
+					
+					service.edit(employment,vector,bVector,pVector);
 				}
 				
 				Flow.next(getParent(), new EmploymentGridContent());
@@ -208,6 +243,8 @@ public class EmploymentEditContent extends FormContent
 		tabbox.appendChild(new Tabpanels());
 		tabbox.getTabs().appendChild(new Tab(lang.get("employment.grid.column.salarys")));
 		tabbox.getTabs().appendChild(new Tab(lang.get("employment.grid.column.benefits")));
+		tabbox.getTabs().appendChild(new Tab(lang.get("employment.grid.column.payrolls")));
+		tabbox.getTabpanels().appendChild(new Tabpanel());
 		tabbox.getTabpanels().appendChild(new Tabpanel());
 		tabbox.getTabpanels().appendChild(new Tabpanel());
 		
@@ -354,7 +391,81 @@ public class EmploymentEditContent extends FormContent
 			}
 		});
 		
+		tabbox.getTabpanels().getChildren().get(1).appendChild(nrc);
+		tabbox.getTabpanels().getChildren().get(1).appendChild(benefits);
+	}
+	
+	private void initPayrolls()
+	{
+		NRCToolbar nrc = new NRCToolbar(payrolls);
+		
+		payrolls.setWidth("100%");
+		payrolls.appendChild(new Columns());
+		payrolls.appendChild(new Rows());
+		payrolls.setEmptyMessage(lang.get("message.grid.empty"));
+		payrolls.getColumns().appendChild(new Column(null,null,"25px"));
+		payrolls.getColumns().appendChild(new Column(lang.get("employment.grid.column.start"),null,"105px"));
+		payrolls.getColumns().appendChild(new Column(lang.get("employment.grid.column.end"),null,"105px"));
+		payrolls.getColumns().appendChild(new Column(lang.get("employment.grid.column.paymenttype"),null,"110px"));
+		payrolls.getColumns().appendChild(new Column(lang.get("employment.grid.column.percent"),null,"90px"));
+		payrolls.getColumns().appendChild(new Column(lang.get("employment.grid.column.amount"),null,"90px"));
+		payrolls.getColumns().appendChild(new Column(lang.get("employment.grid.column.banknumber"),null,"120px"));
+		payrolls.getColumns().appendChild(new Column(lang.get("employment.grid.column.bankname"),null,"120px"));
+		payrolls.getColumns().appendChild(new Column(lang.get("employment.grid.column.period"),null,"90px"));
+		payrolls.getColumns().appendChild(new Column());
+		payrolls.getColumns().getLastChild().setVisible(false);
+		
+		Employment employment = service.findOne(RowUtils.id(row));
+		if(employment != null)
+		{
+			for(PayrollPreference preference:employment.getEmployee().getPreferences())
+			{
+				Listbox periods = Components.fullSpanSelect();
+				for(PeriodType type:PeriodType.values())
+					periods.setSelectedItem(periods.appendItem(type.display(), type.name()));
+				
+				Row prow = new Row();
+				prow.appendChild(Components.checkbox(false));
+				prow.appendChild(Components.mandatoryDatebox(preference.getStart()));
+				prow.appendChild(Components.fullSpanDatebox(preference.getEnd()));
+				prow.appendChild(Components.fullSpanSelect(methodTypeService.findAll(), preference.getPaymentType()));
+				prow.appendChild(Components.doubleBox(preference.getPercent()));
+				prow.appendChild(Components.doubleBox(preference.getAmount()));
+				prow.appendChild(Components.textBox(preference.getBankNumber()));
+				prow.appendChild(Components.textBox(preference.getBankName()));
+				prow.appendChild(periods);
+				prow.appendChild(Components.label(preference.getId()));
+				
+				payrolls.getRows().appendChild(prow);
+			}
+		}
+		
+		nrc.getNew().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				Listbox periods = Components.fullSpanSelect();
+				for(PeriodType type:PeriodType.values())
+					periods.setSelectedItem(periods.appendItem(type.display(), type.name()));
+				
+				Row row = new Row();
+				row.appendChild(Components.checkbox(false));
+				row.appendChild(Components.mandatoryDatebox(DateTimes.currentDate()));
+				row.appendChild(Components.fullSpanDatebox(null));
+				row.appendChild(Components.fullSpanSelect(methodTypeService.findAll(), true));
+				row.appendChild(Components.doubleBox(null));
+				row.appendChild(Components.doubleBox(null));
+				row.appendChild(Components.textBox(null));
+				row.appendChild(Components.textBox(null));
+				row.appendChild(periods);
+				row.appendChild(Components.label(UUID.randomUUID().toString()));
+				
+				payrolls.getRows().appendChild(row);
+			}
+		});
+		
 		tabbox.getTabpanels().getLastChild().appendChild(nrc);
-		tabbox.getTabpanels().getLastChild().appendChild(benefits);
+		tabbox.getTabpanels().getLastChild().appendChild(payrolls);
 	}
 }

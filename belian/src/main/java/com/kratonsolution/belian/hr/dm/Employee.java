@@ -15,7 +15,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.kratonsolution.belian.general.dm.PartyRole;
-import com.kratonsolution.belian.payment.dm.PayrollPreference;
 import com.kratonsolution.belian.production.dm.Timesheet;
 import com.kratonsolution.belian.security.dm.User;
 

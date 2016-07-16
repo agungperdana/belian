@@ -28,6 +28,7 @@ import com.kratonsolution.belian.hr.dm.EmployeeRepository;
 import com.kratonsolution.belian.hr.dm.Employment;
 import com.kratonsolution.belian.hr.dm.EmploymentRepository;
 import com.kratonsolution.belian.hr.dm.PayHistory;
+import com.kratonsolution.belian.hr.dm.PayrollPreference;
 import com.kratonsolution.belian.security.dm.Role;
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.security.dm.UserRole;
@@ -54,6 +55,9 @@ public class EmploymentService
 	@Autowired
 	private TaxRepository taxRepository;
 
+	@Autowired
+	private EmployeeRepository employeeRepo;
+	
 	@Autowired
 	private CurrencyRepository currencyRepository;
 	
@@ -164,16 +168,20 @@ public class EmploymentService
 	}
 	
 	@Secured("ROLE_EMPLOYMENT_UPDATE")
-	public void edit(Employment employment,Collection<PayHistory> salarys,Collection<Benefit> benefits)
+	public void edit(Employment employment,Collection<PayHistory> salarys,Collection<Benefit> benefits,Collection<PayrollPreference> payrolls)
 	{
+		employment.getEmployee().getPreferences().clear();
+		employeeRepo.saveAndFlush(employment.getEmployee());
+
+		employment.getEmployee().getPreferences().addAll(payrolls);
+		employeeRepo.saveAndFlush(employment.getEmployee());
+		
 		employment.getSalarys().clear();
 		employment.getBenefits().clear();
-		
 		repository.saveAndFlush(employment);
 		
 		employment.getSalarys().addAll(salarys);
 		employment.getBenefits().addAll(benefits);
-		
 		repository.saveAndFlush(employment);
 	}
 	
