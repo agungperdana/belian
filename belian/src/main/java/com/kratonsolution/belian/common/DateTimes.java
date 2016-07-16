@@ -41,6 +41,24 @@ public class DateTimes implements Serializable
 		return sql(calendar.getTime());
 	}
 	
+	public static final java.sql.Date firstDay(Date date)
+	{
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		
+		return sql(calendar.getTime());
+	}
+	
+	public static final java.sql.Date lastDay(Date date)
+	{
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.set(Calendar.DAY_OF_MONTH, calendar.getMaximum(Calendar.DAY_OF_MONTH));
+		
+		return sql(calendar.getTime());
+	}
+	
 	public static final boolean inActiveState(java.sql.Date start,java.sql.Date end)
 	{
 		if(start == null)

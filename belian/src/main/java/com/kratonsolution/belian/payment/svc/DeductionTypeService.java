@@ -47,48 +47,48 @@ public class DeductionTypeService
 	@Autowired
 	private AccountingPeriodRepository periodRepository;
 	
-	@Secured("ROLE_CASHSALES_READ")
+	@Secured("ROLE_DEDUCTION_TYPE_READ")
 	public int size()
 	{
 		return (int)repository.count();
 	}
 	
-	@Secured("ROLE_CASHSALES_READ")
+	@Secured("ROLE_DEDUCTION_TYPE_READ")
 	public DeductionType findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 	
-	@Secured("ROLE_CASHSALES_READ")
+	@Secured("ROLE_DEDUCTION_TYPE_READ")
 	public List<DeductionType> findAll()
 	{
 		return repository.findAll();
 	}
 	
-	@Secured("ROLE_CASHSALES_READ")
+	@Secured("ROLE_DEDUCTION_TYPE_READ")
 	public List<DeductionType> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
 	}
 	
-	@Secured("ROLE_CASHSALES_CREATE")
+	@Secured("ROLE_DEDUCTION_TYPE_CREATE")
 	public void add(DeductionType sales)
 	{
 		repository.save(sales);
 	}
 	
-	@Secured("ROLE_CASHSALES_UPDATE")
+	@Secured("ROLE_DEDUCTION_TYPE_UPDATE")
 	public void edit(DeductionType sales)
 	{
 		repository.saveAndFlush(sales);
 	}
 	
-	@Secured("ROLE_CASHSALES_UPDATE")
+	@Secured("ROLE_DEDUCTION_TYPE_UPDATE")
 	public void addPayment(DeductionType out)
 	{
 	}
 	
-	@Secured("ROLE_CASHSALES_DELETE")
+	@Secured("ROLE_DEDUCTION_TYPE_DELETE")
 	public void delete(@PathVariable String id)
 	{
 		repository.delete(id);

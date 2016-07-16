@@ -14,6 +14,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.dm.CurrencyRepository;
 import com.kratonsolution.belian.accounting.dm.Tax;
@@ -74,6 +75,15 @@ public class EmploymentService
 	}
 	
 	@Secured("ROLE_EMPLOYMENT_READ")
+	public Employment findOne(Employee employee)
+	{
+		if(employee != null)
+			return repository.findOneByEmployeeId(employee.getId());
+	
+		return null;
+	}
+	
+	@Secured("ROLE_EMPLOYMENT_READ")
 	public List<Employment> findAll()
 	{
 		if(utils.getOrganizationIds() != null && !utils.getOrganizationIds().isEmpty())
@@ -83,12 +93,12 @@ public class EmploymentService
 	}
 	
 	@Secured("ROLE_EMPLOYMENT_READ")
-	public List<Employment> byCompany()
+	public List<Employment> findAll(String key)
 	{
-		if(utils.getOrganization() == null)
-			return new ArrayList<>();
+		if(Strings.isNullOrEmpty(key))
+			return findAll();
 		
-		return repository.findAll(utils.getOrganization().getId());
+		return repository.findAll(utils.getOrganizationIds(),key);
 	}
 	
 	@Secured("ROLE_EMPLOYMENT_READ")
@@ -170,18 +180,14 @@ public class EmploymentService
 	@Secured("ROLE_EMPLOYMENT_UPDATE")
 	public void edit(Employment employment,Collection<PayHistory> salarys,Collection<Benefit> benefits,Collection<PayrollPreference> payrolls)
 	{
-		employment.getEmployee().getPreferences().clear();
-		employeeRepo.saveAndFlush(employment.getEmployee());
-
-		employment.getEmployee().getPreferences().addAll(payrolls);
-		employeeRepo.saveAndFlush(employment.getEmployee());
-		
+		employment.getPreferences().clear();
 		employment.getSalarys().clear();
 		employment.getBenefits().clear();
 		repository.saveAndFlush(employment);
 		
 		employment.getSalarys().addAll(salarys);
 		employment.getBenefits().addAll(benefits);
+		employment.getPreferences().addAll(payrolls);
 		repository.saveAndFlush(employment);
 	}
 	

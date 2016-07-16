@@ -69,7 +69,7 @@ public class PayrollPreference implements Serializable
 	
 	@ManyToOne
 	@JoinColumn(name="fk_employee")
-	private Employee employee;
+	private Employment employment;
 	
 	@Version
 	private Long version;

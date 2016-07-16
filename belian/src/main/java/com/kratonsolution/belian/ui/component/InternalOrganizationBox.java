@@ -62,7 +62,7 @@ public class InternalOrganizationBox extends Hbox
 			{
 				identity.getChildren().clear();
 				
-				for(Employment employment:service.byCompany())
+				for(Employment employment:service.findAll())
 				{
 					identity.appendItem(employment.getInternalOrganization().getParty().getName());
 					if(!maps.containsKey(employment.getInternalOrganization().getParty().getName()))

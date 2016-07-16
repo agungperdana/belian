@@ -29,5 +29,9 @@ public class Receipt extends Payment
 	@JoinColumn(name="fk_billable")
 	private Billable billable;
 	
+	@ManyToOne
+	@JoinColumn(name="fk_payment_type")
+	private PaymentMethodType type;
+	
 	public Receipt(){}
 }

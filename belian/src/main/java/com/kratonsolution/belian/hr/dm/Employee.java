@@ -39,9 +39,6 @@ public class Employee extends PartyRole
 	private Set<Employment> employments = new HashSet<>();
 	
 	@OneToMany(mappedBy="employee",cascade=CascadeType.ALL,orphanRemoval=true)
-	private Set<PayrollPreference> preferences = new HashSet<>();
-	
-	@OneToMany(mappedBy="employee",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<Timesheet> timesheet = new HashSet<>();
 	
 	public Employee(){}

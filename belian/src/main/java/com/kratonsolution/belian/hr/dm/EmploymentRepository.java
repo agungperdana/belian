@@ -26,6 +26,17 @@ public interface EmploymentRepository extends JpaRepository<Employment, String>
 	@Query("FROM Employment emp WHERE emp.internalOrganization.party.id =:company ORDER BY emp.employee.party.name ASC")
 	public List<Employment> findAll(@Param("company")String company);
 	
-	@Query("FROM Employment emp WHERE emp.internalOrganization.party.id IN(:company) ORDER BY emp.employee.party.name ASC")
+	@Query("FROM Employment emp WHERE "
+			+ "emp.internalOrganization.party.id IN(:company) "
+			+ "ORDER BY emp.employee.party.name ASC")
 	public List<Employment> findAll(@Param("company")List<String> company);
+	
+	@Query("FROM Employment emp WHERE "
+			+ "emp.internalOrganization.party.id IN(:company) "
+			+ "AND (emp.employee.party.identity LIKE %:key% "
+			+ "OR emp.employee.party.name LIKE %:key%) "
+			+ "ORDER BY emp.employee.party.name ASC")
+	public List<Employment> findAll(@Param("company")List<String> company,@Param("key")String key);
+	
+	public Employment findOneByEmployeeId(String employee);
 }

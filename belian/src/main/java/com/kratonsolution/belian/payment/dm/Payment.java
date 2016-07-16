@@ -37,21 +37,17 @@ public abstract class Payment implements Serializable
 	@Id
 	protected String id = UUID.randomUUID().toString();
 	
-	@Column(name="reference")
-	protected String reference;
-	
 	@Column(name="date")
 	protected Date date;
+
+	@Column(name="reference")
+	protected String reference;
 	
 	@Column(name="amount")
 	protected BigDecimal amount = BigDecimal.ZERO;
 	
 	@Column(name="note")
 	protected String note;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_payment_method_type")
-	protected PaymentMethodType type;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_organization")

@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.payment.dm;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -11,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
+import com.kratonsolution.belian.global.dm.Listable;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +24,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="deduction_type")
-public class DeductionType implements Serializable
+public class DeductionType implements Listable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -38,4 +39,16 @@ public class DeductionType implements Serializable
 	private Long version;
 	
 	public DeductionType(){}
+
+	@Override
+	public String getLabel()
+	{
+		return getName();
+	}
+
+	@Override
+	public String getValue()
+	{
+		return getId();
+	}
 }

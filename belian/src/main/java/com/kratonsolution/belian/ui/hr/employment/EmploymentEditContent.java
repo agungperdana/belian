@@ -166,21 +166,13 @@ public class EmploymentEditContent extends FormContent
 						preference.setId(RowUtils.id(prow));
 						preference.setStart(RowUtils.sql(prow, 1));
 						preference.setEnd(RowUtils.sql(prow, 2));
-						try
-						{
-							preference.setPaymentType(methodTypeService.findOne(RowUtils.string(prow, 3)));
-						} catch (Exception e)
-						{
-							e.printStackTrace();
-						}
+						preference.setPaymentType(methodTypeService.findOne(RowUtils.string(prow, 3)));
 						preference.setPercent(RowUtils.decimal(prow, 4));
 						preference.setAmount(RowUtils.decimal(prow, 5));
 						preference.setBankNumber(RowUtils.string(prow, 6));
 						preference.setBankName(RowUtils.string(prow, 7));
 						preference.setPeriodType(PeriodType.valueOf(RowUtils.string(prow, 8)));
-						preference.setEmployee(employment.getEmployee());
-					
-						employment.getEmployee().getPreferences().add(preference);
+						preference.setEmployment(employment);
 					
 						pVector.add(preference);
 					}
@@ -418,7 +410,7 @@ public class EmploymentEditContent extends FormContent
 		Employment employment = service.findOne(RowUtils.id(row));
 		if(employment != null)
 		{
-			for(PayrollPreference preference:employment.getEmployee().getPreferences())
+			for(PayrollPreference preference:employment.getPreferences())
 			{
 				Listbox periods = Components.fullSpanSelect();
 				for(PeriodType type:PeriodType.values())

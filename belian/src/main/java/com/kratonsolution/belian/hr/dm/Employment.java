@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.hr.dm;
 
+import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,9 +16,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.general.dm.InternalOrganization;
 import com.kratonsolution.belian.general.dm.PartyRelationship;
 import com.kratonsolution.belian.global.dm.Listable;
+import com.kratonsolution.belian.production.dm.TimeEntry;
+import com.kratonsolution.belian.production.dm.Timesheet;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -45,6 +50,9 @@ public class Employment extends PartyRelationship implements Listable
 	@OneToMany(mappedBy="employment",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
 	private Set<Benefit> benefits = new HashSet<>();
 	
+	@OneToMany(mappedBy="employment",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<PayrollPreference> preferences = new HashSet<>();
+	
 	public Employment(){}
 
 	@Override
@@ -57,5 +65,36 @@ public class Employment extends PartyRelationship implements Listable
 	public String getValue()
 	{
 		return employee.getParty().getValue();
+	}
+	
+	public BigDecimal getGross(Date date,Date start,Date end)
+	{
+		BigDecimal salary = BigDecimal.ZERO;
+		BigDecimal gross = BigDecimal.ZERO;
+		
+		for(PayHistory history:salarys)
+		{
+			if(DateTimes.inRange(date,history.getStart(),history.getEnd()))
+			{
+				salary = history.getAmount();
+				break;
+			}
+		}
+		
+		for(Timesheet timesheet:employee.getTimesheet())
+		{
+			if(timesheet.getStart().equals(start) && timesheet.getEnd().equals(end))
+			{
+				for(TimeEntry entry:timesheet.getTimeEntrys())
+					gross = gross.add(entry.getHour().multiply(salary));
+
+				break;
+			}
+		}
+		
+		for(Benefit benefit:benefits)
+			gross = gross.add(benefit.getCost().multiply(benefit.getEmployerPaid()).divide(BigDecimal.valueOf(100)));
+		
+		return gross;
 	}
 }
