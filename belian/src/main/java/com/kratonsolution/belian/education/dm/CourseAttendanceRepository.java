@@ -28,21 +28,21 @@ public interface CourseAttendanceRepository extends JpaRepository<CourseAttendan
 	
 	@Query("FROM CourseAttendance att WHERE "
 			+ "att.organization.id IN(:company) "
-			+ "AND (att.schedule.room.name LIKE %:key% OR "
-			+ "att.schedule.room.period.name LIKE %:key%) "
+			+ "AND (att.schedule.requirement.name LIKE %:key% OR "
+			+ "att.schedule.requirement.period.name LIKE %:key%) "
 			+ "ORDER BY att.date DESC")
 	public List<CourseAttendance> findAll(Pageable pageable,@Param("company")List<String> company,@Param("key")String key);
 	
 	@Query("SELECT COUNT(att) FROM CourseAttendance att WHERE "
 			+ "att.organization.id IN(:company) "
-			+ "AND (att.schedule.room.name LIKE %:key% OR "
-			+ "att.schedule.room.period.name LIKE %:key%) ")
+			+ "AND (att.schedule.requirement.name LIKE %:key% OR "
+			+ "att.schedule.requirement.period.name LIKE %:key%) ")
 	public Long count(@Param("company")List<String> company,@Param("key")String key);
 	
 	@Query("FROM CourseAttendance att WHERE "
 			+ "att.organization.id IN(:company) "
 			+ "AND (att.schedule.start =:start AND att.schedule.end =:end) "
-			+ "AND att.schedule.room.period.id =:period "
+			+ "AND att.schedule.requirement.period.id =:period "
 			+ "AND att.schedule.day IN(:day)"
 			+ "ORDER BY att.date DESC")
 	public List<CourseSchedule> findAll(@Param("company")List<String> company,

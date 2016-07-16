@@ -16,6 +16,8 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -36,46 +38,48 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="requirement")
-public class Requirement implements Serializable
+@Inheritance(strategy=InheritanceType.JOINED)
+public abstract class Requirement implements Serializable
 {
 	@Id
-	private String id = UUID.randomUUID().toString();
+	protected String id = UUID.randomUUID().toString();
 
 	@Column(name="date")
-	private Date date;
+	protected Date date;
 	
 	@Column(name="required_date")
-	private Date required;
+	protected Date required;
 	
 	@Column(name="quantity")
-	private BigDecimal quantity;
+	protected BigDecimal quantity = BigDecimal.ONE;
 	
 	@Column(name="reason")
-	private String reason;
+	protected String reason;
 	
 	@Column(name="name")
-	private String name;
+	protected String name;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="requirement_type")
-	private RequirementType type;
+	protected RequirementType type = RequirementType.Work;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="status")
+	protected RequirementStatus status = RequirementStatus.Inprogress;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_organization")
-	private Organization organization;
+	protected Organization organization;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_staff")
-	private Person staff;
+	protected Person staff;
 
 	@Version
-	private Long version;
+	protected Long version;
 
 	@OneToMany(mappedBy="requirement",cascade=CascadeType.ALL,orphanRemoval=true)
-	private Set<RequirementRole> roles = new HashSet<>();
+	protected Set<RequirementRole> roles = new HashSet<>();
 	
-	@OneToMany(mappedBy="requirement",cascade=CascadeType.ALL,orphanRemoval=true)
-	private Set<WorkEffort> efforts = new HashSet<>();
-	
-	public Requirement(){}
+	protected abstract Set<? extends WorkEffort> getEfforts();
 }

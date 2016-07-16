@@ -103,9 +103,17 @@ public class CourseAttendanceFormContent extends FormContent
 					Row row = (Row)com;
 					
 					CourseAttendanceItem item = new CourseAttendanceItem();
+					item.setDate(attendance.getDate());
+					item.setStart(attendance.getSchedule().getStart());
+					item.setEnd(attendance.getSchedule().getEnd());
 					item.setAttendance(attendance);
 					item.setPerson(personService.findOne(RowUtils.string(row,0)));
 					item.setStatus(AttendanceStatus.valueOf(RowUtils.string(row, 1)));
+					item.setComment("Attendance time entry");
+					item.setEffort(attendance.getSchedule());
+					
+					if(item.getStatus().equals(AttendanceStatus.IN))
+						item.setHour(DateTimes.toHours(item.getStart(), item.getEnd()));
 					
 					attendance.getItems().add(item);
 				}
@@ -142,13 +150,13 @@ public class CourseAttendanceFormContent extends FormContent
 				StudyRoom room = roomService.findOne(Components.string(programs));
 				if(room != null)
 				{
-					for(CourseSchedule schedule:room.getSchedules())
+					for(CourseSchedule schedule:room.getEfforts())
 					{
 						StringBuilder builder = new StringBuilder();
 						builder.append("["+DateTimes.format(schedule.getStart())+"-"+DateTimes.format(schedule.getEnd())+"] ");
 						builder.append(schedule.getDay()+"-");
 						builder.append(schedule.getProduct().getName()+"-");
-						builder.append(schedule.getTeacher().getName());
+						builder.append(schedule.getPerson().getName());
 
 						schedules.appendItem(builder.toString(), schedule.getId());
 					}
@@ -222,7 +230,7 @@ public class CourseAttendanceFormContent extends FormContent
 				Row row = new Row();
 
 				Listbox person = Components.fullSpanSelect();
-				person.setSelectedItem(person.appendItem(schedule.getTeacher().getName()+" [Mentor]",schedule.getTeacher().getId()));
+				person.setSelectedItem(person.appendItem(schedule.getPerson().getName()+" [Mentor]",schedule.getPerson().getId()));
 				person.setStyle("font-weight:bold;color:blue;");
 				
 				row.appendChild(person);

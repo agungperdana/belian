@@ -12,6 +12,8 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -28,34 +30,35 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="time_entry")
+@Inheritance(strategy=InheritanceType.JOINED)
 public class TimeEntry implements Serializable
 {
 	@Id
-	private String id = UUID.randomUUID().toString();
+	protected String id = UUID.randomUUID().toString();
 
 	@Column(name="date")
-	private Date date;
+	protected Date date;
 
 	@Column(name="start")
-	private Time start;
+	protected Time start;
 	
 	@Column(name="end")
-	private Time end;
+	protected Time end;
 	
 	@Column(name="hour")
-	private BigDecimal hour = BigDecimal.ZERO;
+	protected BigDecimal hour = BigDecimal.ZERO;
 	
 	@Column(name="comment")
-	private String comment;
+	protected String comment;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_timesheet")
-	private Timesheet timesheet;
+	protected Timesheet timesheet;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_work_effort")
-	private WorkEffort effort;
+	protected WorkEffort effort;
 	
 	@Version
-	private Long version;
+	protected Long version;
 }

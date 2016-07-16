@@ -3,27 +3,21 @@
  */
 package com.kratonsolution.belian.education.dm;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
-import com.kratonsolution.belian.general.dm.Organization;
-import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.inventory.dm.Facility;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductFeature;
+import com.kratonsolution.belian.production.dm.Requirement;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -36,18 +30,8 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="study_room")
-public class StudyRoom implements Serializable
-{
-	@Id
-	private String id  = UUID.randomUUID().toString();
-
-	@Column(name="name")
-	private String name;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_organization")
-	private Organization organization;
-	
+public class StudyRoom extends Requirement
+{	
 	@ManyToOne
 	@JoinColumn(name="fk_room")
 	private Facility room;
@@ -72,19 +56,12 @@ public class StudyRoom implements Serializable
 	@JoinColumn(name="fk_feature")
 	private ProductFeature feature;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_staff")
-	private Person staff;
-	
-	@Version
-	private Long version;
-	
 	@OneToMany(mappedBy="room")
 	private Set<CourseRegistration> registrations = new HashSet<>();
 	
-	@OneToMany(mappedBy="room",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(mappedBy="requirement",cascade=CascadeType.ALL,orphanRemoval=true)
 	@OrderBy("day")
-	private Set<CourseSchedule> schedules = new HashSet<>();
+	private Set<CourseSchedule> efforts = new HashSet<>();
 	
 	public StudyRoom(){}
 }

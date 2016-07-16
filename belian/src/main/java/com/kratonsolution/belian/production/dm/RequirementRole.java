@@ -43,7 +43,7 @@ public class RequirementRole implements Serializable
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="type")
-	private RequirementRoleType type = RequirementRoleType.Created;
+	private RequirementRoleType type = RequirementRoleType.Responsible;
 
 	@ManyToOne
 	@JoinColumn(name="fk_party")

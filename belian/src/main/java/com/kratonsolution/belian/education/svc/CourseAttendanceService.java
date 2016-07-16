@@ -26,7 +26,6 @@ import com.kratonsolution.belian.education.dm.CourseSchedule;
 import com.kratonsolution.belian.education.dm.TimeEntryRepository;
 import com.kratonsolution.belian.hr.dm.Employee;
 import com.kratonsolution.belian.hr.dm.EmployeeRepository;
-import com.kratonsolution.belian.production.dm.TimeEntry;
 import com.kratonsolution.belian.production.dm.Timesheet;
 import com.kratonsolution.belian.production.dm.TimesheetRepository;
 
@@ -93,65 +92,57 @@ public class CourseAttendanceService
 	@Secured("ROLE_COURSE_ATTENDANCE_CREATE")
 	public void add(CourseAttendance attendance)
 	{
-		repository.save(attendance);
-		writeTimesheet(attendance);
-	}
-
-	private void writeTimesheet(CourseAttendance attendance)
-	{
-		for(CourseAttendanceItem attend:attendance.getItems())
+		for(CourseAttendanceItem item:attendance.getItems())
 		{
-			if(attend.getAttendance().getSchedule().getTeacher().getId().equals(attend.getPerson().getId()) && attend.getStatus().equals(AttendanceStatus.IN))
+			Employee employee = employeeRepo.findOneByPartyId(item.getPerson().getId());
+			if(employee != null)
 			{
-				Timesheet timesheet = timesheetRepo.findOne(attendance.getDate(), attend.getPerson().getId());
+				Timesheet timesheet = timesheetRepo.findOne(attendance.getDate(), item.getPerson().getId());
 				if(timesheet == null)
 				{
-					Employee employee = employeeRepo.findOneByPartyId(attend.getPerson().getId());
-					if(employee == null)
-						throw new RuntimeException(attend.getPerson().getName()+" not an employee.");
-					
 					timesheet = new Timesheet();
-					timesheet.setStart(DateTimes.firstDay(attendance.getDate()));
-					timesheet.setEnd(DateTimes.lastDay(attendance.getDate()));
 					timesheet.setEmployee(employee);
+					timesheet.setEnd(DateTimes.lastDay(attendance.getDate()));
+					timesheet.setStart(DateTimes.firstDay(attendance.getDate()));
 					
 					timesheetRepo.save(timesheet);
 				}
 				
-				TimeEntry entry = new TimeEntry();
-				entry.setComment("Teaching task");
-				entry.setDate(attendance.getDate());
-				entry.setStart(attend.getAttendance().getSchedule().getStart());
-				entry.setEnd(attend.getAttendance().getSchedule().getEnd());
-				entry.setTimesheet(timesheet);
-				entry.setHour(DateTimes.toHours(entry.getStart(), entry.getEnd()));
-				
-				timesheet.getTimeEntrys().add(entry);
-				timesheetRepo.saveAndFlush(timesheet);
-
-				attend.setTimeEntry(entry);
+				item.setTimesheet(timesheet);
 			}
 		}
 		
-		repository.saveAndFlush(attendance);
+		repository.save(attendance);
 	}
 
 	@Secured("ROLE_COURSE_ATTENDANCE_UPDATE")
 	public void edit(CourseAttendance attendance,Collection<CourseAttendanceItem> items)
 	{
-		for(CourseAttendanceItem item:attendance.getItems())
-		{
-			if(item.getTimeEntry() != null)
-				entryRepo.delete(item.getTimeEntry());
-		}
-		
 		attendance.getItems().clear();
 		repository.saveAndFlush(attendance);
 		
+		for(CourseAttendanceItem item:items)
+		{
+			Employee employee = employeeRepo.findOneByPartyId(item.getPerson().getId());
+			if(employee != null && item.getStatus().equals(AttendanceStatus.IN))
+			{			
+				Timesheet timesheet = timesheetRepo.findOne(attendance.getDate(), item.getPerson().getId());
+				if(timesheet == null)
+				{
+					timesheet = new Timesheet();
+					timesheet.setEmployee(employee);
+					timesheet.setEnd(DateTimes.lastDay(attendance.getDate()));
+					timesheet.setStart(DateTimes.firstDay(attendance.getDate()));
+					
+					timesheetRepo.save(timesheet);
+				}
+				
+				item.setTimesheet(timesheet);
+			}
+		}
+		
 		attendance.getItems().addAll(items);
 		repository.saveAndFlush(attendance);
-		
-		writeTimesheet(attendance);
 	}
 
 	@Secured("ROLE_COURSE_ATTENDANCE_DELETE")

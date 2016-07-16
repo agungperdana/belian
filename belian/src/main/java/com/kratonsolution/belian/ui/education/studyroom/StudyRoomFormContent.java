@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.ui.education.studyroom;
 
 import java.util.List;
+import java.util.Vector;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
@@ -26,7 +27,9 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.education.dm.CourseRegistration;
+import com.kratonsolution.belian.education.dm.CourseSchedule;
 import com.kratonsolution.belian.education.dm.StudyDay;
 import com.kratonsolution.belian.education.dm.StudyRoom;
 import com.kratonsolution.belian.education.dm.StudyTime;
@@ -35,9 +38,13 @@ import com.kratonsolution.belian.education.svc.StudyDayService;
 import com.kratonsolution.belian.education.svc.StudyPeriodService;
 import com.kratonsolution.belian.education.svc.StudyRoomService;
 import com.kratonsolution.belian.education.svc.StudyTimeService;
+import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.hr.svc.EmploymentService;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductFeature;
+import com.kratonsolution.belian.inventory.svc.ProductService;
+import com.kratonsolution.belian.production.dm.WorkEffortPurpose;
+import com.kratonsolution.belian.production.dm.WorkEffortType;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.component.FacilityList;
@@ -46,6 +53,7 @@ import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.education.courseregistration.CourseClassBox;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
+import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -58,6 +66,10 @@ public class StudyRoomFormContent extends FormContent implements ModelListener<P
 	private StudyRoomService service = Springs.get(StudyRoomService.class);
 	
 	private StudyPeriodService periodService = Springs.get(StudyPeriodService.class);
+	
+	private ProductService productService = Springs.get(ProductService.class);
+	
+	private PersonService personService = Springs.get(PersonService.class);
 	
 	private CourseRegistrationService registrationService = Springs.get(CourseRegistrationService.class);
 	
@@ -81,7 +93,7 @@ public class StudyRoomFormContent extends FormContent implements ModelListener<P
 	
 	private CourseClassBox courses = new CourseClassBox(false);
 	
-	private Listbox feature = Components.newSelect();
+	private Listbox features = Components.newSelect();
 	
 	private Tabbox tabbox = new Tabbox();
 	
@@ -128,8 +140,8 @@ public class StudyRoomFormContent extends FormContent implements ModelListener<P
 				if(courses.getProduct() == null)
 					throw new WrongValueException(courses,"message.field.empty");
 				
-				if(feature.getSelectedCount() == 0)
-					throw new WrongValueException(feature,"message.field.empty");
+				if(features.getSelectedCount() == 0)
+					throw new WrongValueException(features,"message.field.empty");
 				
 				StudyRoom room = new StudyRoom();
 				room.setCourse(courses.getProduct());
@@ -140,7 +152,24 @@ public class StudyRoomFormContent extends FormContent implements ModelListener<P
 				room.setRoom(rooms.getFacility());
 				room.setTime(timeService.findOne(Components.string(times)));
 				room.setStaff(utils.getEmployee());
+				room.setDate(DateTimes.currentDate());
+				room.setReason("Course programm for "+name.getText());
+				room.setRequired(DateTimes.currentDate());
 
+				for(ProductFeature feature:courses.getProduct().getFeatures())
+				{
+					if(feature.getId().equals(Components.string(features)))
+					{
+						room.setFeature(feature);
+						break;
+					}
+				}
+				
+				if(room.getFeature() == null)
+					throw new WrongValueException(features,"message.field.empty");
+
+				Vector<CourseRegistration> students = new Vector<>();
+				
 				for(Component com:items.getRows().getChildren())
 				{
 					Row row = (Row)com;
@@ -150,15 +179,32 @@ public class StudyRoomFormContent extends FormContent implements ModelListener<P
 					{
 						CourseRegistration reg = registrationService.findOne(check.getAttribute("prim").toString());
 						if(reg != null)
-						{
-							reg.setRoom(room);
-							room.getRegistrations().add(reg);
-						}
+							students.add(reg);
 					}
 				}
 				
-				if(!room.getRegistrations().isEmpty())
-					service.add(room);
+				for(Component com:schedules.getRows().getChildren())
+				{
+					Row row = (Row)com;
+					
+					CourseSchedule schedule = new CourseSchedule();
+					schedule.setDate(room.getDate());
+					schedule.setDay(RowUtils.string(row, 1));
+					schedule.setStart(RowUtils.time(row, 2));
+					schedule.setEnd(RowUtils.time(row, 3));
+					schedule.setProduct(productService.findOne(RowUtils.string(row, 4)));
+					schedule.setRequirement(room);
+					schedule.setPerson(personService.findOne(RowUtils.string(row, 5)));
+					schedule.setPurpose(WorkEffortPurpose.Production);
+					schedule.setType(WorkEffortType.Task);
+					
+					room.getEfforts().add(schedule);
+				}
+				
+				if(students.isEmpty() || room.getEfforts().isEmpty())
+					throw new WrongValueException("Detail cannot be empty");
+				
+				service.add(room,students);
 				
 				Flow.next(getParent(),new StudyRoomGridContent());
 			}
@@ -168,7 +214,7 @@ public class StudyRoomFormContent extends FormContent implements ModelListener<P
 	@Override
 	public void initForm()
 	{
-		feature.addEventListener(Events.ON_SELECT, new EventListener<Event>()
+		features.addEventListener(Events.ON_SELECT, new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event arg0) throws Exception
@@ -185,14 +231,14 @@ public class StudyRoomFormContent extends FormContent implements ModelListener<P
 				if(courses.getProduct() == null)
 					throw new WrongValueException(courses,"message.field.empty");
 				
-				if(feature.getSelectedCount() == 0)
-					throw new WrongValueException(feature,"message.field.empty");
+				if(features.getSelectedCount() == 0)
+					throw new WrongValueException(features,"message.field.empty");
 			
 				items.getRows().getChildren().clear();
 				
 				List<CourseRegistration> list = registrationService.findAllNoRoom(courses.getProduct().getId(),
 												Components.string(periods),Components.string(days),
-												Components.string(times),Components.string(feature));
+												Components.string(times),Components.string(features));
 				
 				if(list.isEmpty())
 				{
@@ -250,7 +296,7 @@ public class StudyRoomFormContent extends FormContent implements ModelListener<P
 		
 		Row row8 = new Row();
 		row8.appendChild(new Label(lang.get("studyroom.grid.column.feature")));
-		row8.appendChild(feature);
+		row8.appendChild(features);
 		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
@@ -316,8 +362,8 @@ public class StudyRoomFormContent extends FormContent implements ModelListener<P
 				if(courses.getProduct() == null)
 					throw new WrongValueException(courses,"message.field.empty");
 				
-				if(feature.getSelectedCount() == 0)
-					throw new WrongValueException(feature,"message.field.empty");
+				if(features.getSelectedCount() == 0)
+					throw new WrongValueException(features,"message.field.empty");
 				
 				Listbox _days = Components.fullSpanSelect();
 				
@@ -365,9 +411,9 @@ public class StudyRoomFormContent extends FormContent implements ModelListener<P
 	@Override
 	public void fireEvent(Product model)
 	{
-		feature.getItems().clear();
+		features.getItems().clear();
 		
 		for(ProductFeature feat:model.getFeatures())
-			feature.appendItem(feat.getValue(), feat.getId());
+			features.appendItem(feat.getValue(), feat.getId());
 	}
 }

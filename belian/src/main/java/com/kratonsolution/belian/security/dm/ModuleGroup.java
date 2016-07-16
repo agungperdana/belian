@@ -23,5 +23,6 @@ public enum ModuleGroup
 	POS,
 	CLINIC,
 	MEDICALLAB,
-	EDUCATION
+	EDUCATION,
+	PRODUCTION
 }

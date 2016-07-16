@@ -125,14 +125,14 @@ public class CourseAttendanceEditContent extends FormContent
 		{
 			companys.setOrganization(attendance.getOrganization());
 			date.setValue(attendance.getDate());
-			periods.setSelectedItem(periods.appendItem(attendance.getSchedule().getRoom().getPeriod().getLabel(),attendance.getSchedule().getRoom().getPeriod().getValue()));
-			programs.setSelectedItem(programs.appendItem(attendance.getSchedule().getRoom().getName(), attendance.getSchedule().getRoom().getId()));
+			periods.setSelectedItem(periods.appendItem(attendance.getSchedule().getRequirement().getPeriod().getLabel(),attendance.getSchedule().getRequirement().getPeriod().getValue()));
+			programs.setSelectedItem(programs.appendItem(attendance.getSchedule().getRequirement().getName(), attendance.getSchedule().getRequirement().getId()));
 
 			StringBuilder builder = new StringBuilder();
 			builder.append("["+DateTimes.format(attendance.getSchedule().getStart())+"-"+DateTimes.format(attendance.getSchedule().getEnd())+"] ");
 			builder.append(attendance.getSchedule().getDay()+"-");
 			builder.append(attendance.getSchedule().getProduct().getName()+"-");
-			builder.append(attendance.getSchedule().getTeacher().getName());
+			builder.append(attendance.getSchedule().getPerson().getName());
 			
 			schedules.setSelectedItem(schedules.appendItem(builder.toString(), attendance.getSchedule().getId()));
 		}
@@ -184,7 +184,7 @@ public class CourseAttendanceEditContent extends FormContent
 		{
 			for(CourseAttendanceItem item:attendance.getItems())
 			{
-				if(item.getAttendance().getSchedule().getTeacher().getId().equals(item.getPerson().getId()))
+				if(item.getAttendance().getSchedule().getPerson().getId().equals(item.getPerson().getId()))
 				{
 					Row row = new Row();
 					
@@ -212,7 +212,7 @@ public class CourseAttendanceEditContent extends FormContent
 			
 			for(CourseAttendanceItem item:attendance.getItems())
 			{
-				if(!item.getAttendance().getSchedule().getTeacher().getId().equals(item.getPerson().getId()))
+				if(!item.getAttendance().getSchedule().getPerson().getId().equals(item.getPerson().getId()))
 				{
 					Row row = new Row();
 					

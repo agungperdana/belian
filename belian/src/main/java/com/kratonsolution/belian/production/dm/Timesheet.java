@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -50,7 +49,7 @@ public class Timesheet implements Serializable
 	@Version
 	private Long version;
 
-	@OneToMany(mappedBy="timesheet",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(mappedBy="timesheet")
 	private Set<TimeEntry> timeEntrys = new HashSet<>();
 	
 	public Timesheet(){}

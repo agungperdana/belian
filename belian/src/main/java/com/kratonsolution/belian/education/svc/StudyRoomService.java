@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.education.svc;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
 
@@ -100,25 +101,28 @@ public class StudyRoomService
 	}
 	
 	@Secured("ROLE_STUDY_ROOM_CREATE")
-	public void add(StudyRoom room)
+	public void add(StudyRoom room,Collection<CourseRegistration> students)
 	{
 		repository.save(room);
 		
-		for(CourseRegistration registration:room.getRegistrations())
+		for(CourseRegistration registration:students)
+		{
+			registration.setRoom(room);
 			registrationRepo.save(registration);
+		}
 	}
 	
 	@Secured("ROLE_STUDY_ROOM_UPDATE")
 	public void edit(StudyRoom room,Vector<CourseSchedule> schedules)
 	{	
-		room.getSchedules().clear();
+		room.getEfforts().clear();
 		
 		for(CourseRegistration registration:room.getRegistrations())
 			registrationRepo.save(registration);
 		
 		repository.saveAndFlush(room);
 	
-		room.getSchedules().addAll(schedules);
+		room.getEfforts().addAll(schedules);
 		
 		repository.saveAndFlush(room);
 	}
@@ -126,6 +130,16 @@ public class StudyRoomService
 	@Secured("ROLE_STUDY_ROOM_DELETE")
 	public void delete(String id)
 	{
-		repository.delete(id);
+		StudyRoom room = findOne(id);
+		if(room != null)
+		{
+			for(CourseRegistration registration:room.getRegistrations())
+			{
+				registration.setRoom(null);
+				registrationRepo.save(registration);
+			}
+		}
+		
+		repository.delete(room);
 	}
 }
