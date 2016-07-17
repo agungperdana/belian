@@ -40,6 +40,8 @@ public class PaycheckWindow extends AbstractWindow implements HasGrid,HasCreateF
 	private PaycheckWindow()
 	{
 		super();
+		setWidth("675px");
+		setHeight("525px");
 	}
 	
 	protected void init()

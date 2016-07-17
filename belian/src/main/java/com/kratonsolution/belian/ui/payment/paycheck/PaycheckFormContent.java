@@ -28,12 +28,16 @@ import org.zkoss.zul.Textbox;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.hr.dm.Employment;
 import com.kratonsolution.belian.hr.dm.PayrollPreference;
+import com.kratonsolution.belian.payment.dm.Deduction;
+import com.kratonsolution.belian.payment.dm.Paycheck;
+import com.kratonsolution.belian.payment.dm.PaycheckItem;
 import com.kratonsolution.belian.payment.svc.DeductionTypeService;
 import com.kratonsolution.belian.payment.svc.PaycheckService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.component.EmployeeBox;
 import com.kratonsolution.belian.ui.component.ModelListener;
+import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Numbers;
@@ -51,13 +55,17 @@ public class PaycheckFormContent extends FormContent implements ModelListener<Em
 	
 	private DeductionTypeService typeService = Springs.get(DeductionTypeService.class);
 	
+	private OrganizationList companys = new OrganizationList();
+	
 	private Datebox date = Components.currentDatebox();
 	
-	private Datebox start = Components.mandatoryDatebox(DateTimes.firstDay(date.getValue()));
+	private Datebox start = Components.mandatoryDatebox("150px");
 	
-	private Datebox end = Components.mandatoryDatebox(DateTimes.lastDay(date.getValue()));
+	private Datebox end = Components.mandatoryDatebox("150px");
 	
 	private EmployeeBox employees = new EmployeeBox(false);
+	
+	private Textbox note = Components.stdTextBox(null, false);
 	
 	private Textbox sGross = Components.readOnlyMoneyBox(BigDecimal.ZERO);
 	
@@ -101,6 +109,46 @@ public class PaycheckFormContent extends FormContent implements ModelListener<Em
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
+				Paycheck paycheck = new Paycheck();
+				paycheck.setDate(DateTimes.sql(date.getValue()));
+				paycheck.setStart(DateTimes.sql(start.getValue()));
+				paycheck.setEnd(DateTimes.sql(end.getValue()));
+				paycheck.setEmployment(employees.getEmployment());
+				paycheck.setOrganization(companys.getOrganization());
+				paycheck.setNote(note.getText());
+				paycheck.setAmount(gross);
+				paycheck.setStaff(utils.getEmployee());
+				
+				for(Component com:deductions.getRows().getChildren())
+				{
+					Row row = (Row)com;
+					
+					if(RowUtils.decimal(row, 2).compareTo(BigDecimal.ZERO) > 0)
+					{
+						Deduction deduction = new Deduction();
+						deduction.setAmount(RowUtils.decimal(row, 2));
+						deduction.setType(typeService.findOne(RowUtils.string(row, 1)));
+						deduction.setPaycheck(paycheck);
+						
+						paycheck.getDeductions().add(deduction);
+					}
+				}
+				
+				for(Component com:preferences.getRows().getChildren())
+				{
+					Row row = (Row)com;
+					
+					PaycheckItem item = new PaycheckItem();
+					item.setMethod(RowUtils.string(row, 1));
+					item.setAmount(RowUtils.decimal(row, 2));
+					item.setAccount(RowUtils.string(row, 3));
+					item.setBank(RowUtils.string(row, 4));
+					item.setPaycheck(paycheck);
+					
+					paycheck.getItems().add(item);
+				}
+				
+				service.add(paycheck);
 				
 				Flow.next(getParent(), new PaycheckGridContent());
 			}
@@ -110,40 +158,53 @@ public class PaycheckFormContent extends FormContent implements ModelListener<Em
 	@Override
 	public void initForm()
 	{
+		start.setValue(DateTimes.firstDay(date.getValue()));
+		end.setValue(DateTimes.lastDay(date.getValue()));
 		employees.addListener(PaycheckFormContent.this);
 		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"100px"));
+		grid.getColumns().appendChild(new Column(null,null,"90px"));
 		grid.getColumns().appendChild(new Column());
-		grid.getColumns().appendChild(new Column(null,null,"100px"));
-		grid.getColumns().appendChild(new Column());
+		grid.getColumns().appendChild(new Column(null,null,"90px"));
+		grid.getColumns().appendChild(new Column(null,null,"155px"));
+		grid.setSpan("1");
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label(lang.get("paycheck.grid.column.date")));
-		row1.appendChild(date);
+		row1.appendChild(new Label(lang.get("paycheck.grid.column.company")));
+		row1.appendChild(companys);
 		row1.appendChild(new Label(lang.get("paycheck.grid.column.gross")));
 		row1.appendChild(sGross);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label(lang.get("paycheck.grid.column.start")));
-		row2.appendChild(start);
+		row2.appendChild(new Label(lang.get("paycheck.grid.column.date")));
+		row2.appendChild(date);
 		row2.appendChild(new Label(lang.get("paycheck.grid.column.deduct")));
 		row2.appendChild(sDeduct);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label(lang.get("paycheck.grid.column.end")));
-		row3.appendChild(end);
+		row3.appendChild(new Label(lang.get("paycheck.grid.column.start")));
+		row3.appendChild(start);
 		row3.appendChild(new Label(lang.get("paycheck.grid.column.net")));
 		row3.appendChild(net);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label(lang.get("paycheck.grid.column.employee")));
-		row4.appendChild(employees);
+		row4.appendChild(new Label(lang.get("paycheck.grid.column.end")));
+		row4.appendChild(end);
+		
+		Row row5 = new Row();
+		row5.appendChild(new Label(lang.get("paycheck.grid.column.employee")));
+		row5.appendChild(employees);
+		
+		Row row6 = new Row();
+		row6.appendChild(new Label(lang.get("paycheck.grid.column.note")));
+		row6.appendChild(note);
 		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
 		rows.appendChild(row4);
+		rows.appendChild(row5);
+		rows.appendChild(row6);
 	}
 
 	private void initTabbox()
@@ -195,6 +256,9 @@ public class PaycheckFormContent extends FormContent implements ModelListener<Em
 				deductions.getRows().appendChild(row);
 			}
 		});
+		
+		tabbox.getTabpanels().getFirstChild().appendChild(nrc);
+		tabbox.getTabpanels().getFirstChild().appendChild(deductions);
 	}
 	
 	private void initPreferences()
@@ -208,6 +272,8 @@ public class PaycheckFormContent extends FormContent implements ModelListener<Em
 		preferences.getColumns().appendChild(new Column(lang.get("paycheck.grid.column.amount"),null,"110px"));
 		preferences.getColumns().appendChild(new Column(lang.get("paycheck.grid.column.number"),null,"110px"));
 		preferences.getColumns().appendChild(new Column(lang.get("paycheck.grid.column.bank"),null,"110px"));
+	
+		tabbox.getTabpanels().getLastChild().appendChild(preferences);
 	}
 	
 	@Override
@@ -225,7 +291,7 @@ public class PaycheckFormContent extends FormContent implements ModelListener<Em
 			Row row = new Row();
 			row.appendChild(Components.checkbox(false));
 			row.appendChild(Components.label(preference.getPaymentType().getName()));
-			row.appendChild(Components.label(amount));
+			row.appendChild(Components.readOnlyDoubleBox(amount.doubleValue()));
 			row.appendChild(Components.label(preference.getBankNumber()));
 			row.appendChild(Components.label(preference.getBankName()));
 			

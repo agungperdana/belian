@@ -61,4 +61,24 @@ public class Paycheck extends Disbursement
 		
 		return net;
 	}
+	
+	public BigDecimal getDeductionAmount()
+	{
+		BigDecimal deduction = BigDecimal.ZERO;
+		
+		for(Deduction ded:deductions)
+			deduction = deduction.add(ded.getAmount());
+		
+		return deduction;
+	}
+
+	public BigDecimal getRate()
+	{
+		return employment.getRate(date);
+	}
+	
+	public BigDecimal getHour()
+	{
+		return employment.getHours(end, start, end);
+	}
 }

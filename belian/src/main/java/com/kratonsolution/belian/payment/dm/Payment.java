@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.dm.Person;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -52,6 +53,10 @@ public abstract class Payment implements Serializable
 	@ManyToOne
 	@JoinColumn(name="fk_organization")
 	protected Organization organization;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_staff")
+	protected Person staff;
 	
 	@Version
 	protected Long version;

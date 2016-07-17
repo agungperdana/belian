@@ -17,12 +17,12 @@ import org.springframework.data.repository.query.Param;
 public interface PaycheckRepository extends JpaRepository<Paycheck, String>
 {
 	@Query("FROM Paycheck pay WHERE "
-			+ "pay.organization.id =:company "
+			+ "pay.organization.id IN(:company) "
 			+ "ORDER BY pay.date DESC")
 	public List<Paycheck> findAll(@Param("company")List<String> company);
 	
 	@Query("FROM Paycheck pay WHERE "
-			+ "pay.organization.id =:company "
+			+ "pay.organization.id IN(:company) "
 			+ "ORDER BY pay.date DESC")
 	public List<Paycheck> findAll(Pageable pageable,@Param("company")List<String> company);
 	
@@ -30,7 +30,7 @@ public interface PaycheckRepository extends JpaRepository<Paycheck, String>
 	public Long count(@Param("company")List<String> company);
 	
 	@Query("FROM Paycheck pay WHERE "
-			+ "pay.organization.id =:company "
+			+ "pay.organization.id IN(:company) "
 			+ "AND (pay.employment.employee.party.identity LIKE %:key% "
 			+ "OR pay.employment.employee.party.name LIKE %:key%) "
 			+ "ORDER BY pay.date DESC")

@@ -69,7 +69,7 @@ public class BillingEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		Billable billing = service.findOne(RowUtils.string(row, 6));
+		Billable billing = service.findOne(RowUtils.id(row));
 		if(billing != null)
 		{
 			grid.appendChild(new Columns());

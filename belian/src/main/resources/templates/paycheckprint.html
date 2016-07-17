@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:inline='text'>
+	<meta charset="UTF-8"/>
+	<script type="text/javascript">
+    	function onprint()
+    	{
+    		window.print();
+    	}
+    </script>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/print.css}"/>
+</head>
+<body th:inline="text">
+	<table id='outer'>
+	<tr>
+		<td width="100%"><span id='toolbar'><img th:src="@{/icons/print.png}" onclick="onprint()"/></span></td>
+	</tr>
+	<tr>
+		<td width="100%">
+			<table id='top-content'>
+			<tr>
+				<td id='comp-title'>[[${paycheck.organization.name}]]</td>
+				<td id='doc-title'>[[${title}]]</td>
+			</tr>
+			<tr>
+				<td id='ext1'>
+					<p th:each="post:${paycheck.organization.addresses}">
+						<span>[[${post.address}]]</span><br/>
+						<span>[[${post.city.name}]] - [[${post.postal}]]</span><br/>
+						<span>[[${post.province.name}]]</span><br/>
+						<span>[[${post.country.name}]]</span>
+					</p>
+					<span th:each="cont:${paycheck.organization.contacts}">
+						[[${cont.type}]] : [[${cont.contact}]],&nbsp;
+					</span>
+				</td>
+				<td id='ext2'>
+					<span>[[${paycheck.employment.employee.party.name}]]</span><br/>
+					<span>Period ([[${#dates.format(paycheck.start,'dd/MM/yyyy')}]] - [[${#dates.format(paycheck.end,'dd/MM/yyyy')}]])</span>
+				</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table id='mid-content'>
+			<tr>
+				<td width="100%">
+					<table id='content'>
+					<thead>
+					<tr>
+						<th width="40%">Description</th>
+						<th width="20%">Hour(s)</th>
+						<th width="20%">Rate/Hour</th>
+						<th width="20%">Total</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr>
+						<td>Working</td>
+						<td id='money'>[[${#numbers.formatDecimal(paycheck.hour,1,'COMMA',0,'POINT')}]]</td>
+						<td id='money'>[[${#numbers.formatDecimal(paycheck.rate,1,'COMMA',0,'POINT')}]]</td>
+						<td id='money'>[[${#numbers.formatDecimal(paycheck.amount,1,'COMMA',0,'POINT')}]]</td>
+					</tr>
+					<tr><td colspan="4">Deduction</td></tr>
+					<tr th:each="deduct:${paycheck.deductions}">
+						<td colspan="3">-[[${deduct.type.name}]]</td>
+						<td id='money'>[[${#numbers.formatDecimal(deduct.amount,1,'COMMA',0,'POINT')}]]</td>
+					</tr>
+					<tr>
+						<td colspan="3" align="right">Take Home Pay</td>
+						<td id='money'>[[${#numbers.formatDecimal(paycheck.netAmount,1,'COMMA',0,'POINT')}]]</td>
+					</tr>
+					</tbody>
+					</table>
+				</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table id='bot-content'>
+			<tr>
+				<td width="50%">&nbsp;</td>
+				<td width="50%" align="center">Pontianak, [[${#dates.format(paycheck.end,'dd/MM/yyyy')}]]</td>
+			</tr>
+			<tr><td colspan="2">&nbsp;</td></tr>
+			<tr><td colspan="2">&nbsp;</td></tr>
+			<tr>
+				<td width="50%">&nbsp;</td>
+				<td width="50%" align="center">([[${paycheck.staff.name}]])</td>
+			</tr>
+			</table>
+		</td>	
+	</tr>
+	</table>
+</body>
+</html>
