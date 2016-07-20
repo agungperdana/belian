@@ -19,7 +19,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="disbursement")
-public class Disbursement extends Payment
+public abstract class Disbursement extends Payment
 {
-
+	public abstract String getName();
 }

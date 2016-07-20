@@ -81,4 +81,10 @@ public class Paycheck extends Disbursement
 	{
 		return employment.getHours(end, start, end);
 	}
+
+	@Override
+	public String getName()
+	{
+		return "Paycheck";
+	}
 }

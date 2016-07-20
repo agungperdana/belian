@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.payment.dm;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -34,4 +36,11 @@ public class Receipt extends Payment
 	private PaymentMethodType type;
 	
 	public Receipt(){}
+
+	@Override
+	public BigDecimal getNetAmount()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

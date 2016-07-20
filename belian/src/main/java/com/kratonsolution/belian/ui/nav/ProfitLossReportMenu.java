@@ -10,7 +10,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.Language;
-import com.kratonsolution.belian.ui.asset.assettype.AssetTypeWindow;
+import com.kratonsolution.belian.ui.financial.profitloss.ProfitLossWindow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -18,35 +18,35 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class AssetTypeMenu extends Listitem
+public class ProfitLossReportMenu extends Listitem
 {
 	private Language language = Springs.get(Language.class);
 	
-	public AssetTypeMenu()
+	public ProfitLossReportMenu()
 	{
 		init();
 	}
 	
 	public void init()
 	{
-		setLabel(language.get("navbar.menu.asset.assettype"));
-		setImage("/icons/assettype.png");
+		setLabel(language.get("navbar.menu.finance.profitloss"));
+		setImage("/icons/profitloss.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				AssetTypeWindow window = null;
+				ProfitLossWindow window = null;
 				
 				for(Component component:getPage().getRoots())
 				{
-					if(component instanceof AssetTypeWindow)
-						window = (AssetTypeWindow)component;
+					if(component instanceof ProfitLossWindow)
+						window = (ProfitLossWindow)component;
 				}
 				
 				if(window == null)
-					window = AssetTypeWindow.injectInto(getPage());
+					window = ProfitLossWindow.injectInto(getPage());
 				
 				else if(!window.isVisible())
 				{

@@ -22,6 +22,8 @@ public class ReportToolbar extends Toolbar
 	
 	private Toolbarbutton generate = new Toolbarbutton(lang.get("label.component.button.generate"),"/icons/generate-report.png");
 	
+	private Toolbarbutton print = new Toolbarbutton(lang.get("label.component.button.print"),"/icons/print.png");
+	
 	private Toolbarbutton pdf = new Toolbarbutton(lang.get("label.component.button.pdf"),"/icons/exportpdf.png");
 	
 	private Toolbarbutton excel = new Toolbarbutton(lang.get("label.component.button.excel"),"/icons/exportexcel.png");
@@ -34,6 +36,7 @@ public class ReportToolbar extends Toolbar
 		excel.setDisabled(true);
 		
 		appendChild(generate);
+		appendChild(print);
 //		appendChild(pdf);
 //		appendChild(excel);
 	}

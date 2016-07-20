@@ -51,6 +51,7 @@ public class NavigationMenu extends Window
 		initGeneral(modules);
 		initSecurity(modules);
 		initAccounting(modules);
+		initFinancial(modules);
 		initPayment(modules);
 		initInventory(modules);
 		initAsset(modules);
@@ -158,6 +159,24 @@ public class NavigationMenu extends Window
 		if(!list.getChildren().isEmpty())
 		{
 			tabs.appendChild(new Tab(language.get("navbar.menu.accounting")));
+			Tabpanel accounting = new Tabpanel();
+			accounting.setStyle("overflow:auto");
+			accounting.appendChild(list);
+			panels.appendChild(accounting);
+		}
+	}
+	
+	protected void initFinancial(Map<String,Boolean> modules)
+	{
+		Listbox list = new Listbox();
+		list.setStyle("border:none");
+		
+		if(modules.containsKey("ROLE_PROFIT_LOSS_READ"))
+			list.appendChild(new ProfitLossReportMenu());
+		
+		if(!list.getChildren().isEmpty())
+		{
+			tabs.appendChild(new Tab(language.get("navbar.menu.finance")));
 			Tabpanel accounting = new Tabpanel();
 			accounting.setStyle("overflow:auto");
 			accounting.appendChild(list);

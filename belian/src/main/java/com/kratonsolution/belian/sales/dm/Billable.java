@@ -118,4 +118,9 @@ public abstract class Billable implements Serializable
 		
 		return(paids.compareTo(getBillingAmount().add(getTaxAmount())) == 0);
 	}
+	
+	public BigDecimal getNet()
+	{
+		return getBillingAmount().subtract(getTaxAmount());
+	}
 }

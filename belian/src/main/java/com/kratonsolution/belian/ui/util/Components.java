@@ -530,6 +530,7 @@ public class Components implements Serializable
 		Datebox datebox = new Datebox(new Date());
 		datebox.setWidth("150px");
 		datebox.setConstraint("no empty");
+		datebox.setFormat("dd/MM/yyyy");
 		
 		return datebox;
 	}
@@ -539,6 +540,7 @@ public class Components implements Serializable
 		Datebox datebox = new Datebox(new Date());
 		datebox.setWidth("150px");
 		datebox.setConstraint("no empty");
+		datebox.setFormat("dd/MM/yyyy");
 		datebox.setReadonly(readonly);
 		
 		return datebox;
@@ -548,6 +550,7 @@ public class Components implements Serializable
 	{
 		Datebox datebox = new Datebox();
 		datebox.setWidth("150px");
+		datebox.setFormat("dd/MM/yyyy");
 		
 		return datebox;
 	}
@@ -556,6 +559,7 @@ public class Components implements Serializable
 	{
 		Datebox datebox = new Datebox();
 		datebox.setWidth("100%");
+		datebox.setFormat("dd/MM/yyyy");
 		if(date != null)
 			datebox.setValue(date);
 		
@@ -566,6 +570,7 @@ public class Components implements Serializable
 	{
 		Datebox datebox = new Datebox(date);
 		datebox.setWidth("100%");
+		datebox.setFormat("dd/MM/yyyy");
 		datebox.setReadonly(true);
 		datebox.setDisabled(true);
 

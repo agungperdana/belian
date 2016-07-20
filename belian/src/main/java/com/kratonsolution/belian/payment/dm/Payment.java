@@ -18,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.accounting.dm.Currency;
+import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Person;
 
@@ -58,8 +60,18 @@ public abstract class Payment implements Serializable
 	@JoinColumn(name="fk_staff")
 	protected Person staff;
 	
+	@ManyToOne
+	@JoinColumn(name="fk_currency")
+	protected Currency currency;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_tax")
+	protected Tax tax;
+	
 	@Version
 	protected Long version;
 	
 	public Payment(){}
+	
+	public abstract BigDecimal getNetAmount();
 }

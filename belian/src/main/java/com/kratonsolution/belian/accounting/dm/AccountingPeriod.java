@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.accounting.dm;
 
-import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +22,8 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.global.dm.Listable;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,7 +37,7 @@ import lombok.Setter;
 @Entity
 @Table(name="accounting_period")
 @Cacheable
-public class AccountingPeriod implements Serializable
+public class AccountingPeriod implements Listable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -67,4 +68,16 @@ public class AccountingPeriod implements Serializable
 	@OneToMany(mappedBy="parent",cascade=CascadeType.REMOVE,orphanRemoval=true)
 	@OrderBy("number ASC")
 	private List<AccountingPeriod> members = new ArrayList<AccountingPeriod>();
+
+	@Override
+	public String getLabel()
+	{
+		return getName();
+	}
+
+	@Override
+	public String getValue()
+	{
+		return getId();
+	}
 }

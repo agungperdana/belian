@@ -71,6 +71,14 @@ public class SessionUtils
 	
 	public Person getEmployee()
 	{
+		if(isSysAdmin())
+		{
+			Person person = new Person();
+			person.setName("System Administrator");
+			
+			return person;
+		}
+		
 		return getUser().getPerson();
 	}
 
@@ -141,7 +149,7 @@ public class SessionUtils
 		return new ArrayList<Organization>(maps.values());
 	}
 
-	private void extractStructure(Map<String, Organization> maps,CompanyStructure structure)
+	public void extractStructure(Map<String, Organization> maps,CompanyStructure structure)
 	{
 		if(structure != null && !maps.containsKey(structure.getOrganization().getName()))
 		{
@@ -199,7 +207,7 @@ public class SessionUtils
 		return new ArrayList<>(maps.values());
 	}
 
-	private void extractOrganizationId(Map<String, String> maps,CompanyStructure structure)
+	public void extractOrganizationId(Map<String, String> maps,CompanyStructure structure)
 	{
 		if(structure != null && !maps.containsKey(structure.getOrganization().getName()))
 		{

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.accounting.accountingperiod;
+package com.kratonsolution.belian.ui.financial.profitloss;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Page;
@@ -11,43 +11,48 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Row;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.HasCreateForm;
 import com.kratonsolution.belian.ui.HasEditForm;
 import com.kratonsolution.belian.ui.HasGrid;
 import com.kratonsolution.belian.ui.nav.IconBar;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class AccountingPeriodWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
+public class ProfitLossWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption(lang.get("navbar.menu.accounting.period"));
+	private Language lang = Springs.get(Language.class);
 	
-	private AccountingPeriodButton status = new AccountingPeriodButton();
+	private Caption caption = new Caption(lang.get("navbar.menu.finance.profitloss"));
 	
-	public static AccountingPeriodWindow injectInto(Page page)
+	private ProfitLossButton status = new ProfitLossButton();
+	
+	public static ProfitLossWindow injectInto(Page page)
 	{
-		AccountingPeriodWindow window = new AccountingPeriodWindow();
+		ProfitLossWindow window = new ProfitLossWindow();
 		window.setPage(page);
 		window.init();
 		
 		return window;
 	}
 	
-	private AccountingPeriodWindow()
+	private ProfitLossWindow()
 	{
 		super();
-		setWidth("625px");
+		setWidth("675px");
+		setHeight("575px");
 	}
 	
 	protected void init()
 	{
-		caption.setImage("/icons/period.png");
+		caption.setImage("/icons/profitloss.png");
 		appendChild(caption);
-		insertGrid();
+		insertCreateForm();
 		insertStatus();
 		status.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
@@ -93,7 +98,6 @@ public class AccountingPeriodWindow extends AbstractWindow implements HasGrid,Ha
 	@Override
 	public void insertEditForm(Row row)
 	{
-//		appendChild(new AccountingPeriodEditContent(row));
 	}
 
 	@Override
@@ -101,7 +105,7 @@ public class AccountingPeriodWindow extends AbstractWindow implements HasGrid,Ha
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof AccountingPeriodEditContent)
+			if(component instanceof ProfitLossResultContent)
 			{
 				removeChild(component);
 				break;
@@ -112,7 +116,7 @@ public class AccountingPeriodWindow extends AbstractWindow implements HasGrid,Ha
 	@Override
 	public void insertCreateForm()
 	{
-//		appendChild(new AccountingPeriodFormContent());
+		appendChild(new ProfitLossFormContent());
 	}
 
 	@Override
@@ -120,7 +124,7 @@ public class AccountingPeriodWindow extends AbstractWindow implements HasGrid,Ha
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof AccountingPeriodFormContent)
+			if(component instanceof ProfitLossFormContent)
 			{
 				removeChild(component);
 				break;
@@ -129,21 +133,8 @@ public class AccountingPeriodWindow extends AbstractWindow implements HasGrid,Ha
 	}
 
 	@Override
-	public void insertGrid()
-	{
-		appendChild(new AccountingPeriodGridContent());
-	}
+	public void insertGrid(){}
 
 	@Override
-	public void removeGrid()
-	{
-		for(Component component:getChildren())
-		{
-			if(component instanceof AccountingPeriodGridContent)
-			{
-				removeChild(component);
-				break;
-			}
-		}
-	}	
+	public void removeGrid(){}	
 }

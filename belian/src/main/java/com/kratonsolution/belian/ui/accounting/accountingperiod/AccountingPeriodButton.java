@@ -15,7 +15,7 @@ public class AccountingPeriodButton extends Toolbarbutton
 	public AccountingPeriodButton()
 	{
 		setImage("/icons/period.png");
-		setTooltip("Accounting Period Management");
+		setTooltiptext("Accounting Period Management");
 		setHeight("38px");
 	}
 }

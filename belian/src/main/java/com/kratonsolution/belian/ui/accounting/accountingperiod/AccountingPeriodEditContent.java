@@ -29,6 +29,7 @@ import com.kratonsolution.belian.accounting.svc.AccountingPeriodService;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.Refreshable;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -40,17 +41,17 @@ public class AccountingPeriodEditContent extends AbstractWindow
 {	
 	private final AccountingPeriodService service = Springs.get(AccountingPeriodService.class);
 	
-	private Textbox number = new Textbox();
+private Textbox number = new Textbox();
 	
-	private Textbox name = new Textbox();
+	private Textbox name = Components.mandatoryTextBox(false);
 	
-	private Datebox from = new Datebox();
+	private Datebox from = Components.currentDatebox();
 	
-	private Datebox to = new Datebox();
+	private Datebox to = Components.mandatoryDatebox("150px");
 	
-	private Listbox months = new Listbox();
+	private Listbox months = Components.newSelect();
 	
-	private Listbox parents = new Listbox();
+	private Listbox parents = Components.newSelect();
 	
 	private AccountingPeriod edited;
 	
@@ -62,7 +63,7 @@ public class AccountingPeriodEditContent extends AbstractWindow
 		this.edited = edited;
 		
 		setMode(Mode.POPUP);
-		Caption caption = new Caption("Accounting Period");
+		Caption caption = new Caption(lang.get("navbar.menu.accounting.period"));
 		caption.setImage("/icons/period.png");
 
 		layout.setWidth("100%");
@@ -104,10 +105,10 @@ public class AccountingPeriodEditContent extends AbstractWindow
 			public void onEvent(Event event) throws Exception
 			{
 				if(Strings.isNullOrEmpty(number.getText()))
-					throw new WrongValueException(number,"Number cannot be empty");
+					throw new WrongValueException(number,lang.get("message.field.empty"));
 			
 				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
+					throw new WrongValueException(name,lang.get("message.field.empty"));
 			
 				edited.setNumber(number.getText());
 				edited.setName(name.getText());
@@ -125,18 +126,11 @@ public class AccountingPeriodEditContent extends AbstractWindow
 
 	public void initForm()
 	{
-		number.setConstraint("no empty");
-		number.setWidth("250px");
 		number.setText(edited.getNumber());
-		
-		name.setConstraint("no empty");
-		name.setWidth("300px");
 		name.setText(edited.getName());
-		
 		from.setValue(edited.getFrom());
 		to.setValue(edited.getTo());
-		
-		parents.setMold("select");
+
 		if(edited.getParent() != null)
 		{
 			parents.appendChild(new Listitem(edited.getParent().getName(),edited.getParent().getId()));
@@ -149,37 +143,35 @@ public class AccountingPeriodEditContent extends AbstractWindow
 			months.appendChild(listitem);
 			months.setSelectedItem(listitem);
 		}
-		
-		months.setMold("select");
 
 		Grid grid = new Grid();
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
 		grid.appendChild(new Rows());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Number"));
+		row1.appendChild(new Label(lang.get("accountingperiod.grid.column.number")));
 		row1.appendChild(number);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Name"));
+		row2.appendChild(new Label(lang.get("accountingperiod.grid.column.name")));
 		row2.appendChild(name);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("From"));
+		row3.appendChild(new Label(lang.get("accountingperiod.grid.column.start")));
 		row3.appendChild(from);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("To"));
+		row4.appendChild(new Label(lang.get("accountingperiod.grid.column.end")));
 		row4.appendChild(to);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Month"));
+		row5.appendChild(new Label(lang.get("accountingperiod.grid.column.month")));
 		row5.appendChild(months);
 		
 		Row row6 = new Row();
-		row6.appendChild(new Label("Parent"));
+		row6.appendChild(new Label(lang.get("accountingperiod.grid.column.parent")));
 		row6.appendChild(parents);
 		
 		grid.getRows().appendChild(row1);

@@ -60,9 +60,16 @@ public interface BillableRepository extends JpaRepository<Billable, String>
 	
 	@Query("FROM Billable bil WHERE "
 			+ "bil.organization.id =:company "
-			+ "AND bil.date BETWEEN :start AND :end "
-			+ "ORDER BY bil.number DESC")
+			+ "AND (bil.date BETWEEN :start AND :end) "
+			+ "ORDER BY bil.date ASC,bil.number DESC")
 	public List<Billable> findAll(@Param("start")Date start,@Param("end")Date end,@Param("company")String company);
+	
+	@Query("FROM Billable bil WHERE "
+			+ "bil.organization.id =:company "
+			+ "AND bil.paid IS TRUE "
+			+ "AND (bil.date BETWEEN :start AND :end) "
+			+ "ORDER BY bil.date ASC,bil.number DESC")
+	public List<Billable> findAllPaid(@Param("start")Date start,@Param("end")Date end,@Param("company")String company);
 	
 	@Query("FROM Billable bil WHERE "
 			+ "bil.organization.id =:company "
