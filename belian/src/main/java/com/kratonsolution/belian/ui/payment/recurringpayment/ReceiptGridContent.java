@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.inventory.product;
+package com.kratonsolution.belian.ui.payment.recurringpayment;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -16,10 +16,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.common.Language;
-import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.inventory.svc.ProductService;
+import com.kratonsolution.belian.payment.svc.ReceiptService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -27,15 +26,11 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class ProductGridContent extends GridContent
+public class ReceiptGridContent extends GridContent
 {
-	private ProductService service = Springs.get(ProductService.class);
+	private ReceiptService service = Springs.get(ReceiptService.class);
 	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
-	
-	private Language lang = Springs.get(Language.class);
-	
-	public ProductGridContent()
+	public ReceiptGridContent()
 	{
 		super();
 		initToolbar();
@@ -45,14 +40,12 @@ public class ProductGridContent extends GridContent
 	protected void initToolbar()
 	{
 		appendChild(gridToolbar);
-		
 		gridToolbar.getRefresh().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				refresh(new ProductModel(utils.getRowPerPage()));
+				Flow.next(getParent(), new ReceiptGridContent());
 			}
 		});
 		
@@ -61,9 +54,7 @@ public class ProductGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				ProductWindow window = (ProductWindow)getParent();
-				window.removeGrid();
-				window.insertCreateForm();
+				Flow.next(getParent(), new ReceiptFormContent());
 			}
 		});
 		
@@ -137,7 +128,7 @@ public class ProductGridContent extends GridContent
 								}
 							}
 							
-							refresh(new ProductModel(utils.getRowPerPage()));
+							refresh(new ReceiptModel(utils.getRowPerPage()));
 						}
 					}
 				});
@@ -156,41 +147,38 @@ public class ProductGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		filter.setPlaceholder("Type product code/name to filter");
-		
-		appendChild(filter);
-		appendChild(grid);
-		
+		filter.setPlaceholder(lang.get("message.filter.placeholder"));
 		filter.addEventListener(Events.ON_CHANGING, new EventListener<InputEvent>()
 		{
 			@Override
 			public void onEvent(InputEvent input) throws Exception
 			{
-				refresh(new ProductModel(utils.getRowPerPage(),input.getValue()));
+				refresh(new ReceiptModel(utils.getRowPerPage(), input.getValue()));
 			}
 		});
 		
-		final ProductModel model = new ProductModel(utils.getRowPerPage(),filter.getText());
+		appendChild(filter);
+		appendChild(grid);
+		
+		final ReceiptModel model = new ReceiptModel(utils.getRowPerPage());
 		
 		grid.setHeight("80%");
-		grid.setEmptyMessage(lang.get("inventory.product.grid.column.empty"));
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
-		grid.setRowRenderer(new ProductRowRenderer());
+		grid.setRowRenderer(new ReceiptRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column(lang.get("inventory.product.grid.column.start"),null,"85px"));
-		grid.getColumns().appendChild(new Column(lang.get("inventory.product.grid.column.end"),null,"85px"));
-		grid.getColumns().appendChild(new Column(lang.get("inventory.product.grid.column.code"),null,"85px"));
-		grid.getColumns().appendChild(new Column(lang.get("inventory.product.grid.column.name")));
-		grid.getColumns().appendChild(new Column(lang.get("inventory.product.grid.column.category"),null,"100px"));
-		grid.getColumns().appendChild(new Column(lang.get("inventory.product.grid.column.type"),null,"125px"));
-		grid.getColumns().appendChild(new Column(lang.get("inventory.product.grid.column.uom"),null,"75px"));
-		grid.getColumns().appendChild(new Column("",null,"1px"));
-		grid.getColumns().getChildren().get(8).setVisible(false);
+		grid.getColumns().appendChild(new Column(lang.get("receipt.grid.column.date"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("receipt.grid.column.type"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("receipt.grid.column.amount"),null,"110px"));
+		grid.getColumns().appendChild(new Column(lang.get("receipt.grid.column.note"),null,"90px"));
+		grid.getColumns().appendChild(new Column(null,null,"1px"));
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("4");
+		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
 
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
@@ -203,6 +191,6 @@ public class ProductGridContent extends GridContent
 			}
 		});
 		
-		refresh(new ProductModel(utils.getRowPerPage(),filter.getText()));
+		refresh(new ReceiptModel(utils.getRowPerPage()));
 	}
 }

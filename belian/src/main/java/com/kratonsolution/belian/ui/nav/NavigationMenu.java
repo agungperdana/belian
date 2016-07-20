@@ -58,9 +58,9 @@ public class NavigationMenu extends Window
 		initHR(modules);
 		initProcurement(modules);
 		initSales(modules);
-//		initPharmacy(modules);
-//		initClinic(modules);
-//		initMedicalLab(modules);
+		initPharmacy(modules);
+		initClinic(modules);
+		initMedicalLab(modules);
 		initEducation(modules);
 	}
 
@@ -104,7 +104,8 @@ public class NavigationMenu extends Window
 			
 			Tabpanel general = new Tabpanel();
 			general.appendChild(list);
-
+			general.setStyle("overflow:auto");
+			
 			panels.appendChild(general);
 		}
 	}
@@ -112,7 +113,7 @@ public class NavigationMenu extends Window
 	protected void initSecurity(Map<String,Boolean> modules)
 	{
 		Listbox list = new Listbox();
-		list.setStyle("border:none");
+		list.setStyle("border:none;");
 		
 		if(modules.containsKey("ROLE_MODULE_READ"))
 			list.appendChild(new ModuleMenu());
@@ -129,6 +130,7 @@ public class NavigationMenu extends Window
 		{
 			tabs.appendChild(new Tab(language.get("navbar.menu.security")));
 			Tabpanel panel = new Tabpanel();
+			panel.setStyle("overflow:auto");
 			panel.appendChild(list);
 			panels.appendChild(panel);
 		}
@@ -243,6 +245,7 @@ public class NavigationMenu extends Window
 		{
 			tabs.appendChild(new Tab(language.get("navbar.menu.sales")));
 			Tabpanel panel = new Tabpanel();
+			panel.setStyle("overflow:auto");
 			panel.appendChild(list);
 			panels.appendChild(panel);
 		}
@@ -264,6 +267,7 @@ public class NavigationMenu extends Window
 		{
 			tabs.appendChild(new Tab(language.get("navbar.menu.procurement")));
 			Tabpanel panel = new Tabpanel();
+			panel.setStyle("overflow:auto");
 			panel.appendChild(list);
 			panels.appendChild(panel);
 		}
@@ -412,6 +416,10 @@ public class NavigationMenu extends Window
 			list.appendChild(new DeductionTypeMenu());
 		if(modules.containsKey("ROLE_PAYCHECK_READ"))
 			list.appendChild(new PaycheckMenu());
+		if(modules.containsKey("ROLE_RECURRING_PAYMENT_READ"))
+			list.appendChild(new RecurringPaymentMenu());
+		if(modules.containsKey("ROLE_RECEIPT_READ"))
+			list.appendChild(new ReceiptMenu());
 
 		if(!list.getChildren().isEmpty())
 		{

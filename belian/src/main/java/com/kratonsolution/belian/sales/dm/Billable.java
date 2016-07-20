@@ -10,7 +10,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -26,7 +25,6 @@ import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.payment.dm.Receipt;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -81,8 +79,8 @@ public abstract class Billable implements Serializable
 	@Version
 	protected Long version;
 
-	@OneToMany(mappedBy="billable",cascade=CascadeType.ALL,orphanRemoval=true)
-	private Set<Receipt> receipts = new HashSet<>();
+	@OneToMany(mappedBy="billable")
+	private Set<PaymentApplication> receipts = new HashSet<>();
 	
 	public Billable(){}
 	
@@ -113,8 +111,8 @@ public abstract class Billable implements Serializable
 	public boolean match()
 	{
 		BigDecimal paids = BigDecimal.ZERO;
-		for(Receipt receipt:receipts)
-			paids = paids.add(receipt.getAmount());
+		for(PaymentApplication application:receipts)
+			paids = paids.add(application.getAmount());
 		
 		return(paids.compareTo(getBillingAmount().add(getTaxAmount())) == 0);
 	}

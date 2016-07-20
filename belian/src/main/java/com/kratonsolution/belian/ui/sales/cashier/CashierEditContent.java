@@ -97,7 +97,7 @@ public class CashierEditContent extends FormContent
 				CashierShift shift = cashierShiftService.findToday();
 
 				if(billing != null && shift != null)
-				{
+				{					
 					for(BillableItem item:billing.getItems())
 					{
 						for(Component com:billingItems.getRows().getChildren())
@@ -119,10 +119,9 @@ public class CashierEditContent extends FormContent
 						return;
 					}
 					
-					billing.setPaid(true);
 					billing.setShift(shift);
 					
-					service.edit(billing);
+					service.paid(billing);
 					
 					PrintWindow window = new PrintWindow(BillablePrint.GEN(billing.getId(),utils.isPos()),true);
 					window.setPage(getPage());

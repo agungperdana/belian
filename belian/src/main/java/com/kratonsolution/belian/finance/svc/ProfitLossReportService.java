@@ -93,7 +93,7 @@ public class ProfitLossReportService
 					BigDecimal tExpense = BigDecimal.ZERO;
 					
 					for(Billable billable:incomes)
-						tIncome = tIncome.add(billable.getNet());
+						tIncome = tIncome.add(billable.getBillingAmount());
 
 					for(Disbursement disbursement:expense)
 						tExpense = tExpense.add(disbursement.getNetAmount());

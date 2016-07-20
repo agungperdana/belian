@@ -81,4 +81,10 @@ public interface BillableRepository extends JpaRepository<Billable, String>
 			+ "bil.organization.id =:company "
 			+ "ORDER BY bil.number DESC")
 	public List<Billable> findAllByCompany(@Param("company")String company);
+	
+	@Query("FROM Billable bil WHERE "
+			+ "bil.organization.id =:company "
+			+ "AND bil.customer.id =:person "
+			+ "AND bil.paid IS FALSE")
+	public List<Billable> findAllUnpaid(@Param("company")String company,@Param("person")String person);
 }

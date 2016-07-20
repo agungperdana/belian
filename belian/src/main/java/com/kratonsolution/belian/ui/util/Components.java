@@ -287,6 +287,23 @@ public class Components implements Serializable
 		return box;
 	}
 	
+	public static final Textbox readOnlyMoneyBox(BigDecimal decimal,boolean span)
+	{
+		NumberFormat format = NumberFormat.getNumberInstance();
+		format.setGroupingUsed(true);
+		
+		Textbox box = new Textbox();
+		if(span)
+			box.setWidth("100%");
+		else
+			box.setWidth("150px");
+		
+		box.setReadonly(true);
+		box.setText(format.format(decimal));
+		box.setStyle("text-align:right;");
+		return box;
+	}
+	
 	public static final Label numberLabel(BigDecimal amout)
 	{
 		NumberFormat format = NumberFormat.getNumberInstance();

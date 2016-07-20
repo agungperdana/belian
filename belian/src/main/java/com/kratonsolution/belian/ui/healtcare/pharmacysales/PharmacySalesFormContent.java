@@ -44,6 +44,7 @@ import com.kratonsolution.belian.healtcare.dm.PharmacySalesItem;
 import com.kratonsolution.belian.healtcare.svc.PharmacySalesService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.component.MedicalSalesRow;
+import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.component.PersonBox;
 import com.kratonsolution.belian.ui.component.ProductPriceSelectionListener;
 import com.kratonsolution.belian.ui.util.Components;
@@ -87,7 +88,7 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 	
 	private Listbox currencys = Components.fullSpanSelect(sessionUtils.getCurrency());
 	
-	private Listbox organizations = Components.fullSpanSelect(sessionUtils.getOrganization());
+	private OrganizationList companys = new OrganizationList();
 	
 	private Listbox locations = Components.fullSpanSelect(sessionUtils.getLocation());
 	
@@ -172,8 +173,11 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 			saleses.setSelectedIndex(0);
 		}
 		
-		String code = generator.generate(DateTimes.currentDate(), sessionUtils.getOrganization(),Code.PHS);
-		number.setText(code);
+		if(companys.getOrganization() != null)
+		{
+			String code = generator.generate(DateTimes.currentDate(), companys.getOrganization(),Code.PHS);
+			number.setText(code);
+		}
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"85px"));
@@ -183,7 +187,7 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 		
 		Row row1 = new Row();
 		row1.appendChild(new Label("Company"));
-		row1.appendChild(organizations);
+		row1.appendChild(companys);
 		row1.appendChild(new Label("Billing"));
 		row1.appendChild(bill);
 		

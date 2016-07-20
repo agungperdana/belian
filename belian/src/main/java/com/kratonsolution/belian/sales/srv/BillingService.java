@@ -18,8 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.payment.dm.ReceiptRepository;
 import com.kratonsolution.belian.sales.dm.Billable;
 import com.kratonsolution.belian.sales.dm.BillableRepository;
+import com.kratonsolution.belian.sales.dm.PaymentApplication;
 
 /**
  * 
@@ -35,6 +37,9 @@ public class BillingService
 	
 	@Autowired
 	private CashierShiftService cashierShiftService;
+	
+	@Autowired
+	private ReceiptRepository receiptRepo;
 	
 	@Autowired
 	private SessionUtils utils;
@@ -108,15 +113,26 @@ public class BillingService
 	}
 	
 	@Secured("ROLE_BILLING_CREATE")
-	public void add(Billable module)
+	public void add(Billable billing)
 	{
-		repository.save(module);
+		repository.save(billing);
 	}
 	
 	@Secured({"ROLE_BILLING_UPDATE","ROLE_CASHIER_UPDATE"})
-	public void edit(Billable module)
+	public void edit(Billable billing)
 	{
-		repository.save(module);
+		repository.save(billing);
+	}
+	
+	@Secured({"ROLE_BILLING_UPDATE","ROLE_CASHIER_UPDATE"})
+	public void paid(Billable billing)
+	{
+		for(PaymentApplication application:billing.getReceipts())
+			receiptRepo.save(application.getReceipt());
+		
+		billing.setPaid(true);
+
+		repository.saveAndFlush(billing);
 	}
 	
 	@Secured("ROLE_BILLING_DELETE")
@@ -126,10 +142,10 @@ public class BillingService
 	}
 	
 	@Secured("ROLE_BILLING_DELETE")
-	public void delete(Billable module)
+	public void delete(Billable billing)
 	{
-		if(module != null)
-			repository.delete(module);
+		if(billing != null)
+			repository.delete(billing);
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -150,5 +166,12 @@ public class BillingService
 			return repository.findAll(utils.getOrganization().getId());
 		else
 			return repository.findAll(utils.getOrganization().getId(),key);
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured({"ROLE_BILLING_READ","ROLE_CASHIER_READ"})
+	public List<Billable> findAllUnpaid(String company,String person)
+	{
+		return repository.findAllUnpaid(company, person);
 	}
 }

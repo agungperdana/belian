@@ -3,6 +3,10 @@
  */
 package com.kratonsolution.belian.ui.component;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
+
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -13,6 +17,7 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Hbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.ui.general.person.PersonFormContent;
@@ -26,43 +31,40 @@ import lombok.Getter;
  * @email agung.dodi.perdana@gmail.com
  */
 @Getter
-public class PersonBox extends Hbox implements PersonRegistrationListener
+public class PersonBox extends Hbox implements PersonRegistrationListener,Listenable<ModelListener<Person>>
 {
+	private Language lang = Springs.get(Language.class);
+	
 	private PersonService service = Springs.get(PersonService.class);
-	
+
 	private Combobox identity = new Combobox();
-	
+
 	private A link = new A("New Person");
+
+	private Vector<ModelListener<Person>> listeners = new Vector<>();
 	
+	private Map<String,Person> maps = new HashMap<>();
+
 	public PersonBox(boolean showCreateLink)
 	{
 		setWidth("400px");
+
+		Handler handler = new Handler();
 		
-		identity.setPlaceholder("Identity Number or Name");
+		identity.setPlaceholder(lang.get("message.filter.placeholder"));
 		identity.setAutodrop(true);
 		identity.setAutocomplete(false);
 		identity.setWidth("290px");
+		identity.addEventListener(Events.ON_CHANGING, handler);
+		identity.addEventListener(Events.ON_SELECT, handler);
+		identity.addEventListener(Events.ON_BLUR, handler);
 		
 		appendChild(identity);
-		
+
 		if(showCreateLink)
 			appendChild(link);
-		
-		identity.addEventListener(Events.ON_CHANGING, new EventListener<InputEvent>()
-		{
-			@Override
-			public void onEvent(InputEvent input) throws Exception
-			{
-				identity.getChildren().clear();
-				
-				for(Person person:service.findAll(input.getValue()))
-				{
-					identity.appendItem(person.getIdentity()+" - "+person.getName());
-					identity.getAttributes().put(person.getIdentity()+" - "+person.getName(), person.getId());
-				}
-			}
-		});
-		
+
+
 		link.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
@@ -70,7 +72,7 @@ public class PersonBox extends Hbox implements PersonRegistrationListener
 			{
 				PersonFormContent content = new PersonFormContent();
 				content.addListener(PersonBox.this);
-				
+
 				PersonWindow window = PersonWindow.injectInto(getPage());
 				window.removeGrid();
 				window.appendChild(content);
@@ -78,34 +80,36 @@ public class PersonBox extends Hbox implements PersonRegistrationListener
 			}
 		});
 	}
-	
+
 	public Person getPerson()
 	{
-		if(!Strings.isNullOrEmpty(identity.getValue()))
-		{
-			if(identity.getAttributes().containsKey(identity.getValue()) && identity.getAttributes().get(identity.getValue()) != null)
-				return service.findOne(identity.getAttributes().get(identity.getValue()).toString());
-		}
-		
-		return null;
+		if(Strings.isNullOrEmpty(identity.getValue()) || !maps.containsKey(identity.getValue()))
+			throw new RuntimeException(lang.get("message.field.empty"));
+
+		return maps.get(identity.getValue());
 	}
 
 	public String getPersonId()
 	{
 		if(getPerson() != null)
 			return getPerson().getId();
-		
+
 		return null;
 	}
-	
+
 	@Override
 	public void setPerson(Person person)
 	{
 		if(person != null)
 		{
-			Comboitem item = identity.appendItem(person.getIdentity()+" - "+person.getName());
+			String key = person.getIdentity()+" - "+person.getName();
+			
+			Comboitem item = identity.appendItem(key);
 			identity.setSelectedItem(item);
 			identity.getAttributes().put(person.getIdentity()+" - "+person.getName(), person.getId());
+			
+			if(!maps.containsKey(key))
+				maps.put(key, person);
 		}
 	}
 
@@ -113,5 +117,44 @@ public class PersonBox extends Hbox implements PersonRegistrationListener
 	public void fireEvent(Person model)
 	{
 		setPerson(model);
+	}
+
+	@Override
+	public void addListener(ModelListener<Person> listener)
+	{
+		if(listener != null)
+			listeners.add(listener);
+	}
+
+	private class Handler implements EventListener<Event>
+	{
+		@Override
+		public void onEvent(Event event) throws Exception
+		{
+			if(event instanceof InputEvent)
+			{
+				InputEvent ie = (InputEvent)event;
+
+				identity.getChildren().clear();
+
+				for(Person person:service.findAll(ie.getValue()))
+				{
+					String key = person.getIdentity()+" - "+person.getName();
+					identity.appendItem(key);
+					identity.getAttributes().put(person.getIdentity()+" - "+person.getName(), person.getId());
+					
+					if(!maps.containsKey(key))
+						maps.put(key, person);
+				}
+			}
+			else
+			{
+				if(Strings.isNullOrEmpty(identity.getValue()) || !maps.containsKey(identity.getValue()))
+					throw new RuntimeException(lang.get("message.field.empty"));
+				
+				for(ModelListener<Person> listener:listeners)
+					listener.fireEvent(maps.get(identity.getValue()));
+			}
+		}
 	}
 }

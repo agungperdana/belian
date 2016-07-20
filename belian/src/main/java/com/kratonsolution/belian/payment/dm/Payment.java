@@ -68,6 +68,10 @@ public abstract class Payment implements Serializable
 	@JoinColumn(name="fk_tax")
 	protected Tax tax;
 	
+	@ManyToOne
+	@JoinColumn(name="fk_payment_type")
+	protected PaymentMethodType type;
+	
 	@Version
 	protected Long version;
 	

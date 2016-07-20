@@ -4,13 +4,15 @@
 package com.kratonsolution.belian.payment.dm;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.kratonsolution.belian.sales.dm.Billable;
+import com.kratonsolution.belian.sales.dm.PaymentApplication;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,20 +29,14 @@ import lombok.Setter;
 @Table(name="receipt")
 public class Receipt extends Payment
 {
-	@ManyToOne
-	@JoinColumn(name="fk_billable")
-	private Billable billable;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_payment_type")
-	private PaymentMethodType type;
+	@OneToMany(mappedBy="receipt",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<PaymentApplication> billings = new HashSet<>();
 	
 	public Receipt(){}
 
 	@Override
 	public BigDecimal getNetAmount()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return getAmount();
 	}
 }

@@ -15,10 +15,12 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.payment.dm.PaymentMethodType;
 import com.kratonsolution.belian.payment.dm.Receipt;
 import com.kratonsolution.belian.payment.svc.PaymentMethodTypeService;
 import com.kratonsolution.belian.sales.dm.Billable;
+import com.kratonsolution.belian.sales.dm.PaymentApplication;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -28,6 +30,8 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class MedicalReceiptRow extends Row
 {
+	private SessionUtils utils = Springs.get(SessionUtils.class);
+	
 	private PaymentMethodTypeService service = Springs.get(PaymentMethodTypeService.class);
 	
 	private Listbox types = Components.fullSpanSelect();
@@ -75,13 +79,23 @@ public class MedicalReceiptRow extends Row
 		if(billable != null)
 		{
 			Receipt receipt = new Receipt();
-			receipt.setBillable(billable);
 			receipt.setAmount(BigDecimal.valueOf(amount.doubleValue()));
+			receipt.setCurrency(billable.getCurrency());
 			receipt.setDate(DateTimes.currentDate());
-			receipt.setReference(ref.getText());
+			receipt.setNote("Cashier Event");
+			receipt.setOrganization(billable.getOrganization());
+			receipt.setReference(billable.getNumber());
+			receipt.setStaff(utils.getEmployee());
+			receipt.setTax(billable.getTax());
 			receipt.setType(service.findOne(Components.string(types)));
-		
-			billable.getReceipts().add(receipt);
+			
+			PaymentApplication application = new PaymentApplication();
+			application.setAmount(receipt.getAmount());
+			application.setBillable(billable);
+			application.setReceipt(receipt);
+			
+			receipt.getBillings().add(application);
+			billable.getReceipts().add(application);
 			
 			return true;
 		}
