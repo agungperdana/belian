@@ -58,4 +58,10 @@ public class Treatment extends Billable
 	{
 		return 0;
 	}
+
+	@Override
+	public String getName()
+	{
+		return "Medical Treatment Sales";
+	}
 }

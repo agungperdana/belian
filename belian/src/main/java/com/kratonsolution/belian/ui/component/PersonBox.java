@@ -88,10 +88,26 @@ public class PersonBox extends Hbox implements PersonRegistrationListener,Listen
 
 		return maps.get(identity.getValue());
 	}
+	
+	public Person getNullablePerson()
+	{
+		if(!Strings.isNullOrEmpty(identity.getValue()) && maps.containsKey(identity.getValue()))
+			return maps.get(identity.getValue());
+	
+		return null;
+	}
 
 	public String getPersonId()
 	{
 		if(getPerson() != null)
+			return getPerson().getId();
+
+		return null;
+	}
+	
+	public String getNullablePersonId()
+	{
+		if(getNullablePerson() != null)
 			return getPerson().getId();
 
 		return null;

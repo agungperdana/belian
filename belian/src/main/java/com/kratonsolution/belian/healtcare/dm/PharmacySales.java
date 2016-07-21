@@ -43,4 +43,10 @@ public class PharmacySales extends MedicalSales
 		else
 			return "Apotek";
 	}
+
+	@Override
+	public String getName()
+	{
+		return "Pharmacy Sales";
+	}
 }

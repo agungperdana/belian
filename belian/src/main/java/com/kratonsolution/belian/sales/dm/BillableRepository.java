@@ -85,6 +85,43 @@ public interface BillableRepository extends JpaRepository<Billable, String>
 	@Query("FROM Billable bil WHERE "
 			+ "bil.organization.id =:company "
 			+ "AND bil.customer.id =:person "
-			+ "AND bil.paid IS FALSE")
+			+ "AND bil.paid IS FALSE "
+			+ "ORDER BY bil.date ASC,bil.number ASC ")
 	public List<Billable> findAllUnpaid(@Param("company")String company,@Param("person")String person);
+	
+	@Query("FROM Billable bil WHERE "
+			+ "bil.organization.id =:company "
+			+ "AND bil.paid IS FALSE "
+			+ "ORDER BY bil.date ASC,bil.number ASC ")
+	public List<Billable> findAllUnpaid(@Param("company")String company);
+	
+	@Query("FROM Billable bil WHERE "
+			+ "bil.organization.id =:company "
+			+ "AND bil.customer.id =:person "
+			+ "AND bil.paid IS FALSE "
+			+ "AND bil.date =:date "
+			+ "ORDER BY bil.date ASC,bil.number ASC ")
+	public List<Billable> findAllDueUnpaid(@Param("company")String company,@Param("person")String person,@Param("date")Date date);
+	
+	@Query("FROM Billable bil WHERE "
+			+ "bil.organization.id =:company "
+			+ "AND bil.paid IS FALSE "
+			+ "AND bil.date =:date "
+			+ "ORDER BY bil.date ASC,bil.number ASC ")
+	public List<Billable> findAllDueUnpaid(@Param("company")String company,@Param("date")Date date);
+	
+	@Query("FROM Billable bil WHERE "
+			+ "bil.organization.id =:company "
+			+ "AND bil.customer.id =:person "
+			+ "AND bil.paid IS FALSE "
+			+ "AND bil.date < :date "
+			+ "ORDER BY bil.date ASC,bil.number ASC ")
+	public List<Billable> findAllOverDueUnpaid(@Param("company")String company,@Param("person")String person,@Param("date")Date date);
+	
+	@Query("FROM Billable bil WHERE "
+			+ "bil.organization.id =:company "
+			+ "AND bil.paid IS FALSE "
+			+ "AND bil.date < :date "
+			+ "ORDER BY bil.date ASC,bil.number ASC ")
+	public List<Billable> findAllOverDueUnpaid(@Param("company")String company,@Param("date")Date date);
 }

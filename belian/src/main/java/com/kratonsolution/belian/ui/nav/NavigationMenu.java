@@ -175,6 +175,12 @@ public class NavigationMenu extends Window
 		
 		if(modules.containsKey("ROLE_PROFIT_LOSS_READ"))
 			list.appendChild(new ProfitLossReportMenu());
+		if(modules.containsKey("ROLE_INVOICE_REPORT_READ"))
+			list.appendChild(new InvoiceReportMenu());
+		if(modules.containsKey("ROLE_INVOICE_DUEDATE_REPORT_READ"))
+			list.appendChild(new InvoiceDueReportMenu());
+		if(modules.containsKey("ROLE_INVOICE_OVERDUE_REPORT_READ"))
+			list.appendChild(new InvoiceOverDueReportMenu());
 		
 		if(!list.getChildren().isEmpty())
 		{

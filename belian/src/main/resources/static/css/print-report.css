@@ -79,7 +79,20 @@
 }
 
 @media print{
+	body { 
+		background: white; 
+	}
+	
 	#toolbar{
 		display: none;
+	}
+	
+	#outer{
+		width: 100%; margin: 0; 
+		float: none;
+		background: transparent;
+		font-family: Georgia, ‘Times New Roman’, serif;
+		font-size: 12pt;
+		color: #111;
 	}
 }

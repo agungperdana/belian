@@ -66,4 +66,10 @@ public class Laboratory extends Billable
 	{
 		return 0;
 	}
+
+	@Override
+	public String getName()
+	{
+		return "Medical Lab Sales";
+	}
 }

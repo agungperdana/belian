@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:inline='text'>
+	<meta charset="UTF-8"/>
+	<script type="text/javascript">
+    	function onprint()
+    	{
+    		window.print();
+    	}
+    </script>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/print-report.css}"/>
+</head>
+<body th:inline="text">
+	<table id='outer'>
+	<tr>
+		<td width="100%" align="center"><span id='toolbar'><img th:src="@{/icons/print.png}" onclick="onprint()"/></span></td>
+	</tr>
+	<tr>
+		<td id='comp-title'>[[${company.name}]]</td>
+	</tr>
+	<tr>
+		<td id='comp-title'>[[${title}]]</td>
+	</tr>
+	<tr>
+		<td>
+			<table id='content'>
+			<tbody>
+			<th:block th:each="map:${contents}">
+			<tr id='black-red'>
+				<td colspan="4">[[${map.company.name}]]</td>
+			</tr>
+			<tr th:each="billable:${map.incomes}">
+				<td width="10%" align="left">[[${#dates.format(billable.date,'dd/MM/yyyy')}]]</td>
+				<td align="left">[[${billable.customer.name}]] ([[${billable.number}]] - [[${billable.name}]])</td>
+				<td width="5%" align="center">[[${billable.currency.code}]]</td>
+				<td width="10%" align="right">[[${#numbers.formatDecimal(billable.billingAmount,1,'COMMA',0,'POINT')}]]</td>
+			</tr>
+			<tr>
+				<td id='black-title' colspan="3">&nbsp;</td>
+				<td id='black-total'>[[${#numbers.formatDecimal(map.netincome,1,'COMMA',0,'POINT')}]]</td>
+			</tr>
+			<tr>
+				<td colspan="4">&nbsp;</td>
+			</tr>			
+			</th:block>
+			<tr>
+				<td colspan="4">&nbsp;</td>
+			</tr>
+			<tr>
+				<td id='black-title' colspan="3">TOTAL</td>
+				<td id='black-total-blue'>[[${#numbers.formatDecimal(total,1,'COMMA',0,'POINT')}]]</td>
+			</tr>
+			</tbody>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table id='bot-content'>
+			<tr>
+				<td width="50%">&nbsp;</td>
+				<td width="50%" align="center">[[${location}]], [[${#dates.format(date,'dd/MM/yyyy')}]]</td>
+			</tr>
+			<tr><td colspan="2">&nbsp;</td></tr>
+			<tr><td colspan="2">&nbsp;</td></tr>
+			<tr>
+				<td width="50%">&nbsp;</td>
+				<td width="50%" align="center">([[${staff.name}]])</td>
+			</tr>
+			</table>
+		</td>	
+	</tr>
+	</table>
+</body>
+</html>

@@ -48,4 +48,10 @@ public class Medication extends MedicalSales
 		else
 			return "Clinic Medication";
 	}
+
+	@Override
+	public String getName()
+	{
+		return "Medication Sales";
+	}
 }

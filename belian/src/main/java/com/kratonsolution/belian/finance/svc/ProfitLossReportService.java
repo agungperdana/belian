@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,6 +56,7 @@ public class ProfitLossReportService
 	@Autowired
 	private SessionUtils utils;
 
+	@Secured({"ROLE_PROFIT_LOSS_READ"})
 	public Map<String,Object> generate(String period,String company)
 	{
 		Map<String,Object> map = new HashMap<>();

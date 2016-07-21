@@ -70,4 +70,10 @@ public class CashSales extends Billable
 	{
 		return this.table;
 	}
+
+	@Override
+	public String getName()
+	{
+		return "Cash Sales";
+	}
 }
