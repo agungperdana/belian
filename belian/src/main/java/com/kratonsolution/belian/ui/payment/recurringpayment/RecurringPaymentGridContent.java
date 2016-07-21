@@ -16,9 +16,8 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.payment.svc.ReceiptService;
+import com.kratonsolution.belian.payment.svc.RecurringPaymentService;
 import com.kratonsolution.belian.ui.GridContent;
-import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -26,11 +25,11 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class ReceiptGridContent extends GridContent
+public class RecurringPaymentGridContent extends GridContent
 {
-	private ReceiptService service = Springs.get(ReceiptService.class);
+	private RecurringPaymentService service = Springs.get(RecurringPaymentService.class);
 	
-	public ReceiptGridContent()
+	public RecurringPaymentGridContent()
 	{
 		super();
 		initToolbar();
@@ -39,13 +38,14 @@ public class ReceiptGridContent extends GridContent
 	
 	protected void initToolbar()
 	{
-		appendChild(gridToolbar);
+		gridToolbar.setParent(this);
 		gridToolbar.getRefresh().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Flow.next(getParent(), new ReceiptGridContent());
+				grid.getPagingChild().setActivePage(0);
+				refresh(new RecurringPaymentModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -54,7 +54,9 @@ public class ReceiptGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Flow.next(getParent(), new ReceiptFormContent());
+				RecurringPaymentWindow window = (RecurringPaymentWindow)getParent();
+				window.removeGrid();
+				window.insertCreateForm();
 			}
 		});
 		
@@ -128,7 +130,7 @@ public class ReceiptGridContent extends GridContent
 								}
 							}
 							
-							refresh(new ReceiptModel(utils.getRowPerPage()));
+							refresh(new RecurringPaymentModel(utils.getRowPerPage()));
 						}
 					}
 				});
@@ -153,28 +155,28 @@ public class ReceiptGridContent extends GridContent
 			@Override
 			public void onEvent(InputEvent input) throws Exception
 			{
-				refresh(new ReceiptModel(utils.getRowPerPage(), input.getValue()));
+				refresh(new RecurringPaymentModel(utils.getRowPerPage(), input.getValue()));
 			}
 		});
 		
 		appendChild(filter);
 		appendChild(grid);
 		
-		final ReceiptModel model = new ReceiptModel(utils.getRowPerPage());
+		final RecurringPaymentModel model = new RecurringPaymentModel(utils.getRowPerPage());
 		
 		grid.setHeight("80%");
 		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
-		grid.setRowRenderer(new ReceiptRowRenderer());
+		grid.setRowRenderer(new RecurringPaymentRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column(lang.get("receipt.grid.column.date"),null,"85px"));
-		grid.getColumns().appendChild(new Column(lang.get("receipt.grid.column.type"),null,"150px"));
-		grid.getColumns().appendChild(new Column(lang.get("receipt.grid.column.amount"),null,"110px"));
-		grid.getColumns().appendChild(new Column(lang.get("receipt.grid.column.note"),null,"90px"));
+		grid.getColumns().appendChild(new Column(lang.get("recurringpayment.grid.column.date"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("recurringpayment.grid.column.name"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("recurringpayment.grid.column.amount"),null,"110px"));
+		grid.getColumns().appendChild(new Column(lang.get("recurringpayment.grid.column.note"),null,"90px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
 		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("4");
@@ -191,6 +193,6 @@ public class ReceiptGridContent extends GridContent
 			}
 		});
 		
-		refresh(new ReceiptModel(utils.getRowPerPage()));
+		refresh(new RecurringPaymentModel(utils.getRowPerPage()));
 	}
 }

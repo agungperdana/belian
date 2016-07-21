@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.payment.recurringpayment;
+package com.kratonsolution.belian.ui.payment.receipt;
 
 import org.zkoss.zul.Toolbarbutton;
 

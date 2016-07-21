@@ -22,22 +22,22 @@ import com.kratonsolution.belian.ui.nav.IconBar;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class RecurringPaymentWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
+public class ReceiptWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private Caption caption = new Caption(lang.get("navbar.menu.payment.recurringpayment"));
+	private Caption caption = new Caption(lang.get("navbar.menu.payment.receipt"));
 	
-	private RecurringPaymentButton status = new RecurringPaymentButton();
+	private ReceiptButton status = new ReceiptButton();
 	
-	public static RecurringPaymentWindow injectInto(Page page)
+	public static ReceiptWindow injectInto(Page page)
 	{
-		RecurringPaymentWindow window = new RecurringPaymentWindow();
+		ReceiptWindow window = new ReceiptWindow();
 		window.setPage(page);
 		window.init();
 		
 		return window;
 	}
 	
-	private RecurringPaymentWindow()
+	private ReceiptWindow()
 	{
 		super();
 		setWidth("650px");
@@ -46,7 +46,7 @@ public class RecurringPaymentWindow extends AbstractWindow implements HasGrid,Ha
 	
 	protected void init()
 	{
-		caption.setImage("/icons/recurringpayment.png");
+		caption.setImage("/icons/receipt.png");
 		appendChild(caption);
 		insertGrid();
 		insertStatus();
@@ -94,7 +94,7 @@ public class RecurringPaymentWindow extends AbstractWindow implements HasGrid,Ha
 	@Override
 	public void insertEditForm(Row row)
 	{
-		appendChild(new RecurringPaymentEditContent(row));
+		appendChild(new ReceiptEditContent(row));
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class RecurringPaymentWindow extends AbstractWindow implements HasGrid,Ha
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof RecurringPaymentEditContent)
+			if(component instanceof ReceiptEditContent)
 			{
 				removeChild(component);
 				break;
@@ -113,7 +113,7 @@ public class RecurringPaymentWindow extends AbstractWindow implements HasGrid,Ha
 	@Override
 	public void insertCreateForm()
 	{
-		appendChild(new RecurringPaymentFormContent());
+		appendChild(new ReceiptFormContent());
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class RecurringPaymentWindow extends AbstractWindow implements HasGrid,Ha
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof RecurringPaymentFormContent)
+			if(component instanceof ReceiptFormContent)
 			{
 				removeChild(component);
 				break;
@@ -132,7 +132,7 @@ public class RecurringPaymentWindow extends AbstractWindow implements HasGrid,Ha
 	@Override
 	public void insertGrid()
 	{
-		appendChild(new RecurringPaymentGridContent());
+		appendChild(new ReceiptGridContent());
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class RecurringPaymentWindow extends AbstractWindow implements HasGrid,Ha
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof RecurringPaymentGridContent)
+			if(component instanceof ReceiptGridContent)
 			{
 				removeChild(component);
 				break;
