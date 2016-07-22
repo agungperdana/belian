@@ -67,37 +67,6 @@ public class Employment extends PartyRelationship implements Listable
 		return employee.getParty().getValue();
 	}
 	
-	public BigDecimal getGross(Date date,Date start,Date end)
-	{
-		BigDecimal salary = BigDecimal.ZERO;
-		BigDecimal gross = BigDecimal.ZERO;
-		
-		for(PayHistory history:salarys)
-		{
-			if(DateTimes.inRange(date,history.getStart(),history.getEnd()))
-			{
-				salary = history.getAmount();
-				break;
-			}
-		}
-		
-		for(Timesheet timesheet:employee.getTimesheet())
-		{
-			if(timesheet.getStart().equals(start) && timesheet.getEnd().equals(end))
-			{
-				for(TimeEntry entry:timesheet.getTimeEntrys())
-					gross = gross.add(entry.getHour().multiply(salary));
-
-				break;
-			}
-		}
-		
-		for(Benefit benefit:benefits)
-			gross = gross.add(benefit.getCost().multiply(benefit.getEmployerPaid()).divide(BigDecimal.valueOf(100)));
-		
-		return gross;
-	}
-	
 	public BigDecimal getRate(Date date)
 	{
 		BigDecimal salary = BigDecimal.ZERO;

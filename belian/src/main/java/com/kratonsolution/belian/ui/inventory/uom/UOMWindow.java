@@ -18,12 +18,13 @@ import com.kratonsolution.belian.ui.HasGrid;
 import com.kratonsolution.belian.ui.nav.IconBar;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class UOMWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption("Unit of Measure");
+	private final Caption caption = new Caption(lang.get("navbar.menu.inventory.uom"));
 	
 	private UOMButton status = new UOMButton();
 	

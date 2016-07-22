@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.inventory.svc;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.kratonsolution.belian.inventory.dm.UOMFactor;
 import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
 import com.kratonsolution.belian.inventory.dm.UnitOfMeasureRepository;
 
@@ -60,8 +62,12 @@ public class UnitOfMeasureService
 	}
 	
 	@Secured("ROLE_UOM_UPDATE")
-	public void edit(UnitOfMeasure uom)
+	public void edit(UnitOfMeasure uom,Collection<UOMFactor> factors)
 	{
+		uom.getFactors().clear();
+		repository.saveAndFlush(uom);
+		
+		uom.getFactors().addAll(factors);
 		repository.saveAndFlush(uom);
 	}
 	

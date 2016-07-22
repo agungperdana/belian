@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.hr.svc;
 
+import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -19,7 +21,9 @@ import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.dm.CurrencyRepository;
 import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.accounting.dm.TaxRepository;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.education.dm.TimeEntryRepository;
 import com.kratonsolution.belian.general.dm.InternalOrganization;
 import com.kratonsolution.belian.general.dm.InternalOrganizationRepository;
 import com.kratonsolution.belian.global.dm.UserSetting;
@@ -30,6 +34,11 @@ import com.kratonsolution.belian.hr.dm.Employment;
 import com.kratonsolution.belian.hr.dm.EmploymentRepository;
 import com.kratonsolution.belian.hr.dm.PayHistory;
 import com.kratonsolution.belian.hr.dm.PayrollPreference;
+import com.kratonsolution.belian.inventory.dm.UOMFactor;
+import com.kratonsolution.belian.inventory.dm.UOMFactorRepository;
+import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
+import com.kratonsolution.belian.inventory.dm.UnitOfMeasureRepository;
+import com.kratonsolution.belian.production.dm.TimeEntry;
 import com.kratonsolution.belian.security.dm.Role;
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.security.dm.UserRole;
@@ -44,6 +53,12 @@ import com.kratonsolution.belian.security.svc.RoleService;
 @Transactional(rollbackFor=Exception.class)
 public class EmploymentService
 {
+	@Autowired
+	private UOMFactorRepository factorRepo;
+
+	@Autowired
+	private UnitOfMeasureRepository measureRepo;
+	
 	@Autowired
 	private EmploymentRepository repository;
 	
@@ -64,6 +79,9 @@ public class EmploymentService
 	
 	@Autowired
 	private RoleService roleService;
+
+	@Autowired
+	private TimeEntryRepository timeEntryRepo;
 	
 	@Autowired
 	private SessionUtils utils;
@@ -207,5 +225,50 @@ public class EmploymentService
 			return repository.findAll(new PageRequest(pageIndex, itemsSize),utils.getOrganization().getId());
 		else
 			return new ArrayList<>();
+	}
+	
+	public BigDecimal getGross(Employment employment,Date date,Date start,Date end)
+	{
+		UnitOfMeasure hour = measureRepo.findOneByName("Hour");
+		if(hour == null)
+			throw new RuntimeException("Unit of Measure (Hour) doesnot exist or with deference name,please provide or change it first to (Hour).");
+		
+		BigDecimal salary = BigDecimal.ZERO;
+		BigDecimal gross = BigDecimal.ZERO;
+		
+		for(PayHistory history:employment.getSalarys())
+		{
+			if(DateTimes.inRange(date,history.getStart(),history.getEnd()))
+			{
+				//check if this pay history in smallest uom (hour)
+				if(history.getUom().getId().equals(hour.getId()))
+					salary = history.getAmount();
+				else
+				{
+					//uom of pay history not in smallest value,find multiplying factor to hour.
+					for(UOMFactor factor:history.getUom().getFactors())
+					{
+						if(factor.getTo().getId().equals(hour.getId()))
+						{
+							salary = history.getAmount().divide(factor.getFactor());
+							break;
+						}
+					}
+				}
+				
+				if(salary.compareTo(BigDecimal.ZERO) == 0)
+					throw new RuntimeException("Salary/unit of measure not defined correctly.");
+				
+				break;
+			}
+		}
+		
+		for(TimeEntry entry:timeEntryRepo.findAllUnpaid(employment.getEmployee().getParty().getId(), start, end))
+			gross = gross.add(entry.getHour().multiply(salary));
+		
+		for(Benefit benefit:employment.getBenefits())
+			gross = gross.add(benefit.getCost().multiply(benefit.getEmployerPaid()).divide(BigDecimal.valueOf(100)));
+		
+		return gross;
 	}
 }

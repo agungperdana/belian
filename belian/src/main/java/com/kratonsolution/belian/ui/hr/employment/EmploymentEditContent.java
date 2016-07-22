@@ -37,6 +37,8 @@ import com.kratonsolution.belian.hr.dm.PayrollPreference;
 import com.kratonsolution.belian.hr.svc.BenefitTypeService;
 import com.kratonsolution.belian.hr.svc.EmploymentApplicationService;
 import com.kratonsolution.belian.hr.svc.EmploymentService;
+import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
+import com.kratonsolution.belian.inventory.svc.UnitOfMeasureService;
 import com.kratonsolution.belian.payment.svc.PaymentMethodTypeService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
@@ -54,6 +56,8 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class EmploymentEditContent extends FormContent
 {	
+	private UnitOfMeasureService measureService = Springs.get(UnitOfMeasureService.class);
+	
 	private EmploymentService service = Springs.get(EmploymentService.class);
 	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
@@ -135,7 +139,7 @@ public class EmploymentEditContent extends FormContent
 						history.setEmployment(employment);
 						history.setStart(RowUtils.sql(row, 1));
 						history.setEnd(RowUtils.sql(row, 2));
-						history.setPeriodType(PeriodType.valueOf(RowUtils.string(row, 4)));
+						history.setUom(measureService.findOne(RowUtils.string(row, 4)));
 						
 						vector.add(history);
 					}
@@ -253,9 +257,9 @@ public class EmploymentEditContent extends FormContent
 		salarys.appendChild(new Rows());
 		salarys.setEmptyMessage(lang.get("message.grid.empty"));
 		salarys.getColumns().appendChild(new Column(null,null,"25px"));
-		salarys.getColumns().appendChild(new Column(lang.get("employment.grid.column.start"),null,"110px"));
-		salarys.getColumns().appendChild(new Column(lang.get("employment.grid.column.end"),null,"110px"));
-		salarys.getColumns().appendChild(new Column(lang.get("employment.grid.column.amount"),null,"110px"));
+		salarys.getColumns().appendChild(new Column(lang.get("employment.grid.column.start"),null,"120px"));
+		salarys.getColumns().appendChild(new Column(lang.get("employment.grid.column.end"),null,"120px"));
+		salarys.getColumns().appendChild(new Column(lang.get("employment.grid.column.amount"),null,"120px"));
 		salarys.getColumns().appendChild(new Column(lang.get("employment.grid.column.period"),null,"110px"));
 		salarys.getColumns().appendChild(new Column());
 		salarys.getColumns().getLastChild().setVisible(false);
@@ -266,12 +270,13 @@ public class EmploymentEditContent extends FormContent
 		{
 			for(PayHistory history:employment.getSalarys())
 			{
-				Listbox periods = Components.fullSpanSelect();
-				for(PeriodType type:PeriodType.values())
+				Listbox measures = Components.fullSpanSelect();
+				
+				for(UnitOfMeasure measure:measureService.findAll())
 				{
-					Listitem item = periods.appendItem(type.display(), type.name());
-					if(history.getPeriodType().equals(type))
-						periods.setSelectedItem(item);
+					Listitem listitem = measures.appendItem(measure.getLabel(), measure.getValue());
+					if(measure.getId().equals(history.getUom().getId()))
+						measures.setSelectedItem(listitem);
 				}
 				
 				Row row = new Row();
@@ -279,7 +284,7 @@ public class EmploymentEditContent extends FormContent
 				row.appendChild(Components.mandatoryDatebox(history.getStart()));
 				row.appendChild(Components.fullSpanDatebox(history.getEnd()));
 				row.appendChild(Components.doubleBox(history.getAmount().doubleValue()));
-				row.appendChild(periods);
+				row.appendChild(measures);
 				row.appendChild(Components.label(history.getId()));
 				
 				salarys.getRows().appendChild(row);
@@ -291,16 +296,12 @@ public class EmploymentEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Listbox periods = Components.fullSpanSelect();
-				for(PeriodType type:PeriodType.values())
-					periods.setSelectedItem(periods.appendItem(type.display(), type.name()));
-				
 				Row row = new Row();
 				row.appendChild(Components.checkbox(false));
 				row.appendChild(Components.mandatoryDatebox());
 				row.appendChild(Components.fullSpanDatebox(null));
 				row.appendChild(Components.doubleBox(0));
-				row.appendChild(periods);
+				row.appendChild(Components.fullSpanSelect(measureService.findAll(),true));
 				row.appendChild(Components.label(UUID.randomUUID().toString()));
 				
 				salarys.getRows().appendChild(row);

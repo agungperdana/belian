@@ -110,7 +110,7 @@ public class UOMGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.field.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -153,32 +153,23 @@ public class UOMGridContent extends GridContent
 	{
 		final UOMModel model = new UOMModel(utils.getRowPerPage());
 		
+		appendChild(grid);
+		
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No tax data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new UOMRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(utils.getRowPerPage());
-		
-		appendChild(grid);
-		
-		Columns columns = new Columns();
-		
-		Column select = new Column(null,null,"25px");
-		Column code = new Column("Code",null,"100px");
-		Column name = new Column("Name",null,"150px");
-		Column note = new Column("Note");
-		Column id = new Column();
-		id.setVisible(false);
-		
-		columns.appendChild(select);
-		columns.appendChild(code);
-		columns.appendChild(name);
-		columns.appendChild(note);
-		columns.appendChild(id);
-		
-		grid.appendChild(columns);
+		grid.appendChild(new Columns());
+		grid.getColumns().appendChild(new Column(null,null,"25px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.code"),null,"100px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.name"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.note"),null,"150px"));
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().getLastChild().setVisible(false);
+		grid.setSpan("2");
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override

@@ -15,7 +15,7 @@ public class UOMButton extends Toolbarbutton
 	public UOMButton()
 	{
 		setImage("/icons/measure.png");
-		setTooltip("Unit of Measure Management");
+		setTooltiptext("Unit of Measure Management");
 		setHeight("38px");
 	}
 }

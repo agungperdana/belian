@@ -11,8 +11,9 @@ import org.zkoss.zul.RowRenderer;
 import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class UOMRowRenderer implements RowRenderer<UnitOfMeasure>
 {

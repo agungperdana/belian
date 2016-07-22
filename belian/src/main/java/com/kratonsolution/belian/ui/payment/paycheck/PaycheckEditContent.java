@@ -26,6 +26,7 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.hr.svc.EmploymentService;
 import com.kratonsolution.belian.payment.dm.Deduction;
 import com.kratonsolution.belian.payment.dm.Paycheck;
 import com.kratonsolution.belian.payment.dm.PaycheckItem;
@@ -52,6 +53,8 @@ public class PaycheckEditContent extends FormContent
 
 	private DeductionTypeService typeService = Springs.get(DeductionTypeService.class);
 
+	private EmploymentService employmentService = Springs.get(EmploymentService.class);
+	
 	private OrganizationList companys = new OrganizationList();
 
 	private Datebox date = Components.currentDatebox();
@@ -138,7 +141,7 @@ public class PaycheckEditContent extends FormContent
 			employees.setText(paycheck.getEmployment().getLabel());
 			note.setText(paycheck.getNote());
 			
-			this.gross = paycheck.getEmployment().getGross(paycheck.getDate(), paycheck.getStart(), paycheck.getEnd());
+			this.gross = employmentService.getGross(paycheck.getEmployment(),paycheck.getDate(), paycheck.getStart(), paycheck.getEnd());
 			
 			sGross.setText(Numbers.format(this.gross));
 			sDeduct.setText(Numbers.format(paycheck.getDeductionAmount()));

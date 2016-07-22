@@ -36,6 +36,9 @@ public class TimeEntry implements Serializable
 	@Id
 	protected String id = UUID.randomUUID().toString();
 
+	@Column(name="is_paid")
+	protected boolean paid;
+	
 	@Column(name="date")
 	protected Date date;
 

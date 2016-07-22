@@ -36,6 +36,9 @@ public class Timesheet implements Serializable
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
+	@Column(name="is_paid")
+	private boolean paid;
+	
 	@Column(name="start")
 	private Date start;
 	

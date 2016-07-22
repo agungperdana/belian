@@ -10,15 +10,16 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.accounting.dm.PeriodType;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
+import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -45,9 +46,10 @@ public class PayHistory implements Serializable
 	@Column(name="amount")
 	private BigDecimal amount = BigDecimal.ZERO;
 	
-	@Enumerated(EnumType.STRING)
-	@Column(name="period_type")
-	private PeriodType periodType = PeriodType.Monthly;
+	@ManyToOne
+	@JoinColumn(name="fk_uom")
+	@NotFound(action=NotFoundAction.IGNORE)
+	private UnitOfMeasure uom;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_employment")

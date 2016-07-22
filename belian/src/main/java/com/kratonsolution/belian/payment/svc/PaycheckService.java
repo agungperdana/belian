@@ -15,8 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.education.dm.TimeEntryRepository;
 import com.kratonsolution.belian.payment.dm.Paycheck;
 import com.kratonsolution.belian.payment.dm.PaycheckRepository;
+import com.kratonsolution.belian.production.dm.TimeEntry;
 
 /**
  * 
@@ -32,6 +34,9 @@ public class PaycheckService
 	
 	@Autowired
 	private PaycheckRepository repository;
+	
+	@Autowired
+	private TimeEntryRepository timeEntryRepo;
 		
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PAYCHECK_READ")
@@ -94,6 +99,12 @@ public class PaycheckService
 	public void add(Paycheck check)
 	{
 		repository.save(check);
+		
+		for(TimeEntry entry:timeEntryRepo.findAllUnpaid(check.getEmployment().getEmployee().getId(), check.getStart(), check.getEnd()))
+		{
+			entry.setPaid(true);
+			timeEntryRepo.saveAndFlush(entry);
+		}
 	}
 	
 	@Secured("ROLE_PAYCHECK_UPDATE")

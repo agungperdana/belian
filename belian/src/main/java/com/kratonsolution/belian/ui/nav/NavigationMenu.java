@@ -17,6 +17,9 @@ import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.IndustrySegmentation;
+import com.kratonsolution.belian.global.dm.ERPMode;
+import com.kratonsolution.belian.global.dm.ERPModeRepository;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -47,7 +50,15 @@ public class NavigationMenu extends Window
 		Map<String,Boolean> modules = utils.getAccessibleModules();
 		
 		init();
-			
+		
+		ERPModeRepository repository = Springs.get(ERPModeRepository.class);
+		ERPMode mode = repository.findOne("00000");
+		if(mode == null)
+		{
+			mode = new ERPMode();
+			mode.setSegmentation(IndustrySegmentation.GENERAL);
+		}
+		
 		initGeneral(modules);
 		initSecurity(modules);
 		initAccounting(modules);
@@ -58,10 +69,18 @@ public class NavigationMenu extends Window
 		initHR(modules);
 		initProcurement(modules);
 		initSales(modules);
-		initPharmacy(modules);
-		initClinic(modules);
-		initMedicalLab(modules);
-		initEducation(modules);
+
+		if(mode.getSegmentation().equals(IndustrySegmentation.MEDICAL) || mode.getSegmentation().equals(IndustrySegmentation.GENERAL))
+		{
+			initPharmacy(modules);
+			initClinic(modules);
+			initMedicalLab(modules);
+		}
+		
+		if(mode.getSegmentation().equals(IndustrySegmentation.EDUCATION) || mode.getSegmentation().equals(IndustrySegmentation.GENERAL))
+		{
+			initEducation(modules);
+		}
 	}
 
 	protected void init()

@@ -28,6 +28,7 @@ import org.zkoss.zul.Textbox;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.hr.dm.Employment;
 import com.kratonsolution.belian.hr.dm.PayrollPreference;
+import com.kratonsolution.belian.hr.svc.EmploymentService;
 import com.kratonsolution.belian.payment.dm.Deduction;
 import com.kratonsolution.belian.payment.dm.Paycheck;
 import com.kratonsolution.belian.payment.dm.PaycheckItem;
@@ -54,6 +55,8 @@ public class PaycheckFormContent extends FormContent implements ModelListener<Em
 	private PaycheckService service = Springs.get(PaycheckService.class);
 	
 	private DeductionTypeService typeService = Springs.get(DeductionTypeService.class);
+	
+	private EmploymentService employmentService = Springs.get(EmploymentService.class);
 	
 	private OrganizationList companys = new OrganizationList();
 	
@@ -279,7 +282,7 @@ public class PaycheckFormContent extends FormContent implements ModelListener<Em
 	@Override
 	public void fireEvent(Employment model)
 	{
-		this.gross = model.getGross(DateTimes.sql(date.getValue()), DateTimes.sql(start.getValue()), DateTimes.sql(end.getValue()));
+		this.gross = employmentService.getGross(model,DateTimes.sql(date.getValue()), DateTimes.sql(start.getValue()), DateTimes.sql(end.getValue()));
 		
 		preferences.getRows().getChildren().clear();
 		for(PayrollPreference preference:model.getPreferences())
