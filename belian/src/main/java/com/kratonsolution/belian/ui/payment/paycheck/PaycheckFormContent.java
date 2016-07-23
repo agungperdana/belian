@@ -10,6 +10,7 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.InputEvent;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
@@ -282,7 +283,15 @@ public class PaycheckFormContent extends FormContent implements ModelListener<Em
 	@Override
 	public void fireEvent(Employment model)
 	{
-		this.gross = employmentService.getGross(model,DateTimes.sql(date.getValue()), DateTimes.sql(start.getValue()), DateTimes.sql(end.getValue()));
+		try
+		{
+			this.gross = employmentService.getGross(model,DateTimes.sql(date.getValue()), DateTimes.sql(start.getValue()), DateTimes.sql(end.getValue()));
+		}
+		catch (Exception e)
+		{
+			Clients.showNotification(e.getMessage());
+			return;
+		}
 		
 		preferences.getRows().getChildren().clear();
 		for(PayrollPreference preference:model.getPreferences())

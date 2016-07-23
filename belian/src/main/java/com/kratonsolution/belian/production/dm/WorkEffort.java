@@ -61,7 +61,7 @@ public abstract class WorkEffort implements Serializable
 
 	@ManyToOne
 	@JoinColumn(name="fk_person")
-	protected Person person;
+	protected Person worker;
 	
 	@Version
 	protected Long version;

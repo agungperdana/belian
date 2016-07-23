@@ -504,11 +504,14 @@ public class Components implements Serializable
 	
 	public static final Datebox mandatoryDatebox(Date date)
 	{
-		Datebox datebox = new Datebox(date);
+		Datebox datebox = new Datebox();
 		datebox.setWidth("100%");
 		datebox.setConstraint("no empty");
 		datebox.setFormat("dd/MM/yyyy");
 		
+		if(date != null)
+			datebox.setValue(date);
+			
 		return datebox;
 	}
 	
@@ -518,7 +521,9 @@ public class Components implements Serializable
 		time.setWidth("100%");
 		time.setConstraint("no empty");
 		time.setFormat("HH:mm");
-		time.setValue(tm);
+		
+		if(tm != null)
+			time.setValue(tm);
 		
 		return time;
 	}

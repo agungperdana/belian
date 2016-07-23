@@ -69,6 +69,7 @@ public class NavigationMenu extends Window
 		initHR(modules);
 		initProcurement(modules);
 		initSales(modules);
+		initProductions(modules);
 
 		if(mode.getSegmentation().equals(IndustrySegmentation.MEDICAL) || mode.getSegmentation().equals(IndustrySegmentation.GENERAL))
 		{
@@ -269,6 +270,24 @@ public class NavigationMenu extends Window
 		if(!list.getChildren().isEmpty())
 		{
 			tabs.appendChild(new Tab(language.get("navbar.menu.sales")));
+			Tabpanel panel = new Tabpanel();
+			panel.setStyle("overflow:auto");
+			panel.appendChild(list);
+			panels.appendChild(panel);
+		}
+	}
+	
+	protected void initProductions(Map<String,Boolean> modules)
+	{
+		Listbox list = new Listbox();
+		list.setStyle("border:none");
+		
+		if(modules.containsKey("ROLE_WORKING_TIMESHEET_READ"))
+			list.appendChild(new WorkingTimesheetMenu());
+		
+		if(!list.getChildren().isEmpty())
+		{
+			tabs.appendChild(new Tab(language.get("navbar.menu.production")));
 			Tabpanel panel = new Tabpanel();
 			panel.setStyle("overflow:auto");
 			panel.appendChild(list);

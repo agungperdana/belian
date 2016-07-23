@@ -156,7 +156,7 @@ public class CourseAttendanceFormContent extends FormContent
 						builder.append("["+DateTimes.format(schedule.getStart())+"-"+DateTimes.format(schedule.getEnd())+"] ");
 						builder.append(schedule.getDay()+"-");
 						builder.append(schedule.getProduct().getName()+"-");
-						builder.append(schedule.getPerson().getName());
+						builder.append(schedule.getWorker().getName());
 
 						schedules.appendItem(builder.toString(), schedule.getId());
 					}
@@ -230,7 +230,7 @@ public class CourseAttendanceFormContent extends FormContent
 				Row row = new Row();
 
 				Listbox person = Components.fullSpanSelect();
-				person.setSelectedItem(person.appendItem(schedule.getPerson().getName()+" [Mentor]",schedule.getPerson().getId()));
+				person.setSelectedItem(person.appendItem(schedule.getWorker().getName()+" [Mentor]",schedule.getWorker().getId()));
 				person.setStyle("font-weight:bold;color:blue;");
 				
 				row.appendChild(person);

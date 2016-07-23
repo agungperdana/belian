@@ -165,7 +165,7 @@ public class StudyRoomEditContent extends FormContent
 						crs.setEnd(RowUtils.time(row, 3));
 						crs.setProduct(productService.findOne(RowUtils.string(row, 4)));
 						crs.setRequirement(room);
-						crs.setPerson(personService.findOne(RowUtils.string(row, 5)));
+						crs.setWorker(personService.findOne(RowUtils.string(row, 5)));
 						
 						scd.add(crs);
 					}
@@ -334,7 +334,7 @@ public class StudyRoomEditContent extends FormContent
 				row.appendChild(Components.fullspanTimebox(schedule.getStart()));
 				row.appendChild(Components.fullspanTimebox(schedule.getEnd()));
 				row.appendChild(Components.fullSpanSelect(rm.getCourse().getComponents(),schedule.getProduct()));
-				row.appendChild(Components.fullSpanSelect(schedule.getPerson()));
+				row.appendChild(Components.fullSpanSelect(schedule.getWorker()));
 				row.appendChild(Components.label(schedule.getId()));
 			
 				schedules.getRows().appendChild(row);

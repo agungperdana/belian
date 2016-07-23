@@ -1,11 +1,12 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.payment.paycheck;
+package com.kratonsolution.belian.ui.production.workingtimesheet;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
@@ -15,9 +16,8 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.payment.svc.PaycheckService;
+import com.kratonsolution.belian.production.svc.WorkingTimesheetService;
 import com.kratonsolution.belian.ui.GridContent;
-import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -25,11 +25,11 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class PaycheckGridContent extends GridContent
+public class WorkingTimesheetGridContent extends GridContent
 {
-	private PaycheckService service = Springs.get(PaycheckService.class);
+	private WorkingTimesheetService service = Springs.get(WorkingTimesheetService.class);
 	
-	public PaycheckGridContent()
+	public WorkingTimesheetGridContent()
 	{
 		super();
 		initToolbar();
@@ -44,7 +44,8 @@ public class PaycheckGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Flow.next(getParent(), new PaycheckGridContent());
+				grid.getPagingChild().setActivePage(0);
+				refresh(new WorkingTimesheetModel(utils.getRowPerPage()));
 			}
 		});
 		
@@ -53,7 +54,9 @@ public class PaycheckGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Flow.next(getParent(), new PaycheckFormContent());
+				WorkingTimesheetWindow window = (WorkingTimesheetWindow)getParent();
+				window.removeGrid();
+				window.insertCreateForm();
 			}
 		});
 		
@@ -105,38 +108,32 @@ public class PaycheckGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				try
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
-					Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+					@Override
+					public void onEvent(Event event) throws Exception
 					{
-						@Override
-						public void onEvent(Event event) throws Exception
+						if(event.getName().equals("onOK"))
 						{
-							if(event.getName().equals("onOK"))
+							for(Object object:grid.getRows().getChildren())
 							{
-								for(Object object:grid.getRows().getChildren())
+								Row row = (Row)object;
+								
+								if(row.getFirstChild() instanceof Checkbox)
 								{
-									Row row = (Row)object;
-									
-									if(row.getFirstChild() instanceof Checkbox)
+									Checkbox check = (Checkbox)row.getFirstChild();
+									if(check.isChecked())
 									{
-										Checkbox check = (Checkbox)row.getFirstChild();
-										if(check.isChecked())
-										{
-											Label label = (Label)row.getLastChild();
-											service.delete(label.getValue());
-										}
+										Label label = (Label)row.getLastChild();
+										service.delete(label.getValue());
 									}
 								}
-								
-								refresh(new PaycheckModel(utils.getRowPerPage()));
 							}
+							
+							refresh(new WorkingTimesheetModel(utils.getRowPerPage()));
 						}
-					});
-				} catch (Exception e)
-				{
-					e.printStackTrace();
-				}
+					}
+				});
 			}
 		});
 		
@@ -153,29 +150,37 @@ public class PaycheckGridContent extends GridContent
 	protected void initGrid()
 	{
 		filter.setPlaceholder(lang.get("message.filter.placeholder"));
+		filter.addEventListener(Events.ON_CHANGING, new EventListener<InputEvent>()
+		{
+			@Override
+			public void onEvent(InputEvent input) throws Exception
+			{
+				refresh(new WorkingTimesheetModel(utils.getRowPerPage(), input.getValue()));
+			}
+		});
 		
 		appendChild(filter);
 		appendChild(grid);
 		
-		final PaycheckModel model = new PaycheckModel(utils.getRowPerPage());
+		final WorkingTimesheetModel model = new WorkingTimesheetModel(utils.getRowPerPage());
 		
+		grid.setHeight("80%");
 		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
-		grid.setRowRenderer(new PaycheckRowRenderer());
+		grid.setRowRenderer(new WorkingTimesheetRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column(lang.get("paycheck.grid.column.date"),null,"85px"));
-		grid.getColumns().appendChild(new Column(lang.get("paycheck.grid.column.start"),null,"85px"));
-		grid.getColumns().appendChild(new Column(lang.get("paycheck.grid.column.end"),null,"85px"));
-		grid.getColumns().appendChild(new Column(lang.get("paycheck.grid.column.employee"),null,"85px"));
-		grid.getColumns().appendChild(new Column(lang.get("paycheck.grid.column.net"),null,"110px"));
+		grid.getColumns().appendChild(new Column(lang.get("workingtimesheet.grid.column.start"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("workingtimesheet.grid.column.end"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("workingtimesheet.grid.column.employee"),null,"110px"));
 		grid.getColumns().appendChild(new Column());
 		grid.getColumns().getLastChild().setVisible(false);
-		grid.setSpan("4");
-		
+		grid.setSpan("3");
+		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
+
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override
@@ -187,6 +192,6 @@ public class PaycheckGridContent extends GridContent
 			}
 		});
 		
-		refresh(new PaycheckModel(utils.getRowPerPage()));
+		refresh(new WorkingTimesheetModel(utils.getRowPerPage()));
 	}
 }

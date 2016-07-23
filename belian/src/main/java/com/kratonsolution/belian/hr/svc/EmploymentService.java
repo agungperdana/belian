@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.hr.svc;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,7 +24,6 @@ import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.accounting.dm.TaxRepository;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.education.dm.TimeEntryRepository;
 import com.kratonsolution.belian.general.dm.InternalOrganization;
 import com.kratonsolution.belian.general.dm.InternalOrganizationRepository;
 import com.kratonsolution.belian.global.dm.UserSetting;
@@ -39,6 +39,7 @@ import com.kratonsolution.belian.inventory.dm.UOMFactorRepository;
 import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
 import com.kratonsolution.belian.inventory.dm.UnitOfMeasureRepository;
 import com.kratonsolution.belian.production.dm.TimeEntry;
+import com.kratonsolution.belian.production.dm.TimeEntryRepository;
 import com.kratonsolution.belian.security.dm.Role;
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.security.dm.UserRole;
@@ -229,12 +230,12 @@ public class EmploymentService
 	
 	public BigDecimal getGross(Employment employment,Date date,Date start,Date end)
 	{
+		BigDecimal salary = BigDecimal.ZERO;
+		BigDecimal gross = BigDecimal.ZERO;
+		
 		UnitOfMeasure hour = measureRepo.findOneByName("Hour");
 		if(hour == null)
 			throw new RuntimeException("Unit of Measure (Hour) doesnot exist or with deference name,please provide or change it first to (Hour).");
-		
-		BigDecimal salary = BigDecimal.ZERO;
-		BigDecimal gross = BigDecimal.ZERO;
 		
 		for(PayHistory history:employment.getSalarys())
 		{
@@ -250,7 +251,7 @@ public class EmploymentService
 					{
 						if(factor.getTo().getId().equals(hour.getId()))
 						{
-							salary = history.getAmount().divide(factor.getFactor());
+							salary = history.getAmount().divide(factor.getFactor(),RoundingMode.HALF_EVEN);
 							break;
 						}
 					}
@@ -263,11 +264,15 @@ public class EmploymentService
 			}
 		}
 		
-		for(TimeEntry entry:timeEntryRepo.findAllUnpaid(employment.getEmployee().getParty().getId(), start, end))
+		List<TimeEntry> entrys = timeEntryRepo.findAllUnpaid(employment.getEmployee().getParty().getId(), start, end);
+		if(entrys.isEmpty())
+			throw new RuntimeException(employment.getEmployee().getParty().getName()+" doesnot have payable time entry.");
+
+		for(TimeEntry entry:entrys)
 			gross = gross.add(entry.getHour().multiply(salary));
 		
 		for(Benefit benefit:employment.getBenefits())
-			gross = gross.add(benefit.getCost().multiply(benefit.getEmployerPaid()).divide(BigDecimal.valueOf(100)));
+			gross = gross.add(benefit.getCost().multiply(benefit.getEmployerPaid()).divide(BigDecimal.valueOf(100),RoundingMode.HALF_EVEN));
 		
 		return gross;
 	}

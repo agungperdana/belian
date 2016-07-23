@@ -15,10 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.education.dm.TimeEntryRepository;
 import com.kratonsolution.belian.payment.dm.Paycheck;
 import com.kratonsolution.belian.payment.dm.PaycheckRepository;
 import com.kratonsolution.belian.production.dm.TimeEntry;
+import com.kratonsolution.belian.production.dm.TimeEntryRepository;
 
 /**
  * 
@@ -98,13 +98,17 @@ public class PaycheckService
 	@Secured("ROLE_PAYCHECK_CREATE")
 	public void add(Paycheck check)
 	{
-		repository.save(check);
-		
-		for(TimeEntry entry:timeEntryRepo.findAllUnpaid(check.getEmployment().getEmployee().getId(), check.getStart(), check.getEnd()))
+		List<TimeEntry> entrys = timeEntryRepo.findAllUnpaid(check.getEmployment().getEmployee().getParty().getId(), check.getStart(), check.getEnd());
+		if(entrys.isEmpty())
+			throw new RuntimeException(check.getEmployment().getEmployee().getParty().getName()+" doesnot have and payable time entry.");
+
+		for(TimeEntry entry:entrys)
 		{
 			entry.setPaid(true);
 			timeEntryRepo.saveAndFlush(entry);
 		}
+		
+		repository.save(check);
 	}
 	
 	@Secured("ROLE_PAYCHECK_UPDATE")

@@ -23,9 +23,9 @@ import com.kratonsolution.belian.education.dm.CourseAttendance;
 import com.kratonsolution.belian.education.dm.CourseAttendanceItem;
 import com.kratonsolution.belian.education.dm.CourseAttendanceRepository;
 import com.kratonsolution.belian.education.dm.CourseSchedule;
-import com.kratonsolution.belian.education.dm.TimeEntryRepository;
 import com.kratonsolution.belian.hr.dm.Employee;
 import com.kratonsolution.belian.hr.dm.EmployeeRepository;
+import com.kratonsolution.belian.production.dm.TimeEntryRepository;
 import com.kratonsolution.belian.production.dm.Timesheet;
 import com.kratonsolution.belian.production.dm.TimesheetRepository;
 

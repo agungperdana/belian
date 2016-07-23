@@ -136,11 +136,11 @@ public class EmployeeBox extends Hbox implements Listenable<ModelListener<Employ
 			}
 			else
 			{
-				if(Strings.isNullOrEmpty(identity.getValue()) || !maps.containsKey(identity.getValue()))
-					throw new WrongValueException(lang.get("message.field.empty"));
-					
-				for(ModelListener<Employment> listener:listeners)
-					listener.fireEvent(getEmployment());
+				if(!Strings.isNullOrEmpty(identity.getValue()) && maps.containsKey(identity.getValue()))
+				{
+					for(ModelListener<Employment> listener:listeners)
+						listener.fireEvent(getEmployment());
+				}
 			}
 		}
 		

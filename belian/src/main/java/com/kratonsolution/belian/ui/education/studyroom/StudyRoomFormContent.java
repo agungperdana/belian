@@ -194,7 +194,7 @@ public class StudyRoomFormContent extends FormContent implements ModelListener<P
 					schedule.setEnd(RowUtils.time(row, 3));
 					schedule.setProduct(productService.findOne(RowUtils.string(row, 4)));
 					schedule.setRequirement(room);
-					schedule.setPerson(personService.findOne(RowUtils.string(row, 5)));
+					schedule.setWorker(personService.findOne(RowUtils.string(row, 5)));
 					schedule.setPurpose(WorkEffortPurpose.Production);
 					schedule.setType(WorkEffortType.Task);
 					

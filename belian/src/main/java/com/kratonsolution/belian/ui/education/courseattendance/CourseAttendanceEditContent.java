@@ -132,7 +132,7 @@ public class CourseAttendanceEditContent extends FormContent
 			builder.append("["+DateTimes.format(attendance.getSchedule().getStart())+"-"+DateTimes.format(attendance.getSchedule().getEnd())+"] ");
 			builder.append(attendance.getSchedule().getDay()+"-");
 			builder.append(attendance.getSchedule().getProduct().getName()+"-");
-			builder.append(attendance.getSchedule().getPerson().getName());
+			builder.append(attendance.getSchedule().getWorker().getName());
 			
 			schedules.setSelectedItem(schedules.appendItem(builder.toString(), attendance.getSchedule().getId()));
 		}
@@ -184,7 +184,7 @@ public class CourseAttendanceEditContent extends FormContent
 		{
 			for(CourseAttendanceItem item:attendance.getItems())
 			{
-				if(item.getAttendance().getSchedule().getPerson().getId().equals(item.getPerson().getId()))
+				if(item.getAttendance().getSchedule().getWorker().getId().equals(item.getPerson().getId()))
 				{
 					Row row = new Row();
 					
@@ -212,7 +212,7 @@ public class CourseAttendanceEditContent extends FormContent
 			
 			for(CourseAttendanceItem item:attendance.getItems())
 			{
-				if(!item.getAttendance().getSchedule().getPerson().getId().equals(item.getPerson().getId()))
+				if(!item.getAttendance().getSchedule().getWorker().getId().equals(item.getPerson().getId()))
 				{
 					Row row = new Row();
 					
