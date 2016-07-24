@@ -15,7 +15,7 @@ public class TaxButton extends Toolbarbutton
 	public TaxButton()
 	{
 		setImage("/icons/tax.png");
-		setTooltip("Tax Management");
+		setTooltiptext("Tax Management");
 		setHeight("38px");
 	}
 }

@@ -32,8 +32,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="gl_account_balance")
 @Cacheable
+@Table(name="gl_account_balance")
 public class GLAccountBalance implements Serializable
 {
 	@Id

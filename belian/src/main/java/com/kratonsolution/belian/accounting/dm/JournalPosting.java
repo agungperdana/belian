@@ -29,8 +29,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="journal_posting")
 @Cacheable
+@Table(name="journal_posting")
 public class JournalPosting implements Serializable
 {
 	@Id

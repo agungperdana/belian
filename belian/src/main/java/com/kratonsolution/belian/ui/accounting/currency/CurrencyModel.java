@@ -20,7 +20,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class CurrencyModel implements ListModel<Currency>
 {
-	private final CurrencyService service = Springs.get(CurrencyService.class);
+	private CurrencyService service = Springs.get(CurrencyService.class);
 	
 	private List<Currency> data = new ArrayList<Currency>();
 	

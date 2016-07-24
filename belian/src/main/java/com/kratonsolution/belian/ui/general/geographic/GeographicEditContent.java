@@ -11,7 +11,6 @@ import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
@@ -32,21 +31,22 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class GeographicEditContent extends FormContent
 {	
-	private final GeographicService service = Springs.get(GeographicService.class);
+	private GeographicService service = Springs.get(GeographicService.class);
 	
 	private Textbox code = Components.mandatoryTextBox(false);
 	
 	private Textbox name = Components.mandatoryTextBox(false);
 	
-	private Listbox type = new Listbox();
+	private Listbox type = Components.newSelect();
 	
-	private Textbox note = Components.mandatoryTextBox();
+	private Textbox note = Components.stdTextBox(null,false);
 	
 	private Row row;
 	
 	public GeographicEditContent(Row row)
 	{
 		super();
+
 		this.row = row;
 		initToolbar();
 		initForm();
@@ -70,10 +70,10 @@ public class GeographicEditContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				if(Strings.isNullOrEmpty(code.getText()))
-					throw new WrongValueException(code,"Code cannot be empty");
+					throw new WrongValueException(code,lang.get("message.field.empty"));
 			
 				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
+					throw new WrongValueException(name,lang.get("message.field.empty"));
 			
 				Geographic geographic = service.findOne(RowUtils.id(row));
 				geographic.setCode(code.getText());
@@ -91,46 +91,33 @@ public class GeographicEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		code.setConstraint("no empty");
-		code.setText(RowUtils.string(this.row,1));
-		code.setWidth("200px");
-		
-		name.setConstraint("no empty");
-		name.setText(RowUtils.string(row, 2));
-		name.setWidth("250px");
-		
-		note.setWidth("300px");
-		note.setText(RowUtils.string(row, 4));
-		
-		for(GeographicType geo :GeographicType.values())
+		Geographic geographic = service.findOne(RowUtils.id(row));
+		if(geographic != null)
 		{
-			Listitem listitem = new Listitem(geo.toString(),geo.toString());
-			if(geo.toString().equals(RowUtils.string(row, 3)))
-				listitem.setSelected(true);
-				
-			type.appendChild(listitem);
+			code.setText(geographic.getCode());
+			name.setText(geographic.getName());
+			type.setSelectedItem(type.appendItem(geographic.getType().name(), geographic.getType().name()));
+			note.setText(geographic.getNote());
 		}
 		
-		type.setMold("select");
-		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Code"));
+		row1.appendChild(new Label(lang.get("geographic.grid.column.code")));
 		row1.appendChild(code);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Name"));
+		row2.appendChild(new Label(lang.get("geographic.grid.column.name")));
 		row2.appendChild(name);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Type"));
+		row3.appendChild(new Label(lang.get("geographic.grid.column.type")));
 		row3.appendChild(type);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Note"));
+		row4.appendChild(new Label(lang.get("geographic.grid.column.note")));
 		row4.appendChild(note);
 		
 		rows.appendChild(row1);

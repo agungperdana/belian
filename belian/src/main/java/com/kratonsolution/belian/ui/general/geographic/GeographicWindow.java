@@ -24,7 +24,7 @@ import com.kratonsolution.belian.ui.nav.IconBar;
  */
 public class GeographicWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption("Geographic");
+	private final Caption caption = new Caption(lang.get("navbar.menu.general.geographic"));
 	
 	private Geographicbutton status = new Geographicbutton();
 	
@@ -40,6 +40,7 @@ public class GeographicWindow extends AbstractWindow implements HasGrid,HasCreat
 	private GeographicWindow()
 	{
 		super();
+		setWidth("625px");
 	}
 	
 	protected void init()

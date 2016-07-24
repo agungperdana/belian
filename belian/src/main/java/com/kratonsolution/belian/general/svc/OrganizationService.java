@@ -16,8 +16,6 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.OrganizationRepository;
-import com.kratonsolution.belian.global.dm.EconomicAgentRoleEventListener;
-import com.kratonsolution.belian.global.svc.EconomicAgentService;
 
 /**
  * 
@@ -32,10 +30,7 @@ public class OrganizationService
 	private OrganizationRepository repository;
 	
 	@Autowired
-	private EconomicAgentService service;
-	
-	@Autowired
-	private List<EconomicAgentRoleEventListener> listeners;
+	private PartyService service;
 
 	@Secured({"ROLE_ORGANIZATION_READ","ROLE_SYSTEM_READ"})
 	public Organization findOne(String id)

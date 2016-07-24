@@ -24,7 +24,7 @@ import com.kratonsolution.belian.ui.nav.IconBar;
  */
 public class CurrencyWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption("Currency");
+	private final Caption caption = new Caption(lang.get("navbar.menu.accounting.currency"));
 	
 	private CurrencyButton status = new CurrencyButton();
 	
@@ -40,6 +40,7 @@ public class CurrencyWindow extends AbstractWindow implements HasGrid,HasCreateF
 	private CurrencyWindow()
 	{
 		super();
+		setWidth("625px");
 	}
 	
 	protected void init()

@@ -20,7 +20,7 @@ import org.zkoss.zul.Vlayout;
 
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.general.dm.PartyRepository;
-import com.kratonsolution.belian.global.svc.EconomicAgentService;
+import com.kratonsolution.belian.general.svc.PartyService;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductSupplier;
 import com.kratonsolution.belian.inventory.svc.ProductService;
@@ -37,7 +37,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class SupplierWindow extends AbstractWindow
 {
-	private EconomicAgentService agentService = Springs.get(EconomicAgentService.class);
+	private PartyService agentService = Springs.get(PartyService.class);
 	
 	private Vlayout layout = new Vlayout();
 	

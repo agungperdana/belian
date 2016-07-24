@@ -6,7 +6,6 @@ package com.kratonsolution.belian.ui.security.role;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.CheckEvent;
 import org.zkoss.zk.ui.event.Event;
@@ -33,7 +32,6 @@ import com.kratonsolution.belian.general.dm.CompanyStructure;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.security.dm.AccessRole;
-import com.kratonsolution.belian.security.dm.AccessibleOrganization;
 import com.kratonsolution.belian.security.dm.Module;
 import com.kratonsolution.belian.security.dm.ModuleGroup;
 import com.kratonsolution.belian.security.dm.Role;
@@ -41,6 +39,7 @@ import com.kratonsolution.belian.security.svc.ModuleService;
 import com.kratonsolution.belian.security.svc.RoleService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -82,7 +81,6 @@ public class RoleFormContent extends FormContent
 		initToolbar();
 		initForm();
 		initModules();
-		initCompanys();
 	}
 
 	@Override
@@ -93,9 +91,7 @@ public class RoleFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				RoleWindow window = (RoleWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new RoleGridContent());
 			}
 		});
 		
@@ -105,10 +101,10 @@ public class RoleFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				if(Strings.isNullOrEmpty(code.getText()))
-					throw new WrongValueException(code,"Code cannot be empty");
+					throw new WrongValueException(code,lang.get("message.field.empty"));
 			
 				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
+					throw new WrongValueException(name,lang.get("message.field.empty"));
 			
 				Role role = new Role();
 				role.setCode(code.getText());
@@ -139,23 +135,9 @@ public class RoleFormContent extends FormContent
 					}
 				}
 				
-				for(Component component:accessibleCompanys.getRows().getChildren())
-				{
-					Row row = (Row)component;
-					
-					AccessibleOrganization organization = new AccessibleOrganization();
-					organization.setOrganization(organizationService.findOne(RowUtils.string(row, 2)));
-					organization.setRole(role);
-					organization.setSelected(RowUtils.isChecked(row, 1));
-					
-					role.getOrganizations().add(organization);
-				}
-				
 				service.add(role);
 				
-				RoleWindow window = (RoleWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new RoleGridContent());
 			}
 		});
 	}
@@ -176,15 +158,15 @@ public class RoleFormContent extends FormContent
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Code"));
+		row1.appendChild(new Label(lang.get("generic.grid.column.code")));
 		row1.appendChild(code);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Name"));
+		row2.appendChild(new Label(lang.get("generic.grid.column.name")));
 		row2.appendChild(name);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Note"));
+		row3.appendChild(new Label(lang.get("generic.grid.column.note")));
 		row3.appendChild(note);
 		
 		rows.appendChild(row1);

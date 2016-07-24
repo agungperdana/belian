@@ -27,8 +27,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="tax")
 @Cacheable
+@Table(name="tax")
 public class Tax implements Serializable,Listable
 {
 	@Id

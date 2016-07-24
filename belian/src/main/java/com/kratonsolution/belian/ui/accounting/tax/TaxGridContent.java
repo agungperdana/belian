@@ -18,6 +18,7 @@ import org.zkoss.zul.event.PagingEvent;
 import com.kratonsolution.belian.accounting.svc.TaxService;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -40,14 +41,13 @@ public class TaxGridContent extends GridContent
 	
 	protected void initToolbar()
 	{
-		gridToolbar.setParent(this);
+		appendChild(gridToolbar);
 		gridToolbar.getRefresh().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				refresh(new TaxModel(utils.getRowPerPage()));
+				Flow.next(getParent(), new TaxGridContent());
 			}
 		});
 		
@@ -110,7 +110,7 @@ public class TaxGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -155,7 +155,7 @@ public class TaxGridContent extends GridContent
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No tax data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new TaxRowRenderer());
 		grid.setPagingPosition("both");
@@ -163,11 +163,11 @@ public class TaxGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Code",null,"75px"));
-		grid.getColumns().appendChild(new Column("Name"));
-		grid.getColumns().appendChild(new Column("Value (%)",null,"75px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.code"),null,"75px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.name")));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.value")+" %",null,"75px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(4).setVisible(false);
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
 
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()

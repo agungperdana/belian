@@ -24,7 +24,7 @@ import com.kratonsolution.belian.ui.nav.IconBar;
  */
 public class TaxWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption("Tax");
+	private final Caption caption = new Caption(lang.get("navbar.menu.accounting.tax"));
 	
 	private TaxButton status = new TaxButton();
 	

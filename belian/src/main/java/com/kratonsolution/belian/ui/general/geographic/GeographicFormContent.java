@@ -11,7 +11,6 @@ import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
@@ -20,6 +19,8 @@ import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.GeographicType;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -29,15 +30,15 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class GeographicFormContent extends FormContent
 {	
-	private final GeographicService service = Springs.get(GeographicService.class);
+	private GeographicService service = Springs.get(GeographicService.class);
 	
-	private Textbox code = new Textbox();
+	private Textbox code = Components.mandatoryTextBox(false);
 	
-	private Textbox name = new Textbox();
+	private Textbox name = Components.mandatoryTextBox(false);
 	
-	private Listbox type = new Listbox();
+	private Listbox type = Components.newSelect();
 	
-	private Textbox note = new Textbox();
+	private Textbox note = Components.stdTextBox(null, false);
 	
 	public GeographicFormContent()
 	{
@@ -54,9 +55,7 @@ public class GeographicFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				GeographicWindow window = (GeographicWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new GeographicGridContent());
 			}
 		});
 		
@@ -66,10 +65,10 @@ public class GeographicFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				if(Strings.isNullOrEmpty(code.getText()))
-					throw new WrongValueException(code,"Code cannot be empty");
+					throw new WrongValueException(code,lang.get("message.field.empty"));
 			
 				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
+					throw new WrongValueException(name,lang.get("message.field.empty"));
 			
 				Geographic geographic = new Geographic();
 				geographic.setCode(code.getText());
@@ -79,51 +78,35 @@ public class GeographicFormContent extends FormContent
 				
 				service.add(geographic);
 				
-				GeographicWindow window = (GeographicWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new GeographicGridContent());
 			}
 		});
 	}
 
 	@Override
 	public void initForm()
-	{
-		code.setConstraint("no empty");
-		code.setWidth("200px");
-		
-		name.setConstraint("no empty");
-		name.setWidth("250px");
-		
-		note.setWidth("300px");
-		
+	{	
 		for(GeographicType geo :GeographicType.values())
-		{
-			Listitem listitem = new Listitem(geo.toString(),geo.toString());
-			type.appendChild(listitem);
-		}
-		
-		type.setMold("select");
-		type.setSelectedIndex(0);
+			type.setSelectedItem(type.appendItem(geo.name(), geo.name()));
 		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Code"));
+		row1.appendChild(new Label(lang.get("geographic.grid.column.code")));
 		row1.appendChild(code);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Name"));
+		row2.appendChild(new Label(lang.get("geographic.grid.column.name")));
 		row2.appendChild(name);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Type"));
+		row3.appendChild(new Label(lang.get("geographic.grid.column.type")));
 		row3.appendChild(type);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Note"));
+		row4.appendChild(new Label(lang.get("geographic.grid.column.note")));
 		row4.appendChild(note);
 		
 		rows.appendChild(row1);

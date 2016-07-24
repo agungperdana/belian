@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.CheckEvent;
 import org.zkoss.zk.ui.event.Event;
@@ -32,11 +30,8 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.general.dm.CompanyStructure;
-import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.security.dm.AccessRole;
-import com.kratonsolution.belian.security.dm.AccessibleOrganization;
 import com.kratonsolution.belian.security.dm.Module;
 import com.kratonsolution.belian.security.dm.ModuleGroup;
 import com.kratonsolution.belian.security.dm.Role;
@@ -44,6 +39,7 @@ import com.kratonsolution.belian.security.svc.ModuleService;
 import com.kratonsolution.belian.security.svc.RoleService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -86,7 +82,6 @@ public class RoleEditContent extends FormContent
 		initToolbar();
 		initForm();
 		initModules();
-		initCompanys();
 	}
 
 	@Override
@@ -97,9 +92,7 @@ public class RoleEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				RoleWindow window = (RoleWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new RoleGridContent());
 			}
 		});
 
@@ -109,57 +102,45 @@ public class RoleEditContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				if(Strings.isNullOrEmpty(code.getText()))
-					throw new WrongValueException(code,"Code cannot be empty");
+					throw new WrongValueException(code,lang.get("message.field.empty"));
 
 				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
+					throw new WrongValueException(name,lang.get("message.field.empty"));
 
-				Role role = service.findOne(RowUtils.string(row, 4));
-				role.setCode(code.getText());
-				role.setName(name.getText());
-				role.setNote(note.getText());
-
-				for(Grid grid:modules)
+				Role role = service.findOne(RowUtils.id(row));
+				if(role != null)
 				{
-					Rows moduleRows = grid.getRows();
-					for(Object object:moduleRows.getChildren())
-					{
-						Row _row = (Row)object;
+					role.setCode(code.getText());
+					role.setName(name.getText());
+					role.setNote(note.getText());
 
-						Iterator<AccessRole> iterator = role.getAccesses().iterator();
-						while (iterator.hasNext())
+					for(Grid grid:modules)
+					{
+						Rows moduleRows = grid.getRows();
+						for(Object object:moduleRows.getChildren())
 						{
-							AccessRole accessRole = (AccessRole) iterator.next();
-							if(accessRole.getId().equals(RowUtils.string(_row, 7)))
+							Row _row = (Row)object;
+
+							Iterator<AccessRole> iterator = role.getAccesses().iterator();
+							while (iterator.hasNext())
 							{
-								accessRole.setCanCreate(RowUtils.isChecked(_row, 1));
-								accessRole.setCanRead(RowUtils.isChecked(_row, 2));
-								accessRole.setCanUpdate(RowUtils.isChecked(_row, 3));
-								accessRole.setCanDelete(RowUtils.isChecked(_row, 4));
-								accessRole.setCanPrint(RowUtils.isChecked(_row, 5));
+								AccessRole accessRole = (AccessRole) iterator.next();
+								if(accessRole.getId().equals(RowUtils.string(_row, 7)))
+								{
+									accessRole.setCanCreate(RowUtils.isChecked(_row, 1));
+									accessRole.setCanRead(RowUtils.isChecked(_row, 2));
+									accessRole.setCanUpdate(RowUtils.isChecked(_row, 3));
+									accessRole.setCanDelete(RowUtils.isChecked(_row, 4));
+									accessRole.setCanPrint(RowUtils.isChecked(_row, 5));
+								}
 							}
 						}
 					}
-				}
-				
-				for(Component component:accessibleCompanys.getRows().getChildren())
-				{
-					Row _row = (Row)component;
-					
-					Iterator<AccessibleOrganization> iterator = role.getOrganizations().iterator();
-					while (iterator.hasNext())
-					{
-						AccessibleOrganization org = (AccessibleOrganization) iterator.next();
-						if(org.getId().equals(RowUtils.string(_row, 2)))
-							org.setSelected(RowUtils.isChecked(_row, 1));
-					}
+
+					service.edit(role);
 				}
 
-				service.edit(role);
-
-				RoleWindow window = (RoleWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new RoleGridContent());
 			}
 		});
 	}
@@ -406,82 +387,6 @@ public class RoleEditContent extends FormContent
 			tabbox.getTabpanels().appendChild(tabpanel);
 		
 			modules.add(grid);
-		}
-	}
-	
-	private void initCompanys()
-	{
-		Role role = service.findOne(RowUtils.string(row, 4));
-		
-		accessibleCompanys.appendChild(new Columns());
-		accessibleCompanys.appendChild(new Rows());
-		accessibleCompanys.getColumns().appendChild(new Column("Company",null, null));
-		accessibleCompanys.getColumns().appendChild(new Column("Status",null, "65px"));
-		accessibleCompanys.getColumns().appendChild(new Column("",null,null));
-		accessibleCompanys.getColumns().getChildren().get(2).setVisible(false);
-		
-		if(role != null)
-		{
-			populateCompanys(role.getOrganizations());
-			
-			Collection<Organization> ins = new ArrayList<>();
-			for(CompanyStructure structure:structureService.findAll())
-			{
-				if(structure.getOrganization() != null)
-				{
-					boolean fresh = true;
-					for(AccessibleOrganization com:role.getOrganizations())
-					{
-						if(com.getOrganization() != null && com.getOrganization().getId().equals(structure.getOrganization().getId()))
-						{
-							fresh = false;
-							break;
-						}
-					}
-					
-					if(fresh)
-						ins.add(structure.getOrganization());
-				}
-			}
-			
-			List<AccessibleOrganization> orgs = new ArrayList<AccessibleOrganization>();
-			for(Organization structure:ins)
-			{
-				AccessibleOrganization accessibleOrganization = new AccessibleOrganization();
-				accessibleOrganization.setId(UUID.randomUUID().toString());
-				accessibleOrganization.setRole(role);
-				accessibleOrganization.setOrganization(structure);
-				
-				role.getOrganizations().add(accessibleOrganization);
-			
-				orgs.add(accessibleOrganization);
-			}
-			
-			service.edit(role);
-			
-			populateCompanys(orgs);
-		}
-		
-		Tabpanel tabpanel = new Tabpanel();
-		tabpanel.appendChild(accessibleCompanys);
-		
-		tabbox.getTabs().appendChild(new Tab("Accessible Organization"));
-		tabbox.getTabpanels().appendChild(tabpanel);
-	}
-
-	private void populateCompanys(Collection<AccessibleOrganization> companys)
-	{
-		for(AccessibleOrganization access:companys)
-		{
-			if(access.getOrganization() != null)
-			{
-				Row row = new Row();
-				row.appendChild(new Label(access.getOrganization().getName()));
-				row.appendChild(Components.checkbox(access.isSelected()));
-				row.appendChild(new Label(access.getId()));
-				
-				accessibleCompanys.getRows().appendChild(row);
-			}
 		}
 	}
 }

@@ -27,7 +27,7 @@ import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.GeographicType;
 import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.svc.GeographicService;
-import com.kratonsolution.belian.global.svc.EconomicAgentService;
+import com.kratonsolution.belian.general.svc.PartyService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -59,7 +59,7 @@ public class AddressEditWindow extends Window
 	
 	private GeographicService geographicController = Springs.get(GeographicService.class);
 	
-	private EconomicAgentService service = Springs.get(EconomicAgentService.class);
+	private PartyService service = Springs.get(PartyService.class);
 	
 	private Party party;
 	

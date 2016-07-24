@@ -24,7 +24,7 @@ import com.kratonsolution.belian.ui.nav.IconBar;
  */
 public class OrganizationWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption("Organization");
+	private Caption caption = new Caption(lang.get("navbar.menu.general.organization"));
 	
 	private OrganizationButton status = new OrganizationButton();
 	
@@ -40,6 +40,7 @@ public class OrganizationWindow extends AbstractWindow implements HasGrid,HasCre
 	private OrganizationWindow()
 	{
 		super();
+		setWidth("625px");
 	}
 	
 	protected void init()

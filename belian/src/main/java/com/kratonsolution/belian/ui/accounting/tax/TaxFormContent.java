@@ -4,7 +4,6 @@
 package com.kratonsolution.belian.ui.accounting.tax;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
@@ -21,6 +20,8 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.accounting.svc.TaxService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -32,11 +33,11 @@ public class TaxFormContent extends FormContent
 {	
 	private TaxService service = Springs.get(TaxService.class);
 	
-	private Textbox code = new Textbox();
+	private Textbox code = Components.mandatoryTextBox(false);
 	
-	private Textbox name = new Textbox();
+	private Textbox name = Components.mandatoryTextBox(false);
 	
-	private Doublebox value = new Doublebox();
+	private Doublebox value = Components.stdDoubleBox(0);
 	
 	public TaxFormContent()
 	{
@@ -53,9 +54,7 @@ public class TaxFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				TaxWindow window = (TaxWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new TaxGridContent());
 			}
 		});
 		
@@ -65,25 +64,22 @@ public class TaxFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				if(Strings.isNullOrEmpty(code.getText()))
-					throw new WrongValueException(code,"Code cannot be empty");
+					throw new WrongValueException(code,lang.get("message.field.empty"));
 			
 				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
+					throw new WrongValueException(name,lang.get("message.field.empty"));
 				
 				if(Strings.isNullOrEmpty(value.getText()))
-					throw new WrongValueException(value,"Value cannot be empty");
+					throw new WrongValueException(value,lang.get("message.field.empty"));
 			
 				Tax tax = new Tax();
-				tax.setId(UUID.randomUUID().toString());
 				tax.setCode(code.getText());
 				tax.setName(name.getText());
 				tax.setAmount(BigDecimal.valueOf(value.doubleValue()));
 				
 				service.add(tax);
 				
-				TaxWindow window = (TaxWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new TaxGridContent());
 			}
 		});
 	}
@@ -91,25 +87,20 @@ public class TaxFormContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		code.setConstraint("no empty");
-		name.setConstraint("no empty");
-		name.setWidth("300px");
-		value.setConstraint("no empty");
-		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Code"));
+		row1.appendChild(new Label(lang.get("generic.grid.column.code")));
 		row1.appendChild(code);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Name"));
+		row2.appendChild(new Label(lang.get("generic.grid.column.name")));
 		row2.appendChild(name);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Value"));
+		row3.appendChild(new Label(lang.get("generic.grid.column.value")));
 		row3.appendChild(value);
 		
 		rows.appendChild(row1);

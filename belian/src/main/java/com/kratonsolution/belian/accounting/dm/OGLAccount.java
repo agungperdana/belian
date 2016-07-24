@@ -31,8 +31,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="organization_gl_account")
 @Cacheable
+@Table(name="organization_gl_account")
 public class OGLAccount implements Serializable,Listable
 {
 	@Id

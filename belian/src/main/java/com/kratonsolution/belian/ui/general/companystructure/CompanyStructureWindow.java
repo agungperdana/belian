@@ -24,7 +24,7 @@ import com.kratonsolution.belian.ui.nav.IconBar;
  */
 public class CompanyStructureWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption("Company Structure");
+	private Caption caption = new Caption(lang.get("navbar.menu.general.companystructure"));
 	
 	private CompanyStructureButton status = new CompanyStructureButton();
 	

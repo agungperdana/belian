@@ -26,7 +26,7 @@ import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.GeographicService;
-import com.kratonsolution.belian.global.svc.EconomicAgentService;
+import com.kratonsolution.belian.general.svc.PartyService;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductFeature;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
@@ -59,7 +59,7 @@ public class PriceEditWindow extends AbstractWindow
 
 	private GeographicService geographicService = Springs.get(GeographicService.class);
 
-	private EconomicAgentService partyService = Springs.get(EconomicAgentService.class);
+	private PartyService partyService = Springs.get(PartyService.class);
 
 	private CurrencyService currencyService = Springs.get(CurrencyService.class);
 

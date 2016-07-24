@@ -16,7 +16,7 @@ import org.zkoss.zul.Treerow;
 
 import com.kratonsolution.belian.general.dm.Contact;
 import com.kratonsolution.belian.general.dm.Party;
-import com.kratonsolution.belian.global.svc.EconomicAgentService;
+import com.kratonsolution.belian.general.svc.PartyService;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -28,7 +28,7 @@ public class ContactInformation extends Treeitem
 {
 	private Treerow row = new Treerow();
 	
-	private EconomicAgentService service = Springs.get(EconomicAgentService.class);
+	private PartyService service = Springs.get(PartyService.class);
 	
 	public ContactInformation(Contact contact,Party party)
 	{

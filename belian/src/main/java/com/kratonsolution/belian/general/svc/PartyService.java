@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.global.svc;
+package com.kratonsolution.belian.general.svc;
 
 import java.util.List;
 
@@ -15,7 +15,6 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.PartyRepository;
 import com.kratonsolution.belian.general.dm.PartyRole;
-import com.kratonsolution.belian.global.dm.EconomicAgentRoleEventListener;
 
 /**
  * 
@@ -24,13 +23,10 @@ import com.kratonsolution.belian.global.dm.EconomicAgentRoleEventListener;
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
-public class EconomicAgentService
+public class PartyService
 {
 	@Autowired
 	private PartyRepository repository;
-	
-	@Autowired
-	private List<EconomicAgentRoleEventListener> listeners;
 	
 	@Secured({"ROLE_PARTY_READ","ROLE_ORGANIZATION_READ","ROLE_PERSON_READ"})
 	public Party findOne(String id)

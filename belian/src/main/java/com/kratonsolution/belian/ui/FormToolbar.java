@@ -6,6 +6,9 @@ package com.kratonsolution.belian.ui;
 import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 
+import com.kratonsolution.belian.common.Language;
+import com.kratonsolution.belian.ui.util.Springs;
+
 import lombok.Getter;
 
 /**
@@ -16,20 +19,19 @@ import lombok.Getter;
 @Getter
 public class FormToolbar extends Toolbar
 {
-	private Toolbarbutton cancel = new Toolbarbutton("Cancel");
+	private Language lang = Springs.get(Language.class);
 	
-	private Toolbarbutton save = new Toolbarbutton("Save");
+	private Toolbarbutton cancel = new Toolbarbutton(lang.get("label.component.button.cancel"),"/icons/cancel.png");
 	
-	private Toolbarbutton print = new Toolbarbutton("Print","/icons/print.png");
+	private Toolbarbutton save = new Toolbarbutton(lang.get("label.component.button.save"),"/icons/save.png");
+	
+	private Toolbarbutton print = new Toolbarbutton(lang.get("label.component.button.print"),"/icons/print.png");
 	
 	public FormToolbar()
 	{
 		setWidth("100%");
 		setLeft("0px");
 		setHeight("20%");
-		
-		cancel.setImage("/icons/cancel.png");
-		save.setImage("/icons/save.png");
 	
 		appendChild(cancel);
 		appendChild(save);

@@ -110,7 +110,7 @@ public class CurrencyGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",
+				Messagebox.show(lang.get("message.removedata"),"Warning",
 						Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 						{
 							@Override
@@ -156,7 +156,7 @@ public class CurrencyGridContent extends GridContent
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No currency data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new CurrencyRowRenderer());
 		grid.setPagingPosition("both");
@@ -164,10 +164,10 @@ public class CurrencyGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Code"));
-		grid.getColumns().appendChild(new Column("Name"));
-		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(3).setVisible(false);
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.code")));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.name")));
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()

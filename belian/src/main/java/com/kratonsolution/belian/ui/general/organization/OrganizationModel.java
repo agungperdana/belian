@@ -20,7 +20,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class OrganizationModel implements ListModel<Organization>
 {
-	private final OrganizationService controller = Springs.get(OrganizationService.class);
+	private OrganizationService service = Springs.get(OrganizationService.class);
 	
 	private List<Organization> data = new ArrayList<Organization>();
 	
@@ -41,7 +41,7 @@ public class OrganizationModel implements ListModel<Organization>
 	@Override
 	public int getSize()
 	{
-		return controller.size();
+		return service.size();
 	}
 
 	@Override
@@ -57,6 +57,6 @@ public class OrganizationModel implements ListModel<Organization>
 	public void next(int pageIndex,int itemSize)
 	{
 		data.clear();
-		data.addAll(controller.findAll(0, (itemSize*pageIndex)+itemSize));
+		data.addAll(service.findAll(0, (itemSize*pageIndex)+itemSize));
 	}
 }

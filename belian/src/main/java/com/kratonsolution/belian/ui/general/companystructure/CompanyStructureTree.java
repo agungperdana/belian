@@ -13,6 +13,7 @@ import org.zkoss.zul.Treecol;
 import org.zkoss.zul.Treecols;
 import org.zkoss.zul.Treeitem;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.general.dm.CompanyStructure;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -24,6 +25,8 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class CompanyStructureTree extends Tree implements CompanyStructureDataListener
 {
+	private Language lang = Springs.get(Language.class);
+	
 	private CompanyStructureService service = Springs.get(CompanyStructureService.class);
 	
 	private Component container;
@@ -36,7 +39,7 @@ public class CompanyStructureTree extends Tree implements CompanyStructureDataLi
 		setHeight("100%");
 		appendChild(new Treecols());
 		appendChild(new Treechildren());
-		getTreecols().appendChild(new Treecol("Facilitys(s)"));
+		getTreecols().appendChild(new Treecol(lang.get("companystructure.grid.column.title")));
 		getTreechildren().appendChild(CompanyStructureTreeItem.New(contentArea,this));
 		
 		Collection<CompanyStructureTreeItem> items = CompanyStructureTreeItem.list(contentArea,service.findAllParent());

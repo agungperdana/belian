@@ -11,14 +11,19 @@ import org.zkoss.zul.Treecols;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.Refreshable;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class PartyInformation extends Tree implements Refreshable
 {
+	private Language lang = Springs.get(Language.class);
+	
 	private Treecols treecols = new Treecols();
 	
 	private Treecol column1 = new Treecol();
@@ -28,8 +33,8 @@ public class PartyInformation extends Tree implements Refreshable
 	private Treeitem addressRoot = new Treeitem();
 	private Treeitem contactRoot = new Treeitem();
 	
-	private Treecell address = new Treecell("Address");
-	private Treecell contact = new Treecell("Contacts");
+	private Treecell address = new Treecell(lang.get("organization.grid.column.address"));
+	private Treecell contact = new Treecell(lang.get("organization.grid.column.contacts"));
 	
 	private Treerow addressContent = new Treerow();
 	private Treerow contactContent = new Treerow();

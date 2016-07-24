@@ -59,8 +59,10 @@ public class NavigationMenu extends Window
 			mode.setSegmentation(IndustrySegmentation.GENERAL);
 		}
 		
+		if(utils.isSysAdmin())
+			initSecurity(modules);
+		
 		initGeneral(modules);
-		initSecurity(modules);
 		initAccounting(modules);
 		initFinancial(modules);
 		initPayment(modules);
@@ -71,14 +73,14 @@ public class NavigationMenu extends Window
 		initSales(modules);
 		initProductions(modules);
 
-		if(mode.getSegmentation().equals(IndustrySegmentation.MEDICAL) || mode.getSegmentation().equals(IndustrySegmentation.GENERAL))
+		if(mode.getSegmentation().equals(IndustrySegmentation.MEDICAL))
 		{
 			initPharmacy(modules);
 			initClinic(modules);
 			initMedicalLab(modules);
 		}
 		
-		if(mode.getSegmentation().equals(IndustrySegmentation.EDUCATION) || mode.getSegmentation().equals(IndustrySegmentation.GENERAL))
+		if(mode.getSegmentation().equals(IndustrySegmentation.EDUCATION))
 		{
 			initEducation(modules);
 		}

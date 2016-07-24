@@ -33,8 +33,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="gl_account")
 @Cacheable
+@Table(name="gl_account")
 public class GLAccount implements Serializable
 {
 	@Id

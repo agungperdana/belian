@@ -31,8 +31,8 @@ import com.kratonsolution.belian.accounting.svc.BudgetService;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.general.svc.PartyService;
 import com.kratonsolution.belian.global.dm.StatusType;
-import com.kratonsolution.belian.global.svc.EconomicAgentService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
@@ -51,7 +51,7 @@ public class BudgetEditContent extends FormContent
 
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
-	private EconomicAgentService personService = Springs.get(EconomicAgentService.class);
+	private PartyService personService = Springs.get(PartyService.class);
 	
 	private SessionUtils sessionUtils = Springs.get(SessionUtils.class);
 

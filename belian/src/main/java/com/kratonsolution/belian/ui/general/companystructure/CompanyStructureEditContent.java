@@ -36,9 +36,9 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class CompanyStructureEditContent extends FormContent
 {	
-private final CompanyStructureService service = Springs.get(CompanyStructureService.class);
+	private CompanyStructureService service = Springs.get(CompanyStructureService.class);
 	
-	private final OrganizationService organizationService = Springs.get(OrganizationService.class);
+	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 	
 	private Datebox from = Components.currentDatebox();
 	
@@ -86,7 +86,7 @@ private final CompanyStructureService service = Springs.get(CompanyStructureServ
 			}
 		});
 		
-		Toolbarbutton toolbarbutton = new Toolbarbutton("New Child", "/icons/new-warehouse.png");
+		Toolbarbutton toolbarbutton = new Toolbarbutton(lang.get("generic.grid.column.child"), "/icons/new-warehouse.png");
 		toolbarbutton.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
@@ -137,19 +137,19 @@ private final CompanyStructureService service = Springs.get(CompanyStructureServ
 			grid.getColumns().appendChild(new Column());
 			
 			Row row1 = new Row();
-			row1.appendChild(new Label("Start Date"));
+			row1.appendChild(new Label(lang.get("companystructure.grid.column.start")));
 			row1.appendChild(from);
 			
 			Row row2 = new Row();
-			row2.appendChild(new Label("End Date"));
+			row2.appendChild(new Label(lang.get("companystructure.grid.column.end")));
 			row2.appendChild(to);
 			
 			Row row3 = new Row();
-			row3.appendChild(new Label("Organization"));
+			row3.appendChild(new Label(lang.get("companystructure.grid.column.company")));
 			row3.appendChild(organizations);
 			
 			Row row4 = new Row();
-			row4.appendChild(new Label("Type"));
+			row4.appendChild(new Label(lang.get("companystructure.grid.column.type")));
 			row4.appendChild(types);
 			
 			rows.appendChild(row1);

@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,6 +33,7 @@ import com.kratonsolution.belian.hr.dm.Employee;
  */
 @Entity
 @Table(name="user")
+@Cacheable
 public class User implements Listable
 {
 	@Id
