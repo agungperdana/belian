@@ -18,12 +18,13 @@ import com.kratonsolution.belian.ui.HasGrid;
 import com.kratonsolution.belian.ui.nav.IconBar;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class PositionTypeWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption("Position Type");
+	private final Caption caption = new Caption(lang.get("navbar.menu.hr.positiontype"));
 	
 	private PositionTypeButton status = new PositionTypeButton();
 

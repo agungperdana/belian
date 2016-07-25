@@ -24,7 +24,7 @@ public class PersonRowRenderer implements RowRenderer<Person>
 	{
 		if(data != null)
 		{
-			row.appendChild(Components.checkbox(false));
+			row.appendChild(Components.checkbox(!data.isRemoveable(),false));
 			row.appendChild(new Label(data.getIdentity()));
 			row.appendChild(new Label(data.getName()));
 			row.appendChild(new Label(DateTimes.format(data.getBirthDate())));

@@ -24,7 +24,7 @@ import com.kratonsolution.belian.ui.nav.IconBar;
  */
 public class PositionTypeRateWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption("Position Type Rate");
+	private Caption caption = new Caption(lang.get("navbar.menu.hr.positiontyperate"));
 	
 	private PositionTypeRateButton status = new PositionTypeRateButton();
 	

@@ -31,7 +31,6 @@ public class PositionRowRenderer implements RowRenderer<Position>
 			row.appendChild(new Label(data.getType().getTitle()));
 			row.appendChild(new Label(data.getWorktimeStatus().name()));
 			row.appendChild(new Label(data.getEmploymentStatus().name()));
-			row.appendChild(new Label(data.getSalaryStatus().name()));
 			row.appendChild(new Label(data.getId()));
 		}
 	}

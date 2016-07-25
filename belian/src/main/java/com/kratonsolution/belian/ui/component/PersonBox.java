@@ -165,11 +165,11 @@ public class PersonBox extends Hbox implements PersonRegistrationListener,Listen
 			}
 			else
 			{
-				if(Strings.isNullOrEmpty(identity.getValue()) || !maps.containsKey(identity.getValue()))
-					throw new RuntimeException(lang.get("message.field.empty"));
-				
-				for(ModelListener<Person> listener:listeners)
-					listener.fireEvent(maps.get(identity.getValue()));
+				if(!Strings.isNullOrEmpty(identity.getValue()) && maps.containsKey(identity.getValue()))
+				{
+					for(ModelListener<Person> listener:listeners)
+						listener.fireEvent(maps.get(identity.getValue()));
+				}
 			}
 		}
 	}

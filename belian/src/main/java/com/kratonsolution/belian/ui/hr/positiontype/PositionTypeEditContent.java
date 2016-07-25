@@ -17,23 +17,26 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.hr.dm.PositionType;
 import com.kratonsolution.belian.hr.svc.PositionTypeService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class PositionTypeEditContent extends FormContent
 {	
 	private final PositionTypeService service = Springs.get(PositionTypeService.class);
-	
-	private Textbox title = new Textbox();
-	
-	private Textbox description = new Textbox();
-	
+
+	private Textbox titile = Components.mandatoryTextBox(false);
+
+	private Textbox description = Components.stdTextBox(null, false);
+
 	private Row row;
-	
+
 	public PositionTypeEditContent(Row row)
 	{
 		super();
@@ -50,32 +53,28 @@ public class PositionTypeEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PositionTypeWindow window = (PositionTypeWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new PositionTypeGridContent());
 			}
 		});
-		
+
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				if(Strings.isNullOrEmpty(title.getText()))
-					throw new WrongValueException(title,"Title cannot be empty");
-			
-				if(Strings.isNullOrEmpty(description.getText()))
-					throw new WrongValueException(description,"Description cannot be empty");
-				
-				PositionType type = service.findOne(RowUtils.string(row, 3));
-				type.setTitle(title.getText());
-				type.setDescription(description.getText());
-				
-				service.edit(type);
-				
-				PositionTypeWindow window = (PositionTypeWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				if(Strings.isNullOrEmpty(titile.getText()))
+					throw new WrongValueException(titile,lang.get("message.field.empty"));
+
+				PositionType type = service.findOne(RowUtils.id(row));
+				if(type != null)
+				{
+					type.setTitle(titile.getText());
+					type.setDescription(description.getText());
+
+					service.edit(type);
+				}
+
+				Flow.next(getParent(), new PositionTypeGridContent());
 			}
 		});
 	}
@@ -83,26 +82,25 @@ public class PositionTypeEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		title.setConstraint("no empty");
-		title.setText(RowUtils.string(this.row,1));
-		title.setWidth("300px");
+		PositionType type = service.findOne(RowUtils.id(row));
+		if(type != null)
+		{
+			titile.setText(type.getTitle());
+			description.setText(type.getDescription());
+		}
 		
-		description.setConstraint("no empty");
-		description.setWidth("300px");
-		description.setText(RowUtils.string(row, 2));
-
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
-		
+
 		Row row1 = new Row();
-		row1.appendChild(new Label("Title"));
-		row1.appendChild(title);
-		
+		row1.appendChild(new Label(lang.get("generic.grid.column.name")));
+		row1.appendChild(titile);
+
 		Row row2 = new Row();
-		row2.appendChild(new Label("Description"));
+		row2.appendChild(new Label(lang.get("generic.grid.column.note")));
 		row2.appendChild(description);
-		
+
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 	}

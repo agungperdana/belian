@@ -206,6 +206,22 @@ public class SessionUtils
 		
 		return new ArrayList<>(maps.values());
 	}
+	
+	public List<String> getAccessibleOrganizations(String organization)
+	{
+		List<String> companys = new ArrayList<>();
+		
+		CompanyStructure companyStructure = companyStructureService.byOrganization(organization);
+		if(companyStructure != null)
+		{
+			Map<String,String> maps = new HashMap<>();
+			extractOrganizationId(maps, companyStructure);
+			
+			companys.addAll(maps.values());
+		}
+		
+		return companys;
+	}
 
 	public void extractOrganizationId(Map<String, String> maps,CompanyStructure structure)
 	{

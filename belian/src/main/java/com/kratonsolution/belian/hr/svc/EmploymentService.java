@@ -121,6 +121,12 @@ public class EmploymentService
 	}
 	
 	@Secured("ROLE_EMPLOYMENT_READ")
+	public List<Employment> findAllIn(List<String> organizations)
+	{
+		return repository.findAll(organizations);
+	}
+	
+	@Secured("ROLE_EMPLOYMENT_READ")
 	public int getSize()
 	{
 		if(utils.isSysAdmin())

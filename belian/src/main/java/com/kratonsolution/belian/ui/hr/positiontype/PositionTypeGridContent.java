@@ -20,12 +20,13 @@ import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class PositionTypeGridContent extends GridContent
 {
-	private final PositionTypeService service = Springs.get(PositionTypeService.class);
+	private PositionTypeService service = Springs.get(PositionTypeService.class);
 	
 	public PositionTypeGridContent()
 	{
@@ -106,7 +107,7 @@ public class PositionTypeGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -151,7 +152,7 @@ public class PositionTypeGridContent extends GridContent
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No position type data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new PositionTypeRowRenderer());
 		grid.setPagingPosition("both");
@@ -160,10 +161,10 @@ public class PositionTypeGridContent extends GridContent
 		grid.appendChild(new Columns());
 		
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Title",null,"175px"));
-		grid.getColumns().appendChild(new Column("Description"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.name"),null,"175px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.name")));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(3).setVisible(false);
+		grid.getColumns().getLastChild().setVisible(false);
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{

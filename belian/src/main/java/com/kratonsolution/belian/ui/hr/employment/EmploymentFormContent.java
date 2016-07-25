@@ -92,7 +92,7 @@ public class EmploymentFormContent extends FormContent
 				
 				service.add(employment);
 				
-				Flow.next(getParent(), new EmploymentEditContent(RowUtils.shield(employee.getId())));
+				Flow.next(getParent(), new EmploymentEditContent(RowUtils.shield(employment.getId())));
 			}
 		});
 	}

@@ -18,6 +18,7 @@ import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.hr.svc.PositionService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -44,8 +45,7 @@ public class PositionGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new PositionModel(8));
+				Flow.next(getParent(),new PositionGridContent());
 			}
 		});
 		
@@ -54,9 +54,7 @@ public class PositionGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PositionWindow window = (PositionWindow)getParent();
-				window.removeGrid();
-				window.insertCreateForm();
+				Flow.next(getParent(), new PositionFormContent());
 			}
 		});
 		
@@ -108,7 +106,7 @@ public class PositionGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -130,7 +128,7 @@ public class PositionGridContent extends GridContent
 								}
 							}
 							
-							grid.setModel(new PositionModel(8));
+							grid.setModel(new PositionModel(utils.getRowPerPage()));
 						}
 					}
 				});
@@ -174,16 +172,15 @@ public class PositionGridContent extends GridContent
 		grid.appendChild(new Columns());
 		
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Start",null,"85px"));
-		grid.getColumns().appendChild(new Column("End",null,"85px"));
-		grid.getColumns().appendChild(new Column("Act. Start",null,"85px"));
-		grid.getColumns().appendChild(new Column("Act. End",null,"85px"));
-		grid.getColumns().appendChild(new Column("Type",null,"150px"));
-		grid.getColumns().appendChild(new Column("Worktime",null,"90px"));
-		grid.getColumns().appendChild(new Column("Status",null,"90px"));
-		grid.getColumns().appendChild(new Column("Salary",null,"90px"));
-		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(9).setVisible(false);
+		grid.getColumns().appendChild(new Column(lang.get("position.grid.column.start"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("position.grid.column.end"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("position.grid.column.actualstart"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("position.grid.column.actualend"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("position.grid.column.worktype"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("position.grid.column.employtype"),null,"90px"));
+		grid.getColumns().appendChild(new Column(lang.get("position.grid.column.status"),null,"90px"));
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("5");
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()

@@ -20,7 +20,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PositionTypeRateModel implements ListModel<PositionTypeRate>
 {
-	private final PositionTypeRateService controller = Springs.get(PositionTypeRateService.class);
+	private PositionTypeRateService controller = Springs.get(PositionTypeRateService.class);
 	
 	private List<PositionTypeRate> data = new ArrayList<PositionTypeRate>();
 	

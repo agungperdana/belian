@@ -26,7 +26,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PositionTypeRateGridContent extends GridContent
 {
-	private final PositionTypeRateService service = Springs.get(PositionTypeRateService.class);
+	private PositionTypeRateService service = Springs.get(PositionTypeRateService.class);
 	
 	public PositionTypeRateGridContent()
 	{
@@ -107,7 +107,7 @@ public class PositionTypeRateGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -147,7 +147,7 @@ public class PositionTypeRateGridContent extends GridContent
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No Position Type Rate data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new PositionTypeRateRowRenderer());
 		grid.setPagingPosition("both");
@@ -155,14 +155,14 @@ public class PositionTypeRateGridContent extends GridContent
 		grid.setPageSize(25);
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Start",null,"85px"));
-		grid.getColumns().appendChild(new Column("End",null,"85px"));
-		grid.getColumns().appendChild(new Column("Position",null,"135px"));
-		grid.getColumns().appendChild(new Column("Rate Type",null,"135px"));
-		grid.getColumns().appendChild(new Column("Period",null,"135px"));
-		grid.getColumns().appendChild(new Column("Amount",null,"135px"));
-		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(7).setVisible(false);
+		grid.getColumns().appendChild(new Column(lang.get("positiontyperate.grid.column.start"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("positiontyperate.grid.column.end"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("positiontyperate.grid.column.position"),null,"135px"));
+		grid.getColumns().appendChild(new Column(lang.get("positiontyperate.grid.column.type"),null,"135px"));
+		grid.getColumns().appendChild(new Column(lang.get("positiontyperate.grid.column.period"),null,"135px"));
+		grid.getColumns().appendChild(new Column(lang.get("positiontyperate.grid.column.amount"),null,"135px"));
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().getLastChild().setVisible(false);
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{

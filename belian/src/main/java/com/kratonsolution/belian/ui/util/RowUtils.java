@@ -48,7 +48,7 @@ public class RowUtils
 	public static Row shield(String value)
 	{
 		if(Strings.isNullOrEmpty(value))
-			return null;
+			throw new RuntimeException("id cannot be empty.");
 		
 		Row row = new Row();
 		row.appendChild(new Label(value));

@@ -58,7 +58,7 @@ public class PositionTypeRateFormContent extends FormContent
 	
 	private Doublebox amount = Components.stdDoubleBox(0);
 	
-	private Textbox comment = new Textbox();
+	private Textbox comment = Components.stdTextBox(null,false);
 	
 	public PositionTypeRateFormContent()
 	{
@@ -130,35 +130,35 @@ public class PositionTypeRateFormContent extends FormContent
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Start Date"));
+		row1.appendChild(new Label(lang.get("positiontyperate.grid.column.start")));
 		row1.appendChild(start);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("End Date"));
+		row2.appendChild(new Label(lang.get("positiontyperate.grid.column.end")));
 		row2.appendChild(end);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Position Type"));
+		row3.appendChild(new Label(lang.get("positiontyperate.grid.column.position")));
 		row3.appendChild(positions);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Rate Type"));
+		row4.appendChild(new Label(lang.get("positiontyperate.grid.column.type")));
 		row4.appendChild(rateTypes);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Period Type"));
+		row5.appendChild(new Label(lang.get("positiontyperate.grid.column.period")));
 		row5.appendChild(periodTypes);
 		
 		Row row6 = new Row();
-		row6.appendChild(new Label("Currency"));
+		row6.appendChild(new Label(lang.get("positiontyperate.grid.column.currency")));
 		row6.appendChild(currencys);
 		
 		Row row7 = new Row();
-		row7.appendChild(new Label("Amount"));
+		row7.appendChild(new Label(lang.get("positiontyperate.grid.column.amount")));
 		row7.appendChild(amount);
 		
 		Row row8 = new Row();
-		row8.appendChild(new Label("Comment"));
+		row8.appendChild(new Label(lang.get("positiontyperate.grid.column.note")));
 		row8.appendChild(comment);
 		
 		rows.appendChild(row1);

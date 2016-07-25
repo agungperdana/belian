@@ -37,6 +37,7 @@ import com.kratonsolution.belian.hr.dm.PositionResponsibility;
 import com.kratonsolution.belian.hr.dm.PositionStatus;
 import com.kratonsolution.belian.hr.dm.SalaryStatus;
 import com.kratonsolution.belian.hr.dm.WorktimeStatus;
+import com.kratonsolution.belian.hr.svc.EmploymentService;
 import com.kratonsolution.belian.hr.svc.PositionService;
 import com.kratonsolution.belian.hr.svc.PositionTypeService;
 import com.kratonsolution.belian.ui.FormContent;
@@ -55,6 +56,8 @@ public class PositioEditContent extends FormContent
 {	
 	private PositionService service = Springs.get(PositionService.class);
 
+	private EmploymentService employmentService = Springs.get(EmploymentService.class);
+	
 	private PersonService personService = Springs.get(PersonService.class);
 
 	private BudgetItemService budgetItemService = Springs.get(BudgetItemService.class);
@@ -142,7 +145,7 @@ public class PositioEditContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 
-				Position position = service.findOne(RowUtils.string(row, 9));
+				Position position = service.findOne(RowUtils.id(row));
 				if(position != null)
 				{
 					position.setActualEnd(DateTimes.sql(actualEnd.getValue()));
@@ -223,6 +226,10 @@ public class PositioEditContent extends FormContent
 		if(position != null)
 		{
 			companys.setOrganization(position.getOrganization());
+			start.setValue(position.getStart());
+			end.setValue(position.getEnd());
+			actualStart.setValue(position.getActualStart());
+			actualEnd.setValue(position.getActualEnd());
 			
 			if(position.getBudgetItem() != null)
 			{
@@ -263,30 +270,33 @@ public class PositioEditContent extends FormContent
 				if(status.equals(PositionStatus.Planned))
 					positionStatusTypes.setSelectedItem(listitem);
 			}
+			
+			companys.setWidth("100%");
 
 			grid.appendChild(new Columns());
-			grid.getColumns().appendChild(new Column(null,null,"125px"));
+			grid.getColumns().appendChild(new Column(null,null,"90px"));
 			grid.getColumns().appendChild(new Column());
-			grid.getColumns().appendChild(new Column(null,null,"125px"));
+			grid.getColumns().appendChild(new Column(null,null,"105px"));
 			grid.getColumns().appendChild(new Column());
+			grid.setSpan("1");
 
 			Row row1 = new Row();
 			row1.appendChild(new Label(lang.get("position.grid.column.company")));
 			row1.appendChild(companys);
-			row1.appendChild(new Label(lang.get("position.grid.column.start")));
-			row1.appendChild(start);
+			row1.appendChild(new Label(lang.get("position.grid.column.worktype")));
+			row1.appendChild(worktimes);
 			
 			Row row2 = new Row();
+			row2.appendChild(new Label(lang.get("position.grid.column.start")));
+			row2.appendChild(start);
 			row2.appendChild(new Label(lang.get("position.grid.column.end")));
 			row2.appendChild(end);
-			row2.appendChild(new Label(lang.get("position.grid.column.actualstart")));
-			row2.appendChild(actualStart);
 			
 			Row row3 = new Row();
+			row3.appendChild(new Label(lang.get("position.grid.column.actualstart")));
+			row3.appendChild(actualStart);
 			row3.appendChild(new Label(lang.get("position.grid.column.actualend")));
 			row3.appendChild(actualEnd);
-			row3.appendChild(new Label(lang.get("position.grid.column.worktype")));
-			row3.appendChild(worktimes);
 			
 			Row row4 = new Row();
 			row4.appendChild(new Label(lang.get("position.grid.column.employtype")));
@@ -310,28 +320,30 @@ public class PositioEditContent extends FormContent
 
 	private void initResponsibilitys()
 	{
-		Position position = service.findOne(RowUtils.string(row, 9));
-
-		NRCToolbar toolbar = new NRCToolbar();
+		NRCToolbar toolbar = new NRCToolbar(responsibilitys);
 
 		responsibilitys.getColumns().appendChild(new Column(null,null,"25px"));
-		responsibilitys.getColumns().appendChild(new Column("Start Date",null,"125px"));
-		responsibilitys.getColumns().appendChild(new Column("End Date",null,"125px"));
-		responsibilitys.getColumns().appendChild(new Column("Description",null,null));
-		responsibilitys.getColumns().appendChild(new Column(null,null,"1px"));
-		responsibilitys.getColumns().getChildren().get(4).setVisible(false);
+		responsibilitys.getColumns().appendChild(new Column(lang.get("position.grid.column.start"),null,"125px"));
+		responsibilitys.getColumns().appendChild(new Column(lang.get("position.grid.column.end"),null,"125px"));
+		responsibilitys.getColumns().appendChild(new Column(lang.get("generic.grid.column.note"),null,null));
+		responsibilitys.getColumns().appendChild(new Column());
+		responsibilitys.getColumns().getLastChild().setVisible(false);
 		responsibilitys.setSpan("3");
 
-		for(PositionResponsibility responsibility:position.getResponsibilitys())
+		Position position = service.findOne(RowUtils.id(row));
+		if(position != null)
 		{
-			Row row = new Row();
-			row.appendChild(Components.checkbox(false));
-			row.appendChild(Components.mandatoryDatebox(responsibility.getStart()));
-			row.appendChild(Components.fullSpanDatebox(responsibility.getEnd()));
-			row.appendChild(Components.mandatoryTextBox(responsibility.getDescription()));
-			row.appendChild(new Label(responsibility.getId()));
+			for(PositionResponsibility responsibility:position.getResponsibilitys())
+			{
+				Row row = new Row();
+				row.appendChild(Components.checkbox(false));
+				row.appendChild(Components.mandatoryDatebox(responsibility.getStart()));
+				row.appendChild(Components.fullSpanDatebox(responsibility.getEnd()));
+				row.appendChild(Components.mandatoryTextBox(responsibility.getDescription()));
+				row.appendChild(new Label(responsibility.getId()));
 
-			responsibilitys.getRows().appendChild(row);
+				responsibilitys.getRows().appendChild(row);
+			}
 		}
 
 		toolbar.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()
@@ -380,30 +392,32 @@ public class PositioEditContent extends FormContent
 
 	private void initFulfillment()
 	{
-		Position position = service.findOne(RowUtils.string(row, 9));
-
-		NRCToolbar toolbar = new NRCToolbar();
+		NRCToolbar toolbar = new NRCToolbar(fulfillments);
 
 		fulfillments.getColumns().appendChild(new Column(null,null,"25px"));
-		fulfillments.getColumns().appendChild(new Column("Start Date",null,"125px"));
-		fulfillments.getColumns().appendChild(new Column("End Date",null,"125px"));
-		fulfillments.getColumns().appendChild(new Column("Person",null,"175px"));
-		fulfillments.getColumns().appendChild(new Column("Description",null,null));
-		fulfillments.getColumns().appendChild(new Column(null,null,"1px"));
-		fulfillments.getColumns().getChildren().get(5).setVisible(false);
+		fulfillments.getColumns().appendChild(new Column(lang.get("position.grid.column.start"),null,"125px"));
+		fulfillments.getColumns().appendChild(new Column(lang.get("position.grid.column.end"),null,"125px"));
+		fulfillments.getColumns().appendChild(new Column(lang.get("generic.grid.column.person"),null,"175px"));
+		fulfillments.getColumns().appendChild(new Column(lang.get("generic.grid.column.note"),null,null));
+		fulfillments.getColumns().appendChild(new Column());
+		fulfillments.getColumns().getLastChild().setVisible(false);
 		fulfillments.setSpan("4");
 
-		for(PositionFulfillment fulfillment:position.getFulfillments())
+		Position position = service.findOne(RowUtils.id(row));
+		if(position != null)
 		{
-			Row row = new Row();
-			row.appendChild(Components.checkbox(false));
-			row.appendChild(Components.mandatoryDatebox(fulfillment.getStart()));
-			row.appendChild(Components.fullSpanDatebox(fulfillment.getEnd()));
-			row.appendChild(Components.fullSpanSelect(fulfillment.getEmployee()));
-			row.appendChild(Components.mandatoryTextBox(fulfillment.getDescription()));
-			row.appendChild(new Label(fulfillment.getId()));
+			for(PositionFulfillment fulfillment:position.getFulfillments())
+			{
+				Row row = new Row();
+				row.appendChild(Components.checkbox(false));
+				row.appendChild(Components.mandatoryDatebox(fulfillment.getStart()));
+				row.appendChild(Components.fullSpanDatebox(fulfillment.getEnd()));
+				row.appendChild(Components.fullSpanSelect(fulfillment.getEmployee()));
+				row.appendChild(Components.textBox(fulfillment.getDescription()));
+				row.appendChild(new Label(fulfillment.getId()));
 
-			fulfillments.getRows().appendChild(row);
+				fulfillments.getRows().appendChild(row);
+			}
 		}
 
 		toolbar.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()
@@ -415,8 +429,8 @@ public class PositioEditContent extends FormContent
 				row.appendChild(Components.checkbox(false));
 				row.appendChild(Components.mandatoryDatebox());
 				row.appendChild(Components.fullSpanDatebox(null));
-				row.appendChild(Components.fullSpanSelect(personService.findAll(),true));
-				row.appendChild(Components.mandatoryTextBox());
+				row.appendChild(Components.fullSpanSelect(employmentService.findAllIn(utils.getAccessibleOrganizations(companys.getOrganization().getId())),true));
+				row.appendChild(Components.textBox(null));
 				row.appendChild(new Label(UUID.randomUUID().toString()));
 
 				fulfillments.getRows().appendChild(row);
@@ -453,30 +467,32 @@ public class PositioEditContent extends FormContent
 
 	private void initReporting()
 	{
-		Position position = service.findOne(RowUtils.string(row, 9));
-
-		NRCToolbar toolbar = new NRCToolbar();
+		NRCToolbar toolbar = new NRCToolbar(reportings);
 
 		reportings.getColumns().appendChild(new Column(null,null,"25px"));
-		reportings.getColumns().appendChild(new Column("Start Date",null,"125px"));
-		reportings.getColumns().appendChild(new Column("End Date",null,"125px"));
-		reportings.getColumns().appendChild(new Column("Position",null,"175px"));
-		reportings.getColumns().appendChild(new Column("Description",null,null));
-		reportings.getColumns().appendChild(new Column(null,null,"1px"));
-		reportings.getColumns().getChildren().get(5).setVisible(false);
+		reportings.getColumns().appendChild(new Column(lang.get("position.grid.column.start"),null,"125px"));
+		reportings.getColumns().appendChild(new Column(lang.get("position.grid.column.end"),null,"125px"));
+		reportings.getColumns().appendChild(new Column(lang.get("position.grid.column.position"),null,"175px"));
+		reportings.getColumns().appendChild(new Column(lang.get("generic.grid.column.note"),null,null));
+		reportings.getColumns().appendChild(new Column());
+		reportings.getColumns().getLastChild().setVisible(false);
 		reportings.setSpan("4");
 
-		for(PositionReportingStructure report:position.getReportings())
+		Position position = service.findOne(RowUtils.id(row));
+		if(position != null)
 		{
-			Row row = new Row();
-			row.appendChild(Components.checkbox(false));
-			row.appendChild(Components.mandatoryDatebox(report.getStart()));
-			row.appendChild(Components.fullSpanDatebox(report.getEnd()));
-			row.appendChild(Components.fullSpanSelect(report.getReportTo()));
-			row.appendChild(Components.mandatoryTextBox(report.getDescription()));
-			row.appendChild(new Label(report.getId()));
+			for(PositionReportingStructure report:position.getReportings())
+			{
+				Row row = new Row();
+				row.appendChild(Components.checkbox(false));
+				row.appendChild(Components.mandatoryDatebox(report.getStart()));
+				row.appendChild(Components.fullSpanDatebox(report.getEnd()));
+				row.appendChild(Components.fullSpanSelect(report.getReportTo()));
+				row.appendChild(Components.mandatoryTextBox(report.getDescription()));
+				row.appendChild(new Label(report.getId()));
 
-			reportings.getRows().appendChild(row);
+				reportings.getRows().appendChild(row);
+			}
 		}
 
 		toolbar.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()
