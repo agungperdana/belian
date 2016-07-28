@@ -24,7 +24,7 @@ import com.kratonsolution.belian.ui.nav.IconBar;
  */
 public class COAWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption("Chart of Account");
+	private Caption caption = new Caption(lang.get("navbar.menu.accounting.coa"));
 	
 	private COAButton status = new COAButton();
 	
@@ -40,6 +40,8 @@ public class COAWindow extends AbstractWindow implements HasGrid,HasCreateForm,H
 	private COAWindow()
 	{
 		super();
+		setWidth("700px");
+		setHeight("600px");
 	}
 	
 	protected void init()

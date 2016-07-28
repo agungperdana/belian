@@ -21,7 +21,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class OrganizationAccountModel implements ListModel<OrganizationAccount>
 {
-	private final OrganizationAccountService controller = Springs.get(OrganizationAccountService.class);
+	private OrganizationAccountService controller = Springs.get(OrganizationAccountService.class);
 	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	

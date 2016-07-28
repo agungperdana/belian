@@ -29,6 +29,7 @@ import com.kratonsolution.belian.accounting.svc.AccountingPeriodService;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.Refreshable;
+import com.kratonsolution.belian.ui.component.CompanyList;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -39,9 +40,15 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class AccountingPeriodEditContent extends AbstractWindow
 {	
-	private final AccountingPeriodService service = Springs.get(AccountingPeriodService.class);
+	private AccountingPeriodService service = Springs.get(AccountingPeriodService.class);
 	
-private Textbox number = new Textbox();
+//	private CompanyStructureService structureService = Springs.get(CompanyStructureService.class);
+//	
+//	private OrganizationPeriodService periodService = Springs.get(OrganizationPeriodService.class);
+	
+	private CompanyList companys = new CompanyList();
+	
+	private Textbox number = Components.mandatoryTextBox(false);
 	
 	private Textbox name = Components.mandatoryTextBox(false);
 	
@@ -81,13 +88,41 @@ private Textbox number = new Textbox();
 	{
 		Toolbar toolbar = new Toolbar();
 		
-		Toolbarbutton back = new Toolbarbutton("Back","/icons/back.png");
-		Toolbarbutton save = new Toolbarbutton("Save","/icons/save.png");
+		Toolbarbutton back = new Toolbarbutton(lang.get("label.component.button.back"),"/icons/back.png");
+		Toolbarbutton save = new Toolbarbutton(lang.get("label.component.button.save"),"/icons/save.png");
+		Toolbarbutton status = new Toolbarbutton(lang.get("label.component.button.close"),"/icons/status_close.png");
+		
+		if(edited != null && edited.isClosed())
+		{
+			status.setImage("/icons/status_open.png");
+			status.setLabel(lang.get("label.component.button.open"));
+		}
 		
 		toolbar.appendChild(back);
 		toolbar.appendChild(save);
+		toolbar.appendChild(status);
 		
 		layout.appendChild(toolbar);
+		
+		status.addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				if(edited != null && edited.isClosed())
+				{
+					service.open(edited);
+					status.setImage("/icons/status_close.png");
+					status.setLabel(lang.get("label.component.button.close"));
+				}
+				else
+				{
+					service.close(edited);
+					status.setImage("/icons/status_open.png");
+					status.setLabel(lang.get("label.component.button.open"));
+				}
+			}
+		});
 		
 		back.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
@@ -109,14 +144,24 @@ private Textbox number = new Textbox();
 			
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,lang.get("message.field.empty"));
-			
-				edited.setNumber(number.getText());
-				edited.setName(name.getText());
-				edited.setFrom(DateTimes.sql(from.getValue()));
-				edited.setTo(DateTimes.sql(to.getValue()));
-				edited.setMonth(Month.valueOf(months.getSelectedItem().getValue().toString()));
 				
-				service.edit(edited);
+				if(companys.getOrganization() == null)
+					throw new WrongValueException(companys,lang.get("message.field.empty"));
+			
+				if(edited != null)
+				{
+					edited.setOrganization(companys.getOrganization());
+					edited.setNumber(number.getText());
+					edited.setName(name.getText());
+					edited.setFrom(DateTimes.sql(from.getValue()));
+					edited.setTo(DateTimes.sql(to.getValue()));
+					edited.setMonth(Month.valueOf(months.getSelectedItem().getValue().toString()));
+					
+					if(edited.getParent() != null)
+						edited.setOrganization(edited.getParent().getOrganization());
+					
+					service.edit(edited);
+				}
 				
 				((Refreshable)getParent()).refresh();
 				onClose();
@@ -126,22 +171,26 @@ private Textbox number = new Textbox();
 
 	public void initForm()
 	{
-		number.setText(edited.getNumber());
-		name.setText(edited.getName());
-		from.setValue(edited.getFrom());
-		to.setValue(edited.getTo());
+		if(edited != null)
+		{
+			number.setText(edited.getNumber());
+			name.setText(edited.getName());
+			from.setValue(edited.getFrom());
+			to.setValue(edited.getTo());
+			companys.setOrganization(edited.getOrganization());
 
-		if(edited.getParent() != null)
-		{
-			parents.appendChild(new Listitem(edited.getParent().getName(),edited.getParent().getId()));
-			parents.setSelectedIndex(0);
-		}
-		
-		for(Month month:Month.values())
-		{
-			Listitem listitem = new Listitem(month.name(),month.name());
-			months.appendChild(listitem);
-			months.setSelectedItem(listitem);
+			if(edited.getParent() != null)
+			{
+				parents.appendChild(new Listitem(edited.getParent().getName(),edited.getParent().getId()));
+				parents.setSelectedIndex(0);
+			}
+			
+			for(Month month:Month.values())
+			{
+				Listitem listitem = new Listitem(month.name(),month.name());
+				months.appendChild(listitem);
+				months.setSelectedItem(listitem);
+			}
 		}
 
 		Grid grid = new Grid();
@@ -149,6 +198,10 @@ private Textbox number = new Textbox();
 		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
 		grid.appendChild(new Rows());
+		
+		Row row0 = new Row();
+		row0.appendChild(new Label(lang.get("accountingperiod.grid.column.company")));
+		row0.appendChild(companys);
 		
 		Row row1 = new Row();
 		row1.appendChild(new Label(lang.get("accountingperiod.grid.column.number")));
@@ -174,6 +227,7 @@ private Textbox number = new Textbox();
 		row6.appendChild(new Label(lang.get("accountingperiod.grid.column.parent")));
 		row6.appendChild(parents);
 		
+		grid.getRows().appendChild(row0);
 		grid.getRows().appendChild(row1);
 		grid.getRows().appendChild(row2);
 		grid.getRows().appendChild(row3);
@@ -183,7 +237,7 @@ private Textbox number = new Textbox();
 		
 		layout.appendChild(grid);
 	}
-	
+
 	@Override
 	public void onClose()
 	{

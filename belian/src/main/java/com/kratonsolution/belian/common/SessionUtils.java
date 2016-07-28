@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -158,6 +159,19 @@ public class SessionUtils
 			{
 				for(CompanyStructure com:structure.getChilds())
 					extractStructure(maps, com);
+			}
+		}
+	}
+	
+	public void extractStructure(Set<Organization> set,CompanyStructure structure)
+	{
+		if(structure != null && !set.contains(structure.getOrganization()))
+		{
+			set.add(structure.getOrganization());
+			if(!structure.getChilds().isEmpty())
+			{
+				for(CompanyStructure com:structure.getChilds())
+					extractStructure(set, com);
 			}
 		}
 	}

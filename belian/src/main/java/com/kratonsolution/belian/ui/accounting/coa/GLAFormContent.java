@@ -38,11 +38,11 @@ public class GLAFormContent extends AbstractWindow
 {	
 	private final GLAccountService service = Springs.get(GLAccountService.class);
 	
-	private Textbox number = new Textbox();
+	private Textbox number = Components.mandatoryTextBox(false);
 	
-	private Textbox name = new Textbox();
+	private Textbox name = Components.mandatoryTextBox(false);
 	
-	private Textbox note = new Textbox();
+	private Textbox note = Components.stdTextBox(null, false);
 	
 	private Listbox parents = Components.newSelect();
 	
@@ -59,7 +59,7 @@ public class GLAFormContent extends AbstractWindow
 		super();
 		setMode(Mode.POPUP);
 		
-		Caption caption = new Caption("GL Account");
+		Caption caption = new Caption(lang.get("coa.grid.column.gl"));
 		caption.setImage("/icons/coa.png");
 		
 		appendChild(caption);
@@ -98,10 +98,10 @@ public class GLAFormContent extends AbstractWindow
 				if(parent != null)
 				{
 					if(Strings.isNullOrEmpty(number.getText()))
-						throw new WrongValueException(number,"Number cannot be empty");
+						throw new WrongValueException(number,lang.get("message.field.empty"));
 				
 					if(Strings.isNullOrEmpty(name.getText()))
-						throw new WrongValueException(name,"Name cannot be empty");
+						throw new WrongValueException(name,lang.get("message.field.empty"));
 				
 					GLAccount coa = new GLAccount();
 					coa.setNumber(number.getValue());
@@ -128,16 +128,6 @@ public class GLAFormContent extends AbstractWindow
 
 	public void initForm()
 	{
-		grid.appendChild(new Rows());
-		
-		number.setConstraint("no empty");
-		number.setWidth("200px");
-		
-		name.setConstraint("no empty");
-		name.setWidth("300px");
-		
-		note.setWidth("400px");
-		
 		if(parent != null)
 		{
 			parents.appendChild(new Listitem(parent.getName(),parent.getId()));
@@ -150,34 +140,32 @@ public class GLAFormContent extends AbstractWindow
 			
 			types.appendChild(listitem);
 			if(parent != null && type.equals(parent.getType()))
-			{
 				types.setSelectedItem(listitem);
-//				number.setValue(service.nextNumber(type));
-			}
 		}
-		
+
+		grid.appendChild(new Rows());
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Number"));
+		row1.appendChild(new Label(lang.get("coa.grid.column.number")));
 		row1.appendChild(number);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Name"));
+		row2.appendChild(new Label(lang.get("coa.grid.column.name")));
 		row2.appendChild(name);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Type"));
+		row3.appendChild(new Label(lang.get("coa.grid.column.type")));
 		row3.appendChild(types);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Parent"));
+		row4.appendChild(new Label(lang.get("coa.grid.column.parent")));
 		row4.appendChild(parents);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Description"));
+		row5.appendChild(new Label(lang.get("coa.grid.column.note")));
 		row5.appendChild(note);
 		
 		grid.getRows().appendChild(row1);

@@ -110,7 +110,7 @@ public class OrganizationAccountGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -153,33 +153,25 @@ public class OrganizationAccountGridContent extends GridContent
 	{
 		final OrganizationAccountModel model = new OrganizationAccountModel(utils.getRowPerPage());
 		
-		grid.setParent(this);
+		appendChild(grid);
+		
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No organization account data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new OrganizationAccountRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(utils.getRowPerPage());
-		
-		Columns columns = new Columns();
-		
-		Column select = new Column(null,null,"25px");
-		Column name = new Column("Name",null,"150px");
-		Column org = new Column("Organization",null,"150px");
-		Column status = new Column("Status",null,"45px");
-		Column note = new Column("Note");
-		Column id = new Column();
-		id.setVisible(false);
-		
-		columns.appendChild(select);
-		columns.appendChild(name);
-		columns.appendChild(org);
-		columns.appendChild(status);
-		columns.appendChild(note);
-		columns.appendChild(id);
-		
-		grid.appendChild(columns);
+		grid.appendChild(new Columns());
+		grid.getColumns().appendChild(new Column(null,null,"25px"));
+		grid.getColumns().appendChild(new Column(lang.get("ogl.grid.column.name"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("ogl.grid.column.company"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("ogl.grid.column.status"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("ogl.grid.column.note"),null,"120px"));
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().getLastChild().setVisible(false);
+		grid.setSpan("1");
+
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override

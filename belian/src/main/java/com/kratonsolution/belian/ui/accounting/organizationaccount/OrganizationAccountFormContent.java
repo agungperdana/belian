@@ -11,7 +11,6 @@ import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Label;
-import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Treeitem;
@@ -26,6 +25,7 @@ import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -46,13 +46,13 @@ public class OrganizationAccountFormContent extends FormContent
 	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
-	private Textbox name = new Textbox();
+	private Textbox name = Components.mandatoryTextBox(false);
 	
-	private Textbox note = new Textbox();
+	private Textbox note = Components.stdTextBox(null, false);
 	
 	private Checkbox status = new Checkbox("Active");
 	
-	private Listbox organizations = Components.newSelect(utils.getOrganizations(),true);
+	private OrganizationList companys = new OrganizationList();
 	
 	private OAccountTree tree = new OAccountTree(null);
 		
@@ -85,13 +85,13 @@ public class OrganizationAccountFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
+					throw new WrongValueException(name,lang.get("message.field.empty"));
 			
 				OrganizationAccount organization = new OrganizationAccount();
 				organization.setName(name.getText());
 				organization.setNote(note.getText());
 				organization.setActive(status.isChecked());
-				organization.setOrganization(organizationService.findOne(organizations.getSelectedItem().getValue().toString()));
+				organization.setOrganization(companys.getOrganization());
 				
 				for(Treeitem treeitem:tree.getTreechildren().getItems())
 				{
@@ -117,31 +117,24 @@ public class OrganizationAccountFormContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		name.setConstraint("no empty");
-		name.setWidth("350px");
-
-		note.setWidth("400px");
-		
-		status.setChecked(true);
-		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Name"));
+		row1.appendChild(new Label(lang.get("ogl.grid.column.name")));
 		row1.appendChild(name);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Organization"));
-		row2.appendChild(organizations);
+		row2.appendChild(new Label(lang.get("ogl.grid.column.company")));
+		row2.appendChild(companys);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Note"));
+		row3.appendChild(new Label(lang.get("ogl.grid.column.note")));
 		row3.appendChild(note);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Status"));
+		row4.appendChild(new Label(lang.get("ogl.grid.column.status")));
 		row4.appendChild(status);
 		
 		rows.appendChild(row1);

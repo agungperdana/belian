@@ -4,15 +4,18 @@
 package com.kratonsolution.belian.accounting.svc;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.kratonsolution.belian.accounting.dm.OGLAccount;
 import com.kratonsolution.belian.accounting.dm.OrganizationAccount;
 import com.kratonsolution.belian.accounting.dm.OrganizationAccountRepository;
 
@@ -34,24 +37,28 @@ public class OrganizationAccountService
 		return Long.valueOf(repository.count()).intValue();
 	}
 	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_ORGANIZATIONACCOUNT_READ")
 	public OrganizationAccount findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_ORGANIZATIONACCOUNT_READ")
 	public OrganizationAccount findOneByOrganization(String id)
 	{
 		return repository.findOneByOrganizationId(id);
 	}
 	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_ORGANIZATIONACCOUNT_READ")
 	public List<OrganizationAccount> findAll()
 	{
 		return repository.findAll();
 	}
 	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_ORGANIZATIONACCOUNT_READ")
 	public List<OrganizationAccount> findAll(int pageIndex,int pageSize,List<String> companys)
 	{
@@ -61,6 +68,7 @@ public class OrganizationAccountService
 		return new ArrayList<>();
 	}
 	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_ORGANIZATIONACCOUNT_READ")
 	public List<OrganizationAccount> findAllByOrganization(String organization)
 	{
@@ -71,6 +79,16 @@ public class OrganizationAccountService
 	public void add(OrganizationAccount org)
 	{
 		repository.save(org);
+	}
+	
+	@Secured("ROLE_ORGANIZATIONACCOUNT_UPDATE")
+	public void edit(OrganizationAccount org,Collection<OGLAccount> accounts)
+	{
+		org.getAccounts().clear();
+		repository.saveAndFlush(org);
+		
+		org.getAccounts().addAll(accounts);
+		repository.saveAndFlush(org);
 	}
 	
 	@Secured("ROLE_ORGANIZATIONACCOUNT_UPDATE")

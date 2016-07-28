@@ -40,7 +40,8 @@ public class AccountingPeriodWindow extends AbstractWindow implements HasGrid,Ha
 	private AccountingPeriodWindow()
 	{
 		super();
-		setWidth("625px");
+		setWidth("700px");
+		setHeight("600px");
 	}
 	
 	protected void init()
@@ -131,7 +132,7 @@ public class AccountingPeriodWindow extends AbstractWindow implements HasGrid,Ha
 	@Override
 	public void insertGrid()
 	{
-		appendChild(new AccountingPeriodGridContent());
+		appendChild(new AccountingPeriodTreeContent());
 	}
 
 	@Override
@@ -139,7 +140,7 @@ public class AccountingPeriodWindow extends AbstractWindow implements HasGrid,Ha
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof AccountingPeriodGridContent)
+			if(component instanceof AccountingPeriodTreeContent)
 			{
 				removeChild(component);
 				break;

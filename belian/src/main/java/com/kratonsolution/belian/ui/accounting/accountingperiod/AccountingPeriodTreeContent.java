@@ -21,13 +21,13 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class AccountingPeriodGridContent extends GridContent implements Refreshable
+public class AccountingPeriodTreeContent extends GridContent implements Refreshable
 {
-	private final AccountingPeriodService service = Springs.get(AccountingPeriodService.class);
+	private AccountingPeriodService service = Springs.get(AccountingPeriodService.class);
 	
 	private APTree tree;
 	
-	public AccountingPeriodGridContent()
+	public AccountingPeriodTreeContent()
 	{
 		super();
 		initToolbar();

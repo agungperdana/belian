@@ -22,6 +22,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.global.dm.Listable;
 
 import lombok.Getter;
@@ -53,6 +54,13 @@ public class AccountingPeriod implements Listable
 	
 	@Column(name="date_to")
 	private Date to;
+	
+	@Column(name="is_closed")
+	private boolean closed;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_organization")
+	private Organization organization;
 	
 	@Column(name="month")
 	@Enumerated(EnumType.STRING)

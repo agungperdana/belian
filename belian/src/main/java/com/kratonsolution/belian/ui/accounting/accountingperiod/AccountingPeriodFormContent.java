@@ -3,9 +3,6 @@
  */
 package com.kratonsolution.belian.ui.accounting.accountingperiod;
 
-import java.util.Date;
-import java.util.UUID;
-
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -32,6 +29,7 @@ import com.kratonsolution.belian.accounting.svc.AccountingPeriodService;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.Refreshable;
+import com.kratonsolution.belian.ui.component.CompanyList;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -43,6 +41,8 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class AccountingPeriodFormContent extends AbstractWindow
 {	
 	private final AccountingPeriodService service = Springs.get(AccountingPeriodService.class);
+	
+	private CompanyList companys = new CompanyList();
 	
 	private Textbox number = new Textbox();
 	
@@ -112,15 +112,21 @@ public class AccountingPeriodFormContent extends AbstractWindow
 			
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,lang.get("message.field.empty"));
+				
+				if(companys.getOrganization() == null)
+					throw new WrongValueException(companys,lang.get("message.field.empty"));
 			
 				AccountingPeriod period = new AccountingPeriod();
-				period.setId(UUID.randomUUID().toString());
 				period.setNumber(number.getText());
 				period.setName(name.getText());
+				period.setOrganization(companys.getOrganization());
 				period.setFrom(DateTimes.sql(from.getValue()));
 				period.setTo(DateTimes.sql(to.getValue()));
 				period.setMonth(Month.valueOf(months.getSelectedItem().getValue().toString()));
 				period.setParent(parent);
+				
+				if(parent != null)
+					period.setOrganization(period.getParent().getOrganization());
 				
 				service.add(period);
 				
@@ -132,19 +138,12 @@ public class AccountingPeriodFormContent extends AbstractWindow
 
 	public void initForm()
 	{
-		number.setConstraint("no empty");
-		number.setWidth("250px");
-		
-		name.setConstraint("no empty");
-		name.setWidth("300px");
-		
-		from.setValue(new Date());
-		parents.setMold("select");
-		
 		if(this.parent != null)
 		{
 			parents.appendChild(new Listitem(parent.getName(),parent.getId()));
 			parents.setSelectedIndex(0);
+			
+			companys.setOrganization(parent.getOrganization());
 		}
 		
 		for(Month month:Month.values())
@@ -158,6 +157,10 @@ public class AccountingPeriodFormContent extends AbstractWindow
 		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
 		grid.appendChild(new Rows());
+		
+		Row row0 = new Row();
+		row0.appendChild(new Label(lang.get("accountingperiod.grid.column.company")));
+		row0.appendChild(companys);
 		
 		Row row1 = new Row();
 		row1.appendChild(new Label(lang.get("accountingperiod.grid.column.number")));
@@ -183,6 +186,7 @@ public class AccountingPeriodFormContent extends AbstractWindow
 		row6.appendChild(new Label(lang.get("accountingperiod.grid.column.parent")));
 		row6.appendChild(parents);
 		
+		grid.getRows().appendChild(row0);
 		grid.getRows().appendChild(row1);
 		grid.getRows().appendChild(row2);
 		grid.getRows().appendChild(row3);

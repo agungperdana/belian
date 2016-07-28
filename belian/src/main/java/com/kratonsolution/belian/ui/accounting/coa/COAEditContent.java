@@ -16,6 +16,7 @@ import org.zkoss.zul.Vlayout;
 
 import com.kratonsolution.belian.accounting.dm.GLAccount;
 import com.kratonsolution.belian.accounting.svc.GLAccountService;
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.Refreshable;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -26,8 +27,10 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class COAEditContent extends Vlayout implements Refreshable
 {	
-	private final GLAccountService service = Springs.get(GLAccountService.class);
+	private GLAccountService service = Springs.get(GLAccountService.class);
 
+	private Language lang = Springs.get(Language.class);
+	
 	private GLAccount root;
 	
 	private COATree tree;
@@ -51,9 +54,9 @@ public class COAEditContent extends Vlayout implements Refreshable
 		toolbar.setHeight("30px");
 		toolbar.setWidth("100%");
 		
-		Toolbarbutton back = new Toolbarbutton("Back","/icons/back.png");
-		Toolbarbutton account = new Toolbarbutton("New Account", "/icons/coasmall.png");
-		Toolbarbutton delete = new Toolbarbutton("Delete","/icons/delete.png");
+		Toolbarbutton back = new Toolbarbutton(lang.get("label.component.button.back"),"/icons/back.png");
+		Toolbarbutton account = new Toolbarbutton(lang.get("label.component.button.new"), "/icons/coasmall.png");
+		Toolbarbutton delete = new Toolbarbutton(lang.get("label.component.button.delete"),"/icons/delete.png");
 		
 		back.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
@@ -85,7 +88,7 @@ public class COAEditContent extends Vlayout implements Refreshable
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -93,10 +96,7 @@ public class COAEditContent extends Vlayout implements Refreshable
 						if(event.getName().equals("onOK"))
 						{
 							if(tree.getSelectedItem() != null)
-							{
 								removeTreeitem(tree.getSelectedItem());
-//								remove(service.findOne(tree.getSelectedItem().getId()));
-							}
 							
 							refresh();
 						}
@@ -178,7 +178,5 @@ public class COAEditContent extends Vlayout implements Refreshable
 			
 			service.edit(parent);
 		}
-		
-//		service.delete(account.getId());
 	}
 }

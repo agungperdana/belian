@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.ui.accounting.organizationaccount;
 
+import java.util.Vector;
+
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -11,20 +13,19 @@ import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Label;
-import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Treeitem;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.accounting.dm.GLAccount;
 import com.kratonsolution.belian.accounting.dm.OGLAccount;
 import com.kratonsolution.belian.accounting.dm.OrganizationAccount;
 import com.kratonsolution.belian.accounting.svc.GLAccountService;
 import com.kratonsolution.belian.accounting.svc.OrganizationAccountService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.component.OrganizationList;
+import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -35,19 +36,19 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class OrganizationAccountEditContent extends FormContent
 {	
-	private final OrganizationAccountService service = Springs.get(OrganizationAccountService.class);
+	private OrganizationAccountService service = Springs.get(OrganizationAccountService.class);
 
-	private final OrganizationService organizationService = Springs.get(OrganizationService.class);
-	
-	private final GLAccountService accountService = Springs.get(GLAccountService.class);
+	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 
-	private Textbox name = new Textbox();
+	private GLAccountService accountService = Springs.get(GLAccountService.class);
 
-	private Textbox note = new Textbox();
+	private Textbox name = Components.mandatoryTextBox(false);
+
+	private Textbox note = Components.stdTextBox(null, false);
 
 	private Checkbox status = new Checkbox("Active");
 
-	private Listbox organizations = new Listbox();
+	private OrganizationList companys = new OrganizationList();
 
 	private OAccountTree tree;
 
@@ -59,8 +60,8 @@ public class OrganizationAccountEditContent extends FormContent
 		this.row = row;
 		initToolbar();
 		initForm();
-		
-		tree = new OAccountTree(service.findOne(RowUtils.string(row, 5)));
+
+		tree = new OAccountTree(service.findOne(RowUtils.id(row)));
 		appendChild(tree);
 	}
 
@@ -84,28 +85,29 @@ public class OrganizationAccountEditContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
+					throw new WrongValueException(name,lang.get("message.field.empty"));
 
-				OrganizationAccount org = service.findOne(RowUtils.string(row,5));
-				org.setName(name.getText());
-				org.setActive(status.isChecked());
-				org.setNote(note.getText());
-				org.getAccounts().clear();
-				service.edit(org);
-				
-				for(Treeitem treeitem:tree.getItems())
+				OrganizationAccount org = service.findOne(RowUtils.id(row));
+				if(org != null)
 				{
-					GLAccount account = accountService.findOne(treeitem.getId());
+					org.setName(name.getText());
+					org.setActive(status.isChecked());
+					org.setNote(note.getText());
+
+					Vector<OGLAccount> vAccount = new Vector<>();
 					
-					OGLAccount oglAccount = new OGLAccount();
-					oglAccount.setAccount(account);
-					oglAccount.setSelected(treeitem.isSelected());
-					oglAccount.setParent(org);
-					
-					org.getAccounts().add(oglAccount);
+					for(Treeitem treeitem:tree.getItems())
+					{
+						OGLAccount oglAccount = new OGLAccount();
+						oglAccount.setAccount(accountService.findOne(treeitem.getId()));
+						oglAccount.setSelected(treeitem.isSelected());
+						oglAccount.setParent(org);
+
+						vAccount.add(oglAccount);
+					}
+
+					service.edit(org,vAccount);
 				}
-					
-				service.edit(org);
 
 				OrganizationAccountWindow window = (OrganizationAccountWindow)getParent();
 				window.removeEditForm();
@@ -117,39 +119,33 @@ public class OrganizationAccountEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		OrganizationAccount account = service.findOne(RowUtils.string(row, 5));
-		
-		name.setConstraint("no empty");
-		name.setWidth("350px");
-		name.setText(account.getName());
+		OrganizationAccount account = service.findOne(RowUtils.id(row));
+		if(account != null)
+		{
+			name.setText(account.getName());
+			note.setText(account.getNote());
+			status.setChecked(account.isActive());
+			companys.setOrganization(account.getOrganization());
+		}
 
-		note.setText(account.getNote());
-		note.setWidth("400px");
-		
-		status.setChecked(account.isActive());
-		
-		organizations.setMold("select");
-		organizations.appendChild(new Listitem(account.getOrganization().getName(),account.getOrganization().getId()));
-		organizations.setSelectedIndex(0);
-		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Name"));
+		row1.appendChild(new Label(lang.get("ogl.grid.column.name")));
 		row1.appendChild(name);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Organization"));
-		row2.appendChild(organizations);
+		row2.appendChild(new Label(lang.get("ogl.grid.column.company")));
+		row2.appendChild(companys);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Note"));
+		row3.appendChild(new Label(lang.get("ogl.grid.column.note")));
 		row3.appendChild(note);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Status"));
+		row4.appendChild(new Label(lang.get("ogl.grid.column.status")));
 		row4.appendChild(status);
 		
 		rows.appendChild(row1);

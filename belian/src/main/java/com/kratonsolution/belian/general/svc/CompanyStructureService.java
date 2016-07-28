@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.general.svc;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.general.dm.CompanyStructure;
 import com.kratonsolution.belian.general.dm.CompanyStructureRepository;
 import com.kratonsolution.belian.general.dm.Party;
@@ -44,6 +46,15 @@ public class CompanyStructureService
 	public List<CompanyStructure> findAll()
 	{
 		return repository.findAll();
+	}
+	
+	@Secured("ROLE_COMPANY_STRUCTURE_READ")
+	public List<CompanyStructure> findAllCompany(Date date)
+	{
+		if(date == null)
+			return repository.findAllCompany(DateTimes.currentDate());
+		else
+			return repository.findAllCompany(date);
 	}
 	
 	@Secured("ROLE_COMPANY_STRUCTURE_READ")

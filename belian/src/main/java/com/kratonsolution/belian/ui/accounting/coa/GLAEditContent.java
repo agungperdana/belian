@@ -38,11 +38,11 @@ public class GLAEditContent extends AbstractWindow
 {	
 	private GLAccountService service = Springs.get(GLAccountService.class);
 	
-	private Textbox number = new Textbox();
+	private Textbox number = Components.mandatoryTextBox(false);
 	
-	private Textbox name = new Textbox();
+	private Textbox name = Components.mandatoryTextBox(false);
 	
-	private Textbox note = new Textbox();
+	private Textbox note = Components.stdTextBox(null, false);
 	
 	private Listbox parents = Components.newSelect();
 	
@@ -59,7 +59,7 @@ public class GLAEditContent extends AbstractWindow
 		super();
 		setMode(Mode.POPUP);
 		
-		Caption caption = new Caption("GL Account");
+		Caption caption = new Caption(lang.get("coa.grid.column.gl"));
 		caption.setImage("/icons/coa.png");
 		
 		appendChild(caption);
@@ -95,17 +95,20 @@ public class GLAEditContent extends AbstractWindow
 			public void onEvent(Event event) throws Exception
 			{
 				if(Strings.isNullOrEmpty(number.getText()))
-					throw new WrongValueException(number,"Number cannot be empty");
+					throw new WrongValueException(number,lang.get("message.field.empty"));
 			
 				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
+					throw new WrongValueException(name,lang.get("message.field.empty"));
 			
-				edited.setNumber(number.getValue());
-				edited.setName(name.getText());
-				edited.setNote(note.getText());
-				edited.setType(GLAccountType.valueOf(types.getSelectedItem().getValue().toString()));
-				
-				service.edit(edited);
+				if(edited != null)
+				{
+					edited.setNumber(number.getValue());
+					edited.setName(name.getText());
+					edited.setNote(note.getText());
+					edited.setType(GLAccountType.valueOf(types.getSelectedItem().getValue().toString()));
+					
+					service.edit(edited);
+				}
 
 				((Refreshable)getParent()).refresh();
 				
@@ -118,59 +121,53 @@ public class GLAEditContent extends AbstractWindow
 
 	public void initForm()
 	{
+
+		if(edited != null)
+		{
+			number.setValue(edited.getNumber());
+			name.setText(edited.getName());
+			note.setText(edited.getNote());
+
+			if(edited.getParent() != null)
+			{
+				parents.appendChild(new Listitem(edited.getParent().getName(),edited.getParent().getId()));
+				parents.setSelectedIndex(0);
+			}
+		
+			for(GLAccountType type:GLAccountType.values())
+			{
+				Listitem listitem = new Listitem(type.name(),type.name());
+				types.appendChild(listitem);
+				
+				if(type.equals(edited.getType()))
+					types.setSelectedItem(listitem);
+			}
+		}
+		
+		grid.setWidth("100%");
 		grid.appendChild(new Rows());
-		
-		number.setConstraint("no empty");
-		number.setWidth("200px");
-		number.setValue(edited.getNumber());
-		
-		name.setConstraint("no empty");
-		name.setWidth("300px");
-		name.setText(edited.getName());
-		
-		note.setWidth("400px");
-		note.setText(edited.getNote());
-		
-		types.setMold("select");
-		parents.setMold("select");
-		
-		if(edited.getParent() != null)
-		{
-			parents.appendChild(new Listitem(edited.getParent().getName(),edited.getParent().getId()));
-			parents.setSelectedIndex(0);
-		}
-		
-		for(GLAccountType type:GLAccountType.values())
-		{
-			Listitem listitem = new Listitem(type.name(),type.name());
-			types.appendChild(listitem);
-			
-			if(type.equals(edited.getType()))
-				types.setSelectedItem(listitem);
-		}
-		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Number"));
+		row1.appendChild(new Label(lang.get("coa.grid.column.number")));
 		row1.appendChild(number);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Name"));
+		row2.appendChild(new Label(lang.get("coa.grid.column.name")));
 		row2.appendChild(name);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Type"));
+		row3.appendChild(new Label(lang.get("coa.grid.column.type")));
 		row3.appendChild(types);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Parent"));
+		row4.appendChild(new Label(lang.get("coa.grid.column.parent")));
 		row4.appendChild(parents);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Description"));
+		row5.appendChild(new Label(lang.get("coa.grid.column.note")));
 		row5.appendChild(note);
 		
 		grid.getRows().appendChild(row1);

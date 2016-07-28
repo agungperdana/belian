@@ -24,7 +24,7 @@ import com.kratonsolution.belian.ui.nav.IconBar;
  */
 public class OrganizationAccountWindow extends AbstractWindow implements HasCreateForm,HasEditForm,HasGrid
 {
-	private final Caption caption = new Caption("Organization GL Account");
+	private final Caption caption = new Caption(lang.get("navbar.menu.accounting.ogl"));
 	
 	private OrganizationAccountButton status = new OrganizationAccountButton();
 	
@@ -40,6 +40,8 @@ public class OrganizationAccountWindow extends AbstractWindow implements HasCrea
 	private OrganizationAccountWindow()
 	{
 		super();
+		setWidth("700px");
+		setHeight("600px");
 	}
 	
 	protected void init()

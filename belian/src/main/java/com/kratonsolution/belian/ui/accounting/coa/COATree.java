@@ -16,6 +16,7 @@ import org.zkoss.zul.Treerow;
 
 import com.kratonsolution.belian.accounting.dm.GLAccount;
 import com.kratonsolution.belian.accounting.svc.GLAccountService;
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -25,6 +26,8 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class COATree extends Tree
 {
+	private Language lang = Springs.get(Language.class);
+	
 	private GLAccountService service = Springs.get(GLAccountService.class);
 	
 	private GLAccount rootAccount;
@@ -39,7 +42,7 @@ public class COATree extends Tree
 	protected void initHeader()
 	{
 		Treecols headers = new Treecols();
-		Treecol header = new Treecol("General Ledger Account");
+		Treecol header = new Treecol(lang.get("coa.grid.column.title"));
 		headers.appendChild(header);
 		
 		appendChild(headers);

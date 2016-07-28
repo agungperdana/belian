@@ -9,5 +9,5 @@ package com.kratonsolution.belian.accounting.dm;
  */
 public enum GLAccountType
 {
-	ASSETS,LIABILITIES,EQUITY,REVENUE,DRAWING,COGS,EXPENSE
+	Assets,Liabilities,Equity,Capital,Drawing,Revenue,Expense,Cogs
 }

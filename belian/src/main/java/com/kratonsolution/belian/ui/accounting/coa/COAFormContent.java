@@ -17,6 +17,8 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.GLAccount;
 import com.kratonsolution.belian.accounting.svc.GLAccountService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -26,13 +28,13 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class COAFormContent extends FormContent
 {	
-	private final GLAccountService service = Springs.get(GLAccountService.class);
+	private GLAccountService service = Springs.get(GLAccountService.class);
 	
-	private Textbox number = new Textbox();
+	private Textbox number = Components.mandatoryTextBox(false);
 	
-	private Textbox name = new Textbox();
+	private Textbox name = Components.mandatoryTextBox(false);
 	
-	private Textbox note = new Textbox();
+	private Textbox note = Components.stdTextBox(null,false);
 	
 	public COAFormContent()
 	{
@@ -49,9 +51,7 @@ public class COAFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				COAWindow window = (COAWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new COAGridContent());
 			}
 		});
 		
@@ -61,10 +61,10 @@ public class COAFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				if(Strings.isNullOrEmpty(number.getText()))
-					throw new WrongValueException(number,"Number cannot be empty");
+					throw new WrongValueException(number,lang.get("message.field.empty"));
 			
 				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
+					throw new WrongValueException(name,lang.get("message.field.empty"));
 			
 				GLAccount coa = new GLAccount();
 				coa.setNumber(number.getValue());
@@ -73,9 +73,7 @@ public class COAFormContent extends FormContent
 				
 				service.add(coa);
 				
-				COAWindow window = (COAWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new COAGridContent());
 			}
 		});
 	}
@@ -83,28 +81,20 @@ public class COAFormContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		number.setConstraint("no empty");
-		number.setWidth("200px");
-		
-		name.setConstraint("no empty");
-		name.setWidth("300px");
-		
-		note.setWidth("400px");
-		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Number"));
+		row1.appendChild(new Label(lang.get("coa.grid.column.number")));
 		row1.appendChild(number);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Name"));
+		row2.appendChild(new Label(lang.get("coa.grid.column.name")));
 		row2.appendChild(name);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Description"));
+		row3.appendChild(new Label(lang.get("coa.grid.column.note")));
 		row3.appendChild(note);
 		
 		rows.appendChild(row1);

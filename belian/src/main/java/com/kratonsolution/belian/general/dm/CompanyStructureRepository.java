@@ -3,10 +3,12 @@
  */
 package com.kratonsolution.belian.general.dm;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 /**
  * @author Agung Dodi Perdana
@@ -21,4 +23,11 @@ public interface CompanyStructureRepository extends JpaRepository<CompanyStructu
 	public List<String> findAllOrganizationId(); 
 	
 	public CompanyStructure findOneByOrganizationId(String id);
+
+	@Query("FROM CompanyStructure com WHERE "
+			+ "com.type = 'BRANCH' "
+			+ "AND ((:date BETWEEN com.from AND com.to) "
+			+ "OR (com.from <= :date AND com.to IS NULL)) "
+			+ "ORDER BY com.organization.name ASC ")
+	public List<CompanyStructure> findAllCompany(@Param("date")Date date); 
 }

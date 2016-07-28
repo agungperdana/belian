@@ -111,7 +111,7 @@ public class COAGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -154,31 +154,24 @@ public class COAGridContent extends GridContent
 	{
 		final COAModel model = new COAModel(utils.getRowPerPage());
 		
-		grid.setParent(this);
+		appendChild(grid);
+		
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No chart of account data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new COARowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
 		grid.setPageSize(utils.getRowPerPage());
+		grid.appendChild(new Columns());
+		grid.getColumns().appendChild(new Column(null,null,"25px"));
+		grid.getColumns().appendChild(new Column(lang.get("coa.grid.column.number"),null,"100px"));
+		grid.getColumns().appendChild(new Column(lang.get("coa.grid.column.name"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("coa.grid.column.note")));
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().getLastChild().setVisible(false);
+		grid.setSpan("2");
 		
-		Columns columns = new Columns();
-		
-		Column select = new Column(null,null,"25px");
-		Column number = new Column("Number",null,"100px");
-		Column name = new Column("Name",null,"150px");
-		Column note = new Column("Description");
-		Column id = new Column();
-		id.setVisible(false);
-		
-		columns.appendChild(select);
-		columns.appendChild(number);
-		columns.appendChild(name);
-		columns.appendChild(note);
-		columns.appendChild(id);
-		
-		grid.appendChild(columns);
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override
@@ -201,7 +194,6 @@ public class COAGridContent extends GridContent
 				{
 					COAWindow window = (COAWindow)getParent();
 					window.removeGrid();
-//					window.insertEditForm(row);
 					COAEditContent content = new COAEditContent(service.findOne(RowUtils.string(row, 4)));
 					window.appendChild(content);
 				}

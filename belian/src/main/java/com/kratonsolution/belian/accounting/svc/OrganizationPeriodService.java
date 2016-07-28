@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.accounting.svc;
 
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,8 +14,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.kratonsolution.belian.accounting.dm.AccountingPeriod;
-import com.kratonsolution.belian.accounting.dm.AccountingPeriodRepository;
+import com.kratonsolution.belian.accounting.dm.OrganizationPeriod;
+import com.kratonsolution.belian.accounting.dm.OrganizationPeriodRepository;
 
 /**
  * 
@@ -25,10 +24,10 @@ import com.kratonsolution.belian.accounting.dm.AccountingPeriodRepository;
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
-public class AccountingPeriodService
+public class OrganizationPeriodService
 {
 	@Autowired
-	private AccountingPeriodRepository repository;
+	private OrganizationPeriodRepository repository;
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_ACCOUNTINGPERIOD_READ")
@@ -39,48 +38,41 @@ public class AccountingPeriodService
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_ACCOUNTINGPERIOD_READ")
-	public AccountingPeriod findOne(String id)
+	public OrganizationPeriod findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_ACCOUNTINGPERIOD_READ")
-	public List<AccountingPeriod> findAll()
+	public OrganizationPeriod findOne(String company,String period)
+	{
+		return repository.findOne(company,period);
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_ACCOUNTINGPERIOD_READ")
+	public List<OrganizationPeriod> findAll()
 	{
 		return repository.findAll();
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_ACCOUNTINGPERIOD_READ")
-	public List<AccountingPeriod> findAllRoot()
-	{
-		return repository.findAllByParentIsNull();
-	}
-	
-	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_ACCOUNTINGPERIOD_READ")
-	public List<AccountingPeriod> findAll(int pageIndex,int pageSize)
+	public List<OrganizationPeriod> findAll(int pageIndex,int pageSize)
 	{
 		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
 	}
 	
-	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	@Secured("ROLE_ACCOUNTINGPERIOD_READ")
-	public AccountingPeriod findForDate(Date date)
-	{
-		return repository.findForDate(date);
-	}
-	
 	@Secured("ROLE_ACCOUNTINGPERIOD_CREATE")
-	public void add(AccountingPeriod period)
+	public void add(OrganizationPeriod period)
 	{
 		period.setId(UUID.randomUUID().toString());
 		repository.save(period);
 	}
 	
 	@Secured("ROLE_ACCOUNTINGPERIOD_UPDATE")
-	public void edit(AccountingPeriod period)
+	public void edit(OrganizationPeriod period)
 	{
 		repository.saveAndFlush(period);
 	}
@@ -92,13 +84,13 @@ public class AccountingPeriodService
 	}
 	
 	@Secured("ROLE_ACCOUNTINGPERIOD_UPDATE")
-	public void close(AccountingPeriod period)
+	public void close(OrganizationPeriod period)
 	{
 		period.setClosed(true);
 	}
 	
 	@Secured("ROLE_ACCOUNTINGPERIOD_UPDATE")
-	public void open(AccountingPeriod period)
+	public void open(OrganizationPeriod period)
 	{
 		period.setClosed(false);
 	}

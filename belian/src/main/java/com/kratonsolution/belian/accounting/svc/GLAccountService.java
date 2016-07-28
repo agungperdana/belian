@@ -112,8 +112,6 @@ public class GLAccountService
 		
 		for(GLAccountChangeEventListener listener:listeners)
 			listener.fireObjectDeleted(account.getId());
-		
-		System.out.println("delete done");
 	}
 	
 	@Secured("ROLE_COA_READ")

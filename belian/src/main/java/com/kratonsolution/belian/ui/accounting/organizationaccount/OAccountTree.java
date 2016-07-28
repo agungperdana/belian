@@ -15,6 +15,7 @@ import com.kratonsolution.belian.accounting.dm.GLAccount;
 import com.kratonsolution.belian.accounting.dm.OGLAccount;
 import com.kratonsolution.belian.accounting.dm.OrganizationAccount;
 import com.kratonsolution.belian.accounting.svc.GLAccountService;
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -24,6 +25,8 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class OAccountTree extends Tree
 {
+	private Language lang = Springs.get(Language.class);
+	
 	private GLAccountService service = Springs.get(GLAccountService.class);
 	
 	private OrganizationAccount edited;
@@ -43,7 +46,7 @@ public class OAccountTree extends Tree
 	protected void initHeaders()
 	{
 		Treecols headers = new Treecols();
-		headers.appendChild(new Treecol("General Ledger Account"));
+		headers.appendChild(new Treecol(lang.get("ogl.grid.column.title")));
 		
 		appendChild(headers);
 	}

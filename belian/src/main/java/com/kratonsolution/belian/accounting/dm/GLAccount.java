@@ -51,7 +51,7 @@ public class GLAccount implements Serializable
 
 	@Column(name="type")
 	@Enumerated(EnumType.STRING)
-	private GLAccountType type = GLAccountType.ASSETS;
+	private GLAccountType type = GLAccountType.Assets;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_gl_account_parent")

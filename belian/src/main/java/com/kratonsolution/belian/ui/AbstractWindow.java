@@ -6,6 +6,7 @@ package com.kratonsolution.belian.ui;
 import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.common.Language;
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -16,6 +17,8 @@ import com.kratonsolution.belian.ui.util.Springs;
 public abstract class AbstractWindow extends Window implements HasStatus
 {	
 	protected Language lang = Springs.get(Language.class);
+	
+	protected SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public AbstractWindow()
 	{
