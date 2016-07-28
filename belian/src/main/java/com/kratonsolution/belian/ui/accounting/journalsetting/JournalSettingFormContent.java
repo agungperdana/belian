@@ -3,27 +3,31 @@
  */
 package com.kratonsolution.belian.ui.accounting.journalsetting;
 
+import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
+import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
-import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
+import org.zkoss.zul.Rows;
+import org.zkoss.zul.Tab;
+import org.zkoss.zul.Tabbox;
+import org.zkoss.zul.Tabpanel;
+import org.zkoss.zul.Tabpanels;
+import org.zkoss.zul.Tabs;
+import org.zkoss.zul.Textbox;
 
-import com.kratonsolution.belian.accounting.dm.JournalSetting;
-import com.kratonsolution.belian.accounting.dm.OGLAccount;
-import com.kratonsolution.belian.accounting.dm.OrganizationAccount;
-import com.kratonsolution.belian.accounting.svc.GLAccountService;
+import com.kratonsolution.belian.accounting.dm.AutoJournalSales;
+import com.kratonsolution.belian.accounting.dm.AutoJournalSetting;
 import com.kratonsolution.belian.accounting.svc.JournalSettingService;
-import com.kratonsolution.belian.accounting.svc.OrganizationAccountService;
-import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.Organization;
-import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.accounting.organizationaccount.OGLAccountList;
+import com.kratonsolution.belian.ui.component.CompanyList;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -35,27 +39,29 @@ public class JournalSettingFormContent extends FormContent
 {	
 	private JournalSettingService service = Springs.get(JournalSettingService.class);
 	
-	private OrganizationService organizationService = Springs.get(OrganizationService.class);
+	private CompanyList companys = new CompanyList();
 	
-	private OrganizationAccountService organizationAccountService = Springs.get(OrganizationAccountService.class);
+	private OGLAccountList cashes = new OGLAccountList(companys.getOrganization());
 	
-	private GLAccountService accountService = Springs.get(GLAccountService.class);
+	private OGLAccountList serviceSales = new OGLAccountList(companys.getOrganization());
 	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
+	private OGLAccountList goodsSales = new OGLAccountList(companys.getOrganization());
 	
-	private Listbox organizations = Components.newSelect();
+	private OGLAccountList taxpayable = new OGLAccountList(companys.getOrganization());
 	
-	private Listbox cashes = Components.newSelect();
+	private OGLAccountList payable = new OGLAccountList(companys.getOrganization());
 	
-	private Listbox saleses = Components.newSelect();
+	private Textbox note = Components.stdTextBox(null,false);
 	
-	private Listbox ppnPayables = Components.newSelect();
+	private Tabbox tabbox = new Tabbox();
 	
 	public JournalSettingFormContent()
 	{
 		super();
 		initToolbar();
 		initForm();
+		initTabbox();
+		initSales();
 	}
 
 	@Override
@@ -66,9 +72,7 @@ public class JournalSettingFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				JournalSettingWindow window = (JournalSettingWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new JournalSettingGridContent());
 			}
 		});
 		
@@ -77,17 +81,21 @@ public class JournalSettingFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				JournalSetting setting = new JournalSetting();
-				setting.setOrganization(organizationService.findOne(Components.string(organizations)));
-				setting.setCash(accountService.findOne(Components.string(cashes)));
-				setting.setSales(accountService.findOne(Components.string(saleses)));
-				setting.setPpnPayable(accountService.findOne(Components.string(ppnPayables)));
-
+				if(service.findOneByOrganizationId(companys.getOrganization().getId()) != null)
+					throw new WrongValueException(companys,lang.get("message.field.exist"));
+				
+				AutoJournalSetting setting = new AutoJournalSetting();
+				setting.setOrganization(companys.getOrganization());
+				setting.setSales(new AutoJournalSales());
+				setting.getSales().setCash(cashes.getAccount());
+				setting.getSales().setServiceSales(serviceSales.getAccount());
+				setting.getSales().setGoodsSales(goodsSales.getAccount());
+				setting.getSales().setTaxPayable(taxpayable.getAccount());
+				setting.getSales().setPayable(payable.getAccount());
+				
 				service.add(setting);
 				
-				JournalSettingWindow window = (JournalSettingWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new JournalSettingGridContent());
 			}
 		});
 	}
@@ -95,53 +103,85 @@ public class JournalSettingFormContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		for(Organization unit:utils.getOrganizations())
-			organizations.appendChild(new Listitem(unit.getName(),unit.getId()));
-
-		organizations.addEventListener(Events.ON_SELECT, new EventListener()
+		companys.addEventListener(Events.ON_SELECT, new EventListener<Event>()
 		{
 			@Override
-			public void onEvent(Event event) throws Exception
+			public void onEvent(Event arg0) throws Exception
 			{
-				OrganizationAccount accounts = organizationAccountService.findOneByOrganization(Components.string(organizations));
-				if(accounts != null)
-				{
-					for(OGLAccount account:accounts.getAccounts())
-					{
-						cashes.appendChild(new Listitem(account.getLabel(),account.getValue()));
-						saleses.appendChild(new Listitem(account.getLabel(),account.getValue()));
-						ppnPayables.appendChild(new Listitem(account.getLabel(),account.getValue()));
-					}
-				}
+				cashes.repopulate(companys.getOrganization());
+				serviceSales.repopulate(companys.getOrganization());
+				taxpayable.repopulate(companys.getOrganization());
+				payable.repopulate(companys.getOrganization());
 			}
 		});
 		
-		Components.setDefault(cashes);
-		Components.setDefault(saleses);
-		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"150px"));
+		grid.getColumns().appendChild(new Column(null,null,"165px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Organization"));
-		row1.appendChild(organizations);
+		row1.appendChild(new Label(lang.get("generic.grid.column.company")));
+		row1.appendChild(companys);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Cash Account"));
-		row2.appendChild(cashes);
-		
-		Row row3 = new Row();
-		row3.appendChild(new Label("Sales Account"));
-		row3.appendChild(saleses);
-		
-		Row row4 = new Row();
-		row4.appendChild(new Label("PPN Payable Account"));
-		row4.appendChild(ppnPayables);
+		row2.appendChild(new Label(lang.get("generic.grid.column.note")));
+		row2.appendChild(note);
 		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
-		rows.appendChild(row3);
-		rows.appendChild(row4);
+		
+		appendChild(grid);
+	}
+	
+	private void initTabbox()
+	{
+		tabbox.setWidth("100%");
+		tabbox.appendChild(new Tabs());
+		tabbox.appendChild(new Tabpanels());
+		tabbox.getTabs().appendChild(new Tab("SALES"));
+		tabbox.getTabs().appendChild(new Tab("PAYROLL"));
+		tabbox.getTabs().appendChild(new Tab("PAYMENT"));
+		tabbox.getTabpanels().appendChild(new Tabpanel());
+		tabbox.getTabpanels().appendChild(new Tabpanel());
+		tabbox.getTabpanels().appendChild(new Tabpanel());
+		
+		appendChild(tabbox);
+	}
+	
+	private void initSales()
+	{
+		Grid layout = new Grid();
+		layout.appendChild(new Columns());
+		layout.appendChild(new Rows());
+		layout.getColumns().appendChild(new Column(null,null,"165px"));
+		layout.getColumns().appendChild(new Column());
+		
+		Row row2 = new Row();
+		row2.appendChild(new Label(lang.get("journalsetting.grid.column.cash")));
+		row2.appendChild(cashes);
+		
+		Row row3 = new Row();
+		row3.appendChild(new Label(lang.get("journalsetting.grid.column.servicesales")));
+		row3.appendChild(serviceSales);
+		
+		Row row4 = new Row();
+		row4.appendChild(new Label(lang.get("journalsetting.grid.column.goodssales")));
+		row4.appendChild(goodsSales);
+		
+		Row row5 = new Row();
+		row5.appendChild(new Label(lang.get("journalsetting.grid.column.taxpayable")));
+		row5.appendChild(taxpayable);
+		
+		Row row6 = new Row();
+		row6.appendChild(new Label(lang.get("journalsetting.grid.column.payable")));
+		row6.appendChild(payable);
+		
+		layout.getRows().appendChild(row2);
+		layout.getRows().appendChild(row3);
+		layout.getRows().appendChild(row4);
+		layout.getRows().appendChild(row5);
+		layout.getRows().appendChild(row6);
+		
+		tabbox.getTabpanels().getFirstChild().appendChild(layout);
 	}
 }

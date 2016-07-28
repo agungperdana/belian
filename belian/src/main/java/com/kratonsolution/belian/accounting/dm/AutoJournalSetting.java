@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.util.UUID;
 
 import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -31,7 +33,7 @@ import lombok.Setter;
 @Entity
 @Cacheable
 @Table(name="journal_setting")
-public class JournalSetting implements Serializable
+public class AutoJournalSetting implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -41,23 +43,15 @@ public class JournalSetting implements Serializable
 	@NotFound(action=NotFoundAction.IGNORE)
 	private Organization organization;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_gl_account_cash")
-	@NotFound(action=NotFoundAction.IGNORE)
-	private GLAccount cash;
+	@Column(name="note")
+	private String note;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_gl_account_sales")
-	@NotFound(action=NotFoundAction.IGNORE)
-	private GLAccount sales;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_gl_account_ppn_payable")
-	@NotFound(action=NotFoundAction.IGNORE)
-	private GLAccount ppnPayable;
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="fk_auto_journal_sales")
+	private AutoJournalSales sales;
 	
 	@Version
 	private Long version;
 	
-	public JournalSetting(){}
+	public AutoJournalSetting(){}
 }

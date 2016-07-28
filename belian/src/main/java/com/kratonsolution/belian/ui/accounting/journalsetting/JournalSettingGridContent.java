@@ -110,7 +110,7 @@ public class JournalSettingGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -155,9 +155,10 @@ public class JournalSettingGridContent extends GridContent
 	{
 		final JournalSettingModel model = new JournalSettingModel(utils.getRowPerPage());
 		
-		grid.setParent(this);
+		appendChild(grid);
+		
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No journal setting data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new JournalSettingRowRenderer());
 		grid.setPagingPosition("both");
@@ -165,9 +166,10 @@ public class JournalSettingGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Organization",null,"85px"));
-		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(2).setVisible(false);
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.company"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.note"),null,"85px"));
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("1");
 		grid.appendChild(getFoot(3));
 		

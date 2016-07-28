@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.kratonsolution.belian.accounting.dm.JournalSetting;
+import com.kratonsolution.belian.accounting.dm.AutoJournalSetting;
 import com.kratonsolution.belian.accounting.dm.JournalSettingRepository;
 
 /**
@@ -45,34 +45,40 @@ public class JournalSettingService
 	}
 
 	@Secured("ROLE_JOURNALSETTING_READ")
-	public JournalSetting findOne(String id)
+	public AutoJournalSetting findOne(String id)
 	{
 		return repository.findOne(id);
 	}
+	
+	@Secured("ROLE_JOURNALSETTING_READ")
+	public AutoJournalSetting findOneByOrganizationId(String id)
+	{
+		return repository.findOneByOrganizationId(id);
+	}
 
 	@Secured("ROLE_JOURNALSETTING_READ")
-	public List<JournalSetting> findAll()
+	public List<AutoJournalSetting> findAll()
 	{
 		return repository.findAll();
 	}
 
 	@Secured("ROLE_JOURNALSETTING_READ")
-	public List<JournalSetting> findAll(int pageIndex,int pageSize,List<String> companys)
+	public List<AutoJournalSetting> findAll(int pageIndex,int pageSize,List<String> companys)
 	{
 		if(companys != null && !companys.isEmpty())
 			return repository.findAll(new PageRequest(pageIndex, pageSize),companys);
 	
-		return new ArrayList<JournalSetting>();
+		return new ArrayList<AutoJournalSetting>();
 	}
 
 	@Secured("ROLE_JOURNALSETTING_CREATE")
-	public void add(JournalSetting setting)
+	public void add(AutoJournalSetting setting)
 	{
 		repository.save(setting);
 	}
 
 	@Secured("ROLE_JOURNALSETTING_UPDATE")
-	public void edit(JournalSetting setting)
+	public void edit(AutoJournalSetting setting)
 	{
 		repository.saveAndFlush(setting);
 	}

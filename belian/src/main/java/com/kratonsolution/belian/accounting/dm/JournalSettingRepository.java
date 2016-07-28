@@ -14,13 +14,15 @@ import org.springframework.data.repository.query.Param;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public interface JournalSettingRepository extends JpaRepository<JournalSetting, String>
+public interface JournalSettingRepository extends JpaRepository<AutoJournalSetting, String>
 {
-	public JournalSetting findOneByOrganizationId(String id);
+	public AutoJournalSetting findOneByOrganizationId(String id);
+
+	@Query("FROM AutoJournalSetting setting WHERE "
+			+ "setting.organization.id IN(:companys) ")
+	public List<AutoJournalSetting> findAll(Pageable pageable,@Param("companys")List<String> companys);
 	
-	@Query("SELECT COUNT(setting) FROM JournalSetting setting WHERE setting.organization.id IN :companys")
+	@Query("SELECT COUNT(setting) FROM AutoJournalSetting setting WHERE "
+			+ "setting.organization.id IN(:companys) ")
 	public int count(@Param("companys")List<String> companys);
-	
-	@Query("FROM JournalSetting setting WHERE setting.organization.id IN :companys")
-	public List<JournalSetting> findAll(Pageable pageable,@Param("companys")List<String> companys);
 }

@@ -9,7 +9,7 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
-import com.kratonsolution.belian.accounting.dm.JournalSetting;
+import com.kratonsolution.belian.accounting.dm.AutoJournalSetting;
 import com.kratonsolution.belian.accounting.svc.JournalSettingService;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -19,13 +19,13 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class JournalSettingModel implements ListModel<JournalSetting>
+public class JournalSettingModel implements ListModel<AutoJournalSetting>
 {
-	private final JournalSettingService controller = Springs.get(JournalSettingService.class);
+	private JournalSettingService controller = Springs.get(JournalSettingService.class);
 	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
-	private List<JournalSetting> data = new ArrayList<JournalSetting>();
+	private List<AutoJournalSetting> data = new ArrayList<AutoJournalSetting>();
 	
 	public JournalSettingModel(int itemSize)
 	{
@@ -33,7 +33,7 @@ public class JournalSettingModel implements ListModel<JournalSetting>
 	}
 	
 	@Override
-	public JournalSetting getElementAt(int index)
+	public AutoJournalSetting getElementAt(int index)
 	{
 		if(index >= data.size())
 			return null;

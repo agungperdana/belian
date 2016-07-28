@@ -24,7 +24,7 @@ import com.kratonsolution.belian.ui.nav.IconBar;
  */
 public class JournalSettingWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption("Journal Setting");
+	private Caption caption = new Caption(lang.get("navbar.menu.accounting.setting"));
 	
 	private JournalSettingButton status = new JournalSettingButton();
 	
@@ -40,6 +40,8 @@ public class JournalSettingWindow extends AbstractWindow implements HasGrid,HasC
 	private JournalSettingWindow()
 	{
 		super();
+		setWidth("700px");
+		setHeight("525px");
 	}
 	
 	protected void init()
