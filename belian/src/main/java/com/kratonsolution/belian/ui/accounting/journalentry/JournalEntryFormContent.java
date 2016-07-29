@@ -144,6 +144,8 @@ public class JournalEntryFormContent extends FormContent
 	@Override
 	public void initForm()
 	{
+		companys.setWidth("100%");
+		
 		populatePeriod();
 		populateCOA();
 
@@ -155,7 +157,7 @@ public class JournalEntryFormContent extends FormContent
 				populatePeriod();
 				populateCOA();
 				
-				transactions.getChildren().clear();
+				transactions.getRows().getChildren().clear();
 			}
 		});
 		
@@ -211,7 +213,6 @@ public class JournalEntryFormContent extends FormContent
 		transactions.appendChild(new Columns());
 		transactions.appendChild(new Rows());
 		transactions.setWidth("100%");
-		
 		transactions.getColumns().appendChild(new Column(null, null, "25px"));
 		transactions.getColumns().appendChild(new Column("Account", null, "225px"));
 		transactions.getColumns().appendChild(new Column("Type", null, "100px"));
@@ -230,9 +231,12 @@ public class JournalEntryFormContent extends FormContent
 					return;
 				}
 				
-				Row row = new Row();
-				row.appendChild(new Checkbox());
-				row.appendChild(new OGLAccountList(companys.getOrganization()));
+				OGLAccountList ogla = new OGLAccountList(companys.getOrganization());
+				ogla.setWidth("100%");
+				
+				Row _row = new Row();
+				_row.appendChild(new Checkbox());
+				_row.appendChild(ogla);
 				
 				Listbox types = Components.fullSpanSelect();
 				types.appendChild(new Listitem("DEBET","DEBET"));
@@ -254,11 +258,11 @@ public class JournalEntryFormContent extends FormContent
 				Textbox txnote = new Textbox();
 				txnote.setWidth("100%");
 				
-				row.appendChild(types);
-				row.appendChild(amout);
-				row.appendChild(txnote);
+				_row.appendChild(types);
+				_row.appendChild(amout);
+				_row.appendChild(txnote);
 				
-				transactions.getRows().appendChild(row);
+				transactions.getRows().appendChild(_row);
 				
 				types.addEventListener(Events.ON_SELECT,new EventListener<Event>()
 				{

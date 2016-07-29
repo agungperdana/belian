@@ -5,7 +5,6 @@ package com.kratonsolution.belian.accounting.svc;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -17,7 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kratonsolution.belian.accounting.dm.GLAccountBalanceRepository;
 import com.kratonsolution.belian.accounting.dm.JournalEntry;
+import com.kratonsolution.belian.accounting.dm.JournalEntryDetail;
 import com.kratonsolution.belian.accounting.dm.JournalEntryRepository;
+import com.kratonsolution.belian.accounting.dm.JournalPosting;
 import com.kratonsolution.belian.accounting.dm.JournalPostingRepository;
 
 /**
@@ -77,14 +78,17 @@ public class JournalEntryService
 	@Secured("ROLE_JOURNALENTRY_CREATE")
 	public void add(JournalEntry entry)
 	{
-		entry.setId(UUID.randomUUID().toString());
 		repository.save(entry);
+		
+		if(entry.isAuto())
+			post(entry);
 	}
 	
 	@Secured("ROLE_JOURNALENTRY_UPDATE")
 	public void edit(JournalEntry entry)
 	{
-		repository.saveAndFlush(entry);
+		if(!entry.isAuto())
+			repository.saveAndFlush(entry);
 	}
 	
 	@Secured("ROLE_JOURNALENTRY_DELETE")
@@ -103,7 +107,22 @@ public class JournalEntryService
 	@Secured("ROLE_JOURNALENTRY_UPDATE")
 	public void post(JournalEntry entry)
 	{
-		repository.save(entry);
+		for(JournalEntryDetail detail:entry.getJournals())
+		{
+			JournalPosting posting = new JournalPosting();
+			posting.setAccount(detail.getAccount());
+			posting.setAmount(detail.getAmount());
+			posting.setDate(entry.getDate());
+			posting.setType(detail.getType());
+			
+			postingRepository.save(posting);
+			
+			detail.setReference(posting.getId());
+		}
+
+		entry.setPosted(true);
+		
+		repository.saveAndFlush(entry);
 	}
 	
 	@Secured("ROLE_JOURNALENTRY_UPDATE")

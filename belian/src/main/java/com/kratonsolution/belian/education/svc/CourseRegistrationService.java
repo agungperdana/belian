@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.accounting.dm.JournalEntry;
+import com.kratonsolution.belian.accounting.svc.AutoJournalCreatorFactory;
+import com.kratonsolution.belian.accounting.svc.JournalEntryService;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.education.dm.CourseDiscount;
 import com.kratonsolution.belian.education.dm.CourseInstallment;
@@ -35,7 +38,13 @@ public class CourseRegistrationService
 
 	@Autowired
 	private CourseRegistrationRepository repository;
+	
+	@Autowired
+	private AutoJournalCreatorFactory journalCreatorFactory;
 
+	@Autowired
+	private JournalEntryService entryService;
+	
 	@Secured({"ROLE_COURSE_REGISTRATION_READ","ROLE_SYSTEM_READ"})
 	public CourseRegistration findOne(String id)
 	{
@@ -83,6 +92,13 @@ public class CourseRegistrationService
 	public void add(CourseRegistration reg)
 	{
 		repository.save(reg);
+		
+		for(CourseInstallment installment:reg.getInstallments())
+		{
+			JournalEntry entry = journalCreatorFactory.create(installment);
+			if(entry != null)
+				entryService.add(entry);
+		}
 	}
 
 	@Secured("ROLE_COURSE_REGISTRATION_UPDATE")

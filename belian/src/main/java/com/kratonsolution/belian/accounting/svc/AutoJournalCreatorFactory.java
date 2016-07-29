@@ -8,6 +8,8 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kratonsolution.belian.accounting.dm.JournalEntry;
+
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
@@ -18,12 +20,12 @@ public class AutoJournalCreatorFactory
 	@Autowired
 	private Set<AutoJournalCreator> creators;
 	
-	public AutoJournalCreator forClass(Journalable journalable)
+	public JournalEntry create(Journalable journalable)
 	{
 		for(AutoJournalCreator creator:creators)
 		{
-			if(creator.isSupported(journalable.getClass()))
-				return creator;
+			if(creator.isSupported(journalable))
+				return creator.generate(journalable);
 		}
 		
 		return null;

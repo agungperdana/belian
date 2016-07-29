@@ -48,14 +48,19 @@ public class AutoJournalSales implements Serializable
 	private OGLAccount goodsSales;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_tax_payable_account")
+	@JoinColumn(name="fk_tax_sales_account")
 	@NotFound(action=NotFoundAction.IGNORE)
-	private OGLAccount taxPayable;
+	private OGLAccount taxSales;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_payable_account")
+	@JoinColumn(name="fk_tuslah_payable_account")
 	@NotFound(action=NotFoundAction.IGNORE)
-	private OGLAccount payable;
+	private OGLAccount tuslah;
+
+	@ManyToOne
+	@JoinColumn(name="fk_receivable_account")
+	@NotFound(action=NotFoundAction.IGNORE)
+	private OGLAccount receivable;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_journal_setting")

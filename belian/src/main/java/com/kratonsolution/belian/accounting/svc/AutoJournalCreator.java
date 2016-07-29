@@ -3,15 +3,29 @@
  */
 package com.kratonsolution.belian.accounting.svc;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.kratonsolution.belian.accounting.dm.AccountingPeriodRepository;
+import com.kratonsolution.belian.accounting.dm.AutoJournalSettingRepository;
 import com.kratonsolution.belian.accounting.dm.JournalEntry;
+import com.kratonsolution.belian.accounting.dm.OrganizationAccountRepository;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public interface AutoJournalCreator<E extends Journalable>
+public abstract class AutoJournalCreator<E extends Journalable>
 {
-	public boolean isSupported(Object target);
+	@Autowired
+	protected AutoJournalSettingRepository repository;
 	
-	public JournalEntry generate(E e);
+	@Autowired
+	protected OrganizationAccountRepository coaRepo;
+	
+	@Autowired
+	protected AccountingPeriodRepository periodRepo;
+	
+	public abstract boolean isSupported(Object target);
+	
+	public abstract JournalEntry generate(E e);
 }

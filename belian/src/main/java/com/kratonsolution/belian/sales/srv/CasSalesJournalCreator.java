@@ -3,17 +3,13 @@
  */
 package com.kratonsolution.belian.sales.srv;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kratonsolution.belian.accounting.dm.AccountingPeriod;
-import com.kratonsolution.belian.accounting.dm.AccountingPeriodRepository;
 import com.kratonsolution.belian.accounting.dm.AutoJournalSetting;
-import com.kratonsolution.belian.accounting.dm.AutoJournalSettingRepository;
 import com.kratonsolution.belian.accounting.dm.JournalEntry;
 import com.kratonsolution.belian.accounting.dm.JournalEntryDetail;
 import com.kratonsolution.belian.accounting.dm.OrganizationAccount;
-import com.kratonsolution.belian.accounting.dm.OrganizationAccountRepository;
 import com.kratonsolution.belian.accounting.svc.AutoJournalCreator;
 import com.kratonsolution.belian.sales.dm.CashSales;
 
@@ -22,17 +18,8 @@ import com.kratonsolution.belian.sales.dm.CashSales;
  * @email agung.dodi.perdana@gmail.com
  */
 @Service
-public class CasSalesJournalCreator implements AutoJournalCreator<CashSales>
+public class CasSalesJournalCreator extends AutoJournalCreator<CashSales>
 {
-	@Autowired
-	private AutoJournalSettingRepository repository;
-	
-	@Autowired
-	private OrganizationAccountRepository coaRepo;
-	
-	@Autowired
-	private AccountingPeriodRepository periodRepo;
-	
 	/* (non-Javadoc)
 	 * @see com.kratonsolution.belian.accounting.svc.AutoJournalCreator#isSupported(java.lang.Class)
 	 */
@@ -67,7 +54,7 @@ public class CasSalesJournalCreator implements AutoJournalCreator<CashSales>
 				entry.setPeriod(period);
 				entry.setPosted(false);
 				entry.addDetail(JournalEntryDetail.DEBET(setting.getSales().getCash(), cashSales.getBillingAmount().add(cashSales.getTaxAmount()), "Posting to Cash Account"));
-				entry.addDetail(JournalEntryDetail.CREDIT(setting.getSales().getTaxPayable(), cashSales.getTaxAmount(), "Posting to Tax Payable Account"));
+				entry.addDetail(JournalEntryDetail.CREDIT(setting.getSales().getTaxSales(), cashSales.getTaxAmount(), "Posting to Tax Payable Account"));
 				entry.addDetail(JournalEntryDetail.CREDIT(setting.getSales().getGoodsSales(), cashSales.getNet(), "Posting to Sales (Goods) Account"));
 
 				if(entry.isBalance());

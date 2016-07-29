@@ -157,6 +157,8 @@ public class JournalEntryEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
+		companys.setWidth("100%");
+		
 		JournalEntry entry = service.findOne(RowUtils.id(row));
 		if(entry != null)
 		{
@@ -263,7 +265,7 @@ public class JournalEntryEditContent extends FormContent
 		transactions.setSpan("4");
 
 		toolbar.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()
-				{
+		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
@@ -321,10 +323,10 @@ public class JournalEntryEditContent extends FormContent
 					}
 						});
 			}
-				});
+		});
 
 		toolbar.getRemove().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-				{
+		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
@@ -349,9 +351,9 @@ public class JournalEntryEditContent extends FormContent
 				debet.setValue(0d);
 				credit.setValue(0d);
 			}
-				});
+		});
 
-		JournalEntry entry = service.findOne(RowUtils.string(row, 5));
+		JournalEntry entry = service.findOne(RowUtils.id(row));
 		if(entry != null)
 		{
 			for(JournalEntryDetail detail:entry.getJournals())
@@ -359,22 +361,13 @@ public class JournalEntryEditContent extends FormContent
 				Row row = new Row();
 				row.appendChild(new Checkbox());
 
-				Listbox accounts = Components.newSelect();
-				OrganizationAccount account = accountService.findOne(Components.string(coas));
-				if(account != null)
-				{
-					for(OGLAccount gl:account.getAccounts())
-					{
-						Listitem listitem = new Listitem(gl.getAccount().getName(), gl.getAccount().getId());
-						accounts.appendChild(listitem);
-						if(gl.getAccount().getId().equals(detail.getAccount().getId()))
-							accounts.setSelectedItem(listitem);
-					}
-				}
-
+				OGLAccountList accounts = new OGLAccountList(entry.getOwner());
+				accounts.setWidth("100%");
+				accounts.setAccount(detail.getAccount());
+				
 				row.appendChild(accounts);
 
-				Listbox types = Components.newSelect();
+				Listbox types = Components.fullSpanSelect();
 				for(JournalEntryDetailType type:JournalEntryDetailType.values())
 				{
 					Listitem listitem = new Listitem(type.toString(), type.toString());
@@ -384,26 +377,26 @@ public class JournalEntryEditContent extends FormContent
 				}
 
 				types.addEventListener(Events.ON_SELECT,new EventListener<Event>()
-						{
+				{
 					@Override
 					public void onEvent(Event event) throws Exception
 					{
 						resetDisplay();
 					}
-						});
+				});
 
 				final Doublebox amout = new Doublebox(0d);
 				amout.setWidth("100%");
 				amout.setStyle("text-align:right");
 				amout.setValue(detail.getAmount().doubleValue());
 				amout.addEventListener(Events.ON_CHANGE, new EventListener<Event>()
-						{
+				{
 					@Override
 					public void onEvent(Event event) throws Exception
 					{
 						resetDisplay();
 					}
-						});
+				});
 
 				Textbox txnote = new Textbox();
 				txnote.setWidth("100%");

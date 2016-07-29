@@ -39,6 +39,9 @@ public class JournalEntryDetail implements Serializable
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
+	@Column(name="reference")
+	private String reference;
+	
 	@ManyToOne
 	@JoinColumn(name="fk_gl_account")
 	@NotFound(action=NotFoundAction.IGNORE)

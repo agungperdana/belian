@@ -45,10 +45,12 @@ public class JournalSettingEditContent extends FormContent
 
 	private OGLAccountList goodsSales = new OGLAccountList();
 
-	private OGLAccountList taxpayable = new OGLAccountList();
+	private OGLAccountList taxsales = new OGLAccountList();
 
-	private OGLAccountList payable = new OGLAccountList();
-
+	private OGLAccountList tuslahpayable = new OGLAccountList();
+	
+	private OGLAccountList receivable = new OGLAccountList();
+	
 	private Textbox note = Components.stdTextBox(null, false);
 	
 	private Tabbox tabbox = new Tabbox();
@@ -89,8 +91,9 @@ public class JournalSettingEditContent extends FormContent
 					setting.getSales().setCash(cashes.getAccount());
 					setting.getSales().setServiceSales(serviceSales.getAccount());
 					setting.getSales().setGoodsSales(goodsSales.getAccount());
-					setting.getSales().setTaxPayable(taxpayable.getAccount());
-					setting.getSales().setPayable(payable.getAccount());
+					setting.getSales().setTaxSales(taxsales.getAccount());
+					setting.getSales().setTuslah(tuslahpayable.getAccount());
+					setting.getSales().setReceivable(receivable.getAccount());
 
 					service.edit(setting);
 				}
@@ -114,8 +117,9 @@ public class JournalSettingEditContent extends FormContent
 			{
 				cashes.repopulate(companys.getOrganization());
 				serviceSales.repopulate(companys.getOrganization());
-				taxpayable.repopulate(companys.getOrganization());
-				payable.repopulate(companys.getOrganization());
+				goodsSales.repopulate(companys.getOrganization());
+				taxsales.repopulate(companys.getOrganization());
+				receivable.repopulate(companys.getOrganization());
 			}
 		});
 		
@@ -166,11 +170,14 @@ public class JournalSettingEditContent extends FormContent
 			goodsSales.repopulate(setting.getOrganization());
 			goodsSales.setAccount(setting.getSales().getGoodsSales());
 
-			taxpayable.repopulate(setting.getOrganization());
-			taxpayable.setAccount(setting.getSales().getTaxPayable());
-
-			payable.repopulate(setting.getOrganization());
-			payable.setAccount(setting.getSales().getPayable());
+			taxsales.repopulate(setting.getOrganization());
+			taxsales.setAccount(setting.getSales().getTaxSales());
+			
+			tuslahpayable.repopulate(setting.getOrganization());
+			tuslahpayable.setAccount(setting.getSales().getTuslah());
+			
+			receivable.repopulate(setting.getOrganization());
+			receivable.setAccount(setting.getSales().getReceivable());
 		}
 		
 		Grid layout = new Grid();
@@ -192,18 +199,23 @@ public class JournalSettingEditContent extends FormContent
 		row4.appendChild(goodsSales);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label(lang.get("journalsetting.grid.column.taxpayable")));
-		row5.appendChild(taxpayable);
+		row5.appendChild(new Label(lang.get("journalsetting.grid.column.taxsales")));
+		row5.appendChild(taxsales);
 		
 		Row row6 = new Row();
-		row6.appendChild(new Label(lang.get("journalsetting.grid.column.payable")));
-		row6.appendChild(payable);
+		row6.appendChild(new Label(lang.get("journalsetting.grid.column.receivable")));
+		row6.appendChild(receivable);
+		
+		Row row7 = new Row();
+		row7.appendChild(new Label(lang.get("journalsetting.grid.column.tuslah")));
+		row7.appendChild(tuslahpayable);
 		
 		layout.getRows().appendChild(row2);
 		layout.getRows().appendChild(row3);
 		layout.getRows().appendChild(row4);
 		layout.getRows().appendChild(row5);
 		layout.getRows().appendChild(row6);
+		layout.getRows().appendChild(row7);
 		
 		tabbox.getTabpanels().getFirstChild().appendChild(layout);
 	}

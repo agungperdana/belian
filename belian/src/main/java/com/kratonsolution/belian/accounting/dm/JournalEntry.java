@@ -42,14 +42,17 @@ public class JournalEntry implements Serializable
 	@Id
 	private String id = UUID.randomUUID().toString();
 
+	@Column(name="number")
+	private String number;
+	
 	@Column(name="date")
 	private Date date;
 	
 	@Column(name="total_debet")
-	private BigDecimal debet;
+	private BigDecimal debet = BigDecimal.ZERO;
 	
 	@Column(name="total_credit")
-	private BigDecimal credit;
+	private BigDecimal credit = BigDecimal.ZERO;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_organization")

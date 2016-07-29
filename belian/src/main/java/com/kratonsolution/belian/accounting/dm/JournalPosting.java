@@ -48,7 +48,7 @@ public class JournalPosting implements Serializable
 
 	@ManyToOne
 	@JoinColumn(name="fk_gl_account_balance")
-	private GLAccountBalance account;
+	private OGLAccount account;
 	
 	@Version
 	private Long version;

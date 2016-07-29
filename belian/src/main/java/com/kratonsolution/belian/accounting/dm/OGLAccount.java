@@ -4,6 +4,8 @@
 package com.kratonsolution.belian.accounting.dm;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Cacheable;
@@ -12,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -53,6 +56,9 @@ public class OGLAccount implements Serializable,Listable
 	
 	@Version
 	private Long version;
+	
+	@OneToMany(mappedBy="account")
+	private Set<JournalPosting> postings = new HashSet<>();
 	
 	public OGLAccount(){}
 
