@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kratonsolution.belian.accounting.dm.AccountingPeriodRepository;
-import com.kratonsolution.belian.accounting.dm.JournalSettingRepository;
+import com.kratonsolution.belian.accounting.dm.AutoJournalSettingRepository;
 import com.kratonsolution.belian.accounting.dm.OrganizationAccountRepository;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.inventory.dm.InventoryItemRepository;
@@ -36,7 +36,7 @@ public class DeductionTypeService
 	private DeductionTypeRepository repository;
 	
 	@Autowired
-	private JournalSettingRepository journalRepository;
+	private AutoJournalSettingRepository journalRepository;
 	
 	@Autowired
 	private InventoryItemRepository inventoryRepository;

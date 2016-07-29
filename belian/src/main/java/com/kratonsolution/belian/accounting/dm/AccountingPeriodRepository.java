@@ -23,4 +23,11 @@ public interface AccountingPeriodRepository extends JpaRepository<AccountingPeri
 	@Query("FROM AccountingPeriod period WHERE period.parent IS NOT NULL AND (period.from <= :date AND period.to >= :date)")
 	public AccountingPeriod findForDate(@Param("date") Date date);
 	
+	@Query("FROM AccountingPeriod period WHERE "
+			+ "period.organization.id =:company "
+			+ "AND (:date BETWEEN period.from AND period.to) "
+			+ "AND period.parent IS NOT NULL "
+			+ "AND period.closed IS FALSE ")
+	public AccountingPeriod findOneOpenChild(@Param("company")String company,@Param("date")Date date);
+	
 }

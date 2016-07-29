@@ -22,9 +22,9 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.global.dm.SequenceNumber.Code;
-import com.kratonsolution.belian.healtcare.dm.Laboratory;
-import com.kratonsolution.belian.healtcare.dm.LaboratoryItem;
-import com.kratonsolution.belian.healtcare.svc.LaboratoryRegistrationService;
+import com.kratonsolution.belian.healtcare.dm.LaboratorySales;
+import com.kratonsolution.belian.healtcare.dm.LaboratorySalesItem;
+import com.kratonsolution.belian.healtcare.svc.LaboratorySalesService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.component.MedicalServiceRow;
@@ -41,7 +41,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class LabsRegistrationFormContent extends FormContent
 {	
-	private LaboratoryRegistrationService service = Springs.get(LaboratoryRegistrationService.class);
+	private LaboratorySalesService service = Springs.get(LaboratorySalesService.class);
 	
 	private Listbox companys = Components.newSelect(utils.getOrganization());
 	
@@ -85,7 +85,7 @@ public class LabsRegistrationFormContent extends FormContent
 				if(patient.getPatient() == null)
 					throw new WrongValueException(patient,"Patient cannot be empty");
 				
-				Laboratory laboratory = new Laboratory();
+				LaboratorySales laboratory = new LaboratorySales();
 				laboratory.setPersonal(true);
 				laboratory.setCurrency(utils.getCurrency());
 				laboratory.setCustomer(patient.getPatient().getPerson());
@@ -100,7 +100,7 @@ public class LabsRegistrationFormContent extends FormContent
 				{
 					MedicalServiceRow row = (MedicalServiceRow)com;
 					
-					LaboratoryItem item = new LaboratoryItem();
+					LaboratorySalesItem item = new LaboratorySalesItem();
 					item.setCharge(row.getCharge());
 					item.setDiscount(row.getDiscount());
 					item.setLaboratory(laboratory);

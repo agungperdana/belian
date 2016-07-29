@@ -31,6 +31,7 @@ import org.zkoss.zul.Textbox;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.education.dm.CourseDiscount;
 import com.kratonsolution.belian.education.dm.CourseInstallment;
+import com.kratonsolution.belian.education.dm.CourseInstallmentItem;
 import com.kratonsolution.belian.education.dm.CourseItem;
 import com.kratonsolution.belian.education.dm.CourseRegistration;
 import com.kratonsolution.belian.education.svc.CourseRegistrationService;
@@ -190,6 +191,13 @@ public class CourseRegistrationFormContent extends FormContent implements Displa
 					installment.setRegistration(reg);
 					installment.setSales(reg.getStaff());
 					installment.setTax(reg.getTax());
+					
+					CourseInstallmentItem item = new CourseInstallmentItem();
+					item.setInstallment(installment);
+					item.setPrice(installment.getAmount());
+					item.setProduct(installment.getRegistration().getRoom().getCourse());
+					
+					installment.getItems().add(item);
 					
 					reg.getInstallments().add(installment);
 				

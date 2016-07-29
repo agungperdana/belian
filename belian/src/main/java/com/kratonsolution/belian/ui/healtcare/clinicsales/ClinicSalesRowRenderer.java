@@ -6,7 +6,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
 import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.healtcare.dm.Medication;
+import com.kratonsolution.belian.healtcare.dm.ClinicSales;
 import com.kratonsolution.belian.ui.util.Components;
 
 /**
@@ -14,10 +14,10 @@ import com.kratonsolution.belian.ui.util.Components;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class ClinicSalesRowRenderer implements RowRenderer<Medication>
+public class ClinicSalesRowRenderer implements RowRenderer<ClinicSales>
 {
 	@Override
-	public void render(Row row, Medication data, int index) throws Exception
+	public void render(Row row, ClinicSales data, int index) throws Exception
 	{
 		if(data != null)
 		{

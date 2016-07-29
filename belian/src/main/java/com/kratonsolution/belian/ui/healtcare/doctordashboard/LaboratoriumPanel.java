@@ -21,8 +21,8 @@ import org.zkoss.zul.Tabpanel;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentStatus;
-import com.kratonsolution.belian.healtcare.dm.Laboratory;
-import com.kratonsolution.belian.healtcare.dm.LaboratoryItem;
+import com.kratonsolution.belian.healtcare.dm.LaboratorySales;
+import com.kratonsolution.belian.healtcare.dm.LaboratorySalesItem;
 import com.kratonsolution.belian.healtcare.svc.MedicalRecordService;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.NRCToolbar;
@@ -107,7 +107,7 @@ public class LaboratoriumPanel extends Tabpanel
 		
 		if(appointment.getRecord() != null && appointment.getRecord().getLaboratory() != null)
 		{
-			for(LaboratoryItem item:appointment.getRecord().getLaboratory().getItems())
+			for(LaboratorySalesItem item:appointment.getRecord().getLaboratory().getItems())
 			{
 				MedicalServiceRow row = new MedicalServiceRow();
 				row.setItem(item);
@@ -120,7 +120,7 @@ public class LaboratoriumPanel extends Tabpanel
 	{
 		if(!grid.getRows().getChildren().isEmpty())
 		{
-			Laboratory laboratory = new Laboratory();
+			LaboratorySales laboratory = new LaboratorySales();
 			laboratory.setPersonal(false);
 			laboratory.setCurrency(utils.getCurrency());
 			laboratory.setCustomer(appointment.getPatient().getPerson());
@@ -144,7 +144,7 @@ public class LaboratoriumPanel extends Tabpanel
 				
 				productService.checkStock(row.getProduct(), row.getQuantity());
 				
-				LaboratoryItem item = new LaboratoryItem();
+				LaboratorySalesItem item = new LaboratorySalesItem();
 				item.setService(row.getProduct());
 				item.setCharge(row.getCharge());
 				item.setDiscount(row.getDiscount());

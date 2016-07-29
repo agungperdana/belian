@@ -22,7 +22,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class CashierModel implements ListModel<Billable>,Searchable
 {
-	private final BillingService service = Springs.get(BillingService.class);
+	private BillingService service = Springs.get(BillingService.class);
 	
 	private List<Billable> data = new ArrayList<Billable>();
 	

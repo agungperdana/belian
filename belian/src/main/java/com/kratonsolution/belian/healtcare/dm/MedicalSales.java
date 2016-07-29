@@ -33,6 +33,9 @@ public abstract class MedicalSales extends Billable
 	@Column(name="time")
 	protected Time time;
 	
+	@Column(name="is_bpjs")
+	protected boolean bpjs;
+	
 	@Enumerated(EnumType.STRING)
 	@Column(name="status")
 	protected MedicalSalesStatus status = MedicalSalesStatus.Registered;

@@ -15,13 +15,9 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kratonsolution.belian.accounting.dm.GLAccountBalance;
 import com.kratonsolution.belian.accounting.dm.GLAccountBalanceRepository;
 import com.kratonsolution.belian.accounting.dm.JournalEntry;
-import com.kratonsolution.belian.accounting.dm.JournalEntryDetail;
-import com.kratonsolution.belian.accounting.dm.JournalEntryDetailType;
 import com.kratonsolution.belian.accounting.dm.JournalEntryRepository;
-import com.kratonsolution.belian.accounting.dm.JournalPosting;
 import com.kratonsolution.belian.accounting.dm.JournalPostingRepository;
 
 /**
@@ -107,62 +103,12 @@ public class JournalEntryService
 	@Secured("ROLE_JOURNALENTRY_UPDATE")
 	public void post(JournalEntry entry)
 	{
-		for(JournalEntryDetail detail:entry.getJournals())
-		{
-			GLAccountBalance balance = balanceRepository.findOneByPeriodIdAndAccountIdAndCurrencyId(entry.getPeriod().getId(), detail.getAccount().getId(), entry.getCurrency().getId());
-			if(balance == null)
-			{
-				balance = new GLAccountBalance();
-				balance.setAccount(detail.getAccount());
-				balance.setPeriod(entry.getPeriod());
-				balance.setCurrency(entry.getCurrency());
-			}
-
-			if(detail.getType().equals(JournalEntryDetailType.DEBET))
-				balance.setDebet(balance.getDebet().add(detail.getAmount()));
-			else 
-				balance.setCredit(balance.getCredit().add(detail.getAmount()));
-			
-			balanceRepository.save(balance);
-			
-			JournalPosting posting = new JournalPosting();
-			posting.setAmount(detail.getAmount());
-			posting.setDate(entry.getDate());
-			posting.setType(detail.getType());
-			posting.setAccount(balance);
-			
-			postingRepository.save(posting);
-			
-			detail.setPosting(posting);
-		}
-		
-		entry.setPosted(true);
-		
 		repository.save(entry);
 	}
 	
 	@Secured("ROLE_JOURNALENTRY_UPDATE")
 	public void unpost(JournalEntry entry)
 	{
-		for(JournalEntryDetail detail:entry.getJournals())
-		{
-			GLAccountBalance balance = balanceRepository.findOneByPeriodIdAndAccountIdAndCurrencyId(entry.getPeriod().getId(), detail.getAccount().getId(), entry.getCurrency().getId());
-			if(balance != null)
-			{
-				if(detail.getType().equals(JournalEntryDetailType.DEBET))
-					balance.setDebet(balance.getDebet().subtract(detail.getAmount()));
-				else 
-					balance.setCredit(balance.getCredit().subtract(detail.getAmount()));
-				
-				balanceRepository.save(balance);
-			}
-			
-			postingRepository.delete(detail.getPosting());
-		}
-		
-		entry.setPosted(false);
-		entry.clearPost();
-		
 		repository.save(entry);
 	}
 }

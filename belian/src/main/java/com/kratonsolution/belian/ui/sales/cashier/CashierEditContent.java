@@ -115,7 +115,7 @@ public class CashierEditContent extends FormContent
 					
 					if(!billing.match())
 					{
-						Clients.alert("Payment amount not equals billed amount");
+						Clients.alert(lang.get("cashier.message.notmatch"));
 						return;
 					}
 					

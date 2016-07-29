@@ -6,7 +6,6 @@ package com.kratonsolution.belian.ui.accounting.journalentry;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.UUID;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
@@ -40,7 +39,12 @@ import com.kratonsolution.belian.accounting.svc.OrganizationAccountService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
+import com.kratonsolution.belian.ui.accounting.organizationaccount.OGLAccountList;
+import com.kratonsolution.belian.ui.component.CurrencyList;
+import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
+import com.kratonsolution.belian.ui.util.Numbers;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -65,13 +69,13 @@ public class JournalEntryEditContent extends FormContent
 
 	private Datebox date = new Datebox(new Date());
 
-	private Listbox owners = Components.newSelect();
+	private OrganizationList companys = new OrganizationList();
 
 	private Listbox coas = Components.newSelect();
 
 	private Listbox periods = Components.newSelect();
 
-	private Listbox currencys = Components.newSelect();
+	private CurrencyList currencys = new CurrencyList();
 
 	private Textbox note = new Textbox();
 
@@ -96,18 +100,16 @@ public class JournalEntryEditContent extends FormContent
 	public void initToolbar()
 	{
 		toolbar.getCancel().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-				{
+		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				JournalEntryWindow window = (JournalEntryWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new JournalEntryGridContent());
 			}
-				});
+		});
 
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-				{
+		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
@@ -129,15 +131,17 @@ public class JournalEntryEditContent extends FormContent
 
 					for(Component component:transactions.getRows().getChildren())
 					{
-						Row row = (Row)component;
+						Row rw = (Row)component;
 
+						OGLAccountList list = (OGLAccountList)rw.getChildren().get(1);
+						
 						JournalEntryDetail detail = new JournalEntryDetail();
-						detail.setId(UUID.randomUUID().toString());
-						detail.setAccount(glAccountService.findOne(RowUtils.string(row, 1)));
-						detail.setAmount(RowUtils.decimal(row, 3));
+						detail.setId(RowUtils.id(rw));
+						detail.setAccount(list.getAccount());
+						detail.setAmount(RowUtils.decimal(rw, 3));
 						detail.setJournal(entry);
-						detail.setNote(RowUtils.string(row, 4));
-						detail.setType(JournalEntryDetailType.valueOf(RowUtils.string(row, 2)));
+						detail.setNote(RowUtils.string(rw, 4));
+						detail.setType(JournalEntryDetailType.valueOf(RowUtils.string(rw, 2)));
 
 						entry.getJournals().add(detail);
 					}
@@ -145,21 +149,25 @@ public class JournalEntryEditContent extends FormContent
 					service.edit(entry);
 				}
 
-				JournalEntryWindow window = (JournalEntryWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new JournalEntryGridContent());
 			}
-				});
+		});
 	}
 
 	@Override
 	public void initForm()
 	{
-		JournalEntry entry = service.findOne(RowUtils.string(row, 5));
-		if(entry == null)
+		JournalEntry entry = service.findOne(RowUtils.id(row));
+		if(entry != null)
 		{
-			Clients.showNotification("Internal System error!",true);
-			return;
+			date.setValue(entry.getDate());
+			companys.setOrganization(entry.getOwner());
+			coas.setSelectedItem(coas.appendItem(entry.getCoa().getName(), entry.getCoa().getId()));
+			periods.setSelectedItem(periods.appendItem(entry.getPeriod().getLabel(), entry.getPeriod().getId()));
+			currencys.setCurrency(entry.getCurrency());
+			note.setText(entry.getNote());
+			debet.setText(Numbers.format(entry.getDebet()));
+			credit.setText(Numbers.format(entry.getCredit()));
 		}
 
 		Toolbarbutton posting = new Toolbarbutton("Posting", "/icons/locked.png");
@@ -194,24 +202,6 @@ public class JournalEntryEditContent extends FormContent
 			}
 		});
 		
-		
-		date.setReadonly(true);
-		note.setWidth("250px");
-		note.setText(entry.getNote());
-
-		debet.setValue(entry.getDebet().doubleValue());
-		credit.setValue(entry.getCredit().doubleValue());
-
-		owners.appendChild(new Listitem(entry.getOwner().getName(),entry.getOwner().getId()));
-		coas.appendChild(new Listitem(entry.getCoa().getName(),entry.getCoa().getId()));
-		periods.appendChild(new Listitem(entry.getPeriod().getName(),entry.getPeriod().getId()));
-		currencys.appendChild(new Listitem(entry.getCurrency().getCode(),entry.getCurrency().getId()));
-
-		Components.setDefault(owners);
-		Components.setDefault(periods);
-		Components.setDefault(coas);
-		Components.setDefault(currencys);
-
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.getColumns().appendChild(new Column(null,null,"280px"));
@@ -226,7 +216,7 @@ public class JournalEntryEditContent extends FormContent
 
 		Row row2 = new Row();
 		row2.appendChild(new Label("Owner"));
-		row2.appendChild(owners);
+		row2.appendChild(companys);
 		row2.appendChild(debet);
 		row2.appendChild(credit);
 

@@ -21,10 +21,10 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.healtcare.dm.Laboratory;
-import com.kratonsolution.belian.healtcare.dm.LaboratoryItem;
+import com.kratonsolution.belian.healtcare.dm.LaboratorySales;
+import com.kratonsolution.belian.healtcare.dm.LaboratorySalesItem;
 import com.kratonsolution.belian.healtcare.svc.DoctorService;
-import com.kratonsolution.belian.healtcare.svc.LaboratoryRegistrationService;
+import com.kratonsolution.belian.healtcare.svc.LaboratorySalesService;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
@@ -44,7 +44,7 @@ public class LabsRegistrationEditContent extends FormContent
 {	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
-	private LaboratoryRegistrationService service = Springs.get(LaboratoryRegistrationService.class);
+	private LaboratorySalesService service = Springs.get(LaboratorySalesService.class);
 	
 	private DoctorService doctorService = Springs.get(DoctorService.class);
 	
@@ -97,7 +97,7 @@ public class LabsRegistrationEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Laboratory laboratory = service.findOne(RowUtils.string(row, 6));
+				LaboratorySales laboratory = service.findOne(RowUtils.string(row, 6));
 				if(laboratory != null && !laboratory.isPaid())
 				{
 					laboratory.getItems().clear();
@@ -107,7 +107,7 @@ public class LabsRegistrationEditContent extends FormContent
 					{
 						MedicationRow row = (MedicationRow)com;
 						
-						LaboratoryItem item = new LaboratoryItem();
+						LaboratorySalesItem item = new LaboratorySalesItem();
 						item.setCharge(row.getItem().getCharge());
 						item.setDiscount(row.getItem().getDiscount());
 						item.setLaboratory(laboratory);
@@ -132,7 +132,7 @@ public class LabsRegistrationEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		Laboratory lab = service.findOne(RowUtils.string(row, 6));
+		LaboratorySales lab = service.findOne(RowUtils.string(row, 6));
 		if(lab != null)
 		{
 			number.setWidth("300px");
@@ -179,7 +179,7 @@ public class LabsRegistrationEditContent extends FormContent
 	
 	private void initNRC()
 	{
-		Laboratory lab = service.findOne(RowUtils.string(row, 6));
+		LaboratorySales lab = service.findOne(RowUtils.string(row, 6));
 		if(lab != null && !lab.isPaid())
 		{
 			appendChild(nrc);
@@ -245,10 +245,10 @@ public class LabsRegistrationEditContent extends FormContent
 		details.getColumns().appendChild(new Column("Note",null));
 		details.setSpan("1");
 		
-		Laboratory lab = service.findOne(RowUtils.string(row, 6));
+		LaboratorySales lab = service.findOne(RowUtils.string(row, 6));
 		if(lab != null)
 		{
-			for(LaboratoryItem item:lab.getItems())
+			for(LaboratorySalesItem item:lab.getItems())
 			{
 				MedicationRow row = new MedicationRow(patient.getPatient().isBpjs(),true);
 				row.setItem(item);

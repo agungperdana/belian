@@ -29,9 +29,9 @@ public class CashierWindow extends AbstractWindow implements HasGrid,HasCreateFo
 {
 	private CashierShiftService cashierShiftService = Springs.get(CashierShiftService.class);
 	
-	private Language language = Springs.get(Language.class);
+	private Language lang = Springs.get(Language.class);
 	
-	private Caption caption = new Caption(language.get("navbar.menu.sales.cashier"));
+	private Caption caption = new Caption(lang.get("navbar.menu.sales.cashier"));
 	
 	private CashierButton status = new CashierButton();
 	

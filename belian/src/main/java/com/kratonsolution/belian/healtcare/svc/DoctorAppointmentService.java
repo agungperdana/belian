@@ -39,13 +39,13 @@ public class DoctorAppointmentService extends SessionAware
 	private MedicalRecordRepository medicalRecordRepository;
 	
 	@Autowired
-	private MedicationService medicationService;
+	private ClinicSalesService medicationService;
 	
 	@Autowired
-	private TreatmentService treatmentService;
+	private MedicalTreatmentSalesService treatmentService;
 	
 	@Autowired
-	private LaboratoryRegistrationService labService;
+	private LaboratorySalesService labService;
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_DOCTOR_APPOINTMENT_READ")

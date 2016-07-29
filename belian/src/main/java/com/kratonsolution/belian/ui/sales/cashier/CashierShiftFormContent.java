@@ -20,7 +20,6 @@ import org.zkoss.zul.Row;
 
 import com.kratonsolution.belian.asset.svc.AssetService;
 import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.sales.dm.CashierShift;
 import com.kratonsolution.belian.sales.srv.CashierShiftService;
 import com.kratonsolution.belian.ui.FormContent;
@@ -34,8 +33,6 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class CashierShiftFormContent extends FormContent
 {	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
-	
 	private AssetService assetService = Springs.get(AssetService.class);
 	
 	private CashierShiftService service = Springs.get(CashierShiftService.class);
@@ -63,7 +60,7 @@ public class CashierShiftFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Clients.showNotification("You need to register Cashier Shift first to be able to use Cashier menu.");
+				Clients.showNotification(lang.get("cashier.message.shiftwarning"));
 			}
 		});
 		
@@ -73,7 +70,7 @@ public class CashierShiftFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				if(assets.getSelectedCount() != 1)
-					throw new WrongValueException(assets, "All cashier machine already in use,close one before registering for new user.");
+					throw new WrongValueException(assets,lang.get("cashier.message.machiendused"));
 				
 				CashierShift shift = new CashierShift();
 				shift.setCapital(BigDecimal.valueOf(capital.doubleValue()));
@@ -98,19 +95,19 @@ public class CashierShiftFormContent extends FormContent
 		grid.getColumns().appendChild(new Column());
 		
 		Row row0 = new Row();
-		row0.appendChild(new Label("Employee"));
+		row0.appendChild(new Label(lang.get("cashier.grid.column.employee")));
 		row0.appendChild(employee);
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Date"));
+		row1.appendChild(new Label(lang.get("cashier.grid.column.date")));
 		row1.appendChild(date);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Cashier Machine"));
+		row2.appendChild(new Label(lang.get("cashier.grid.column.machine")));
 		row2.appendChild(assets);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Capital"));
+		row3.appendChild(new Label(lang.get("cashier.grid.column.capital")));
 		row3.appendChild(capital);
 		
 		rows.appendChild(row0);

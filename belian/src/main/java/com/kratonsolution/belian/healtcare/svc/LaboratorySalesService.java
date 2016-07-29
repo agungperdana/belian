@@ -15,9 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.healtcare.dm.Laboratory;
-import com.kratonsolution.belian.healtcare.dm.LaboratoryItem;
-import com.kratonsolution.belian.healtcare.dm.LaboratoryRepository;
+import com.kratonsolution.belian.healtcare.dm.LaboratorySales;
+import com.kratonsolution.belian.healtcare.dm.LaboratorySalesItem;
+import com.kratonsolution.belian.healtcare.dm.LaboratorySalesRepository;
 import com.kratonsolution.belian.inventory.dm.ProductComponent;
 import com.kratonsolution.belian.inventory.svc.InventoryStockService;
 
@@ -28,13 +28,13 @@ import com.kratonsolution.belian.inventory.svc.InventoryStockService;
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
-public class LaboratoryRegistrationService
+public class LaboratorySalesService
 {
 	@Autowired
 	private SessionUtils utils;
 	
 	@Autowired
-	private LaboratoryRepository repository;
+	private LaboratorySalesRepository repository;
 	
 	@Autowired
 	private InventoryStockService stockService;
@@ -51,59 +51,59 @@ public class LaboratoryRegistrationService
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_LABS_REGISTRATION_READ")
-	public Laboratory findOne(String id)
+	public LaboratorySales findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_LABS_REGISTRATION_READ")
-	public List<Laboratory> findAll()
+	public List<LaboratorySales> findAll()
 	{
 		if(utils.getOrganization() == null)
-			return new ArrayList<Laboratory>();
+			return new ArrayList<LaboratorySales>();
 
 		return repository.findAll();
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_LABS_REGISTRATION_READ")
-	public List<Laboratory> findAllPaid()
+	public List<LaboratorySales> findAllPaid()
 	{
 		if(utils.getOrganization() == null)
-			return new ArrayList<Laboratory>();
+			return new ArrayList<LaboratorySales>();
 
 		return repository.findAllPaid(utils.getOrganization().getId());
 	}
 			
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_LABS_REGISTRATION_READ")
-	public List<Laboratory> findAll(int pageIndex,int pageSize)
+	public List<LaboratorySales> findAll(int pageIndex,int pageSize)
 	{
 		if(utils.getOrganization() == null)
-			return new ArrayList<Laboratory>();
+			return new ArrayList<LaboratorySales>();
 
 		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId());
 	}
 	
 	@Secured("ROLE_LABS_REGISTRATION_CREATE")
-	public void add(Laboratory lab)
+	public void add(LaboratorySales lab)
 	{
 		repository.save(lab);
 	}
 	
 	@Secured("ROLE_LABS_REGISTRATION_UPDATE")
-	public void edit(Laboratory lab)
+	public void edit(LaboratorySales lab)
 	{
 		repository.save(lab);
 	}
 	
 	@Secured("ROLE_LABS_REGISTRATION_UPDATE")
-	public void handle(Laboratory lab)
+	public void handle(LaboratorySales lab)
 	{
 		repository.save(lab);
 		
-		for(LaboratoryItem item:lab.getItems())
+		for(LaboratorySalesItem item:lab.getItems())
 		{
 			if(!item.getService().getComponents().isEmpty())
 			{
@@ -119,7 +119,7 @@ public class LaboratoryRegistrationService
 	@Secured("ROLE_LABS_REGISTRATION_DELETE")
 	public void delete(@PathVariable String id)
 	{
-		Laboratory lab = findOne(id);
+		LaboratorySales lab = findOne(id);
 		if(!lab.isPaid())
 			repository.delete(lab);
 	}

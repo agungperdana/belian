@@ -42,7 +42,7 @@ public class JournalEntryDetail implements Serializable
 	@ManyToOne
 	@JoinColumn(name="fk_gl_account")
 	@NotFound(action=NotFoundAction.IGNORE)
-	private GLAccount account;
+	private OGLAccount account;
 
 	@Column(name="type")
 	@Enumerated(EnumType.STRING)
@@ -58,17 +58,12 @@ public class JournalEntryDetail implements Serializable
 	@JoinColumn(name="fk_journal_entry")
 	private JournalEntry journal;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_journal_posting")
-	@NotFound(action=NotFoundAction.IGNORE)
-	private JournalPosting posting;
-	
 	@Version
 	private Long version;
 	
 	public JournalEntryDetail(){}
 	
-	public static JournalEntryDetail DEBET(GLAccount account,BigDecimal amount,String note)
+	public static JournalEntryDetail DEBET(OGLAccount account,BigDecimal amount,String note)
 	{
 		JournalEntryDetail detail = new JournalEntryDetail();
 		detail.setAccount(account);
@@ -79,7 +74,7 @@ public class JournalEntryDetail implements Serializable
 		return detail;
 	}
 	
-	public static JournalEntryDetail CREDIT(GLAccount account,BigDecimal amount,String note)
+	public static JournalEntryDetail CREDIT(OGLAccount account,BigDecimal amount,String note)
 	{
 		JournalEntryDetail detail = new JournalEntryDetail();
 		detail.setAccount(account);

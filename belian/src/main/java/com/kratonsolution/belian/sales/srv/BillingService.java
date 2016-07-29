@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.payment.dm.ReceiptRepository;
 import com.kratonsolution.belian.sales.dm.Billable;
@@ -32,6 +33,9 @@ import com.kratonsolution.belian.sales.dm.PaymentApplication;
 @Transactional(rollbackFor=Exception.class)
 public class BillingService
 {
+	@Autowired
+	private Language lang;
+	
 	@Autowired
 	private BillableRepository repository;
 	
@@ -127,6 +131,9 @@ public class BillingService
 	@Secured({"ROLE_BILLING_UPDATE","ROLE_CASHIER_UPDATE"})
 	public void paid(Billable billing)
 	{
+		if(!billing.match())
+			throw new RuntimeException(lang.get("cashier.message.notmatch"));
+		
 		for(PaymentApplication application:billing.getReceipts())
 			receiptRepo.save(application.getReceipt());
 		

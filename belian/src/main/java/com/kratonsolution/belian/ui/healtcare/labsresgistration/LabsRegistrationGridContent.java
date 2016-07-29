@@ -15,7 +15,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.healtcare.svc.LaboratoryRegistrationService;
+import com.kratonsolution.belian.healtcare.svc.LaboratorySalesService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -26,7 +26,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class LabsRegistrationGridContent extends GridContent
 {
-	private LaboratoryRegistrationService service = Springs.get(LaboratoryRegistrationService.class);
+	private LaboratorySalesService service = Springs.get(LaboratorySalesService.class);
 	
 	public LabsRegistrationGridContent()
 	{

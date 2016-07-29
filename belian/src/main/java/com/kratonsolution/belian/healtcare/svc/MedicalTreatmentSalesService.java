@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.healtcare.dm.Treatment;
-import com.kratonsolution.belian.healtcare.dm.TreatmentItem;
-import com.kratonsolution.belian.healtcare.dm.TreatmentRepository;
+import com.kratonsolution.belian.healtcare.dm.MedicalTreatmentSales;
+import com.kratonsolution.belian.healtcare.dm.MedicalTreatmentSalesItem;
+import com.kratonsolution.belian.healtcare.dm.MedicalTreatmentSalesRepository;
 import com.kratonsolution.belian.inventory.dm.ProductComponent;
 import com.kratonsolution.belian.inventory.svc.InventoryStockService;
 
@@ -27,13 +27,13 @@ import com.kratonsolution.belian.inventory.svc.InventoryStockService;
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
-public class TreatmentService
+public class MedicalTreatmentSalesService
 {
 	@Autowired
 	private SessionUtils utils;
 	
 	@Autowired
-	private TreatmentRepository repository;
+	private MedicalTreatmentSalesRepository repository;
 	
 	@Autowired
 	private InventoryStockService stockService;
@@ -47,36 +47,36 @@ public class TreatmentService
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_TREATMENT_READ")
-	public Treatment findOne(String id)
+	public MedicalTreatmentSales findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_TREATMENT_READ")
-	public List<Treatment> findAll()
+	public List<MedicalTreatmentSales> findAll()
 	{
 		if(utils.getOrganization() == null)
-			return new ArrayList<Treatment>();
+			return new ArrayList<MedicalTreatmentSales>();
 
 		return repository.findAll();
 	}
 				
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_TREATMENT_READ")
-	public List<Treatment> findAll(int pageIndex,int pageSize)
+	public List<MedicalTreatmentSales> findAll(int pageIndex,int pageSize)
 	{
 		return null;
 	}
 	
 	@Secured({"ROLE_TREATMENT_CREATE","ROLE_DOCTOR_APPOINTMENT_UPDATE"})
-	public void add(Treatment treatment)
+	public void add(MedicalTreatmentSales treatment)
 	{
 		repository.save(treatment);
 		
 		if(treatment.isBpjs())
 		{
-			for(TreatmentItem item:treatment.getItems())
+			for(MedicalTreatmentSalesItem item:treatment.getItems())
 			{
 				if(!item.getService().getComponents().isEmpty())
 				{
@@ -90,14 +90,14 @@ public class TreatmentService
 	}
 	
 	@Secured("ROLE_TREATMENT_UPDATE")
-	public void paid(Treatment treatment)
+	public void paid(MedicalTreatmentSales treatment)
 	{
 		if(utils.getOrganization() == null)
 			throw new RuntimeException("Default Organization not exist,please go to user setting.");
 		
 		repository.saveAndFlush(treatment);
 		
-		for(TreatmentItem item:treatment.getItems())
+		for(MedicalTreatmentSalesItem item:treatment.getItems())
 		{
 			if(!item.getService().getComponents().isEmpty())
 			{
@@ -113,7 +113,7 @@ public class TreatmentService
 	}
 	
 	@Secured("ROLE_TREATMENT_UPDATE")
-	public void edit(Treatment treatment)
+	public void edit(MedicalTreatmentSales treatment)
 	{
 		repository.saveAndFlush(treatment);
 	}

@@ -85,13 +85,29 @@ public class JournalEntry implements Serializable
 	
 	public void addDetail(JournalEntryDetail detail)
 	{
-		detail.setJournal(this);
-		journals.add(detail);
+		if(detail.getAmount().compareTo(BigDecimal.ZERO) > 0)
+		{
+			detail.setJournal(this);
+			journals.add(detail);
+		}
 	}
-	
-	public void clearPost()
+
+	public boolean isBalance()
 	{
+		BigDecimal debet = BigDecimal.ZERO;
+		BigDecimal credit = BigDecimal.ZERO;
+		
 		for(JournalEntryDetail detail:journals)
-			detail.setPosting(null);
+		{
+			if(detail.getType().equals(JournalEntryDetailType.DEBET))
+				debet = debet.add(detail.getAmount());
+			else
+				credit = credit.add(detail.getAmount());
+		}
+		
+		setDebet(debet);
+		setCredit(credit);
+
+		return (debet.compareTo(credit) == 0);
 	}
 }

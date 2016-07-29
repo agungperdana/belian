@@ -72,6 +72,13 @@ public class AccountingPeriodService
 		return repository.findForDate(date);
 	}
 	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured("ROLE_ACCOUNTINGPERIOD_READ")
+	public AccountingPeriod findOpenChild(String company,Date date)
+	{
+		return repository.findOneOpenChild(company,date);
+	}
+	
 	@Secured("ROLE_ACCOUNTINGPERIOD_CREATE")
 	public void add(AccountingPeriod period)
 	{

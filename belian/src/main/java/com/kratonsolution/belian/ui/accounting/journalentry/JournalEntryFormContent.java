@@ -6,7 +6,6 @@ package com.kratonsolution.belian.ui.accounting.journalentry;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Iterator;
-import java.util.UUID;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
@@ -27,23 +26,21 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.accounting.dm.AccountingPeriod;
-import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.dm.JournalEntry;
 import com.kratonsolution.belian.accounting.dm.JournalEntryDetail;
 import com.kratonsolution.belian.accounting.dm.JournalEntryDetailType;
-import com.kratonsolution.belian.accounting.dm.OGLAccount;
 import com.kratonsolution.belian.accounting.dm.OrganizationAccount;
 import com.kratonsolution.belian.accounting.svc.AccountingPeriodService;
-import com.kratonsolution.belian.accounting.svc.CurrencyService;
-import com.kratonsolution.belian.accounting.svc.GLAccountService;
 import com.kratonsolution.belian.accounting.svc.JournalEntryService;
 import com.kratonsolution.belian.accounting.svc.OrganizationAccountService;
-import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
+import com.kratonsolution.belian.ui.accounting.organizationaccount.OGLAccountList;
+import com.kratonsolution.belian.ui.component.CurrencyList;
+import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -56,29 +53,23 @@ public class JournalEntryFormContent extends FormContent
 {	
 	private JournalEntryService service = Springs.get(JournalEntryService.class);
 	
-	private CurrencyService currencyService = Springs.get(CurrencyService.class);
-	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
-	
-	private SessionUtils sessionUtils = Springs.get(SessionUtils.class);
 	
 	private OrganizationAccountService accountService = Springs.get(OrganizationAccountService.class);
 	
 	private AccountingPeriodService accountingPeriodService = Springs.get(AccountingPeriodService.class);
 	
-	private GLAccountService glAccountService = Springs.get(GLAccountService.class);
-	
 	private Datebox date = Components.currentDatebox();
 	
-	private Listbox owners = Components.fullSpanSelect();
+	private OrganizationList companys = new OrganizationList();
 	
 	private Listbox coas = Components.fullSpanSelect();
 	
 	private Listbox periods = Components.fullSpanSelect();
 	
-	private Listbox currencys = Components.newSelect();
+	private CurrencyList currencys = new CurrencyList();
 	
-	private Textbox note = new Textbox();
+	private Textbox note = Components.stdTextBox(null, false);
 	
 	private Doublebox debet = Components.readOnlyDoubleBox();
 	
@@ -102,9 +93,7 @@ public class JournalEntryFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				JournalEntryWindow window = (JournalEntryWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new JournalEntryGridContent());
 			}
 		});
 		
@@ -122,10 +111,10 @@ public class JournalEntryFormContent extends FormContent
 				JournalEntry entry = new JournalEntry();
 				entry.setCoa(accountService.findOne(Components.string(coas)));
 				entry.setCredit(BigDecimal.valueOf(credit.doubleValue()));
-				entry.setCurrency(currencyService.findOne(Components.string(currencys)));
+				entry.setCurrency(currencys.getCurrency());
 				entry.setDate(new Date(date.getValue().getTime()));
 				entry.setDebet(BigDecimal.valueOf(debet.doubleValue()));
-				entry.setOwner(organizationService.findOne(Components.string(owners)));
+				entry.setOwner(organizationService.findOne(Components.string(companys)));
 				entry.setPeriod(accountingPeriodService.findOne(Components.string(periods)));
 				entry.setNote(note.getText());
 
@@ -133,9 +122,10 @@ public class JournalEntryFormContent extends FormContent
 				{
 					Row row = (Row)component;
 					
+					OGLAccountList list = (OGLAccountList)row.getChildren().get(1);
+					
 					JournalEntryDetail detail = new JournalEntryDetail();
-					detail.setId(UUID.randomUUID().toString());
-					detail.setAccount(glAccountService.findOne(RowUtils.string(row, 1)));
+					detail.setAccount(list.getAccount());
 					detail.setAmount(RowUtils.decimal(row, 3));
 					detail.setJournal(entry);
 					detail.setNote(RowUtils.string(row, 4));
@@ -145,10 +135,8 @@ public class JournalEntryFormContent extends FormContent
 				}
 				
 				service.add(entry);
-				
-				JournalEntryWindow window = (JournalEntryWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+			
+				Flow.next(getParent(), new JournalEntryGridContent());
 			}
 		});
 	}
@@ -156,38 +144,20 @@ public class JournalEntryFormContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		date.setConstraint("no empty");
-		note.setWidth("250px");
-		
-		for(Organization organization:sessionUtils.getOrganizations())
+		populatePeriod();
+		populateCOA();
+
+		companys.addEventListener(Events.ON_SELECT, new EventListener<Event>()
 		{
-			Listitem listitem = new Listitem(organization.getLabel(), organization.getValue());
-			owners.appendChild(listitem);
-		}
-		
-		if(!owners.getChildren().isEmpty())
-		{
-			populateCOA();
-			
-			owners.addEventListener(Events.ON_SELECT, new EventListener<Event>()
+			@Override
+			public void onEvent(Event arg0) throws Exception
 			{
-				@Override
-				public void onEvent(Event event) throws Exception
-				{
-					populateCOA();
-				}
-			});
-		}
-		
-		AccountingPeriod period = accountingPeriodService.findForDate(date.getValue());
-		if(period != null)
-			periods.appendChild(new Listitem(period.getName(),period.getId()));
-		
-		for(Currency currency:currencyService.findAll())
-			currencys.appendChild(new Listitem(currency.getCode(), currency.getId()));
-		
-		Components.setDefault(periods);
-		Components.setDefault(currencys);
+				populatePeriod();
+				populateCOA();
+				
+				transactions.getChildren().clear();
+			}
+		});
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
@@ -203,7 +173,7 @@ public class JournalEntryFormContent extends FormContent
 		
 		Row row2 = new Row();
 		row2.appendChild(new Label("Owner"));
-		row2.appendChild(owners);
+		row2.appendChild(companys);
 		row2.appendChild(debet);
 		row2.appendChild(credit);
 		
@@ -262,20 +232,7 @@ public class JournalEntryFormContent extends FormContent
 				
 				Row row = new Row();
 				row.appendChild(new Checkbox());
-				
-				Listbox accounts = Components.fullSpanSelect();
-				
-				OrganizationAccount account = accountService.findOne(Components.string(coas));
-				if(account != null)
-				{
-					for(OGLAccount gl:account.getAccounts())
-					{
-						if(gl.isSelected())
-							accounts.appendChild(new Listitem(gl.getAccount().getName(), gl.getAccount().getId()));
-					}
-				}
-				
-				row.appendChild(accounts);
+				row.appendChild(new OGLAccountList(companys.getOrganization()));
 				
 				Listbox types = Components.fullSpanSelect();
 				types.appendChild(new Listitem("DEBET","DEBET"));
@@ -364,10 +321,17 @@ public class JournalEntryFormContent extends FormContent
 	
 	private void populateCOA()
 	{
-		coas.getChildren().clear();
-		for(OrganizationAccount account:accountService.findAllByOrganization(Components.string(owners)))
-			coas.appendChild(new Listitem(account.getName(),account.getId()));
+		coas.getItems().clear();
+		OrganizationAccount account = accountService.findOneByOrganization(companys.getOrganization().getId());
+		if(account != null)
+			coas.setSelectedItem(coas.appendItem(account.getName(), account.getId()));
+	}
 	
-		Components.setDefault(coas);
+	private void populatePeriod()
+	{
+		periods.getChildren().clear();
+		AccountingPeriod period = accountingPeriodService.findOpenChild(companys.getOrganization().getId(),date.getValue());
+		if(period != null)
+			periods.setSelectedItem(periods.appendItem(period.getName(),period.getId()));
 	}
 }

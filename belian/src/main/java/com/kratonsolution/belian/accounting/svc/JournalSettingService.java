@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kratonsolution.belian.accounting.dm.AutoJournalSetting;
-import com.kratonsolution.belian.accounting.dm.JournalSettingRepository;
+import com.kratonsolution.belian.accounting.dm.AutoJournalSettingRepository;
 
 /**
  * 
@@ -27,7 +27,7 @@ import com.kratonsolution.belian.accounting.dm.JournalSettingRepository;
 public class JournalSettingService
 {
 	@Autowired
-	private JournalSettingRepository repository;
+	private AutoJournalSettingRepository repository;
 
 	@Secured("ROLE_JOURNALSETTING_READ")
 	public int size()

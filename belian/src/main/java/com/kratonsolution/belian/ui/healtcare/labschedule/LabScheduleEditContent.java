@@ -15,9 +15,9 @@ import org.zkoss.zul.Rows;
 
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.healtcare.dm.LabHandlingStatus;
-import com.kratonsolution.belian.healtcare.dm.Laboratory;
-import com.kratonsolution.belian.healtcare.dm.LaboratoryItem;
-import com.kratonsolution.belian.healtcare.svc.LaboratoryRegistrationService;
+import com.kratonsolution.belian.healtcare.dm.LaboratorySalesItem;
+import com.kratonsolution.belian.healtcare.dm.LaboratorySales;
+import com.kratonsolution.belian.healtcare.svc.LaboratorySalesService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -28,7 +28,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class LabScheduleEditContent extends FormContent
 {	
-	private LaboratoryRegistrationService service = Springs.get(LaboratoryRegistrationService.class);
+	private LaboratorySalesService service = Springs.get(LaboratorySalesService.class);
 	
 	private Row row;
 
@@ -61,10 +61,10 @@ public class LabScheduleEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Laboratory laboratory = service.findOne(RowUtils.string(row, 4));
+				LaboratorySales laboratory = service.findOne(RowUtils.string(row, 4));
 				if(laboratory != null && laboratory.getStatus().equals(LabHandlingStatus.Registered))
 				{
-					laboratory.setStatus(LabHandlingStatus.Handled);
+					laboratory.setHandlingStatus(LabHandlingStatus.Handled);
 					service.handle(laboratory);
 				}
 				
@@ -78,7 +78,7 @@ public class LabScheduleEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		Laboratory laboratory = service.findOne(RowUtils.string(row, 4));
+		LaboratorySales laboratory = service.findOne(RowUtils.string(row, 4));
 		if(laboratory != null)
 		{
 			grid.appendChild(new Columns());
@@ -104,7 +104,7 @@ public class LabScheduleEditContent extends FormContent
 			items.getColumns().appendChild(new Column("Note",null,"165px"));
 			items.setSpan("0");
 			
-			for(LaboratoryItem item:laboratory.getItems())
+			for(LaboratorySalesItem item:laboratory.getItems())
 			{
 				Row row = new Row();
 				row.appendChild(new Label(item.getResource()));

@@ -22,8 +22,8 @@ import org.zkoss.zul.Tabpanel;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentStatus;
-import com.kratonsolution.belian.healtcare.dm.Medication;
-import com.kratonsolution.belian.healtcare.dm.MedicationItem;
+import com.kratonsolution.belian.healtcare.dm.ClinicSales;
+import com.kratonsolution.belian.healtcare.dm.ClinicSalesItem;
 import com.kratonsolution.belian.healtcare.svc.MedicalRecordService;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.NRCToolbar;
@@ -115,7 +115,7 @@ public class MedicationPanel extends Tabpanel
 
 		if(appointment.getRecord() != null && appointment.getRecord().getMedication() != null)
 		{
-			for(MedicationItem item:appointment.getRecord().getMedication().getItems())
+			for(ClinicSalesItem item:appointment.getRecord().getMedication().getItems())
 			{
 				MedicalSalesRow row = new MedicalSalesRow(appointment.getPatient().isBpjs(), true);
 				row.setItem(item);
@@ -128,7 +128,7 @@ public class MedicationPanel extends Tabpanel
 	{
 		if(!grid.getRows().getChildren().isEmpty())
 		{
-			Medication medication = new Medication();
+			ClinicSales medication = new ClinicSales();
 			medication.setCurrency(utils.getCurrency());
 			medication.setCustomer(appointment.getPatient().getPerson());
 			medication.setDate(appointment.getDate());
@@ -151,7 +151,7 @@ public class MedicationPanel extends Tabpanel
 
 				productService.checkStock(row.getProduct(), row.getItem().getQuantity());
 
-				MedicationItem item = new MedicationItem();
+				ClinicSalesItem item = new ClinicSalesItem();
 				item.setCharge(row.getItem().getCharge());
 				item.setDiscount(row.getItem().getDiscount());
 				item.setMedication(medication);

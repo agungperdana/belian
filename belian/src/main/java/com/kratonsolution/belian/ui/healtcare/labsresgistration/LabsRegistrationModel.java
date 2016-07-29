@@ -9,8 +9,8 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
-import com.kratonsolution.belian.healtcare.dm.Laboratory;
-import com.kratonsolution.belian.healtcare.svc.LaboratoryRegistrationService;
+import com.kratonsolution.belian.healtcare.dm.LaboratorySales;
+import com.kratonsolution.belian.healtcare.svc.LaboratorySalesService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -18,11 +18,11 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class LabsRegistrationModel implements ListModel<Laboratory>
+public class LabsRegistrationModel implements ListModel<LaboratorySales>
 {
-	private LaboratoryRegistrationService service = Springs.get(LaboratoryRegistrationService.class);
+	private LaboratorySalesService service = Springs.get(LaboratorySalesService.class);
 	
-	private List<Laboratory> data = new ArrayList<Laboratory>();
+	private List<LaboratorySales> data = new ArrayList<LaboratorySales>();
 	
 	public LabsRegistrationModel(int itemSize)
 	{
@@ -30,7 +30,7 @@ public class LabsRegistrationModel implements ListModel<Laboratory>
 	}
 	
 	@Override
-	public Laboratory getElementAt(int index)
+	public LaboratorySales getElementAt(int index)
 	{
 		if(index >= data.size())
 			return null;

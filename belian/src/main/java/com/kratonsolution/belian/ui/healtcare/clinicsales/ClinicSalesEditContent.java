@@ -34,9 +34,9 @@ import org.zkoss.zul.Toolbarbutton;
 
 import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.healtcare.dm.Medication;
-import com.kratonsolution.belian.healtcare.dm.MedicationItem;
-import com.kratonsolution.belian.healtcare.svc.MedicationService;
+import com.kratonsolution.belian.healtcare.dm.ClinicSales;
+import com.kratonsolution.belian.healtcare.dm.ClinicSalesItem;
+import com.kratonsolution.belian.healtcare.svc.ClinicSalesService;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
 import com.kratonsolution.belian.sales.view.BillablePrint;
 import com.kratonsolution.belian.ui.FormContent;
@@ -60,7 +60,7 @@ public class ClinicSalesEditContent extends FormContent implements ProductPriceS
 
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 
-	private MedicationService service = Springs.get(MedicationService.class);
+	private ClinicSalesService service = Springs.get(ClinicSalesService.class);
 
 	private Textbox number = Components.readOnlyTextBox();
 
@@ -150,7 +150,7 @@ public class ClinicSalesEditContent extends FormContent implements ProductPriceS
 	@Override
 	public void initForm()
 	{
-		Medication medication = service.findOne(RowUtils.string(row, 6));
+		ClinicSales medication = service.findOne(RowUtils.string(row, 6));
 		if(medication != null)
 		{
 			number.setText(medication.getNumber());
@@ -247,10 +247,10 @@ public class ClinicSalesEditContent extends FormContent implements ProductPriceS
 		saleItems.appendChild(new Rows());
 		saleItems.setSpan("1");
 
-		Medication medication = service.findOne(RowUtils.id(row));
+		ClinicSales medication = service.findOne(RowUtils.id(row));
 		if(medication != null)
 		{
-			for(MedicationItem item:medication.getItems())
+			for(ClinicSalesItem item:medication.getItems())
 			{
 				MedicalSalesRow row = new MedicalSalesRow(false,false,ref.isChecked());
 				row.setItem(item);

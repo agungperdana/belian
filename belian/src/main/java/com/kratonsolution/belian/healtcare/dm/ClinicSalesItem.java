@@ -27,8 +27,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="medication_item")
-public class MedicationItem implements MedicalSalesItem
+@Table(name="clinic_sales_item")
+public class ClinicSalesItem implements MedicalSalesItem
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -54,12 +54,12 @@ public class MedicationItem implements MedicalSalesItem
 	
 	@ManyToOne
 	@JoinColumn(name="fk_medication")
-	private Medication medication;
+	private ClinicSales medication;
 	
 	@Version
 	private Long version;
 	
-	public MedicationItem(){}
+	public ClinicSalesItem(){}
 
 	@Override
 	public String getResource()

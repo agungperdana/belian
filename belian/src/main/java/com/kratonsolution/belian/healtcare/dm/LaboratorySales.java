@@ -11,7 +11,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -27,31 +26,49 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="medication")
-public class Medication extends MedicalSales
+@Table(name="laboratory_sales")
+public class LaboratorySales extends MedicalSales
 {
 	@Column(name="is_bpjs")
 	private boolean bpjs;
+	
+	@Column(name="is_personal")
+	private boolean personal;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="bpjs_payment_status")
 	private BPJSPaymentStatus bpjsStatus = BPJSPaymentStatus.UNPAID;
 	
-	@OneToMany(mappedBy="medication",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
-	private Set<MedicationItem> items = new HashSet<MedicationItem>();
+	@Enumerated(EnumType.STRING)
+	@Column(name="lab_handling_status")
+	private LabHandlingStatus handlingStatus = LabHandlingStatus.Registered;
 	
+	@OneToMany(mappedBy="laboratory",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<LaboratorySalesItem> items = new HashSet<LaboratorySalesItem>();
+
+	public LaboratorySales(){}
+	
+	/* (non-Javadoc)
+	 * @see com.kratonsolution.belian.sales.dm.Billable#getBillingType()
+	 */
 	@Override
 	public String getBillingType(String lang)
 	{
 		if(Strings.isNullOrEmpty(lang) || lang.equals("in_ID"))
-			return "Obat Klinik";
+			return personal?"Lab Mandiri":"Lab Klinik";
 		else
-			return "Clinic Medication";
+			return personal?"Laboratory":"Clinic Laboratory";
+	}
+
+	@Override
+	public int getTableNumber()
+	{
+		return 0;
 	}
 
 	@Override
 	public String getName()
 	{
-		return "Medication Sales";
+		return "Medical Lab Sales";
 	}
 }

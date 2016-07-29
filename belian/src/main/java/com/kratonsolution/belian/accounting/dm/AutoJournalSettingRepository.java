@@ -14,7 +14,7 @@ import org.springframework.data.repository.query.Param;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public interface JournalSettingRepository extends JpaRepository<AutoJournalSetting, String>
+public interface AutoJournalSettingRepository extends JpaRepository<AutoJournalSetting, String>
 {
 	public AutoJournalSetting findOneByOrganizationId(String id);
 

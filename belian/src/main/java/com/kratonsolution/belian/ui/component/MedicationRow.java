@@ -24,8 +24,8 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
-import com.kratonsolution.belian.healtcare.dm.LaboratoryItem;
-import com.kratonsolution.belian.healtcare.dm.MedicationItem;
+import com.kratonsolution.belian.healtcare.dm.LaboratorySalesItem;
+import com.kratonsolution.belian.healtcare.dm.ClinicSalesItem;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductPrice;
 import com.kratonsolution.belian.inventory.dm.ProductPriceRepository;
@@ -143,9 +143,9 @@ public class MedicationRow extends Row implements HasAmount
 			listeners.add(listener);
 	}
 
-	public MedicationItem getItem()
+	public ClinicSalesItem getItem()
 	{
-		MedicationItem item = new MedicationItem();
+		ClinicSalesItem item = new ClinicSalesItem();
 		item.setCharge(Components.decimal(charges));
 		item.setDiscount(Components.decimal(discounts));
 		item.setPrice(Components.decimal(prices));
@@ -156,7 +156,7 @@ public class MedicationRow extends Row implements HasAmount
 		return item;
 	}
 
-	public void setItem(MedicationItem item)
+	public void setItem(ClinicSalesItem item)
 	{
 		products.appendItem(item.getProduct().getName());
 		prices.appendItem(Numbers.format(item.getPrice()),item.getPrice().toString());
@@ -172,7 +172,7 @@ public class MedicationRow extends Row implements HasAmount
 		Components.setDefault(uoms);
 	}
 
-	public void setItem(LaboratoryItem item)
+	public void setItem(LaboratorySalesItem item)
 	{
 		products.appendItem(item.getProduct().getName());
 		prices.appendItem(Numbers.format(item.getPrice()),item.getPrice().toString());

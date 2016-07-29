@@ -23,6 +23,7 @@ import javax.persistence.Version;
 
 import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.dm.Tax;
+import com.kratonsolution.belian.accounting.svc.Journalable;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Person;
 
@@ -38,7 +39,7 @@ import lombok.Setter;
 @Entity
 @Table(name="billable")
 @Inheritance(strategy=InheritanceType.JOINED)
-public abstract class Billable implements Serializable
+public abstract class Billable implements Journalable,Serializable
 {
 	@Id
 	protected String id = UUID.randomUUID().toString();

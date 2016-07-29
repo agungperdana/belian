@@ -16,7 +16,6 @@ import javax.persistence.Version;
 
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductPriceType;
-import com.kratonsolution.belian.sales.dm.BillableItem;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -28,14 +27,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="treatment_item")
-public class TreatmentItem implements BillableItem
+@Table(name="laboratory_sales_item")
+public class LaboratorySalesItem implements MedicalSalesItem
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
 	@ManyToOne
-	@JoinColumn(name="fk_product_treatment")
+	@JoinColumn(name="fk_product_service")
 	private Product service;
 	
 	@Column(name="quantity")
@@ -54,13 +53,13 @@ public class TreatmentItem implements BillableItem
 	private String note;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_treatment")
-	private Treatment treatment;
+	@JoinColumn(name="fk_laboratory")
+	private LaboratorySales laboratory;
 	
 	@Version
 	private Long version;
 	
-	public TreatmentItem(){}
+	public LaboratorySalesItem(){}
 
 	@Override
 	public String getResource()
@@ -71,15 +70,6 @@ public class TreatmentItem implements BillableItem
 	@Override
 	public BigDecimal getUnitPrice()
 	{
-		if(price == null)
-			return BigDecimal.ZERO;
-		
-		if(discount == null)
-			this.discount = BigDecimal.ZERO;
-		
-		if(charge == null)
-			this.charge = BigDecimal.ZERO;
-		
 		return price.subtract(discount).add(charge);
 	}
 
@@ -104,6 +94,9 @@ public class TreatmentItem implements BillableItem
 	@Override
 	public ProductPriceType getPriceType()
 	{
-		return ProductPriceType.CLINIC;
+		if(getLaboratory().isPersonal())
+			return ProductPriceType.BASE;
+		else
+			return ProductPriceType.CLINIC;
 	}
 }

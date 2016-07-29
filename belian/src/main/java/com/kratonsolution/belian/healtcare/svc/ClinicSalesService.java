@@ -19,9 +19,9 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.healtcare.dm.MedicalSalesStatus;
-import com.kratonsolution.belian.healtcare.dm.Medication;
-import com.kratonsolution.belian.healtcare.dm.MedicationItem;
-import com.kratonsolution.belian.healtcare.dm.MedicationRepository;
+import com.kratonsolution.belian.healtcare.dm.ClinicSales;
+import com.kratonsolution.belian.healtcare.dm.ClinicSalesItem;
+import com.kratonsolution.belian.healtcare.dm.ClinicSalesRepository;
 import com.kratonsolution.belian.inventory.dm.ProductComponent;
 import com.kratonsolution.belian.inventory.svc.InventoryStockService;
 
@@ -32,13 +32,13 @@ import com.kratonsolution.belian.inventory.svc.InventoryStockService;
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
-public class MedicationService
+public class ClinicSalesService
 {
 	@Autowired
 	private SessionUtils utils;
 	
 	@Autowired
-	private MedicationRepository repository;
+	private ClinicSalesRepository repository;
 	
 	@Autowired
 	private InventoryStockService stockService;
@@ -68,44 +68,44 @@ public class MedicationService
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ","ROLE_CLINIC_SALES_READ"})
-	public Medication findOne(String id)
+	public ClinicSales findOne(String id)
 	{
 		return repository.findOne(id);
 	}
 
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ","ROLE_CLINIC_SALES_READ"})
-	public List<Medication> findAll()
+	public List<ClinicSales> findAll()
 	{
 		if(utils.getOrganization() == null)
-			return new ArrayList<Medication>();
+			return new ArrayList<ClinicSales>();
 
 		return repository.findAll();
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ","ROLE_CLINIC_SALES_READ"})
-	public List<Medication> findAllPaidRegistered()
+	public List<ClinicSales> findAllPaidRegistered()
 	{
 		if(utils.getOrganization() == null)
-			return new ArrayList<Medication>();
+			return new ArrayList<ClinicSales>();
 
 		return repository.findAllPaidRegistered(new Date(System.currentTimeMillis()),utils.getOrganization().getId());
 	}
 			
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ","ROLE_CLINIC_SALES_READ"})
-	public List<Medication> findAll(int pageIndex,int pageSize)
+	public List<ClinicSales> findAll(int pageIndex,int pageSize)
 	{
 		if(utils.getOrganizationIds() == null || utils.getOrganizationIds().isEmpty())
-			return new ArrayList<Medication>();
+			return new ArrayList<ClinicSales>();
 
 		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganizationIds());
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ","ROLE_CLINIC_SALES_READ"})
-	public List<Medication> findAll(int pageIndex,int pageSize,String key)
+	public List<ClinicSales> findAll(int pageIndex,int pageSize,String key)
 	{
 		if(utils.getOrganizationIds() == null || utils.getOrganizationIds().isEmpty())
 			return new ArrayList<>();
@@ -118,10 +118,10 @@ public class MedicationService
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ","ROLE_CLINIC_SALES_READ"})
-	public List<Medication> findAllPaid()
+	public List<ClinicSales> findAllPaid()
 	{
 		if(utils.getOrganization() == null)
-			return new ArrayList<Medication>();
+			return new ArrayList<ClinicSales>();
 
 		return repository.findAllPaid(DateTimes.currentDate(),utils.getOrganization().getId());
 	}
@@ -137,14 +137,14 @@ public class MedicationService
 	}
 	
 	@Secured("ROLE_PHARMACY_SALES_CREATE")
-	public void add(Medication medication)
+	public void add(ClinicSales medication)
 	{
 		medication.setTime(DateTimes.currentTime());
 		repository.save(medication);
 	}
 	
 	@Secured({"ROLE_PHARMACY_SALES_UPDATE","ROLE_PHARMACY_ORDER_UPDATE"})
-	public void finish(Medication medication)
+	public void finish(ClinicSales medication)
 	{
 		if(utils.getOrganization() == null)
 			throw new RuntimeException("Default Organization not exist,please go to user setting.");
@@ -154,7 +154,7 @@ public class MedicationService
 		
 		if(medication.getStatus().equals(MedicalSalesStatus.Finished))
 		{
-			for(MedicationItem item:medication.getItems())
+			for(ClinicSalesItem item:medication.getItems())
 			{
 				if(!item.getMedicine().getComponents().isEmpty())
 				{
@@ -168,7 +168,7 @@ public class MedicationService
 	}
 
 	@Secured({"ROLE_PHARMACY_SALES_UPDATE","ROLE_PHARMACY_ORDER_UPDATE"})
-	public void edit(Medication medication)
+	public void edit(ClinicSales medication)
 	{
 		repository.saveAndFlush(medication);
 	}
@@ -176,7 +176,7 @@ public class MedicationService
 	@Secured({"ROLE_PHARMACY_SALES_DELETE","ROLE_PHARMACY_ORDER_DELETE"})
 	public void delete(@PathVariable String id)
 	{
-		Medication medication = findOne(id);
+		ClinicSales medication = findOne(id);
 		if(!medication.isPaid() && medication.getStatus().equals(MedicalSalesStatus.Registered))
 			repository.delete(medication);
 		else

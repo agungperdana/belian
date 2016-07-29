@@ -65,17 +65,17 @@ public class MedicalRecord implements Serializable
 	@ManyToOne
 	@JoinColumn(name="fk_medication")
 	@NotFound(action=NotFoundAction.IGNORE)
-	private Medication medication;
+	private ClinicSales medication;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_treatment")
 	@NotFound(action=NotFoundAction.IGNORE)
-	private Treatment treatment;
+	private MedicalTreatmentSales treatment;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_laboratory")
 	@NotFound(action=NotFoundAction.IGNORE)
-	private Laboratory laboratory;
+	private LaboratorySales laboratory;
 	
 	@Version
 	private Long version;
