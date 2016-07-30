@@ -6,6 +6,7 @@ package com.kratonsolution.belian.ui.accounting.journalentry;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
@@ -16,8 +17,8 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.accounting.svc.JournalEntryService;
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -28,8 +29,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class JournalEntryGridContent extends GridContent
 {
 	private JournalEntryService service = Springs.get(JournalEntryService.class);
-	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public JournalEntryGridContent()
 	{
@@ -46,8 +45,7 @@ public class JournalEntryGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				refresh(new JournalEntryModel(utils.getRowPerPage()));
+				Flow.next(getParent(), new JournalEntryGridContent());
 			}
 		});
 		
@@ -56,9 +54,7 @@ public class JournalEntryGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				JournalEntryWindow window = (JournalEntryWindow)getParent();
-				window.removeGrid();
-				window.insertCreateForm();
+				Flow.next(getParent(), new JournalEntryFormContent());
 			}
 		});
 		
@@ -110,7 +106,7 @@ public class JournalEntryGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",
+				Messagebox.show(lang.get("message.removedata"),"Warning",
 						Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 						{
 							@Override
@@ -152,11 +148,23 @@ public class JournalEntryGridContent extends GridContent
 	
 	protected void initGrid()
 	{
+		filter.setPlaceholder(lang.get("message.filter.placeholder"));
+		filter.addEventListener(Events.ON_CHANGING, new EventListener<InputEvent>()
+		{
+			@Override
+			public void onEvent(InputEvent input) throws Exception
+			{
+				refresh(new JournalEntryModel(utils.getRowPerPage(), input.getValue()));
+			}
+		});
+		
+		appendChild(filter);
+		appendChild(grid);
+		
 		final JournalEntryModel model = new JournalEntryModel(utils.getRowPerPage());
 		
-		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No Journal Entry data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new JournalEntryRowRenderer());
 		grid.setPagingPosition("both");
@@ -165,20 +173,20 @@ public class JournalEntryGridContent extends GridContent
 		grid.appendChild(new Columns());
 		
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Date",null,"100px"));
-		grid.getColumns().appendChild(new Column("Owner",null,"200px"));
-		grid.getColumns().appendChild(new Column("Period",null,"110px"));
-		grid.getColumns().appendChild(new Column("Note",null,"125px"));
-		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(5).setVisible(false);
-		grid.setSpan("4");
+		grid.getColumns().appendChild(new Column(lang.get("journalentry.grid.column.date"),null,"100px"));
+		grid.getColumns().appendChild(new Column(lang.get("journalentry.grid.column.note"),null,"125px"));
+		grid.getColumns().appendChild(new Column(lang.get("journalentry.grid.column.company"),null,"200px"));
+		grid.getColumns().appendChild(new Column(lang.get("journalentry.grid.column.period"),null,"110px"));
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().getLastChild().setVisible(false);
+		grid.setSpan("2");
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), utils.getRowPerPage());
+				model.next(event.getActivePage(), utils.getRowPerPage(),filter.getText());
 				grid.setModel(model);
 				refresh(model);
 			}

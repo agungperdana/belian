@@ -4,7 +4,6 @@
 package com.kratonsolution.belian.ui.accounting.journalentry;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.Iterator;
 
 import org.zkoss.zk.ui.Component;
@@ -32,11 +31,9 @@ import com.kratonsolution.belian.accounting.dm.JournalEntryDetailType;
 import com.kratonsolution.belian.accounting.dm.OGLAccount;
 import com.kratonsolution.belian.accounting.dm.OrganizationAccount;
 import com.kratonsolution.belian.accounting.svc.AccountingPeriodService;
-import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.accounting.svc.GLAccountService;
 import com.kratonsolution.belian.accounting.svc.JournalEntryService;
 import com.kratonsolution.belian.accounting.svc.OrganizationAccountService;
-import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.accounting.organizationaccount.OGLAccountList;
@@ -57,17 +54,13 @@ public class JournalEntryEditContent extends FormContent
 {	
 	private JournalEntryService service = Springs.get(JournalEntryService.class);
 
-	private CurrencyService currencyService = Springs.get(CurrencyService.class);
-
-	private OrganizationService organizationService = Springs.get(OrganizationService.class);
-
 	private OrganizationAccountService accountService = Springs.get(OrganizationAccountService.class);
 
 	private AccountingPeriodService accountingPeriodService = Springs.get(AccountingPeriodService.class);
 
 	private GLAccountService glAccountService = Springs.get(GLAccountService.class);
 
-	private Datebox date = new Datebox(new Date());
+	private Datebox date = Components.currentDatebox();
 
 	private OrganizationList companys = new OrganizationList();
 
@@ -77,7 +70,7 @@ public class JournalEntryEditContent extends FormContent
 
 	private CurrencyList currencys = new CurrencyList();
 
-	private Textbox note = new Textbox();
+	private Textbox note = Components.stdTextBox(null,false);
 
 	private Doublebox debet = Components.readOnlyDoubleBox();
 
@@ -115,7 +108,7 @@ public class JournalEntryEditContent extends FormContent
 			{
 				if(credit.doubleValue() <= 0 || debet.doubleValue() <= 0 || (debet.doubleValue() != credit.doubleValue()))
 				{
-					Clients.showNotification("debet & credit must be equals", true);
+					Clients.showNotification(lang.get("journalentry.message.amount"), true);
 					return;
 				}
 
@@ -172,8 +165,8 @@ public class JournalEntryEditContent extends FormContent
 			credit.setText(Numbers.format(entry.getCredit()));
 		}
 
-		Toolbarbutton posting = new Toolbarbutton("Posting", "/icons/locked.png");
-		Toolbarbutton unposting = new Toolbarbutton("Unposting", "/icons/unlocked.png");
+		Toolbarbutton posting = new Toolbarbutton(lang.get("journalentry.grid.column.posting"), "/icons/locked.png");
+		Toolbarbutton unposting = new Toolbarbutton(lang.get("journalentry.grid.column.unposting"), "/icons/unlocked.png");
 		
 		if(entry.isPosted())
 			toolbar.appendChild(unposting);
@@ -211,31 +204,31 @@ public class JournalEntryEditContent extends FormContent
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
 
 		Row row1 = new Row();
-		row1.appendChild(new Label("Date"));
+		row1.appendChild(new Label(lang.get("journalentry.grid.column.date")));
 		row1.appendChild(date);
-		row1.appendChild(new Label("Debet"));
-		row1.appendChild(new Label("Credit"));
-
+		row1.appendChild(new Label(lang.get("journalentry.grid.column.debet")));
+		row1.appendChild(new Label(lang.get("journalentry.grid.column.credit")));
+		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Owner"));
+		row2.appendChild(new Label(lang.get("journalentry.grid.column.company")));
 		row2.appendChild(companys);
 		row2.appendChild(debet);
 		row2.appendChild(credit);
-
+		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Chart of Account"));
+		row3.appendChild(new Label(lang.get("journalentry.grid.column.coa")));
 		row3.appendChild(coas);
-
+		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Accounting Period"));
+		row4.appendChild(new Label(lang.get("journalentry.grid.column.ap")));
 		row4.appendChild(periods);
-
+		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Currency"));
+		row5.appendChild(new Label(lang.get("journalentry.grid.column.currency")));
 		row5.appendChild(currencys);
-
+		
 		Row row6 = new Row();
-		row6.appendChild(new Label("Note"));
+		row6.appendChild(new Label(lang.get("journalentry.grid.column.note")));
 		row6.appendChild(note);
 
 		rows.appendChild(row1);
@@ -258,10 +251,10 @@ public class JournalEntryEditContent extends FormContent
 		transactions.setWidth("100%");
 
 		transactions.getColumns().appendChild(new Column(null, null, "25px"));
-		transactions.getColumns().appendChild(new Column("Account", null, "225px"));
-		transactions.getColumns().appendChild(new Column("Type", null, "100px"));
-		transactions.getColumns().appendChild(new Column("Amount", null, "100px"));
-		transactions.getColumns().appendChild(new Column("Note", null, null));
+		transactions.getColumns().appendChild(new Column(lang.get("journalentry.grid.column.account"), null, "225px"));
+		transactions.getColumns().appendChild(new Column(lang.get("journalentry.grid.column.type"), null, "100px"));
+		transactions.getColumns().appendChild(new Column(lang.get("journalentry.grid.column.amount"), null, "100px"));
+		transactions.getColumns().appendChild(new Column(lang.get("journalentry.grid.column.note"), null, null));
 		transactions.setSpan("4");
 
 		toolbar.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()
@@ -271,7 +264,7 @@ public class JournalEntryEditContent extends FormContent
 			{
 				if(Components.isEmpty(coas))
 				{
-					Clients.showNotification("Please select Chart of Account first!",true);
+					Clients.showNotification(lang.get("journalentry.message.coa"),true);
 					return;
 				}
 
@@ -289,8 +282,8 @@ public class JournalEntryEditContent extends FormContent
 				row.appendChild(accounts);
 
 				Listbox types = Components.newSelect();
-				types.appendChild(new Listitem("DEBET","DEBET"));
-				types.appendChild(new Listitem("CREDIT","CREDIT"));
+				types.appendChild(new Listitem(lang.get("journalentry.grid.column.debet"),"DEBET"));
+				types.appendChild(new Listitem(lang.get("journalentry.grid.column.credit"),"CREDIT"));
 				Components.setDefault(types);
 
 				final Doublebox amout = new Doublebox(0d);

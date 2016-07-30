@@ -42,6 +42,9 @@ public class JournalEntryDetail implements Serializable
 	@Column(name="reference")
 	private String reference;
 	
+	@Column(name="posting")
+	private String posting;
+	
 	@ManyToOne
 	@JoinColumn(name="fk_gl_account")
 	@NotFound(action=NotFoundAction.IGNORE)

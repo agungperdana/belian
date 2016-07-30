@@ -4,7 +4,6 @@
 package com.kratonsolution.belian.ui.accounting.journalentry;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.util.Iterator;
 
 import org.zkoss.zk.ui.Component;
@@ -33,7 +32,7 @@ import com.kratonsolution.belian.accounting.dm.OrganizationAccount;
 import com.kratonsolution.belian.accounting.svc.AccountingPeriodService;
 import com.kratonsolution.belian.accounting.svc.JournalEntryService;
 import com.kratonsolution.belian.accounting.svc.OrganizationAccountService;
-import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.accounting.organizationaccount.OGLAccountList;
@@ -52,9 +51,7 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class JournalEntryFormContent extends FormContent
 {	
 	private JournalEntryService service = Springs.get(JournalEntryService.class);
-	
-	private OrganizationService organizationService = Springs.get(OrganizationService.class);
-	
+
 	private OrganizationAccountService accountService = Springs.get(OrganizationAccountService.class);
 	
 	private AccountingPeriodService accountingPeriodService = Springs.get(AccountingPeriodService.class);
@@ -104,7 +101,7 @@ public class JournalEntryFormContent extends FormContent
 			{
 				if(credit.doubleValue() <= 0 || debet.doubleValue() <= 0 || (debet.doubleValue() != credit.doubleValue()))
 				{
-					Clients.showNotification("debet & credit must be equals", true);
+					Clients.showNotification(lang.get("journalentry.message.amount"), true);
 					return;
 				}
 				
@@ -112,9 +109,9 @@ public class JournalEntryFormContent extends FormContent
 				entry.setCoa(accountService.findOne(Components.string(coas)));
 				entry.setCredit(BigDecimal.valueOf(credit.doubleValue()));
 				entry.setCurrency(currencys.getCurrency());
-				entry.setDate(new Date(date.getValue().getTime()));
+				entry.setDate(DateTimes.sql(date.getValue()));
 				entry.setDebet(BigDecimal.valueOf(debet.doubleValue()));
-				entry.setOwner(organizationService.findOne(Components.string(companys)));
+				entry.setOwner(companys.getOrganization());
 				entry.setPeriod(accountingPeriodService.findOne(Components.string(periods)));
 				entry.setNote(note.getText());
 
@@ -168,31 +165,31 @@ public class JournalEntryFormContent extends FormContent
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Date"));
+		row1.appendChild(new Label(lang.get("journalentry.grid.column.date")));
 		row1.appendChild(date);
-		row1.appendChild(new Label("Debet"));
-		row1.appendChild(new Label("Credit"));
+		row1.appendChild(new Label(lang.get("journalentry.grid.column.debet")));
+		row1.appendChild(new Label(lang.get("journalentry.grid.column.credit")));
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Owner"));
+		row2.appendChild(new Label(lang.get("journalentry.grid.column.company")));
 		row2.appendChild(companys);
 		row2.appendChild(debet);
 		row2.appendChild(credit);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Chart of Account"));
+		row3.appendChild(new Label(lang.get("journalentry.grid.column.coa")));
 		row3.appendChild(coas);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Accounting Period"));
+		row4.appendChild(new Label(lang.get("journalentry.grid.column.ap")));
 		row4.appendChild(periods);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Currency"));
+		row5.appendChild(new Label(lang.get("journalentry.grid.column.currency")));
 		row5.appendChild(currencys);
 		
 		Row row6 = new Row();
-		row6.appendChild(new Label("Note"));
+		row6.appendChild(new Label(lang.get("journalentry.grid.column.note")));
 		row6.appendChild(note);
 		
 		rows.appendChild(row1);

@@ -27,9 +27,17 @@ public class JournalEntryModel implements ListModel<JournalEntry>
 	
 	private List<JournalEntry> data = new ArrayList<JournalEntry>();
 	
+	private String key;
+	
 	public JournalEntryModel(int itemSize)
 	{
-		next(0, itemSize);
+		next(0, itemSize,null);
+	}
+	
+	public JournalEntryModel(int itemSize,String key)
+	{
+		this.key = key;
+		next(0, itemSize,key);
 	}
 	
 	@Override
@@ -44,26 +52,22 @@ public class JournalEntryModel implements ListModel<JournalEntry>
 	@Override
 	public int getSize()
 	{
-		return service.count(utils.getOrganizationIds());
+		return service.size(this.key);
 	}
 
 	@Override
 	public void addListDataListener(ListDataListener l)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void removeListDataListener(ListDataListener l)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
-	public void next(int pageIndex,int itemSize)
+	public void next(int pageIndex,int itemSize,String key)
 	{
 		data.clear();
-		data.addAll(service.findAll(0, (itemSize*pageIndex)+itemSize,utils.getOrganizationIds()));
+		data.addAll(service.findAll(0, (itemSize*pageIndex)+itemSize,key));
 	}
 }

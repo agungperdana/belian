@@ -195,6 +195,8 @@ public class NavigationMenu extends Window
 		Listbox list = new Listbox();
 		list.setStyle("border:none");
 		
+		if(modules.containsKey("ROLE_GENERAL_JOURNAL_REPORT_READ"))
+			list.appendChild(new GeneralJournalMenu());
 		if(modules.containsKey("ROLE_PROFIT_LOSS_READ"))
 			list.appendChild(new ProfitLossReportMenu());
 		if(modules.containsKey("ROLE_INVOICE_REPORT_READ"))

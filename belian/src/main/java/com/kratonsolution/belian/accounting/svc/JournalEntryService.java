@@ -8,18 +8,19 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.GLAccountBalanceRepository;
 import com.kratonsolution.belian.accounting.dm.JournalEntry;
 import com.kratonsolution.belian.accounting.dm.JournalEntryDetail;
 import com.kratonsolution.belian.accounting.dm.JournalEntryRepository;
 import com.kratonsolution.belian.accounting.dm.JournalPosting;
 import com.kratonsolution.belian.accounting.dm.JournalPostingRepository;
+import com.kratonsolution.belian.common.Language;
+import com.kratonsolution.belian.common.SessionUtils;
 
 /**
  * 
@@ -30,6 +31,12 @@ import com.kratonsolution.belian.accounting.dm.JournalPostingRepository;
 @Transactional(rollbackFor=Exception.class)
 public class JournalEntryService
 {
+	@Autowired
+	private SessionUtils utils;
+	
+	@Autowired
+	private Language lang;
+	
 	@Autowired
 	private JournalEntryRepository repository;
 	
@@ -42,16 +49,19 @@ public class JournalEntryService
 	@Secured("ROLE_JOURNALENTRY_READ")
 	public int size()
 	{
-		return Long.valueOf(repository.count()).intValue();
+		if(!utils.getOrganizationIds().isEmpty())
+			return repository.count(utils.getOrganizationIds()).intValue();
+		
+		return 0;
 	}
 	
 	@Secured("ROLE_JOURNALENTRY_READ")
-	public int count(@Param("companys")List<String> companys)
+	public int size(String key)
 	{
-		if(companys != null && !companys.isEmpty())
-			return repository.count(companys);
-	
-		return 0;
+		if(!Strings.isNullOrEmpty(key))
+			return repository.count(utils.getOrganizationIds(), key).intValue();
+		
+		return size();
 	}
 	
 	@Secured("ROLE_JOURNALENTRY_READ")
@@ -67,12 +77,21 @@ public class JournalEntryService
 	}
 	
 	@Secured("ROLE_JOURNALENTRY_READ")
-	public List<JournalEntry> findAll(int pageIndex,int pageSize,List<String> companys)
+	public List<JournalEntry> findAll(int pageIndex,int pageSize)
 	{
-		if(companys != null && !companys.isEmpty())
-			return repository.findAll(new PageRequest(pageIndex, pageSize,new Sort(Sort.Direction.DESC,"date")),companys);
+		if(!utils.getOrganizationIds().isEmpty())
+			return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganizationIds());
 		
 		return new ArrayList<JournalEntry>();
+	}
+	
+	@Secured("ROLE_JOURNALENTRY_READ")
+	public List<JournalEntry> findAll(int pageIndex,int pageSize,String key)
+	{
+		if(!Strings.isNullOrEmpty(key))
+			return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganizationIds(),key);
+		
+		return findAll(pageIndex, pageSize);
 	}
 	
 	@Secured("ROLE_JOURNALENTRY_CREATE")
@@ -117,7 +136,7 @@ public class JournalEntryService
 			
 			postingRepository.save(posting);
 			
-			detail.setReference(posting.getId());
+			detail.setReference(posting.getAccount().getAccount().getNumber());
 		}
 
 		entry.setPosted(true);
@@ -128,6 +147,26 @@ public class JournalEntryService
 	@Secured("ROLE_JOURNALENTRY_UPDATE")
 	public void unpost(JournalEntry entry)
 	{
-		repository.save(entry);
+		if(entry.isAuto())
+			throw new RuntimeException(lang.get("journalentry.message.warning"));
+			
+		forceUnpost(entry);
+	}
+	
+	@Secured("ROLE_JOURNALENTRY_UPDATE")
+	public void forceUnpost(JournalEntry entry)
+	{
+		for(JournalEntryDetail detail:entry.getJournals())
+		{
+			if(!Strings.isNullOrEmpty(detail.getPosting()))
+				postingRepository.delete(detail.getPosting());
+	
+			detail.setReference(null);
+			detail.setPosting(null);
+		}
+		
+		entry.setPosted(false);
+		
+		repository.saveAndFlush(entry);
 	}
 }

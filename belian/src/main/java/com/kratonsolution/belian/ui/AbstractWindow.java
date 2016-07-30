@@ -22,8 +22,8 @@ public abstract class AbstractWindow extends Window implements HasStatus
 	
 	public AbstractWindow()
 	{
-		setWidth("500px");
-		setHeight("450px");
+		setWidth("625px");
+		setHeight("525px");
 		setMode(Mode.OVERLAPPED);
 		setClosable(true);
 		setMinimizable(true);

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.accounting.journalentry;
+package com.kratonsolution.belian.ui.financial.generaljournal;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Page;
@@ -11,44 +11,48 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Row;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.HasCreateForm;
 import com.kratonsolution.belian.ui.HasEditForm;
 import com.kratonsolution.belian.ui.HasGrid;
 import com.kratonsolution.belian.ui.nav.IconBar;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class JournalEntryWindow extends AbstractWindow implements HasCreateForm,HasEditForm,HasGrid
+public class GeneralJournalReportWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption(lang.get("navbar.menu.accounting.journal"));
+	private Language lang = Springs.get(Language.class);
 	
-	private JournalEntrybutton status = new JournalEntrybutton();
+	private Caption caption = new Caption(lang.get("navbar.menu.finance.generaljournal"));
 	
-	public static JournalEntryWindow injectInto(Page page)
+	private GeneralJournalReportButton status = new GeneralJournalReportButton();
+	
+	public static GeneralJournalReportWindow injectInto(Page page)
 	{
-		JournalEntryWindow window = new JournalEntryWindow();
+		GeneralJournalReportWindow window = new GeneralJournalReportWindow();
 		window.setPage(page);
 		window.init();
 		
 		return window;
 	}
 	
-	private JournalEntryWindow()
+	private GeneralJournalReportWindow()
 	{
 		super();
 		setWidth("675px");
-		setHeight("500px");
+		setHeight("575px");
 	}
 	
 	protected void init()
 	{
-		caption.setImage("/icons/journalentry.png");
+		caption.setImage("/icons/general-journal.png");
 		appendChild(caption);
-		
+		insertCreateForm();
 		insertStatus();
 		status.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
@@ -61,8 +65,6 @@ public class JournalEntryWindow extends AbstractWindow implements HasCreateForm,
 					setTopmost();
 			}
 		});
-		
-		insertGrid();
 	}
 	
 	@Override
@@ -71,23 +73,6 @@ public class JournalEntryWindow extends AbstractWindow implements HasCreateForm,
 		setVisible(false);
 		removeStatus();
 		setPage(null);
-	}
-	
-	public void removeGrid()
-	{
-		for(Component component:getChildren())
-		{
-			if(component instanceof JournalEntryGridContent)
-			{
-				removeChild(component);
-				break;
-			}
-		}
-	}
-
-	public void insertGrid()
-	{
-		appendChild(new JournalEntryGridContent());
 	}
 
 	@Override
@@ -113,7 +98,6 @@ public class JournalEntryWindow extends AbstractWindow implements HasCreateForm,
 	@Override
 	public void insertEditForm(Row row)
 	{
-		appendChild(new JournalEntryEditContent(row));
 	}
 
 	@Override
@@ -121,7 +105,7 @@ public class JournalEntryWindow extends AbstractWindow implements HasCreateForm,
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof JournalEntryEditContent)
+			if(component instanceof GeneralJournalReportResultContent)
 			{
 				removeChild(component);
 				break;
@@ -132,7 +116,7 @@ public class JournalEntryWindow extends AbstractWindow implements HasCreateForm,
 	@Override
 	public void insertCreateForm()
 	{
-		appendChild(new JournalEntryFormContent());
+		appendChild(new GeneralJournalReportFormContent());
 	}
 
 	@Override
@@ -140,11 +124,17 @@ public class JournalEntryWindow extends AbstractWindow implements HasCreateForm,
 	{
 		for(Component component:getChildren())
 		{
-			if(component instanceof JournalEntryFormContent)
+			if(component instanceof GeneralJournalReportFormContent)
 			{
 				removeChild(component);
 				break;
 			}
 		}
 	}
+
+	@Override
+	public void insertGrid(){}
+
+	@Override
+	public void removeGrid(){}	
 }
