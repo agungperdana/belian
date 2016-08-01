@@ -53,19 +53,23 @@ public class StockExpiredReminder extends Timer
 	
 	private void showNotification()
 	{
-		List<InventoryItem> onhands = repository.findAllExpired(utils.getFacilitys(),DateTimes.nextMonth(DateTimes.currentDate()));
-		if(!onhands.isEmpty())
+		try
 		{
-			int idx = 1;
-			
-			StringBuilder builder = new StringBuilder();
-			for(InventoryItem item:onhands)
+			List<InventoryItem> onhands = repository.findAllExpired(utils.getFacilitys(),DateTimes.nextMonth(DateTimes.currentDate()));
+			if(!onhands.isEmpty())
 			{
-				builder.append("\n"+idx+"."+item.getProduct().getName()+"\n");
-				idx++;
+				int idx = 1;
+				
+				StringBuilder builder = new StringBuilder();
+				for(InventoryItem item:onhands)
+				{
+					builder.append("\n"+idx+"."+item.getProduct().getName()+"\n");
+					idx++;
+				}
+				
+				Clients.showNotification(onhands.size()+" Product expired in one month\n"+builder.toString());
 			}
-			
-			Clients.showNotification(onhands.size()+" Product expired in one month\n"+builder.toString());
-		}
+		} 
+		catch (Exception e){}
 	}
 }

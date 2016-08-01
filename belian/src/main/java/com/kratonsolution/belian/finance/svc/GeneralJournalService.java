@@ -71,7 +71,7 @@ public class GeneralJournalService
 			Party party = partyRepo.findOne(com);
 			if(party != null)
 			{
-				List<JournalEntry> entrys = journalRepo.findAll(company, start, end);
+				List<JournalEntry> entrys = journalRepo.findAll(party.getId(), start, end);
 				if(!entrys.isEmpty())
 				{
 					Map<String,Object> content = new HashMap<>();

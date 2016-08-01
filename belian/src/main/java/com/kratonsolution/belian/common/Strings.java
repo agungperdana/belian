@@ -4,8 +4,9 @@
 package com.kratonsolution.belian.common;
 
 /**
- * @author agungdodiperdana
- *
+ * 
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  */
 public class Strings
 {

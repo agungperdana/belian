@@ -52,19 +52,23 @@ public class StockReminder extends Timer
 	
 	private void showNotification()
 	{
-		List<InventoryItem> onhands = inventoryItemService.findAllOutOfStock(utils.getFacilitys());
-		if(!onhands.isEmpty())
+		try
 		{
-			int idx = 1;
-			
-			StringBuilder builder = new StringBuilder();
-			for(InventoryItem item:onhands)
+			List<InventoryItem> onhands = inventoryItemService.findAllOutOfStock(utils.getFacilitys());
+			if(!onhands.isEmpty())
 			{
-				builder.append("\n"+idx+"."+item.getProduct().getName()+"\n");
-				idx++;
+				int idx = 1;
+				
+				StringBuilder builder = new StringBuilder();
+				for(InventoryItem item:onhands)
+				{
+					builder.append("\n"+idx+"."+item.getProduct().getName()+"\n");
+					idx++;
+				}
+				
+				Clients.showNotification(onhands.size()+" Product stock less than min stock\n"+builder.toString());
 			}
-			
-			Clients.showNotification(onhands.size()+" Product stock less than min stock\n"+builder.toString());
 		}
+		catch (Exception e){}
 	}
 }

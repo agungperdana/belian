@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.accounting.svc.AutoJournalCreatorFactory;
+import com.kratonsolution.belian.accounting.svc.JournalEntryService;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
@@ -44,6 +46,12 @@ public class BillingService
 	
 	@Autowired
 	private ReceiptRepository receiptRepo;
+	
+	@Autowired
+	private AutoJournalCreatorFactory factory;
+	
+	@Autowired
+	private JournalEntryService journalService;
 	
 	@Autowired
 	private SessionUtils utils;
@@ -140,6 +148,8 @@ public class BillingService
 		billing.setPaid(true);
 
 		repository.saveAndFlush(billing);
+		
+		journalService.add(factory.create(billing));
 	}
 	
 	@Secured("ROLE_BILLING_DELETE")

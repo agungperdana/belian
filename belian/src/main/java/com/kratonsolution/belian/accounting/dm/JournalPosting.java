@@ -52,4 +52,22 @@ public class JournalPosting implements Serializable
 	
 	@Version
 	private Long version;
+	
+	public JournalPosting(){}
+	
+	public BigDecimal getDebet()
+	{
+		if(type.equals(JournalEntryDetailType.DEBET))
+			return amount;
+		
+		return BigDecimal.ZERO;
+	}
+	
+	public BigDecimal getCredit()
+	{
+		if(type.equals(JournalEntryDetailType.CREDIT))
+			return amount;
+		
+		return BigDecimal.ZERO;
+	}
 }

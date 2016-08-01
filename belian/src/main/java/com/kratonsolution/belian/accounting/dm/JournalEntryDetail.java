@@ -90,4 +90,20 @@ public class JournalEntryDetail implements Serializable
 		
 		return detail;
 	}
+	
+	public BigDecimal getDebet()
+	{
+		if(type.equals(JournalEntryDetailType.DEBET))
+			return amount;
+		
+		return BigDecimal.ZERO;
+	}
+	
+	public BigDecimal getCredit()
+	{
+		if(type.equals(JournalEntryDetailType.CREDIT))
+			return amount;
+		
+		return BigDecimal.ZERO;
+	}
 }

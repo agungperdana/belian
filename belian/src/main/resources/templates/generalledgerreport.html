@@ -28,38 +28,28 @@
 			<tbody>
 			<th:block th:each="map:${contents}">
 			<tr id='black-red'>
-				<td colspan="5">[[${map.company.name}]]</td>
+				<td colspan="3">[[${map.company.name}]]</td>
 			</tr>
-			<tr id='black-red'>
-				<td align="left">[[${date}]]</td>
-				<td align="left">[[${note}]]</td>
-				<td align="center">[[${ref}]]</td>
+			<tr id='black'>
+				<td>[[${date}]]</td>
 				<td align="right">[[${debet}]]</td>
 				<td align="right">[[${credit}]]</td>
 			</tr>
-			<th:block th:each="entry:${map.journals}">
-			<tr>
-				<td width="10%" align="left">[[${#dates.format(entry.date,'dd/MM/yyyy')}]]</td>
-				<td align="left" id='black'>[[${entry.note}]]</td>
-				<td width="15%" align="center">&nbsp;</td>
-				<td width="15%" align="center">&nbsp;</td>
-				<td width="15%" align="right">&nbsp;</td>
+			<tr><td colspan="3">&nbsp;</td></tr>
+			<th:block th:each="account:${map.accounts}">
+			<th:block th:if="${not #lists.isEmpty(account.postings)}" >
+			<tr id='black'>
+				<td colspan="3">[[${account.account.number}]]-[[${account.account.name}]]</td>
 			</tr>
-			<tr th:each="detail:${entry.journals}">
-				<td align="left">&nbsp;</td>
-				<td align="left">[[${detail.account.account.number}]]-[[${detail.account.account.name}]]</td>
-				<td align="center">[[${detail.reference}]]</td>
-				<td align="right">
-					[[${#numbers.formatDecimal(detail.debet,1,'COMMA',0,'POINT')}]]&nbsp;
-				</td>
-				<td align="right">
-					[[${#numbers.formatDecimal(detail.credit,1,'COMMA',0,'POINT')}]]&nbsp;
-				</td>
+			<tr th:each="post:${account.postings}">
+				<td width="10%" align="left">&nbsp;&nbsp;&nbsp;[[${#dates.format(post.date,'dd/MM/yyyy')}]]</td>
+				<td width="5%" align="right">[[${#numbers.formatDecimal(post.debet,1,'COMMA',0,'POINT')}]]</td>
+				<td width="10%" align="right">[[${#numbers.formatDecimal(post.credit,1,'COMMA',0,'POINT')}]]</td>
 			</tr>
 			</th:block>
-			<tr>
-				<td colspan="5">&nbsp;</td>
-			</tr>			
+			<tr><td colspan="3">&nbsp;</td></tr>
+			</th:block>
+			<tr><td colspan="3">&nbsp;</td></tr>
 			</th:block>
 			</tbody>
 			</table>

@@ -4,7 +4,6 @@
 package com.kratonsolution.belian.ui.sales.cashsales;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.text.NumberFormat;
 import java.util.Iterator;
 
@@ -33,10 +32,10 @@ import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.accounting.svc.TaxService;
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
@@ -45,8 +44,11 @@ import com.kratonsolution.belian.sales.dm.CashSales;
 import com.kratonsolution.belian.sales.dm.CashSalesLine;
 import com.kratonsolution.belian.sales.srv.CashSalesService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.component.CurrencyList;
+import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.component.ProductPriceSelectionListener;
 import com.kratonsolution.belian.ui.component.ProductRow;
+import com.kratonsolution.belian.ui.component.TaxList;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
@@ -92,13 +94,13 @@ public class CashSalesFormContent extends FormContent implements ProductPriceSel
 	
 	private Listbox consumers = Components.fullSpanSelect();
 	
-	private Listbox currencys = Components.fullSpanSelect();
+	private CurrencyList currencys = new CurrencyList();
 	
-	private Listbox organizations = Components.fullSpanSelect();
+	private OrganizationList companys = new OrganizationList();
 	
 	private Listbox locations = Components.fullSpanSelect(geographicService.findAll(),true);
 	
-	private Listbox taxes = Components.fullSpanSelect(taxService.findAll(),true);
+	private TaxList taxes = new TaxList();
 	
 	private Tabbox tabbox = new Tabbox();
 	
@@ -145,12 +147,12 @@ public class CashSalesFormContent extends FormContent implements ProductPriceSel
 				CashSales sales = new CashSales();
 				sales.setTable(Integer.parseInt(Components.string(tableNumber)));
 				sales.setCustomer(personService.findOne(Components.string(consumers)));
-				sales.setCurrency(currencyService.findOne(Components.string(currencys)));
-				sales.setDate(new Date(date.getValue().getTime()));
+				sales.setCurrency(currencys.getCurrency());
+				sales.setDate(DateTimes.sql(date.getValue()));
 				sales.setNote(note.getText());
 				sales.setNumber(number.getText());
-				sales.setTax(taxService.findOne(Components.string(taxes)));
-				sales.setOrganization(organizationService.findOne(Components.string(organizations)));
+				sales.setTax(taxes.getTax());
+				sales.setOrganization(companys.getOrganization());
 				sales.setSales(personService.findOne(Components.string(producers)));
 				sales.setLocation(geographicService.findOne(Components.string(locations)));
 				
@@ -180,11 +182,10 @@ public class CashSalesFormContent extends FormContent implements ProductPriceSel
 
 	@Override
 	public void initForm()
-	{
-		date.setConstraint("no empty");
-				
-		term.setConstraint("no empty");
-		term.setWidth("65px");
+	{		
+		companys.setWidth("100%");
+		currencys.setWidth("100%");
+		taxes.setWidth("100%");
 		
 		bill.setStyle("text-align:right;");
 		
@@ -193,28 +194,7 @@ public class CashSalesFormContent extends FormContent implements ProductPriceSel
 		for(int idx=1;idx<=20;idx++)
 			tableNumber.appendChild(new Listitem(idx+"", idx));
 		
-		for(Object object:taxes.getChildren())
-		{
-			Listitem listitem = (Listitem)object;
-			if(listitem.getLabel().equals("None"))
-				taxes.setSelectedItem(listitem);
-		}
-		
 		Components.setDefault(tableNumber);
-		
-		if(sessionUtils.getOrganization() != null)
-		{
-			organizations.appendItem(sessionUtils.getOrganization().getName(), sessionUtils.getOrganization().getId());
-			organizations.setSelectedIndex(0);
-		}
-		
-		for(Currency currency:currencyService.findAll())
-		{
-			Listitem listitem = new Listitem(currency.getCode(), currency.getId());
-			currencys.appendChild(listitem);
-			if(sessionUtils.getCurrency() != null && currency.getId().equals(sessionUtils.getCurrency().getId()))
-				currencys.setSelectedItem(listitem);
-		}
 		
 		for(Object object:locations.getChildren())
 		{
@@ -235,7 +215,7 @@ public class CashSalesFormContent extends FormContent implements ProductPriceSel
 		consumers.appendChild(new Listitem(personService.anonymous().getLabel(), personService.anonymous().getValue()));
 		consumers.setSelectedIndex(0);
 		
-		taxes.addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		taxes.addEventListener(Events.ON_SELECT,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
@@ -256,7 +236,7 @@ public class CashSalesFormContent extends FormContent implements ProductPriceSel
 		
 		Row row1 = new Row();
 		row1.appendChild(new Label("Document Owner"));
-		row1.appendChild(organizations);
+		row1.appendChild(companys);
 		row1.appendChild(new Label("Billing"));
 		row1.appendChild(bill);
 		

@@ -12,13 +12,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kratonsolution.belian.accounting.dm.JournalEntry;
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.JournalEntryRepository;
+import com.kratonsolution.belian.accounting.dm.OGLAccount;
+import com.kratonsolution.belian.accounting.dm.OGLAccountRepository;
+import com.kratonsolution.belian.accounting.dm.OrganizationAccount;
+import com.kratonsolution.belian.accounting.dm.OrganizationAccountRepository;
 import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.CompanyStructure;
 import com.kratonsolution.belian.general.dm.CompanyStructureRepository;
-import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.PartyRepository;
 
 /**
@@ -37,7 +39,13 @@ public class GeneralLedgerService
 	private PartyRepository partyRepo;
 
 	@Autowired
+	private OGLAccountRepository accountRepo;
+	
+	@Autowired
 	private JournalEntryRepository journalRepo;
+	
+	@Autowired
+	private OrganizationAccountRepository oatRepo;
 	
 	@Autowired
 	private Language lang;
@@ -50,36 +58,37 @@ public class GeneralLedgerService
 	{
 		Map<String,Object> map = new HashMap<>();
 		
-		Party selected = partyRepo.findOne(company);
-		CompanyStructure cs = structureRepo.findOneByOrganizationId(company);
-
-		Map<String,String> structureIds = new HashMap<>();
-		utils.extractOrganizationId(structureIds, cs);
-
-		map.put("company", selected);
-		map.put("title",lang.get("generaljournal.label.title"));
-		map.put("date", lang.get("journalentry.grid.column.date"));
-		map.put("note", lang.get("journalentry.grid.column.note"));
-		map.put("ref", lang.get("journalentry.grid.column.ref"));
-		map.put("debet", lang.get("journalentry.grid.column.debet"));
-		map.put("credit", lang.get("journalentry.grid.column.credit"));
-		
-		List<Map<String,Object>> contents = new ArrayList<>();
-		
-		for(String com:structureIds.values())
+		OrganizationAccount oat = oatRepo.findOne(company);
+		if(oat != null)
 		{
-			Party party = partyRepo.findOne(com);
-			if(party != null)
+			map.put("company", oat.getOrganization());
+			map.put("title",lang.get("generalledger.label.title"));
+			map.put("date", lang.get("journalentry.grid.column.date"));
+			map.put("debet", lang.get("journalentry.grid.column.debet"));
+			map.put("credit", lang.get("journalentry.grid.column.credit"));
+			
+			List<Map<String,Object>> contents = new ArrayList<>();
+
+			List<OGLAccount> postings = new ArrayList<>();
+			
+			if(Strings.isNullOrEmpty(account))
 			{
-				List<JournalEntry> entrys = journalRepo.findAll(company, start, end);
-				if(!entrys.isEmpty())
+				for(OGLAccount oglAccount:oat.getAccounts())
 				{
-					Map<String,Object> content = new HashMap<>();
-					content.put("company", party);
-					content.put("journals",entrys);
-				
-					contents.add(content);
+					if(oglAccount.isSelected() && !oglAccount.getPostings().isEmpty())
+						postings.add(oglAccount);
 				}
+			}
+			else
+				postings.add(accountRepo.findOne(account));
+			
+			if(!postings.isEmpty())
+			{
+				Map<String,Object> content = new HashMap<>();
+				content.put("company", oat.getOrganization());
+				content.put("accounts",postings);
+				
+				contents.add(content);
 			}
 			
 			map.put("contents", contents);

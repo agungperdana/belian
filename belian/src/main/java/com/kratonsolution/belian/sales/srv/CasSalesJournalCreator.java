@@ -55,7 +55,7 @@ public class CasSalesJournalCreator extends AutoJournalCreator<CashSales>
 				entry.setPosted(false);
 				entry.addDetail(JournalEntryDetail.DEBET(setting.getSales().getCash(), cashSales.getBillingAmount().add(cashSales.getTaxAmount()), "Posting to Cash Account"));
 				entry.addDetail(JournalEntryDetail.CREDIT(setting.getSales().getTaxSales(), cashSales.getTaxAmount(), "Posting to Tax Payable Account"));
-				entry.addDetail(JournalEntryDetail.CREDIT(setting.getSales().getGoodsSales(), cashSales.getNet(), "Posting to Sales (Goods) Account"));
+				entry.addDetail(JournalEntryDetail.CREDIT(setting.getSales().getGoodsSales(), cashSales.getBillingAmount(), "Posting to Sales (Goods) Account"));
 
 				if(entry.isBalance());
 					return entry;

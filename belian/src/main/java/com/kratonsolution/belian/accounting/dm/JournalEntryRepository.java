@@ -46,7 +46,7 @@ public interface JournalEntryRepository extends JpaRepository<JournalEntry, Stri
 	
 	@Query("FROM JournalEntry entry WHERE "
 			+ "entry.owner.id =:company "
-			+ "AND entry.date BETWEEN :start AND :end "
+			+ "AND (entry.date BETWEEN :start AND :end) "
 			+ "ORDER BY entry.date DESC,entry.owner.name ASC ")
 	public List<JournalEntry> findAll(@Param("company")String company,@Param("start")Date start,@Param("end")Date end);
 }

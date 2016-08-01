@@ -38,6 +38,14 @@ public class OGLAccountList extends Listbox
 			populate(company.getId());
 	}
 	
+	public OGLAccountList(Organization company,boolean canbeempty)
+	{
+		this(company);
+		
+		if(canbeempty)
+			setSelectedItem(appendItem("",""));
+	}
+	
 	public OGLAccountList(String company)
 	{
 		setWidth("250px");
@@ -66,10 +74,13 @@ public class OGLAccountList extends Listbox
 		
 		for(OGLAccount account:org.getAccounts())
 		{
-			appendItem(account.getLabel(), account.getValue());
-			
-			if(!maps.containsKey(account.getId()))
-				maps.put(account.getId(), account);
+			if(account.isSelected())
+			{
+				appendItem(account.getLabel(), account.getValue());
+				
+				if(!maps.containsKey(account.getId()))
+					maps.put(account.getId(), account);
+			}
 		}
 		
 		if(getItemCount() > 0)
@@ -111,5 +122,16 @@ public class OGLAccountList extends Listbox
 	{
 		if(organization != null)
 			populate(organization.getId());
+	}
+	
+	public void repopulate(Organization organization,boolean canbeempty)
+	{
+		if(organization != null)
+		{
+			populate(organization.getId());
+			
+			if(canbeempty)
+				setSelectedItem(appendItem("",""));
+		}
 	}
 }

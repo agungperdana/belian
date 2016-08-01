@@ -11,5 +11,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface JournalPostingRepository extends JpaRepository<JournalPosting, String>
 {
-
 }

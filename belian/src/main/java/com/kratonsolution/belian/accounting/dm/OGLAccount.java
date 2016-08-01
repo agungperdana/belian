@@ -11,6 +11,7 @@ import java.util.UUID;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -57,7 +58,7 @@ public class OGLAccount implements Serializable,Listable
 	@Version
 	private Long version;
 	
-	@OneToMany(mappedBy="account")
+	@OneToMany(mappedBy="account",fetch=FetchType.EAGER)
 	private Set<JournalPosting> postings = new HashSet<>();
 	
 	public OGLAccount(){}
