@@ -17,6 +17,7 @@ import org.zkoss.zul.Hbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.healtcare.dm.DoctorRelationship;
@@ -32,13 +33,15 @@ public class DoctorBox extends Hbox implements DoctorRegistrationListener
 {
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
+	private Language lang = Springs.get(Language.class);
+	
 	private DoctorRelationshipRepository repository = Springs.get(DoctorRelationshipRepository.class);
 	
 	private DoctorRepository doctorRepository = Springs.get(DoctorRepository.class);
 	
 	private Combobox doctor = new Combobox();
 
-	private A link = new A("New Doctor");
+	private A link = new A(lang.get("doctor.grid.column.new"));
 	
 	private Map<String,DoctorRelationship> maps = new HashMap<String, DoctorRelationship>(); 
 
@@ -48,7 +51,7 @@ public class DoctorBox extends Hbox implements DoctorRegistrationListener
 		doctor.setAutodrop(true);
 		doctor.setConstraint("no empty");
 		doctor.setWidth("290px");
-		doctor.setPlaceholder("Type doctor identity/name.");
+		doctor.setPlaceholder(lang.get("message.filter.placeholder"));
 		
 		setWidth("400px");
 
@@ -64,7 +67,7 @@ public class DoctorBox extends Hbox implements DoctorRegistrationListener
 			{
 				if(utils.getOrganization() == null)
 				{
-					Clients.showNotification("Please select default Working company first.");
+					Clients.showNotification(lang.get("message.field.company"));
 					return;
 				}
 				

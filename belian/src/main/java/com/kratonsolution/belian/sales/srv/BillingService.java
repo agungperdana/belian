@@ -149,7 +149,7 @@ public class BillingService
 
 		repository.saveAndFlush(billing);
 		
-		journalService.add(factory.create(billing));
+		journalService.silence(factory.create(billing));
 	}
 	
 	@Secured("ROLE_BILLING_DELETE")

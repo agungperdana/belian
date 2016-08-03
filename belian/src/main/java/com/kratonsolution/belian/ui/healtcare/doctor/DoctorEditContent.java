@@ -15,11 +15,11 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 
 import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.healtcare.dm.DoctorRelationship;
 import com.kratonsolution.belian.healtcare.svc.DoctorRelationshipService;
 import com.kratonsolution.belian.healtcare.svc.DoctorTypeService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.component.PersonBox;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
@@ -33,8 +33,6 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class DoctorEditContent extends FormContent
 {	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
-	
 	private DoctorRelationshipService service = Springs.get(DoctorRelationshipService.class);
 
 	private DoctorTypeService doctorTypeService = Springs.get(DoctorTypeService.class);
@@ -43,7 +41,7 @@ public class DoctorEditContent extends FormContent
 
 	private Datebox end = Components.datebox();
 
-	private Listbox companys = Components.newSelect();
+	private OrganizationList companys = new OrganizationList();
 
 	private PersonBox person = new PersonBox(false);
 
@@ -99,8 +97,7 @@ public class DoctorEditContent extends FormContent
 		{
 			start.setValue(doctor.getStart());
 			end.setValue(doctor.getEnd());
-			companys.appendItem(utils.getOrganization().getName(),utils.getOrganization().getId());
-			companys.setSelectedIndex(0);
+			companys.setOrganization(doctor.getOrganization().getOrganization());
 			person.setPerson(doctor.getDoctor().getPerson());
 
 			if(doctor.getCategory() != null)
@@ -118,23 +115,23 @@ public class DoctorEditContent extends FormContent
 			grid.setSpan("1");
 			
 			Row row1 = new Row();
-			row1.appendChild(new Label("Start"));
+			row1.appendChild(new Label(lang.get("doctor.grid.column.start")));
 			row1.appendChild(start);
 			
 			Row row2 = new Row();
-			row2.appendChild(new Label("End"));
+			row2.appendChild(new Label(lang.get("doctor.grid.column.end")));
 			row2.appendChild(end);
 			
 			Row row3 = new Row();
-			row3.appendChild(new Label("Company"));
+			row3.appendChild(new Label(lang.get("doctor.grid.column.company")));
 			row3.appendChild(companys);
 			
 			Row row4 = new Row();
-			row4.appendChild(new Label("Person"));
+			row4.appendChild(new Label(lang.get("doctor.grid.column.person")));
 			row4.appendChild(person);
 			
 			Row row5 = new Row();
-			row5.appendChild(new Label("Classification"));
+			row5.appendChild(new Label(lang.get("doctor.grid.column.type")));
 			row5.appendChild(classifications);
 			
 			rows.appendChild(row1);

@@ -110,7 +110,7 @@ public class DoctorGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -163,8 +163,8 @@ public class DoctorGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.start"),null,"85px"));
-		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.end"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("doctor.grid.column.start"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("doctor.grid.column.end"),null,"85px"));
 		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.nik"),null,"100px"));
 		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.name")));
 		grid.getColumns().appendChild(new Column(lang.get("healtcare.grid.column.drtitle"),null,"115px"));

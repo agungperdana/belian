@@ -21,6 +21,7 @@ import org.zkoss.zul.Vlayout;
 import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.InternalOrganization;
 import com.kratonsolution.belian.healtcare.dm.Doctor;
@@ -42,6 +43,8 @@ public class DoctorRegistration extends Window
 	private Collection<DoctorRegistrationListener> listeners = new Vector<DoctorRegistrationListener>();
 
 	private SessionUtils utils = Springs.get(SessionUtils.class);
+	
+	private Language lang = Springs.get(Language.class);
 	
 	private DoctorService service = Springs.get(DoctorService.class);
 	
@@ -73,7 +76,7 @@ public class DoctorRegistration extends Window
 
 	private void init()
 	{
-		Caption caption = new Caption("Doctor Registration");
+		Caption caption = new Caption(lang.get("doctor.grid.column.reg"));
 		caption.setImage("/icons/doctor.png");
 		appendChild(caption);
 		
@@ -83,11 +86,11 @@ public class DoctorRegistration extends Window
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.setSpan("1");
-		grid.getRows().appendChild(RowUtils.row("Start", start));
-		grid.getRows().appendChild(RowUtils.row("End", end));
-		grid.getRows().appendChild(RowUtils.row("Company", companys));
-		grid.getRows().appendChild(RowUtils.row("Type", types));
-		grid.getRows().appendChild(RowUtils.row("Person", person));
+		grid.getRows().appendChild(RowUtils.row(lang.get("doctor.grid.column.start"), start));
+		grid.getRows().appendChild(RowUtils.row(lang.get("doctor.grid.column.end"), end));
+		grid.getRows().appendChild(RowUtils.row(lang.get("doctor.grid.column.company"), companys));
+		grid.getRows().appendChild(RowUtils.row(lang.get("doctor.grid.column.type"), types));
+		grid.getRows().appendChild(RowUtils.row(lang.get("doctor.grid.column.person"), person));
 		
 		toolbar.getCancel().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
@@ -104,7 +107,7 @@ public class DoctorRegistration extends Window
 			public void onEvent(Event arg0) throws Exception
 			{
 				if(person.getPerson() == null)
-					throw new WrongValueException(person,"Person box cannot be empty.");
+					throw new WrongValueException(person,lang.get("message.field.empty"));
 				
 				DoctorRelationship relationship = new DoctorRelationship();
 				relationship.setStart(DateTimes.sql(start.getValue()));

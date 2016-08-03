@@ -12,9 +12,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.inventory.dm.ProductPrice;
 import com.kratonsolution.belian.inventory.dm.ProductPriceType;
 
 import lombok.Getter;
@@ -56,6 +59,9 @@ public class PharmacySalesItem implements MedicalSalesItem
 	@JoinColumn(name="fk_pharmacy_sales")
 	private PharmacySales pharmacySales;
 
+	@Transient
+	private BigDecimal cost;
+	
 	@Version
 	private Long version;
 	
@@ -92,5 +98,16 @@ public class PharmacySalesItem implements MedicalSalesItem
 			return ProductPriceType.REFERENCE;
 		else
 			return ProductPriceType.BASE;
+	}
+	
+	public BigDecimal getCost()
+	{
+		for(ProductPrice price:product.getPrices())
+		{
+			if(DateTimes.inRange(pharmacySales.getDate(), price.getFrom(), price.getTo()))
+				return price.getPrice();
+		}
+		
+		return BigDecimal.ZERO;
 	}
 }

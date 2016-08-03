@@ -9,10 +9,10 @@ import java.text.NumberFormat;
 import java.util.Iterator;
 
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
@@ -33,9 +33,9 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.global.dm.SequenceNumber.Code;
 import com.kratonsolution.belian.global.svc.CodeGenerator;
@@ -43,10 +43,12 @@ import com.kratonsolution.belian.healtcare.dm.PharmacySales;
 import com.kratonsolution.belian.healtcare.dm.PharmacySalesItem;
 import com.kratonsolution.belian.healtcare.svc.PharmacySalesService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.component.CurrencyList;
 import com.kratonsolution.belian.ui.component.MedicalSalesRow;
 import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.component.PersonBox;
 import com.kratonsolution.belian.ui.component.ProductPriceSelectionListener;
+import com.kratonsolution.belian.ui.component.TaxList;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
@@ -60,8 +62,6 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 {	
 	private CodeGenerator generator = Springs.get(CodeGenerator.class);
 	
-	private SessionUtils sessionUtils = Springs.get(SessionUtils.class);
-	
 	private PersonService personService = Springs.get(PersonService.class);
 	
 	private PharmacySalesService service = Springs.get(PharmacySalesService.class);
@@ -74,6 +74,10 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 	
 	private Doublebox term = Components.readOnlyDoubleBox(0);
 	
+	private Doublebox tuslah = Components.doubleBox(4000);
+	
+	private Doublebox rounding = Components.doubleBox(0);
+	
 	private Textbox bill = Components.moneyBox();
 	
 	private Textbox tax = Components.moneyBox();
@@ -82,17 +86,17 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 	
 	private Textbox note = new Textbox();
 	
-	private Listbox saleses = Components.fullSpanSelect(sessionUtils.getUser().getPerson());
+	private Listbox saleses = Components.fullSpanSelect(utils.getUser().getPerson());
 	
 	private PersonBox customers = new PersonBox(false);
 	
-	private Listbox currencys = Components.fullSpanSelect(sessionUtils.getCurrency());
+	private CurrencyList currencys = new CurrencyList();
 	
 	private OrganizationList companys = new OrganizationList();
 	
-	private Listbox locations = Components.fullSpanSelect(sessionUtils.getLocation());
+	private Listbox locations = Components.fullSpanSelect(utils.getLocation());
 	
-	private Listbox taxes = Components.fullSpanSelect(sessionUtils.getTax());
+	private TaxList taxes = new TaxList();
 	
 	private Tabbox tabbox = new Tabbox();
 	
@@ -130,18 +134,17 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				if(sessionUtils.getTax() == null)
-					throw new WrongValueException(taxes, "Tax cannot be empty.");
-				
 				PharmacySales pharmacy = new PharmacySales();
-				pharmacy.setCurrency(sessionUtils.getCurrency());
+				pharmacy.setCurrency(currencys.getCurrency());
 				pharmacy.setCustomer(customers.getPerson());
 				pharmacy.setDate(new Date(date.getValue().getTime()));
 				pharmacy.setNumber(number.getText());
-				pharmacy.setOrganization(sessionUtils.getOrganization());
-				pharmacy.setSales(sessionUtils.getUser().getPerson());
-				pharmacy.setTax(sessionUtils.getTax());
+				pharmacy.setOrganization(companys.getOrganization());
+				pharmacy.setSales(utils.getUser().getPerson());
+				pharmacy.setTax(taxes.getTax());
 				pharmacy.setReference(ref.isChecked());
+				pharmacy.setRounding(BigDecimal.valueOf(rounding.doubleValue()));
+				pharmacy.setTuslah(BigDecimal.valueOf(tuslah.doubleValue()));
 				
 				for(Component com:saleItems.getRows().getChildren())
 				{
@@ -161,15 +164,35 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 	@Override
 	public void initForm()
 	{
+		rounding.addEventListener(Events.ON_CHANGE, new EventListener<InputEvent>()
+		{
+			@Override
+			public void onEvent(InputEvent input) throws Exception
+			{
+				if(!Strings.isNullOrEmpty(input.getValue()))
+					display();
+			}
+		});
+		
+		tuslah.addEventListener(Events.ON_CHANGE, new EventListener<InputEvent>()
+		{
+			@Override
+			public void onEvent(InputEvent input) throws Exception
+			{
+				if(!Strings.isNullOrEmpty(input.getValue()))
+					display();
+			}
+		});
+		
 		customers.setPerson(personService.anonymous());
 		
-		number.setText(generator.generate(new Date(System.currentTimeMillis()), sessionUtils.getOrganization(), Code.BLMED));
+		number.setText(generator.generate(new Date(System.currentTimeMillis()), companys.getOrganization(), Code.BLMED));
 		date.setConstraint("no empty");
 		note.setWidth("100%");
 		
-		if(sessionUtils.getUser().getPerson() != null)
+		if(utils.getUser().getPerson() != null)
 		{
-			saleses.appendChild(new Listitem(sessionUtils.getUser().getPerson().getLabel(), sessionUtils.getUser().getPerson().getValue()));
+			saleses.appendChild(new Listitem(utils.getUser().getPerson().getLabel(), utils.getUser().getPerson().getValue()));
 			saleses.setSelectedIndex(0);
 		}
 		
@@ -194,20 +217,26 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 		Row row2 = new Row();
 		row2.appendChild(new Label("Doc Number"));
 		row2.appendChild(number);
-		row2.appendChild(new Label("Tax"));
-		row2.appendChild(tax);
+		row2.appendChild(new Label("Tuslah/Etiket"));
+		row2.appendChild(tuslah);
 		
 		Row row3 = new Row();
 		row3.appendChild(new Label("Date"));
 		row3.appendChild(date);
-		row3.appendChild(new Label("Total Billing"));
-		row3.appendChild(totalBill);
+		row3.appendChild(new Label("Tax"));
+		row3.appendChild(tax);
 		
+		Row row4 = new Row();
+		row4.appendChild(new Label("Tax"));
+		row4.appendChild(taxes);
+		row4.appendChild(new Label("Rounding"));
+		row4.appendChild(rounding);
+
 		Row row5 = new Row();
-		row5.appendChild(new Label("Tax"));
-		row5.appendChild(taxes);
 		row5.appendChild(new Label("Currency"));
 		row5.appendChild(currencys);
+		row5.appendChild(new Label("Total Billing"));
+		row5.appendChild(totalBill);
 		
 		Row row6 = new Row();
 		row6.appendChild(new Label("Sales"));
@@ -228,6 +257,7 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
+		rows.appendChild(row4);
 		rows.appendChild(row5);
 		rows.appendChild(row6);
 		rows.appendChild(row8);
@@ -316,17 +346,17 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 			billAmount = billAmount.add(row.getAmount());
 		}
 		
-		Tax tx = sessionUtils.getTax();
+		Tax tx = taxes.getTax();
 		if(tx != null)
 			taxAmount = billAmount.multiply(tx.getAmount()).divide(BigDecimal.valueOf(100));
 		
-		totalAmount = billAmount.add(taxAmount);
+		totalAmount = billAmount.add(taxAmount).add(BigDecimal.valueOf(tuslah.doubleValue()));
 		
 		NumberFormat format = NumberFormat.getNumberInstance();
 		format.setGroupingUsed(true);
 		
 		bill.setText(format.format(billAmount));
 		tax.setText(format.format(taxAmount));
-		totalBill.setText(format.format(totalAmount));
+		totalBill.setText(format.format(totalAmount.add(BigDecimal.valueOf(rounding.doubleValue()))));
 	}
 }

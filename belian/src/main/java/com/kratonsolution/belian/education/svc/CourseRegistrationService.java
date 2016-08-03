@@ -97,7 +97,7 @@ public class CourseRegistrationService
 		{
 			JournalEntry entry = journalCreatorFactory.create(installment);
 			if(entry != null)
-				entryService.add(entry);
+				entryService.silence(entry);
 		}
 	}
 

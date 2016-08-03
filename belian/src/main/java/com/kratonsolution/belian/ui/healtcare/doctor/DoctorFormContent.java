@@ -15,13 +15,13 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Row;
 
 import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.InternalOrganization;
 import com.kratonsolution.belian.healtcare.dm.Doctor;
 import com.kratonsolution.belian.healtcare.dm.DoctorRelationship;
 import com.kratonsolution.belian.healtcare.svc.DoctorRelationshipService;
 import com.kratonsolution.belian.healtcare.svc.DoctorTypeService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.component.PersonBox;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
@@ -34,8 +34,6 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class DoctorFormContent extends FormContent
 {	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
-	
 	private DoctorRelationshipService service = Springs.get(DoctorRelationshipService.class);
 	
 	private DoctorTypeService doctorTypeService = Springs.get(DoctorTypeService.class);
@@ -44,7 +42,7 @@ public class DoctorFormContent extends FormContent
 	
 	private Datebox end = Components.datebox();
 	
-	private Listbox companys = Components.newSelect(utils.getCurrentOrganizations(),true);
+	private OrganizationList companys = new OrganizationList();
 	
 	private PersonBox person = new PersonBox(true);
 	
@@ -75,7 +73,7 @@ public class DoctorFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				if(person.getPerson() == null)
-					throw new WrongValueException(person,"Person cannot be empty");
+					throw new WrongValueException(person,lang.get("message.field.empty"));
 				
 				DoctorRelationship relationship = new DoctorRelationship();
 				relationship.setStart(DateTimes.sql(start.getValue()));
@@ -91,7 +89,7 @@ public class DoctorFormContent extends FormContent
 				InternalOrganization organization = new InternalOrganization();
 				organization.setStart(DateTimes.sql(start.getValue()));
 				organization.setEnd(DateTimes.sql(end.getValue()));
-				organization.setParty(utils.getOrganization());
+				organization.setParty(companys.getOrganization());
 				
 				relationship.setDoctor(doctor);
 				relationship.setOrganization(organization);
@@ -112,23 +110,23 @@ public class DoctorFormContent extends FormContent
 		grid.setSpan("1");
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Start"));
+		row1.appendChild(new Label(lang.get("doctor.grid.column.start")));
 		row1.appendChild(start);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("End"));
+		row2.appendChild(new Label(lang.get("doctor.grid.column.end")));
 		row2.appendChild(end);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Company"));
+		row3.appendChild(new Label(lang.get("doctor.grid.column.company")));
 		row3.appendChild(companys);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Person"));
+		row4.appendChild(new Label(lang.get("doctor.grid.column.person")));
 		row4.appendChild(person);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Classification"));
+		row5.appendChild(new Label(lang.get("doctor.grid.column.type")));
 		row5.appendChild(classifications);
 		
 		rows.appendChild(row1);

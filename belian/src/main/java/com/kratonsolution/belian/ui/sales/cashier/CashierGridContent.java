@@ -13,7 +13,6 @@ import org.zkoss.zul.ListModel;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.sales.dm.Billable;
 import com.kratonsolution.belian.sales.srv.CashierShiftService;
 import com.kratonsolution.belian.ui.GridContent;
@@ -29,8 +28,6 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class CashierGridContent extends GridContent
 {
-	private SessionUtils utils = Springs.get(SessionUtils.class);
-	
 	public CashierGridContent()
 	{
 		super();

@@ -14,6 +14,7 @@ import com.kratonsolution.belian.accounting.dm.OGLAccount;
 import com.kratonsolution.belian.accounting.dm.OrganizationAccount;
 import com.kratonsolution.belian.accounting.svc.OrganizationAccountService;
 import com.kratonsolution.belian.common.Language;
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -24,6 +25,8 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class OGLAccountList extends Listbox
 {
 	private Language lang = Springs.get(Language.class);
+	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	private OrganizationAccountService service = Springs.get(OrganizationAccountService.class);
 	
@@ -68,7 +71,7 @@ public class OGLAccountList extends Listbox
 
 		getItems().clear();
 		
-		OrganizationAccount org = service.findOneByOrganization(company);
+		OrganizationAccount org = utils.getCOA(company);
 		if(org == null)
 			throw new RuntimeException(lang.get("message.field.company"));
 		

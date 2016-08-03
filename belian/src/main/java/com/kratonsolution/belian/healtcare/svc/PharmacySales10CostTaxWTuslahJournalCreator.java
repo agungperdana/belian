@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.healtcare.svc;
 
+import org.springframework.stereotype.Service;
+
 import com.kratonsolution.belian.accounting.dm.AccountingPeriod;
 import com.kratonsolution.belian.accounting.dm.AutoJournalSetting;
 import com.kratonsolution.belian.accounting.dm.JournalEntry;
@@ -15,9 +17,9 @@ import com.kratonsolution.belian.healtcare.dm.PharmacySales;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class PharmacySalesJournalCreator extends AutoJournalCreator<PharmacySales>
+@Service
+public class PharmacySales10CostTaxWTuslahJournalCreator extends AutoJournalCreator<PharmacySales>
 {
-
 	/* (non-Javadoc)
 	 * @see com.kratonsolution.belian.accounting.svc.AutoJournalCreator#isSupported(java.lang.Object)
 	 */
@@ -35,30 +37,34 @@ public class PharmacySalesJournalCreator extends AutoJournalCreator<PharmacySale
 	{
 		if(pharmacy != null)
 		{
-			AccountingPeriod period = periodRepo.findOneOpenChild(pharmacy.getOrganization().getId(), pharmacy.getDate());
-			OrganizationAccount coa = coaRepo.findOneByOrganizationId(pharmacy.getOrganization().getId());
-			AutoJournalSetting setting = repository.findOneByOrganizationId(pharmacy.getOrganization().getId());
+			AccountingPeriod period = getAccountingPeriod(pharmacy.getOrganization(), pharmacy.getDate());
+			OrganizationAccount coa = getCOA(pharmacy.getOrganization());
+			AutoJournalSetting setting = getAutoJournalSetting(pharmacy.getOrganization());
 			
 			if(setting != null && coa != null && period != null 
 				&& setting.getSales() != null && setting.getSales().getCash() != null 
-				&& setting.getSales().getGoodsSales() != null)
+				&& setting.getSales().getGoodsSales() != null 
+				&& setting.getSales().getTaxSales() != null 
+				&& setting.getSales().getTuslah() != null)
 			{
 				JournalEntry entry = new JournalEntry();
 				entry.setAuto(true);
 				entry.setCoa(coa);
 				entry.setCurrency(pharmacy.getCurrency());
 				entry.setDate(pharmacy.getDate());
-				entry.setNote("Pharmacy Sales["+pharmacy.getNumber()+"]");
+				entry.setNote("Auto [Pharmacy Sales "+pharmacy.getNumber()+"]");
 				entry.setOwner(pharmacy.getOrganization());
 				entry.setPeriod(period);
 				entry.setPosted(false);
 				
-				entry.addDetail(JournalEntryDetail.DEBET(setting.getSales().getCash(), pharmacy.getBillingAmount().add(pharmacy.getTaxAmount()), "Posting to Cash Account"));
-				entry.addDetail(JournalEntryDetail.CREDIT(setting.getSales().getTaxSales(), pharmacy.getTaxAmount(), "Posting to Tax Payable Account"));
-				entry.addDetail(JournalEntryDetail.CREDIT(setting.getSales().getGoodsSales(), pharmacy.getNet(), "Posting to Sales (Goods) Account"));
-
-				if(entry.isBalance());
-					return entry;
+				entry.addDetail(JournalEntryDetail.DEBET(setting.getSales().getCash(), pharmacy.getBillingAmount(), "Posting to Cash Account"));
+				entry.addDetail(JournalEntryDetail.CREDIT(setting.getSales().getTaxSales(), pharmacy.getCostTax(), "Posting to Tax Payable Account"));
+				entry.addDetail(JournalEntryDetail.CREDIT(setting.getSales().getGoodsSales(), pharmacy.getBillingAmount().subtract(pharmacy.getCostTax()).subtract(pharmacy.getTuslah()), "Posting to Sales (Goods) Account"));
+				entry.addDetail(JournalEntryDetail.CREDIT(setting.getSales().getTuslah(), pharmacy.getTuslah(), "Posting to Tuslah Account"));
+				
+				entry.isBalance();
+				
+				return entry;
 			}
 		}
 		

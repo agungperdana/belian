@@ -95,8 +95,25 @@ public class JournalEntryService
 	}
 	
 	@Secured("ROLE_JOURNALENTRY_CREATE")
+	public void silence(JournalEntry entry)
+	{
+		System.out.println("## Journal "+entry);
+		
+		if(entry != null)
+		{
+			repository.save(entry);
+			
+			if(entry.isAuto())
+				post(entry);
+		}
+	}
+	
+	@Secured("ROLE_JOURNALENTRY_CREATE")
 	public void add(JournalEntry entry)
 	{
+		if(entry == null)
+			throw new RuntimeException("Journal cannot be emtpy.");
+		
 		repository.save(entry);
 		
 		if(entry.isAuto())

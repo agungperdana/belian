@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.common;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,12 +17,20 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.accounting.dm.AccountingPeriod;
+import com.kratonsolution.belian.accounting.dm.AccountingPeriodRepository;
+import com.kratonsolution.belian.accounting.dm.AutoJournalSetting;
+import com.kratonsolution.belian.accounting.dm.AutoJournalSettingRepository;
 import com.kratonsolution.belian.accounting.dm.Currency;
+import com.kratonsolution.belian.accounting.dm.OrganizationAccount;
+import com.kratonsolution.belian.accounting.dm.OrganizationAccountRepository;
 import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.accounting.svc.TaxService;
 import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.CompanyStructure;
+import com.kratonsolution.belian.general.dm.CompanyStructureRepository;
+import com.kratonsolution.belian.general.dm.CompanyStructureType;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Person;
@@ -58,9 +67,21 @@ public class SessionUtils
 
 	@Autowired
 	private OrganizationService organizationService;
-
+	
 	@Autowired
 	private CompanyStructureService companyStructureService;
+	
+	@Autowired
+	protected AutoJournalSettingRepository repository;
+	
+	@Autowired
+	protected OrganizationAccountRepository coaRepo;
+	
+	@Autowired
+	protected AccountingPeriodRepository periodRepo;
+
+	@Autowired
+	protected CompanyStructureRepository structureRepo;
 	
 	@Autowired
 	private TaxService taxService;
@@ -415,5 +436,46 @@ public class SessionUtils
 		}
 		
 		return list;
+	}
+	
+	public AutoJournalSetting getAutoJournalSetting(Organization organization)
+	{
+		CompanyStructure structure = structureRepo.findOneByOrganizationId(organization.getId());
+		if(structure == null)
+			throw new RuntimeException();
+
+		if(!structure.getType().equals(CompanyStructureType.BRANCH))
+			return getAutoJournalSetting(structure.getParent().getOrganization());
+		else
+			return repository.findOneByOrganizationId(organization.getId());
+	}
+
+	public OrganizationAccount getCOA(Organization organization)
+	{
+		CompanyStructure structure = structureRepo.findOneByOrganizationId(organization.getId());
+		if(structure == null)
+			throw new RuntimeException();
+		
+		if(!structure.getType().equals(CompanyStructureType.BRANCH))
+			return getCOA(structure.getParent().getOrganization());
+		else
+			return coaRepo.findOneByOrganizationId(organization.getId());
+	}
+	
+	public OrganizationAccount getCOA(String organization)
+	{
+		return getCOA(organizationService.findOne(organization));
+	}
+	
+	public AccountingPeriod getAccountingPeriod(Organization organization,Date date)
+	{
+		CompanyStructure structure = structureRepo.findOneByOrganizationId(organization.getId());
+		if(structure == null)
+			throw new RuntimeException();
+		
+		if(!structure.getType().equals(CompanyStructureType.BRANCH))
+			return getAccountingPeriod(structure.getParent().getOrganization(),date);
+		else
+			return periodRepo.findOneOpenChild(organization.getId(),date);
 	}
 }

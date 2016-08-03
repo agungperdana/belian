@@ -53,6 +53,9 @@ public abstract class Billable implements Journalable,Serializable
 	@Column(name="is_paid")
 	protected boolean paid;
 	
+	@Column(name="rounding")
+	protected BigDecimal rounding;
+	
 	@ManyToOne
 	@JoinColumn(name="fk_currency")
 	protected Currency currency;
@@ -92,6 +95,11 @@ public abstract class Billable implements Journalable,Serializable
 	public abstract int getTableNumber();
 	
 	public abstract String getName();
+	
+	public BigDecimal getExtra()
+	{
+		return BigDecimal.ZERO;
+	}
 	
 	public BigDecimal getBillingAmount()
 	{

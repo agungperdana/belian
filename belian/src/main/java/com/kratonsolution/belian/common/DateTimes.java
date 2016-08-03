@@ -92,9 +92,15 @@ public class DateTimes implements Serializable
 		return BigDecimal.valueOf(d2.minus(d1).toMinutes()).divide(BigDecimal.valueOf(60));
 	}
 	
-	public static final boolean inRange(Date target,Date rangeStart,Date rangeEnd)
+	public static final boolean inRange(Date target,Date start,Date end)
 	{
-		return ((target.compareTo(rangeStart) >= 0) && (rangeEnd == null || target.compareTo(rangeEnd) <= 0));
+		if(target == null || start == null)
+			return false;
+
+		if(end != null)
+			return (target.compareTo(start) >=0 && target.compareTo(end) <= 0);
+		else
+			return (target.compareTo(start) >=0);
 	}
 
 	public static java.sql.Date currentDate()

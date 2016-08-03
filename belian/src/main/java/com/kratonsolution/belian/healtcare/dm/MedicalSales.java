@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.healtcare.dm;
 
+import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.Set;
 
@@ -35,6 +36,9 @@ public abstract class MedicalSales extends Billable
 	
 	@Column(name="is_bpjs")
 	protected boolean bpjs;
+	
+	@Column(name="tuslah")
+	protected BigDecimal tuslah;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="status")

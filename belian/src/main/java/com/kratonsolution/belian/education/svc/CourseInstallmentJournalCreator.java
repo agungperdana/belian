@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.education.svc;
 
+import org.springframework.stereotype.Service;
+
 import com.kratonsolution.belian.accounting.dm.AccountingPeriod;
 import com.kratonsolution.belian.accounting.dm.AutoJournalSetting;
 import com.kratonsolution.belian.accounting.dm.JournalEntry;
@@ -15,6 +17,7 @@ import com.kratonsolution.belian.education.dm.CourseInstallment;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
+@Service
 public class CourseInstallmentJournalCreator extends AutoJournalCreator<CourseInstallment>
 {
 

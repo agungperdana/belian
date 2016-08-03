@@ -60,6 +60,8 @@ public class CashierEditContent extends FormContent
 	
 	private Textbox tax = Components.readOnlyMoneyBox(BigDecimal.ZERO);
 	
+	private Textbox other = Components.readOnlyMoneyBox(BigDecimal.ZERO);
+	
 	private Textbox total = Components.readOnlyMoneyBox(BigDecimal.ZERO);
 	
 	private Tabbox tabbox = new Tabbox();
@@ -160,26 +162,31 @@ public class CashierEditContent extends FormContent
 			Row dts = new Row();
 			dts.appendChild(new Label("Date"));
 			dts.appendChild(new Label(DateTimes.format(billing.getDate())));
-			dts.appendChild(new Label("Total Billing"));
-			dts.appendChild(total);
+			dts.appendChild(new Label("Other"));
+			dts.appendChild(other);
 			
 			Row currs = new Row();
 			currs.appendChild(new Label("Currency"));
 			currs.appendChild(new Label(billing.getCurrency().getCode()));
-			currs.appendChild(new Label("Sales"));
-			currs.appendChild(new Label(billing.getSales().getName()));
+			currs.appendChild(new Label("Total Billing"));
+			currs.appendChild(total);
 			
 			Row cuss = new Row();
 			cuss.appendChild(new Label("Type"));
 			cuss.appendChild(new Label(billing.getBillingType(utils.getLanguage())));
-			cuss.appendChild(new Label("Customer"));
-			cuss.appendChild(new Label(billing.getCustomer()!=null?billing.getCustomer().getName():"Anonymous"));
+			cuss.appendChild(new Label("Sales"));
+			cuss.appendChild(new Label(billing.getSales().getName()));
+			
+			Row last = new Row();
+			last.appendChild(new Label("Customer"));
+			last.appendChild(new Label(billing.getCustomer()!=null?billing.getCustomer().getName():"Anonymous"));
 			
 			grid.getRows().appendChild(numbers);
 			grid.getRows().appendChild(comps);
 			grid.getRows().appendChild(dts);
 			grid.getRows().appendChild(currs);
 			grid.getRows().appendChild(cuss);
+			grid.getRows().appendChild(last);
 			
 			tabbox.setWidth("100%");
 			tabbox.appendChild(new Tabs());
@@ -204,13 +211,13 @@ public class CashierEditContent extends FormContent
 		billingItems.appendChild(new Rows());
 		billingItems.appendChild(new Columns());
 		billingItems.getColumns().appendChild(new Column("Name",null,"250px"));
-		billingItems.getColumns().appendChild(new Column("Qty",null,"65px"));
+		billingItems.getColumns().appendChild(new Column("Qty",null,"45px"));
 		billingItems.getColumns().appendChild(new Column("UoM",null,"70px"));
-		billingItems.getColumns().appendChild(new Column("Price",null,"100px"));
-		billingItems.getColumns().appendChild(new Column("Disc",null,"100px"));
-		billingItems.getColumns().appendChild(new Column("Charge",null,"100px"));
+		billingItems.getColumns().appendChild(new Column("Price",null,"90px"));
+		billingItems.getColumns().appendChild(new Column("Disc",null,"90px"));
+		billingItems.getColumns().appendChild(new Column("Charge",null,"90px"));
 		billingItems.getColumns().appendChild(new Column("Note",null,"100px"));
-		billingItems.setSpan("1");
+		billingItems.setSpan("0");
 
 		for(BillableItem item:billing.getItems())
 		{
@@ -269,7 +276,8 @@ public class CashierEditContent extends FormContent
 			
 			amount.setText(Numbers.format(_amount));
 			tax.setText(Numbers.format(_tax));
-			total.setText(Numbers.format(_amount.add(_tax)));
+			other.setText(Numbers.format(billing.getExtra()));
+			total.setText(Numbers.format(_amount.add(_tax).add(billing.getExtra())));
 			
 			return _amount.add(_tax);
 		}

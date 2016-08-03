@@ -62,10 +62,6 @@ public class AutoJournalSales implements Serializable
 	@NotFound(action=NotFoundAction.IGNORE)
 	private OGLAccount receivable;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_journal_setting")
-	private AutoJournalSetting setting;
-	
 	@Version
 	private Long version;
 	

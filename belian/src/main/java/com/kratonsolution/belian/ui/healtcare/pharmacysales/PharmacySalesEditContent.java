@@ -189,7 +189,8 @@ public class PharmacySalesEditContent extends FormContent implements ProductPric
 			customers.appendChild(new Listitem(medication.getCustomer()!=null?medication.getCustomer().getLabel():"Anonymous",medication.getCustomer()!=null?medication.getCustomer().getLabel():"Anonymous"));
 			customers.setSelectedIndex(0);
 
-			locations.appendChild(new Listitem(utils.getLocation().getLabel(),utils.getLocation().getValue()));
+			if(utils.getLocation() != null)
+				locations.appendChild(new Listitem(utils.getLocation().getLabel(),utils.getLocation().getValue()));
 
 			bill.setText(Numbers.format(medication.getBillingAmount()));
 			tax.setText(Numbers.format(medication.getTaxAmount()));
