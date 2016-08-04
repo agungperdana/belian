@@ -57,6 +57,6 @@ public class PharmacyOrderModel implements ListModel<MedicalSales>
 	public void next(int pageIndex,int itemSize)
 	{
 		data.clear();
-		data.addAll(service.findAllPaid());
+		data.addAll(service.findAllPaidRegistered());
 	}
 }

@@ -88,7 +88,7 @@ public class CashierEditContent extends FormContent
 			}
 		});
 
-		toolbar.getSave().setLabel("Pay & Print");
+		toolbar.getSave().setLabel(lang.get("label.component.button.payprint"));
 		toolbar.getSave().setImage("/icons/print.png");
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{

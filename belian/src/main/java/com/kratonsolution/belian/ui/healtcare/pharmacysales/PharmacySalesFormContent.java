@@ -164,6 +164,10 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 	@Override
 	public void initForm()
 	{
+		companys.setWidth("100%");
+		taxes.setWidth("100%");
+		currencys.setWidth("100%");
+		
 		rounding.addEventListener(Events.ON_CHANGE, new EventListener<InputEvent>()
 		{
 			@Override
@@ -203,55 +207,55 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 		}
 		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"85px"));
+		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.getColumns().appendChild(new Column());
-		grid.getColumns().appendChild(new Column(null,null,"80px"));
+		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Company"));
+		row1.appendChild(new Label(lang.get("pharmacysales.grid.column.company")));
 		row1.appendChild(companys);
-		row1.appendChild(new Label("Billing"));
+		row1.appendChild(new Label(lang.get("pharmacysales.grid.column.billing")));
 		row1.appendChild(bill);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Doc Number"));
+		row2.appendChild(new Label(lang.get("pharmacysales.grid.column.number")));
 		row2.appendChild(number);
-		row2.appendChild(new Label("Tuslah/Etiket"));
+		row2.appendChild(new Label(lang.get("pharmacysales.grid.column.tuslah")));
 		row2.appendChild(tuslah);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Date"));
+		row3.appendChild(new Label(lang.get("pharmacysales.grid.column.date")));
 		row3.appendChild(date);
-		row3.appendChild(new Label("Tax"));
+		row3.appendChild(new Label(lang.get("pharmacysales.grid.column.taxbill")));
 		row3.appendChild(tax);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Tax"));
+		row4.appendChild(new Label(lang.get("pharmacysales.grid.column.tax")));
 		row4.appendChild(taxes);
-		row4.appendChild(new Label("Rounding"));
+		row4.appendChild(new Label(lang.get("pharmacysales.grid.column.rounding")));
 		row4.appendChild(rounding);
 
 		Row row5 = new Row();
-		row5.appendChild(new Label("Currency"));
+		row5.appendChild(new Label(lang.get("pharmacysales.grid.column.currency")));
 		row5.appendChild(currencys);
-		row5.appendChild(new Label("Total Billing"));
+		row5.appendChild(new Label(lang.get("pharmacysales.grid.column.totbil")));
 		row5.appendChild(totalBill);
 		
 		Row row6 = new Row();
-		row6.appendChild(new Label("Sales"));
+		row6.appendChild(new Label(lang.get("pharmacysales.grid.column.sales")));
 		row6.appendChild(saleses);
-		row6.appendChild(new Label("Customer"));
+		row6.appendChild(new Label(lang.get("pharmacysales.grid.column.customer")));
 		row6.appendChild(customers);
 		
 		Row row8 = new Row();
-		row8.appendChild(new Label("Location"));
+		row8.appendChild(new Label(lang.get("pharmacysales.grid.column.location")));
 		row8.appendChild(locations);
-		row8.appendChild(new Label("Note"));
+		row8.appendChild(new Label(lang.get("pharmacysales.grid.column.note")));
 		row8.appendChild(note);
 		
 		Row row9 = new Row();
-		row9.appendChild(new Label("Reference"));
+		row9.appendChild(new Label(lang.get("pharmacysales.grid.column.reference")));
 		row9.appendChild(ref);
 		
 		rows.appendChild(row1);
@@ -271,21 +275,21 @@ public class PharmacySalesFormContent extends FormContent implements ProductPric
 		
 		saleItems.appendChild(new Columns());
 		saleItems.getColumns().appendChild(new Column(null,null,"25px"));
-		saleItems.getColumns().appendChild(new Column("Product",null,"225px"));
-		saleItems.getColumns().appendChild(new Column("Quantity",null,"85px"));
-		saleItems.getColumns().appendChild(new Column("UoM",null,"85px"));
-		saleItems.getColumns().appendChild(new Column("Price",null,"95px"));
-		saleItems.getColumns().appendChild(new Column("Disc",null,"95px"));
-		saleItems.getColumns().appendChild(new Column("Charge",null,"95px"));
-		saleItems.getColumns().appendChild(new Column("Note",null));
+		saleItems.getColumns().appendChild(new Column(lang.get("pharmacysales.grid.column.product"),null,"225px"));
+		saleItems.getColumns().appendChild(new Column(lang.get("pharmacysales.grid.column.quantity"),null,"85px"));
+		saleItems.getColumns().appendChild(new Column(lang.get("pharmacysales.grid.column.uom"),null,"85px"));
+		saleItems.getColumns().appendChild(new Column(lang.get("pharmacysales.grid.column.price"),null,"95px"));
+		saleItems.getColumns().appendChild(new Column(lang.get("pharmacysales.grid.column.discount"),null,"95px"));
+		saleItems.getColumns().appendChild(new Column(lang.get("pharmacysales.grid.column.charge"),null,"95px"));
+		saleItems.getColumns().appendChild(new Column(lang.get("pharmacysales.grid.column.note"),null));
 		saleItems.appendChild(new Rows());
 		saleItems.setSpan("4");
 		
 		Toolbar toolbar = new Toolbar();
 		toolbar.setHeight("40px");
-		toolbar.appendChild(new Toolbarbutton("New","/icons/new.png"));
-		toolbar.appendChild(new Toolbarbutton("Remove","/icons/delete.png"));
-		toolbar.appendChild(new Toolbarbutton("Clear","/icons/refresh.png"));
+		toolbar.appendChild(new Toolbarbutton(lang.get("label.component.button.new"),"/icons/new.png"));
+		toolbar.appendChild(new Toolbarbutton(lang.get("label.component.button.delete"),"/icons/delete.png"));
+		toolbar.appendChild(new Toolbarbutton(lang.get("label.component.button.clear"),"/icons/refresh.png"));
 		toolbar.getChildren().get(0).addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override

@@ -228,10 +228,10 @@ public class EmploymentService
 		if(utils.isSysAdmin())
 			return repository.findAll(new PageRequest(pageIndex, itemsSize)).getContent();
 		
-		if(utils.getOrganization() != null)
-			return repository.findAll(new PageRequest(pageIndex, itemsSize),utils.getOrganization().getId());
-		else
+		if(utils.getOrganizationIds().isEmpty())
 			return new ArrayList<>();
+		
+		return repository.findAll(new PageRequest(pageIndex, itemsSize),utils.getOrganizationIds());
 	}
 	
 	public BigDecimal getGross(Employment employment,Date date,Date start,Date end)

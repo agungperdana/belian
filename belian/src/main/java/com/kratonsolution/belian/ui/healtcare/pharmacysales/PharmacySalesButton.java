@@ -5,6 +5,9 @@ package com.kratonsolution.belian.ui.healtcare.pharmacysales;
 
 import org.zkoss.zul.Toolbarbutton;
 
+import com.kratonsolution.belian.common.Language;
+import com.kratonsolution.belian.ui.util.Springs;
+
 /**
  * 
  * @author Agung Dodi Perdana
@@ -12,10 +15,12 @@ import org.zkoss.zul.Toolbarbutton;
  */
 public class PharmacySalesButton extends Toolbarbutton
 {
+	private Language lang = Springs.get(Language.class);
+	
 	public PharmacySalesButton()
 	{
 		setImage("/icons/apotek.png");
-		setTooltip("Pharmacy Sales Management");
+		setTooltiptext(lang.get("navbar.menu.healtcare.apotek"));
 		setHeight("38px");
 	}
 }

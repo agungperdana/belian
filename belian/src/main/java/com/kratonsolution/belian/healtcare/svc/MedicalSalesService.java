@@ -71,10 +71,20 @@ public class MedicalSalesService
 	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
 	public List<MedicalSales> findAllPaidRegistered()
 	{
-		if(utils.getOrganization() == null)
+		if(utils.getOrganizationIds().isEmpty())
 			return new ArrayList<MedicalSales>();
 
-		return repository.findAllPaidRegistered(DateTimes.currentDate(),utils.getOrganization().getId());
+		return repository.findAllPaidRegistered(utils.getOrganizationIds());
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
+	public List<MedicalSales> findAllTodayPaidRegistered()
+	{
+		if(utils.getOrganizationIds().isEmpty())
+			return new ArrayList<MedicalSales>();
+
+		return repository.findAllTodayPaidRegistered(DateTimes.currentDate(),utils.getOrganizationIds());
 	}
 			
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)

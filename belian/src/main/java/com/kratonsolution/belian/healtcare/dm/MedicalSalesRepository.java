@@ -17,7 +17,9 @@ import org.springframework.data.repository.query.Param;
  */
 public interface MedicalSalesRepository extends JpaRepository<MedicalSales, String>
 {
-	@Query("FROM MedicalSales med WHERE med.organization.id =:company ORDER BY med.date DESC")
+	@Query("FROM MedicalSales med WHERE "
+			+ "med.organization.id =:company "
+			+ "ORDER BY med.date DESC")
 	public List<MedicalSales> findAll(Pageable pageable,@Param("company")String company);
 	
 	@Query("FROM MedicalSales med WHERE "
@@ -40,10 +42,17 @@ public interface MedicalSalesRepository extends JpaRepository<MedicalSales, Stri
 	public Long count(@Param("company")String company);
 	
 	@Query("FROM MedicalSales med WHERE "
-			+ "med.organization.id =:company AND "
-			+ "med.status = 'Registered' AND "
-			+ "med.status.paid IS true "
+			+ "med.organization.id IN(:company) "
+			+ "AND med.status = 'Registered' "
+			+ "AND med.status.paid IS true "
 			+ "AND med.date =:date "
 			+ "ORDER BY med.date ASC,med.time ASC")
-	public List<MedicalSales> findAllPaidRegistered(@Param("date")Date date,@Param("company")String company);
+	public List<MedicalSales> findAllTodayPaidRegistered(@Param("date")Date date,@Param("company")List<String> company);
+	
+	@Query("FROM MedicalSales med WHERE "
+			+ "med.organization.id IN(:company) "
+			+ "AND med.status = 'Registered' "
+			+ "AND med.status.paid IS true "
+			+ "ORDER BY med.date DESC,med.time DESC")
+	public List<MedicalSales> findAllPaidRegistered(@Param("company")List<String> company);
 }

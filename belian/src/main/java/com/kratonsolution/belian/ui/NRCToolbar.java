@@ -14,7 +14,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.util.RowUtils;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * 
@@ -23,11 +25,13 @@ import com.kratonsolution.belian.ui.util.RowUtils;
  */
 public class NRCToolbar extends Toolbar
 {
-	private Toolbarbutton newData = new Toolbarbutton("New","/icons/new.png");
+	private Language lang = Springs.get(Language.class);
 	
-	private Toolbarbutton remove = new Toolbarbutton("Remove","/icons/delete.png");
+	private Toolbarbutton newData = new Toolbarbutton(lang.get("label.component.button.new"),"/icons/new.png");
 	
-	private Toolbarbutton clear = new Toolbarbutton("Clear","/icons/refresh.png");
+	private Toolbarbutton remove = new Toolbarbutton(lang.get("label.component.button.delete"),"/icons/delete.png");
+	
+	private Toolbarbutton clear = new Toolbarbutton(lang.get("label.component.button.clear"),"/icons/refresh.png");
 	
 	private Grid parent;
 	
