@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.ui.sales.cashier;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
@@ -17,6 +18,7 @@ import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Row;
+import org.zkoss.zul.Toolbarbutton;
 
 import com.kratonsolution.belian.asset.svc.AssetService;
 import com.kratonsolution.belian.common.DateTimes;
@@ -34,17 +36,17 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class CashierShiftFormContent extends FormContent
 {	
 	private AssetService assetService = Springs.get(AssetService.class);
-	
+
 	private CashierShiftService service = Springs.get(CashierShiftService.class);
-	
+
 	private Datebox date = Components.currentDatebox(true);
-	
+
 	private Listbox assets = Components.newSelect(assetService.findAllUnused(),true);
-	
+
 	private Listbox employee = Components.newSelect(utils.getEmployee());
-	
+
 	private Doublebox capital = Components.stdDoubleBox(0);
-	
+
 	public CashierShiftFormContent()
 	{
 		super();
@@ -63,7 +65,7 @@ public class CashierShiftFormContent extends FormContent
 				Clients.showNotification(lang.get("cashier.message.shiftwarning"));
 			}
 		});
-		
+
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
@@ -71,7 +73,7 @@ public class CashierShiftFormContent extends FormContent
 			{
 				if(assets.getSelectedCount() != 1)
 					throw new WrongValueException(assets,lang.get("cashier.message.machiendused"));
-				
+
 				CashierShift shift = new CashierShift();
 				shift.setCapital(BigDecimal.valueOf(capital.doubleValue()));
 				shift.setClosed(false);
@@ -79,12 +81,38 @@ public class CashierShiftFormContent extends FormContent
 				shift.setMachine(assetService.findOne(Components.string(assets)));
 				shift.setEmployee(utils.getEmployee());
 				shift.setStart(DateTimes.currentTime());
-				
+
 				service.open(shift);
-				
+
 				Flow.next(getParent(), new CashierGridContent());
 			}
 		});
+
+		if(utils.getEmployee() != null)
+		{
+			List<CashierShift> shifts = service.findAllPendingBefore(null, utils.getEmployee().getId());
+			if(!shifts.isEmpty())
+			{
+				Toolbarbutton close = new Toolbarbutton(lang.get("generic.grid.column.cashierclose"),"/icons/cashier-shift.png");
+				close.addEventListener(Events.ON_CLICK,new EventListener<Event>()
+				{
+					@Override
+					public void onEvent(Event event) throws Exception
+					{
+						CashierShiftService service = Springs.get(CashierShiftService.class);
+						if(service != null)
+						{
+							for(CashierShift shift:shifts)
+								service.close(shift);
+						}
+
+						Flow.next(getParent(),new CashierShiftFormContent());
+					}
+				});
+				
+				toolbar.appendChild(close);
+			}
+		}
 	}
 
 	@Override
@@ -93,23 +121,23 @@ public class CashierShiftFormContent extends FormContent
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.getColumns().appendChild(new Column());
-		
+
 		Row row0 = new Row();
 		row0.appendChild(new Label(lang.get("cashier.grid.column.employee")));
 		row0.appendChild(employee);
-		
+
 		Row row1 = new Row();
 		row1.appendChild(new Label(lang.get("cashier.grid.column.date")));
 		row1.appendChild(date);
-		
+
 		Row row2 = new Row();
 		row2.appendChild(new Label(lang.get("cashier.grid.column.machine")));
 		row2.appendChild(assets);
-		
+
 		Row row3 = new Row();
 		row3.appendChild(new Label(lang.get("cashier.grid.column.capital")));
 		row3.appendChild(capital);
-		
+
 		rows.appendChild(row0);
 		rows.appendChild(row1);
 		rows.appendChild(row2);

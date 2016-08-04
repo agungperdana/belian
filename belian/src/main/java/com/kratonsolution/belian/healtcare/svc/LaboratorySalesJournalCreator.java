@@ -37,9 +37,9 @@ public class LaboratorySalesJournalCreator extends AutoJournalCreator<Laboratory
 	{
 		if(laboratory != null)
 		{
-			AccountingPeriod period = periodRepo.findOneOpenChild(laboratory.getOrganization().getId(), laboratory.getDate());
-			OrganizationAccount coa = coaRepo.findOneByOrganizationId(laboratory.getOrganization().getId());
-			AutoJournalSetting setting = repository.findOneByOrganizationId(laboratory.getOrganization().getId());
+			AccountingPeriod period = getAccountingPeriod(laboratory.getOrganization(), laboratory.getDate());
+			OrganizationAccount coa = getCOA(laboratory.getOrganization());
+			AutoJournalSetting setting = getAutoJournalSetting(laboratory.getOrganization());
 			
 			if(setting != null && coa != null && period != null 
 				&& setting.getSales() != null && setting.getSales().getCash() != null 
@@ -50,7 +50,7 @@ public class LaboratorySalesJournalCreator extends AutoJournalCreator<Laboratory
 				entry.setCoa(coa);
 				entry.setCurrency(laboratory.getCurrency());
 				entry.setDate(laboratory.getDate());
-				entry.setNote("Pharmacy Sales["+laboratory.getNumber()+"]");
+				entry.setNote("Auto [Pharmacy Sales "+laboratory.getNumber()+"]");
 				entry.setOwner(laboratory.getOrganization());
 				entry.setPeriod(period);
 				entry.setPosted(false);
@@ -59,8 +59,8 @@ public class LaboratorySalesJournalCreator extends AutoJournalCreator<Laboratory
 				entry.addDetail(JournalEntryDetail.CREDIT(setting.getSales().getTaxSales(), laboratory.getTaxAmount(), "Posting to Tax Payable Account"));
 				entry.addDetail(JournalEntryDetail.CREDIT(setting.getSales().getServiceSales(), laboratory.getNet(), "Posting to Sales (Service) Account"));
 
-				if(entry.isBalance());
-					return entry;
+				entry.isBalance();
+				return entry;
 			}
 		}
 		

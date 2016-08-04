@@ -49,9 +49,9 @@ public class ClinicSalesJournalCreator extends AutoJournalCreator<ClinicSales>
 		
 		if(clinicSales != null)
 		{
-			AccountingPeriod period = periodRepo.findOneOpenChild(clinicSales.getOrganization().getId(), clinicSales.getDate());
-			OrganizationAccount coa = coaRepo.findOneByOrganizationId(clinicSales.getOrganization().getId());
-			AutoJournalSetting setting = repository.findOneByOrganizationId(clinicSales.getOrganization().getId());
+			AccountingPeriod period = getAccountingPeriod(clinicSales.getOrganization(), clinicSales.getDate());
+			OrganizationAccount coa = getCOA(clinicSales.getOrganization());
+			AutoJournalSetting setting = getAutoJournalSetting(clinicSales.getOrganization());
 			
 			if(setting != null && coa != null && period != null 
 				&& setting.getSales() != null && setting.getSales().getCash() != null 
@@ -72,8 +72,9 @@ public class ClinicSalesJournalCreator extends AutoJournalCreator<ClinicSales>
 				entry.addDetail(JournalEntryDetail.CREDIT(setting.getSales().getGoodsSales(), clinicSales.getBillingAmount().subtract(tuslah), "Posting to Sales (Goods) Account"));
 				entry.addDetail(JournalEntryDetail.CREDIT(setting.getSales().getTuslah(), tuslah, "Posting to Tuslah Account"));
 
-				if(entry.isBalance());
-					return entry;
+				entry.isBalance();
+				
+				return entry;
 			}
 		}
 		

@@ -38,9 +38,9 @@ public class CourseInstallmentJournalCreator extends AutoJournalCreator<CourseIn
 	{
 		if(installment != null)
 		{
-			AccountingPeriod period = periodRepo.findOneOpenChild(installment.getOrganization().getId(), installment.getDate());
-			OrganizationAccount coa = coaRepo.findOneByOrganizationId(installment.getOrganization().getId());
-			AutoJournalSetting setting = repository.findOneByOrganizationId(installment.getOrganization().getId());
+			AccountingPeriod period = getAccountingPeriod(installment.getOrganization(), installment.getDate());
+			OrganizationAccount coa = getCOA(installment.getOrganization());
+			AutoJournalSetting setting = getAutoJournalSetting(installment.getOrganization());
 			
 			if(setting != null && coa != null && period != null 
 				&& setting.getSales() != null && setting.getSales().getCash() != null 
@@ -60,8 +60,8 @@ public class CourseInstallmentJournalCreator extends AutoJournalCreator<CourseIn
 				entry.addDetail(JournalEntryDetail.CREDIT(setting.getSales().getTaxSales(), installment.getTaxAmount(), "Posting to Tax Sales Account"));
 				entry.addDetail(JournalEntryDetail.CREDIT(setting.getSales().getServiceSales(), installment.getNet(), "Posting to Sales (Service) Account"));
 
-				if(entry.isBalance());
-					return entry;
+				entry.isBalance();
+				return entry;
 			}
 		}
 		

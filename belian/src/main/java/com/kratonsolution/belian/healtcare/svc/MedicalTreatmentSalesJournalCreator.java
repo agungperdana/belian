@@ -35,9 +35,9 @@ public class MedicalTreatmentSalesJournalCreator extends AutoJournalCreator<Medi
 	{
 		if(treatment != null)
 		{
-			AccountingPeriod period = periodRepo.findOneOpenChild(treatment.getOrganization().getId(), treatment.getDate());
-			OrganizationAccount coa = coaRepo.findOneByOrganizationId(treatment.getOrganization().getId());
-			AutoJournalSetting setting = repository.findOneByOrganizationId(treatment.getOrganization().getId());
+			AccountingPeriod period = getAccountingPeriod(treatment.getOrganization(), treatment.getDate());
+			OrganizationAccount coa = getCOA(treatment.getOrganization());
+			AutoJournalSetting setting = getAutoJournalSetting(treatment.getOrganization());
 			
 			if(setting != null && coa != null && period != null 
 				&& setting.getSales() != null && setting.getSales().getCash() != null 
@@ -57,8 +57,8 @@ public class MedicalTreatmentSalesJournalCreator extends AutoJournalCreator<Medi
 				entry.addDetail(JournalEntryDetail.CREDIT(setting.getSales().getTaxSales(), treatment.getTaxAmount(), "Posting to Tax Payable Account"));
 				entry.addDetail(JournalEntryDetail.CREDIT(setting.getSales().getServiceSales(), treatment.getNet(), "Posting to Sales (Service) Account"));
 
-				if(entry.isBalance());
-					return entry;
+				entry.isBalance();
+				return entry;
 			}
 		}
 		

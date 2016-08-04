@@ -48,6 +48,7 @@ public class CashierShiftService
 		return (int)repository.count();
 	}
 	
+	@Secured("ROLE_CASHIER_READ")
 	public CashierShift findToday()
 	{
 		if(utils.isEmployee())
@@ -56,6 +57,7 @@ public class CashierShiftService
 		return null;
 	}
 	
+	@Secured("ROLE_CASHIER_READ")
 	public CashierShift findToday(Date date,Person employee)
 	{
 		if(date != null && employee != null)
@@ -74,6 +76,12 @@ public class CashierShiftService
 	public List<CashierShift> findAll()
 	{
 		return repository.findAll();
+	}
+	
+	@Secured("ROLE_CASHIER_READ")
+	public List<CashierShift> findAllPendingBefore(Date date,String employee)
+	{
+		return repository.findAllPendingBefore(date!=null?date:DateTimes.currentDate(), employee);
 	}
 	
 	@Secured("ROLE_CASHIER_CREATE")
@@ -115,6 +123,28 @@ public class CashierShiftService
 		}
 
 		audit.create("Cashier Shift", "Closed shift session for cashier on "+shift.getMachine().getName());
+		
+		return shift.getId();
+	}
+	
+	@Secured("ROLE_CASHIER_UPDATE")
+	public String close(CashierShift shift)
+	{
+		if(shift != null)
+		{
+			shift.setClosed(true);
+			shift.setEnd(DateTimes.currentTime());
+			repository.save(shift);
+			
+			Asset asset = assetRepo.findOne(shift.getMachine().getId());
+			if(asset != null)
+			{
+				asset.setUsedBy(null);
+				assetRepo.save(asset);
+			}
+
+			audit.create("Cashier Shift", "Closed shift session for cashier on "+shift.getMachine().getName());
+		}
 		
 		return shift.getId();
 	}

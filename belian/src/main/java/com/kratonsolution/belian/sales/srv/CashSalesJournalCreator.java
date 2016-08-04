@@ -18,7 +18,7 @@ import com.kratonsolution.belian.sales.dm.CashSales;
  * @email agung.dodi.perdana@gmail.com
  */
 @Service
-public class CasSalesJournalCreator extends AutoJournalCreator<CashSales>
+public class CashSalesJournalCreator extends AutoJournalCreator<CashSales>
 {
 	/* (non-Javadoc)
 	 * @see com.kratonsolution.belian.accounting.svc.AutoJournalCreator#isSupported(java.lang.Class)
@@ -37,9 +37,10 @@ public class CasSalesJournalCreator extends AutoJournalCreator<CashSales>
 	{
 		if(cashSales != null)
 		{
-			AccountingPeriod period = periodRepo.findOneOpenChild(cashSales.getOrganization().getId(), cashSales.getDate());
-			OrganizationAccount coa = coaRepo.findOneByOrganizationId(cashSales.getOrganization().getId());
-			AutoJournalSetting setting = repository.findOneByOrganizationId(cashSales.getOrganization().getId());
+			AccountingPeriod period = getAccountingPeriod(cashSales.getOrganization(), cashSales.getDate());
+			OrganizationAccount coa = getCOA(cashSales.getOrganization());
+			AutoJournalSetting setting = getAutoJournalSetting(cashSales.getOrganization());
+
 			if(setting != null && coa != null && period != null 
 				&& setting.getSales() != null && setting.getSales().getCash() != null 
 				&& setting.getSales().getGoodsSales() != null)
@@ -57,8 +58,9 @@ public class CasSalesJournalCreator extends AutoJournalCreator<CashSales>
 				entry.addDetail(JournalEntryDetail.CREDIT(setting.getSales().getTaxSales(), cashSales.getTaxAmount(), "Posting to Tax Payable Account"));
 				entry.addDetail(JournalEntryDetail.CREDIT(setting.getSales().getGoodsSales(), cashSales.getBillingAmount(), "Posting to Sales (Goods) Account"));
 
-				if(entry.isBalance());
-					return entry;
+				entry.isBalance();
+
+				return entry;
 			}
 		}
 

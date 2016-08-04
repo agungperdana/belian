@@ -148,37 +148,37 @@ public class CashierEditContent extends FormContent
 			grid.getColumns().appendChild(new Column());
 
 			Row numbers = new Row();
-			numbers.appendChild(new Label("Table"));
+			numbers.appendChild(new Label(lang.get("cashier.grid.column.table")));
 			numbers.appendChild(new Label(billing.getTableNumber()+""));
-			numbers.appendChild(new Label("Billing"));
+			numbers.appendChild(new Label(lang.get("cashier.grid.column.billing")));
 			numbers.appendChild(amount);
 			
 			Row comps = new Row();
-			comps.appendChild(new Label("Number"));
+			comps.appendChild(new Label(lang.get("cashier.grid.column.number")));
 			comps.appendChild(new Label(billing.getNumber()));
-			comps.appendChild(new Label("Tax"));
+			comps.appendChild(new Label(lang.get("cashier.grid.column.tax")));
 			comps.appendChild(tax);
 			
 			Row dts = new Row();
-			dts.appendChild(new Label("Date"));
+			dts.appendChild(new Label(lang.get("cashier.grid.column.date")));
 			dts.appendChild(new Label(DateTimes.format(billing.getDate())));
-			dts.appendChild(new Label("Other"));
+			dts.appendChild(new Label(lang.get("cashier.grid.column.other")));
 			dts.appendChild(other);
 			
 			Row currs = new Row();
-			currs.appendChild(new Label("Currency"));
+			currs.appendChild(new Label(lang.get("cashier.grid.column.currency")));
 			currs.appendChild(new Label(billing.getCurrency().getCode()));
-			currs.appendChild(new Label("Total Billing"));
+			currs.appendChild(new Label(lang.get("cashier.grid.column.totbil")));
 			currs.appendChild(total);
 			
 			Row cuss = new Row();
-			cuss.appendChild(new Label("Type"));
+			cuss.appendChild(new Label(lang.get("cashier.grid.column.type")));
 			cuss.appendChild(new Label(billing.getBillingType(utils.getLanguage())));
-			cuss.appendChild(new Label("Sales"));
+			cuss.appendChild(new Label(lang.get("cashier.grid.column.sales")));
 			cuss.appendChild(new Label(billing.getSales().getName()));
 			
 			Row last = new Row();
-			last.appendChild(new Label("Customer"));
+			last.appendChild(new Label(lang.get("cashier.grid.column.customer")));
 			last.appendChild(new Label(billing.getCustomer()!=null?billing.getCustomer().getName():"Anonymous"));
 			
 			grid.getRows().appendChild(numbers);
@@ -191,8 +191,8 @@ public class CashierEditContent extends FormContent
 			tabbox.setWidth("100%");
 			tabbox.appendChild(new Tabs());
 			tabbox.appendChild(new Tabpanels());
-			tabbox.getTabs().appendChild(new Tab("Item(s)"));
-			tabbox.getTabs().appendChild(new Tab("Payment(s)"));
+			tabbox.getTabs().appendChild(new Tab(lang.get("cashier.grid.column.items")));
+			tabbox.getTabs().appendChild(new Tab(lang.get("cashier.grid.column.payments")));
 			tabbox.getTabpanels().appendChild(new Tabpanel());
 			tabbox.getTabpanels().appendChild(new Tabpanel());
 
@@ -210,13 +210,13 @@ public class CashierEditContent extends FormContent
 		billingItems.setWidth("100%");
 		billingItems.appendChild(new Rows());
 		billingItems.appendChild(new Columns());
-		billingItems.getColumns().appendChild(new Column("Name",null,"250px"));
-		billingItems.getColumns().appendChild(new Column("Qty",null,"45px"));
-		billingItems.getColumns().appendChild(new Column("UoM",null,"70px"));
-		billingItems.getColumns().appendChild(new Column("Price",null,"90px"));
-		billingItems.getColumns().appendChild(new Column("Disc",null,"90px"));
-		billingItems.getColumns().appendChild(new Column("Charge",null,"90px"));
-		billingItems.getColumns().appendChild(new Column("Note",null,"100px"));
+		billingItems.getColumns().appendChild(new Column(lang.get("cashier.grid.column.name"),null,"250px"));
+		billingItems.getColumns().appendChild(new Column(lang.get("cashier.grid.column.quantity"),null,"45px"));
+		billingItems.getColumns().appendChild(new Column(lang.get("cashier.grid.column.uom"),null,"70px"));
+		billingItems.getColumns().appendChild(new Column(lang.get("cashier.grid.column.price"),null,"90px"));
+		billingItems.getColumns().appendChild(new Column(lang.get("cashier.grid.column.discount"),null,"90px"));
+		billingItems.getColumns().appendChild(new Column(lang.get("cashier.grid.column.charge"),null,"90px"));
+		billingItems.getColumns().appendChild(new Column(lang.get("cashier.grid.column.note"),null,"100px"));
 		billingItems.setSpan("0");
 
 		for(BillableItem item:billing.getItems())
@@ -238,9 +238,9 @@ public class CashierEditContent extends FormContent
 		payments.setWidth("100%");
 		payments.appendChild(new Rows());
 		payments.appendChild(new Columns());
-		payments.getColumns().appendChild(new Column("Type",null,"200px"));
-		payments.getColumns().appendChild(new Column("Amount",null,"105px"));
-		payments.getColumns().appendChild(new Column("Reference",null,null));
+		payments.getColumns().appendChild(new Column(lang.get("cashier.grid.column.type"),null,"200px"));
+		payments.getColumns().appendChild(new Column(lang.get("cashier.grid.column.amount"),null,"105px"));
+		payments.getColumns().appendChild(new Column(lang.get("cashier.grid.column.reference"),null,null));
 		payments.setSpan("2");
 		
 		tabbox.getTabpanels().getLastChild().appendChild(toolbar);
