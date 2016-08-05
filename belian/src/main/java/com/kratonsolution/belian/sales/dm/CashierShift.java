@@ -20,6 +20,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.accounting.dm.Currency;
+import com.kratonsolution.belian.accounting.svc.Journalable;
 import com.kratonsolution.belian.asset.dm.Asset;
 import com.kratonsolution.belian.general.dm.Person;
 
@@ -34,7 +36,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="cashier_shift")
-public class CashierShift implements Serializable
+public class CashierShift implements Serializable,Journalable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -61,6 +63,10 @@ public class CashierShift implements Serializable
 	
 	@Column(name="is_closed")
 	private boolean closed;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_currency")
+	private Currency currency;
 	
 	@Version
 	private Long version;

@@ -97,8 +97,6 @@ public class JournalEntryService
 	@Secured("ROLE_JOURNALENTRY_CREATE")
 	public void silence(JournalEntry entry)
 	{
-		System.out.println("## Journal "+entry);
-		
 		if(entry != null)
 		{
 			repository.save(entry);

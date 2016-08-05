@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.kratonsolution.belian.accounting.svc.AutoJournalCreatorFactory;
+import com.kratonsolution.belian.accounting.svc.JournalEntryService;
 import com.kratonsolution.belian.asset.dm.Asset;
 import com.kratonsolution.belian.asset.dm.AssetRepository;
 import com.kratonsolution.belian.common.DateTimes;
@@ -41,6 +43,12 @@ public class CashierShiftService
 	
 	@Autowired
 	private AuditTrailService audit;
+	
+	@Autowired
+	private AutoJournalCreatorFactory journalFactory;
+	
+	@Autowired
+	private JournalEntryService journalService;
 	
 	@Secured("ROLE_CASHIER_READ")
 	public int size()
@@ -110,21 +118,7 @@ public class CashierShiftService
 	@Secured("ROLE_CASHIER_UPDATE")
 	public String close()
 	{
-		CashierShift shift = findToday();
-		shift.setClosed(true);
-		shift.setEnd(DateTimes.currentTime());
-		repository.save(shift);
-		
-		Asset asset = assetRepo.findOne(shift.getMachine().getId());
-		if(asset != null)
-		{
-			asset.setUsedBy(null);
-			assetRepo.save(asset);
-		}
-
-		audit.create("Cashier Shift", "Closed shift session for cashier on "+shift.getMachine().getName());
-		
-		return shift.getId();
+		return close(findToday());
 	}
 	
 	@Secured("ROLE_CASHIER_UPDATE")
@@ -143,6 +137,8 @@ public class CashierShiftService
 				assetRepo.save(asset);
 			}
 
+			journalService.silence(journalFactory.create(shift));
+			
 			audit.create("Cashier Shift", "Closed shift session for cashier on "+shift.getMachine().getName());
 		}
 		

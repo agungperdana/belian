@@ -51,6 +51,8 @@ public class JournalSettingEditContent extends FormContent
 	
 	private OGLAccountList receivable = new OGLAccountList();
 	
+	private OGLAccountList branchCash = new OGLAccountList(companys.getOrganization());
+	
 	private Textbox note = Components.stdTextBox(null, false);
 	
 	private Tabbox tabbox = new Tabbox();
@@ -94,6 +96,7 @@ public class JournalSettingEditContent extends FormContent
 					setting.getSales().setTaxSales(taxsales.getAccount());
 					setting.getSales().setTuslah(tuslahpayable.getAccount());
 					setting.getSales().setReceivable(receivable.getAccount());
+					setting.getSales().setBranchCash(branchCash.getAccount());
 
 					service.edit(setting);
 				}
@@ -120,6 +123,7 @@ public class JournalSettingEditContent extends FormContent
 				goodsSales.repopulate(companys.getOrganization());
 				taxsales.repopulate(companys.getOrganization());
 				receivable.repopulate(companys.getOrganization());
+				branchCash.repopulate(companys.getOrganization());
 			}
 		});
 		
@@ -178,6 +182,9 @@ public class JournalSettingEditContent extends FormContent
 			
 			receivable.repopulate(setting.getOrganization());
 			receivable.setAccount(setting.getSales().getReceivable());
+			
+			branchCash.repopulate(setting.getOrganization());
+			branchCash.setAccount(setting.getSales().getBranchCash());
 		}
 		
 		Grid layout = new Grid();
@@ -210,12 +217,17 @@ public class JournalSettingEditContent extends FormContent
 		row7.appendChild(new Label(lang.get("journalsetting.grid.column.tuslah")));
 		row7.appendChild(tuslahpayable);
 		
+		Row row8 = new Row();
+		row8.appendChild(new Label(lang.get("journalsetting.grid.column.branchcash")));
+		row8.appendChild(branchCash);
+		
 		layout.getRows().appendChild(row2);
 		layout.getRows().appendChild(row3);
 		layout.getRows().appendChild(row4);
 		layout.getRows().appendChild(row5);
 		layout.getRows().appendChild(row6);
 		layout.getRows().appendChild(row7);
+		layout.getRows().appendChild(row8);
 		
 		tabbox.getTabpanels().getFirstChild().appendChild(layout);
 	}
