@@ -14,7 +14,9 @@ import org.zkoss.zul.Tabpanel;
 import com.kratonsolution.belian.accounting.dm.Budget;
 import com.kratonsolution.belian.accounting.dm.BudgetRevision;
 import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * @author Agung Dodi Perdana
@@ -22,6 +24,8 @@ import com.kratonsolution.belian.ui.util.Components;
  */
 public class BudgetRevisionPanel extends Tabpanel
 {
+	private Language lang = Springs.get(Language.class);
+	
 	private Grid grid = new Grid();
 	
 	public BudgetRevisionPanel(Budget budget)
@@ -38,13 +42,13 @@ public class BudgetRevisionPanel extends Tabpanel
 		grid.setWidth("100%");
 		grid.appendChild(new Columns());
 		grid.appendChild(new Rows());
-		grid.setEmptyMessage("No budget revision exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Seq",null,"50px"));
-		grid.getColumns().appendChild(new Column("Date",null,"125px"));
-		grid.getColumns().appendChild(new Column("Comment",null,"150px"));
-		grid.getColumns().appendChild(new Column(null,null,"0px"));
-		grid.getColumns().getChildren().get(4).setVisible(false);
+		grid.getColumns().appendChild(new Column(lang.get("budget.grid.column.seq"),null,"50px"));
+		grid.getColumns().appendChild(new Column(lang.get("budget.grid.column.date"),null,"125px"));
+		grid.getColumns().appendChild(new Column(lang.get("budget.grid.column.comment"),null,"150px"));
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("3");
 
 		for(BudgetRevision item:budget.getRevisions())

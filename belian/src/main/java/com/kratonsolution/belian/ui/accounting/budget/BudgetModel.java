@@ -11,7 +11,6 @@ import org.zkoss.zul.event.ListDataListener;
 
 import com.kratonsolution.belian.accounting.dm.Budget;
 import com.kratonsolution.belian.accounting.svc.BudgetService;
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -22,8 +21,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class BudgetModel implements ListModel<Budget>
 {
 	private BudgetService controller = Springs.get(BudgetService.class);
-	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	private List<Budget> data = new ArrayList<Budget>();
 	
@@ -44,7 +41,7 @@ public class BudgetModel implements ListModel<Budget>
 	@Override
 	public int getSize()
 	{
-		return controller.count(utils.getOrganizationIds());
+		return controller.count();
 	}
 
 	@Override
@@ -60,6 +57,6 @@ public class BudgetModel implements ListModel<Budget>
 	public void next(int pageIndex,int itemSize)
 	{
 		data.clear();
-		data.addAll(controller.findAll(0, (itemSize*pageIndex)+itemSize,utils.getOrganizationIds()));
+		data.addAll(controller.findAll(0, (itemSize*pageIndex)+itemSize));
 	}
 }

@@ -48,8 +48,6 @@ public class BudgetEditContent extends FormContent
 	private BudgetService service = Springs.get(BudgetService.class);
 
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
-
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	private PartyService personService = Springs.get(PartyService.class);
 	
@@ -105,11 +103,11 @@ public class BudgetEditContent extends FormContent
 		tabbox.setVflex("1");
 		tabbox.appendChild(new Tabs());
 		tabbox.appendChild(new Tabpanels());
-		tabbox.getTabs().appendChild(new Tab("Item(s)"));
-		tabbox.getTabs().appendChild(new Tab("Statuses"));
-		tabbox.getTabs().appendChild(new Tab("Party Role(s)"));
-		tabbox.getTabs().appendChild(new Tab("Review(s)"));
-		tabbox.getTabs().appendChild(new Tab("Revision(s)"));
+		tabbox.getTabs().appendChild(new Tab(lang.get("budget.grid.column.items")));
+		tabbox.getTabs().appendChild(new Tab(lang.get("budget.grid.column.statuses")));
+		tabbox.getTabs().appendChild(new Tab(lang.get("budget.grid.column.roles")));
+		tabbox.getTabs().appendChild(new Tab(lang.get("budget.grid.column.reviews")));
+		tabbox.getTabs().appendChild(new Tab(lang.get("budget.grid.column.revisions")));
 		tabbox.getTabpanels().appendChild(new BudgetItemPanel(budget));
 		tabbox.getTabpanels().appendChild(new BudgetStatusPanel(budget));
 		tabbox.getTabpanels().appendChild(rolePanel);
@@ -216,23 +214,23 @@ public class BudgetEditContent extends FormContent
 			grid.getColumns().appendChild(new Column());
 			
 			Row row1 = new Row();
-			row1.appendChild(new Label("Type"));
+			row1.appendChild(new Label(lang.get("budget.grid.column.type")));
 			row1.appendChild(types);
 			
 			Row row2 = new Row();
-			row2.appendChild(new Label("Party"));
+			row2.appendChild(new Label(lang.get("budget.grid.column.party")));
 			row2.appendChild(targets);
 			
 			Row row3 = new Row();
-			row3.appendChild(new Label("Start"));
+			row3.appendChild(new Label(lang.get("budget.grid.column.start")));
 			row3.appendChild(start);
 			
 			Row row4 = new Row();
-			row4.appendChild(new Label("End"));
+			row4.appendChild(new Label(lang.get("budget.grid.column.end")));
 			row4.appendChild(end);
 			
 			Row row5 = new Row();
-			row5.appendChild(new Label("Comment"));
+			row5.appendChild(new Label(lang.get("budget.grid.column.comment")));
 			row5.appendChild(comment);
 			
 			rows.appendChild(row1);

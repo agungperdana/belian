@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kratonsolution.belian.accounting.dm.Budget;
 import com.kratonsolution.belian.accounting.dm.BudgetRepository;
+import com.kratonsolution.belian.common.SessionUtils;
 
 /**
  * 
@@ -26,6 +27,9 @@ import com.kratonsolution.belian.accounting.dm.BudgetRepository;
 public class BudgetService
 {
 	@Autowired
+	private SessionUtils utils;
+	
+	@Autowired
 	private BudgetRepository repository;
 	
 	@Secured("ROLE_BUDGET_READ")
@@ -35,12 +39,12 @@ public class BudgetService
 	}
 	
 	@Secured("ROLE_BUDGET_READ")
-	public int count(List<String> companys)
+	public int count()
 	{
-		if(companys != null && !companys.isEmpty())
-			return repository.count(companys);
+		if(utils.getOrganizationIds().isEmpty())
+			return 0;
 		
-		return 0;
+		return repository.count(utils.getOrganizationIds());
 	}
 	
 	@Secured("ROLE_BUDGET_READ")
@@ -56,12 +60,12 @@ public class BudgetService
 	}
 	
 	@Secured("ROLE_BUDGET_READ")
-	public List<Budget> findAll(int pageIndex,int pageSize,List<String> companys)
+	public List<Budget> findAll(int pageIndex,int pageSize)
 	{
-		if(companys != null && !companys.isEmpty())
-			return repository.findAll(new PageRequest(pageIndex, pageSize),companys);
-
-		return new ArrayList<>();
+		if(utils.getOrganizationIds().isEmpty())
+			return new ArrayList<>();
+			
+		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganizationIds());
 	}
 	
 	@Secured("ROLE_BUDGET_CREATE")

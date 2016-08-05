@@ -29,7 +29,6 @@ import com.kratonsolution.belian.accounting.dm.BudgetStatus;
 import com.kratonsolution.belian.accounting.dm.BudgetType;
 import com.kratonsolution.belian.accounting.svc.BudgetService;
 import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.global.dm.RoledType;
 import com.kratonsolution.belian.global.dm.StatusType;
@@ -50,8 +49,6 @@ public class BudgetFormContent extends FormContent
 	private BudgetService service = Springs.get(BudgetService.class);
 	
 	private PersonService personService = Springs.get(PersonService.class);
-	
-	private SessionUtils sessionUtils = Springs.get(SessionUtils.class);
 	
 	private Datebox start = Components.currentDatebox();
 	
@@ -96,7 +93,7 @@ public class BudgetFormContent extends FormContent
 			{
 				Budget budget = new Budget();
 				budget.setType(BudgetType.valueOf(Components.string(types)));
-				budget.setOrganization(sessionUtils.getOrganization());
+				budget.setOrganization(utils.getOrganization());
 				budget.setStart(DateTimes.sql(start.getValue()));
 				budget.setEnd(DateTimes.sql(end.getValue()));
 				budget.setComment(comment.getText());
@@ -112,12 +109,12 @@ public class BudgetFormContent extends FormContent
 				
 				BudgetRole initiator = new BudgetRole();
 				initiator.setBudget(budget);
-				initiator.setParty(sessionUtils.getUser().getPerson());
+				initiator.setParty(utils.getUser().getPerson());
 				initiator.setType(RoledType.Initiator);
 				
 				BudgetRole requested = new BudgetRole();
 				requested.setBudget(budget);
-				requested.setParty(sessionUtils.getOrganization());
+				requested.setParty(utils.getOrganization());
 				requested.setType(RoledType.Requested);
 				
 				budget.getRoles().add(initiator);
@@ -160,7 +157,7 @@ public class BudgetFormContent extends FormContent
 	public void initForm()
 	{
 		comment.setWidth("300px");
-		targets.appendItem(sessionUtils.getOrganization().getName(),sessionUtils.getOrganization().getId());
+		targets.appendItem(utils.getOrganization().getName(),utils.getOrganization().getId());
 		
 		for(BudgetType type:BudgetType.values())
 			types.appendItem(type.name(), type.name());
@@ -173,23 +170,23 @@ public class BudgetFormContent extends FormContent
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Type"));
+		row1.appendChild(new Label(lang.get("budget.grid.column.type")));
 		row1.appendChild(types);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Party"));
+		row2.appendChild(new Label(lang.get("budget.grid.column.party")));
 		row2.appendChild(targets);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Start"));
+		row3.appendChild(new Label(lang.get("budget.grid.column.start")));
 		row3.appendChild(start);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("End"));
+		row4.appendChild(new Label(lang.get("budget.grid.column.end")));
 		row4.appendChild(end);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Comment"));
+		row5.appendChild(new Label(lang.get("budget.grid.column.comment")));
 		row5.appendChild(comment);
 		
 		rows.appendChild(row1);
@@ -204,8 +201,8 @@ public class BudgetFormContent extends FormContent
 		tabbox.setWidth("100%");
 		tabbox.appendChild(new Tabs());
 		tabbox.appendChild(new Tabpanels());
-		tabbox.getTabs().appendChild(new Tab("Item(s)"));
-		tabbox.getTabs().appendChild(new Tab("Role(s)"));
+		tabbox.getTabs().appendChild(new Tab(lang.get("budget.grid.column.items")));
+		tabbox.getTabs().appendChild(new Tab(lang.get("budget.grid.column.roles")));
 		tabbox.getTabpanels().appendChild(new Tabpanel());
 		tabbox.getTabpanels().appendChild(new Tabpanel());
 		
@@ -222,10 +219,10 @@ public class BudgetFormContent extends FormContent
 		itemsGrid.appendChild(new Columns());
 		itemsGrid.appendChild(new Rows());
 		itemsGrid.getColumns().appendChild(new Column(null,null,"25px"));
-		itemsGrid.getColumns().appendChild(new Column("SEQ",null,"55px"));
-		itemsGrid.getColumns().appendChild(new Column("Amount",null,"125px"));
-		itemsGrid.getColumns().appendChild(new Column("Purpose",null,"150px"));
-		itemsGrid.getColumns().appendChild(new Column("Justification",null,"150px"));
+		itemsGrid.getColumns().appendChild(new Column(lang.get("budget.grid.column.seq"),null,"55px"));
+		itemsGrid.getColumns().appendChild(new Column(lang.get("budget.grid.column.amount"),null,"125px"));
+		itemsGrid.getColumns().appendChild(new Column(lang.get("budget.grid.column.purpose"),null,"150px"));
+		itemsGrid.getColumns().appendChild(new Column(lang.get("budget.grid.column.justi"),null,"150px"));
 		itemsGrid.setSpan("4");
 		
 		bar.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()
@@ -235,22 +232,16 @@ public class BudgetFormContent extends FormContent
 			@Override
 			public void onEvent(Event arg0) throws Exception
 			{
-				try
-				{
-					Row row = new Row();
-					row.appendChild(Components.checkbox(false));
-					row.appendChild(Components.readOnlyDoubleBox(index));
-					row.appendChild(Components.doubleBox(1d));
-					row.appendChild(Components.mandatoryTextBox());
-					row.appendChild(Components.mandatoryTextBox());
-					
-					itemsGrid.getRows().appendChild(row);
-					
-					index++;
-				} catch (Exception e)
-				{
-					e.printStackTrace();
-				}
+				Row row = new Row();
+				row.appendChild(Components.checkbox(false));
+				row.appendChild(Components.readOnlyDoubleBox(index));
+				row.appendChild(Components.doubleBox(1d));
+				row.appendChild(Components.mandatoryTextBox());
+				row.appendChild(Components.mandatoryTextBox());
+				
+				itemsGrid.getRows().appendChild(row);
+				
+				index++;
 			}
 		});
 		
@@ -265,8 +256,8 @@ public class BudgetFormContent extends FormContent
 		rolesGrid.appendChild(new Columns());
 		rolesGrid.appendChild(new Rows());
 		rolesGrid.getColumns().appendChild(new Column(null,null,"25px"));
-		rolesGrid.getColumns().appendChild(new Column("Person",null,"150px"));
-		rolesGrid.getColumns().appendChild(new Column("Type",null,"125px"));
+		rolesGrid.getColumns().appendChild(new Column(lang.get("budget.grid.column.person"),null,"150px"));
+		rolesGrid.getColumns().appendChild(new Column(lang.get("budget.grid.column.type"),null,"125px"));
 		rolesGrid.setSpan("1");
 		
 		bar.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()

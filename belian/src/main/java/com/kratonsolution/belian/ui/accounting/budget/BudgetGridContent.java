@@ -16,8 +16,8 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.accounting.svc.BudgetService;
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -28,8 +28,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class BudgetGridContent extends GridContent
 {
 	private BudgetService service = Springs.get(BudgetService.class);
-	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public BudgetGridContent()
 	{
@@ -46,8 +44,7 @@ public class BudgetGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				refresh(new BudgetModel(utils.getRowPerPage()));
+				Flow.next(getParent(), new BudgetGridContent());
 			}
 		});
 		
@@ -56,9 +53,7 @@ public class BudgetGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				BudgetWindow window = (BudgetWindow)getParent();
-				window.removeGrid();
-				window.insertCreateForm();
+				Flow.next(getParent(), new BudgetFormContent());
 			}
 		});
 		
@@ -110,7 +105,7 @@ public class BudgetGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -132,9 +127,7 @@ public class BudgetGridContent extends GridContent
 								}
 							}
 							
-							BudgetWindow window = (BudgetWindow)getParent();
-							window.removeGrid();
-							window.insertGrid();
+							Flow.next(getParent(), new BudgetGridContent());
 						}
 					}
 				});
@@ -157,7 +150,7 @@ public class BudgetGridContent extends GridContent
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No Budget data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new BudgetRowRenderer());
 		grid.setPagingPosition("both");
@@ -165,13 +158,13 @@ public class BudgetGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Type",null,"85px"));
-		grid.getColumns().appendChild(new Column("Target",null,"150px"));
-		grid.getColumns().appendChild(new Column("Start",null,"85px"));
-		grid.getColumns().appendChild(new Column("End",null,"85px"));
-		grid.getColumns().appendChild(new Column("Comment"));
-		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(6).setVisible(false);
+		grid.getColumns().appendChild(new Column(lang.get("budget.grid.column.type"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("budget.grid.column.target"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("budget.grid.column.start"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("budget.grid.column.end"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("budget.grid.column.comment")));
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("2");
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()

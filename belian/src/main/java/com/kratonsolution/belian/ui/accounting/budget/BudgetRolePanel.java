@@ -23,6 +23,7 @@ import org.zkoss.zul.Tabpanel;
 import com.kratonsolution.belian.accounting.dm.Budget;
 import com.kratonsolution.belian.accounting.dm.BudgetRole;
 import com.kratonsolution.belian.accounting.svc.BudgetItemService;
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.global.dm.RoledType;
 import com.kratonsolution.belian.ui.NRCToolbar;
@@ -36,6 +37,8 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class BudgetRolePanel extends Tabpanel
 {
+	private Language lang = Springs.get(Language.class);
+	
 	private BudgetItemService service = Springs.get(BudgetItemService.class);
 	
 	private PersonService agentService = Springs.get(PersonService.class);
@@ -58,11 +61,12 @@ public class BudgetRolePanel extends Tabpanel
 		grid.setWidth("100%");
 		grid.appendChild(new Columns());
 		grid.appendChild(new Rows());
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Party",null,"250px"));
-		grid.getColumns().appendChild(new Column("Type",null,"125px"));
-		grid.getColumns().appendChild(new Column(null,null,"0px"));
-		grid.getColumns().getChildren().get(3).setVisible(false);
+		grid.getColumns().appendChild(new Column(lang.get("budget.grid.column.party"),null,"250px"));
+		grid.getColumns().appendChild(new Column(lang.get("budget.grid.column.type"),null,"125px"));
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("2");
 
 		for(BudgetRole item:budget.getRoles())

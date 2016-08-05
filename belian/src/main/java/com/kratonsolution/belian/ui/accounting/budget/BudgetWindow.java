@@ -24,7 +24,7 @@ import com.kratonsolution.belian.ui.nav.IconBar;
  */
 public class BudgetWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption("Budget");
+	private Caption caption = new Caption(lang.get("navbar.menu.accounting.budget"));
 	
 	private Budgetbutton status = new Budgetbutton();
 	

@@ -13,7 +13,9 @@ import org.zkoss.zul.Tabpanel;
 
 import com.kratonsolution.belian.accounting.dm.Budget;
 import com.kratonsolution.belian.accounting.dm.BudgetStatus;
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * @author Agung Dodi Perdana
@@ -21,6 +23,8 @@ import com.kratonsolution.belian.ui.util.Components;
  */
 public class BudgetStatusPanel extends Tabpanel
 {
+	private Language lang = Springs.get(Language.class);
+	
 	private Grid grid = new Grid();
 	
 	public BudgetStatusPanel(Budget budget)
@@ -38,11 +42,11 @@ public class BudgetStatusPanel extends Tabpanel
 		grid.appendChild(new Columns());
 		grid.appendChild(new Rows());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Date",null,"125px"));
-		grid.getColumns().appendChild(new Column("Type",null,"125px"));
-		grid.getColumns().appendChild(new Column("Description",null,"200px"));
-		grid.getColumns().appendChild(new Column(null,null,"0px"));
-		grid.getColumns().getChildren().get(4).setVisible(false);
+		grid.getColumns().appendChild(new Column(lang.get("budget.grid.column.date"),null,"125px"));
+		grid.getColumns().appendChild(new Column(lang.get("budget.grid.column.type"),null,"125px"));
+		grid.getColumns().appendChild(new Column(lang.get("budget.grid.column.note"),null,"200px"));
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("3");
 
 		for(BudgetStatus item:budget.getStatuses())
