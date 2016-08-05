@@ -21,6 +21,7 @@ import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 
 import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.global.svc.CodeGenerator;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
@@ -43,6 +44,8 @@ public class CurrentAppointmentPanel extends Tabbox
 	private MedicalRecordService medicalRecordService = Springs.get(MedicalRecordService.class);
 	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
+	
+	private Language lang = Springs.get(Language.class);
 	
 	private CodeGenerator generator = Springs.get(CodeGenerator.class);
 	
@@ -70,11 +73,11 @@ public class CurrentAppointmentPanel extends Tabbox
 		appendChild(new Tabs());
 		appendChild(new Tabpanels());
 
-		getTabs().appendChild(new Tab("Appointment"));
-		getTabs().appendChild(new Tab("Observation"));
-		getTabs().appendChild(new Tab("Medication"));
-		getTabs().appendChild(new Tab("Treatment"));
-		getTabs().appendChild(new Tab("Laboratiorium"));
+		getTabs().appendChild(new Tab(lang.get("doctordashboard.grid.column.appointment")));
+		getTabs().appendChild(new Tab(lang.get("doctordashboard.grid.column.observation")));
+		getTabs().appendChild(new Tab(lang.get("doctordashboard.grid.column.medication")));
+		getTabs().appendChild(new Tab(lang.get("doctordashboard.grid.column.treatment")));
+		getTabs().appendChild(new Tab(lang.get("doctordashboard.grid.column.laboratory")));
 		getTabpanels().appendChild(info);
 		getTabpanels().appendChild(result);
 		getTabpanels().appendChild(medication);
@@ -86,8 +89,8 @@ public class CurrentAppointmentPanel extends Tabbox
 	
 	private void initAppointmentInfo(DoctorAppointment appointment)
 	{
-		Toolbarbutton done = new Toolbarbutton("Completed","/icons/completed.png");
-		Toolbarbutton cancel = new Toolbarbutton("Cancel","/icons/cancel.png");
+		Toolbarbutton done = new Toolbarbutton(lang.get("label.component.button.complete"),"/icons/completed.png");
+		Toolbarbutton cancel = new Toolbarbutton(lang.get("label.component.button.cancel"),"/icons/cancel.png");
 
 		Toolbar toolbar = new Toolbar();
 		toolbar.appendChild(done);
@@ -122,7 +125,7 @@ public class CurrentAppointmentPanel extends Tabbox
 				
 				status.setValue(DoctorAppointmentStatus.DONE.toString());
 				
-				Clients.showNotification("Appointment finished", Clients.NOTIFICATION_TYPE_INFO, null, null, 25, true);
+				Clients.showNotification(lang.get("doctordashboard.message.finish"), Clients.NOTIFICATION_TYPE_INFO, null, null, 25, true);
 			}
 		});
 		
@@ -148,12 +151,12 @@ public class CurrentAppointmentPanel extends Tabbox
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.getColumns().appendChild(new Column());
 		grid.setSpan("1");
-		grid.getRows().appendChild(RowUtils.row("Queue",appointment.getQueue()+""));
-		grid.getRows().appendChild(RowUtils.row("Company",appointment.getCompany().getName()));
-		grid.getRows().appendChild(RowUtils.row("Date",DateTimes.format(appointment.getDate())));
-		grid.getRows().appendChild(RowUtils.row("Progress Status",status));
-		grid.getRows().appendChild(RowUtils.row("Note",appointment.getNote()));
-		grid.getRows().appendChild(RowUtils.row("Billing Information",""));
+		grid.getRows().appendChild(RowUtils.row(lang.get("doctordashboard.grid.column.queue"),appointment.getQueue()+""));
+		grid.getRows().appendChild(RowUtils.row(lang.get("doctordashboard.grid.column.company"),appointment.getCompany().getName()));
+		grid.getRows().appendChild(RowUtils.row(lang.get("doctordashboard.grid.column.date"),DateTimes.format(appointment.getDate())));
+		grid.getRows().appendChild(RowUtils.row(lang.get("doctordashboard.grid.column.status"),status));
+		grid.getRows().appendChild(RowUtils.row(lang.get("doctordashboard.grid.column.note"),appointment.getNote()));
+		grid.getRows().appendChild(RowUtils.row(lang.get("doctordashboard.grid.column.billing"),""));
 		
 		info.appendChild(toolbar);
 		info.appendChild(grid);

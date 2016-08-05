@@ -19,11 +19,12 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Tabpanel;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
-import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentStatus;
 import com.kratonsolution.belian.healtcare.dm.ClinicSales;
 import com.kratonsolution.belian.healtcare.dm.ClinicSalesItem;
+import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
+import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentStatus;
 import com.kratonsolution.belian.healtcare.svc.MedicalRecordService;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.NRCToolbar;
@@ -39,6 +40,8 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class MedicationPanel extends Tabpanel
 {
 	private SessionUtils utils = Springs.get(SessionUtils.class);
+	
+	private Language lang = Springs.get(Language.class);
 
 	private MedicalRecordService service = Springs.get(MedicalRecordService.class);
 
@@ -107,10 +110,10 @@ public class MedicationPanel extends Tabpanel
 		grid.appendChild(new Columns());
 		grid.appendChild(new Rows());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Product",null,"200px"));
-		grid.getColumns().appendChild(new Column("Quantity",null,"70px"));
-		grid.getColumns().appendChild(new Column("UoM",null,"75px"));
-		grid.getColumns().appendChild(new Column("Note",null));
+		grid.getColumns().appendChild(new Column(lang.get("doctordashboard.grid.column.product"),null,"200px"));
+		grid.getColumns().appendChild(new Column(lang.get("doctordashboard.grid.column.quantity"),null,"70px"));
+		grid.getColumns().appendChild(new Column(lang.get("doctordashboard.grid.column.uom"),null,"75px"));
+		grid.getColumns().appendChild(new Column(lang.get("doctordashboard.grid.column.note"),null));
 		grid.setSpan("4");
 
 		if(appointment.getRecord() != null && appointment.getRecord().getMedication() != null)
@@ -144,10 +147,10 @@ public class MedicationPanel extends Tabpanel
 				MedicationRow row = (MedicationRow)com;
 
 				if(row.getProduct() == null)
-					throw new WrongValueException(com,"Product cannot be empty.");
+					throw new WrongValueException(com,lang.get("message.field.empty"));
 
 				if(row.getItem().getQuantity().compareTo(BigDecimal.ZERO) <= 0)
-					throw new WrongValueException(com,"Quantity cannot be 0 or less.");
+					throw new WrongValueException(com,lang.get("message.field.empty"));
 
 				productService.checkStock(row.getProduct(), row.getItem().getQuantity());
 

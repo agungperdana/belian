@@ -16,6 +16,7 @@ import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Hbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.healtcare.dm.Patient;
@@ -30,6 +31,8 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PatientBox extends Hbox implements PatientRegistrationListener
 {
+	private Language lang = Springs.get(Language.class);
+	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	private PatientRelationshipRepository repository = Springs.get(PatientRelationshipRepository.class);
@@ -38,7 +41,7 @@ public class PatientBox extends Hbox implements PatientRegistrationListener
 	
 	private Combobox patients = new Combobox();
 
-	private A link = new A("New Patient");
+	private A link = new A(lang.get("patient.grid.column.new"));
 	
 	private Map<String,Patient> maps = new HashMap<String, Patient>(); 
 
@@ -63,7 +66,7 @@ public class PatientBox extends Hbox implements PatientRegistrationListener
 			{
 				if(utils.getOrganization() == null)
 				{
-					Clients.showNotification("Please select default Working company first.");
+					Clients.showNotification(lang.get("message.field.company"));
 					return;
 				}
 				

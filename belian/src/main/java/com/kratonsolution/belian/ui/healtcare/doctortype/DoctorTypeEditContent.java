@@ -17,6 +17,8 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.healtcare.dm.DoctorType;
 import com.kratonsolution.belian.healtcare.svc.DoctorTypeService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -29,11 +31,11 @@ public class DoctorTypeEditContent extends FormContent
 {	
 	private DoctorTypeService service = Springs.get(DoctorTypeService.class);
 	
-	private Textbox code = new Textbox();
+private Textbox code = Components.mandatoryTextBox(false);
 	
-	private Textbox name = new Textbox();
+	private Textbox name = Components.mandatoryTextBox(false);
 	
-	private Textbox description = new Textbox();
+	private Textbox note = Components.stdTextBox(null, false);
 	
 	private Row row;
 	
@@ -53,9 +55,7 @@ public class DoctorTypeEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				DoctorTypeWindow window = (DoctorTypeWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new DoctorTypeGridContent());
 			}
 		});
 		
@@ -65,24 +65,22 @@ public class DoctorTypeEditContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				if(Strings.isNullOrEmpty(code.getText()))
-					throw new WrongValueException(code,"Code cannot be empty");
+					throw new WrongValueException(code,lang.get("message.field.empty"));
 			
 				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
+					throw new WrongValueException(name,lang.get("message.field.empty"));
 				
-				if(Strings.isNullOrEmpty(description.getText()))
-					throw new WrongValueException(description,"Value cannot be empty");
-			
-				DoctorType type = service.findOne(RowUtils.string(row, 4));
-				type.setCode(code.getText());
-				type.setName(name.getText());
-				type.setDescription(description.getText());
+				DoctorType type = service.findOne(RowUtils.id(row));
+				if(type != null)
+				{
+					type.setCode(code.getText());
+					type.setName(name.getText());
+					type.setDescription(note.getText());
+					
+					service.edit(type);
+				}
 				
-				service.edit(type);
-				
-				DoctorTypeWindow window = (DoctorTypeWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new DoctorTypeGridContent());
 			}
 		});
 	}
@@ -90,43 +88,32 @@ public class DoctorTypeEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		System.out.println("init form......");
-		DoctorType type = service.findOne(RowUtils.string(row, 4));
+		DoctorType type = service.findOne(RowUtils.id(row));
 		if(type != null)
 		{
-			System.out.println(type);
-			
-			code.setConstraint("no empty");
 			code.setText(type.getCode());
-			
-			name.setConstraint("no empty");
-			name.setWidth("300px");
 			name.setText(type.getName());
-			
-			description.setWidth("300px");
-			description.setText(type.getDescription());
+			note.setText(type.getDescription());
 			
 			grid.appendChild(new Columns());
-			grid.getColumns().appendChild(new Column(null,null,"75px"));
+			grid.getColumns().appendChild(new Column(null,null,"100px"));
 			grid.getColumns().appendChild(new Column());
 			
 			Row row1 = new Row();
-			row1.appendChild(new Label("Code"));
+			row1.appendChild(new Label(lang.get("generic.grid.column.code")));
 			row1.appendChild(code);
 			
 			Row row2 = new Row();
-			row2.appendChild(new Label("Name"));
+			row2.appendChild(new Label(lang.get("generic.grid.column.name")));
 			row2.appendChild(name);
 			
 			Row row3 = new Row();
-			row3.appendChild(new Label("Description"));
-			row3.appendChild(description);
+			row3.appendChild(new Label(lang.get("generic.grid.column.note")));
+			row3.appendChild(note);
 			
 			rows.appendChild(row1);
 			rows.appendChild(row2);
 			rows.appendChild(row3);
-			
-			System.out.println("add maning");
 		}
 	}
 }

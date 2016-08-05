@@ -13,6 +13,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Tabpanel;
 import org.zkoss.zul.Textbox;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.MedicalRecord;
 import com.kratonsolution.belian.healtcare.svc.MedicalRecordService;
@@ -27,6 +28,8 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class CheckingResult extends Tabpanel
 {
 	private MedicalRecordService service = Springs.get(MedicalRecordService.class);
+	
+	private Language lang = Springs.get(Language.class);
 	
 	private Grid grid = new Grid();
 	
@@ -62,10 +65,10 @@ public class CheckingResult extends Tabpanel
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null, "125px"));
 		grid.getColumns().appendChild(new Column());
-		grid.getRows().appendChild(RowUtils.row("Date", datebox));
-		grid.getRows().appendChild(RowUtils.row("Anamnesis", anamnesis));
-		grid.getRows().appendChild(RowUtils.row("Checking Result", checkingResult));
-		grid.getRows().appendChild(RowUtils.row("Diagnosis", diagnosis));
+		grid.getRows().appendChild(RowUtils.row(lang.get("doctordashboard.grid.column.date"), datebox));
+		grid.getRows().appendChild(RowUtils.row(lang.get("doctordashboard.grid.column.anamnesis"), anamnesis));
+		grid.getRows().appendChild(RowUtils.row(lang.get("doctordashboard.grid.column.checkresult"), checkingResult));
+		grid.getRows().appendChild(RowUtils.row(lang.get("doctordashboard.grid.column.diagnosis"), diagnosis));
 	}
 	
 	private void setValues(DoctorAppointment appointment)

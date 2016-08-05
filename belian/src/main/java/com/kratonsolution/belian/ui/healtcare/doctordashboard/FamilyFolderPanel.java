@@ -17,10 +17,12 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Vlayout;
 
 import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.FamilyFolder;
 import com.kratonsolution.belian.healtcare.dm.FamilyMember;
 import com.kratonsolution.belian.healtcare.dm.Patient;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * @author Agung Dodi Perdana
@@ -28,6 +30,8 @@ import com.kratonsolution.belian.healtcare.dm.Patient;
  */
 public class FamilyFolderPanel extends Vlayout
 {
+	private Language lang = Springs.get(Language.class);
+	
 	private Tabbox box = new Tabbox();
 	
 	public FamilyFolderPanel(Patient patient)
@@ -66,15 +70,15 @@ public class FamilyFolderPanel extends Vlayout
 				{
 					Grid grid = new Grid();
 					grid.setWidth("100%");
-					grid.setEmptyMessage("Patient does not have any doctor appointment.");
+					grid.setEmptyMessage(lang.get("message.grid.empty"));
 					grid.appendChild(new Columns());
 					grid.appendChild(new Rows());
 					grid.getColumns().appendChild(new Column(null,null,"0px"));
-					grid.getColumns().appendChild(new Column("Date",null,"85px"));
-					grid.getColumns().appendChild(new Column("Company",null,"150px"));
-					grid.getColumns().appendChild(new Column("Doctor",null,"150px"));
-					grid.getColumns().appendChild(new Column("Diagnosis",null,"150px"));
-					grid.getColumns().getChildren().get(0).setVisible(false);
+					grid.getColumns().appendChild(new Column(lang.get("doctordashboard.grid.column.date"),null,"85px"));
+					grid.getColumns().appendChild(new Column(lang.get("doctordashboard.grid.column.company"),null,"150px"));
+					grid.getColumns().appendChild(new Column(lang.get("doctordashboard.grid.column.doctor"),null,"150px"));
+					grid.getColumns().appendChild(new Column(lang.get("doctordashboard.grid.column.diagnosis"),null,"150px"));
+					grid.getColumns().getLastChild().setVisible(false);
 					grid.setSpan("4");
 					
 					for(DoctorAppointment app:member.getPatient().getAppointments())
@@ -100,9 +104,9 @@ public class FamilyFolderPanel extends Vlayout
 		else
 		{
 			Tabpanel panel = new Tabpanel();
-			panel.appendChild(new Label("No family information linked with this patient."));
+			panel.appendChild(new Label(lang.get("doctordashboard.message.emptylink")));
 			
-			box.getTabs().appendChild(new Tab("Information"));
+			box.getTabs().appendChild(new Tab(lang.get("doctordashboard.grid.column.info")));
 			box.getTabpanels().appendChild(panel);
 		}
 	}

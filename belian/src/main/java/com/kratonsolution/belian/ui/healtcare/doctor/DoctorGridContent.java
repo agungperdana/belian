@@ -15,9 +15,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.healtcare.svc.DoctorRelationshipService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -28,8 +28,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class DoctorGridContent extends GridContent
 {
 	private DoctorRelationshipService service = Springs.get(DoctorRelationshipService.class);
-	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public DoctorGridContent()
 	{
@@ -46,8 +44,7 @@ public class DoctorGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				refresh(new DoctorModel(utils.getRowPerPage()));
+				Flow.next(getParent(), new DoctorGridContent());
 			}
 		});
 		
@@ -56,9 +53,7 @@ public class DoctorGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				DoctorWindow window = (DoctorWindow)getParent();
-				window.removeGrid();
-				window.insertCreateForm();
+				Flow.next(getParent(), new DoctorFormContent());
 			}
 		});
 		

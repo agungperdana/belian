@@ -10,7 +10,9 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Treechildren;
 import org.zkoss.zul.Treeitem;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * @author Agung Dodi Perdana
@@ -22,7 +24,8 @@ public class FamiliFolderItem extends Treeitem
 
 	public FamiliFolderItem(DoctorAppointment appointment,Component layout)
 	{
-		super("Famili Folder");
+		Language lang = Springs.get(Language.class);
+		setLabel(lang.get("doctordashboard.grid.column.folder"));
 		setImage("/icons/famili-folder-info.png");
 		appendChild(treechildren);
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()

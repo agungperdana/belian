@@ -16,9 +16,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -29,8 +29,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class PatientGridContent extends GridContent
 {
 	private PatientService service = Springs.get(PatientService.class);
-	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public PatientGridContent()
 	{
@@ -47,8 +45,7 @@ public class PatientGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				refresh(new PatientModel(utils.getRowPerPage()));
+				Flow.next(getParent(), new PatientGridContent());
 			}
 		});
 		
@@ -57,9 +54,7 @@ public class PatientGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PatientWindow window = (PatientWindow)getParent();
-				window.removeGrid();
-				window.insertCreateForm();
+				Flow.next(getParent(), new PatientFormContent());
 			}
 		});
 		
@@ -111,7 +106,7 @@ public class PatientGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -152,7 +147,7 @@ public class PatientGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		filter.setPlaceholder("Type person name");
+		filter.setPlaceholder(lang.get("message.filter.placeholder"));
 		
 		appendChild(filter);
 		appendChild(grid);

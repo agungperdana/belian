@@ -46,7 +46,7 @@ public class PharmacySalesService
 	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
 	public int size()
 	{
-		if(utils.getOrganizationIds() == null || utils.getOrganizationIds().isEmpty())
+		if(utils.getOrganizationIds().isEmpty())
 			return 0;
 		
 		return repository.count(utils.getOrganizationIds()).intValue();

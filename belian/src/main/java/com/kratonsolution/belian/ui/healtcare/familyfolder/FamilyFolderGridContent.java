@@ -15,9 +15,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.healtcare.svc.FamilyFolderService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -28,8 +28,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class FamilyFolderGridContent extends GridContent
 {
 	private FamilyFolderService service = Springs.get(FamilyFolderService.class);
-	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public FamilyFolderGridContent()
 	{
@@ -46,8 +44,7 @@ public class FamilyFolderGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				refresh(new FamilyFolderModel(utils.getRowPerPage()));
+				Flow.next(getParent(), new FamilyFolderGridContent());
 			}
 		});
 		
@@ -56,9 +53,7 @@ public class FamilyFolderGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				FamilyFolderWindow window = (FamilyFolderWindow)getParent();
-				window.removeGrid();
-				window.insertCreateForm();
+				Flow.next(getParent(), new FamilyFolderFormContent());
 			}
 		});
 		
@@ -110,7 +105,7 @@ public class FamilyFolderGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception

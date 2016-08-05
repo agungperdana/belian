@@ -38,6 +38,13 @@ public interface MedicalSalesRepository extends JpaRepository<MedicalSales, Stri
 			+ "ORDER BY med.date DESC")
 	public Long count(@Param("date")Date date,@Param("company")List<String> company);
 	
+	@Query("SELECT COUNT(med) FROM MedicalSales med WHERE "
+			+ "med.organization.id IN(:company) "
+			+ "AND med.paid IS true "
+			+ "AND med.status != 'Finished' "
+			+ "ORDER BY med.date DESC")
+	public Long count(@Param("company")List<String> company);
+	
 	@Query("SELECT COUNT(med) FROM MedicalSales med WHERE med.organization.id =:company")
 	public Long count(@Param("company")String company);
 	
@@ -51,7 +58,7 @@ public interface MedicalSalesRepository extends JpaRepository<MedicalSales, Stri
 	
 	@Query("FROM MedicalSales med WHERE "
 			+ "med.organization.id IN(:company) "
-			+ "AND med.status = 'Registered' "
+			+ "AND med.status != 'Finished' "
 			+ "AND med.status.paid IS true "
 			+ "ORDER BY med.date DESC,med.time DESC")
 	public List<MedicalSales> findAllPaidRegistered(@Param("company")List<String> company);

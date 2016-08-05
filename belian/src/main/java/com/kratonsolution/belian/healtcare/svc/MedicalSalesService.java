@@ -109,12 +109,22 @@ public class MedicalSalesService
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
-	public int sizePaid()
+	public int sizeTodayPaid()
 	{
-		if(utils.getOrganizationIds() == null || utils.getOrganizationIds().isEmpty())
+		if(utils.getOrganizationIds().isEmpty())
 			return 0;
 		
 		return repository.count(DateTimes.currentDate(),utils.getOrganizationIds()).intValue();
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured({"ROLE_PHARMACY_SALES_READ","ROLE_PHARMACY_ORDER_READ"})
+	public int sizePaid()
+	{
+		if(utils.getOrganizationIds().isEmpty())
+			return 0;
+		
+		return repository.count(utils.getOrganizationIds()).intValue();
 	}
 	
 	@Secured("ROLE_PHARMACY_SALES_CREATE")
@@ -136,13 +146,20 @@ public class MedicalSalesService
 		{
 			for(MedicalSalesItem item:medical.getItems())
 			{
+				System.out.println("### "+item);
+				
 				if(!item.getProduct().getComponents().isEmpty())
 				{
 					for(ProductComponent com:item.getProduct().getComponents())
 						stockService.issue(com.getProduct(), com.getQuantity().multiply(item.getQuantity()));
 				}
 				else
+				{
+					System.out.println("### "+item.getClass().getName());
+					System.out.println("### "+item.getProduct().getName());
+					System.out.println("### "+item.getQuantity());
 					stockService.issue(item.getProduct(),item.getQuantity());
+				}
 			}
 		}
 	}

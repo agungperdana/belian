@@ -17,6 +17,8 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.healtcare.dm.DoctorType;
 import com.kratonsolution.belian.healtcare.svc.DoctorTypeService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -28,11 +30,11 @@ public class DoctorTypeFormContent extends FormContent
 {	
 	private DoctorTypeService service = Springs.get(DoctorTypeService.class);
 	
-	private Textbox code = new Textbox();
+	private Textbox code = Components.mandatoryTextBox(false);
 	
-	private Textbox name = new Textbox();
+	private Textbox name = Components.mandatoryTextBox(false);
 	
-	private Textbox description = new Textbox();
+	private Textbox note = Components.stdTextBox(null, false);
 	
 	public DoctorTypeFormContent()
 	{
@@ -49,9 +51,7 @@ public class DoctorTypeFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				DoctorTypeWindow window = (DoctorTypeWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new DoctorTypeGridContent());
 			}
 		});
 		
@@ -61,22 +61,20 @@ public class DoctorTypeFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				if(Strings.isNullOrEmpty(code.getText()))
-					throw new WrongValueException(code,"Code cannot be empty");
+					throw new WrongValueException(code,lang.get("message.field.empty"));
 			
 				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
+					throw new WrongValueException(name,lang.get("message.field.empty"));
 				
 			
 				DoctorType type = new DoctorType();
 				type.setCode(code.getText());
 				type.setName(name.getText());
-				type.setDescription(description.getText());
+				type.setDescription(note.getText());
 				
 				service.add(type);
 				
-				DoctorTypeWindow window = (DoctorTypeWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new DoctorTypeGridContent());
 			}
 		});
 	}
@@ -84,26 +82,21 @@ public class DoctorTypeFormContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		code.setConstraint("no empty");
-		name.setConstraint("no empty");
-		name.setWidth("350px");
-		description.setWidth("350px");
-		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Code"));
+		row1.appendChild(new Label(lang.get("generic.grid.column.code")));
 		row1.appendChild(code);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Name"));
+		row2.appendChild(new Label(lang.get("generic.grid.column.name")));
 		row2.appendChild(name);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Description"));
-		row3.appendChild(description);
+		row3.appendChild(new Label(lang.get("generic.grid.column.note")));
+		row3.appendChild(note);
 		
 		rows.appendChild(row1);
 		rows.appendChild(row2);

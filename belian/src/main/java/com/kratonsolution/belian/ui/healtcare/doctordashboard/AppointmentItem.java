@@ -11,6 +11,7 @@ import org.zkoss.zul.Treechildren;
 import org.zkoss.zul.Treeitem;
 
 import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.DoctorType;
 import com.kratonsolution.belian.healtcare.dm.Patient;
@@ -32,7 +33,8 @@ public class AppointmentItem extends Treeitem
 
 	public AppointmentItem(DoctorAppointment appointment,Component layout)
 	{
-		super("Medical Check History");
+		Language lang = Springs.get(Language.class);
+		setLabel(lang.get("doctordashboard.grid.column.history"));
 		setImage("/icons/doctor-appointment-info.png");
 		appendChild(treechildren);
 		

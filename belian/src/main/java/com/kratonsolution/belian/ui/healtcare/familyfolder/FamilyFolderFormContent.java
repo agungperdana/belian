@@ -27,6 +27,7 @@ import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.healtcare.patient.PatientBox;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -39,9 +40,9 @@ public class FamilyFolderFormContent extends FormContent
 {	
 	private FamilyFolderService service = Springs.get(FamilyFolderService.class);
 	
-	private Textbox name = new Textbox();
+	private Textbox name = Components.mandatoryTextBox(false);
 	
-	private Textbox description = new Textbox();
+	private Textbox note = Components.stdTextBox(null,false);
 	
 	private Grid members = new Grid();
 	
@@ -61,9 +62,7 @@ public class FamilyFolderFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				FamilyFolderWindow window = (FamilyFolderWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new FamilyFolderGridContent());
 			}
 		});
 		
@@ -73,12 +72,11 @@ public class FamilyFolderFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
+					throw new WrongValueException(name,lang.get("message.field.empty"));
 				
-			
 				FamilyFolder folder = new FamilyFolder();
 				folder.setName(name.getText());
-				folder.setNote(description.getText());
+				folder.setNote(note.getText());
 				
 				for(Component com:members.getRows().getChildren())
 				{
@@ -96,9 +94,7 @@ public class FamilyFolderFormContent extends FormContent
 				
 				service.add(folder);
 				
-				FamilyFolderWindow window = (FamilyFolderWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new FamilyFolderGridContent());
 			}
 		});
 	}
@@ -108,19 +104,19 @@ public class FamilyFolderFormContent extends FormContent
 	{
 		name.setConstraint("no empty");
 		name.setWidth("350px");
-		description.setWidth("350px");
+		note.setWidth("350px");
 		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Name"));
+		row2.appendChild(new Label(lang.get("familyfolder.grid.column.name")));
 		row2.appendChild(name);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Description"));
-		row3.appendChild(description);
+		row3.appendChild(new Label(lang.get("familyfolder.grid.column.note")));
+		row3.appendChild(note);
 		
 		rows.appendChild(row2);
 		rows.appendChild(row3);
@@ -134,8 +130,8 @@ public class FamilyFolderFormContent extends FormContent
 		members.appendChild(new Columns());
 		members.setWidth("100%");
 		members.getColumns().appendChild(new Column(null,null,"25px"));
-		members.getColumns().appendChild(new Column("Patient",null,"150px"));
-		members.getColumns().appendChild(new Column("Role",null,"150px"));
+		members.getColumns().appendChild(new Column(lang.get("familyfolder.grid.column.patient"),null,"150px"));
+		members.getColumns().appendChild(new Column(lang.get("familyfolder.grid.column.role"),null,"150px"));
 		members.setSpan("1");
 		
 		nrc.getNew().addEventListener(Events.ON_CLICK,new EventListener<Event>()

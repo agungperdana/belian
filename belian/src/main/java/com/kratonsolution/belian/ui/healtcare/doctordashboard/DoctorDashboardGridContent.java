@@ -15,7 +15,6 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.healtcare.svc.DoctorAppointmentService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.Removeable;
@@ -29,8 +28,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class DoctorDashboardGridContent extends GridContent implements Removeable
 {
 	private DoctorAppointmentService service = Springs.get(DoctorAppointmentService.class);
-	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public DoctorDashboardGridContent()
 	{
@@ -114,7 +111,7 @@ public class DoctorDashboardGridContent extends GridContent implements Removeabl
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -158,7 +155,7 @@ public class DoctorDashboardGridContent extends GridContent implements Removeabl
 		final DoctorDashboardModel model = new DoctorDashboardModel(utils.getRowPerPage());
 		
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No appointment data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new DoctorDashboardRowRenderer());
 		grid.setPagingPosition("both");
@@ -166,10 +163,10 @@ public class DoctorDashboardGridContent extends GridContent implements Removeabl
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Date",null,"75px"));
-		grid.getColumns().appendChild(new Column("Patient"));
-		grid.getColumns().appendChild(new Column("Status",null,"85px"));
-		grid.getColumns().appendChild(new Column("Note",null,"125px"));
+		grid.getColumns().appendChild(new Column(lang.get("doctordashboard.grid.column.date"),null,"75px"));
+		grid.getColumns().appendChild(new Column(lang.get("doctordashboard.grid.column.patient")));
+		grid.getColumns().appendChild(new Column(lang.get("doctordashboard.grid.column.status"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("doctordashboard.grid.column.note"),null,"125px"));
 		grid.getColumns().appendChild(new Column(null,null,"70px"));
 		grid.getColumns().appendChild(new Column(null,null,"0px"));
 		grid.getColumns().getLastChild().setVisible(false);

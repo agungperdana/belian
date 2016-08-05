@@ -40,6 +40,9 @@ public class InventoryStockService
 
 			for(FacilityOrganization facility:utils.getOrganization().getFacilitys())
 			{
+				System.out.println(product);
+				System.out.println(facility.getFacility());
+				
 				List<InventoryItem> outs = itemRepository.findAll(product.getId(), facility.getFacility().getId());
 				for(InventoryItem out: outs)
 				{

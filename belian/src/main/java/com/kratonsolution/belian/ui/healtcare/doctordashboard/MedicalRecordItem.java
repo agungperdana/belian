@@ -18,6 +18,7 @@ import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Vlayout;
 
 import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.MedicalRecord;
 import com.kratonsolution.belian.healtcare.dm.Patient;
@@ -30,6 +31,8 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class MedicalRecordItem extends Treeitem
 {
+	private Language lang = Springs.get(Language.class);
+	
 	private MedicalRecordService service = Springs.get(MedicalRecordService.class);
 	
 	private Treechildren treechildren = new Treechildren();
@@ -65,15 +68,15 @@ public class MedicalRecordItem extends Treeitem
 		grid.setWidth("100%");
 		grid.appendChild(new Columns());
 		grid.appendChild(new Rows());
-		grid.getColumns().appendChild(new Column("Date",null,"85px"));
-		grid.getColumns().appendChild(new Column("Doctor",null,"150px"));
-		grid.getColumns().appendChild(new Column("Anamnesis",null,"150px"));
-		grid.getColumns().appendChild(new Column("Checking Result",null,"150px"));
-		grid.getColumns().appendChild(new Column("Diagnosis",null,"150px"));
-		grid.getColumns().appendChild(new Column(null,null,"0px"));
-		grid.getColumns().getChildren().get(5).setVisible(false);
+		grid.getColumns().appendChild(new Column(lang.get("doctordashboard.grid.column.date"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("doctordashboard.grid.column.doctor"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("doctordashboard.grid.column.anamnesis"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("doctordashboard.grid.column.checkresult"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("doctordashboard.grid.column.diagnosis"),null,"150px"));
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("4");
-		grid.setEmptyMessage("No medical record data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		
 		for(MedicalRecord record:service.findAllByPatientId(patient.getId()))
 		{
