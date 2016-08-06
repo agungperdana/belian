@@ -2,7 +2,7 @@ BelianERP
 ======
 
 Simple application for business
-created using spring boot 1.3.6+spring data+mysql+zk 8
+created using Spring boot 1.4+Spring data+MySQL+zk 8
 
 contains modules:
 
