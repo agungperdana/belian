@@ -39,6 +39,9 @@ public class JournalPosting implements Serializable
 	@Column(name="date")
 	private Date date;
 	
+	@Column(name="note")
+	private String note;
+	
 	@Enumerated(EnumType.STRING)
 	@Column(name="type")
 	private JournalEntryDetailType type = JournalEntryDetailType.DEBET;
@@ -70,4 +73,5 @@ public class JournalPosting implements Serializable
 		
 		return BigDecimal.ZERO;
 	}
+	
 }

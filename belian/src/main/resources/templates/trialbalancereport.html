@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:inline='text'>
+	<meta charset="UTF-8"/>
+	<script type="text/javascript">
+    	function onprint()
+    	{
+    		window.print();
+    	}
+    </script>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/print-report.css}"/>
+</head>
+<body th:inline="text">
+	<table id='outer'>
+	<tr>
+		<td width="100%" align="center">
+			<span id='toolbar'><img th:src="@{/icons/print.png}" onclick="onprint()"/></span>
+		</td>
+	</tr>
+	<tr>
+		<td id='comp-title'>[[${company.name}]]</td>
+	</tr>
+	<tr>
+		<td id='comp-title'>[[${title}]]</td>
+	</tr>
+	<tr>
+		<td id='comp-title'>[[${#dates.format(date,'dd/MM/yyyy')}]]</td>
+	</tr>
+	<tr>
+		<td>
+			<table id='content'>
+			<thead>
+			<tr id='black'>
+				<th>[[${account}]]</th>
+				<th>[[${debet}]]</th>
+				<th>[[${credit}]]</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr th:each="content:${contents}">
+				<td width="70%" align="left">[[${content.account.account.name}]]</td>
+				<td width="10%" align="right">[[${#numbers.formatDecimal(content.debet,1,'COMMA',0,'POINT')}]]</td>
+				<td width="10%" align="right">[[${#numbers.formatDecimal(content.credit,1,'COMMA',0,'POINT')}]]</td>
+			</tr>
+			<tr id="black-total">
+				<td width="70%" align="left">&nbsp;</td>
+				<td width="10%" align="right">[[${#numbers.formatDecimal(tdebet,1,'COMMA',0,'POINT')}]]</td>
+				<td width="10%" align="right">[[${#numbers.formatDecimal(tcredit,1,'COMMA',0,'POINT')}]]</td>
+			</tr>
+			</tbody>
+			</table>
+		</td>
+	</tr>
+	</table>
+</body>
+</html>

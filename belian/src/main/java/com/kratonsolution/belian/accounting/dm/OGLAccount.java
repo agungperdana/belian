@@ -4,6 +4,8 @@
 package com.kratonsolution.belian.accounting.dm;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -22,6 +24,7 @@ import javax.persistence.Version;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.global.dm.Listable;
 
 import lombok.Getter;
@@ -41,26 +44,26 @@ public class OGLAccount implements Serializable,Listable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
-	
+
 	@Column(name="is_selected")
 	private boolean selected;
-		
+
 	@ManyToOne
 	@JoinColumn(name="fk_account")
 	@NotFound(action=NotFoundAction.IGNORE)
 	private GLAccount account;
-	
+
 	@ManyToOne
 	@JoinColumn(name="fk_organization_account")
 	@NotFound(action=NotFoundAction.IGNORE)
 	private OrganizationAccount parent;
-	
+
 	@Version
 	private Long version;
-	
+
 	@OneToMany(mappedBy="account",fetch=FetchType.EAGER)
 	private Set<JournalPosting> postings = new HashSet<>();
-	
+
 	public OGLAccount(){}
 
 	@Override
@@ -73,5 +76,31 @@ public class OGLAccount implements Serializable,Listable
 	public String getValue()
 	{
 		return this.id;
+	}
+
+	public BigDecimal getDebet(Date start,Date end)
+	{
+		BigDecimal debet = BigDecimal.ZERO;
+
+		for(JournalPosting posting:postings)
+		{
+			if(posting.getType().equals(JournalEntryDetailType.DEBET) && DateTimes.inRange(posting.getDate(), start, end))
+				debet = debet.add(posting.getAmount());
+		}
+
+		return debet;
+	}
+
+	public BigDecimal getCredit(Date start,Date end)
+	{
+		BigDecimal credit = BigDecimal.ZERO;
+
+		for(JournalPosting posting:postings)
+		{
+			if(posting.getType().equals(JournalEntryDetailType.CREDIT) && DateTimes.inRange(posting.getDate(), start, end))
+				credit = credit.add(posting.getAmount());
+		}
+
+		return credit;
 	}
 }
