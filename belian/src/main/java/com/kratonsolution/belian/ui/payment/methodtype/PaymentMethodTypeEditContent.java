@@ -61,10 +61,13 @@ public class PaymentMethodTypeEditContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				PaymentMethodType type = service.findOne(RowUtils.id(row));
-				type.setName(name.getText());
-				type.setNote(note.getText());
+				if(type != null)
+				{
+					type.setName(name.getText());
+					type.setNote(note.getText());
 
-				service.edit(type);
+					service.edit(type);
+				}
 
 				Flow.next(getParent(), new PaymentMethodTypeGridContent());
 			}
@@ -85,11 +88,11 @@ public class PaymentMethodTypeEditContent extends FormContent
 			grid.getColumns().appendChild(new Column());
 			
 			Row row1 = new Row();
-			row1.appendChild(new Label("Name"));
+			row1.appendChild(new Label(lang.get("generic.grid.column.name")));
 			row1.appendChild(name);
 			
 			Row row2 = new Row();
-			row2.appendChild(new Label("Note"));
+			row2.appendChild(new Label(lang.get("generic.grid.column.note")));
 			row2.appendChild(note);
 			
 			rows.appendChild(row1);

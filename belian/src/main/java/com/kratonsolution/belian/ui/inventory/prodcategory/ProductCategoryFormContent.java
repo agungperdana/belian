@@ -20,6 +20,7 @@ import com.kratonsolution.belian.inventory.dm.ProductCategory;
 import com.kratonsolution.belian.inventory.svc.ProductCategoryService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -29,13 +30,13 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class ProductCategoryFormContent extends FormContent
 {	
-	private final ProductCategoryService service = Springs.get(ProductCategoryService.class);
+	private ProductCategoryService service = Springs.get(ProductCategoryService.class);
 	
-	private Textbox code = new Textbox();
+	private Textbox code = Components.mandatoryTextBox(false);
 	
-	private Textbox name = new Textbox();
+	private Textbox name = Components.mandatoryTextBox(false);
 	
-	private Textbox note = new Textbox();
+	private Textbox note = Components.stdTextBox(null,false);
 	
 	private Listbox segmentations = Components.newSelect();
 	
@@ -54,9 +55,7 @@ public class ProductCategoryFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				ProductCategoryWindow window = (ProductCategoryWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new ProductCategoryGridContent());
 			}
 		});
 		
@@ -66,10 +65,10 @@ public class ProductCategoryFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				if(Strings.isNullOrEmpty(code.getText()))
-					throw new WrongValueException(code,"Code cannot be empty");
+					throw new WrongValueException(code,lang.get("message.field.empty"));
 			
 				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
+					throw new WrongValueException(name,lang.get("message.field.empty"));
 			
 				ProductCategory category = new ProductCategory();
 				category.setCode(code.getText());
@@ -79,9 +78,7 @@ public class ProductCategoryFormContent extends FormContent
 				
 				service.add(category);
 				
-				ProductCategoryWindow window = (ProductCategoryWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new ProductCategoryGridContent());
 			}
 		});
 	}
@@ -89,14 +86,6 @@ public class ProductCategoryFormContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		code.setConstraint("no empty");
-		code.setWidth("200px");
-		
-		name.setConstraint("no empty");
-		name.setWidth("300px");
-		
-		note.setWidth("350px");
-		
 		for(IndustrySegmentation segmentation:IndustrySegmentation.values())
 			segmentations.appendItem(segmentation.name(), segmentation.name());
 
@@ -107,19 +96,19 @@ public class ProductCategoryFormContent extends FormContent
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Code"));
+		row1.appendChild(new Label(lang.get("generic.grid.column.code")));
 		row1.appendChild(code);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Name"));
+		row2.appendChild(new Label(lang.get("generic.grid.column.name")));
 		row2.appendChild(name);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Note"));
+		row3.appendChild(new Label(lang.get("generic.grid.column.note")));
 		row3.appendChild(note);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Industry"));
+		row4.appendChild(new Label(lang.get("generic.grid.column.industry")));
 		row4.appendChild(segmentations);
 		
 		rows.appendChild(row1);

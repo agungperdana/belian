@@ -15,9 +15,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.payment.svc.PaymentMethodTypeService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -28,8 +28,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class PaymentMethodTypeGridContent extends GridContent
 {
 	private PaymentMethodTypeService service = Springs.get(PaymentMethodTypeService.class);
-	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public PaymentMethodTypeGridContent()
 	{
@@ -46,8 +44,7 @@ public class PaymentMethodTypeGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				refresh(new PaymentMethodTypeModel(utils.getRowPerPage()));
+				Flow.next(getParent(), new PaymentMethodTypeGridContent());
 			}
 		});
 		
@@ -56,9 +53,7 @@ public class PaymentMethodTypeGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PaymentMethodTypeWindow window = (PaymentMethodTypeWindow)getParent();
-				window.removeGrid();
-				window.insertCreateForm();
+				Flow.next(getParent(), new PaymentMethodTypeFormContent());
 			}
 		});
 		
@@ -110,7 +105,7 @@ public class PaymentMethodTypeGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -155,7 +150,7 @@ public class PaymentMethodTypeGridContent extends GridContent
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No payment method type data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new PaymentMethodTypeRowRenderer());
 		grid.setPagingPosition("both");
@@ -163,9 +158,9 @@ public class PaymentMethodTypeGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Name",null,"200px"));
-		grid.getColumns().appendChild(new Column("Note",null,null));
-		grid.getColumns().appendChild(new Column(null,null,"1px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.name"),null,"200px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.note"),null,null));
+		grid.getColumns().appendChild(new Column());
 		grid.getColumns().getLastChild().setVisible(false);
 		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
 		grid.setSpan("2");

@@ -31,7 +31,6 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Toolbarbutton;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.CompanyStructure;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
@@ -57,8 +56,6 @@ public class FacilityEditContent extends FormContent
 
 	private CompanyStructureService companyStructureService = Springs.get(CompanyStructureService.class);
 	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
-
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 
 	private Textbox code = Components.mandatoryTextBox(false);
@@ -89,8 +86,8 @@ public class FacilityEditContent extends FormContent
 		tabbox.setWidth("100%");
 		tabbox.appendChild(new Tabs());
 		tabbox.appendChild(new Tabpanels());
-		tabbox.getTabs().appendChild(new Tab("FORM"));
-		tabbox.getTabs().appendChild(new Tab("ORGANIZATION(S)"));
+		tabbox.getTabs().appendChild(new Tab(lang.get("facility.grid.column.form")));
+		tabbox.getTabs().appendChild(new Tab(lang.get("facility.grid.column.org")));
 		tabbox.getTabpanels().appendChild(new Tabpanel());
 		tabbox.getTabpanels().appendChild(new Tabpanel());
 		tabbox.getTabpanels().getChildren().get(0).appendChild(grid);
@@ -112,10 +109,10 @@ public class FacilityEditContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				if(Strings.isNullOrEmpty(code.getText()))
-					throw new WrongValueException(code,"Code cannot be empty");
-
+					throw new WrongValueException(code,lang.get("message.field.empty"));
+			
 				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
+					throw new WrongValueException(name,lang.get("message.field.empty"));
 
 				if(facility != null)
 				{
@@ -143,7 +140,7 @@ public class FacilityEditContent extends FormContent
 			}
 		});
 
-		Toolbarbutton child = new Toolbarbutton("New Facility","/icons/new-warehouse.png");
+		Toolbarbutton child = new Toolbarbutton(lang.get("facility.grid.column.new"),"/icons/new-warehouse.png");
 		toolbar.appendChild(child);
 		child.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
@@ -167,16 +164,12 @@ public class FacilityEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		code.setConstraint("no empty");
-		code.setText(facility.getCode());
-		code.setWidth("250px");
-
-		name.setConstraint("no empty");
-		name.setWidth("300px");
-		name.setText(facility.getName());
-
-		note.setText(facility.getNote());
-		note.setWidth("350px");
+		if(facility != null)
+		{
+			code.setText(facility.getCode());
+			name.setText(facility.getName());
+			note.setText(facility.getNote());
+		}
 
 		types.setMold("select");
 
@@ -193,19 +186,19 @@ public class FacilityEditContent extends FormContent
 		grid.getColumns().appendChild(new Column());
 
 		Row row1 = new Row();
-		row1.appendChild(new Label("Code"));
+		row1.appendChild(new Label(lang.get("facility.grid.column.code")));
 		row1.appendChild(code);
-
+		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Name"));
+		row2.appendChild(new Label(lang.get("facility.grid.column.name")));
 		row2.appendChild(name);
-
+		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Type"));
+		row3.appendChild(new Label(lang.get("facility.grid.column.type")));
 		row3.appendChild(types);
-
+		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Note"));
+		row4.appendChild(new Label(lang.get("facility.grid.column.note")));
 		row4.appendChild(note);
 
 		rows.appendChild(row1);
@@ -238,9 +231,9 @@ public class FacilityEditContent extends FormContent
 		orgs.appendChild(new Columns());
 		orgs.appendChild(new Rows());
 		orgs.getColumns().appendChild(new Column(null,null,"25px"));
-		orgs.getColumns().appendChild(new Column("Organization",null,"150px"));
-		orgs.getColumns().appendChild(new Column(null,null,"0px"));
-		orgs.getColumns().getChildren().get(2).setVisible(false);
+		orgs.getColumns().appendChild(new Column(lang.get("facility.grid.column.organization"),null,"150px"));
+		orgs.getColumns().appendChild(new Column());
+		orgs.getColumns().getLastChild().setVisible(false);
 		orgs.setSpan("1");
 		orgs.getColumns().getChildren().get(0).appendChild(all);
 

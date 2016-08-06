@@ -24,7 +24,7 @@ import com.kratonsolution.belian.ui.nav.IconBar;
  */
 public class FacilityWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private Caption caption = new Caption("Facility");
+	private Caption caption = new Caption(lang.get("navbar.menu.inventory.facility"));
 	
 	private FacilityButton status = new FacilityButton();
 	

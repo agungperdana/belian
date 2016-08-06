@@ -76,11 +76,11 @@ public class PaymentMethodTypeFormContent extends FormContent
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Name"));
+		row1.appendChild(new Label(lang.get("generic.grid.column.name")));
 		row1.appendChild(name);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Note"));
+		row2.appendChild(new Label(lang.get("generic.grid.column.note")));
 		row2.appendChild(note);
 		
 		rows.appendChild(row1);

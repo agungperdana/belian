@@ -21,6 +21,7 @@ import com.kratonsolution.belian.inventory.dm.ProductCategory;
 import com.kratonsolution.belian.inventory.svc.ProductCategoryService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -32,17 +33,17 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class ProductCategoryEditContent extends FormContent
 {	
 	private final ProductCategoryService service = Springs.get(ProductCategoryService.class);
-	
-	private Textbox code = new Textbox();
-	
-	private Textbox name = new Textbox();
-	
-	private Textbox note = new Textbox();
-	
+
+	private Textbox code = Components.mandatoryTextBox(false);
+
+	private Textbox name = Components.mandatoryTextBox(false);
+
+	private Textbox note = Components.stdTextBox(null,false);
+
 	private Listbox segmentations = Components.newSelect();
-	
+
 	private Row row;
-	
+
 	public ProductCategoryEditContent(Row row)
 	{
 		super();
@@ -59,37 +60,33 @@ public class ProductCategoryEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				ProductCategoryWindow window = (ProductCategoryWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new ProductCategoryGridContent());
 			}
 		});
-		
+
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
 				if(Strings.isNullOrEmpty(code.getText()))
-					throw new WrongValueException(code,"Code cannot be empty");
+					throw new WrongValueException(code,lang.get("message.field.empty"));
 			
 				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
-				
-				if(Strings.isNullOrEmpty(note.getText()))
-					throw new WrongValueException(note,"Value cannot be empty");
-			
-				ProductCategory category = service.findOne(RowUtils.string(row, 4));
-				category.setCode(code.getText());
-				category.setName(name.getText());
-				category.setNote(note.getText());
-				category.setSegmentation(IndustrySegmentation.valueOf(Components.string(segmentations)));
-				
-				service.edit(category);
-				
-				ProductCategoryWindow window = (ProductCategoryWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+					throw new WrongValueException(name,lang.get("message.field.empty"));
+
+				ProductCategory category = service.findOne(RowUtils.id(row));
+				if(category != null)
+				{
+					category.setCode(code.getText());
+					category.setName(name.getText());
+					category.setNote(note.getText());
+					category.setSegmentation(IndustrySegmentation.valueOf(Components.string(segmentations)));
+
+					service.edit(category);
+				}
+
+				Flow.next(getParent(), new ProductCategoryGridContent());
 			}
 		});
 	}
@@ -97,20 +94,13 @@ public class ProductCategoryEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		ProductCategory category = service.findOne(RowUtils.string(row, 4));
+		ProductCategory category = service.findOne(RowUtils.id(row));
 		if(category != null)
 		{
-			code.setConstraint("no empty");
-			code.setWidth("200px");
 			code.setText(category.getCode());
-			
-			name.setConstraint("no empty");
-			name.setWidth("300px");
 			name.setText(category.getName());
-			
-			note.setWidth("350px");
 			note.setText(category.getNote());
-			
+
 			for(IndustrySegmentation segmentation:IndustrySegmentation.values())
 			{
 				Listitem listitem = new Listitem(segmentation.name(), segmentation.name());
@@ -118,29 +108,34 @@ public class ProductCategoryEditContent extends FormContent
 				if(category.getSegmentation() != null && segmentation.equals(category.getSegmentation()))
 					segmentations.setSelectedItem(listitem);
 			}
-			
+
 			if(segmentations.getSelectedItem() != null)
 				segmentations.setSelectedIndex(0);
-				
+
 			grid.appendChild(new Columns());
 			grid.getColumns().appendChild(new Column(null,null,"135px"));
 			grid.getColumns().appendChild(new Column());
-			
+
 			Row row1 = new Row();
-			row1.appendChild(new Label("Code"));
+			row1.appendChild(new Label(lang.get("generic.grid.column.code")));
 			row1.appendChild(code);
 			
 			Row row2 = new Row();
-			row2.appendChild(new Label("Name"));
+			row2.appendChild(new Label(lang.get("generic.grid.column.name")));
 			row2.appendChild(name);
 			
 			Row row3 = new Row();
-			row3.appendChild(new Label("Note"));
+			row3.appendChild(new Label(lang.get("generic.grid.column.note")));
 			row3.appendChild(note);
 			
+			Row row4 = new Row();
+			row4.appendChild(new Label(lang.get("generic.grid.column.industry")));
+			row4.appendChild(segmentations);
+
 			rows.appendChild(row1);
 			rows.appendChild(row2);
 			rows.appendChild(row3);
+			rows.appendChild(row4);
 		}
 	}
 }

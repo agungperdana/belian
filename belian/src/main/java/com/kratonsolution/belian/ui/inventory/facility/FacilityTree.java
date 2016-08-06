@@ -11,6 +11,7 @@ import org.zkoss.zul.Treechildren;
 import org.zkoss.zul.Treecol;
 import org.zkoss.zul.Treecols;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.inventory.dm.Facility;
 import com.kratonsolution.belian.inventory.svc.FacilityService;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -34,7 +35,7 @@ public class FacilityTree extends Tree implements FacilityDataListener
 		setHeight("100%");
 		appendChild(new Treecols());
 		appendChild(new Treechildren());
-		getTreecols().appendChild(new Treecol("Facilitys(s)"));
+		getTreecols().appendChild(new Treecol(Springs.get(Language.class).get("navbar.menu.inventory.facility")));
 		getTreechildren().appendChild(FacilityTreeItem.New(contentArea,this));
 		
 		Collection<FacilityTreeItem> items = FacilityTreeItem.list(contentArea,service.findAllParent());

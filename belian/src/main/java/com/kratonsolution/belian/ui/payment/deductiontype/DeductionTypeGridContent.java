@@ -15,9 +15,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.payment.svc.DeductionTypeService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -28,8 +28,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class DeductionTypeGridContent extends GridContent
 {
 	private DeductionTypeService service = Springs.get(DeductionTypeService.class);
-	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public DeductionTypeGridContent()
 	{
@@ -46,8 +44,7 @@ public class DeductionTypeGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				refresh(new DeductionTypeModel(utils.getRowPerPage()));
+				Flow.next(getParent(), new DeductionTypeGridContent());
 			}
 		});
 		
@@ -56,9 +53,7 @@ public class DeductionTypeGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				DeductionTypeWindow window = (DeductionTypeWindow)getParent();
-				window.removeGrid();
-				window.insertCreateForm();
+				Flow.next(getParent(), new DeductionTypeFormContent());
 			}
 		});
 		
@@ -110,7 +105,7 @@ public class DeductionTypeGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -154,7 +149,7 @@ public class DeductionTypeGridContent extends GridContent
 		final DeductionTypeModel model = new DeductionTypeModel(utils.getRowPerPage());
 		
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No Deduction Type data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new DeductionTypeRowRenderer());
 		grid.setPagingPosition("both");
@@ -162,10 +157,10 @@ public class DeductionTypeGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Name",null,"150px"));
-		grid.getColumns().appendChild(new Column("Note"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.name"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.note")));
 		grid.getColumns().appendChild(new Column());
-		grid.getColumns().getChildren().get(3).setVisible(false);
+		grid.getColumns().getLastChild().setVisible(false);
 		
 		appendChild(grid);
 

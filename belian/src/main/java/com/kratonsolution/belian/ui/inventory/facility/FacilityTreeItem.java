@@ -13,7 +13,9 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Treechildren;
 import org.zkoss.zul.Treeitem;
 
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.inventory.dm.Facility;
+import com.kratonsolution.belian.ui.util.Springs;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -54,7 +56,7 @@ public class FacilityTreeItem extends Treeitem implements FacilityDataListener
 	
 	public static Treeitem New(Component canvas,FacilityDataListener listener)
 	{
-		Treeitem treeitem = new Treeitem("New");
+		Treeitem treeitem = new Treeitem(Springs.get(Language.class).get("generic.grid.column.new"));
 		treeitem.setImage("/icons/new-warehouse.png");
 		treeitem.appendChild(new Treechildren());
 		treeitem.addEventListener(Events.ON_CLICK,new EventListener<Event>()

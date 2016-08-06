@@ -72,7 +72,7 @@ public class DiscountFormContent extends FormContent
 			{
 				
 				if(Strings.isNullOrEmpty(value.getText()))
-					throw new WrongValueException(value,"Value cannot be empty");
+					throw new WrongValueException(value,lang.get("message.field.empty"));
 			
 				Discount discount = new Discount();
 				discount.setStart(DateTimes.sql(start.getValue()));
@@ -92,7 +92,7 @@ public class DiscountFormContent extends FormContent
 	public void initForm()
 	{
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();

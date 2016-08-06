@@ -75,7 +75,7 @@ public class DiscountEditContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				if(Strings.isNullOrEmpty(value.getText()))
-					throw new WrongValueException(value,"Value cannot be empty");
+					throw new WrongValueException(value,lang.get("message.field.empty"));
 			
 				Discount discount = service.findOne(RowUtils.id(row));
 				if(discount != null)
@@ -108,7 +108,7 @@ public class DiscountEditContent extends FormContent
 		}
 		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();

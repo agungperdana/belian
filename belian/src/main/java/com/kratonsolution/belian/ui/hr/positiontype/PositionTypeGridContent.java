@@ -162,7 +162,7 @@ public class PositionTypeGridContent extends GridContent
 		
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
 		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.name"),null,"175px"));
-		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.name")));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.note")));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));
 		grid.getColumns().getLastChild().setVisible(false);
 		

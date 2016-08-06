@@ -17,6 +17,8 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.payment.dm.DeductionType;
 import com.kratonsolution.belian.payment.svc.DeductionTypeService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -28,9 +30,9 @@ public class DeductionTypeFormContent extends FormContent
 {	
 	private DeductionTypeService service = Springs.get(DeductionTypeService.class);
 	
-	private Textbox name = new Textbox();
+	private Textbox name = Components.mandatoryTextBox();
 	
-	private Textbox note = new Textbox();
+	private Textbox note = Components.stdTextBox(null, false);
 	
 	public DeductionTypeFormContent()
 	{
@@ -47,9 +49,7 @@ public class DeductionTypeFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				DeductionTypeWindow window = (DeductionTypeWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new DeductionTypeGridContent());
 			}
 		});
 		
@@ -59,7 +59,7 @@ public class DeductionTypeFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
+					throw new WrongValueException(name,lang.get("message.field.empty"));
 				
 				DeductionType uom = new DeductionType();
 				uom.setName(name.getText());
@@ -67,9 +67,7 @@ public class DeductionTypeFormContent extends FormContent
 				
 				service.add(uom);
 				
-				DeductionTypeWindow window = (DeductionTypeWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new DeductionTypeGridContent());
 			}
 		});
 	}
@@ -87,11 +85,11 @@ public class DeductionTypeFormContent extends FormContent
 		grid.getColumns().appendChild(new Column());
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Name"));
+		row2.appendChild(new Label(lang.get("generic.grid.column.name")));
 		row2.appendChild(name);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Note"));
+		row3.appendChild(new Label(lang.get("generic.grid.column.note")));
 		row3.appendChild(note);
 		
 		rows.appendChild(row2);

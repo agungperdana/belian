@@ -15,9 +15,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.inventory.svc.ProductCategoryService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -28,8 +28,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class ProductCategoryGridContent extends GridContent
 {
 	private ProductCategoryService service = Springs.get(ProductCategoryService.class);
-	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public ProductCategoryGridContent()
 	{
@@ -46,8 +44,7 @@ public class ProductCategoryGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				refresh(new ProductCategoryModel(utils.getRowPerPage()));
+				Flow.next(getParent(), new ProductCategoryGridContent());
 			}
 		});
 		
@@ -56,9 +53,7 @@ public class ProductCategoryGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				ProductCategoryWindow window = (ProductCategoryWindow)getParent();
-				window.removeGrid();
-				window.insertCreateForm();
+				Flow.next(getParent(), new ProductCategoryFormContent());
 			}
 		});
 		
@@ -110,7 +105,7 @@ public class ProductCategoryGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -155,7 +150,7 @@ public class ProductCategoryGridContent extends GridContent
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No Product Category data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new ProductCategoryRowRenderer());
 		grid.setPagingPosition("both");
@@ -164,11 +159,11 @@ public class ProductCategoryGridContent extends GridContent
 		grid.appendChild(new Columns());
 		
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Code",null,"100px"));
-		grid.getColumns().appendChild(new Column("Name",null,"150px"));
-		grid.getColumns().appendChild(new Column("Note"));
-		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(4).setVisible(false);
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.code"),null,"100px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.name"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.note")));
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().getLastChild().setVisible(false);
 
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
