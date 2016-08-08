@@ -12,8 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -39,14 +37,6 @@ public class PartyRelationship implements Serializable
 	
 	@Column(name="date_to")
 	protected Date end;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_role_from")
-	protected PartyRole from;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_role_to")
-	protected PartyRole to;
 	
 	@Version
 	protected Long version;

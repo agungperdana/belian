@@ -12,6 +12,8 @@ import java.time.Period;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.google.common.base.Strings;
+
 /**
  * 
  * @author Agung Dodi Perdana
@@ -148,6 +150,32 @@ public class DateTimes implements Serializable
 		if(date != null)
 			return new java.sql.Date(date.getTime());
 
+		return null;
+	}
+	
+	public static java.sql.Date sql(String date)
+	{
+		if(!Strings.isNullOrEmpty(date))
+		{
+			try
+			{
+				if(date.contains("-"))
+				{
+					Date dt = format.parse(date);
+					return new java.sql.Date(dt.getTime());
+				}
+				
+				if(date.contains("/"))
+				{
+					SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+					Date dt = dateFormat.parse(date);
+					return new java.sql.Date(dt.getTime());
+				}
+				
+			} 
+			catch (Exception e){}
+		}
+		
 		return null;
 	}
 	

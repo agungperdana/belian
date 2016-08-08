@@ -16,10 +16,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.common.Language;
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -30,10 +29,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class ProductGridContent extends GridContent
 {
 	private ProductService service = Springs.get(ProductService.class);
-	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
-	
-	private Language lang = Springs.get(Language.class);
 	
 	public ProductGridContent()
 	{
@@ -51,8 +46,7 @@ public class ProductGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				refresh(new ProductModel(utils.getRowPerPage()));
+				Flow.next(getParent(), new ProductGridContent());
 			}
 		});
 		
@@ -61,9 +55,7 @@ public class ProductGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				ProductWindow window = (ProductWindow)getParent();
-				window.removeGrid();
-				window.insertCreateForm();
+				Flow.next(getParent(), new ProductFormContent());
 			}
 		});
 		
@@ -173,7 +165,7 @@ public class ProductGridContent extends GridContent
 		final ProductModel model = new ProductModel(utils.getRowPerPage(),filter.getText());
 		
 		grid.setHeight("80%");
-		grid.setEmptyMessage(lang.get("inventory.product.grid.column.empty"));
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new ProductRowRenderer());
 		grid.setPagingPosition("both");
@@ -188,8 +180,8 @@ public class ProductGridContent extends GridContent
 		grid.getColumns().appendChild(new Column(lang.get("inventory.product.grid.column.category"),null,"100px"));
 		grid.getColumns().appendChild(new Column(lang.get("inventory.product.grid.column.type"),null,"125px"));
 		grid.getColumns().appendChild(new Column(lang.get("inventory.product.grid.column.uom"),null,"75px"));
-		grid.getColumns().appendChild(new Column("",null,"1px"));
-		grid.getColumns().getChildren().get(8).setVisible(false);
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("4");
 
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()

@@ -52,6 +52,7 @@ public class Party implements Serializable, Listable
 	@Column(name="name")
 	protected String name;
 	
+	
 	@Column(name="is_removeable")
 	protected boolean removeable = true;
 	

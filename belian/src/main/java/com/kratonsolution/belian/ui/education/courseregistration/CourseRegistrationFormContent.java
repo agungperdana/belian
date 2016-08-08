@@ -398,7 +398,7 @@ public class CourseRegistrationFormContent extends FormContent implements Displa
 	
 	private void initInstallments()
 	{
-		NRCToolbar nrc = new NRCToolbar(items);
+		NRCToolbar nrc = new NRCToolbar(installments);
 		nrc.getNew().addEventListener(Events.ON_CLICK, new EventListener<Event>()
 		{
 			@Override

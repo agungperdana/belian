@@ -22,8 +22,6 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.common.Language;
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductCategory;
 import com.kratonsolution.belian.inventory.dm.ProductType;
@@ -51,10 +49,6 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class ProductEditContent extends FormContent implements Refreshable
 {	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
-
-	private Language lang = Springs.get(Language.class);
-
 	private ProductService service = Springs.get(ProductService.class);
 
 	private ProductCategoryService categoryService = Springs.get(ProductCategoryService.class);
@@ -112,22 +106,22 @@ public class ProductEditContent extends FormContent implements Refreshable
 			public void onEvent(Event event) throws Exception
 			{
 				if(start.getValue() == null)
-					throw new WrongValueException(start,"Available start date cannot be empty");
-
+					throw new WrongValueException(start,lang.get("message.field.empty"));
+			
 				if(Strings.isNullOrEmpty(code.getText()))
-					throw new WrongValueException(code,"Code cannot be empty");
-
+					throw new WrongValueException(code,lang.get("message.field.empty"));
+				
 				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
-
+					throw new WrongValueException(name,lang.get("message.field.empty"));
+			
 				if(categorys.getSelectedCount() == 0)
-					throw new WrongValueException(categorys,"Please select category first");
-
+					throw new WrongValueException(categorys,lang.get("message.field.empty"));
+				
 				if(uoms.getSelectedCount() == 0)
-					throw new WrongValueException(uoms,"Please select UoM first");
-
+					throw new WrongValueException(uoms,lang.get("message.field.empty"));
+				
 				if(types.getSelectedCount() == 0)
-					throw new WrongValueException(categorys,"Please select product type first");
+					throw new WrongValueException(categorys,lang.get("message.field.empty"));
 
 				Product product = service.findOne(RowUtils.id(row));
 				product.setStart(DateTimes.sql(start.getValue()));
