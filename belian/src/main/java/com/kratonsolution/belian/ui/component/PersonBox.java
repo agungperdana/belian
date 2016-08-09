@@ -39,7 +39,7 @@ public class PersonBox extends Hbox implements PersonRegistrationListener,Listen
 
 	private Combobox identity = new Combobox();
 
-	private A link = new A("New Person");
+	private A link = new A(lang.get("label.component.button.newperson"));
 
 	private Vector<ModelListener<Person>> listeners = new Vector<>();
 	

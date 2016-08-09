@@ -108,27 +108,27 @@ public class EmploymentApplicationFormContent extends FormContent
 		grid.getColumns().appendChild(new Column());
 
 		Row row1 = new Row();
-		row1.appendChild(new Label("Date"));
+		row1.appendChild(new Label(lang.get("emplapp.grid.column.date")));
 		row1.appendChild(date);
 
 		Row row2 = new Row();
-		row2.appendChild(new Label("Status"));
+		row2.appendChild(new Label(lang.get("emplapp.grid.column.status")));
 		row2.appendChild(types);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Source"));
+		row3.appendChild(new Label(lang.get("emplapp.grid.column.source")));
 		row3.appendChild(sources);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Position"));
+		row4.appendChild(new Label(lang.get("emplapp.grid.column.position")));
 		row4.appendChild(positions);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Applicant"));
+		row5.appendChild(new Label(lang.get("emplapp.grid.column.applicant")));
 		row5.appendChild(applicant);
 
 		Row row6 = new Row();
-		row6.appendChild(new Label("Referal"));
+		row6.appendChild(new Label(lang.get("emplapp.grid.column.referal")));
 		row6.appendChild(referals);
 		
 		rows.appendChild(row1);

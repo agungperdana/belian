@@ -14,9 +14,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.hr.svc.BenefitTypeService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -28,8 +28,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class BenefitTypeGridContent extends GridContent
 {
 	private BenefitTypeService service = Springs.get(BenefitTypeService.class);
-	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public BenefitTypeGridContent()
 	{
@@ -46,8 +44,7 @@ public class BenefitTypeGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new BenefitTypeModel(8));
+				Flow.next(getParent(), new BenefitTypeGridContent());
 			}
 		});
 		
@@ -56,9 +53,7 @@ public class BenefitTypeGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				BenefitTypeWindow window = (BenefitTypeWindow)getParent();
-				window.removeGrid();
-				window.insertCreateForm();
+				Flow.next(getParent(), new BenefitTypeFormContent());
 			}
 		});
 		
@@ -110,7 +105,7 @@ public class BenefitTypeGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -125,9 +120,7 @@ public class BenefitTypeGridContent extends GridContent
 									service.delete(RowUtils.string(row, 4));
 							}
 							
-							BenefitTypeWindow window = (BenefitTypeWindow)getParent();
-							window.removeGrid();
-							window.insertGrid();
+							Flow.next(getParent(), new BenefitTypeGridContent());
 						}
 					}
 				});
@@ -150,7 +143,7 @@ public class BenefitTypeGridContent extends GridContent
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No Benefit Type data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new BenefitTypeRowRenderer());
 		grid.setPagingPosition("both");
@@ -158,11 +151,11 @@ public class BenefitTypeGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Code",null,"170px"));
-		grid.getColumns().appendChild(new Column("Name",null,"170px"));
-		grid.getColumns().appendChild(new Column("Note",null,"150px"));
-		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(4).setVisible(false);
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.code"),null,"170px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.name"),null,"170px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.note"),null,"150px"));
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("3");
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()

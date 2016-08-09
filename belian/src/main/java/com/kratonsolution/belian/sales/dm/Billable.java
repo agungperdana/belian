@@ -5,6 +5,7 @@ package com.kratonsolution.belian.sales.dm;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -114,7 +115,7 @@ public abstract class Billable implements Journalable,Serializable
 	public BigDecimal getTaxAmount()
 	{
 		if(tax != null)
-			return getBillingAmount().multiply(tax.getAmount().divide(BigDecimal.valueOf(100)));
+			return getBillingAmount().multiply(tax.getAmount().divide(BigDecimal.valueOf(100),RoundingMode.HALF_UP));
 		
 		return BigDecimal.ZERO;
 	}

@@ -24,7 +24,7 @@ import com.kratonsolution.belian.ui.nav.IconBar;
  */
 public class EmploymentApplicationWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption("Employment Application");
+	private Caption caption = new Caption(lang.get("navbar.menu.hr.application"));
 	
 	private EmploymentApplicationButton status = new EmploymentApplicationButton();
 

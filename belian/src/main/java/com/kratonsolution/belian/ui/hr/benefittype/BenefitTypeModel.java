@@ -20,7 +20,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class BenefitTypeModel implements ListModel<BenefitType>
 {
-	private final BenefitTypeService controller = Springs.get(BenefitTypeService.class);
+	private BenefitTypeService service = Springs.get(BenefitTypeService.class);
 	
 	private List<BenefitType> data = new ArrayList<BenefitType>();
 	
@@ -61,6 +61,6 @@ public class BenefitTypeModel implements ListModel<BenefitType>
 	public void next(int pageIndex,int itemSize)
 	{
 		data.clear();
-		data.addAll(controller.findAll(0, (itemSize*pageIndex)+itemSize));
+		data.addAll(service.findAll(0, (itemSize*pageIndex)+itemSize));
 	}
 }

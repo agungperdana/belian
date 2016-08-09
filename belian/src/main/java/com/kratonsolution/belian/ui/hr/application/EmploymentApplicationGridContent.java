@@ -17,6 +17,7 @@ import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.hr.svc.EmploymentApplicationService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -43,8 +44,7 @@ public class EmploymentApplicationGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new EmploymentApplicationModel(8));
+				Flow.next(getParent(), new EmploymentApplicationGridContent());
 			}
 		});
 		
@@ -53,9 +53,7 @@ public class EmploymentApplicationGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				EmploymentApplicationWindow window = (EmploymentApplicationWindow)getParent();
-				window.removeGrid();
-				window.insertCreateForm();
+				Flow.next(getParent(), new EmploymentApplicationFormContent());
 			}
 		});
 		
@@ -107,7 +105,7 @@ public class EmploymentApplicationGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -129,7 +127,7 @@ public class EmploymentApplicationGridContent extends GridContent
 								}
 							}
 							
-							grid.setModel(new EmploymentApplicationModel(8));
+							Flow.next(getParent(), new EmploymentApplicationGridContent());
 						}
 					}
 				});
@@ -148,26 +146,26 @@ public class EmploymentApplicationGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final EmploymentApplicationModel model = new EmploymentApplicationModel(8);
+		final EmploymentApplicationModel model = new EmploymentApplicationModel(utils.getRowPerPage());
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No Employment Application data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new EmploymentApplicationRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
-		grid.setPageSize(8);
+		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Date",null,"85px"));
-		grid.getColumns().appendChild(new Column("Applicant",null,"150px"));
-		grid.getColumns().appendChild(new Column("Position",null,"125px"));
-		grid.getColumns().appendChild(new Column("Status",null,"100px"));
-		grid.getColumns().appendChild(new Column("Source",null,"100px"));
-		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(6).setVisible(false);
+		grid.getColumns().appendChild(new Column(lang.get("emplapp.grid.column.date"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("emplapp.grid.column.applicant"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("emplapp.grid.column.position"),null,"125px"));
+		grid.getColumns().appendChild(new Column(lang.get("emplapp.grid.column.status"),null,"100px"));
+		grid.getColumns().appendChild(new Column(lang.get("emplapp.grid.column.source"),null,"100px"));
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("2");
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
@@ -175,7 +173,7 @@ public class EmploymentApplicationGridContent extends GridContent
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), 8);
+				model.next(event.getActivePage(), utils.getRowPerPage());
 				grid.setModel(model);
 			}
 		});
