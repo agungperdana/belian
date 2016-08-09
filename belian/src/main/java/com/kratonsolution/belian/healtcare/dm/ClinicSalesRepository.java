@@ -45,6 +45,13 @@ public interface ClinicSalesRepository extends JpaRepository<ClinicSales, String
 			+ "ORDER BY med.date DESC")
 	public List<ClinicSales> findAllPaid(@Param("date")Date date,@Param("company")String company);
 	
+	@Query("FROM ClinicSales med WHERE "
+			+ "med.organization.id =:company "
+			+ "AND (med.date BETWEEN :start AND :end) "
+			+ "AND med.paid IS true "
+			+ "ORDER BY med.date DESC")
+	public List<ClinicSales> findAllPaid(@Param("company")String company,@Param("start")Date start,@Param("end")Date end);
+	
 	@Query("SELECT COUNT(med) FROM ClinicSales med WHERE "
 			+ "med.organization.id =:company "
 			+ "AND med.date =:date "

@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.healtcare.dm.MedicalSalesStatus;
 import com.kratonsolution.belian.healtcare.dm.ClinicSales;
 import com.kratonsolution.belian.healtcare.dm.ClinicSalesItem;
 import com.kratonsolution.belian.healtcare.dm.ClinicSalesRepository;
+import com.kratonsolution.belian.healtcare.dm.MedicalSalesStatus;
 import com.kratonsolution.belian.inventory.dm.ProductComponent;
 import com.kratonsolution.belian.inventory.svc.InventoryStockService;
 
@@ -81,6 +81,16 @@ public class ClinicSalesService
 			return new ArrayList<ClinicSales>();
 
 		return repository.findAll();
+	}
+	
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Secured({"ROLE_PHARMACY_SALES_READ",
+			  "ROLE_PHARMACY_ORDER_READ",
+			  "ROLE_CLINIC_SALES_READ",
+			  "ROLE_CLINIC_SALES_INVOICE_REPORT_READ"})
+	public List<ClinicSales> findAllPaid(String company,Date start,Date end)
+	{
+		return repository.findAllPaid(company,start,end);
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
