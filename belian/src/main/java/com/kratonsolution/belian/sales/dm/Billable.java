@@ -26,6 +26,7 @@ import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.accounting.svc.Journalable;
 import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.Person;
 
 import lombok.Getter;
@@ -71,7 +72,7 @@ public abstract class Billable implements Journalable,Serializable
 	
 	@ManyToOne
 	@JoinColumn(name="fk_person_customer")
-	protected Person customer;
+	protected Party customer;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_tax")

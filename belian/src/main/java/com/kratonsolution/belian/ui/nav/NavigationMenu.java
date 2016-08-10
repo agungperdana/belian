@@ -358,6 +358,9 @@ public class NavigationMenu extends Window
 		if(modules.containsKey("ROLE_PHARMACY_ORDER_READ"))
 			list.appendChild(new PharmacyOrderMenu());
 		
+		if(modules.containsKey("ROLE_SIMPLE_PHARMACY_INVOICE_READ"))
+			list.appendChild(new SimplePharmacyInvoiceMenu());
+		
 		if(modules.containsKey("ROLE_CLINIC_SALES_INVOICE_REPORT_READ"))
 			list.appendChild(new ClinicSalesInvoiceReportMenu());
 		

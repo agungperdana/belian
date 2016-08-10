@@ -21,6 +21,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.healtcare.dm.LaboratorySales;
 import com.kratonsolution.belian.healtcare.dm.LaboratorySalesItem;
 import com.kratonsolution.belian.healtcare.svc.DoctorService;
@@ -143,7 +144,7 @@ public class LabsRegistrationEditContent extends FormContent
 			
 			date.setValue(lab.getDate());
 			doctor.setDoctor(lab.getSales());
-			patient.setPatient(lab.getCustomer());
+			patient.setPatient((Person)lab.getCustomer());
 			
 			grid.appendChild(new Columns());
 			grid.getColumns().appendChild(new Column(null,null,"75px"));
