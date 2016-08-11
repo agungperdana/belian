@@ -36,6 +36,7 @@ import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.global.dm.PrinterType;
 import com.kratonsolution.belian.healtcare.dm.DoctorRelationship;
 import com.kratonsolution.belian.healtcare.dm.DoctorRelationshipRepository;
@@ -69,6 +70,9 @@ public class SessionUtils
 	private OrganizationService organizationService;
 	
 	@Autowired
+	private PersonService personService;
+	
+	@Autowired
 	private CompanyStructureService companyStructureService;
 	
 	@Autowired
@@ -95,10 +99,7 @@ public class SessionUtils
 	{
 		if(isSysAdmin())
 		{
-			Person person = new Person();
-			person.setName("System Administrator");
-			
-			return person;
+			return personService.findOne("78171b13-766f-495b-939d-e01b79e21931");
 		}
 		
 		return getUser().getPerson();

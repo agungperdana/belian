@@ -82,7 +82,7 @@ public class SimplePharmacyInvoice implements Serializable
 		BigDecimal amt = BigDecimal.ZERO;
 		
 		for(SimplePharmacyInvoiceItem item:items)
-			amt.add(item.getAmount());
+			amt = amt.add(item.getAmount());
 		
 		return amt;
 	}

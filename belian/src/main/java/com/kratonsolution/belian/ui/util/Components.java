@@ -460,7 +460,6 @@ public class Components implements Serializable
 		Textbox textbox = new Textbox(text);
 		textbox.setWidth("100%");
 		textbox.setConstraint("no empty");
-		textbox.setText("0");
 		
 		return textbox;
 	}
