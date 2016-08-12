@@ -40,10 +40,10 @@ public class StockAdjustmentService
 	@Secured("ROLE_STOCK_ADJUSTMENT_READ")
 	public int size()
 	{
-		if(utils.getOrganization() != null)
-			return repository.count(utils.getOrganization().getId()).intValue();
+		if(utils.getOrganizationIds().isEmpty())
+			return 0;
 		
-		return 0;
+		return repository.count(utils.getOrganizationIds()).intValue();
 	}
 	
 	@Secured("ROLE_STOCK_ADJUSTMENT_READ")
@@ -62,10 +62,10 @@ public class StockAdjustmentService
 	@Secured("ROLE_STOCK_ADJUSTMENT_READ")
 	public List<StockAdjustment> findAll(int pageIndex,int pageSize)
 	{
-		if(utils.getOrganization() != null)
-			return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId());
+		if(utils.getOrganizationIds().isEmpty())
+			return new ArrayList<>();
 	
-		return new ArrayList<>();
+		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganizationIds());
 	}
 	
 	@Secured("ROLE_STOCK_ADJUSTMENT_CREATE")
@@ -78,7 +78,6 @@ public class StockAdjustmentService
 			InventoryItem inv = itemRepository.findOne(item.getProduct().getId(), adj.getFacility().getId());
 			if(inv == null)
 			{
-				System.out.println("new inventory....");
 				inv = new InventoryItem();
 				inv.setFacility(adj.getFacility());
 				inv.setProduct(item.getProduct());

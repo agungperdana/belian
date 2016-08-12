@@ -15,9 +15,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.inventory.svc.StockAdjustmentService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -28,8 +28,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class StockAdjustmentGridContent extends GridContent
 {
 	private StockAdjustmentService service = Springs.get(StockAdjustmentService.class);
-	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public StockAdjustmentGridContent()
 	{
@@ -46,8 +44,7 @@ public class StockAdjustmentGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				refresh(new StockAdjustmentModel(utils.getRowPerPage()));
+				Flow.next(getParent(), new StockAdjustmentGridContent());
 			}
 		});
 		
@@ -56,9 +53,7 @@ public class StockAdjustmentGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				StockAdjustmentWindow window = (StockAdjustmentWindow)getParent();
-				window.removeGrid();
-				window.insertCreateForm();
+				Flow.next(getParent(), new StockAdjustmentFormContent());
 			}
 		});
 		
@@ -110,7 +105,7 @@ public class StockAdjustmentGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -154,7 +149,7 @@ public class StockAdjustmentGridContent extends GridContent
 		final StockAdjustmentModel model = new StockAdjustmentModel(utils.getRowPerPage());
 		
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No goods receive data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new StockAdjustmentRowRenderer());
 		grid.setPagingPosition("both");
@@ -162,11 +157,11 @@ public class StockAdjustmentGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Date",null,"85px"));
-		grid.getColumns().appendChild(new Column("Company",null,"150px"));
-		grid.getColumns().appendChild(new Column("Facility",null,"125px"));
-		grid.getColumns().appendChild(new Column(null,null,"0px"));
-		grid.getColumns().getChildren().get(4).setVisible(false);
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.date"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.company"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.facility"),null,"125px"));
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("2");
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{

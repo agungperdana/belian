@@ -19,6 +19,7 @@ import com.kratonsolution.belian.inventory.dm.StockAdjustmentItem;
 import com.kratonsolution.belian.inventory.svc.StockAdjustmentService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -30,16 +31,16 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class StockAdjustmentEditContent extends FormContent
 {	
 	private StockAdjustmentService service = Springs.get(StockAdjustmentService.class);
-	
-	private Grid items = new Grid();
 
+	private Grid items = new Grid();
+	
 	private Row row;
 
 	public StockAdjustmentEditContent(Row row)
 	{
 		super();
 		this.row = row;
-		
+
 		initToolbar();
 		initForm();
 		initItems();
@@ -53,9 +54,7 @@ public class StockAdjustmentEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				StockAdjustmentWindow window = (StockAdjustmentWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new StockAdjustmentGridContent());
 			}
 		});
 
@@ -64,9 +63,7 @@ public class StockAdjustmentEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				StockAdjustmentWindow window = (StockAdjustmentWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new StockAdjustmentGridContent());
 			}
 		});
 	}
@@ -80,24 +77,26 @@ public class StockAdjustmentEditContent extends FormContent
 			grid.appendChild(new Columns());
 			grid.getColumns().appendChild(new Column(null,null,"125px"));
 			grid.getColumns().appendChild(new Column());
-			grid.getRows().appendChild(RowUtils.row("Date", DateTimes.format(stock.getDate())));
-			grid.getRows().appendChild(RowUtils.row("Company", stock.getOrganization().getName()));
-			grid.getRows().appendChild(RowUtils.row("Facility", stock.getFacility().getName()));
+			grid.getRows().appendChild(RowUtils.row(lang.get("generic.grid.column.date"), DateTimes.format(stock.getDate())));
+			grid.getRows().appendChild(RowUtils.row(lang.get("generic.grid.column.company"), stock.getOrganization().getName()));
+			grid.getRows().appendChild(RowUtils.row(lang.get("generic.grid.column.facility"), stock.getFacility().getName()));
+			grid.getRows().appendChild(RowUtils.row(lang.get("generic.grid.column.note"), stock.getNote()));
 		}
 	}
-	
+
 	private void initItems()
 	{
 		items.setWidth("100%");
 		items.appendChild(new Rows());
 		items.appendChild(new Columns());
-		items.getColumns().appendChild(new Column("Product",null, "150px"));
-		items.getColumns().appendChild(new Column("Quantity",null, "90px"));
-		items.getColumns().appendChild(new Column("UoM",null, "100px"));
-		items.getColumns().appendChild(new Column("Note",null, "150px"));
+		items.getColumns().appendChild(new Column(lang.get("stockadjustment.grid.column.product"),null, "250px"));
+		items.getColumns().appendChild(new Column(lang.get("stockadjustment.grid.column.quantity"),null, "90px"));
+		items.getColumns().appendChild(new Column(lang.get("stockadjustment.grid.column.uom"),null, "85px"));
+		items.getColumns().appendChild(new Column(lang.get("stockadjustment.grid.column.expired"),null, "125px"));
+		items.getColumns().appendChild(new Column(lang.get("stockadjustment.grid.column.note"),null, "150px"));
 		items.setSpan("0");
-		
-		StockAdjustment stock = service.findOne(RowUtils.string(row, 4));
+
+		StockAdjustment stock = service.findOne(RowUtils.id(row));
 		if(stock != null)
 		{
 			for(StockAdjustmentItem item:stock.getItems())
@@ -106,12 +105,13 @@ public class StockAdjustmentEditContent extends FormContent
 				row.appendChild(new Label(item.getProduct().getName()));
 				row.appendChild(Components.label(item.getQuantity()));
 				row.appendChild(new Label(item.getProduct().getUom().getName()));
+				row.appendChild(new Label(DateTimes.format(item.getExpired())));
 				row.appendChild(new Label(item.getNote()));
-				
+
 				items.getRows().appendChild(row);
 			}
 		}
-		
+
 		appendChild(items);
 	}
 }

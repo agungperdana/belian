@@ -40,4 +40,8 @@ public class Invoice implements Serializable
 	private Set<InvoiceItem> items = new HashSet<>();
 	
 	private Set<InvoiceRole> roles = new HashSet<>();
+
+	private Set<InvoiceStatus> statuses = new HashSet<>();
+	
+	private Set<InvoiceTerm> terms = new HashSet<>();
 }

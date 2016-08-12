@@ -16,9 +16,11 @@ import org.springframework.data.repository.query.Param;
  */
 public interface StockAdjustmentRepository extends JpaRepository<StockAdjustment, String>
 {
-	@Query("FROM StockAdjustment stock WHERE stock.organization.id =:company ORDER BY stock.date DESC")
-	public List<StockAdjustment> findAll(Pageable pageable,@Param("company")String company);
+	@Query("FROM StockAdjustment stock WHERE "
+			+ "stock.organization.id IN(:company) "
+			+ "ORDER BY stock.date DESC")
+	public List<StockAdjustment> findAll(Pageable pageable,@Param("company")List<String> company);
 	
-	@Query("SELECT COUNT(stock) FROM StockAdjustment stock WHERE stock.organization.id =:company")
-	public Long count(@Param("company")String company);
+	@Query("SELECT COUNT(stock) FROM StockAdjustment stock WHERE stock.organization.id IN(:company)")
+	public Long count(@Param("company")List<String> company);
 }

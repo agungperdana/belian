@@ -11,13 +11,11 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Row;
 
-import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.HasCreateForm;
 import com.kratonsolution.belian.ui.HasEditForm;
 import com.kratonsolution.belian.ui.HasGrid;
 import com.kratonsolution.belian.ui.nav.IconBar;
-import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * 
@@ -26,9 +24,9 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class StockAdjustmentWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private Language language = Springs.get(Language.class);
 	
-	private Caption caption = new Caption(language.get("navbar.menu.inventory.stockadjustment"));
+	
+	private Caption caption = new Caption(lang.get("navbar.menu.inventory.stockadjustment"));
 	
 	private StockAdjustmentButton status = new StockAdjustmentButton();
 	
@@ -44,6 +42,7 @@ public class StockAdjustmentWindow extends AbstractWindow implements HasGrid,Has
 	private StockAdjustmentWindow()
 	{
 		super();
+		setWidth("675px");
 	}
 	
 	protected void init()

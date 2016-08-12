@@ -33,7 +33,7 @@ public class StockAdjustmentItem implements Serializable
 	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="expired_date")
-	private Date expiredDate;
+	private Date expired;
 	
 	@Column(name="quantity")
 	private BigDecimal quantity;

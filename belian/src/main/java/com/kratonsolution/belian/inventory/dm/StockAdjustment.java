@@ -40,6 +40,9 @@ public class StockAdjustment implements Serializable
 	@Column(name="date")
 	private Date date;
 
+	@Column(name="note")
+	private String note;
+	
 	@ManyToOne
 	@JoinColumn(name="fk_facility")
 	private Facility facility;
