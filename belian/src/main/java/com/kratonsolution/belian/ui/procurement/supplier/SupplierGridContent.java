@@ -17,6 +17,7 @@ import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.procurement.svc.SupplierRelationshipService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -43,9 +44,7 @@ public class SupplierGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new SupplierModel(utils.getRowPerPage()));
-				refresh(new SupplierModel(utils.getRowPerPage()));
+				Flow.next(getParent(), new SupplierGridContent());
 			}
 		});
 		
@@ -54,9 +53,7 @@ public class SupplierGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				SupplierWindow window = (SupplierWindow)getParent();
-				window.removeGrid();
-				window.insertCreateForm();
+				Flow.next(getParent(), new SupplierFormContent());
 			}
 		});
 		
@@ -108,7 +105,7 @@ public class SupplierGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -153,7 +150,7 @@ public class SupplierGridContent extends GridContent
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No supplier data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new SupplierRowRenderer());
 		grid.setPagingPosition("both");
@@ -161,10 +158,10 @@ public class SupplierGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Start",null,"85px"));
-		grid.getColumns().appendChild(new Column("End",null,"85px"));
-		grid.getColumns().appendChild(new Column("Name",null,"150px"));
-		grid.getColumns().appendChild(new Column(null,null,"0px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.start"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.end"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.name"),null,"150px"));
+		grid.getColumns().appendChild(new Column());
 		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("3");
 		

@@ -27,7 +27,6 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.global.dm.Roled;
 import com.kratonsolution.belian.global.dm.RoledType;
@@ -52,8 +51,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class PurchaseOrderRequestEditContent extends FormContent
 {	
 	private PurchaseOrderRequestService service = Springs.get(PurchaseOrderRequestService.class);
-
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 
 	private UserService userService = Springs.get(UserService.class);
 
@@ -85,7 +82,7 @@ public class PurchaseOrderRequestEditContent extends FormContent
 	@Override
 	public void initToolbar()
 	{
-		PurchaseOrderRequest request = service.findOne(RowUtils.string(row, 5));
+		PurchaseOrderRequest request = service.findOne(RowUtils.id(row));
 		
 		toolbar.getCancel().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
@@ -143,7 +140,7 @@ public class PurchaseOrderRequestEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		PurchaseOrderRequest request = service.findOne(RowUtils.string(row, 5));
+		PurchaseOrderRequest request = service.findOne(RowUtils.id(row));
 		if(request != null)
 		{
 			if(Strings.isNullOrEmpty(request.getNumber()))
@@ -159,15 +156,15 @@ public class PurchaseOrderRequestEditContent extends FormContent
 			grid.getColumns().appendChild(new Column());
 
 			Row row0 = new Row();
-			row0.appendChild(new Label("Number"));
+			row0.appendChild(new Label(lang.get("porequest.grid.column.number")));
 			row0.appendChild(number);
 
 			Row row1 = new Row();
-			row1.appendChild(new Label("Date"));
+			row1.appendChild(new Label(lang.get("porequest.grid.column.date")));
 			row1.appendChild(date);
 
 			Row row2 = new Row();
-			row2.appendChild(new Label("Company"));
+			row2.appendChild(new Label(lang.get("porequest.grid.column.company")));
 			row2.appendChild(companys);
 
 			rows.appendChild(row0);
@@ -181,8 +178,8 @@ public class PurchaseOrderRequestEditContent extends FormContent
 		tabbox.setWidth("100%");
 		tabbox.appendChild(new Tabs());
 		tabbox.appendChild(new Tabpanels());
-		tabbox.getTabs().appendChild(new Tab("Item(s)"));
-		tabbox.getTabs().appendChild(new Tab("Role(s)"));
+		tabbox.getTabs().appendChild(new Tab(lang.get("porequest.grid.column.items")));
+		tabbox.getTabs().appendChild(new Tab(lang.get("porequest.grid.column.roles")));
 		tabbox.getTabpanels().appendChild(new Tabpanel());
 		tabbox.getTabpanels().appendChild(new Tabpanel());
 
@@ -198,13 +195,14 @@ public class PurchaseOrderRequestEditContent extends FormContent
 		NRCToolbar nrc = new NRCToolbar(items);
 
 		items.setWidth("100%");
+		items.setEmptyMessage(lang.get("message.grid.empty"));
 		items.appendChild(new Rows());
 		items.appendChild(new Columns());
 		items.getColumns().appendChild(new Column(null,null,"25px"));
-		items.getColumns().appendChild(new Column("Product",null,"150px"));
-		items.getColumns().appendChild(new Column("Quantity",null,"100px"));
-		items.getColumns().appendChild(new Column("UoM",null,"100px"));
-		items.getColumns().appendChild(new Column("Note",null,"150px"));
+		items.getColumns().appendChild(new Column(lang.get("porequest.grid.column.product"),null,"150px"));
+		items.getColumns().appendChild(new Column(lang.get("porequest.grid.column.quantity"),null,"100px"));
+		items.getColumns().appendChild(new Column(lang.get("porequest.grid.column.uom"),null,"100px"));
+		items.getColumns().appendChild(new Column(lang.get("porequest.grid.column.note"),null,"150px"));
 		items.setSpan("1");
 
 		PurchaseOrderRequest request = service.findOne(RowUtils.string(row, 5));
@@ -254,11 +252,12 @@ public class PurchaseOrderRequestEditContent extends FormContent
 
 		rolesGrid.appendChild(new Columns());
 		rolesGrid.appendChild(new Rows());
+		rolesGrid.setEmptyMessage(lang.get("message.grid.empty"));
 		rolesGrid.getColumns().appendChild(new Column(null,null,"25px"));
-		rolesGrid.getColumns().appendChild(new Column("Person",null,"150px"));
-		rolesGrid.getColumns().appendChild(new Column("Type",null,"125px"));
-		rolesGrid.getColumns().appendChild(new Column(null,null,"0px"));
-		rolesGrid.getColumns().getChildren().get(3).setVisible(false);
+		rolesGrid.getColumns().appendChild(new Column(lang.get("porequest.grid.column.person"),null,"150px"));
+		rolesGrid.getColumns().appendChild(new Column(lang.get("porequest.grid.column.type"),null,"125px"));
+		rolesGrid.getColumns().appendChild(new Column());
+		rolesGrid.getColumns().getLastChild().setVisible(false);
 		rolesGrid.setSpan("1");
 
 		PurchaseOrderRequest request = service.findOne(RowUtils.string(row, 5));

@@ -95,19 +95,19 @@ public class SupplierEditContent extends FormContent
 			grid.getColumns().appendChild(new Column());
 			
 			Row row1 = new Row();
-			row1.appendChild(new Label("Start"));
+			row1.appendChild(new Label(lang.get("generic.grid.column.start")));
 			row1.appendChild(start);
 			
 			Row row2 = new Row();
-			row2.appendChild(new Label("End"));
+			row2.appendChild(new Label(lang.get("generic.grid.column.end")));
 			row2.appendChild(end);
 			
 			Row row3 = new Row();
-			row3.appendChild(new Label("Party"));
+			row3.appendChild(new Label(lang.get("generic.grid.column.party")));
 			row3.appendChild(partys);
 			
 			Row row4 = new Row();
-			row4.appendChild(new Label("Organization"));
+			row4.appendChild(new Label(lang.get("generic.grid.column.company")));
 			row4.appendChild(organizations);
 			
 			rows.appendChild(row1);

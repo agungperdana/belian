@@ -26,9 +26,9 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PurchaseOrderRequestWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private Language language = Springs.get(Language.class);
+	private Language lang = Springs.get(Language.class);
 
-	private Caption caption = new Caption(language.get("navbar.menu.procurement.purchaseorderrequest"));
+	private Caption caption = new Caption(lang.get("navbar.menu.procurement.purchaseorderrequest"));
 
 	private PurchaseOrderRequestButton status = new PurchaseOrderRequestButton();
 

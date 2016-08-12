@@ -21,7 +21,6 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.global.dm.SequenceNumber.Code;
 import com.kratonsolution.belian.global.svc.CodeGenerator;
 import com.kratonsolution.belian.inventory.svc.ProductService;
@@ -52,8 +51,6 @@ public class CashPurchaseOrderFormContent extends FormContent
 	private ProductService productService = Springs.get(ProductService.class);
 
 	private CodeGenerator gen = Springs.get(CodeGenerator.class);
-
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 
 	private Textbox number = Components.readOnlyTextBox();
 
@@ -97,10 +94,10 @@ public class CashPurchaseOrderFormContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				if(suppliers.getSupplier() == null)
-					throw new WrongValueException(suppliers,"Supplier cannot be empty.");
+					throw new WrongValueException(suppliers,lang.get("message.field.empty"));
 				
 				if(requests.getRequest() == null)
-					throw new WrongValueException(requests,"Purchase Order Request cannot be empty.");
+					throw new WrongValueException(requests,lang.get("message.field.empty"));
 				
 				CashPurchaseOrder order = new CashPurchaseOrder();
 				order.setDate(new Date(date.getValue().getTime()));
@@ -157,31 +154,31 @@ public class CashPurchaseOrderFormContent extends FormContent
 		grid.getColumns().appendChild(new Column());
 
 		Row row0 = new Row();
-		row0.appendChild(new Label("Number"));
+		row0.appendChild(new Label(lang.get("cpo.grid.column.number")));
 		row0.appendChild(number);
 
 		Row row1 = new Row();
-		row1.appendChild(new Label("Date"));
+		row1.appendChild(new Label(lang.get("cpo.grid.column.date")));
 		row1.appendChild(date);
 
 		Row row2 = new Row();
-		row2.appendChild(new Label("Company"));
+		row2.appendChild(new Label(lang.get("cpo.grid.column.company")));
 		row2.appendChild(companys);
 
 		Row row3 = new Row();
-		row3.appendChild(new Label("Purchaser"));
+		row3.appendChild(new Label(lang.get("cpo.grid.column.purchaser")));
 		row3.appendChild(purchaser);
 
 		Row row4 = new Row();
-		row4.appendChild(new Label("Supplier"));
+		row4.appendChild(new Label(lang.get("cpo.grid.column.supplier")));
 		row4.appendChild(suppliers);
 
 		Row row5 = new Row();
-		row5.appendChild(new Label("Request"));
+		row5.appendChild(new Label(lang.get("cpo.grid.column.request")));
 		row5.appendChild(requests);
 
 		Row row6 = new Row();
-		row6.appendChild(new Label("Warehouse"));
+		row6.appendChild(new Label(lang.get("cpo.grid.column.facility")));
 		row6.appendChild(facilitys);
 
 		rows.appendChild(row1);
@@ -197,11 +194,12 @@ public class CashPurchaseOrderFormContent extends FormContent
 		items.setWidth("100%");
 		items.appendChild(new Rows());
 		items.appendChild(new Columns());
-		items.getColumns().appendChild(new Column("Product",null,"150px"));
-		items.getColumns().appendChild(new Column("Requested",null,"80px"));
-		items.getColumns().appendChild(new Column("Buying",null,"80px"));
-		items.getColumns().appendChild(new Column("UoM",null,"100px"));
-		items.getColumns().appendChild(new Column("Expired",null,"125px"));
+		items.setEmptyMessage(lang.get("message.grid.empty"));
+		items.getColumns().appendChild(new Column(lang.get("cpo.grid.column.product"),null,"150px"));
+		items.getColumns().appendChild(new Column(lang.get("cpo.grid.column.requested"),null,"80px"));
+		items.getColumns().appendChild(new Column(lang.get("cpo.grid.column.buying"),null,"80px"));
+		items.getColumns().appendChild(new Column(lang.get("cpo.grid.column.uom"),null,"100px"));
+		items.getColumns().appendChild(new Column(lang.get("cpo.grid.column.expired"),null,"125px"));
 		items.setSpan("0");
 
 		initItemsRow();

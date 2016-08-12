@@ -17,6 +17,7 @@ import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.procurement.svc.PurchaseOrderRequestService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -43,9 +44,7 @@ public class PurchaseOrderRequestGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new PurchaseOrderRequestModel(utils.getRowPerPage()));
-				refresh(new PurchaseOrderRequestModel(utils.getRowPerPage()));
+				Flow.next(getParent(), new PurchaseOrderRequestGridContent());
 			}
 		});
 		
@@ -54,9 +53,7 @@ public class PurchaseOrderRequestGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PurchaseOrderRequestWindow window = (PurchaseOrderRequestWindow)getParent();
-				window.removeGrid();
-				window.insertCreateForm();
+				Flow.next(getParent(), new PurchaseOrderRequestFormContent());
 			}
 		});
 		
@@ -108,7 +105,7 @@ public class PurchaseOrderRequestGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -153,7 +150,7 @@ public class PurchaseOrderRequestGridContent extends GridContent
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No Purchasae Order Request data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new PurchaseOrderRequestRowRenderer());
 		grid.setPagingPosition("both");
@@ -161,12 +158,12 @@ public class PurchaseOrderRequestGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Date",null,"85px"));
-		grid.getColumns().appendChild(new Column("Number",null,"150px"));
-		grid.getColumns().appendChild(new Column("Request By",null,"150px"));
-		grid.getColumns().appendChild(new Column("Status",null,"100px"));
-		grid.getColumns().appendChild(new Column(null,null,"0px"));
-		grid.getColumns().getChildren().get(5).setVisible(false);
+		grid.getColumns().appendChild(new Column(lang.get("porequest.grid.column.date"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("porequest.grid.column.number"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("porequest.grid.column.requester"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("porequest.grid.column.status"),null,"100px"));
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("3");
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()

@@ -17,13 +17,13 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.procurement.dm.CashPurchaseOrder;
 import com.kratonsolution.belian.procurement.dm.CashPurchaseOrderItem;
 import com.kratonsolution.belian.procurement.svc.CashPurchaseOrderService;
 import com.kratonsolution.belian.procurement.svc.PurchaseOrderRequestService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.component.FacilityList;
 import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.component.SupplierBox;
 import com.kratonsolution.belian.ui.util.Components;
@@ -44,8 +44,6 @@ public class CashPurchaseOrderEditContent extends FormContent
 
 	private ProductService productService = Springs.get(ProductService.class);
 
-	private SessionUtils utils = Springs.get(SessionUtils.class);
-
 	private Textbox number = Components.readOnlyTextBox();
 
 	private OrganizationList companys = new OrganizationList();
@@ -56,6 +54,8 @@ public class CashPurchaseOrderEditContent extends FormContent
 
 	private Listbox requests = Components.newSelect(requestService.findAllIncomplete(),true);
 
+	private FacilityList facilitys = new FacilityList();
+	
 	private SupplierBox suppliers = new SupplierBox(false);
 
 	private Grid items = new Grid();
@@ -97,7 +97,7 @@ public class CashPurchaseOrderEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		CashPurchaseOrder order = service.findOne(RowUtils.string(row, 7));
+		CashPurchaseOrder order = service.findOne(RowUtils.id(row));
 		if(order != null)
 		{
 			date.setValue(order.getDate());
@@ -117,28 +117,32 @@ public class CashPurchaseOrderEditContent extends FormContent
 			grid.getColumns().appendChild(new Column());
 			
 			Row row0 = new Row();
-			row0.appendChild(new Label("Number"));
+			row0.appendChild(new Label(lang.get("cpo.grid.column.number")));
 			row0.appendChild(number);
-			
+
 			Row row1 = new Row();
-			row1.appendChild(new Label("Date"));
+			row1.appendChild(new Label(lang.get("cpo.grid.column.date")));
 			row1.appendChild(date);
-			
+
 			Row row2 = new Row();
-			row2.appendChild(new Label("Company"));
+			row2.appendChild(new Label(lang.get("cpo.grid.column.company")));
 			row2.appendChild(companys);
-			
+
 			Row row3 = new Row();
-			row3.appendChild(new Label("Purchaser"));
+			row3.appendChild(new Label(lang.get("cpo.grid.column.purchaser")));
 			row3.appendChild(purchaser);
-			
+
 			Row row4 = new Row();
-			row4.appendChild(new Label("Request"));
-			row4.appendChild(requests);
-			
+			row4.appendChild(new Label(lang.get("cpo.grid.column.supplier")));
+			row4.appendChild(suppliers);
+
 			Row row5 = new Row();
-			row5.appendChild(new Label("Supplier"));
-			row5.appendChild(suppliers);
+			row5.appendChild(new Label(lang.get("cpo.grid.column.request")));
+			row5.appendChild(requests);
+
+			Row row6 = new Row();
+			row6.appendChild(new Label(lang.get("cpo.grid.column.facility")));
+			row6.appendChild(facilitys);
 			
 			rows.appendChild(row1);
 			rows.appendChild(row2);
@@ -153,11 +157,12 @@ public class CashPurchaseOrderEditContent extends FormContent
 		items.setWidth("100%");
 		items.appendChild(new Rows());
 		items.appendChild(new Columns());
-		items.getColumns().appendChild(new Column("Product",null,"150px"));
-		items.getColumns().appendChild(new Column("Requested",null,"100px"));
-		items.getColumns().appendChild(new Column("Buying",null,"100px"));
-		items.getColumns().appendChild(new Column("UoM",null,"100px"));
-		items.getColumns().appendChild(new Column("Expired",null,"150px"));
+		items.setEmptyMessage(lang.get("message.grid.empty"));
+		items.getColumns().appendChild(new Column(lang.get("cpo.grid.column.product"),null,"150px"));
+		items.getColumns().appendChild(new Column(lang.get("cpo.grid.column.requested"),null,"80px"));
+		items.getColumns().appendChild(new Column(lang.get("cpo.grid.column.buying"),null,"80px"));
+		items.getColumns().appendChild(new Column(lang.get("cpo.grid.column.uom"),null,"100px"));
+		items.getColumns().appendChild(new Column(lang.get("cpo.grid.column.expired"),null,"125px"));
 		items.setSpan("0");
 		
 		CashPurchaseOrder order = service.findOne(RowUtils.id(row));

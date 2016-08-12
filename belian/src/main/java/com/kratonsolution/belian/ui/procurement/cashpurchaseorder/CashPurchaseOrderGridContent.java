@@ -44,9 +44,7 @@ public class CashPurchaseOrderGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new CashPurchaseOrderModel(utils.getRowPerPage()));
-				refresh(new CashPurchaseOrderModel(utils.getRowPerPage()));
+				Flow.next(getParent(), new CashPurchaseOrderGridContent());
 			}
 		});
 		
@@ -107,7 +105,7 @@ public class CashPurchaseOrderGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -152,7 +150,7 @@ public class CashPurchaseOrderGridContent extends GridContent
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No Cash Purchasae Order data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new CashPurchaseOrderRowRenderer());
 		grid.setPagingPosition("both");
@@ -160,13 +158,13 @@ public class CashPurchaseOrderGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Date",null,"85px"));
-		grid.getColumns().appendChild(new Column("Number",null,"150px"));
-		grid.getColumns().appendChild(new Column("Company",null,"150px"));
-		grid.getColumns().appendChild(new Column("Supplier",null,"150px"));
-		grid.getColumns().appendChild(new Column("Purchaser",null,"150px"));
-		grid.getColumns().appendChild(new Column("Request No",null,"150px"));
-		grid.getColumns().appendChild(new Column(null,null,"0px"));
+		grid.getColumns().appendChild(new Column(lang.get("cpo.grid.column.date"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("cpo.grid.column.number"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("cpo.grid.column.company"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("cpo.grid.column.supplier"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("cpo.grid.column.purchaser"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("cpo.grid.column.request"),null,"150px"));
+		grid.getColumns().appendChild(new Column());
 		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("3");
 		
