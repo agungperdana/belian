@@ -20,7 +20,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class GeographicMenu extends Listitem
 {
-	private Language language = Springs.get(Language.class);
+	private Language lang = Springs.get(Language.class);
 	
 	public GeographicMenu()
 	{
@@ -29,7 +29,10 @@ public class GeographicMenu extends Listitem
 	
 	public void init()
 	{
-		setLabel(language.get("navbar.menu.general.geographic"));
+		System.out.println(this);
+		System.out.println(lang.get("navbar.menu.general.geographic"));
+		
+		setLabel(lang.get("navbar.menu.general.geographic"));
 		setImage("/icons/geographic.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()

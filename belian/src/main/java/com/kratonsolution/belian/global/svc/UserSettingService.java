@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kratonsolution.belian.global.dm.UserSetting;
+import com.kratonsolution.belian.global.dm.UserSettingRepository;
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.security.dm.UserRepository;
 
@@ -25,6 +26,9 @@ public class UserSettingService
 	@Autowired
 	private UserRepository userRepository;
 		
+	@Autowired
+	private UserSettingRepository settingRepository;
+	
 	private StrongPasswordEncryptor encryptor = new StrongPasswordEncryptor();
 		
 	@Secured("ROLE_USER_SETTING_READ")
@@ -48,5 +52,11 @@ public class UserSettingService
 	public void edit(User user)
 	{
 		userRepository.save(user);
+	}
+	
+	@Secured({"ROLE_USER_SETTING_UPDATE","ROLE_SYSTEM_UPDATE"})
+	public void edit(UserSetting setting)
+	{
+		settingRepository.saveAndFlush(setting);
 	}
 }

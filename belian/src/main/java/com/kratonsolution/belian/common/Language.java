@@ -5,6 +5,8 @@ package com.kratonsolution.belian.common;
 
 import java.util.Locale;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ import com.google.common.base.Strings;
 @Service
 public class Language
 {
+	Logger log = LoggerFactory.getLogger(getClass());
+	
 	@Autowired
 	private MessageSource messageSource;
 	
@@ -26,9 +30,16 @@ public class Language
 
 	public String get(String name)
 	{
-		if(messageSource != null && utils != null && !Strings.isNullOrEmpty(utils.getLanguage()))
-			return messageSource.getMessage(name,new Object[]{},new Locale(utils.getLanguage()));
+		String lang = "in_id";
+		if(!Strings.isNullOrEmpty(utils.getLanguage()))
+			lang = utils.getLanguage();
 		
-		return "";
+		log.debug("Lang "+lang+" key:"+name);
+		
+		Locale locale = new Locale(lang);
+		log.debug("###"+locale.getLanguage());
+		log.debug("###"+locale.getCountry());
+		
+		return messageSource.getMessage(name,new Object[]{},locale);
 	}
 }

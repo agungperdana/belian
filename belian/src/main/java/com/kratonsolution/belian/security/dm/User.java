@@ -48,7 +48,7 @@ public class User implements Listable
 	@Column(name="is_enabled")
 	private boolean enabled;
 	
-	@OneToOne(cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToOne(cascade={CascadeType.PERSIST,CascadeType.REMOVE},orphanRemoval=true)
 	@JoinColumn(name="fk_user_setting")
 	private UserSetting setting;
 	

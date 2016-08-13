@@ -3,13 +3,7 @@
  */
 package com.kratonsolution.belian.ui.setting;
 
-import java.util.Locale;
-
-import org.zkoss.util.Locales;
-import org.zkoss.web.Attributes;
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
@@ -27,20 +21,17 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Vlayout;
 
-import com.kratonsolution.belian.accounting.dm.Currency;
-import com.kratonsolution.belian.accounting.dm.Tax;
-import com.kratonsolution.belian.accounting.svc.CurrencyService;
-import com.kratonsolution.belian.accounting.svc.TaxService;
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Geographic;
-import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.svc.GeographicService;
-import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.global.dm.PrinterType;
 import com.kratonsolution.belian.global.svc.UserSettingService;
-import com.kratonsolution.belian.inventory.svc.FacilityService;
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.ui.AbstractWindow;
+import com.kratonsolution.belian.ui.component.CurrencyList;
+import com.kratonsolution.belian.ui.component.FacilityList;
+import com.kratonsolution.belian.ui.component.LanguageList;
+import com.kratonsolution.belian.ui.component.OrganizationList;
+import com.kratonsolution.belian.ui.component.TaxList;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -55,33 +46,23 @@ public class SettingWindow extends AbstractWindow
 	
 	private GeographicService geographicService = Springs.get(GeographicService.class);
 	
-	private OrganizationService organizationService = Springs.get(OrganizationService.class);
-	
-	private FacilityService facilityService = Springs.get(FacilityService.class);
-	
-	private CurrencyService currencyService = Springs.get(CurrencyService.class);
-	
-	private TaxService taxService = Springs.get(TaxService.class);
-	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
-	
 	private Vlayout layout = new Vlayout(); 
 	
 	private Tabbox tabbox = new Tabbox();
 
-	private Listbox organizations = Components.newSelect();
+	private OrganizationList organizations = new OrganizationList();
 	
 	private Listbox locations = Components.newSelect();
 	
-	private Listbox languanges = Components.newSelect();
+	private LanguageList languanges = new LanguageList();
 	
-	private Listbox currencys = Components.newSelect();
+	private CurrencyList currencys = new CurrencyList();
 	
-	private Listbox taxes = Components.newSelect(taxService.findAll(), true);
+	private TaxList taxes = new TaxList();
 	
 	private Listbox printers = Components.newSelect();
 	
-	private Listbox facilitys = Components.newSelect(facilityService.findAllActive(),true);
+	private FacilityList facilitys = new FacilityList();
 	
 	private Doublebox rowPerPage = new Doublebox(25);
 	
@@ -116,22 +97,6 @@ public class SettingWindow extends AbstractWindow
 			if(utils.getPrinterType().equals(type))
 				printers.setSelectedItem(listitem);
 		}
-		
-		for(Organization organization:utils.getOrganizations())
-		{
-			Listitem listitem = new Listitem(organization.getName(), organization.getId());
-			organizations.appendChild(listitem);
-			if(utils.getOrganization() != null && organization.getId().equals(utils.getOrganization().getId()))
-				organizations.setSelectedItem(listitem);
-		}
-		
-		for(Currency currency:currencyService.findAll())
-		{
-			Listitem listitem = new Listitem(currency.getLabel(), currency.getValue());
-			currencys.appendChild(listitem);
-			if(utils.getCurrency() != null && currency.getId().equals(utils.getCurrency().getId()))
-				currencys.setSelectedItem(listitem);
-		}
 
 		for(Geographic geographic:geographicService.findAll())
 		{
@@ -142,30 +107,11 @@ public class SettingWindow extends AbstractWindow
 				locations.setSelectedItem(listitem);
 		}
 		
-		for(Listitem listitem:taxes.getItems())
-		{
-			if(utils.getTax() != null && utils.getTax().getId().equals(listitem.getValue().toString()))
-			{
-				taxes.setSelectedItem(listitem);
-				break;
-			}
-		}
-		
-		
-		languanges.appendChild(new Listitem("Bahasa Indonesia", "in_ID"));
-		languanges.appendChild(new Listitem("English", "en_US"));
-		Components.setDefault(languanges);
-		
-		if("in_ID".equals(utils.getLanguage()))
-			languanges.setSelectedIndex(0);
-		if("en_US".equals(utils.getLanguage()))
-			languanges.setSelectedIndex(1);
-		
 		rowPerPage.setValue(utils.getRowPerPage());
 		
 		Tabpanel tabpanel = new Tabpanel();
 		
-		tabbox.getTabs().appendChild(new Tab("My Account"));
+		tabbox.getTabs().appendChild(new Tab(lang.get("generic.grid.column.account")));
 		tabbox.getTabpanels().appendChild(tabpanel);
 		
 		Grid grid = new Grid();
@@ -178,31 +124,31 @@ public class SettingWindow extends AbstractWindow
 		grid.appendChild(new Rows());
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Default Company"));
+		row1.appendChild(new Label(lang.get("generic.grid.column.company")));
 		row1.appendChild(organizations);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Default Work Location"));
+		row2.appendChild(new Label(lang.get("generic.grid.column.location")));
 		row2.appendChild(locations);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Language"));
+		row3.appendChild(new Label(lang.get("generic.grid.column.language")));
 		row3.appendChild(languanges);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Currency"));
+		row4.appendChild(new Label(lang.get("generic.grid.column.currency")));
 		row4.appendChild(currencys);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Tax"));
+		row5.appendChild(new Label(lang.get("generic.grid.column.tax")));
 		row5.appendChild(taxes);
 		
 		Row row6 = new Row();
-		row6.appendChild(new Label("Row per page"));
+		row6.appendChild(new Label(lang.get("generic.grid.column.rowperpage")));
 		row6.appendChild(rowPerPage);
 		
 		Row row7 = new Row();
-		row7.appendChild(new Label("Printer Type"));
+		row7.appendChild(new Label(lang.get("generic.grid.column.printer")));
 		row7.appendChild(printers);
 		
 		grid.getRows().appendChild(row1);
@@ -220,19 +166,13 @@ public class SettingWindow extends AbstractWindow
 	 * @see com.kratonsolution.belian.ui.HasStatus#insertStatus()
 	 */
 	@Override
-	public void insertStatus()
-	{
-		// TODO Auto-generated method stub
-
-	}
+	public void insertStatus(){}
 
 	/* (non-Javadoc)
 	 * @see com.kratonsolution.belian.ui.HasStatus#removeStatus()
 	 */
 	@Override
-	public void removeStatus()
-	{
-	}
+	public void removeStatus(){}
 
 	@Override
 	public void onClose()
@@ -250,39 +190,28 @@ public class SettingWindow extends AbstractWindow
 				user.getSetting().setLocationName(location.getName());
 			}
 
-			Organization organization = organizationService.findOne(Components.string(organizations));
-			if(organization != null)
+			if(organizations.getOrganization() != null)
 			{
-				user.getSetting().setOrganizationId(organization.getId());
-				user.getSetting().setOrganizationName(organization.getName());
+				user.getSetting().setOrganizationId(organizations.getOrganization().getId());
+				user.getSetting().setOrganizationName(organizations.getOrganization().getName());
 			}
 
-			Currency currency = currencyService.findOne(Components.string(currencys));
-			if(currency != null)
+			if(currencys.getCurrency() != null)
 			{
-				user.getSetting().setCurrencyId(currency.getId());
-				user.getSetting().setCurrencyName(currency.getName());
+				user.getSetting().setCurrencyId(currencys.getCurrency().getId());
+				user.getSetting().setCurrencyName(currencys.getCurrency().getName());
 			}
 			
-			Tax tax = taxService.findOne(Components.string(taxes));
-			if(tax != null)
+			if(taxes.getTax() != null)
 			{
-				user.getSetting().setTaxId(tax.getId());
-				user.getSetting().setTaxName(tax.getName());
+				user.getSetting().setTaxId(taxes.getTax().getId());
+				user.getSetting().setTaxName(taxes.getTax().getName());
 			}
 			
 			user.getSetting().setPrinter(PrinterType.valueOf(Components.string(printers)));
-			userService.edit(user);
+			userService.edit(user.getSetting());
 			
-			try
-			{
-				Locale locale = Locales.getLocale(new Locale(user.getSetting().getLanguage()));
-				Sessions.getCurrent().setAttribute(Attributes.PREFERRED_LOCALE,locale);
-				Clients.reloadMessages(locale);
-				Locales.setThreadLocal(locale);
-				Executions.sendRedirect("/home");
-			} 
-			catch (Exception e){}
+			Executions.sendRedirect("/home");
 		}
 		
 		super.onClose();
