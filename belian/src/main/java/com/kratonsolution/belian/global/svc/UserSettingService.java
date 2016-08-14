@@ -4,6 +4,8 @@
 package com.kratonsolution.belian.global.svc;
 
 import org.jasypt.util.password.StrongPasswordEncryptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,8 @@ import com.kratonsolution.belian.security.dm.UserRepository;
 @Transactional(rollbackFor=Exception.class)
 public class UserSettingService
 {
+	private Logger log = LoggerFactory.getLogger(getClass());
+	
 	@Autowired
 	private UserRepository userRepository;
 		
@@ -30,28 +34,23 @@ public class UserSettingService
 	private UserSettingRepository settingRepository;
 	
 	private StrongPasswordEncryptor encryptor = new StrongPasswordEncryptor();
-		
-	@Secured("ROLE_USER_SETTING_READ")
-	public User findOne(String id)
+	
+	@Secured("ROLE_SYSTEM_UPDATE")
+	public void add(UserSetting setting)
 	{
-		User user = userRepository.findOne(id);
-		if(user != null && user.getSetting() == null)
-		{
-			UserSetting setting = new UserSetting();
-			setting.setLanguage("en_US");
-			
-			user.setSetting(setting);
-			
-			userRepository.save(user);
-		}
-		
-		return user;
+		settingRepository.save(setting);
+	}
+	
+	@Secured("ROLE_SYSTEM_UPDATE")
+	public UserSetting findOne(String id)
+	{
+		return settingRepository.findOne(id);
 	}
 	
 	@Secured({"ROLE_USER_SETTING_UPDATE","ROLE_SYSTEM_UPDATE"})
 	public void edit(User user)
 	{
-		userRepository.save(user);
+		userRepository.saveAndFlush(user);
 	}
 	
 	@Secured({"ROLE_USER_SETTING_UPDATE","ROLE_SYSTEM_UPDATE"})

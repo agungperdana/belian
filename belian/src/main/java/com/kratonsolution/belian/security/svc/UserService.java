@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.global.dm.UserSettingRepository;
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.security.dm.UserRepository;
 
@@ -28,6 +29,9 @@ public class UserService
 {
 	@Autowired
 	private UserRepository repository;
+	
+	@Autowired
+	private UserSettingRepository settingRepository;
 		
 	private StrongPasswordEncryptor encryptor = new StrongPasswordEncryptor();
 		
@@ -71,7 +75,12 @@ public class UserService
 	@Secured("ROLE_USER_DELETE")
 	public void delete(@PathVariable String id)
 	{
-		repository.delete(id);
+		User user = repository.findOne(id);
+		if(user != null)
+		{
+			settingRepository.delete(user.getSetting());
+			repository.delete(user);
+		}
 	}
 	
 	@Secured("ROLE_USER_UPDATE")

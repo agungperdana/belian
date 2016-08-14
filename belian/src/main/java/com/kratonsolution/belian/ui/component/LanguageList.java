@@ -45,7 +45,7 @@ public class LanguageList extends Listbox
 		if(getSelectedItem() != null)
 			return new Locale(getSelectedItem().getValue().toString());
 		
-		return Locale.US;
+		return new Locale("en_us");
 	}
 	
 	public String getLocaleCode()

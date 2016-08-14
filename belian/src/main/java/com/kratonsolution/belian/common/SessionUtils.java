@@ -38,6 +38,7 @@ import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.global.dm.PrinterType;
+import com.kratonsolution.belian.global.svc.UserSettingService;
 import com.kratonsolution.belian.healtcare.dm.DoctorRelationship;
 import com.kratonsolution.belian.healtcare.dm.DoctorRelationshipRepository;
 import com.kratonsolution.belian.hr.dm.Employment;
@@ -62,6 +63,9 @@ public class SessionUtils
 {
 	@Autowired
 	private UserService service;
+	
+	@Autowired
+	private UserSettingService settingService;
 
 	@Autowired
 	private CurrencyService currencyService;
@@ -113,6 +117,11 @@ public class SessionUtils
 	public User getUser()
 	{
 		SecurityInformation information = (SecurityInformation)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		//Update user setting with latest from database
+		if(information.getUser().getSetting() != null)
+			information.getUser().setSetting(settingService.findOne(information.getUser().getSetting().getId()));
+		
 		return information.getUser();
 	}
 
@@ -371,7 +380,7 @@ public class SessionUtils
 	public String getLanguage()
 	{
 		if(getUser().getSetting() == null)
-			return "en-US";
+			return "en_us";
 
 		return getUser().getSetting().getLanguage();
 	}

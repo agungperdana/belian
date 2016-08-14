@@ -15,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -48,7 +49,7 @@ public class User implements Listable
 	@Column(name="is_enabled")
 	private boolean enabled;
 	
-	@OneToOne(cascade={CascadeType.PERSIST,CascadeType.REMOVE},orphanRemoval=true)
+	@ManyToOne()
 	@JoinColumn(name="fk_user_setting")
 	private UserSetting setting;
 	

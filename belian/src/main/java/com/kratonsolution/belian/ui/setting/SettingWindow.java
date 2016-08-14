@@ -24,6 +24,7 @@ import org.zkoss.zul.Vlayout;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.global.dm.PrinterType;
+import com.kratonsolution.belian.global.dm.UserSetting;
 import com.kratonsolution.belian.global.svc.UserSettingService;
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.ui.AbstractWindow;
@@ -180,36 +181,50 @@ public class SettingWindow extends AbstractWindow
 		User user = utils.getUser();
 		if(user != null && !user.isSysAdmin())
 		{
-			user.getSetting().setLanguage(Components.string(languanges));
-			user.getSetting().setRowPerPage(rowPerPage.intValue());
+			UserSetting setting = null;
+			if(user.getSetting() != null)
+				setting = userService.findOne(user.getSetting().getId());
+			
+			if(setting == null)
+			{
+				setting = new UserSetting();
+				userService.add(setting);
+				
+				user.setSetting(setting);
+				userService.edit(user);
+			}
+			
+			setting.setLanguage(Components.string(languanges));
+			setting.setRowPerPage(rowPerPage.intValue());
 
 			Geographic location = geographicService.findOne(Components.string(locations));
 			if(location != null)
 			{
-				user.getSetting().setLocationId(location.getId());
-				user.getSetting().setLocationName(location.getName());
+				setting.setLocationId(location.getId());
+				setting.setLocationName(location.getName());
 			}
 
 			if(organizations.getOrganization() != null)
 			{
-				user.getSetting().setOrganizationId(organizations.getOrganization().getId());
-				user.getSetting().setOrganizationName(organizations.getOrganization().getName());
+				setting.setOrganizationId(organizations.getOrganization().getId());
+				setting.setOrganizationName(organizations.getOrganization().getName());
 			}
 
 			if(currencys.getCurrency() != null)
 			{
-				user.getSetting().setCurrencyId(currencys.getCurrency().getId());
-				user.getSetting().setCurrencyName(currencys.getCurrency().getName());
+				setting.setCurrencyId(currencys.getCurrency().getId());
+				setting.setCurrencyName(currencys.getCurrency().getName());
 			}
 			
 			if(taxes.getTax() != null)
 			{
-				user.getSetting().setTaxId(taxes.getTax().getId());
-				user.getSetting().setTaxName(taxes.getTax().getName());
+				setting.setTaxId(taxes.getTax().getId());
+				setting.setTaxName(taxes.getTax().getName());
 			}
 			
-			user.getSetting().setPrinter(PrinterType.valueOf(Components.string(printers)));
-			userService.edit(user.getSetting());
+			setting.setPrinter(PrinterType.valueOf(Components.string(printers)));
+			
+			userService.edit(setting);
 			
 			Executions.sendRedirect("/home");
 		}
