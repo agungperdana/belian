@@ -24,9 +24,17 @@ public class SupplierModel implements ListModel<SupplierRelationship>
 	
 	private List<SupplierRelationship> data = new ArrayList<SupplierRelationship>();
 	
+	private String key;
+	
 	public SupplierModel(int itemSize)
 	{
-		next(0, itemSize);
+		next(0, itemSize,null);
+	}
+	
+	public SupplierModel(int itemSize,String key)
+	{
+		this.key = key;
+		next(0, itemSize,key);
 	}
 	
 	@Override
@@ -41,7 +49,7 @@ public class SupplierModel implements ListModel<SupplierRelationship>
 	@Override
 	public int getSize()
 	{
-		return service.size();
+		return service.size(this.key);
 	}
 
 	@Override
@@ -54,9 +62,9 @@ public class SupplierModel implements ListModel<SupplierRelationship>
 	{
 	}
 
-	public void next(int pageIndex,int itemSize)
+	public void next(int pageIndex,int itemSize,String key)
 	{
 		data.clear();
-		data.addAll(service.findAll(0, (itemSize*pageIndex)+itemSize));
+		data.addAll(service.findAll(0, (itemSize*pageIndex)+itemSize,key));
 	}
 }

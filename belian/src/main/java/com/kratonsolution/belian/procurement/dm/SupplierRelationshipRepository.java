@@ -17,23 +17,38 @@ import org.springframework.data.repository.query.Param;
 public interface SupplierRelationshipRepository extends JpaRepository<SupplierRelationship, String>
 {
 	@Query("FROM SupplierRelationship sup WHERE "
-			+ "sup.organization.party.id =:company "
+			+ "sup.organization.party.id IN(:company) "
 			+ "ORDER BY sup.supplier.party.name ASC ")
-	public List<SupplierRelationship> findAll(@Param("company")String company);
+	public List<SupplierRelationship> findAll(@Param("company")List<String> company);
 	
 	@Query("FROM SupplierRelationship sup WHERE "
-			+ "sup.organization.party.id =:company "
+			+ "sup.organization.party.id IN(:company) "
+			+ "AND (sup.supplier.party.name LIKE %:key% "
+			+ "OR sup.supplier.party.identity LIKE %:key%) "
 			+ "ORDER BY sup.supplier.party.name ASC ")
-	public List<SupplierRelationship> findAll(Pageable pageable,@Param("company")String company);
-	
-	@Query("SELECT COUNT(sup) FROM SupplierRelationship sup WHERE sup.organization.party.id =:company")
-	public Long count(@Param("company")String company);
+	public List<SupplierRelationship> findAll(@Param("company")List<String> company,@Param("key")String key);
 	
 	@Query("FROM SupplierRelationship sup WHERE "
-			+ "sup.organization.party.id =:company "
-			+ "AND sup.supplier.party.name LIKE %:name% "
+			+ "sup.organization.party.id IN(:company) "
 			+ "ORDER BY sup.supplier.party.name ASC ")
-	public List<SupplierRelationship> findAll(@Param("name")String name,@Param("company")String company);
+	public List<SupplierRelationship> findAll(Pageable pageable,@Param("company")List<String> company);
+	
+	@Query("SELECT COUNT(sup) FROM SupplierRelationship sup WHERE "
+			+ "sup.organization.party.id IN(:company) ")
+	public Long count(@Param("company")List<String> company);
+	
+	@Query("SELECT COUNT(sup) FROM SupplierRelationship sup WHERE "
+			+ "sup.organization.party.id IN(:company) "
+			+ "AND (sup.supplier.party.name LIKE %:key% "
+			+ "OR sup.supplier.party.identity LIKE %:key%) ")
+	public Long count(@Param("company")List<String> company,@Param("key")String key);
+	
+	@Query("FROM SupplierRelationship sup WHERE "
+			+ "sup.organization.party.id IN(:company) "
+			+ "AND (sup.supplier.party.name LIKE %:key% "
+			+ "OR sup.supplier.party.identity LIKE %:key%) "
+			+ "ORDER BY sup.supplier.party.name ASC ")
+	public List<SupplierRelationship> findAll(Pageable pageable,@Param("company")List<String> company,@Param("key")String key);
 
 	@Query("FROM SupplierRelationship sup WHERE "
 			+ "sup.supplier.party.id =:party "

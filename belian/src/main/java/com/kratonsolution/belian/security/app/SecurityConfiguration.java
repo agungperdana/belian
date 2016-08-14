@@ -38,6 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 			.anyRequest().authenticated();
 
 		http.formLogin().failureUrl("/login").loginPage("/login").permitAll()
+			.successHandler(new SuccessHandler())
 			.and()
         	.logout().logoutUrl("/logout").permitAll();
 		
@@ -68,4 +69,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 		
 		return provider;
 	}
+	
+	
 }

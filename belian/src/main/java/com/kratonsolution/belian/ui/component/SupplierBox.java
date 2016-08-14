@@ -15,6 +15,7 @@ import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Hbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.procurement.dm.Supplier;
@@ -31,13 +32,15 @@ import lombok.Getter;
 @Getter
 public class SupplierBox extends Hbox implements SupplierRegistrationListener
 {
+	private Language lang = Springs.get(Language.class);
+	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	private SupplierRelationshipService service = Springs.get(SupplierRelationshipService.class);
 	
 	private Combobox identity = new Combobox();
 	
-	private A link = new A("New Supplier");
+	private A link = new A(lang.get("label.component.button.newsupplier"));
 	
 	private Map<String,Party> maps = new HashMap<>();
 	
@@ -45,7 +48,7 @@ public class SupplierBox extends Hbox implements SupplierRegistrationListener
 	{
 		setWidth("400px");
 		
-		identity.setPlaceholder("Identity Number or Name");
+		identity.setPlaceholder(lang.get("message.field.iden"));
 		identity.setAutodrop(true);
 		identity.setAutocomplete(false);
 		identity.setWidth("290px");

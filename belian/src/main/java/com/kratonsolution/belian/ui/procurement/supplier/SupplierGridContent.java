@@ -6,6 +6,7 @@ package com.kratonsolution.belian.ui.procurement.supplier;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
@@ -146,9 +147,21 @@ public class SupplierGridContent extends GridContent
 	
 	protected void initGrid()
 	{
+		filter.setPlaceholder(lang.get("message.filter.placeholder"));
+		filter.addEventListener(Events.ON_CHANGING, new EventListener<InputEvent>()
+		{
+			@Override
+			public void onEvent(InputEvent input) throws Exception
+			{
+				refresh(new SupplierModel(utils.getRowPerPage(), input.getValue()));
+			}
+		});
+		
+		appendChild(filter);
+		appendChild(grid);
+		
 		final SupplierModel model = new SupplierModel(utils.getRowPerPage());
 		
-		grid.setParent(this);
 		grid.setHeight("80%");
 		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
@@ -170,7 +183,7 @@ public class SupplierGridContent extends GridContent
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), utils.getRowPerPage());
+				model.next(event.getActivePage(), utils.getRowPerPage(),filter.getText());
 				refresh(model);
 			}
 		});

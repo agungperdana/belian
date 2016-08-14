@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.procurement.svc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,19 @@ public class SupplierRelationshipService
 	@Secured("ROLE_SUPPLIER_READ")
 	public int size()
 	{
-		return Long.valueOf(repository.count()).intValue();
+		if(utils.getOrganizationIds().isEmpty())
+			return 0;
+
+		return repository.count(utils.getOrganizationIds()).intValue();
+	}
+	
+	@Secured("ROLE_SUPPLIER_READ")
+	public int size(String key)
+	{
+		if(Strings.isNullOrEmpty(key))
+			return size();
+
+		return repository.count(utils.getOrganizationIds(),key).intValue();
 	}
 	
 	@Secured("ROLE_SUPPLIER_READ")
@@ -57,22 +70,40 @@ public class SupplierRelationshipService
 	@Secured("ROLE_SUPPLIER_READ")
 	public List<SupplierRelationship> findAll()
 	{
-		return repository.findAll();
+		if(utils.getOrganizationIds().isEmpty())
+			return new ArrayList<>();
+		
+		return repository.findAll(utils.getOrganizationIds());
 	}
 	
 	@Secured("ROLE_SUPPLIER_READ")
-	public List<SupplierRelationship> findAll(String name)
+	public List<SupplierRelationship> findAll(String key)
 	{
-		if(Strings.isNullOrEmpty(name))
-			return findAll(utils.getOrganization().getId());
+		if(utils.getOrganizationIds().isEmpty())
+			return new ArrayList<>();
 		
-		return repository.findAll(name,utils.getOrganization().getId());
+		if(Strings.isNullOrEmpty(key))
+			return findAll();
+		
+		return repository.findAll(utils.getOrganizationIds(),key);
 	}
 	
 	@Secured("ROLE_SUPPLIER_READ")
 	public List<SupplierRelationship> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId());
+		if(utils.getOrganizationIds().isEmpty())
+			return new ArrayList<>();
+		
+		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganizationIds());
+	}
+	
+	@Secured("ROLE_SUPPLIER_READ")
+	public List<SupplierRelationship> findAll(int pageIndex,int pageSize,String key)
+	{
+		if(Strings.isNullOrEmpty(key))
+			return findAll(pageIndex, pageSize);
+		
+		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganizationIds(),key);
 	}
 	
 	@Secured("ROLE_SUPPLIER_CREATE")

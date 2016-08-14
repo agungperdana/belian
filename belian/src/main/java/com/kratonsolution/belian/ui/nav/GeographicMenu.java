@@ -29,9 +29,6 @@ public class GeographicMenu extends Listitem
 	
 	public void init()
 	{
-		System.out.println(this);
-		System.out.println(lang.get("navbar.menu.general.geographic"));
-		
 		setLabel(lang.get("navbar.menu.general.geographic"));
 		setImage("/icons/geographic.png");
 		

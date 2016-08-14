@@ -24,6 +24,7 @@ import org.zkoss.zul.Window;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.general.dm.Gender;
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.general.dm.MaritalStatus;
@@ -43,6 +44,8 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PartyRegistration extends Window
 {
+	private Language lang = Springs.get(Language.class);
+	
 	private GeographicService geographicService = Springs.get(GeographicService.class);
 
 	private PersonService service = Springs.get(PersonService.class);
@@ -85,7 +88,7 @@ public class PartyRegistration extends Window
 
 	private void init()
 	{
-		Caption caption = new Caption("Party Registration");
+		Caption caption = new Caption(lang.get("navbar.menu.general.partyreg"));
 		caption.setImage("/icons/person.png");
 		appendChild(caption);
 		
@@ -95,15 +98,15 @@ public class PartyRegistration extends Window
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.setSpan("1");
-		grid.getRows().appendChild(RowUtils.row("Is Person", isPerson));
-		grid.getRows().appendChild(RowUtils.row("Identity", identity));
-		grid.getRows().appendChild(RowUtils.row("Name", name));
-		grid.getRows().appendChild(RowUtils.row("Birth Place", place));
-		grid.getRows().appendChild(RowUtils.row("Birth Date", date));
-		grid.getRows().appendChild(RowUtils.row("Tax Number", tax));
-		grid.getRows().appendChild(RowUtils.row("Gender", genders));
-		grid.getRows().appendChild(RowUtils.row("Marital Status", maritals));
-		grid.getRows().appendChild(RowUtils.row("Industry Segmentation", segmentationList));
+		grid.getRows().appendChild(RowUtils.row(lang.get("partyreg.grid.column.is"), isPerson));
+		grid.getRows().appendChild(RowUtils.row(lang.get("partyreg.grid.column.identity"), identity));
+		grid.getRows().appendChild(RowUtils.row(lang.get("partyreg.grid.column.name"), name));
+		grid.getRows().appendChild(RowUtils.row(lang.get("partyreg.grid.column.place"), place));
+		grid.getRows().appendChild(RowUtils.row(lang.get("partyreg.grid.column.date"), date));
+		grid.getRows().appendChild(RowUtils.row(lang.get("partyreg.grid.column.tax"), tax));
+		grid.getRows().appendChild(RowUtils.row(lang.get("partyreg.grid.column.gender"), genders));
+		grid.getRows().appendChild(RowUtils.row(lang.get("partyreg.grid.column.marital"), maritals));
+		grid.getRows().appendChild(RowUtils.row(lang.get("partyreg.grid.column.industry"), segmentationList));
 		
 		if(isPerson.isChecked())
 			grid.getRows().getLastChild().setVisible(false);
@@ -143,10 +146,10 @@ public class PartyRegistration extends Window
 			public void onEvent(Event arg0) throws Exception
 			{
 				if(Strings.isNullOrEmpty(identity.getText()))
-					throw new WrongValueException(identity,"Identity cannot be empty.");
+					throw new WrongValueException(identity,lang.get("message.field.empty"));
 				
 				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(identity,"Name cannot be empty.");
+					throw new WrongValueException(identity,lang.get("message.field.empty"));
 				
 				if(isPerson.isChecked())
 				{
