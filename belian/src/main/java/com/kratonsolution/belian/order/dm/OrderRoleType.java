@@ -9,5 +9,5 @@ package com.kratonsolution.belian.order.dm;
  */
 public enum OrderRoleType
 {
-
+	Salesperson,Reviewer,Processor,Authorizer,Installer
 }

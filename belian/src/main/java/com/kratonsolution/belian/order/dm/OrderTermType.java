@@ -9,5 +9,5 @@ package com.kratonsolution.belian.order.dm;
  */
 public enum OrderTermType
 {
-
+	PercentCancelCharge,DeliveryTime,PercentPinaltyCharge,Waranty,CreditTerm
 }
