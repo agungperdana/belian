@@ -8,8 +8,6 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -40,9 +38,9 @@ public class OrderTerm implements Serializable
 	@Column(name="amount")
 	private BigDecimal amount = BigDecimal.ZERO;
 	
-	@Enumerated(EnumType.STRING)
-	@Column(name="type")
-	private OrderTermType type;
+	@ManyToOne
+	@JoinColumn(name="fk_term_type")
+	private TermType type;
 
 	@Version
 	private Long version;
