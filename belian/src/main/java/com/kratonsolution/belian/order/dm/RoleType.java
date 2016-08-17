@@ -7,7 +7,7 @@ package com.kratonsolution.belian.order.dm;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public enum RequirementRoleType
+public enum RoleType
 {
-	Owner,Originator,Manager,Implementer,Authorizer
+	Initiator,Reviewer,Approver,Owner,Originator,Manager,Implementer,Authorizer
 }

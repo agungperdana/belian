@@ -12,12 +12,15 @@ import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +31,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Entity
+@Table(name="requirement")
 public class Requirement implements Serializable
 {
 	@Id
@@ -36,7 +41,7 @@ public class Requirement implements Serializable
 	@Column(name="creation_date")
 	private Date creationDate;
 	
-	@Column(name="creation_date")
+	@Column(name="required_date")
 	private Date requiredDate;
 	
 	@Column(name="note")
@@ -56,6 +61,9 @@ public class Requirement implements Serializable
 	@ManyToOne
 	@JoinColumn(name="fk_parent")
 	private Requirement parent;
+	
+	@Version
+	private Long version;
 	
 	@OneToMany(mappedBy="requirement",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<RequirementStatus> statuses = new HashSet<>();

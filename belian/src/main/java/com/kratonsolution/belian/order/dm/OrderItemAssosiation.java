@@ -6,9 +6,11 @@ package com.kratonsolution.belian.order.dm;
 import java.io.Serializable;
 import java.util.UUID;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Version;
 
 import lombok.Getter;
@@ -20,6 +22,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Entity
+@Table(name="order_item_assosiation")
 public class OrderItemAssosiation implements Serializable
 {
 	@Id

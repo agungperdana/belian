@@ -11,10 +11,15 @@ import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
 import com.kratonsolution.belian.general.dm.Address;
 import com.kratonsolution.belian.general.dm.Contact;
@@ -29,6 +34,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Entity
+@Table(name="order")
+@Inheritance(strategy=InheritanceType.JOINED)
 public abstract class Order implements Serializable
 {
 	@Id
@@ -72,6 +80,9 @@ public abstract class Order implements Serializable
 	@JoinColumn(name="fk_bill_to_contact")
 	protected Contact billtoContact;
 	
+	@Version
+	protected Long version;
+	
 	@OneToMany(mappedBy="order",cascade=CascadeType.ALL,orphanRemoval=true)
 	protected Set<OrderRole> partyOrderRoles = new HashSet<>();
 	
@@ -80,4 +91,7 @@ public abstract class Order implements Serializable
 	
 	@OneToMany(mappedBy="order",cascade=CascadeType.ALL,orphanRemoval=true)
 	protected Set<OrderTerm> terms = new HashSet<>();
+	
+	@OneToMany(mappedBy="order",cascade=CascadeType.ALL,orphanRemoval=true)
+	protected Set<OrderAdjustment> adjustments = new HashSet<>();
 }

@@ -8,9 +8,11 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Version;
 
 import lombok.Getter;
@@ -22,6 +24,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Entity
+@Table(name="order_requirement_commitment")
 public class OrderRequirementCommitment implements Serializable
 {
 	@Id
@@ -40,4 +44,6 @@ public class OrderRequirementCommitment implements Serializable
 	
 	@Version
 	private Long version;
+	
+	public OrderRequirementCommitment(){}
 }
