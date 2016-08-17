@@ -9,5 +9,5 @@ package com.kratonsolution.belian.shipment.dm;
  */
 public enum ShipmentStatusType
 {
-
+	Scheduled,Shipped,InRoute,Delivered,Canceled
 }

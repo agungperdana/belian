@@ -24,6 +24,7 @@ import javax.persistence.Version;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductFeature;
 import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
+import com.kratonsolution.belian.shipment.dm.ShipmentOrder;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -77,4 +78,7 @@ public abstract class OrderItem implements Serializable
 	
 	@OneToMany(mappedBy="orderItem",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<OrderRequirementCommitment> commitments = new HashSet<>();
+	
+	@OneToMany(mappedBy="orderItem")
+	private Set<ShipmentOrder> shipments = new HashSet<>();
 }

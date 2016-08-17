@@ -3,13 +3,11 @@
  */
 package com.kratonsolution.belian.shipment.dm;
 
-import java.io.Serializable;
-
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class PicklistItem implements Serializable
+public enum ShipmentRoleType
 {
-
+	Receiver,Issuer,ReceivingParty,IssuingParty,Inspector,Storing,Manager
 }

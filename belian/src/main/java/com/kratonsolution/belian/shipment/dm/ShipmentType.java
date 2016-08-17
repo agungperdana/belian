@@ -9,5 +9,5 @@ package com.kratonsolution.belian.shipment.dm;
  */
 public enum ShipmentType
 {
-
+	OutCustumerShipment,OutPurchaseRetur,InPurchaseShipment,InCustomerRetur,Transfer,DropShipment
 }
