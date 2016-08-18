@@ -1,10 +1,8 @@
 /**
  * 
  */
-package com.kratonsolution.belian.order.dm;
+package com.kratonsolution.belian.shipment.dm;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -25,27 +23,21 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="order_term")
-public class OrderTerm implements Serializable
+@Table(name="shipment_rejection_reason")
+public class ShipmentRejectionReason
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@ManyToOne
-	@JoinColumn(name="fk_order")
-	private Order order;
+	@Column(name="note")
+	private String description;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_order_item")
-	private OrderItem item;
-	
-	@Column(name="amount")
-	private BigDecimal amount = BigDecimal.ZERO;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_term_type")
-	private TermType type;
-
 	@Version
 	private Long version;
+
+	@ManyToOne
+	@JoinColumn(name="fk_shipment_receipt")
+	private ShipmentReceipt receipt;
+	
+	public ShipmentRejectionReason(){}
 }

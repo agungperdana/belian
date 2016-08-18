@@ -4,14 +4,11 @@
 package com.kratonsolution.belian.order.dm;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -25,27 +22,17 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="order_term")
-public class OrderTerm implements Serializable
+@Table(name="term_type")
+public class TermType implements  Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@ManyToOne
-	@JoinColumn(name="fk_order")
-	private Order order;
+	@Column(name="description")
+	private String description;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_order_item")
-	private OrderItem item;
-	
-	@Column(name="amount")
-	private BigDecimal amount = BigDecimal.ZERO;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_term_type")
-	private TermType type;
-
 	@Version
 	private Long version;
+
+	public TermType(){}
 }

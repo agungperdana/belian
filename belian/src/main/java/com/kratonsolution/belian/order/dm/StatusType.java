@@ -3,13 +3,11 @@
  */
 package com.kratonsolution.belian.order.dm;
 
-import java.io.Serializable;
-
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class AgreementPricingProgram implements Serializable
+public enum StatusType
 {
-
+	Received,Approved,Canceled,Active,OnHold,Inactive
 }
