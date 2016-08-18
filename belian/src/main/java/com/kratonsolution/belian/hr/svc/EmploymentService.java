@@ -27,6 +27,7 @@ import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.InternalOrganization;
 import com.kratonsolution.belian.general.dm.InternalOrganizationRepository;
 import com.kratonsolution.belian.global.dm.UserSetting;
+import com.kratonsolution.belian.global.dm.UserSettingRepository;
 import com.kratonsolution.belian.hr.dm.Benefit;
 import com.kratonsolution.belian.hr.dm.Employee;
 import com.kratonsolution.belian.hr.dm.EmployeeRepository;
@@ -68,6 +69,9 @@ public class EmploymentService
 	
 	@Autowired
 	private InternalOrganizationRepository intOrgRepository;
+
+	@Autowired
+	private UserSettingRepository settingRepo;
 	
 	@Autowired
 	private TaxRepository taxRepository;
@@ -185,6 +189,7 @@ public class EmploymentService
 				user.getRoles().add(userRole);
 			}
 			
+			settingRepo.save(setting);
 			employeeRepository.save(employment.getEmployee());
 		}
 		
