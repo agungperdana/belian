@@ -9,5 +9,5 @@ package com.kratonsolution.belian.shipment.dm;
  */
 public enum DocumentType
 {
-
+	BillOfLanding, PackagingSlip, Export, Manifest, PortCharges, TaxTariff,Hazardous
 }

@@ -42,7 +42,7 @@ public class OrderAdjustment implements Serializable
 
 	@Enumerated(EnumType.STRING)
 	@Column(name="type")
-	private OrderAdjustmentType type = OrderAdjustmentType.Tax;
+	private OrderAdjustmentType type = OrderAdjustmentType.TAX;
 
 	@Version
 	private Long version;

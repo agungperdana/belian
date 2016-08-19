@@ -9,5 +9,5 @@ package com.kratonsolution.belian.order.dm;
  */
 public enum StatusType
 {
-	Received,Approved,Canceled,Active,OnHold,Inactive
+	RECEIVED,APPROVED,CANCELED,ACTIVE,ONHOLD,INACTIVE
 }

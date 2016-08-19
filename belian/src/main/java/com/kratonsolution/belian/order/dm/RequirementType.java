@@ -9,5 +9,5 @@ package com.kratonsolution.belian.order.dm;
  */
 public enum RequirementType
 {
-	Product,Work
+	PRODUCTION,WORKEFFORT,PROJECT,MAINTENANCE
 }

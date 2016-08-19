@@ -42,7 +42,7 @@ public class RequirementStatus implements Serializable
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="type")
-	private StatusType type = StatusType.Active;
+	private StatusType type = StatusType.ACTIVE;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_requirement")

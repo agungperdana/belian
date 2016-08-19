@@ -41,7 +41,7 @@ public class RequirementRole implements Serializable
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="type")
-	private RoleType type = RoleType.Initiator;
+	private RoleType type = RoleType.INITIATOR;
 
 	@ManyToOne
 	@JoinColumn(name="fk_order")

@@ -9,5 +9,5 @@ package com.kratonsolution.belian.order.dm;
  */
 public enum RequirementSourceType
 {
-	Customer,Internal
+	CUSTOMER,INTERNAL
 }

@@ -97,6 +97,10 @@ public class Shipment implements Serializable
 	@JoinColumn(name="ship_to_contact")
 	private Contact shipToContact;
 	
+	@ManyToOne
+	@JoinColumn(name="fk_shipping_document")
+	private ShippingDocument document;
+	
 	@Version
 	private Long version;
 	
@@ -105,6 +109,10 @@ public class Shipment implements Serializable
 	
 	@OneToMany(mappedBy="shipment",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<ShipmentStatus> statuses = new HashSet<>();
+	
 
+	@OneToMany(mappedBy="shipment",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<ShipmentRouteSegment> routes = new HashSet<>();
+	
 	public Shipment(){}
 }

@@ -9,5 +9,32 @@ package com.kratonsolution.belian.order.dm;
  */
 public enum OrderAdjustmentType
 {
-	Discount,Surcharge,Tax,ShipingCharge,HandlingCharge,Fee,OtherCharge
+	DISCOUNT("Diskon","Discount"),
+	SURCHARGE("Biaya Tambahan","Surcharge"),
+	TAX("Pajak","Tax"),
+	SHIPPINGCHARGE("Biaya Pengiriman","Shipping Charge"),
+	HANDLINGCHARGE("Biaya Penganganan","Handling Charge"),
+	FEE("Biaya","Fee"),
+	OTHERCHARGE("Biaya Lain Lain","Other Charge");
+	
+	private String inID;
+	
+	private String enUS;
+	
+	private OrderAdjustmentType(String inID,String enUS)
+	{
+		this.inID = inID;
+		this.enUS = enUS;
+	}
+	
+	public String display(String lang)
+	{
+		if(lang == null || lang.equals(""))
+			return this.enUS;
+		
+		if(lang.equalsIgnoreCase("in_ID"))
+			return this.inID;
+		else
+			return this.enUS;
+	}
 }

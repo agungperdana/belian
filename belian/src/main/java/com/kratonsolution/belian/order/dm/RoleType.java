@@ -9,5 +9,5 @@ package com.kratonsolution.belian.order.dm;
  */
 public enum RoleType
 {
-	Initiator,Reviewer,Approver,Owner,Originator,Manager,Implementer,Authorizer
+	INITIATOR,REVIEWER,APPROVER,OWNER,ORIGINATOR,MANAGER,IMPLEMENTER,AUTHORIZER
 }

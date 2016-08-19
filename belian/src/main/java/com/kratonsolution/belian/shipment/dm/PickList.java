@@ -13,8 +13,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -29,27 +27,20 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="shipment_package")
-public class ShipmentPackage implements Serializable
+@Table(name="pick_list")
+public class PickList implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
-	
+
 	@Column(name="create_date")
-	private Date dateCreated;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_shipping_document")
-	private ShippingDocument document;
+	private Date createDate;
 	
 	@Version
 	private Long version;
-
-	@OneToMany(mappedBy="packaging",cascade=CascadeType.ALL,orphanRemoval=true)
-	private Set<PackagingContent> contents = new HashSet<>();
 	
-	@OneToMany(mappedBy="packaging",cascade=CascadeType.ALL,orphanRemoval=true)
-	private Set<ShipmentReceipt> receipts = new HashSet<>();
+	@OneToMany(mappedBy="list",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<PickListItem> items = new HashSet<>();
 	
-	public ShipmentPackage(){}
+	public PickList(){}
 }

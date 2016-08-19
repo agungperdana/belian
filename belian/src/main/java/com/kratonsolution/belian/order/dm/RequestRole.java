@@ -44,7 +44,7 @@ public class RequestRole implements Serializable
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="type")
-	private RoleType type = RoleType.Initiator;
+	private RoleType type = RoleType.INITIATOR;
 	
 	@Version
 	private Long version;

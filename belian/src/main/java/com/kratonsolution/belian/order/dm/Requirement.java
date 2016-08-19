@@ -52,11 +52,11 @@ public class Requirement implements Serializable
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="source_type")
-	private RequirementSourceType source = RequirementSourceType.Internal;
+	private RequirementSourceType source = RequirementSourceType.INTERNAL;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name="type")
-	private RequirementType type = RequirementType.Product;
+	private RequirementType type = RequirementType.PRODUCTION;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_parent")

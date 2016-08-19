@@ -56,6 +56,10 @@ public class ShipmentItem implements Serializable
 	@JoinColumn(name="fk_shipment")
 	private Shipment shipment;
 	
+	@ManyToOne
+	@JoinColumn(name="fk_shipping_document")
+	private ShippingDocument document;
+	
 	@Version
 	private Long version;
 
