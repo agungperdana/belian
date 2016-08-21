@@ -15,11 +15,9 @@ import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 
-import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.education.dm.AttendanceStatus;
 import com.kratonsolution.belian.education.dm.CourseAttendance;
 import com.kratonsolution.belian.education.dm.CourseAttendanceItem;
@@ -123,18 +121,18 @@ public class CourseAttendanceEditContent extends FormContent
 		CourseAttendance attendance = service.findOne(RowUtils.id(row));
 		if(attendance != null)
 		{
-			companys.setOrganization(attendance.getOrganization());
-			date.setValue(attendance.getDate());
-			periods.setSelectedItem(periods.appendItem(attendance.getSchedule().getRequirement().getPeriod().getLabel(),attendance.getSchedule().getRequirement().getPeriod().getValue()));
-			programs.setSelectedItem(programs.appendItem(attendance.getSchedule().getRequirement().getName(), attendance.getSchedule().getRequirement().getId()));
-
-			StringBuilder builder = new StringBuilder();
-			builder.append("["+DateTimes.format(attendance.getSchedule().getStart())+"-"+DateTimes.format(attendance.getSchedule().getEnd())+"] ");
-			builder.append(attendance.getSchedule().getDay()+"-");
-			builder.append(attendance.getSchedule().getProduct().getName()+"-");
-			builder.append(attendance.getSchedule().getWorker().getName());
+//			companys.setOrganization(attendance.getOrganization());
+//			date.setValue(attendance.getDate());
+//			periods.setSelectedItem(periods.appendItem(attendance.getSchedule().getRequirement().getPeriod().getLabel(),attendance.getSchedule().getRequirement().getPeriod().getValue()));
+//			programs.setSelectedItem(programs.appendItem(attendance.getSchedule().getRequirement().getName(), attendance.getSchedule().getRequirement().getId()));
+//
+//			StringBuilder builder = new StringBuilder();
+//			builder.append("["+DateTimes.format(attendance.getSchedule().getStart())+"-"+DateTimes.format(attendance.getSchedule().getEnd())+"] ");
+//			builder.append(attendance.getSchedule().getDay()+"-");
+//			builder.append(attendance.getSchedule().getProduct().getName()+"-");
+//			builder.append(attendance.getSchedule().getWorker().getName());
 			
-			schedules.setSelectedItem(schedules.appendItem(builder.toString(), attendance.getSchedule().getId()));
+//			schedules.setSelectedItem(schedules.appendItem(builder.toString(), attendance.getSchedule().getId()));
 		}
 		
 		grid.appendChild(new Columns());
@@ -184,56 +182,56 @@ public class CourseAttendanceEditContent extends FormContent
 		{
 			for(CourseAttendanceItem item:attendance.getItems())
 			{
-				if(item.getAttendance().getSchedule().getWorker().getId().equals(item.getPerson().getId()))
-				{
-					Row row = new Row();
-					
-					Listbox person = Components.fullSpanSelect();
-					person.setSelectedItem(person.appendItem(item.getPerson().getName()+" [Mentor]",item.getPerson().getId()));
-					person.setStyle("font-weight:bold;color:blue;");
-					
-					row.appendChild(person);
-					
-					Listbox listbox = Components.fullSpanSelect();
-					for(AttendanceStatus status:AttendanceStatus.values())
-					{
-						Listitem listitem = listbox.appendItem(status.display(utils.getLanguage()), status.display(utils.getLanguage()));
-						if(status.equals(item.getStatus()))
-							listbox.setSelectedItem(listitem);
-					}
-					
-					row.appendChild(listbox);
-					row.appendChild(Components.label(item.getId()));
-					
-					items.getRows().appendChild(row);
-					break;
-				}
+//				if(item.getAttendance().getSchedule().getWorker().getId().equals(item.getPerson().getId()))
+//				{
+//					Row row = new Row();
+//					
+//					Listbox person = Components.fullSpanSelect();
+//					person.setSelectedItem(person.appendItem(item.getPerson().getName()+" [Mentor]",item.getPerson().getId()));
+//					person.setStyle("font-weight:bold;color:blue;");
+//					
+//					row.appendChild(person);
+//					
+//					Listbox listbox = Components.fullSpanSelect();
+//					for(AttendanceStatus status:AttendanceStatus.values())
+//					{
+//						Listitem listitem = listbox.appendItem(status.display(utils.getLanguage()), status.display(utils.getLanguage()));
+//						if(status.equals(item.getStatus()))
+//							listbox.setSelectedItem(listitem);
+//					}
+//					
+//					row.appendChild(listbox);
+//					row.appendChild(Components.label(item.getId()));
+//					
+//					items.getRows().appendChild(row);
+//					break;
+//				}
 			}
 			
 			for(CourseAttendanceItem item:attendance.getItems())
 			{
-				if(!item.getAttendance().getSchedule().getWorker().getId().equals(item.getPerson().getId()))
-				{
-					Row row = new Row();
-					
-					Listbox person = Components.fullSpanSelect();
-					person.setSelectedItem(person.appendItem(item.getPerson().getName(),item.getPerson().getId()));
-					
-					row.appendChild(person);
-					
-					Listbox listbox = Components.fullSpanSelect();
-					for(AttendanceStatus status:AttendanceStatus.values())
-					{
-						Listitem listitem = listbox.appendItem(status.display(utils.getLanguage()), status.display(utils.getLanguage()));
-						if(status.equals(item.getStatus()))
-							listbox.setSelectedItem(listitem);
-					}
-					
-					row.appendChild(listbox);
-					row.appendChild(Components.label(item.getId()));
-					
-					items.getRows().appendChild(row);
-				}
+//				if(!item.getAttendance().getSchedule().getWorker().getId().equals(item.getPerson().getId()))
+//				{
+//					Row row = new Row();
+//					
+//					Listbox person = Components.fullSpanSelect();
+//					person.setSelectedItem(person.appendItem(item.getPerson().getName(),item.getPerson().getId()));
+//					
+//					row.appendChild(person);
+//					
+//					Listbox listbox = Components.fullSpanSelect();
+//					for(AttendanceStatus status:AttendanceStatus.values())
+//					{
+//						Listitem listitem = listbox.appendItem(status.display(utils.getLanguage()), status.display(utils.getLanguage()));
+//						if(status.equals(item.getStatus()))
+//							listbox.setSelectedItem(listitem);
+//					}
+//					
+//					row.appendChild(listbox);
+//					row.appendChild(Components.label(item.getId()));
+//					
+//					items.getRows().appendChild(row);
+//				}
 			}
 		}
 		

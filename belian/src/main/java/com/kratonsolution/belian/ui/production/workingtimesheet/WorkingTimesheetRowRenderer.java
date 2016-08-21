@@ -9,7 +9,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
 import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.production.dm.Timesheet;
+import com.kratonsolution.belian.effort.dm.Timesheet;
 
 /**
  * 
@@ -27,7 +27,7 @@ public class WorkingTimesheetRowRenderer implements RowRenderer<Timesheet>
 			row.appendChild(new Checkbox());
 			row.appendChild(new Label(DateTimes.format(data.getStart())));
 			row.appendChild(new Label(DateTimes.format(data.getEnd())));
-			row.appendChild(new Label(data.getEmployee().getParty().getName()));
+			row.appendChild(new Label(data.getWorker().getParty().getName()));
 			row.appendChild(new Label(data.getId()));
 		}
 	}

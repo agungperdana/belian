@@ -4,22 +4,22 @@
 package com.kratonsolution.belian.effort.dm;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.kratonsolution.belian.general.dm.Party;
+import com.kratonsolution.belian.hr.dm.RateType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -31,34 +31,31 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="work_effort_party_assignment")
-public class WorkEffortPartyAssignment implements Serializable
+@Table(name="party_rate")
+public class PartyRate implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
-
+	
 	@Column(name="start")
 	private Date start;
-
+	
 	@Column(name="end")
 	private Date end;
-
-	@Column(name="comment")
-	private String comment;
-
+	
+	@Column(name="rate")
+	private BigDecimal rate = BigDecimal.ONE;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="type")
+	private RateType type = RateType.PAYROLL;
+	
 	@ManyToOne
 	@JoinColumn(name="fk_party")
 	private Party party;
-
-	@ManyToOne
-	@JoinColumn(name="fk_work_effort")
-	private WorkEffort effort;
-
+	
 	@Version
 	private Long version;
 	
-	@OneToMany(mappedBy="assignment",cascade=CascadeType.ALL,orphanRemoval=true)
-	private Set<WorkEffortAssignmentRate> rates = new HashSet<>();
-
-	public WorkEffortPartyAssignment(){}
+	public PartyRate(){}
 }

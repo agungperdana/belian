@@ -17,11 +17,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.effort.dm.TimeEntry;
+import com.kratonsolution.belian.effort.dm.Timesheet;
 import com.kratonsolution.belian.general.dm.InternalOrganization;
 import com.kratonsolution.belian.general.dm.PartyRelationship;
 import com.kratonsolution.belian.global.dm.Listable;
-import com.kratonsolution.belian.production.dm.TimeEntry;
-import com.kratonsolution.belian.production.dm.Timesheet;
 
 import lombok.Getter;
 import lombok.Setter;

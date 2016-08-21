@@ -17,7 +17,7 @@ import javax.persistence.Table;
 import com.kratonsolution.belian.inventory.dm.Facility;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductFeature;
-import com.kratonsolution.belian.production.dm.Requirement;
+import com.kratonsolution.belian.order.dm.Requirement;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -5,11 +5,11 @@ package com.kratonsolution.belian.invoice.dm;
 
 import java.io.Serializable;
 
+import com.kratonsolution.belian.effort.dm.TimeEntry;
+import com.kratonsolution.belian.effort.dm.WorkEffort;
 import com.kratonsolution.belian.inventory.dm.InventoryItem;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductFeature;
-import com.kratonsolution.belian.production.dm.TimeEntry;
-import com.kratonsolution.belian.production.dm.WorkEffort;
 
 /**
  * @author Agung Dodi Perdana

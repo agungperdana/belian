@@ -1,13 +1,11 @@
 /**
  * 
  */
-package com.kratonsolution.belian.production.dm;
+package com.kratonsolution.belian.effort.dm;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.UUID;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -29,32 +27,24 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="requirement_role")
-public class RequirementRole implements Serializable
+@Table(name="work_effort_role")
+public class WorkEffortRole implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
-
-	@Column(name="start")
-	private Date start;
 	
-	@Column(name="end")
-	private Date end;
-	
-	@Enumerated(EnumType.STRING)
-	@Column(name="type")
-	private RequirementRoleType type = RequirementRoleType.Responsible;
-
 	@ManyToOne
 	@JoinColumn(name="fk_party")
 	private Party party;
 	
+	@Enumerated(EnumType.STRING)
+	@JoinColumn(name="type")
+	private WorkEffortRoleType type = WorkEffortRoleType.SUPERVISOR;
+	
 	@ManyToOne
-	@JoinColumn(name="fk_requirement")
-	private Requirement requirement;
+	@JoinColumn(name="fk_work_effort")
+	private WorkEffort effort;
 	
 	@Version
 	private Long version;
-
-	public RequirementRole(){}
 }

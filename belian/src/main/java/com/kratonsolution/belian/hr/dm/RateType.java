@@ -9,20 +9,32 @@ package com.kratonsolution.belian.hr.dm;
  */
 public enum RateType
 {
-	BILL_RATE("Bill Rate"),PAYROLL_RATE("Salary Rate"),
-	COSTS("Cost"),OVER_TIME("Over Time"),
-	HIGHEST_PAY_RATE("Highest Pay Rate"),LOWEST_PAY_RATE("Lowest Pay Rate"),
-	AVERAGE_PAY_RATE("Average Pay Rate"),STANDARD_PAY_RATE("Standard Pay Rate");
-	
-	private String display;
-	
-	private RateType(String display)
+	REGULAR_BILLING("Regular Billing","Biaya Tagihan Standar"),
+	REGULAR_PAY("Regular Pay","Biaya Pembayaran Standar"),
+	OVERTIME_PAY("Overtime Pay","Biaya Pembayaran Lembur"),
+	PAYROLL("Payroll Rate","Gaji"),
+	OVER_TIME_BILLING("Over Time Billing","Biaya Tagihan Lembur");
+
+	private String enUS;
+
+	private String inID;
+
+	private RateType(String enUS,String inID)
 	{
-		this.display = display;
+		this.enUS = enUS;
+		this.inID = inID;
 	}
-	
+
 	public String display()
 	{
-		return this.display;
+		return this.enUS;
+	}
+
+	public String display(String lang)
+	{
+		if(lang == null || lang.equals("") || lang.equals("enUS"))
+			return display();
+
+		return this.inID;
 	}
 }

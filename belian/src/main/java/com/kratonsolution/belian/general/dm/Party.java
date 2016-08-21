@@ -79,6 +79,9 @@ public class Party implements Serializable, Listable
 	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
 	private Set<PartyRole> partyRoles = new HashSet<>();
 	
+	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
+	private Set<PartySkill> skills = new HashSet<>();
+	
 	@Override
 	public String getLabel()
 	{

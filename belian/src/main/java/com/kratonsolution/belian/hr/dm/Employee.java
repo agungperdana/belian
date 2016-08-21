@@ -14,8 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.kratonsolution.belian.general.dm.PartyRole;
-import com.kratonsolution.belian.production.dm.Timesheet;
+import com.kratonsolution.belian.effort.dm.Timesheet;
+import com.kratonsolution.belian.effort.dm.Worker;
 import com.kratonsolution.belian.security.dm.User;
 
 import lombok.Getter;
@@ -29,7 +29,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="employee")
-public class Employee extends PartyRole
+public class Employee extends Worker
 {
 	@OneToOne(cascade=CascadeType.ALL,orphanRemoval=true,optional=true)
 	@JoinColumn(name="fk_user")

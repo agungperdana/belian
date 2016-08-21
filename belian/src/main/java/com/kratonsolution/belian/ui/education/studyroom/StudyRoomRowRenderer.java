@@ -27,7 +27,7 @@ public class StudyRoomRowRenderer implements RowRenderer<StudyRoom>
 		if(data != null)
 		{
 			row.appendChild(new Checkbox());
-			row.appendChild(new Label(data.getName()));
+			row.appendChild(new Label(""));
 			row.appendChild(new Label(data.getRoom().getLabel()));
 			row.appendChild(new Label(data.getCourse().getLabel()));
 			row.appendChild(new Label(data.getPeriod().getLabel()));

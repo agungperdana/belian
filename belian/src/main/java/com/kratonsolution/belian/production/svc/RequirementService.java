@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.production.dm.Requirement;
-import com.kratonsolution.belian.production.dm.RequirementRepository;
+import com.kratonsolution.belian.effort.dm.RequirementRepository;
+import com.kratonsolution.belian.order.dm.Requirement;
 
 /**
  * 

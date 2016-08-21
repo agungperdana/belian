@@ -59,7 +59,7 @@ public class PositionTypeRate implements Serializable
 
 	@Enumerated(EnumType.STRING)
 	@Column(name="rate_type")
-	private RateType rateType = RateType.STANDARD_PAY_RATE;
+	private RateType rateType = RateType.PAYROLL;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name="period_type")

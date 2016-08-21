@@ -15,10 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.effort.dm.TimeEntry;
+import com.kratonsolution.belian.effort.dm.TimeEntryRepository;
 import com.kratonsolution.belian.payment.dm.Paycheck;
 import com.kratonsolution.belian.payment.dm.PaycheckRepository;
-import com.kratonsolution.belian.production.dm.TimeEntry;
-import com.kratonsolution.belian.production.dm.TimeEntryRepository;
 
 /**
  * 
@@ -104,7 +104,6 @@ public class PaycheckService
 
 		for(TimeEntry entry:entrys)
 		{
-			entry.setPaid(true);
 			timeEntryRepo.saveAndFlush(entry);
 		}
 		

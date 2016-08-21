@@ -19,8 +19,8 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 
 import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.production.dm.TimeEntry;
-import com.kratonsolution.belian.production.dm.Timesheet;
+import com.kratonsolution.belian.effort.dm.TimeEntry;
+import com.kratonsolution.belian.effort.dm.Timesheet;
 import com.kratonsolution.belian.production.svc.WorkingTimesheetService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
@@ -82,7 +82,7 @@ public class WorkingTimesheetFormContent extends FormContent
 					throw new WrongValueException(employees,lang.get("message.field.empty"));
 
 				Timesheet timesheet = new Timesheet();
-				timesheet.setEmployee(employees.getEmployee());
+				timesheet.setWorker(employees.getEmployee());
 				timesheet.setEnd(DateTimes.sql(end.getValue()));
 				timesheet.setOrganization(companys.getOrganization());
 				timesheet.setStart(DateTimes.sql(start.getValue()));
@@ -92,10 +92,9 @@ public class WorkingTimesheetFormContent extends FormContent
 					Row ent = (Row)com;
 					
 					TimeEntry entry = new TimeEntry();
-					entry.setDate(RowUtils.sql(ent, 1));
-					entry.setStart(RowUtils.time(ent, 2));
-					entry.setEnd(RowUtils.time(ent, 3));
-					entry.setHour(DateTimes.toHours(entry.getStart(), entry.getEnd()));
+					entry.setStart(null);
+					entry.setEnd(null);
+					entry.setHour(null);
 					entry.setComment(RowUtils.string(ent, 4));
 					entry.setTimesheet(timesheet);
 					

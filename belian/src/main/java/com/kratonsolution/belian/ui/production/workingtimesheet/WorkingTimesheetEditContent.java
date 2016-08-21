@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.ui.production.workingtimesheet;
 
+import java.sql.Timestamp;
 import java.util.UUID;
 import java.util.Vector;
 
@@ -20,8 +21,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 
 import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.production.dm.TimeEntry;
-import com.kratonsolution.belian.production.dm.Timesheet;
+import com.kratonsolution.belian.effort.dm.TimeEntry;
+import com.kratonsolution.belian.effort.dm.Timesheet;
+import com.kratonsolution.belian.hr.dm.Employee;
 import com.kratonsolution.belian.production.svc.WorkingTimesheetService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
@@ -88,7 +90,7 @@ public class WorkingTimesheetEditContent extends FormContent
 				Timesheet timesheet = service.findOne(RowUtils.id(row));
 				if(timesheet != null)
 				{
-					timesheet.setEmployee(employees.getEmployee());
+					timesheet.setWorker(employees.getEmployee());
 					timesheet.setEnd(DateTimes.sql(end.getValue()));
 					timesheet.setOrganization(companys.getOrganization());
 					timesheet.setStart(DateTimes.sql(start.getValue()));
@@ -99,10 +101,9 @@ public class WorkingTimesheetEditContent extends FormContent
 						Row ent = (Row)com;
 						
 						TimeEntry entry = new TimeEntry();
-						entry.setDate(RowUtils.sql(ent, 1));
-						entry.setStart(RowUtils.time(ent, 2));
-						entry.setEnd(RowUtils.time(ent, 3));
-						entry.setHour(DateTimes.toHours(entry.getStart(), entry.getEnd()));
+						entry.setStart(new Timestamp(RowUtils.time(ent, 2).getTime()));
+						entry.setEnd(new Timestamp(RowUtils.time(ent, 3).getTime()));
+						entry.setHour(DateTimes.toHours(entry.getStart().getTime(), entry.getEnd().getTime()));
 						entry.setComment(RowUtils.string(ent, 5));
 						entry.setTimesheet(timesheet);
 						
@@ -126,7 +127,7 @@ public class WorkingTimesheetEditContent extends FormContent
 			companys.setOrganization(timesheet.getOrganization());
 			start.setValue(timesheet.getStart());
 			end.setValue(timesheet.getEnd());
-			employees.setEmployee(timesheet.getEmployee());
+			employees.setEmployee((Employee)timesheet.getWorker());
 		}
 		
 		grid.appendChild(new Columns());
@@ -179,9 +180,9 @@ public class WorkingTimesheetEditContent extends FormContent
 			{
 				Row row = new Row();
 				row.appendChild(Components.checkbox(false));
-				row.appendChild(Components.mandatoryDatebox(entry.getDate()));
-				row.appendChild(Components.fullspanTimebox(entry.getStart()));
-				row.appendChild(Components.fullspanTimebox(entry.getEnd()));
+				row.appendChild(Components.mandatoryDatebox());
+				row.appendChild(Components.fullspanTimebox(null));
+				row.appendChild(Components.fullspanTimebox(null));
 				row.appendChild(Components.textBox(entry.getComment()));
 				row.appendChild(Components.label(entry.getId()));
 				

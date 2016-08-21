@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.production.dm;
+package com.kratonsolution.belian.effort.dm;
 
 import java.util.List;
 
@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import com.kratonsolution.belian.order.dm.Requirement;
 
 /**
  * @author Agung Dodi Perdana

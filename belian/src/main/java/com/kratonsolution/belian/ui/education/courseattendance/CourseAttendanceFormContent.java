@@ -20,7 +20,6 @@ import org.zkoss.zul.Rows;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.education.dm.AttendanceStatus;
 import com.kratonsolution.belian.education.dm.CourseAttendance;
-import com.kratonsolution.belian.education.dm.CourseAttendanceItem;
 import com.kratonsolution.belian.education.dm.CourseRegistration;
 import com.kratonsolution.belian.education.dm.CourseSchedule;
 import com.kratonsolution.belian.education.dm.StudyRoom;
@@ -33,7 +32,6 @@ import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
-import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -102,20 +100,20 @@ public class CourseAttendanceFormContent extends FormContent
 				{
 					Row row = (Row)com;
 					
-					CourseAttendanceItem item = new CourseAttendanceItem();
-					item.setDate(attendance.getDate());
-					item.setStart(attendance.getSchedule().getStart());
-					item.setEnd(attendance.getSchedule().getEnd());
-					item.setAttendance(attendance);
-					item.setPerson(personService.findOne(RowUtils.string(row,0)));
-					item.setStatus(AttendanceStatus.valueOf(RowUtils.string(row, 1)));
-					item.setComment("Attendance time entry");
-					item.setEffort(attendance.getSchedule());
-					
-					if(item.getStatus().equals(AttendanceStatus.IN))
-						item.setHour(DateTimes.toHours(item.getStart(), item.getEnd()));
-					
-					attendance.getItems().add(item);
+//					CourseAttendanceItem item = new CourseAttendanceItem();
+//					item.setDate(attendance.getDate());
+//					item.setStart(attendance.getSchedule().getStart());
+//					item.setEnd(attendance.getSchedule().getEnd());
+//					item.setAttendance(attendance);
+//					item.setPerson(personService.findOne(RowUtils.string(row,0)));
+//					item.setStatus(AttendanceStatus.valueOf(RowUtils.string(row, 1)));
+//					item.setComment("Attendance time entry");
+//					item.setEffort(attendance.getSchedule());
+//					
+//					if(item.getStatus().equals(AttendanceStatus.IN))
+//						item.setHour(DateTimes.toHours(item.getStart(), item.getEnd()));
+//					
+//					attendance.getItems().add(item);
 				}
 				
 				service.add(attendance);
@@ -135,8 +133,8 @@ public class CourseAttendanceFormContent extends FormContent
 			{
 				programs.getChildren().clear();
 			
-				for(StudyRoom room:roomService.findAll(Components.string(periods)))
-					programs.appendItem(room.getName(), room.getId());
+//				for(StudyRoom room:roomService.findAll(Components.string(periods)))
+//					programs.appendItem(room.getName(), room.getId());
 			}
 		});
 		
@@ -153,10 +151,10 @@ public class CourseAttendanceFormContent extends FormContent
 					for(CourseSchedule schedule:room.getEfforts())
 					{
 						StringBuilder builder = new StringBuilder();
-						builder.append("["+DateTimes.format(schedule.getStart())+"-"+DateTimes.format(schedule.getEnd())+"] ");
-						builder.append(schedule.getDay()+"-");
-						builder.append(schedule.getProduct().getName()+"-");
-						builder.append(schedule.getWorker().getName());
+//						builder.append("["+DateTimes.format(schedule.getStart())+"-"+DateTimes.format(schedule.getEnd())+"] ");
+//						builder.append(schedule.getDay()+"-");
+//						builder.append(schedule.getProduct().getName()+"-");
+//						builder.append(schedule.getWorker().getName());
 
 						schedules.appendItem(builder.toString(), schedule.getId());
 					}
@@ -230,8 +228,8 @@ public class CourseAttendanceFormContent extends FormContent
 				Row row = new Row();
 
 				Listbox person = Components.fullSpanSelect();
-				person.setSelectedItem(person.appendItem(schedule.getWorker().getName()+" [Mentor]",schedule.getWorker().getId()));
-				person.setStyle("font-weight:bold;color:blue;");
+//				person.setSelectedItem(person.appendItem(schedule.getWorker().getName()+" [Mentor]",schedule.getWorker().getId()));
+//				person.setStyle("font-weight:bold;color:blue;");
 				
 				row.appendChild(person);
 				

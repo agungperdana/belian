@@ -161,11 +161,11 @@ public class StudyRoomEditContent extends FormContent
 						CourseSchedule crs = new CourseSchedule();
 						crs.setId(RowUtils.id(row));
 						crs.setDay(RowUtils.string(row, 1));
-						crs.setStart(RowUtils.time(row, 2));
-						crs.setEnd(RowUtils.time(row, 3));
+//						crs.setStart(RowUtils.time(row, 2));
+//						crs.setEnd(RowUtils.time(row, 3));
 						crs.setProduct(productService.findOne(RowUtils.string(row, 4)));
 						crs.setRequirement(room);
-						crs.setWorker(personService.findOne(RowUtils.string(row, 5)));
+//						crs.setWorker(personService.findOne(RowUtils.string(row, 5)));
 						
 						scd.add(crs);
 					}
@@ -185,8 +185,8 @@ public class StudyRoomEditContent extends FormContent
 		StudyRoom room = service.findOne(RowUtils.id(row));
 		if(room != null)
 		{
-			name.setText(room.getName());
-			companys.setOrganization(room.getOrganization());
+//			name.setText(room.getName());
+//			companys.setOrganization(room.getOrganization());
 			rooms.appendItem(room.getRoom().getLabel(), room.getRoom().getValue());
 			rooms.setSelectedIndex(0);
 			periods.appendItem(room.getPeriod().getLabel(), room.getPeriod().getValue());
@@ -331,10 +331,10 @@ public class StudyRoomEditContent extends FormContent
 				Row row = new Row();
 				row.appendChild(schedule.getAttendances().isEmpty()?Components.checkbox(false):Components.readOnlyCheckbox());
 				row.appendChild(listbox);
-				row.appendChild(Components.fullspanTimebox(schedule.getStart()));
-				row.appendChild(Components.fullspanTimebox(schedule.getEnd()));
+//				row.appendChild(Components.fullspanTimebox(schedule.getStart()));
+//				row.appendChild(Components.fullspanTimebox(schedule.getEnd()));
 				row.appendChild(Components.fullSpanSelect(rm.getCourse().getComponents(),schedule.getProduct()));
-				row.appendChild(Components.fullSpanSelect(schedule.getWorker()));
+//				row.appendChild(Components.fullSpanSelect(schedule.getWorker()));
 				row.appendChild(Components.label(schedule.getId()));
 			
 				schedules.getRows().appendChild(row);

@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.production.dm.TimeEntry;
-import com.kratonsolution.belian.production.dm.Timesheet;
-import com.kratonsolution.belian.production.dm.TimesheetRepository;
+import com.kratonsolution.belian.effort.dm.TimeEntry;
+import com.kratonsolution.belian.effort.dm.Timesheet;
+import com.kratonsolution.belian.effort.dm.TimesheetRepository;
 
 /**
  * 

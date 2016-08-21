@@ -9,7 +9,7 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
-import com.kratonsolution.belian.production.dm.Timesheet;
+import com.kratonsolution.belian.effort.dm.Timesheet;
 import com.kratonsolution.belian.production.svc.WorkingTimesheetService;
 import com.kratonsolution.belian.ui.util.Springs;
 

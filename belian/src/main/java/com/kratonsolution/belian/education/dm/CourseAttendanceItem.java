@@ -9,8 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.kratonsolution.belian.effort.dm.TimeEntry;
 import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.production.dm.TimeEntry;
 
 import lombok.Getter;
 import lombok.Setter;

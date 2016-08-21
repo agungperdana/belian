@@ -29,7 +29,7 @@ public class CourseAttendanceRowRenderer implements RowRenderer<CourseAttendance
 		{
 			row.appendChild(new Checkbox());
 			row.appendChild(new Label(DateTimes.format(data.getDate())));
-			row.appendChild(new Label(data.getSchedule().getRequirement().getName()));
+			row.appendChild(new Label(""));
 			row.appendChild(new Label(data.getSchedule().getRequirement().getPeriod().getName()));
 			row.appendChild(new Label(data.getSchedule().getDay()));
 			row.appendChild(new Label(data.getSchedule().getRequirement().getTime().getLabel()));

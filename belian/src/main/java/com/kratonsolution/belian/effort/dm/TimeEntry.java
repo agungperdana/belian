@@ -1,12 +1,11 @@
 /**
  * 
  */
-package com.kratonsolution.belian.production.dm;
+package com.kratonsolution.belian.effort.dm;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -36,17 +35,11 @@ public class TimeEntry implements Serializable
 	@Id
 	protected String id = UUID.randomUUID().toString();
 
-	@Column(name="is_paid")
-	protected boolean paid;
-	
-	@Column(name="date")
-	protected Date date;
-
 	@Column(name="start")
-	protected Time start;
+	protected Timestamp start;
 	
 	@Column(name="end")
-	protected Time end;
+	protected Timestamp end;
 	
 	@Column(name="hour")
 	protected BigDecimal hour = BigDecimal.ZERO;

@@ -27,7 +27,6 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
-import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.education.dm.CourseRegistration;
 import com.kratonsolution.belian.education.dm.CourseSchedule;
 import com.kratonsolution.belian.education.dm.StudyDay;
@@ -43,8 +42,6 @@ import com.kratonsolution.belian.hr.svc.EmploymentService;
 import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductFeature;
 import com.kratonsolution.belian.inventory.svc.ProductService;
-import com.kratonsolution.belian.production.dm.WorkEffortPurpose;
-import com.kratonsolution.belian.production.dm.WorkEffortType;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.component.FacilityList;
@@ -146,15 +143,15 @@ public class StudyRoomFormContent extends FormContent implements ModelListener<P
 				StudyRoom room = new StudyRoom();
 				room.setCourse(courses.getProduct());
 				room.setDay(dayService.findOne(Components.string(days)));
-				room.setName(name.getText());
-				room.setOrganization(companys.getOrganization());
+//				room.setName(name.getText());
+//				room.setOrganization(companys.getOrganization());
 				room.setPeriod(periodService.findOne(Components.string(periods)));
 				room.setRoom(rooms.getFacility());
 				room.setTime(timeService.findOne(Components.string(times)));
-				room.setStaff(utils.getEmployee());
-				room.setDate(DateTimes.currentDate());
-				room.setReason("Course programm for "+name.getText());
-				room.setRequired(DateTimes.currentDate());
+//				room.setStaff(utils.getEmployee());
+//				room.setDate(DateTimes.currentDate());
+//				room.setReason("Course programm for "+name.getText());
+//				room.setRequired(DateTimes.currentDate());
 
 				for(ProductFeature feature:courses.getProduct().getFeatures())
 				{
@@ -188,15 +185,15 @@ public class StudyRoomFormContent extends FormContent implements ModelListener<P
 					Row row = (Row)com;
 					
 					CourseSchedule schedule = new CourseSchedule();
-					schedule.setDate(room.getDate());
+//					schedule.setDate(room.getDate());
 					schedule.setDay(RowUtils.string(row, 1));
-					schedule.setStart(RowUtils.time(row, 2));
-					schedule.setEnd(RowUtils.time(row, 3));
+//					schedule.setStart(RowUtils.time(row, 2));
+//					schedule.setEnd(RowUtils.time(row, 3));
 					schedule.setProduct(productService.findOne(RowUtils.string(row, 4)));
 					schedule.setRequirement(room);
-					schedule.setWorker(personService.findOne(RowUtils.string(row, 5)));
-					schedule.setPurpose(WorkEffortPurpose.Production);
-					schedule.setType(WorkEffortType.Task);
+//					schedule.setWorker(personService.findOne(RowUtils.string(row, 5)));
+//					schedule.setPurpose(WorkEffortPurpose.Production);
+//					schedule.setType(WorkEffortType.Task);
 					
 					room.getEfforts().add(schedule);
 				}

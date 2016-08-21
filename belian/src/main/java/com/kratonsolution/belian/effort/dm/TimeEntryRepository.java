@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.production.dm;
+package com.kratonsolution.belian.effort.dm;
 
 import java.sql.Date;
 import java.util.List;
