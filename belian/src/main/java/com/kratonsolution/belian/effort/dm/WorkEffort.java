@@ -95,6 +95,15 @@ public class WorkEffort implements Serializable
 	@OneToMany(mappedBy="effort",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<WorkEffortPartyAssignment> assignments = new HashSet<>();
 	
+	@OneToMany(mappedBy="effort",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<WorkEffortAssetAssignment> assets = new HashSet<>();
+	
+	@OneToMany(mappedBy="effort",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<WorkEffortDeliverableProduced> deliverables = new HashSet<>();
+	
+	@OneToMany(mappedBy="effort",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<WorkEffortInventoryProduced> inventorys = new HashSet<>();
+	
 	@OneToMany(mappedBy="parent",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<WorkEffort> childs = new HashSet<>();
 	
