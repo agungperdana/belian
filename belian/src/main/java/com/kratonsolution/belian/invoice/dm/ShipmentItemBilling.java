@@ -1,20 +1,19 @@
 /**
  * 
  */
-package com.kratonsolution.belian.sales.dm;
+package com.kratonsolution.belian.invoice.dm;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.UUID;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
-import com.kratonsolution.belian.payment.dm.Receipt;
+import com.kratonsolution.belian.shipment.dm.ShipmentItem;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -26,24 +25,22 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="payment_application")
-public class PaymentApplication implements Serializable
+@Table(name="shipment_item_billing")
+public class ShipmentItemBilling implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
-
-	@Column(name="amount")
-	private BigDecimal amount = BigDecimal.ZERO;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_billing")
-	private Billable billable;
+	@JoinColumn(name="fk_shipment_item")
+	private ShipmentItem shipmentItem;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_receipt")
-	private Receipt receipt;
+	@JoinColumn(name="fk_invoice_item")
+	private InvoiceItem invoiceItem;
 	
+	@Version
 	private Long version;
-
-	public PaymentApplication(){}
+	
+	public ShipmentItemBilling(){}
 }

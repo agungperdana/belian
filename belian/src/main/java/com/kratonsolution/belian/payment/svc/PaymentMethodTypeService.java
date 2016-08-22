@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.payment.dm.PaymentMethodType;
-import com.kratonsolution.belian.payment.dm.PaymentMethodTypeRepository;
+import com.kratonsolution.belian.invoice.dm.PaymentMethodType;
+import com.kratonsolution.belian.invoice.dm.PaymentMethodTypeRepository;
 
 /**
  * 

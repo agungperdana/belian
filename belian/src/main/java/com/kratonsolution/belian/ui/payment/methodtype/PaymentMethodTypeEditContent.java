@@ -12,7 +12,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
-import com.kratonsolution.belian.payment.dm.PaymentMethodType;
+import com.kratonsolution.belian.invoice.dm.PaymentMethodType;
 import com.kratonsolution.belian.payment.svc.PaymentMethodTypeService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;

@@ -7,17 +7,16 @@ package com.kratonsolution.belian.invoice.dm;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public enum InvoiceStatusType
+public enum InvoiceType
 {
-	SEND("Terkirim","Send"),
-	VOID("Tidak Berlaku","Void"),
-	APPROVED("Disetujui","Approved");
+	SALES_INVOICE("Tagihan Penjualan","Sales Invoice"),
+	PURCHASE_INVOICE("Tagihan Pembelian","Purchase Invoice");
 
 	private String inID;
 
 	private String enUS;
 
-	private InvoiceStatusType(String inID,String enUS)
+	private InvoiceType(String inID,String enUS)
 	{
 		this.inID = inID;
 		this.enUS = enUS;

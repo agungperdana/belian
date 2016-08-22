@@ -14,8 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.invoice.dm.PaymentApplication;
 import com.kratonsolution.belian.sales.dm.BillableItem;
-import com.kratonsolution.belian.sales.dm.PaymentApplication;
 
 import lombok.Getter;
 import lombok.Setter;

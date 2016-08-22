@@ -7,17 +7,19 @@ package com.kratonsolution.belian.invoice.dm;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public enum InvoiceStatusType
+public enum PaymentMethodType
 {
-	SEND("Terkirim","Send"),
-	VOID("Tidak Berlaku","Void"),
-	APPROVED("Disetujui","Approved");
+	ELECTRONIC("Transfer","Transfer"), 
+	CASH("Tunai","Cash"),
+	CERTIFIED_CHECK("Cek Bersertifikat","Certified Check"),
+	PERSONAL_CHECK("Cek Pribadi","Personal check"),
+	CREDIT_CARD("Kartu Kridit","Credit Card");
 
 	private String inID;
 
 	private String enUS;
 
-	private InvoiceStatusType(String inID,String enUS)
+	private PaymentMethodType(String inID,String enUS)
 	{
 		this.inID = inID;
 		this.enUS = enUS;

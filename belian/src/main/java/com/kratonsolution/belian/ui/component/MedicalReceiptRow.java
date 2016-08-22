@@ -16,11 +16,11 @@ import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.payment.dm.PaymentMethodType;
+import com.kratonsolution.belian.invoice.dm.PaymentApplication;
+import com.kratonsolution.belian.invoice.dm.PaymentMethodType;
 import com.kratonsolution.belian.payment.dm.Receipt;
 import com.kratonsolution.belian.payment.svc.PaymentMethodTypeService;
 import com.kratonsolution.belian.sales.dm.Billable;
-import com.kratonsolution.belian.sales.dm.PaymentApplication;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 

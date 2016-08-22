@@ -21,10 +21,10 @@ import com.kratonsolution.belian.accounting.svc.JournalEntryService;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.invoice.dm.PaymentApplication;
 import com.kratonsolution.belian.payment.dm.ReceiptRepository;
 import com.kratonsolution.belian.sales.dm.Billable;
 import com.kratonsolution.belian.sales.dm.BillableRepository;
-import com.kratonsolution.belian.sales.dm.PaymentApplication;
 
 /**
  * 

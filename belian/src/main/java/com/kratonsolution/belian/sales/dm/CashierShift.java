@@ -24,6 +24,7 @@ import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.svc.Journalable;
 import com.kratonsolution.belian.asset.dm.Asset;
 import com.kratonsolution.belian.general.dm.Person;
+import com.kratonsolution.belian.invoice.dm.PaymentApplication;
 
 import lombok.Getter;
 import lombok.Setter;

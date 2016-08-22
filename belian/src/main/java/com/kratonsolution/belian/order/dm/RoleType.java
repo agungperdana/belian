@@ -9,5 +9,36 @@ package com.kratonsolution.belian.order.dm;
  */
 public enum RoleType
 {
-	INITIATOR,REVIEWER,APPROVER,OWNER,ORIGINATOR,MANAGER,IMPLEMENTER,AUTHORIZER
+	ENTERED_BY("Diinput Oleh","Entered By"),
+	INITIATOR("Pemrakarsa","Initiator"),
+	REVIEWER("Pengulas","Reviewer"),
+	APPROVER("Disetujui Oleh","Approver"),
+	OWNER("Pemilik","Owner"),
+	ORIGINATOR("Bersumber Dari","Originator"),
+	MANAGER("Manajer","manager"),
+	IMPLEMENTER("Diimplementasikan Oleh","Implementer"),
+	AUTHORIZER("Pemberi Izin","Authorizer");
+	
+	private String inID;
+
+	private String enUS;
+
+	private RoleType(String inID,String enUS)
+	{
+		this.inID = inID;
+		this.enUS = enUS;
+	}
+
+	public String display()
+	{
+		return this.enUS;
+	}
+
+	public String display(String lang)
+	{
+		if(lang == null || lang.equals("") || lang.equalsIgnoreCase("en_US"))
+			return this.enUS;
+
+		return this.inID;
+	}
 }

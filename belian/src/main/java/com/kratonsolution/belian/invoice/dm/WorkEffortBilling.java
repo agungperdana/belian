@@ -9,13 +9,13 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
+import com.kratonsolution.belian.effort.dm.WorkEffort;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,25 +27,25 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="invoice_term")
-public class InvoiceTerm implements Serializable
+@Table(name="work_effort_billing")
+public class WorkEffortBilling implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@Column(name="value")
-	private BigDecimal value = BigDecimal.ZERO;
-	
-	@Enumerated(EnumType.STRING)
-	@Column(name="type")
-	private InvoiceTermType type = InvoiceTermType.PAYMENT;
+	@ManyToOne
+	@JoinColumn(name="fk_work_effort")
+	private WorkEffort effort;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_invoice")
-	private Invoice invoice;
-
+	@JoinColumn(name="fk_invoice_item")
+	private InvoiceItem invoiceItem;
+	
+	@Column(name="percent")
+	private BigDecimal percent = BigDecimal.ONE;
+	
 	@Version
 	private Long version;
-
-	public InvoiceTerm(){}
+	
+	public WorkEffortBilling(){}
 }

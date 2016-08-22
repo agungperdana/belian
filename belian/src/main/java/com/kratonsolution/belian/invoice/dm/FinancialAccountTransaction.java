@@ -4,13 +4,11 @@
 package com.kratonsolution.belian.invoice.dm;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -27,25 +25,26 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="invoice_term")
-public class InvoiceTerm implements Serializable
+@Table(name="financial_account_transaction")
+public class FinancialAccountTransaction implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@Column(name="value")
-	private BigDecimal value = BigDecimal.ZERO;
+	@Column(name="transaction_date")
+	private Date transactionDate;
 	
-	@Enumerated(EnumType.STRING)
-	@Column(name="type")
-	private InvoiceTermType type = InvoiceTermType.PAYMENT;
+	@Column(name="entry_date")
+	private Date entryDate;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_invoice")
-	private Invoice invoice;
-
+	@JoinColumn(name="fk_payment")
+	private Payment payment;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_account")
+	private FinancialAccount account;
+	
 	@Version
 	private Long version;
-
-	public InvoiceTerm(){}
 }

@@ -6,6 +6,8 @@ package com.kratonsolution.belian.payment.dm;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.kratonsolution.belian.invoice.dm.Payment;
+
 import lombok.Getter;
 import lombok.Setter;
 

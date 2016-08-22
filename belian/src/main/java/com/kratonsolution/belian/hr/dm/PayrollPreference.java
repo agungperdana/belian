@@ -19,7 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.kratonsolution.belian.accounting.dm.PeriodType;
-import com.kratonsolution.belian.payment.dm.PaymentMethodType;
+import com.kratonsolution.belian.invoice.dm.PaymentMethodType;
 
 import lombok.Getter;
 import lombok.Setter;

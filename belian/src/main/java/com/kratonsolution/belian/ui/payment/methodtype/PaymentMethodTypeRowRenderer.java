@@ -8,7 +8,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
-import com.kratonsolution.belian.payment.dm.PaymentMethodType;
+import com.kratonsolution.belian.invoice.dm.PaymentMethodType;
 
 /**
  * 

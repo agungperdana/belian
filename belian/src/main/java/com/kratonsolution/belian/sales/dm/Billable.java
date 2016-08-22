@@ -28,6 +28,7 @@ import com.kratonsolution.belian.accounting.svc.Journalable;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Party;
 import com.kratonsolution.belian.general.dm.Person;
+import com.kratonsolution.belian.invoice.dm.PaymentApplication;
 
 import lombok.Getter;
 import lombok.Setter;

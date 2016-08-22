@@ -14,10 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.invoice.dm.PaymentApplication;
 import com.kratonsolution.belian.payment.dm.Receipt;
 import com.kratonsolution.belian.payment.dm.ReceiptRepository;
 import com.kratonsolution.belian.sales.dm.BillableRepository;
-import com.kratonsolution.belian.sales.dm.PaymentApplication;
 
 /**
  * 

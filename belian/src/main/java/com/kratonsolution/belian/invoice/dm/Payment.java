@@ -1,27 +1,31 @@
 /**
  * 
  */
-package com.kratonsolution.belian.payment.dm;
+package com.kratonsolution.belian.invoice.dm;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.kratonsolution.belian.accounting.dm.Currency;
-import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.general.dm.Organization;
-import com.kratonsolution.belian.general.dm.Person;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -35,47 +39,44 @@ import lombok.Setter;
 @Entity
 @Table(name="payment")
 @Inheritance(strategy=InheritanceType.JOINED)
-public abstract class Payment implements Serializable
+public class Payment implements Serializable
 {
 	@Id
-	protected String id = UUID.randomUUID().toString();
+	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="date")
-	protected Date date;
+	private Date date;
 
 	@Column(name="reference")
-	protected String reference;
-	
-	@Column(name="amount")
-	protected BigDecimal amount = BigDecimal.ZERO;
+	private String reference;
 	
 	@Column(name="note")
-	protected String note;
+	private String note;
+
+	@Column(name="amount")
+	private BigDecimal amount = BigDecimal.ZERO;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_organization")
-	protected Organization organization;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_staff")
-	protected Person staff;
-	
+	private Organization organization;
+		
 	@ManyToOne
 	@JoinColumn(name="fk_currency")
-	protected Currency currency;
+	private Currency currency;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_tax")
-	protected Tax tax;
+	@Enumerated(EnumType.STRING)
+	@Column(name="method_type")
+	private PaymentMethodType methodType = PaymentMethodType.CASH;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_payment_type")
-	protected PaymentMethodType type;
+	@Enumerated(EnumType.STRING)
+	@Column(name="type")
+	private PaymentType type = PaymentType.RECEIPT;
 	
 	@Version
-	protected Long version;
+	private Long version;
+	
+	@OneToMany(mappedBy="payment",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<PaymentApplication> applications = new HashSet<>();
 	
 	public Payment(){}
-	
-	public abstract BigDecimal getNetAmount();
 }
