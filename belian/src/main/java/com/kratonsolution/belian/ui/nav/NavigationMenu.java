@@ -59,9 +59,7 @@ public class NavigationMenu extends Window
 			mode.setSegmentation(IndustrySegmentation.GENERAL);
 		}
 		
-		if(utils.isSysAdmin())
-			initSecurity(modules);
-		
+		initSecurity(modules);
 		initGeneral(modules);
 		initAccounting(modules);
 		initFinancial(modules);
