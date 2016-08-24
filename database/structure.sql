@@ -2768,13 +2768,16 @@ DROP TABLE IF EXISTS `requirement`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `requirement` (
   `id` char(50) NOT NULL,
-  `creation_date` date DEFAULT NULL,
+  `date` date DEFAULT NULL,
   `required_date` date DEFAULT NULL,
   `note` varchar(250) DEFAULT NULL,
-  `estimated_budget` decimal(10,0) DEFAULT NULL,
-  `source_type` char(25) DEFAULT NULL,
-  `type` char(25) DEFAULT NULL,
-  `fk_parent` char(50) DEFAULT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `reason` varchar(250) DEFAULT NULL,
+  `name` varchar(250) DEFAULT NULL,
+  `requirement_type` char(50) DEFAULT NULL,
+  `status` char(50) DEFAULT '0',
+  `fk_organization` char(50) DEFAULT NULL,
+  `fk_staff` char(50) DEFAULT NULL,
   `version` bigint(20) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
@@ -3655,4 +3658,4 @@ CREATE TABLE `working_shift` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-08-22 14:29:00
+-- Dump completed on 2016-08-24  9:34:33

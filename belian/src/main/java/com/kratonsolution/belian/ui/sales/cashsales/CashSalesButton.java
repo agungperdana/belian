@@ -5,6 +5,9 @@ package com.kratonsolution.belian.ui.sales.cashsales;
 
 import org.zkoss.zul.Toolbarbutton;
 
+import com.kratonsolution.belian.common.Language;
+import com.kratonsolution.belian.ui.util.Springs;
+
 /**
  * 
  * @author Agung Dodi Perdana
@@ -12,10 +15,12 @@ import org.zkoss.zul.Toolbarbutton;
  */
 public class CashSalesButton extends Toolbarbutton
 {
+	private Language lang = Springs.get(Language.class);
+	
 	public CashSalesButton()
 	{
 		setImage("/icons/cashsales.png");
-		setTooltiptext("Cash Sales Management");
+		setTooltiptext(lang.get("navbar.menu.sales.cashsales"));
 		setHeight("38px");
 	}
 }

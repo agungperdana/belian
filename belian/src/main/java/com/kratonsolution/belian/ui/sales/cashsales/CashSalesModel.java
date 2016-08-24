@@ -9,7 +9,6 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.sales.dm.CashSales;
 import com.kratonsolution.belian.sales.srv.CashSalesService;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -22,8 +21,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class CashSalesModel implements ListModel<CashSales>
 {
 	private CashSalesService service = Springs.get(CashSalesService.class);
-	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	private List<CashSales> data = new ArrayList<CashSales>();
 	

@@ -24,7 +24,7 @@ import com.kratonsolution.belian.ui.nav.IconBar;
  */
 public class CashSalesWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption("Cash Sales");
+	private Caption caption = new Caption(lang.get("navbar.menu.sales.cashsales"));
 	
 	private CashSalesButton status = new CashSalesButton();
 	

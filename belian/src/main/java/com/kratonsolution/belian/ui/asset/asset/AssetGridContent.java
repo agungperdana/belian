@@ -16,9 +16,9 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.asset.svc.AssetService;
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.Removeable;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -29,8 +29,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class AssetGridContent extends GridContent implements Removeable
 {
 	private AssetService service = Springs.get(AssetService.class);
-	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public AssetGridContent()
 	{
@@ -47,8 +45,7 @@ public class AssetGridContent extends GridContent implements Removeable
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				refresh(new AssetModel(utils.getRowPerPage()));
+				Flow.next(getParent(), new AssetGridContent());
 			}
 		});
 		
@@ -57,9 +54,7 @@ public class AssetGridContent extends GridContent implements Removeable
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				AssetWindow window = (AssetWindow)getParent();
-				window.removeGrid();
-				window.insertCreateForm();
+				Flow.next(getParent(), new AssetFormContent());
 			}
 		});
 		
@@ -111,7 +106,7 @@ public class AssetGridContent extends GridContent implements Removeable
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -155,7 +150,7 @@ public class AssetGridContent extends GridContent implements Removeable
 		final AssetModel model = new AssetModel(utils.getRowPerPage());
 		
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No Asset data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new AssetRowRenderer());
 		grid.setPagingPosition("both");
@@ -163,13 +158,13 @@ public class AssetGridContent extends GridContent implements Removeable
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Code",null,"100px"));
-		grid.getColumns().appendChild(new Column("Name",null,"150px"));
-		grid.getColumns().appendChild(new Column("Acquired",null,"85px"));
-		grid.getColumns().appendChild(new Column("Active",null,"100px"));
-		grid.getColumns().appendChild(new Column("Disposed",null,"100px"));
-		grid.getColumns().appendChild(new Column(null,null,"0px"));
-		grid.getColumns().getChildren().get(6).setVisible(false);
+		grid.getColumns().appendChild(new Column(lang.get("asset.grid.column.code"),null,"100px"));
+		grid.getColumns().appendChild(new Column(lang.get("asset.grid.column.name"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("asset.grid.column.acquired"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("asset.grid.column.status"),null,"100px"));
+		grid.getColumns().appendChild(new Column(lang.get("asset.grid.column.disposed"),null,"100px"));
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().getLastChild().setVisible(false);
 		
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{

@@ -70,7 +70,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `asset` WRITE;
 /*!40000 ALTER TABLE `asset` DISABLE KEYS */;
-INSERT INTO `asset` VALUES ('b584cc26-695b-4b8a-bdbc-3428c96f2697','CH001','CASHIER AIM01','2016-07-31',NULL,NULL,3200000,'1','0','8503f553-da8b-4182-963a-f2c3cae048a1','',NULL,NULL,10);
+INSERT INTO `asset` VALUES ('b584cc26-695b-4b8a-bdbc-3428c96f2697','CH001','CASHIER AIM01','2016-07-31',NULL,NULL,3200000,'1','0','8503f553-da8b-4182-963a-f2c3cae048a1','','4a129f6b-7b21-4640-bf78-4da17201894a','8053473f-59ab-483f-b4ab-8fd461bce0ed',12);
 /*!40000 ALTER TABLE `asset` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -90,7 +90,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `audit_trail` WRITE;
 /*!40000 ALTER TABLE `audit_trail` DISABLE KEYS */;
-INSERT INTO `audit_trail` VALUES ('0d13282f-2339-4ad4-9917-baeadac38480','2016-08-05 14:15:52.093','0','Nuri','Aim Poli Umum','Cashier Shift','Open new shift for cashier on Cashier 1',0),('4c397285-ecea-47da-a448-6c04ae563c27','2016-08-04 14:34:23.566','0','Nuri','Aim Apotik','Cashier Shift','Open new shift for cashier on Cashier 1',0),('5018d04d-4ad4-43e2-903a-19cbf8977b7e','2016-08-02 10:20:41.967','0','Nuri','Aim Medical Center','Cashier Shift','Open new shift for cashier on Cashier 1',0),('57ba7699-3aa3-4f90-a473-47c069619c11','2016-08-04 09:44:44.249','0','Nuri','Aim Apotik','Cashier Shift','Closed shift session for cashier on Cashier 1',0),('686b52bd-bff8-4c2f-8d4a-c8faa59b73ce','2016-08-05 14:12:08.002','0','Nuri','Aim Poli Umum','Cashier Shift','Closed shift session for cashier on Cashier 1',0),('6c310ab6-9a68-4d9e-84ef-8a4961385d8f','2016-08-05 14:10:42.689','0','Nuri','Aim Poli Umum','Cashier Shift','Open new shift for cashier on Cashier 1',0),('735832df-25e9-45f7-a6ff-fab3d8bace20','2016-08-05 14:16:03.088','0','Nuri','Aim Poli Umum','Cashier Shift','Closed shift session for cashier on Cashier 1',0),('7ac97428-9a42-4615-8925-5a439b99c413','2016-07-31 11:00:28.857','0','Nuri','Aim Medical Center','Cashier Shift','Open new shift for cashier on Cashier 1',0),('7f29b5b6-f3b7-4a69-bc42-ba9f9255049a','2016-08-03 08:50:56.97','0','Nuri','Aim Medical Center','Cashier Shift','Open new shift for cashier on Cashier 2',0),('b9174241-5c55-45bb-8378-479231ec11a5','2016-08-04 09:44:44.178','0','Nuri','Aim Apotik','Cashier Shift','Closed shift session for cashier on Cashier 2',0),('fdaa20b9-ca46-4f69-8280-8a40ad035ba0','2016-08-05 14:10:08.148','0','Nuri','Aim Poli Umum','Cashier Shift','Closed shift session for cashier on Cashier 1',0);
+INSERT INTO `audit_trail` VALUES ('0d13282f-2339-4ad4-9917-baeadac38480','2016-08-05 14:15:52.093','0','Nuri','Aim Poli Umum','Cashier Shift','Open new shift for cashier on Cashier 1',0),('4c397285-ecea-47da-a448-6c04ae563c27','2016-08-04 14:34:23.566','0','Nuri','Aim Apotik','Cashier Shift','Open new shift for cashier on Cashier 1',0),('5018d04d-4ad4-43e2-903a-19cbf8977b7e','2016-08-02 10:20:41.967','0','Nuri','Aim Medical Center','Cashier Shift','Open new shift for cashier on Cashier 1',0),('57ba7699-3aa3-4f90-a473-47c069619c11','2016-08-04 09:44:44.249','0','Nuri','Aim Apotik','Cashier Shift','Closed shift session for cashier on Cashier 1',0),('65a9ed5f-392b-460b-90b1-70a0e90f3f77','2016-08-24 09:25:35.131','0','Dewi S','Aim Medical Center','Cashier Shift','Open new shift for cashier on CASHIER AIM01',0),('686b52bd-bff8-4c2f-8d4a-c8faa59b73ce','2016-08-05 14:12:08.002','0','Nuri','Aim Poli Umum','Cashier Shift','Closed shift session for cashier on Cashier 1',0),('6c310ab6-9a68-4d9e-84ef-8a4961385d8f','2016-08-05 14:10:42.689','0','Nuri','Aim Poli Umum','Cashier Shift','Open new shift for cashier on Cashier 1',0),('735832df-25e9-45f7-a6ff-fab3d8bace20','2016-08-05 14:16:03.088','0','Nuri','Aim Poli Umum','Cashier Shift','Closed shift session for cashier on Cashier 1',0),('7ac97428-9a42-4615-8925-5a439b99c413','2016-07-31 11:00:28.857','0','Nuri','Aim Medical Center','Cashier Shift','Open new shift for cashier on Cashier 1',0),('7f29b5b6-f3b7-4a69-bc42-ba9f9255049a','2016-08-03 08:50:56.97','0','Nuri','Aim Medical Center','Cashier Shift','Open new shift for cashier on Cashier 2',0),('b9174241-5c55-45bb-8378-479231ec11a5','2016-08-04 09:44:44.178','0','Nuri','Aim Apotik','Cashier Shift','Closed shift session for cashier on Cashier 2',0),('fdaa20b9-ca46-4f69-8280-8a40ad035ba0','2016-08-05 14:10:08.148','0','Nuri','Aim Poli Umum','Cashier Shift','Closed shift session for cashier on Cashier 1',0);
 /*!40000 ALTER TABLE `audit_trail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -128,7 +128,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `billable` WRITE;
 /*!40000 ALTER TABLE `billable` DISABLE KEYS */;
-INSERT INTO `billable` VALUES ('bcdfe93b-b7fc-43a1-b6e9-d90877fc4468','2016-08-15','BLG1471228183863','0','85c90912-97ff-47ce-9d6a-7d1650ab3ea9','4a129f6b-7b21-4640-bf78-4da17201894a','b7337ad2-a0a9-47e3-a165-e02d0998a271','b01d8d84-9815-403c-9c44-12a385e997c4','d4921463-e9ff-4c8e-b6ff-9a1730688fbb',NULL,NULL,0);
+INSERT INTO `billable` VALUES ('0cb7c34f-8e23-42a0-9a80-2f078e12055e','2016-08-24','BLG1472005449672','1','85c90912-97ff-47ce-9d6a-7d1650ab3ea9','4a129f6b-7b21-4640-bf78-4da17201894a','4e7a5780-ad0d-459e-ab96-1af7f01522df','b01d8d84-9815-403c-9c44-12a385e997c4','d4921463-e9ff-4c8e-b6ff-9a1730688fbb','8053473f-59ab-483f-b4ab-8fd461bce0ed',NULL,1);
 /*!40000 ALTER TABLE `billable` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -228,7 +228,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `cash_sales` WRITE;
 /*!40000 ALTER TABLE `cash_sales` DISABLE KEYS */;
-INSERT INTO `cash_sales` VALUES ('bcdfe93b-b7fc-43a1-b6e9-d90877fc4468',1,'c4c10aee-a3a1-4e6c-a08b-62d4e26414df','','SHORTTERM');
+INSERT INTO `cash_sales` VALUES ('0cb7c34f-8e23-42a0-9a80-2f078e12055e',1,'68309a5f-4606-46d3-ad20-996ed6c782d0','','SHORTTERM');
 /*!40000 ALTER TABLE `cash_sales` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -238,7 +238,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `cash_sales_line` WRITE;
 /*!40000 ALTER TABLE `cash_sales_line` DISABLE KEYS */;
-INSERT INTO `cash_sales_line` VALUES ('324cd845-2ecc-4f25-8835-ac82811f7d7c',810,0,0,10,'','8d41c267-ff40-466b-89b3-fff445a46b55','c267f236-325c-41f6-8a46-56763ecd4b12','bcdfe93b-b7fc-43a1-b6e9-d90877fc4468',0),('56b25ded-672a-4798-a2e3-d32096ae280b',162,0,0,5,'','8d41c267-ff40-466b-89b3-fff445a46b55','e0850b2e-6108-475c-b8d1-3d94274a563b','bcdfe93b-b7fc-43a1-b6e9-d90877fc4468',0);
+INSERT INTO `cash_sales_line` VALUES ('928be17b-af7d-488c-af1e-cc57a90e956a',810,0,0,3,'','8d41c267-ff40-466b-89b3-fff445a46b55','c267f236-325c-41f6-8a46-56763ecd4b12','0cb7c34f-8e23-42a0-9a80-2f078e12055e',0),('a5faf236-a8c8-4c6b-a304-d9a5c0164caf',444,0,0,5,'','afe54bba-c2b1-4915-973f-24069d45d790','28cba0ec-d341-4e33-abaa-878a82bcd5c9','0cb7c34f-8e23-42a0-9a80-2f078e12055e',0);
 /*!40000 ALTER TABLE `cash_sales_line` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -248,6 +248,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `cashier_shift` WRITE;
 /*!40000 ALTER TABLE `cashier_shift` DISABLE KEYS */;
+INSERT INTO `cashier_shift` VALUES ('8053473f-59ab-483f-b4ab-8fd461bce0ed','2016-08-24','4e7a5780-ad0d-459e-ab96-1af7f01522df','0','b584cc26-695b-4b8a-bdbc-3428c96f2697',50000,'09:25:35',NULL,'85c90912-97ff-47ce-9d6a-7d1650ab3ea9',0);
 /*!40000 ALTER TABLE `cashier_shift` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -637,6 +638,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `journal_entry` WRITE;
 /*!40000 ALTER TABLE `journal_entry` DISABLE KEYS */;
+INSERT INTO `journal_entry` VALUES ('76aafe5c-17b7-4d0b-9ab3-8c38cc019c83','2016-08-24',4650,'4650.00','4a129f6b-7b21-4640-bf78-4da17201894a','55c18725-3d27-4693-8483-d48aeffcb0a2','89d79892-8350-4851-8f0e-700ba962db14','85c90912-97ff-47ce-9d6a-7d1650ab3ea9','Auto ','1','1',NULL,1);
 /*!40000 ALTER TABLE `journal_entry` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -646,6 +648,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `journal_entry_detail` WRITE;
 /*!40000 ALTER TABLE `journal_entry_detail` DISABLE KEYS */;
+INSERT INTO `journal_entry_detail` VALUES ('8a7203cc-804a-4e79-88da-c5a89f1db46b','633de64e-12eb-4e4b-be74-135a4d088b9b','CREDIT',4650,'76aafe5c-17b7-4d0b-9ab3-8c38cc019c83','Posting to Sales (Goods) Account','3402',NULL,1),('edf5f985-a524-4c41-84f6-e49986255e65','3fe8dcfd-cc53-45ad-8eb1-5a25d571d442','DEBET',4650,'76aafe5c-17b7-4d0b-9ab3-8c38cc019c83','Posting to Cash Account','1001',NULL,1);
 /*!40000 ALTER TABLE `journal_entry_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -655,6 +658,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `journal_posting` WRITE;
 /*!40000 ALTER TABLE `journal_posting` DISABLE KEYS */;
+INSERT INTO `journal_posting` VALUES ('1559f69d-05ad-4c89-b66f-ba3e1f370b27','2016-08-24','CREDIT',4650,'633de64e-12eb-4e4b-be74-135a4d088b9b',NULL,0),('73c1795d-da44-4055-be00-895b30e6b485','2016-08-24','DEBET',4650,'3fe8dcfd-cc53-45ad-8eb1-5a25d571d442',NULL,0);
 /*!40000 ALTER TABLE `journal_posting` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -969,6 +973,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `payment` WRITE;
 /*!40000 ALTER TABLE `payment` DISABLE KEYS */;
+INSERT INTO `payment` VALUES ('9a585d75-e76a-4102-a024-3156b8be0a55','BLG1472005449672','2016-08-24',4650,'4e7a5780-ad0d-459e-ab96-1af7f01522df','Cashier Event','4a129f6b-7b21-4640-bf78-4da17201894a','85c90912-97ff-47ce-9d6a-7d1650ab3ea9','d4921463-e9ff-4c8e-b6ff-9a1730688fbb','4e8ec81a-3b9f-4606-ad00-446514bc999f',0);
 /*!40000 ALTER TABLE `payment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -978,6 +983,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `payment_application` WRITE;
 /*!40000 ALTER TABLE `payment_application` DISABLE KEYS */;
+INSERT INTO `payment_application` VALUES ('e319815c-20aa-4c9f-a730-03d55068b7d5',4650,'0cb7c34f-8e23-42a0-9a80-2f078e12055e','9a585d75-e76a-4102-a024-3156b8be0a55',NULL);
 /*!40000 ALTER TABLE `payment_application` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1301,6 +1307,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `receipt` WRITE;
 /*!40000 ALTER TABLE `receipt` DISABLE KEYS */;
+INSERT INTO `receipt` VALUES ('9a585d75-e76a-4102-a024-3156b8be0a55');
 /*!40000 ALTER TABLE `receipt` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1784,4 +1791,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-08-22 14:29:43
+-- Dump completed on 2016-08-24  9:35:53
