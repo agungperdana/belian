@@ -51,10 +51,10 @@ public class DoctorAppointmentService extends SessionAware
 	@Secured("ROLE_DOCTOR_APPOINTMENT_READ")
 	public int size()
 	{
-		if(utils.getOrganization() != null)
-			return repository.count(utils.getOrganization().getId()).intValue();
-			
-		return 0;
+		if(utils.getOrganizationIds().isEmpty())
+			return 0;
+
+		return repository.count(utils.getOrganizationIds()).intValue();
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -89,10 +89,10 @@ public class DoctorAppointmentService extends SessionAware
 	@Secured("ROLE_DOCTOR_APPOINTMENT_READ")
 	public List<DoctorAppointment> findAll(int pageIndex,int pageSize)
 	{
-		if(utils.getOrganization() == null)
+		if(utils.getOrganizationIds().isEmpty())
 			return new ArrayList<DoctorAppointment>();
 		else
-			return repository.findAll(new PageRequest(pageIndex, pageSize), utils.getOrganization().getId());
+			return repository.findAll(new PageRequest(pageIndex, pageSize), utils.getOrganizationIds());
 	}
 	
 	@Secured("ROLE_DOCTOR_APPOINTMENT_CREATE")

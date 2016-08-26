@@ -3,10 +3,13 @@
  */
 package com.kratonsolution.belian.ui.procurement.purchaseorderrequest;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.UUID;
 import java.util.Vector;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -16,7 +19,6 @@ import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Tab;
@@ -26,10 +28,10 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
-import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.global.dm.Roled;
 import com.kratonsolution.belian.global.dm.RoledType;
+import com.kratonsolution.belian.global.dm.StatusType;
 import com.kratonsolution.belian.procurement.dm.PORRole;
 import com.kratonsolution.belian.procurement.dm.PurchaseOrderRequest;
 import com.kratonsolution.belian.procurement.dm.PurchaseOrderRequestItem;
@@ -37,9 +39,13 @@ import com.kratonsolution.belian.procurement.svc.PurchaseOrderRequestService;
 import com.kratonsolution.belian.security.svc.UserService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
+import com.kratonsolution.belian.ui.StateListener;
+import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.component.ProductBox;
+import com.kratonsolution.belian.ui.component.TaxList;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
+import com.kratonsolution.belian.ui.util.Numbers;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -56,17 +62,25 @@ public class PurchaseOrderRequestEditContent extends FormContent
 
 	private PersonService personService = Springs.get(PersonService.class);
 
-	private Textbox number = Components.readOnlyTextBox();
+	private Textbox number = Components.readOnlyTextBox(null,false);
 
-	private Listbox companys = Components.newSelect();
+	private OrganizationList companys = new OrganizationList();
+	
+	private TaxList taxes = new TaxList();
 
+	private Textbox estimated = Components.moneyBox();
+
+	private Textbox tax = Components.moneyBox();
+	
+	private Textbox total = Components.moneyBox();
+	
 	private Datebox date = Components.currentDatebox();
 
 	private Grid items = new Grid();
 
-	private Grid rolesGrid = new Grid();
-
 	private Tabbox tabbox = new Tabbox();
+
+	private Grid rolesGrid = new Grid();
 
 	private Row row;
 
@@ -106,11 +120,18 @@ public class PurchaseOrderRequestEditContent extends FormContent
 					{
 						Row row = (Row)com;
 
+						ProductBox box = (ProductBox)row.getChildren().get(1);
+
+						if(box.getProduct() == null)
+							throw new WrongValueException(box,lang.get("message.field.empty"));
+						
 						PurchaseOrderRequestItem item = new PurchaseOrderRequestItem();
-						item.setNote(RowUtils.string(row, 4));
-						item.setProduct(Components.product(row, 1));
+						item.setNote(RowUtils.string(row, 6));
+						item.setProduct(box.getProduct());
+						item.setQuantity(BigDecimal.valueOf(box.getQuantity().getValue()));
+						item.setEstimatedPrice(BigDecimal.valueOf(box.getPrice().getValue()));
 						item.setRequest(request);
-						item.setQuantity(RowUtils.decimal(row, 2));
+						item.setId(RowUtils.id(row));
 
 						vItems.add(item);
 					}
@@ -124,7 +145,7 @@ public class PurchaseOrderRequestEditContent extends FormContent
 						role.setRequest(request);
 						role.setParty(personService.findOne(RowUtils.string(row, 1)));
 						role.setType(RoledType.valueOf(RowUtils.string(row, 2)));
-						role.setId(RowUtils.string(row, 3));
+						role.setId(RowUtils.id(row));
 						
 						vRoles.add(role);
 					}
@@ -140,36 +161,58 @@ public class PurchaseOrderRequestEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
+		companys.setWidth("100%");
+		number.setWidth("100%");
+		
 		PurchaseOrderRequest request = service.findOne(RowUtils.id(row));
 		if(request != null)
 		{
-			if(Strings.isNullOrEmpty(request.getNumber()))
-				request.setNumber(PurchaseOrderRequest.NCODE+System.currentTimeMillis());
-
 			number.setText(request.getNumber());
+			companys.setOrganization(request.getOrganization());
+			taxes.setTax(request.getTax());
 			date.setValue(request.getDate());
-			companys.appendChild(new Listitem(request.getOrganization().getLabel(),request.getOrganization().getValue()));
-			companys.setSelectedIndex(0);
+			estimated.setText(Numbers.format(request.getEstimatedCost()));
 
+			BigDecimal txt = BigDecimal.ZERO;
+			
+			if(request.getTax() != null)
+				txt = request.getEstimatedCost().multiply(request.getTax().getAmount()).divide(BigDecimal.valueOf(100),RoundingMode.HALF_UP);
+
+			tax.setText(Numbers.format(txt));
+			total.setText(Numbers.format(request.getEstimatedCost().add(txt)));
+			
 			grid.appendChild(new Columns());
+			grid.getColumns().appendChild(new Column(null,null,"100px"));
+			grid.getColumns().appendChild(new Column());
 			grid.getColumns().appendChild(new Column(null,null,"125px"));
 			grid.getColumns().appendChild(new Column());
 
 			Row row0 = new Row();
-			row0.appendChild(new Label(lang.get("porequest.grid.column.number")));
-			row0.appendChild(number);
+			row0.appendChild(new Label(lang.get("porequest.grid.column.company")));
+			row0.appendChild(companys);
+			row0.appendChild(new Label(lang.get("porequest.grid.column.estimated")));
+			row0.appendChild(estimated);
 
 			Row row1 = new Row();
-			row1.appendChild(new Label(lang.get("porequest.grid.column.date")));
-			row1.appendChild(date);
+			row1.appendChild(new Label(lang.get("porequest.grid.column.number")));
+			row1.appendChild(number);
+			row1.appendChild(new Label(lang.get("porequest.grid.column.tax")));
+			row1.appendChild(tax);
 
 			Row row2 = new Row();
-			row2.appendChild(new Label(lang.get("porequest.grid.column.company")));
-			row2.appendChild(companys);
+			row2.appendChild(new Label(lang.get("porequest.grid.column.date")));
+			row2.appendChild(date);
+			row2.appendChild(new Label(lang.get("porequest.grid.column.total")));
+			row2.appendChild(total);
 
+			Row row3 = new Row();
+			row3.appendChild(new Label(lang.get("porequest.grid.column.tax")));
+			row3.appendChild(taxes);
+			
 			rows.appendChild(row0);
 			rows.appendChild(row1);
 			rows.appendChild(row2);
+			rows.appendChild(row3);
 		}
 	}
 
@@ -193,6 +236,8 @@ public class PurchaseOrderRequestEditContent extends FormContent
 	{
 
 		NRCToolbar nrc = new NRCToolbar(items);
+		nrc.getRemove().addEventListener(Events.ON_CLICK, new InfoHandler());
+		nrc.getClear().addEventListener(Events.ON_CLICK, new InfoHandler());
 
 		items.setWidth("100%");
 		items.setEmptyMessage(lang.get("message.grid.empty"));
@@ -200,25 +245,39 @@ public class PurchaseOrderRequestEditContent extends FormContent
 		items.appendChild(new Columns());
 		items.getColumns().appendChild(new Column(null,null,"25px"));
 		items.getColumns().appendChild(new Column(lang.get("porequest.grid.column.product"),null,"150px"));
-		items.getColumns().appendChild(new Column(lang.get("porequest.grid.column.quantity"),null,"100px"));
-		items.getColumns().appendChild(new Column(lang.get("porequest.grid.column.uom"),null,"100px"));
+		items.getColumns().appendChild(new Column(lang.get("porequest.grid.column.quantity"),null,"65px"));
+		items.getColumns().appendChild(new Column(lang.get("porequest.grid.column.uom"),null,"75px"));
+		items.getColumns().appendChild(new Column(lang.get("porequest.grid.column.price"),null,"100px"));
+		items.getColumns().appendChild(new Column(lang.get("porequest.grid.column.total"),null,"100px"));
 		items.getColumns().appendChild(new Column(lang.get("porequest.grid.column.note"),null,"150px"));
+		items.getColumns().appendChild(new Column());
 		items.setSpan("1");
+		items.getColumns().getLastChild().setVisible(false);
 
-		PurchaseOrderRequest request = service.findOne(RowUtils.string(row, 5));
+		PurchaseOrderRequest request = service.findOne(RowUtils.id(row));
 		if(request != null)
 		{
+			nrc.getNew().setDisabled(request.getLastStatus().getType().equals(StatusType.Approved));
+			nrc.getRemove().setDisabled(request.getLastStatus().getType().equals(StatusType.Approved));
+			nrc.getClear().setDisabled(request.getLastStatus().getType().equals(StatusType.Approved));
+			
 			for(PurchaseOrderRequestItem item:request.getItems())
 			{
 				ProductBox box = new ProductBox();
 				box.setProduct(item.getProduct());
-
+				box.getQuantity().setValue(item.getQuantity().doubleValue());
+				box.getPrice().setValue(item.getEstimatedPrice()!=null?item.getEstimatedPrice().doubleValue():0d);
+				box.getTotal().setValue(item.getEstimatedPrice()!=null?item.getQuantity().multiply(item.getEstimatedPrice()).doubleValue():0d);
+				
 				Row row = new Row();
 				row.appendChild(Components.checkbox(false));
 				row.appendChild(box);
-				row.appendChild(Components.doubleBox(item.getQuantity().doubleValue()));
+				row.appendChild(box.getQuantity());
 				row.appendChild(box.getUoms());
+				row.appendChild(box.getPrice());
+				row.appendChild(box.getTotal());
 				row.appendChild(Components.textBox(item.getNote()));
+				row.appendChild(Components.label(item.getId()));
 
 				items.getRows().appendChild(row);
 			}
@@ -230,13 +289,17 @@ public class PurchaseOrderRequestEditContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				ProductBox box = new ProductBox();
+				box.addListener(new InfoHandler());
 
 				Row row = new Row();
 				row.appendChild(Components.checkbox(false));
 				row.appendChild(box);
-				row.appendChild(Components.doubleBox(1));
+				row.appendChild(box.getQuantity());
 				row.appendChild(box.getUoms());
+				row.appendChild(box.getPrice());
+				row.appendChild(box.getTotal());
 				row.appendChild(Components.textBox(null));
+				row.appendChild(Components.label(UUID.randomUUID().toString()));
 
 				items.getRows().appendChild(row);
 			}
@@ -260,7 +323,7 @@ public class PurchaseOrderRequestEditContent extends FormContent
 		rolesGrid.getColumns().getLastChild().setVisible(false);
 		rolesGrid.setSpan("1");
 
-		PurchaseOrderRequest request = service.findOne(RowUtils.string(row, 5));
+		PurchaseOrderRequest request = service.findOne(RowUtils.id(row));
 		if(request != null)
 		{
 			for(Roled roled:request.getRoles())
@@ -294,8 +357,37 @@ public class PurchaseOrderRequestEditContent extends FormContent
 				rolesGrid.getRows().appendChild(row);
 			}
 		});
-
+		
 		tabbox.getTabpanels().getChildren().get(1).appendChild(bar);
 		tabbox.getTabpanels().getChildren().get(1).appendChild(rolesGrid);
+	}
+	
+	private class InfoHandler implements StateListener,EventListener<Event>
+	{
+		@Override
+		public void stateChanged()
+		{
+			BigDecimal price = BigDecimal.ZERO;
+			
+			for(Component com:items.getRows().getChildren())
+			{
+				Row row = (Row)com;
+				ProductBox box = (ProductBox)row.getChildren().get(1);
+			
+				price = price.add(BigDecimal.valueOf(box.getQuantity().getValue()*box.getPrice().getValue()));
+			}
+		
+			BigDecimal tx = price.multiply(taxes.getTax().getAmount()).divide(BigDecimal.valueOf(100),RoundingMode.HALF_UP);
+			
+			estimated.setText(Numbers.format(price));
+			tax.setText(Numbers.format(tx));
+			total.setText(Numbers.format(price.add(tx)));
+		}
+
+		@Override
+		public void onEvent(Event arg0) throws Exception
+		{
+			stateChanged();
+		}
 	}
 }

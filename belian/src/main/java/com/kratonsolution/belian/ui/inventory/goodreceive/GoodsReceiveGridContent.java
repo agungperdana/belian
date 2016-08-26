@@ -15,9 +15,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.inventory.svc.GoodsReceiveService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -28,8 +28,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class GoodsReceiveGridContent extends GridContent
 {
 	private GoodsReceiveService service = Springs.get(GoodsReceiveService.class);
-	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public GoodsReceiveGridContent()
 	{
@@ -46,8 +44,7 @@ public class GoodsReceiveGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				refresh(new GoodsReceiveModel(utils.getRowPerPage()));
+				Flow.next(getParent(), new GoodsReceiveGridContent());
 			}
 		});
 		
@@ -56,9 +53,7 @@ public class GoodsReceiveGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				GoodsReceiveWindow window = (GoodsReceiveWindow)getParent();
-				window.removeGrid();
-				window.insertCreateForm();
+				Flow.next(getParent(), new GoodsReceiveFormContent());
 			}
 		});
 		
@@ -110,7 +105,7 @@ public class GoodsReceiveGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -154,7 +149,7 @@ public class GoodsReceiveGridContent extends GridContent
 		final GoodsReceiveModel model = new GoodsReceiveModel(utils.getRowPerPage());
 		
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No goods receive data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new GoodsReceiveRowRenderer());
 		grid.setPagingPosition("both");
@@ -162,13 +157,14 @@ public class GoodsReceiveGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Date",null,"85px"));
-		grid.getColumns().appendChild(new Column("Number",null,"150px"));
-		grid.getColumns().appendChild(new Column("Company",null,"150px"));
-		grid.getColumns().appendChild(new Column("Facility",null,"125px"));
-		grid.getColumns().appendChild(new Column("Receive By",null,"150px"));
-		grid.getColumns().appendChild(new Column(null,null,"0px"));
-		grid.getColumns().getChildren().get(6).setVisible(false);
+		grid.getColumns().appendChild(new Column(lang.get("goodsreceive.grid.column.date"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("goodsreceive.grid.column.number"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("goodsreceive.grid.column.company"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("goodsreceive.grid.column.facility"),null,"125px"));
+		grid.getColumns().appendChild(new Column(lang.get("goodsreceive.grid.column.order"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("goodsreceive.grid.column.by"),null,"150px"));
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("3");
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{

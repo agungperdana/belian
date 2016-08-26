@@ -13,13 +13,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.global.dm.ProductReceiveableRepository;
-import com.kratonsolution.belian.global.dm.Status;
 import com.kratonsolution.belian.inventory.dm.GoodsReceive;
 import com.kratonsolution.belian.inventory.dm.GoodsReceiveItem;
 import com.kratonsolution.belian.inventory.dm.GoodsReceiveRepository;
 import com.kratonsolution.belian.inventory.dm.InventoryItem;
 import com.kratonsolution.belian.inventory.dm.InventoryItemRepository;
+import com.kratonsolution.belian.inventory.dm.ReceiveableRepository;
 
 /**
  * 
@@ -34,7 +33,7 @@ public class GoodsReceiveService
 	private GoodsReceiveRepository repository;
 	
 	@Autowired
-	private ProductReceiveableRepository receiveableRepository;
+	private ReceiveableRepository receiveableRepository;
 	
 	@Autowired
 	private InventoryItemRepository itemRepository;
@@ -71,8 +70,8 @@ public class GoodsReceiveService
 	{
 		repository.save(receive);
 		
-		receive.getReference().setStatus(Status.DONE);
-		receiveableRepository.save(receive.getReference());
+//		receive.getReference().setStatus(Status.DONE);
+//		receiveableRepository.save(receive.getReference());
 		
 		for(GoodsReceiveItem item:receive.getItems())
 		{
@@ -116,9 +115,9 @@ public class GoodsReceiveService
 				}
 			}
 			
-			receive.getReference().setStatus(Status.NEW);
-
-			receiveableRepository.save(receive.getReference());
+//			receive.getReference().setStatus(Status.NEW);
+//
+//			receiveableRepository.save(receive.getReference());
 			repository.delete(receive);
 		}
 	}

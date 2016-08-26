@@ -143,7 +143,7 @@ public class PharmacySalesEditContent extends FormContent implements ProductPric
 					throw new WrongValueException(taxes,lang.get("message.field.empty"));
 
 				PharmacySales sales = service.findOne(RowUtils.id(row));
-				if(sales != null && !sales.isPaid() && sales.getStatus().equals(MedicalSalesStatus.Registered))
+				if(sales != null && !sales.isPaid() && sales.getStatus().equals(MedicalSalesStatus.REGISTERED))
 				{
 					sales.getItems().clear();
 					for(Component com:saleItems.getRows().getChildren())

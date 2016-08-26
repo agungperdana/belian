@@ -9,5 +9,5 @@ package com.kratonsolution.belian.healtcare.dm;
  */
 public enum MedicalSalesStatus
 {
-	Registered,Prepared,Finished
+	REGISTERED,PREPARED,FINISHED
 }

@@ -41,8 +41,11 @@ public abstract class PurchaseOrderItem implements Serializable
 	@JoinColumn(name="fk_product")
 	protected Product product;
 	
-	@JoinColumn(name="quantity")
-	protected BigDecimal quantity;
+	@Column(name="quantity")
+	protected BigDecimal quantity = BigDecimal.ONE;
+	
+	@Column(name="estimated_price")
+	protected BigDecimal unitPrice = BigDecimal.ZERO;
 	
 	@Column(name="note")
 	private String note;
@@ -56,4 +59,6 @@ public abstract class PurchaseOrderItem implements Serializable
 	
 	@Version
 	protected Long version;
+	
+	public PurchaseOrderItem(){}
 }

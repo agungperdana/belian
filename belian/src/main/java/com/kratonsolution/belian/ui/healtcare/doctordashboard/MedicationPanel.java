@@ -19,12 +19,14 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Tabpanel;
 
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.healtcare.dm.ClinicSales;
 import com.kratonsolution.belian.healtcare.dm.ClinicSalesItem;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointmentStatus;
+import com.kratonsolution.belian.healtcare.dm.MedicalSalesStatus;
 import com.kratonsolution.belian.healtcare.svc.MedicalRecordService;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.NRCToolbar;
@@ -141,6 +143,8 @@ public class MedicationPanel extends Tabpanel
 			medication.setTax(utils.getTax());
 			medication.setBpjs(appointment.getPatient().isBpjs());
 			medication.setPaid(medication.isBpjs());
+			medication.setStatus(MedicalSalesStatus.FINISHED);
+			medication.setTime(DateTimes.currentTime());
 
 			for(Component com:grid.getRows().getChildren())
 			{

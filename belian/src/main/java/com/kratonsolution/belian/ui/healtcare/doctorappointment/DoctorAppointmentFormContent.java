@@ -9,7 +9,6 @@ import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
@@ -20,7 +19,6 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.global.dm.SequenceNumber.Code;
 import com.kratonsolution.belian.global.svc.CodeGenerator;
@@ -30,6 +28,7 @@ import com.kratonsolution.belian.healtcare.svc.DoctorAppointmentService;
 import com.kratonsolution.belian.healtcare.svc.DoctorService;
 import com.kratonsolution.belian.healtcare.svc.PatientService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.healtcare.doctor.DoctorBox;
 import com.kratonsolution.belian.ui.healtcare.patient.PatientBox;
 import com.kratonsolution.belian.ui.util.Components;
@@ -43,8 +42,6 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class DoctorAppointmentFormContent extends FormContent
 {	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
-	
 	private CodeGenerator generator = Springs.get(CodeGenerator.class);
 	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
@@ -55,9 +52,9 @@ public class DoctorAppointmentFormContent extends FormContent
 	
 	private DoctorAppointmentService service = Springs.get(DoctorAppointmentService.class);
 	
-	private Listbox companys = Components.newSelect(utils.getOrganization());
+	private OrganizationList companys = new OrganizationList();
 	
-	private Textbox note = new Textbox();
+	private Textbox note = Components.stdTextBox(null, false);
 
 	private DoctorBox doctors = new DoctorBox(true);
 	
@@ -67,7 +64,7 @@ public class DoctorAppointmentFormContent extends FormContent
 	
 	private Datebox date = Components.currentDatebox();
 	
-	private Doublebox queue = Components.readOnlyDoubleBox();
+	private Doublebox queue = Components.stdDoubleBox("50px");
 	
 	public DoctorAppointmentFormContent()
 	{
@@ -93,21 +90,21 @@ public class DoctorAppointmentFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				if(companys.getSelectedCount() == 0)
-					throw new WrongValueException(companys,"Company cannot be empty.");
+				if(companys.getOrganization() == null)
+					throw new WrongValueException(companys,lang.get("message.field.empty"));
 				
 				if(doctors.getDoctor() == null)
-					throw new WrongValueException(doctors,"Doctor cannot be empty.");
+					throw new WrongValueException(doctors,lang.get("message.field.empty"));
 				
 				if(patients.getPatient() == null)
-					throw new WrongValueException(patients,"Patient cannot be empty.");
+					throw new WrongValueException(patients,lang.get("message.field.empty"));
 				
 				DoctorAppointment appointment = new DoctorAppointment();
 				appointment.setDate(new Date(date.getValue().getTime()));
 				appointment.setDoctor(doctors.getDoctor());
-				appointment.setCompany(utils.getOrganization());
+				appointment.setCompany(companys.getOrganization());
 				appointment.setNote(note.getText());
-				appointment.setStatus(DoctorAppointmentStatus.valueOf(Components.string(statuses)));
+				appointment.setStatus(DoctorAppointmentStatus.REGISTERED);
 				appointment.setPatient(patients.getPatient());
 				
 				if(queue.getText().equals("0"))
@@ -125,15 +122,6 @@ public class DoctorAppointmentFormContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		if(utils.getOrganization() == null)
-		{
-			Clients.showNotification("Default organization does not exist,please go to user profile and set it.");
-			Flow.next(getParent(), new DoctorAppointmentGridContent());
-		}
-		
-		queue.setWidth("75px");
-		note.setWidth("300px");
-		
 		queue.setText(generator.nextQueue(Code.DrApt)+"");
 		
 		for(DoctorAppointmentStatus status:DoctorAppointmentStatus.values())
@@ -142,35 +130,35 @@ public class DoctorAppointmentFormContent extends FormContent
 		Components.setDefault(statuses);
 		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"20%"));
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row0 = new Row();
-		row0.appendChild(new Label("Company"));
+		row0.appendChild(new Label(lang.get("docapp.grid.column.company")));
 		row0.appendChild(companys);
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Queue"));
+		row1.appendChild(new Label(lang.get("docapp.grid.column.queue")));
 		row1.appendChild(queue);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Date"));
+		row2.appendChild(new Label(lang.get("docapp.grid.column.date")));
 		row2.appendChild(date);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Doctor"));
+		row3.appendChild(new Label(lang.get("docapp.grid.column.doctor")));
 		row3.appendChild(doctors);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Patient"));
+		row4.appendChild(new Label(lang.get("docapp.grid.column.patient")));
 		row4.appendChild(patients);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Status"));
+		row5.appendChild(new Label(lang.get("docapp.grid.column.status")));
 		row5.appendChild(statuses);
 		
 		Row row6 = new Row();
-		row6.appendChild(new Label("Note"));
+		row6.appendChild(new Label(lang.get("docapp.grid.column.note")));
 		row6.appendChild(note);
 				
 		rows.appendChild(row0);

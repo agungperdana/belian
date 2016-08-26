@@ -86,7 +86,7 @@ public class Product implements Listable, Serializable
 	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
 	private Set<ProductPrice> prices = new HashSet<ProductPrice>();
 	
-	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
 	private Set<ProductCost> costs = new HashSet<ProductCost>();
 	
 	@OneToMany(mappedBy="product")

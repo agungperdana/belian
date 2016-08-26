@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.CompanyStructure;
@@ -60,14 +59,8 @@ public class CompanyList extends Listbox implements Serializable
 	{
 		if(organization != null)
 		{
-			for(Listitem listitem:getItems())
-			{
-				if(listitem.getValue().toString().equals(organization.getId()))
-				{
-					setSelectedItem(listitem);
-					break;
-				}
-			}
+			getChildren().clear();
+			setSelectedItem(appendItem(organization.getLabel(), organization.getValue()));
 		}
 	}
 }

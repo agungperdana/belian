@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.procurement.dm;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,9 +12,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.global.dm.ApproveAndReviewable;
 import com.kratonsolution.belian.global.dm.Listable;
 import com.kratonsolution.belian.global.dm.Review;
@@ -34,6 +38,10 @@ public class PurchaseOrderRequest extends ApproveAndReviewable implements Listab
 {
 	public static final String NCODE = "POR";
 		
+	@ManyToOne
+	@JoinColumn(name="fk_tax")
+	private Tax tax;
+	
 	@Column(name="date")
 	private Date date;
 		
@@ -97,5 +105,15 @@ public class PurchaseOrderRequest extends ApproveAndReviewable implements Listab
 		}
 		
 		return true;
+	}
+	
+	public BigDecimal getEstimatedCost()
+	{
+		BigDecimal estimated = BigDecimal.ZERO;
+		
+		for(PurchaseOrderRequestItem item:getItems())  
+			estimated = estimated.add(item.getQuantity().multiply(item.getEstimatedPrice()==null?BigDecimal.ZERO:item.getEstimatedPrice()));
+		
+		return estimated;
 	}
 }

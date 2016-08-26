@@ -2400,9 +2400,10 @@ DROP TABLE IF EXISTS `product_receivable`;
 CREATE TABLE `product_receivable` (
   `id` char(50) NOT NULL,
   `date` date DEFAULT NULL,
-  `number` char(50) DEFAULT NULL,
+  `source` char(50) DEFAULT NULL,
   `fk_organization` char(50) DEFAULT NULL,
   `status` char(10) DEFAULT NULL,
+  `fk_facility` char(50) DEFAULT NULL,
   `version` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
@@ -2506,6 +2507,7 @@ CREATE TABLE `purchase_order_item` (
   `note` varchar(250) DEFAULT NULL,
   `fk_purchase_order_request_item` char(50) DEFAULT NULL,
   `expired_date` date DEFAULT NULL,
+  `estimated_price` decimal(10,0) DEFAULT NULL,
   `version` bigint(20) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
@@ -2522,6 +2524,7 @@ DROP TABLE IF EXISTS `purchase_order_request`;
 CREATE TABLE `purchase_order_request` (
   `id` char(50) NOT NULL,
   `date` date DEFAULT NULL,
+  `fk_tax` char(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -2540,6 +2543,7 @@ CREATE TABLE `purchase_order_request_item` (
   `fk_purchase_order_request` char(50) DEFAULT NULL,
   `fk_product` char(50) DEFAULT NULL,
   `note` varchar(250) DEFAULT NULL,
+  `estimated_price` decimal(10,0) DEFAULT NULL,
   `version` bigint(20) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
@@ -2833,6 +2837,27 @@ CREATE TABLE `requirement_status` (
   `fk_order` char(50) DEFAULT NULL,
   `type` char(25) DEFAULT NULL,
   `fk_requirement` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `reveiveable_item`
+--
+
+DROP TABLE IF EXISTS `reveiveable_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `reveiveable_item` (
+  `id` char(50) NOT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `serial` char(50) DEFAULT NULL,
+  `expired` date DEFAULT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  `fk_inventory_item` char(50) DEFAULT NULL,
+  `fk_receivable` char(50) DEFAULT NULL,
   `version` bigint(20) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
@@ -3658,4 +3683,4 @@ CREATE TABLE `working_shift` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-08-24  9:34:33
+-- Dump completed on 2016-08-26  9:28:31

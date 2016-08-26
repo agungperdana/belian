@@ -158,8 +158,8 @@ public class CashPurchaseOrderGridContent extends GridContent
 		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column(lang.get("cpo.grid.column.date"),null,"85px"));
-		grid.getColumns().appendChild(new Column(lang.get("cpo.grid.column.number"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("cpo.grid.column.date"),null,"80px"));
+		grid.getColumns().appendChild(new Column(lang.get("cpo.grid.column.number"),null,"100px"));
 		grid.getColumns().appendChild(new Column(lang.get("cpo.grid.column.company"),null,"150px"));
 		grid.getColumns().appendChild(new Column(lang.get("cpo.grid.column.supplier"),null,"150px"));
 		grid.getColumns().appendChild(new Column(lang.get("cpo.grid.column.purchaser"),null,"150px"));

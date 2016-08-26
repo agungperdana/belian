@@ -100,6 +100,9 @@
     <tr th:each="contact : ${billable.organization.contacts}">
 		<td align="center" colspan="2">[[${contact.contact}]]</td>
 	</tr>
+	<tr>
+		<td align="left" colspan="2">&nbsp;</td>
+	</tr>
 	<tr th:each="line : ${billable.items}">
 		 <td colspan="2">
 		 	<table style="width:99%;" cellspacing="0" cellpadding="0">
@@ -117,12 +120,18 @@
 		 	</table>
 		 </td>
 	</tr>
+	<th:block th:if="${billable.extra > 0}">
+	<tr>
+		<td align="left">Service charge(s)</td>
+		<td align="right" style="padding: 2px;" th:text="${#numbers.formatDecimal(billable.extra,1,'COMMA',0,'POINT')}"/>
+	</tr>
+	</th:block>
 	<tr>
 		<td align="left" style="font-weight: bold;">Sub total</td>
 		<td align="right" style="border-top: solid black 1px;font-weight: bold;padding: 2px;" th:text="${#numbers.formatDecimal(billable.billingAmount,1,'COMMA',0,'POINT')}"/>
 	</tr>
 	<tr>
-		<td align="left" style="font-weight: bold;">[[${billable.tax.name}]]</td>
+		<td align="left" style="font-weight: bold;">Pajak</td>
 		<td align="right" style="font-weight: bold;padding: 2px;" th:text="${#numbers.formatDecimal(billable.taxAmount,1,'COMMA',0,'POINT')}"/>
 	</tr>
 	<tr>

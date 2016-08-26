@@ -1,13 +1,15 @@
 /**
  * 
  */
-package com.kratonsolution.belian.global.dm;
+package com.kratonsolution.belian.inventory.dm;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -17,10 +19,12 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.global.dm.Status;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -34,41 +38,34 @@ import lombok.Setter;
 @Entity
 @Table(name="product_receivable")
 @Inheritance(strategy=InheritanceType.JOINED)
-public abstract class ProductReceiveable implements Serializable,Listable
+public class Receivable implements Serializable
 {
 	@Id
-	protected String id = UUID.randomUUID().toString();
+	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="date")
-	protected Date date;
+	private Date date;
 	
-	@Column(name="number")
-	protected String number;
+	@Column(name="source")
+	private String source;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_organization")
-	protected Organization organization;
+	private Organization organization;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="status")
-	protected Status status = Status.NEW;
-
+	private Status status = Status.NEW;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_facility")
+	private Facility facility;
+	
 	@Version
-	protected Long version;
+	private Long version;
 	
-	public abstract String getType();
-
-	public abstract Set<? extends ProductReceiveableItem> getItems();
+	@OneToMany(mappedBy="receivable",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<ReceiveableItem> items = new HashSet<>();
 	
-	@Override
-	public String getLabel()
-	{
-		return getType()+"("+getNumber()+")";
-	}
-	
-	@Override
-	public String getValue()
-	{
-		return getId();
-	}
+	public Receivable(){}
 }

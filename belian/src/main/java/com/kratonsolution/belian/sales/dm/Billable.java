@@ -13,6 +13,7 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -85,7 +86,7 @@ public abstract class Billable implements Journalable,Serializable
 	@Version
 	protected Long version;
 
-	@OneToMany(mappedBy="billable")
+	@OneToMany(mappedBy="billable",fetch=FetchType.EAGER)
 	private Set<PaymentApplication> receipts = new HashSet<>();
 	
 	public Billable(){}

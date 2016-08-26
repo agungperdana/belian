@@ -21,7 +21,6 @@ import javax.persistence.Version;
 
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.global.dm.ProductReceiveable;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -55,9 +54,9 @@ public class GoodsReceive implements Serializable
 	@JoinColumn(name="fk_facility_destination")
 	private Facility destination;
 	
-	@ManyToOne
+	@ManyToOne()
 	@JoinColumn(name="fk_receiveable")
-	private ProductReceiveable reference;
+	private Receivable receiveable;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_person_received_by")

@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -33,7 +34,7 @@ public class PharmacySales extends MedicalSales
 	@Column(name="is_reference")
 	private boolean reference;
 	
-	@OneToMany(mappedBy="pharmacySales",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(mappedBy="pharmacySales",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
 	private Set<PharmacySalesItem> items = new HashSet<>();
 	
 	public PharmacySales(){}

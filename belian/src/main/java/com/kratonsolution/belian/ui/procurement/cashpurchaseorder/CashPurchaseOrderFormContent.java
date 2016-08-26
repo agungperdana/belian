@@ -3,6 +3,8 @@
  */
 package com.kratonsolution.belian.ui.procurement.cashpurchaseorder;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 
 import org.zkoss.zk.ui.Component;
@@ -30,12 +32,16 @@ import com.kratonsolution.belian.procurement.dm.PurchaseOrderRequestItem;
 import com.kratonsolution.belian.procurement.svc.CashPurchaseOrderService;
 import com.kratonsolution.belian.procurement.svc.PurchaseOrderRequestService;
 import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.StateListener;
 import com.kratonsolution.belian.ui.component.FacilityList;
 import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.component.SupplierBox;
+import com.kratonsolution.belian.ui.component.TaxList;
+import com.kratonsolution.belian.ui.procurement.purchaseorderrequest.PurchaseOrderRequestItemRow;
 import com.kratonsolution.belian.ui.procurement.purchaseorderrequest.PurchaseOrderRequestList;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
+import com.kratonsolution.belian.ui.util.Numbers;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -65,7 +71,15 @@ public class CashPurchaseOrderFormContent extends FormContent
 	private SupplierBox suppliers = new SupplierBox(true);
 
 	private FacilityList facilitys = new FacilityList();
-
+	
+	private TaxList taxes = new TaxList();
+	
+	private Textbox price = Components.readOnlyMoneyBox(null);
+	
+	private Textbox tax = Components.readOnlyMoneyBox(null);
+	
+	private Textbox total = Components.readOnlyMoneyBox(null);
+	
 	private Grid items = new Grid();
 
 	public CashPurchaseOrderFormContent()
@@ -108,7 +122,7 @@ public class CashPurchaseOrderFormContent extends FormContent
 				order.setRequest(requests.getRequest());
 				order.setSupplier(suppliers.getSupplier());
 				order.setCurrency(utils.getCurrency());
-				order.setTax(utils.getTax());
+				order.setTax(taxes.getTax());
 				order.setFacility(facilitys.getFacility());
 
 				for(Component com:items.getRows().getChildren())
@@ -122,8 +136,9 @@ public class CashPurchaseOrderFormContent extends FormContent
 						item.setExpiredDate(row.getExpired());
 						item.setPurchaseOrder(order);
 						item.setQuantity(row.getBuyed());
+						item.setUnitPrice(BigDecimal.valueOf(row.getPrice().getValue()));
 						item.setRequestItem(row.getItem());
-
+						
 						order.getItems().add(item);
 					}
 				}
@@ -146,47 +161,63 @@ public class CashPurchaseOrderFormContent extends FormContent
 				initItemsRow();
 			}
 		});
-
+		
+		taxes.addEventListener(Events.ON_SELECT, new InfoHandler());
 		number.setText(gen.generate(Code.CsPO));
 
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"125px"));
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
+		grid.getColumns().appendChild(new Column(null,null,"150px"));
+		grid.setSpan("0");
 
 		Row row0 = new Row();
-		row0.appendChild(new Label(lang.get("cpo.grid.column.number")));
-		row0.appendChild(number);
+		row0.appendChild(new Label(lang.get("cpo.grid.column.company")));
+		row0.appendChild(companys);
+		row0.appendChild(new Label(lang.get("cpo.grid.column.price")));
+		row0.appendChild(price);
 
 		Row row1 = new Row();
-		row1.appendChild(new Label(lang.get("cpo.grid.column.date")));
-		row1.appendChild(date);
+		row1.appendChild(new Label(lang.get("cpo.grid.column.number")));
+		row1.appendChild(number);
+		row1.appendChild(new Label(lang.get("cpo.grid.column.tax")));
+		row1.appendChild(tax);
 
 		Row row2 = new Row();
-		row2.appendChild(new Label(lang.get("cpo.grid.column.company")));
-		row2.appendChild(companys);
+		row2.appendChild(new Label(lang.get("cpo.grid.column.date")));
+		row2.appendChild(date);
+		row2.appendChild(new Label(lang.get("cpo.grid.column.total")));
+		row2.appendChild(total);
 
 		Row row3 = new Row();
-		row3.appendChild(new Label(lang.get("cpo.grid.column.purchaser")));
-		row3.appendChild(purchaser);
-
+		row3.appendChild(new Label(lang.get("cpo.grid.column.tax")));
+		row3.appendChild(taxes);
+		
 		Row row4 = new Row();
-		row4.appendChild(new Label(lang.get("cpo.grid.column.supplier")));
-		row4.appendChild(suppliers);
+		row4.appendChild(new Label(lang.get("cpo.grid.column.purchaser")));
+		row4.appendChild(purchaser);
 
 		Row row5 = new Row();
-		row5.appendChild(new Label(lang.get("cpo.grid.column.request")));
-		row5.appendChild(requests);
+		row5.appendChild(new Label(lang.get("cpo.grid.column.supplier")));
+		row5.appendChild(suppliers);
 
 		Row row6 = new Row();
-		row6.appendChild(new Label(lang.get("cpo.grid.column.facility")));
-		row6.appendChild(facilitys);
+		row6.appendChild(new Label(lang.get("cpo.grid.column.request")));
+		row6.appendChild(requests);
 
+		Row row7 = new Row();
+		row7.appendChild(new Label(lang.get("cpo.grid.column.facility")));
+		row7.appendChild(facilitys);
+
+		rows.appendChild(row0);
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
 		rows.appendChild(row4);
 		rows.appendChild(row5);
 		rows.appendChild(row6);
+		rows.appendChild(row7);
 	}
 
 	private void initItems()
@@ -195,11 +226,13 @@ public class CashPurchaseOrderFormContent extends FormContent
 		items.appendChild(new Rows());
 		items.appendChild(new Columns());
 		items.setEmptyMessage(lang.get("message.grid.empty"));
-		items.getColumns().appendChild(new Column(lang.get("cpo.grid.column.product"),null,"150px"));
-		items.getColumns().appendChild(new Column(lang.get("cpo.grid.column.requested"),null,"80px"));
-		items.getColumns().appendChild(new Column(lang.get("cpo.grid.column.buying"),null,"80px"));
-		items.getColumns().appendChild(new Column(lang.get("cpo.grid.column.uom"),null,"100px"));
+		items.getColumns().appendChild(new Column(lang.get("cpo.grid.column.product"),null,"250px"));
+		items.getColumns().appendChild(new Column(lang.get("cpo.grid.column.requested"),null,"55px"));
+		items.getColumns().appendChild(new Column(lang.get("cpo.grid.column.buying"),null,"55px"));
+		items.getColumns().appendChild(new Column(lang.get("cpo.grid.column.uom"),null,"80px"));
 		items.getColumns().appendChild(new Column(lang.get("cpo.grid.column.expired"),null,"125px"));
+		items.getColumns().appendChild(new Column(lang.get("cpo.grid.column.price"),null,"85px"));
+		items.getColumns().appendChild(new Column(lang.get("cpo.grid.column.total"),null,"85px"));
 		items.setSpan("0");
 
 		initItemsRow();
@@ -213,8 +246,58 @@ public class CashPurchaseOrderFormContent extends FormContent
 
 		if(requests.getRequest() != null)
 		{
+			BigDecimal prc = BigDecimal.ZERO;
+			
 			for(PurchaseOrderRequestItem item:requests.getRequest().getItems())
-				items.getRows().appendChild(new PurchaseOrderRequestItemRow(item));
+			{
+				if(item.getOrdered().compareTo(item.getQuantity()) < 0)
+				{
+					PurchaseOrderRequestItemRow row = new PurchaseOrderRequestItemRow(item);
+					row.addListener(new InfoHandler());
+					
+					items.getRows().appendChild(row);
+					
+					prc = prc.add((item.getQuantity().subtract(item.getOrdered())).multiply(item.getEstimatedPrice()));
+				}
+			}
+			
+			BigDecimal txt = BigDecimal.ZERO;
+			
+			if(taxes.getTax() != null)
+				txt = prc.multiply(taxes.getTax().getAmount()).divide(BigDecimal.valueOf(100),RoundingMode.CEILING);
+			
+			price.setValue(Numbers.format(prc));
+			tax.setValue(Numbers.format(txt));
+			total.setValue(Numbers.format(prc.add(txt)));
+		}
+	}
+	
+	private class InfoHandler implements StateListener,EventListener<Event>
+	{
+		@Override
+		public void stateChanged()
+		{
+			BigDecimal prc = BigDecimal.ZERO;
+			
+			for(Component com:items.getRows().getChildren())
+			{
+				PurchaseOrderRequestItemRow row = (PurchaseOrderRequestItemRow)com;
+				prc = prc.add(row.getBuyed().multiply(BigDecimal.valueOf(row.getPrice().getValue())));
+			}
+			
+			BigDecimal txt = BigDecimal.ZERO;
+			if(taxes.getTax() != null)
+				txt = prc.multiply(taxes.getTax().getAmount()).divide(BigDecimal.valueOf(100),RoundingMode.CEILING);
+			
+			price.setValue(Numbers.format(prc));
+			tax.setValue(Numbers.format(txt));
+			total.setValue(Numbers.format(prc.add(txt)));
+		}
+
+		@Override
+		public void onEvent(Event arg0) throws Exception
+		{
+			stateChanged();
 		}
 	}
 }

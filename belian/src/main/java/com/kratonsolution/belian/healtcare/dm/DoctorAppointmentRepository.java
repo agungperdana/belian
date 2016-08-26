@@ -35,9 +35,12 @@ public interface DoctorAppointmentRepository extends JpaRepository<DoctorAppoint
 			+ "ORDER BY app.queue ASC")
 	public List<DoctorAppointment> findAll(@Param("date")Date date,@Param("company")String companyId,@Param("doctor")String doctorId,@Param("customer")String customer);
 	
-	@Query("FROM DoctorAppointment app WHERE app.company.id =:companyId ORDER BY app.date DESC")
-	public List<DoctorAppointment> findAll(Pageable pageable,@Param("companyId")String companyId);
+	@Query("FROM DoctorAppointment app WHERE "
+			+ "app.company.id IN(:company) "
+			+ "ORDER BY app.date DESC")
+	public List<DoctorAppointment> findAll(Pageable pageable,@Param("company")List<String> companyId);
 	
-	@Query("SELECT COUNT(app) FROM DoctorAppointment app WHERE app.company.id =:companyId")
-	public Long count(@Param("companyId")String companyId);
+	@Query("SELECT COUNT(app) FROM DoctorAppointment app WHERE "
+			+ "app.company.id IN(:company)")
+	public Long count(@Param("company")List<String> companyId);
 }

@@ -97,7 +97,7 @@ public class PharmacyOrderEditContent extends FormContent
 		MedicalSales medical = service.findOne(RowUtils.id(row));
 		if(medical != null && medical.isPaid())
 		{
-			if(medical.getStatus().equals(MedicalSalesStatus.Finished))
+			if(medical.getStatus().equals(MedicalSalesStatus.FINISHED))
 				toolbar.removeChild(toolbar.getSave());
 			
 			toolbar.getSave().setLabel(lang.get("label.component.button.finish"));

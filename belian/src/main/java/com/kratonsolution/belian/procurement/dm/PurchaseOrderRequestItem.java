@@ -39,6 +39,9 @@ public class PurchaseOrderRequestItem implements ApproveAndReviewableItem
 	
 	@Column(name="quantity")
 	private BigDecimal quantity = BigDecimal.ZERO;
+	
+	@Column(name="estimated_price")
+	private BigDecimal estimatedPrice = BigDecimal.ZERO;
 
 	@Column(name="note")
 	private String note;

@@ -3,9 +3,12 @@
  */
 package com.kratonsolution.belian.ui.procurement.purchaseorderrequest;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -35,8 +38,13 @@ import com.kratonsolution.belian.procurement.svc.PurchaseOrderRequestService;
 import com.kratonsolution.belian.security.svc.UserService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
+import com.kratonsolution.belian.ui.StateListener;
+import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.component.ProductBox;
+import com.kratonsolution.belian.ui.component.TaxList;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
+import com.kratonsolution.belian.ui.util.Numbers;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -52,10 +60,18 @@ public class PurchaseOrderRequestFormContent extends FormContent
 
 	private PersonService personService = Springs.get(PersonService.class);
 
-	private Textbox number = Components.readOnlyTextBox();
+	private Textbox number = Components.readOnlyTextBox(null,false);
 
-	private Listbox companys = Components.newSelect(utils.getOrganization());
+	private OrganizationList companys = new OrganizationList();
+	
+	private TaxList taxes = new TaxList();
 
+	private Textbox estimated = Components.moneyBox();
+
+	private Textbox tax = Components.moneyBox();
+	
+	private Textbox total = Components.moneyBox();
+	
 	private Datebox date = Components.currentDatebox();
 
 	private Grid items = new Grid();
@@ -80,9 +96,7 @@ public class PurchaseOrderRequestFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PurchaseOrderRequestWindow window = (PurchaseOrderRequestWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new PurchaseOrderRequestGridContent());
 			}
 		});
 
@@ -95,16 +109,23 @@ public class PurchaseOrderRequestFormContent extends FormContent
 				request.setNumber(number.getText());
 				request.setDate(new Date(date.getValue().getTime()));
 				request.setOrganization(utils.getOrganization());
+				request.setTax(taxes.getTax());
 
 				for(Component com:items.getRows().getChildren())
 				{
 					Row row = (Row)com;
+					
+					ProductBox box = (ProductBox)row.getChildren().get(1);
 
+					if(box.getProduct() == null)
+						throw new WrongValueException(box,lang.get("message.field.empty"));
+					
 					PurchaseOrderRequestItem item = new PurchaseOrderRequestItem();
-					item.setNote(RowUtils.string(row, 4));
-					item.setProduct(Components.product(row, 1));
+					item.setNote(RowUtils.string(row, 6));
+					item.setProduct(box.getProduct());
+					item.setQuantity(BigDecimal.valueOf(box.getQuantity().getValue()));
+					item.setEstimatedPrice(BigDecimal.valueOf(box.getPrice().getValue()));
 					item.setRequest(request);
-					item.setQuantity(RowUtils.decimal(row, 2));
 
 					request.getItems().add(item);
 				}
@@ -148,9 +169,7 @@ public class PurchaseOrderRequestFormContent extends FormContent
 
 				service.add(request);
 
-				PurchaseOrderRequestWindow window = (PurchaseOrderRequestWindow)getParent();
-				window.removeCreateForm();
-				window.insertGrid();
+				Flow.next(getParent(), new PurchaseOrderRequestGridContent());
 			}
 		});
 	}
@@ -158,27 +177,44 @@ public class PurchaseOrderRequestFormContent extends FormContent
 	@Override
 	public void initForm()
 	{
+		taxes.addEventListener(Events.ON_CLICK, new InfoHandler());
+		
+		companys.setWidth("100%");
+		number.setWidth("100%");
 		number.setText(PurchaseOrderRequest.NCODE+System.currentTimeMillis());
 
 		grid.appendChild(new Columns());
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
+		grid.getColumns().appendChild(new Column());
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.getColumns().appendChild(new Column());
 
 		Row row0 = new Row();
-		row0.appendChild(new Label(lang.get("porequest.grid.column.number")));
-		row0.appendChild(number);
+		row0.appendChild(new Label(lang.get("porequest.grid.column.company")));
+		row0.appendChild(companys);
+		row0.appendChild(new Label(lang.get("porequest.grid.column.estimated")));
+		row0.appendChild(estimated);
 
 		Row row1 = new Row();
-		row1.appendChild(new Label(lang.get("porequest.grid.column.date")));
-		row1.appendChild(date);
+		row1.appendChild(new Label(lang.get("porequest.grid.column.number")));
+		row1.appendChild(number);
+		row1.appendChild(new Label(lang.get("porequest.grid.column.tax")));
+		row1.appendChild(tax);
 
 		Row row2 = new Row();
-		row2.appendChild(new Label(lang.get("porequest.grid.column.company")));
-		row2.appendChild(companys);
+		row2.appendChild(new Label(lang.get("porequest.grid.column.date")));
+		row2.appendChild(date);
+		row2.appendChild(new Label(lang.get("porequest.grid.column.total")));
+		row2.appendChild(total);
 
+		Row row3 = new Row();
+		row3.appendChild(new Label(lang.get("porequest.grid.column.tax")));
+		row3.appendChild(taxes);
+		
 		rows.appendChild(row0);
 		rows.appendChild(row1);
 		rows.appendChild(row2);
+		rows.appendChild(row3);
 	}
 
 	private void initTabbox()
@@ -207,23 +243,28 @@ public class PurchaseOrderRequestFormContent extends FormContent
 		items.appendChild(new Columns());
 		items.getColumns().appendChild(new Column(null,null,"25px"));
 		items.getColumns().appendChild(new Column(lang.get("porequest.grid.column.product"),null,"150px"));
-		items.getColumns().appendChild(new Column(lang.get("porequest.grid.column.quantity"),null,"100px"));
-		items.getColumns().appendChild(new Column(lang.get("porequest.grid.column.uom"),null,"100px"));
+		items.getColumns().appendChild(new Column(lang.get("porequest.grid.column.quantity"),null,"65px"));
+		items.getColumns().appendChild(new Column(lang.get("porequest.grid.column.uom"),null,"75px"));
+		items.getColumns().appendChild(new Column(lang.get("porequest.grid.column.price"),null,"100px"));
+		items.getColumns().appendChild(new Column(lang.get("porequest.grid.column.total"),null,"100px"));
 		items.getColumns().appendChild(new Column(lang.get("porequest.grid.column.note"),null,"150px"));
 		items.setSpan("1");
-
+		
 		nrc.getNew().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
 				ProductBox box = new ProductBox();
-
+				box.addListener(new InfoHandler());
+				
 				Row row = new Row();
 				row.appendChild(Components.checkbox(false));
 				row.appendChild(box);
-				row.appendChild(Components.doubleBox(1));
+				row.appendChild(box.getQuantity());
 				row.appendChild(box.getUoms());
+				row.appendChild(box.getPrice());
+				row.appendChild(box.getTotal());
 				row.appendChild(Components.textBox(null));
 
 				items.getRows().appendChild(row);
@@ -267,5 +308,34 @@ public class PurchaseOrderRequestFormContent extends FormContent
 
 		tabbox.getTabpanels().getChildren().get(1).appendChild(bar);
 		tabbox.getTabpanels().getChildren().get(1).appendChild(rolesGrid);
+	}
+	
+	private class InfoHandler implements StateListener,EventListener<Event>
+	{
+		@Override
+		public void stateChanged()
+		{
+			BigDecimal price = BigDecimal.ZERO;
+			
+			for(Component com:items.getRows().getChildren())
+			{
+				Row row = (Row)com;
+				ProductBox box = (ProductBox)row.getChildren().get(1);
+			
+				price = price.add(BigDecimal.valueOf(box.getQuantity().getValue()*box.getPrice().getValue()));
+			}
+		
+			BigDecimal tx = price.multiply(taxes.getTax().getAmount()).divide(BigDecimal.valueOf(100),RoundingMode.HALF_UP);
+			
+			estimated.setText(Numbers.format(price));
+			tax.setText(Numbers.format(tx));
+			total.setText(Numbers.format(price.add(tx)));
+		}
+
+		@Override
+		public void onEvent(Event arg0) throws Exception
+		{
+			stateChanged();
+		}
 	}
 }

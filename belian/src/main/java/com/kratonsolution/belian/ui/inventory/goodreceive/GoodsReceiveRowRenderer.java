@@ -18,7 +18,6 @@ import com.kratonsolution.belian.inventory.dm.GoodsReceive;
  */
 public class GoodsReceiveRowRenderer implements RowRenderer<GoodsReceive>
 {
-
 	@Override
 	public void render(Row row, GoodsReceive data, int index) throws Exception
 	{
@@ -28,6 +27,7 @@ public class GoodsReceiveRowRenderer implements RowRenderer<GoodsReceive>
 			row.appendChild(new Label(DateTimes.format(data.getDate())));
 			row.appendChild(new Label(data.getOrganization().getName()));
 			row.appendChild(new Label(data.getDestination().getName()));
+			row.appendChild(new Label(data.getReceiveable().getSource()));
 			row.appendChild(new Label(data.getReceiver().getName()));
 			row.appendChild(new Label(data.getId()));
 		}

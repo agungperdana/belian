@@ -20,7 +20,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class DoctorAppointmentModel implements ListModel<DoctorAppointment>
 {
-	private final DoctorAppointmentService service = Springs.get(DoctorAppointmentService.class);
+	private DoctorAppointmentService service = Springs.get(DoctorAppointmentService.class);
 	
 	private List<DoctorAppointment> data = new ArrayList<DoctorAppointment>();
 	

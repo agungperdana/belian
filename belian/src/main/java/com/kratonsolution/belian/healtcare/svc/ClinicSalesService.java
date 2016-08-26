@@ -159,10 +159,10 @@ public class ClinicSalesService
 		if(utils.getOrganization() == null)
 			throw new RuntimeException("Default Organization not exist,please go to user setting.");
 		
-		medication.setStatus(MedicalSalesStatus.Finished);
+		medication.setStatus(MedicalSalesStatus.FINISHED);
 		repository.saveAndFlush(medication);
 		
-		if(medication.getStatus().equals(MedicalSalesStatus.Finished))
+		if(medication.getStatus().equals(MedicalSalesStatus.FINISHED))
 		{
 			for(ClinicSalesItem item:medication.getItems())
 			{
@@ -187,7 +187,7 @@ public class ClinicSalesService
 	public void delete(@PathVariable String id)
 	{
 		ClinicSales medication = findOne(id);
-		if(!medication.isPaid() && medication.getStatus().equals(MedicalSalesStatus.Registered))
+		if(!medication.isPaid() && medication.getStatus().equals(MedicalSalesStatus.REGISTERED))
 			repository.delete(medication);
 		else
 			throw new RuntimeException("This medication order already prepared or finished.");

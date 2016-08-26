@@ -13,6 +13,7 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -71,7 +72,7 @@ public class CashierShift implements Serializable,Journalable
 	@Version
 	private Long version;
 	
-	@OneToMany(mappedBy="shift")
+	@OneToMany(mappedBy="shift",fetch=FetchType.EAGER)
 	private Set<Billable> billings = new HashSet<>();
 	
 	public CashierShift(){}

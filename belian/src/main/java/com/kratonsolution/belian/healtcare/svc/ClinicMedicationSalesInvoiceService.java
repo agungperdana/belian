@@ -66,6 +66,8 @@ public class ClinicMedicationSalesInvoiceService
 		List<Map<String,Object>> contents = new ArrayList<>();
 		for(ClinicSales billable:service.findAllPaid(company,start,end))
 		{
+			System.out.println(billable);
+			
 			BigDecimal amount = BigDecimal.ZERO;
 			List<Map<String,String>> list = new ArrayList<>();
 			

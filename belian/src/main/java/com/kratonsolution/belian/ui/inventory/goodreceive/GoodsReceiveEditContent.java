@@ -97,7 +97,6 @@ public class GoodsReceiveEditContent extends FormContent
 			date.setValue(goodsReceive.getDate());
 			number.setText(goodsReceive.getNumber());
 			companys.appendChild(new Listitem(goodsReceive.getOrganization().getLabel(), goodsReceive.getOrganization().getValue()));
-			receiveables.appendChild(new Listitem(goodsReceive.getReference().getLabel(), goodsReceive.getReference().getValue()));
 			facilitys.appendChild(new Listitem(goodsReceive.getDestination().getLabel(), goodsReceive.getDestination().getValue()));
 			users.appendChild(new Listitem(goodsReceive.getReceiver().getLabel(), goodsReceive.getReceiver().getValue()));
 		

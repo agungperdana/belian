@@ -20,11 +20,10 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.global.dm.ProductReceiveable;
-import com.kratonsolution.belian.global.dm.ProductReceiveableItem;
-import com.kratonsolution.belian.global.dm.ProductReceiveableRepository;
 import com.kratonsolution.belian.inventory.dm.GoodsReceive;
-import com.kratonsolution.belian.inventory.dm.GoodsReceiveItem;
+import com.kratonsolution.belian.inventory.dm.Receivable;
+import com.kratonsolution.belian.inventory.dm.ReceiveableItem;
+import com.kratonsolution.belian.inventory.dm.ReceiveableRepository;
 import com.kratonsolution.belian.inventory.svc.FacilityService;
 import com.kratonsolution.belian.inventory.svc.GoodsReceiveService;
 import com.kratonsolution.belian.ui.FormContent;
@@ -42,7 +41,7 @@ public class GoodsReceiveFormContent extends FormContent
 	
 	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
-	private ProductReceiveableRepository requestService = Springs.get(ProductReceiveableRepository.class);
+	private ReceiveableRepository requestService = Springs.get(ReceiveableRepository.class);
 	
 	private FacilityService facilityService = Springs.get(FacilityService.class);
 	
@@ -52,7 +51,7 @@ public class GoodsReceiveFormContent extends FormContent
 	
 	private Listbox companys = Components.newSelect(utils.getOrganization());
 	
-	private Listbox receiveables = Components.newSelect(requestService.findAllNew(utils.getOrganization().getId()),true);
+	private Listbox receiveables = Components.newSelect();
 	
 	private Listbox facilitys = Components.newSelect(facilityService.findAllActive(),true);
 	
@@ -96,18 +95,6 @@ public class GoodsReceiveFormContent extends FormContent
 				gr.setNumber(number.getText());
 				gr.setOrganization(utils.getOrganization());
 				gr.setReceiver(utils.getUser().getPerson());
-				gr.setReference(requestService.findOne(Components.string(receiveables)));
-				
-				for(ProductReceiveableItem item:gr.getReference().getItems())
-				{
-					GoodsReceiveItem gri = new GoodsReceiveItem();
-					gri.setGoodsReceive(gr);
-					gri.setNote(item.getNote());
-					gri.setProduct(item.getProduct());
-					gri.setQuantity(item.getQuantity());
-					
-					gr.getItems().add(gri);
-				}
 				
 				service.add(gr);
 				
@@ -186,16 +173,15 @@ public class GoodsReceiveFormContent extends FormContent
 	{
 		items.getRows().getChildren().clear();
 		
-		ProductReceiveable receiveable = requestService.findOne(Components.string(receiveables));
+		Receivable receiveable = requestService.findOne(Components.string(receiveables));
 		if(receiveable != null)
 		{
-			for(ProductReceiveableItem item:receiveable.getItems())
+			for(ReceiveableItem item:receiveable.getItems())
 			{
 				Row row = new Row();
 				row.appendChild(new Label(item.getProduct().getName()));
 				row.appendChild(Components.label(item.getQuantity()));
 				row.appendChild(new Label(item.getProduct().getUom().getName()));
-				row.appendChild(new Label(item.getNote()));
 				
 				items.getRows().appendChild(row);
 			}

@@ -276,14 +276,18 @@ public class Components implements Serializable
 	
 	public static final Textbox readOnlyMoneyBox(BigDecimal decimal)
 	{
-		NumberFormat format = NumberFormat.getNumberInstance();
-		format.setGroupingUsed(true);
-		
 		Textbox box = new Textbox();
 		box.setWidth("100%");
 		box.setReadonly(true);
-		box.setText(format.format(decimal));
 		box.setStyle("text-align:right;");
+		
+		if(decimal != null)
+		{
+			NumberFormat format = NumberFormat.getNumberInstance();
+			format.setGroupingUsed(true);
+			box.setText(format.format(decimal));
+		}
+		
 		return box;
 	}
 	
@@ -381,6 +385,15 @@ public class Components implements Serializable
 		box.setWidth("200px");
 		box.setStyle("text-align:right;display:block;");
 		box.setValue(value);
+		
+		return box;
+	}
+	
+	public static final Doublebox stdDoubleBox(String width)
+	{
+		Doublebox box = new Doublebox(0d);
+		box.setWidth(width);
+		box.setStyle("text-align:right;display:block;");
 		
 		return box;
 	}

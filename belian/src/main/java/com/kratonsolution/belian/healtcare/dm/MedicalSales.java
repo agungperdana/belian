@@ -42,7 +42,7 @@ public abstract class MedicalSales extends Billable
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="status")
-	protected MedicalSalesStatus status = MedicalSalesStatus.Registered;
+	protected MedicalSalesStatus status = MedicalSalesStatus.REGISTERED;
 
 	public MedicalSales(){}
 	

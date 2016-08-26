@@ -40,21 +40,26 @@
 			<tbody>
 			<th:block th:each="content:${contents}">
 			<tr>
-				<td width="70%" align="left">[[${content.date}]]</td>
-				<td width="10%" align="right">Tuslah/Etiket</td>
-				<td width="10%" align="right">[[${content.tuslah}]]</td>
+				<td width="15%" align="left">[[${content.date}]]</td>
+				<td width="60%" align="left">Tuslah/Etiket</td>
+				<td width="25%" align="right">[[${content.tuslah}]]</td>
 			</tr>
 			<tr th:each="item:${content.items}">
-				<td width="70%" align="left">&nbsp;</td>
-				<td width="10%" align="right">[[${item.product}]]</td>
-				<td width="10%" align="right">[[${item.price}]]</td>
+				<td width="15%" align="left">&nbsp;</td>
+				<td width="60%" align="left">[[${item.product}]]</td>
+				<td width="25%" align="right">[[${item.price}]]</td>
 			</tr>
 			<tr id="black-total">
-				<td width="70%" align="left">&nbsp;</td>
-				<td width="10%" align="right">&nbsp;</td>
-				<td width="10%" align="right">[[${total}]]</td>
+				<td width="15%" align="left">&nbsp;</td>
+				<td width="60%" align="right">Sub Total</td>
+				<td width="25%" align="right">[[${content.total}]]</td>
 			</tr>
 			</th:block>
+			<tr id="black-total">
+				<td width="15%" align="left">&nbsp;</td>
+				<td width="60%" align="right">Total</td>
+				<td width="25%" align="right">[[${total}]]</td>
+			</tr>
 			</tbody>
 			</table>
 		</td>

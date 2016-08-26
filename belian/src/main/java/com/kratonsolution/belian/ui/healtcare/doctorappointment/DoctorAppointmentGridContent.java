@@ -15,9 +15,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.healtcare.svc.DoctorAppointmentService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -28,8 +28,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class DoctorAppointmentGridContent extends GridContent
 {
 	private DoctorAppointmentService service = Springs.get(DoctorAppointmentService.class);
-	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	public DoctorAppointmentGridContent()
 	{
@@ -46,8 +44,7 @@ public class DoctorAppointmentGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				refresh(new DoctorAppointmentModel(utils.getRowPerPage()));
+				Flow.next(getParent(), new DoctorAppointmentGridContent());
 			}
 		});
 		
@@ -56,9 +53,7 @@ public class DoctorAppointmentGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				DoctorAppointmentWindow window = (DoctorAppointmentWindow)getParent();
-				window.removeGrid();
-				window.insertCreateForm();
+				Flow.next(getParent(), new DoctorAppointmentFormContent());
 			}
 		});
 		
@@ -110,7 +105,7 @@ public class DoctorAppointmentGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception

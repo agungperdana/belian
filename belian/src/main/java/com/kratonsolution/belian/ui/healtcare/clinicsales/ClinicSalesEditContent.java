@@ -33,7 +33,6 @@ import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 
 import com.kratonsolution.belian.accounting.dm.Tax;
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.healtcare.dm.ClinicSales;
 import com.kratonsolution.belian.healtcare.dm.ClinicSalesItem;
 import com.kratonsolution.belian.healtcare.svc.ClinicSalesService;
@@ -41,8 +40,11 @@ import com.kratonsolution.belian.healtcare.svc.PatientService;
 import com.kratonsolution.belian.sales.view.BillablePrint;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.PrintWindow;
+import com.kratonsolution.belian.ui.component.CompanyList;
+import com.kratonsolution.belian.ui.component.CurrencyList;
 import com.kratonsolution.belian.ui.component.MedicalSalesRow;
 import com.kratonsolution.belian.ui.component.ProductPriceSelectionListener;
+import com.kratonsolution.belian.ui.component.TaxList;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Numbers;
@@ -57,8 +59,6 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class ClinicSalesEditContent extends FormContent implements ProductPriceSelectionListener
 {	
 	private PatientService patientService = Springs.get(PatientService.class);
-
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 
 	private ClinicSalesService service = Springs.get(ClinicSalesService.class);
 
@@ -82,13 +82,13 @@ public class ClinicSalesEditContent extends FormContent implements ProductPriceS
 
 	private Listbox customers = Components.fullSpanSelect();
 
-	private Listbox currencys = Components.fullSpanSelect(utils.getCurrency());
+	private CurrencyList currencys = new CurrencyList();
 
-	private Listbox organizations = Components.fullSpanSelect(utils.getOrganization());
+	private CompanyList companys = new CompanyList();
 
 	private Listbox locations = Components.fullSpanSelect(utils.getLocation());
 
-	private Listbox taxes = Components.fullSpanSelect(utils.getTax());
+	private TaxList taxes = new TaxList();
 
 	private Tabbox tabbox = new Tabbox();
 
@@ -102,7 +102,6 @@ public class ClinicSalesEditContent extends FormContent implements ProductPriceS
 		this.row = row;
 		initToolbar();
 		initForm();
-
 
 		this.tabbox.setWidth("100%");
 		this.tabbox.appendChild(new Tabpanels());
@@ -140,7 +139,7 @@ public class ClinicSalesEditContent extends FormContent implements ProductPriceS
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PrintWindow window = new PrintWindow(BillablePrint.GEN(RowUtils.string(row, 6),utils.isPos()),utils.isPos());
+				PrintWindow window = new PrintWindow(BillablePrint.GEN(RowUtils.id(row),utils.isPos()),utils.isPos());
 				window.setPage(getPage());
 				window.setVisible(true);
 			}
@@ -150,20 +149,23 @@ public class ClinicSalesEditContent extends FormContent implements ProductPriceS
 	@Override
 	public void initForm()
 	{
-		ClinicSales medication = service.findOne(RowUtils.string(row, 6));
+		ClinicSales medication = service.findOne(RowUtils.id(row));
 		if(medication != null)
 		{
 			number.setText(medication.getNumber());
 			date.setValue(medication.getDate());
 
-			organizations.appendChild(new Listitem(medication.getOrganization().getLabel(),medication.getOrganization().getValue()));
-			organizations.setSelectedIndex(0);
-
+			companys.setWidth("100%");
+			companys.setOrganization(medication.getOrganization());
+			
+			taxes.setWidth("100%");
+			taxes.setTax(medication.getTax());
+			
+			currencys.setWidth("100%");
+			currencys.setCurrency(medication.getCurrency());
+			
 			saleses.appendChild(new Listitem(medication.getSales().getLabel(),medication.getSales().getValue()));
 			saleses.setSelectedIndex(0);
-
-			taxes.appendChild(new Listitem(medication.getTax().getLabel(),medication.getTax().getValue()));
-			taxes.setSelectedIndex(0);
 
 			customers.appendChild(new Listitem(medication.getCustomer()!=null?medication.getCustomer().getLabel():"Anonymous",medication.getCustomer()!=null?medication.getCustomer().getLabel():"Anonymous"));
 			customers.setSelectedIndex(0);
@@ -182,7 +184,7 @@ public class ClinicSalesEditContent extends FormContent implements ProductPriceS
 
 			Row row1 = new Row();
 			row1.appendChild(new Label("Company"));
-			row1.appendChild(organizations);
+			row1.appendChild(companys);
 			row1.appendChild(new Label("Billing"));
 			row1.appendChild(bill);
 

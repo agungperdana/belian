@@ -55,7 +55,7 @@ public class ClinicSalesInvoiceReportFormContent extends ReportForm
 				if(end.getValue() == null)
 					throw new WrongValueException(end,lang.get("message.field.empty"));
 					
-				Flow.next(getParent(), new ClinicSalesInvoiceReportResultContent(companys.getOrganization().getId(),DateTimes.sql(start.getValue()),DateTimes.sql(start.getValue())));
+				Flow.next(getParent(), new ClinicSalesInvoiceReportResultContent(companys.getOrganization().getId(),DateTimes.sql(start.getValue()),DateTimes.sql(end.getValue())));
 			}
 		});
 	}
