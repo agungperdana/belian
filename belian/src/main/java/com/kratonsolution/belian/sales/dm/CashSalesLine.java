@@ -14,9 +14,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductPriceType;
-import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
+import com.kratonsolution.belian.general.dm.UnitOfMeasure;
+import com.kratonsolution.belian.products.dm.Product;
+import com.kratonsolution.belian.products.dm.PriceComponentType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -92,8 +92,8 @@ public class CashSalesLine implements BillableItem
 	}
 
 	@Override
-	public ProductPriceType getPriceType()
+	public PriceComponentType getPriceType()
 	{
-		return ProductPriceType.BASE;
+		return PriceComponentType.BASE_PRICE;
 	}
 }

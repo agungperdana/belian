@@ -26,7 +26,7 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.global.dm.Listable;
-import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.products.dm.Product;
 import com.kratonsolution.belian.ui.component.ProductBox;
 
 /**

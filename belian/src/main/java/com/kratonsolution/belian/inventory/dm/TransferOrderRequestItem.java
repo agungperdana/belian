@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.kratonsolution.belian.global.dm.ApproveAndReviewableItem;
+import com.kratonsolution.belian.products.dm.Product;
 
 import lombok.Getter;
 import lombok.Setter;

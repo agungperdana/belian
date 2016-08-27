@@ -14,7 +14,7 @@ import org.zkoss.zul.Treechildren;
 import org.zkoss.zul.Treeitem;
 
 import com.kratonsolution.belian.common.Language;
-import com.kratonsolution.belian.inventory.dm.Facility;
+import com.kratonsolution.belian.facility.dm.Facility;
 import com.kratonsolution.belian.ui.util.Springs;
 
 import lombok.Getter;

@@ -14,8 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.kratonsolution.belian.facility.dm.Facility;
 import com.kratonsolution.belian.global.dm.Listable;
-import com.kratonsolution.belian.inventory.dm.Facility;
 
 import lombok.Getter;
 import lombok.Setter;

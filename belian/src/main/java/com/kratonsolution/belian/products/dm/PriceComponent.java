@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.inventory.dm;
+package com.kratonsolution.belian.products.dm;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.text.NumberFormat;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -35,20 +36,23 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="product_price")
-public class ProductPrice implements Serializable,Listable
+@Table(name="price_component")
+public class PriceComponent implements Serializable,Listable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="start")
-	private Date from;
+	private Date start;
 	
 	@Column(name="end")
-	private Date to;
+	private Date end;
 	
 	@Column(name="price")
 	private BigDecimal price = BigDecimal.ONE;
+	
+	@Column(name="percent")
+	private BigDecimal percent = BigDecimal.ONE;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_currency")
@@ -56,11 +60,27 @@ public class ProductPrice implements Serializable,Listable
 	
 	@Column(name="type")
 	@Enumerated(EnumType.STRING)
-	private ProductPriceType type = ProductPriceType.BASE;
+	private PriceComponentType type = PriceComponentType.BASE_PRICE;
 
 	@ManyToOne
 	@JoinColumn(name="fk_geographic")
 	private Geographic geographic;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_category")
+	private ProductCategory category;
+	
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="fk_quantity_break")
+	private QuantityBreak quantityBreak;
+	
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="fk_order_value")
+	private OrderValue orderValue;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="sales_type")
+	private SaleType saleType = SaleType.STANDARD_RETAIL_SALES;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_party")
@@ -74,13 +94,10 @@ public class ProductPrice implements Serializable,Listable
 	@JoinColumn(name="fk_product_feature")
 	private ProductFeature feature;
 	
-	@Column(name="is_percent")
-	private boolean percent;
-	
 	@Version
 	private Long version;
 	
-	public ProductPrice(){}
+	public PriceComponent(){}
 
 	@Override
 	public String getLabel()

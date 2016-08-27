@@ -3,7 +3,7 @@
  */
 package com.kratonsolution.belian.ui.component;
 
-import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.products.dm.Product;
 
 /**
  * @author Agung Dodi Perdana

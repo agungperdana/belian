@@ -25,9 +25,9 @@ import org.zkoss.zul.Vlayout;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductPrice;
 import com.kratonsolution.belian.inventory.svc.ProductService;
+import com.kratonsolution.belian.products.dm.Product;
+import com.kratonsolution.belian.products.dm.PriceComponent;
 import com.kratonsolution.belian.ui.TabedDisplay;
 import com.kratonsolution.belian.ui.inventory.product.ProductEditContent;
 import com.kratonsolution.belian.ui.util.Numbers;
@@ -103,10 +103,10 @@ public class PriceTab implements TabedDisplay
 		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("4");
 
-		final Iterator<ProductPrice> iterator = this.product.getPrices().iterator();
+		final Iterator<PriceComponent> iterator = this.product.getPrices().iterator();
 		while (iterator.hasNext())
 		{
-			final ProductPrice price = (ProductPrice) iterator.next();
+			final PriceComponent price = (PriceComponent) iterator.next();
 
 			Image remove = new Image("/icons/deletesmall.png");
 			remove.addEventListener(Events.ON_CLICK,new EventListener<Event>()

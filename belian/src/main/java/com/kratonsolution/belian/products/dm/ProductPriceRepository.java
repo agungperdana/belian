@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.inventory.dm;
+package com.kratonsolution.belian.products.dm;
 
 import java.sql.Date;
 import java.util.List;
@@ -14,7 +14,7 @@ import org.springframework.data.repository.query.Param;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public interface ProductPriceRepository extends JpaRepository<ProductPrice, String>
+public interface ProductPriceRepository extends JpaRepository<PriceComponent, String>
 {
 	@Query(
 			"FROM ProductPrice prd "
@@ -30,9 +30,9 @@ public interface ProductPriceRepository extends JpaRepository<ProductPrice, Stri
 			+ "prd.product.id =:product"
 			+ " AND "
 			+ "prd.type =:type")
-	public List<ProductPrice> load(@Param("date")Date date,@Param("currency")String currency,
+	public List<PriceComponent> load(@Param("date")Date date,@Param("currency")String currency,
 								   @Param("geo")String geo,@Param("party")String party,
-								   @Param("product")String product,@Param("type")ProductPriceType type);
+								   @Param("product")String product,@Param("type")PriceComponentType type);
 
 	@Query("FROM ProductPrice price "
 			+ "WHERE "
@@ -40,7 +40,7 @@ public interface ProductPriceRepository extends JpaRepository<ProductPrice, Stri
 			+ "AND price.currency.id =:currency "
 			+ "AND price.product.id =:product "
 			+ "AND price.type =:type")
-	public List<ProductPrice> findAll(@Param("date")Date date,@Param("currency")String currency,@Param("product")String product,@Param("type")ProductPriceType type);
+	public List<PriceComponent> findAll(@Param("date")Date date,@Param("currency")String currency,@Param("product")String product,@Param("type")PriceComponentType type);
 	
 	@Query("FROM ProductPrice price "
 			+ "WHERE "
@@ -49,7 +49,7 @@ public interface ProductPriceRepository extends JpaRepository<ProductPrice, Stri
 			+ "AND price.product.id =:product "
 			+ "AND price.type =:type "
 			+ "AND price.geographic.id =:location")
-	public List<ProductPrice> findAllWithLocation(@Param("date")Date date,@Param("location")String location,@Param("currency")String currency,@Param("product")String product,@Param("type")ProductPriceType type);
+	public List<PriceComponent> findAllWithLocation(@Param("date")Date date,@Param("location")String location,@Param("currency")String currency,@Param("product")String product,@Param("type")PriceComponentType type);
 	
 	@Query("FROM ProductPrice price "
 			+ "WHERE "
@@ -58,7 +58,7 @@ public interface ProductPriceRepository extends JpaRepository<ProductPrice, Stri
 			+ "AND price.product.id =:product "
 			+ "AND price.type =:type "
 			+ "AND price.party.id =:customer")
-	public List<ProductPrice> findAllWithCustomer(@Param("date")Date date,@Param("customer")String customer,@Param("currency")String currency,@Param("product")String product,@Param("type")ProductPriceType type);
+	public List<PriceComponent> findAllWithCustomer(@Param("date")Date date,@Param("customer")String customer,@Param("currency")String currency,@Param("product")String product,@Param("type")PriceComponentType type);
 	
 	@Query("FROM ProductPrice price "
 			+ "WHERE "
@@ -68,5 +68,5 @@ public interface ProductPriceRepository extends JpaRepository<ProductPrice, Stri
 			+ "AND price.type =:type "
 			+ "AND price.party.id =:customer "
 			+ "AND price.geographic.id =:location")
-	public List<ProductPrice> findAll(@Param("date")Date date,@Param("location")String location,@Param("customer")String customer,@Param("currency")String currency,@Param("product")String product,@Param("type")ProductPriceType type);
+	public List<PriceComponent> findAll(@Param("date")Date date,@Param("location")String location,@Param("customer")String customer,@Param("currency")String currency,@Param("product")String product,@Param("type")PriceComponentType type);
 }

@@ -14,10 +14,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
-import com.kratonsolution.belian.inventory.dm.Facility;
-import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductFeature;
+import com.kratonsolution.belian.facility.dm.Facility;
 import com.kratonsolution.belian.order.dm.Requirement;
+import com.kratonsolution.belian.products.dm.Product;
+import com.kratonsolution.belian.products.dm.ProductFeature;
 
 import lombok.Getter;
 import lombok.Setter;

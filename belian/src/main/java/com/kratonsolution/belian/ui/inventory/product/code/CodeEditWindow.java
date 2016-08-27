@@ -18,10 +18,10 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vlayout;
 
-import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductCode;
-import com.kratonsolution.belian.inventory.dm.ProductCodeType;
 import com.kratonsolution.belian.inventory.svc.ProductService;
+import com.kratonsolution.belian.products.dm.IDType;
+import com.kratonsolution.belian.products.dm.Product;
+import com.kratonsolution.belian.products.dm.ProductIdentification;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.inventory.product.ProductEditContent;
@@ -87,12 +87,12 @@ public class CodeEditWindow extends AbstractWindow
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				ProductCode on = service.findCode(product, codeId);
+				ProductIdentification on = service.findCode(product, codeId);
 				if(on != null)
 				{
 					on.setCode(code.getText());
 					on.setNote(note.getText());
-					on.setType(ProductCodeType.valueOf(types.getSelectedItem().getValue().toString()));
+					on.setType(IDType.valueOf(types.getSelectedItem().getValue().toString()));
 				
 					service.editCode(on);
 				}
@@ -116,7 +116,7 @@ public class CodeEditWindow extends AbstractWindow
 	
 	protected void initContent()
 	{
-		for(ProductCode productCode:product.getCodes())
+		for(ProductIdentification productCode:product.getCodes())
 		{
 			if(productCode.getId().equals(codeId))
 			{
@@ -127,7 +127,7 @@ public class CodeEditWindow extends AbstractWindow
 				note.setText(productCode.getNote());
 				note.setWidth("300px");
 				
-				for(ProductCodeType type:ProductCodeType.values())
+				for(IDType type:IDType.values())
 				{
 					Listitem listitem = new Listitem(type.name(),type.name());
 					types.appendChild(listitem);

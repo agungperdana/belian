@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.inventory.dm;
+package com.kratonsolution.belian.general.dm;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

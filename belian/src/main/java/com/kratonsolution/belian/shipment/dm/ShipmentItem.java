@@ -19,8 +19,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
+import com.kratonsolution.belian.general.dm.UnitOfMeasure;
+import com.kratonsolution.belian.products.dm.Product;
 
 import lombok.Getter;
 import lombok.Setter;

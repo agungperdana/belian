@@ -15,7 +15,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.kratonsolution.belian.inventory.dm.FacilityOrganization;
+import com.kratonsolution.belian.facility.dm.FacilityOrganization;
 
 import lombok.Getter;
 import lombok.Setter;

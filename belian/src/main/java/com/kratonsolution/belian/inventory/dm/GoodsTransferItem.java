@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.products.dm.Product;
+
 import lombok.Getter;
 import lombok.Setter;
 

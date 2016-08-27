@@ -3,7 +3,7 @@
  */
 package com.kratonsolution.belian.ui.inventory.facility;
 
-import com.kratonsolution.belian.inventory.dm.Facility;
+import com.kratonsolution.belian.facility.dm.Facility;
 
 /**
  * @author Agung Dodi Perdana

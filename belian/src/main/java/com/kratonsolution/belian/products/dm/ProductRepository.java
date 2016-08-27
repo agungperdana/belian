@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.inventory.dm;
+package com.kratonsolution.belian.products.dm;
 
 import java.sql.Date;
 import java.util.List;
@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
+import com.kratonsolution.belian.inventory.dm.ProductType;
 
 /**
  * @author Agung Dodi Perdana

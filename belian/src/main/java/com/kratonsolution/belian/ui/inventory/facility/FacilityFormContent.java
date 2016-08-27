@@ -29,12 +29,12 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.facility.dm.Facility;
+import com.kratonsolution.belian.facility.dm.FacilityOrganization;
+import com.kratonsolution.belian.facility.dm.FacilityType;
 import com.kratonsolution.belian.general.dm.CompanyStructure;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.inventory.dm.Facility;
-import com.kratonsolution.belian.inventory.dm.FacilityOrganization;
-import com.kratonsolution.belian.inventory.dm.FacilityType;
 import com.kratonsolution.belian.inventory.svc.FacilityService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.util.Components;

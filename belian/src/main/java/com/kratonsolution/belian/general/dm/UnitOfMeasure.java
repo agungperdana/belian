@@ -1,20 +1,23 @@
 /**
  * 
  */
-package com.kratonsolution.belian.inventory.dm;
+package com.kratonsolution.belian.general.dm;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.global.dm.Listable;
 
 import lombok.Getter;
@@ -28,30 +31,30 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="product_category")
-public class ProductCategory implements Serializable,Listable
+@Table(name="unit_of_measure")
+public class UnitOfMeasure implements Serializable,Listable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@Column(name="code",nullable=false,unique=true)
-	private String code;
-
-	@Column(name="name",nullable=false,unique=true)
+	@Column(name="name")
 	private String name;
-	
+
 	@Column(name="note")
 	private String note;
 	
-	@Column(name="industry_segmentation")
+	@Column(name="type")
 	@Enumerated(EnumType.STRING)
-	private IndustrySegmentation segmentation = IndustrySegmentation.GENERAL;
+	private UOMType type = UOMType.MASS;
 	
 	@Version
 	private Long version;
-	
-	public ProductCategory(){}
 
+	@OneToMany(mappedBy="from",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<UOMFactor> factors = new HashSet<>(); 
+	
+	public UnitOfMeasure(){}
+	
 	@Override
 	public String getLabel()
 	{

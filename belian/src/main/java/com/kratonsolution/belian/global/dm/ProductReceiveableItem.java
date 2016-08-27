@@ -5,7 +5,7 @@ package com.kratonsolution.belian.global.dm;
 
 import java.math.BigDecimal;
 
-import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.products.dm.Product;
 
 /**
  * @author Agung Dodi Perdana

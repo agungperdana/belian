@@ -3,33 +3,35 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
-import com.google.common.base.Strings;
-
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
 public enum ProductType
 {
-	SERVICE,FINISHGOOD,RAWMATERIAL,SUBASEMBLY;
+	SERVICE("Jasa","Service"),
+	GOODS("Barang Jadi","Goods");
 	
-	public String display(String language)
+	private String inID;
+
+	private String enUS;
+
+	private ProductType(String inID,String enUS)
 	{
-		if(!Strings.isNullOrEmpty(language) && language.equals("in_ID"))
-		{
-			switch (this)
-			{
-				case SERVICE:
-					return "Pelayanan";
-				case FINISHGOOD:
-					return "Barang Jadi";
-				case RAWMATERIAL:
-					return "Barang Mentah";
-				case SUBASEMBLY:
-					return "Barang Setengah Jadi";
-			}
-		}
-		
-		return this.name();
+		this.inID = inID;
+		this.enUS = enUS;
+	}
+
+	public String display()
+	{
+		return this.enUS;
+	}
+
+	public String display(String lang)
+	{
+		if(lang == null || lang.equals("") || lang.equalsIgnoreCase("en_US"))
+			return this.enUS;
+
+		return this.inID;
 	}
 }

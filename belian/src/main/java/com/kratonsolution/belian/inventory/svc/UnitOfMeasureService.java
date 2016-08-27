@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.kratonsolution.belian.inventory.dm.UOMFactor;
-import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
-import com.kratonsolution.belian.inventory.dm.UnitOfMeasureRepository;
+import com.kratonsolution.belian.general.dm.UOMFactor;
+import com.kratonsolution.belian.general.dm.UnitOfMeasure;
+import com.kratonsolution.belian.general.dm.UnitOfMeasureRepository;
 
 /**
  * 

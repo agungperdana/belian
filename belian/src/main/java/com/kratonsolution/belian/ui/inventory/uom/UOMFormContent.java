@@ -18,9 +18,9 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.inventory.dm.UOMFactor;
-import com.kratonsolution.belian.inventory.dm.UOMType;
-import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
+import com.kratonsolution.belian.general.dm.UOMFactor;
+import com.kratonsolution.belian.general.dm.UOMType;
+import com.kratonsolution.belian.general.dm.UnitOfMeasure;
 import com.kratonsolution.belian.inventory.svc.UnitOfMeasureService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;

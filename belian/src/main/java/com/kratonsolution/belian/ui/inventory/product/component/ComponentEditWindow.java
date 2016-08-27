@@ -21,9 +21,9 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vlayout;
 
-import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductComponent;
 import com.kratonsolution.belian.inventory.svc.ProductService;
+import com.kratonsolution.belian.products.dm.Product;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.inventory.product.ProductEditContent;

@@ -16,9 +16,9 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductPrice;
-import com.kratonsolution.belian.inventory.dm.ProductPriceType;
+import com.kratonsolution.belian.products.dm.Product;
+import com.kratonsolution.belian.products.dm.PriceComponent;
+import com.kratonsolution.belian.products.dm.PriceComponentType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -92,17 +92,17 @@ public class PharmacySalesItem implements MedicalSalesItem
 	}
 
 	@Override
-	public ProductPriceType getPriceType()
+	public PriceComponentType getPriceType()
 	{
 		if(pharmacySales.isReference())
-			return ProductPriceType.REFERENCE;
+			return PriceComponentType.REFERENCE;
 		else
-			return ProductPriceType.BASE;
+			return PriceComponentType.BASE_PRICE;
 	}
 	
 	public BigDecimal getCost()
 	{
-		for(ProductPrice price:product.getPrices())
+		for(PriceComponent price:product.getPrices())
 		{
 			if(DateTimes.inRange(pharmacySales.getDate(), price.getFrom(), price.getTo()))
 				return price.getPrice();

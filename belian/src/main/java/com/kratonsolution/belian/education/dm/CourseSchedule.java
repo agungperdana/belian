@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.kratonsolution.belian.effort.dm.WorkEffort;
-import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.products.dm.Product;
 
 import lombok.Getter;
 import lombok.Setter;

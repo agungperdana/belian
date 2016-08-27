@@ -17,21 +17,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kratonsolution.belian.accounting.dm.CurrencyRepository;
 import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.facility.dm.FacilityRepository;
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
-import com.kratonsolution.belian.inventory.dm.FacilityRepository;
+import com.kratonsolution.belian.general.dm.UnitOfMeasure;
+import com.kratonsolution.belian.general.dm.UnitOfMeasureRepository;
 import com.kratonsolution.belian.inventory.dm.InventoryItem;
 import com.kratonsolution.belian.inventory.dm.InventoryItemRepository;
-import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductCategory;
-import com.kratonsolution.belian.inventory.dm.ProductCategoryRepository;
 import com.kratonsolution.belian.inventory.dm.ProductCost;
 import com.kratonsolution.belian.inventory.dm.ProductCostType;
-import com.kratonsolution.belian.inventory.dm.ProductPrice;
-import com.kratonsolution.belian.inventory.dm.ProductPriceType;
-import com.kratonsolution.belian.inventory.dm.ProductRepository;
 import com.kratonsolution.belian.inventory.dm.ProductType;
-import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
-import com.kratonsolution.belian.inventory.dm.UnitOfMeasureRepository;
+import com.kratonsolution.belian.products.dm.Product;
+import com.kratonsolution.belian.products.dm.ProductCategory;
+import com.kratonsolution.belian.products.dm.ProductCategoryRepository;
+import com.kratonsolution.belian.products.dm.PriceComponent;
+import com.kratonsolution.belian.products.dm.PriceComponentType;
+import com.kratonsolution.belian.products.dm.ProductRepository;
 
 /**
  * @author Agung Dodi Perdana
@@ -99,7 +99,7 @@ public class DataImportService
 				product.setName(row.getCell(0).getStringCellValue());
 				product.setStart(DateTimes.currentDate());
 				product.setMinStok((int)row.getCell(10).getNumericCellValue());
-				product.setType(ProductType.FINISHGOOD);
+				product.setType(ProductType.GOODS);
 				product.setUom(uom);
 				
 				ProductCost cost = new ProductCost();
@@ -117,29 +117,29 @@ public class DataImportService
 				evaluator.evaluate(row.getCell(7));
 				evaluator.evaluate(row.getCell(8));
 				
-				ProductPrice basic = new ProductPrice();
+				PriceComponent basic = new PriceComponent();
 				basic.setCurrency(currencyRepository.findOne("85c90912-97ff-47ce-9d6a-7d1650ab3ea9"));
 				basic.setFrom(product.getStart());
 				basic.setProduct(product);
-				basic.setType(ProductPriceType.BASE);
+				basic.setType(PriceComponentType.BASE_PRICE);
 				basic.setPrice(BigDecimal.valueOf(row.getCell(5).getNumericCellValue()));
 				
 				product.getPrices().add(basic);
 				
-				ProductPrice ref = new ProductPrice();
+				PriceComponent ref = new PriceComponent();
 				ref.setCurrency(currencyRepository.findOne("85c90912-97ff-47ce-9d6a-7d1650ab3ea9"));
 				ref.setFrom(product.getStart());
 				ref.setProduct(product);
-				ref.setType(ProductPriceType.REFERENCE);
+				ref.setType(PriceComponentType.REFERENCE);
 				ref.setPrice(BigDecimal.valueOf(row.getCell(6).getNumericCellValue()));
 				
 				product.getPrices().add(ref);
 				  
-				ProductPrice klinik = new ProductPrice();
+				PriceComponent klinik = new PriceComponent();
 				klinik.setCurrency(currencyRepository.findOne("85c90912-97ff-47ce-9d6a-7d1650ab3ea9"));
 				klinik.setFrom(product.getStart());
 				klinik.setProduct(product);
-				klinik.setType(ProductPriceType.CLINIC);
+				klinik.setType(PriceComponentType.CLINIC);
 				klinik.setPrice(BigDecimal.valueOf(row.getCell(7).getNumericCellValue()));
 				
 				product.getPrices().add(klinik);

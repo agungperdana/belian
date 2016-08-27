@@ -19,7 +19,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.inventory.dm.Facility;
+import com.kratonsolution.belian.facility.dm.Facility;
 import com.kratonsolution.belian.inventory.dm.InventoryItem;
 import com.kratonsolution.belian.inventory.dm.StockOpname;
 import com.kratonsolution.belian.inventory.dm.StockOpnameItem;

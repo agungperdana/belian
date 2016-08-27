@@ -71,7 +71,7 @@ public class ClinicMedicationSalesInvoiceService
 			
 			for(ClinicSalesItem item:billable.getItems())
 			{
-				if(item.getProduct().getType().equals(ProductType.FINISHGOOD))
+				if(item.getProduct().getType().equals(ProductType.GOODS))
 				{
 					Map<String,String> items = new HashMap<>();
 					

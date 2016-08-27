@@ -24,12 +24,12 @@ import org.zkoss.zul.Row;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.Language;
-import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductFeature;
-import com.kratonsolution.belian.inventory.dm.ProductFeatureRepository;
-import com.kratonsolution.belian.inventory.dm.ProductPrice;
-import com.kratonsolution.belian.inventory.dm.ProductPriceType;
 import com.kratonsolution.belian.inventory.svc.ProductService;
+import com.kratonsolution.belian.products.dm.Product;
+import com.kratonsolution.belian.products.dm.ProductFeature;
+import com.kratonsolution.belian.products.dm.ProductFeatureRepository;
+import com.kratonsolution.belian.products.dm.PriceComponent;
+import com.kratonsolution.belian.products.dm.PriceComponentType;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Numbers;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -94,17 +94,17 @@ public class ProductServiceRow extends Row
 				
 				if(features.getSelectedItem().getValue().toString().equals("000"))
 				{
-					for(ProductPrice price:maps.get(products.getValue()).getPrices())
+					for(PriceComponent price:maps.get(products.getValue()).getPrices())
 					{
-						if(price.getType().equals(ProductPriceType.BASE) && price.getFeature() == null)
+						if(price.getType().equals(PriceComponentType.BASE_PRICE) && price.getFeature() == null)
 							prices.appendItem(Numbers.format(price.getPrice()), price.getPrice().toString());
 					}
 				}
 				else
 				{
-					for(ProductPrice price:maps.get(products.getValue()).getPrices())
+					for(PriceComponent price:maps.get(products.getValue()).getPrices())
 					{
-						if(price.getType().equals(ProductPriceType.BASE) && price.getFeature() != null && price.getFeature().getId().equals(features.getSelectedItem().getValue().toString()))
+						if(price.getType().equals(PriceComponentType.BASE_PRICE) && price.getFeature() != null && price.getFeature().getId().equals(features.getSelectedItem().getValue().toString()))
 							prices.appendItem(Numbers.format(price.getPrice()), price.getPrice().toString());
 					}
 				}
@@ -150,9 +150,9 @@ public class ProductServiceRow extends Row
 					for(ProductFeature feature:maps.get(products.getValue()).getFeatures())
 						features.appendItem(feature.getValue(), feature.getId());
 				
-					for(ProductPrice price:maps.get(products.getValue()).getPrices())
+					for(PriceComponent price:maps.get(products.getValue()).getPrices())
 					{
-						if(price.getType().equals(ProductPriceType.BASE) && price.getFeature() == null)
+						if(price.getType().equals(PriceComponentType.BASE_PRICE) && price.getFeature() == null)
 							prices.appendItem(Numbers.format(price.getPrice()), price.getPrice().toString());
 					}
 				}

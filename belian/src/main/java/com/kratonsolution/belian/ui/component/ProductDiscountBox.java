@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.zkoss.zul.Listitem;
 
-import com.kratonsolution.belian.inventory.dm.ProductPrice;
+import com.kratonsolution.belian.products.dm.PriceComponent;
 
 /**
  * @author Agung Dodi Perdana
@@ -20,7 +20,7 @@ public class ProductDiscountBox extends Listitem implements ProductPriceListener
 	 * @see com.kratonsolution.belian.ui.component.ProductPriceListener#fireProductSelected(java.util.List)
 	 */
 	@Override
-	public void fireProductSelected(List<ProductPrice> prices)
+	public void fireProductSelected(List<PriceComponent> prices)
 	{
 		getChildren().clear();
 	}

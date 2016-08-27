@@ -19,7 +19,7 @@ import javax.persistence.Version;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
-import com.kratonsolution.belian.inventory.dm.UnitOfMeasure;
+import com.kratonsolution.belian.general.dm.UnitOfMeasure;
 
 import lombok.Getter;
 import lombok.Setter;

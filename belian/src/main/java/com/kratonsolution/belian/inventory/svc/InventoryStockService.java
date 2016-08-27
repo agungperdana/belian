@@ -11,13 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.inventory.dm.Facility;
-import com.kratonsolution.belian.inventory.dm.FacilityOrganization;
+import com.kratonsolution.belian.facility.dm.Facility;
+import com.kratonsolution.belian.facility.dm.FacilityOrganization;
 import com.kratonsolution.belian.inventory.dm.InventoryItem;
 import com.kratonsolution.belian.inventory.dm.InventoryItemRepository;
-import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductComponent;
 import com.kratonsolution.belian.inventory.dm.ProductType;
+import com.kratonsolution.belian.products.dm.Product;
 
 /**
  * @author Agung Dodi Perdana

@@ -13,8 +13,8 @@ import org.zkoss.zul.Textbox;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.healtcare.dm.MedicalSalesItem;
 import com.kratonsolution.belian.healtcare.dm.PharmacySalesItem;
-import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductRepository;
+import com.kratonsolution.belian.products.dm.Product;
+import com.kratonsolution.belian.products.dm.ProductRepository;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 

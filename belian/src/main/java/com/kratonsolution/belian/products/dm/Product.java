@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.inventory.dm;
+package com.kratonsolution.belian.products.dm;
 
 import java.io.Serializable;
 import java.sql.Date;
@@ -22,7 +22,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.general.dm.UnitOfMeasure;
 import com.kratonsolution.belian.global.dm.Listable;
+import com.kratonsolution.belian.inventory.dm.InventoryItem;
+import com.kratonsolution.belian.inventory.dm.ProductComponent;
+import com.kratonsolution.belian.inventory.dm.ProductCost;
+import com.kratonsolution.belian.inventory.dm.ProductSupplier;
+import com.kratonsolution.belian.inventory.dm.ProductType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -41,17 +47,20 @@ public class Product implements Listable, Serializable
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@Column(name="code",unique=true,nullable=false)
-	private String code;
-	
 	@Column(name="name",unique=true,nullable=false)
 	private String name;
 	
-	@Column(name="start")
-	private Date start;
+	@Column(name="introduction_date")
+	private Date introductionDate;
 	
-	@Column(name="end")
-	private Date end;
+	@Column(name="discontinuation_date")
+	private Date discontinuationDate;
+	
+	@Column(name="support_discontinuation_date")
+	private Date supportDiscontinuationDate;
+	
+	@Column(name="comment")
+	private String comment;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="fk_unit_of_measure")
@@ -61,9 +70,9 @@ public class Product implements Listable, Serializable
 	@JoinColumn(name="fk_product_category")
 	private ProductCategory category;
 	
-	@Column(name="type")
 	@Enumerated(EnumType.STRING)
-	private ProductType type = ProductType.FINISHGOOD;
+	@Column(name="type")
+	private ProductType type = ProductType.GOODS;
 	
 	@Column(name="minimal_stock")
 	private int minStok = 0;
@@ -72,22 +81,25 @@ public class Product implements Listable, Serializable
 	private Long version;
 	
 	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true)
-	private Set<ProductCode> codes = new HashSet<ProductCode>();
+	private Set<ProductCategoryClassification> classifications = new HashSet<>();
+	
+	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<ProductIdentification> codes = new HashSet<>();
 	
 	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
-	private Set<ProductFeature> features = new HashSet<ProductFeature>();
+	private Set<ProductFeatureApplicability> features = new HashSet<>();
+
+	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<ProductSupplier> suppliers = new HashSet<>();
+
+	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
+	private Set<PriceComponent> prices = new HashSet<>();
 	
 	@OneToMany(mappedBy="parent",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
-	private Set<ProductComponent> components = new HashSet<ProductComponent>();
-	
+	private Set<ProductComponent> components = new HashSet<>();
+		
 	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true)
-	private Set<ProductSupplier> suppliers = new HashSet<ProductSupplier>();
-	
-	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
-	private Set<ProductPrice> prices = new HashSet<ProductPrice>();
-	
-	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true)
-	private Set<ProductCost> costs = new HashSet<ProductCost>();
+	private Set<ProductCost> costs = new HashSet<>();
 	
 	@OneToMany(mappedBy="product")
 	private Set<InventoryItem> inventorys = new HashSet<>();

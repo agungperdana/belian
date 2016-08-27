@@ -5,7 +5,7 @@ package com.kratonsolution.belian.ui.component;
 
 import java.util.List;
 
-import com.kratonsolution.belian.inventory.dm.ProductPrice;
+import com.kratonsolution.belian.products.dm.PriceComponent;
 
 /**
  * @author Agung Dodi Perdana
@@ -13,5 +13,5 @@ import com.kratonsolution.belian.inventory.dm.ProductPrice;
  */
 public interface ProductPriceListener
 {
-	public void fireProductSelected(List<ProductPrice> prices);
+	public void fireProductSelected(List<PriceComponent> prices);
 }

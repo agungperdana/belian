@@ -14,8 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductPriceType;
+import com.kratonsolution.belian.products.dm.Product;
+import com.kratonsolution.belian.products.dm.PriceComponentType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -101,8 +101,8 @@ public class MedicalTreatmentSalesItem implements MedicalSalesItem
 	}
 
 	@Override
-	public ProductPriceType getPriceType()
+	public PriceComponentType getPriceType()
 	{
-		return ProductPriceType.CLINIC;
+		return PriceComponentType.CLINIC;
 	}
 }

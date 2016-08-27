@@ -16,6 +16,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.facility.dm.Container;
+import com.kratonsolution.belian.facility.dm.Facility;
+import com.kratonsolution.belian.products.dm.Product;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -43,6 +47,10 @@ public class InventoryItem implements Serializable
 	@ManyToOne
 	@JoinColumn(name="fk_facility")
 	private Facility facility;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_container")
+	private Container container;
 	
 	@Column(name="serial_number")
 	private String serialNumber;

@@ -14,9 +14,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductFeature;
-import com.kratonsolution.belian.inventory.dm.ProductPriceType;
+import com.kratonsolution.belian.products.dm.Product;
+import com.kratonsolution.belian.products.dm.ProductFeature;
+import com.kratonsolution.belian.products.dm.PriceComponentType;
 import com.kratonsolution.belian.sales.dm.BillableItem;
 
 import lombok.Getter;
@@ -93,9 +93,9 @@ public class CourseItem implements BillableItem
 	}
 
 	@Override
-	public ProductPriceType getPriceType()
+	public PriceComponentType getPriceType()
 	{
-		return ProductPriceType.BASE;
+		return PriceComponentType.BASE_PRICE;
 	}
 
 	@Override

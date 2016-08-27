@@ -20,9 +20,9 @@ import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Vlayout;
 
-import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductFeature;
 import com.kratonsolution.belian.inventory.svc.ProductService;
+import com.kratonsolution.belian.products.dm.Product;
+import com.kratonsolution.belian.products.dm.ProductFeature;
 import com.kratonsolution.belian.ui.TabedDisplay;
 import com.kratonsolution.belian.ui.inventory.product.ProductEditContent;
 import com.kratonsolution.belian.ui.util.Springs;

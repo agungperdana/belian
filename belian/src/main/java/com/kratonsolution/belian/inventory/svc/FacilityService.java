@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.inventory.dm.Facility;
-import com.kratonsolution.belian.inventory.dm.FacilityOrganization;
-import com.kratonsolution.belian.inventory.dm.FacilityRepository;
+import com.kratonsolution.belian.facility.dm.Facility;
+import com.kratonsolution.belian.facility.dm.FacilityOrganization;
+import com.kratonsolution.belian.facility.dm.FacilityRepository;
 
 /**
  * 

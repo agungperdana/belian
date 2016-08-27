@@ -27,11 +27,11 @@ import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.general.svc.PartyService;
-import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductFeature;
-import com.kratonsolution.belian.inventory.dm.ProductPrice;
-import com.kratonsolution.belian.inventory.dm.ProductPriceType;
 import com.kratonsolution.belian.inventory.svc.ProductService;
+import com.kratonsolution.belian.products.dm.Product;
+import com.kratonsolution.belian.products.dm.ProductFeature;
+import com.kratonsolution.belian.products.dm.PriceComponent;
+import com.kratonsolution.belian.products.dm.PriceComponentType;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.inventory.product.ProductEditContent;
@@ -120,11 +120,11 @@ public class PriceEditWindow extends AbstractWindow
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				ProductPrice productPrice = service.findPrice(product, priceId);
+				PriceComponent productPrice = service.findPrice(product, priceId);
 				productPrice.setFrom(new java.sql.Date(from.getValue().getTime()));
 				productPrice.setTo(to.getValue()!=null?new java.sql.Date(to.getValue().getTime()):null);
 				productPrice.setPrice(BigDecimal.valueOf(price.getValue()));
-				productPrice.setType(ProductPriceType.valueOf(types.getSelectedItem().getValue().toString()));
+				productPrice.setType(PriceComponentType.valueOf(types.getSelectedItem().getValue().toString()));
 				productPrice.setCurrency(currencyService.findOne(currencys.getSelectedItem().getValue().toString()));
 
 				if(geographics.getSelectedCount() > 0)
@@ -155,7 +155,7 @@ public class PriceEditWindow extends AbstractWindow
 
 	protected void initContent()
 	{
-		ProductPrice productPrice = service.findPrice(product, priceId);
+		PriceComponent productPrice = service.findPrice(product, priceId);
 
 		for(ProductFeature feature:productPrice.getProduct().getFeatures())
 			features.appendItem(feature.getValue(), feature.getId());
@@ -165,7 +165,7 @@ public class PriceEditWindow extends AbstractWindow
 		price.setValue(productPrice.getPrice().doubleValue());
 		percent.setChecked(productPrice.isPercent());
 
-		for(ProductPriceType type:ProductPriceType.values())
+		for(PriceComponentType type:PriceComponentType.values())
 		{
 			Listitem listitem = new Listitem(type.display(utils.getLanguage()),type.name());
 			types.appendChild(listitem);

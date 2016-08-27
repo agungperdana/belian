@@ -11,8 +11,8 @@ import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
-import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductType;
+import com.kratonsolution.belian.products.dm.Product;
 
 import lombok.Getter;
 import lombok.Setter;

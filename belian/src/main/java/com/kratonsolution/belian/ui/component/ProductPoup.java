@@ -23,9 +23,9 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
-import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.dm.ProductType;
 import com.kratonsolution.belian.inventory.svc.ProductService;
+import com.kratonsolution.belian.products.dm.Product;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -49,7 +49,7 @@ public class ProductPoup extends Window
 	
 	private IndustrySegmentation segmentation = IndustrySegmentation.GENERAL;
 	
-	private ProductType type = ProductType.FINISHGOOD;
+	private ProductType type = ProductType.GOODS;
 	
 	public ProductPoup(IndustrySegmentation segmentation,ProductType type)
 	{

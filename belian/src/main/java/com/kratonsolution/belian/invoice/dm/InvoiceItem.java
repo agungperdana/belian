@@ -24,8 +24,8 @@ import javax.persistence.Version;
 import com.kratonsolution.belian.effort.dm.TimeEntry;
 import com.kratonsolution.belian.effort.dm.WorkEffort;
 import com.kratonsolution.belian.inventory.dm.InventoryItem;
-import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductFeature;
+import com.kratonsolution.belian.products.dm.Product;
+import com.kratonsolution.belian.products.dm.ProductFeature;
 
 import lombok.Getter;
 import lombok.Setter;

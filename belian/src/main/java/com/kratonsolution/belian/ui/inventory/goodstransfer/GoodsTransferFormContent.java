@@ -21,7 +21,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.inventory.dm.FacilityOrganization;
+import com.kratonsolution.belian.facility.dm.FacilityOrganization;
 import com.kratonsolution.belian.inventory.dm.GoodsTransfer;
 import com.kratonsolution.belian.inventory.dm.GoodsTransferItem;
 import com.kratonsolution.belian.inventory.dm.TransferOrderRequest;

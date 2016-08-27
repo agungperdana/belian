@@ -27,12 +27,12 @@ import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.healtcare.dm.MedicalSalesItem;
 import com.kratonsolution.belian.healtcare.dm.ClinicSalesItem;
 import com.kratonsolution.belian.healtcare.dm.PharmacySalesItem;
-import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductPrice;
-import com.kratonsolution.belian.inventory.dm.ProductPriceRepository;
-import com.kratonsolution.belian.inventory.dm.ProductPriceType;
-import com.kratonsolution.belian.inventory.dm.ProductRepository;
 import com.kratonsolution.belian.inventory.dm.ProductType;
+import com.kratonsolution.belian.products.dm.Product;
+import com.kratonsolution.belian.products.dm.PriceComponent;
+import com.kratonsolution.belian.products.dm.ProductPriceRepository;
+import com.kratonsolution.belian.products.dm.PriceComponentType;
+import com.kratonsolution.belian.products.dm.ProductRepository;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Numbers;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -219,7 +219,7 @@ public class MedicalSalesRow extends Row implements HasAmount
 				products.getItems().clear();
 
 				InputEvent input = (InputEvent)event;
-				for(Product product:productRepository.findAllMedical(DateTimes.currentDate(),input.getValue(),IndustrySegmentation.MEDICAL,ProductType.FINISHGOOD))
+				for(Product product:productRepository.findAllMedical(DateTimes.currentDate(),input.getValue(),IndustrySegmentation.MEDICAL,ProductType.GOODS))
 				{
 					products.appendItem(product.getName());
 					if(!maps.containsKey(product.getName()))
@@ -234,21 +234,21 @@ public class MedicalSalesRow extends Row implements HasAmount
 
 				if(!Strings.isNullOrEmpty(products.getValue()) && maps.containsKey(products.getValue()))
 				{
-					for(ProductPrice price:maps.get(products.getValue()).getPrices())
+					for(PriceComponent price:maps.get(products.getValue()).getPrices())
 					{
 						if(DateTimes.inActiveState(price.getFrom(), price.getTo()))
 						{
-							if(price.getType().equals(ProductPriceType.CHARGE))
+							if(price.getType().equals(PriceComponentType.CHARGE))
 								charges.appendItem(Numbers.format(price.getPrice()), price.getPrice().toString());
-							else if(price.getType().equals(ProductPriceType.DISCOUNT))
+							else if(price.getType().equals(PriceComponentType.DISCOUNT))
 								discounts.appendItem(Numbers.format(price.getPrice()), price.getPrice().toString());
-							else if(price.getType().equals(ProductPriceType.BPJS) && isBPJS && isClinic)
+							else if(price.getType().equals(PriceComponentType.BPJS) && isBPJS && isClinic)
 								prices.appendItem(Numbers.format(price.getPrice()), price.getPrice().toString());
-							else if(price.getType().equals(ProductPriceType.CLINIC) && !isBPJS && isClinic)
+							else if(price.getType().equals(PriceComponentType.CLINIC) && !isBPJS && isClinic)
 								prices.appendItem(Numbers.format(price.getPrice()), price.getPrice().toString());
-							else if(price.getType().equals(ProductPriceType.REFERENCE) && !isClinic && isReference)
+							else if(price.getType().equals(PriceComponentType.REFERENCE) && !isClinic && isReference)
 								prices.appendItem(Numbers.format(price.getPrice()), price.getPrice().toString());
-							else if(price.getType().equals(ProductPriceType.BASE) && !isClinic && !isReference)
+							else if(price.getType().equals(PriceComponentType.BASE_PRICE) && !isClinic && !isReference)
 								prices.appendItem(Numbers.format(price.getPrice()), price.getPrice().toString());
 						}
 					}

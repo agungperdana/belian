@@ -9,9 +9,9 @@ import java.util.Map;
 import org.zkoss.zul.Listbox;
 
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.facility.dm.Facility;
+import com.kratonsolution.belian.facility.dm.FacilityOrganization;
 import com.kratonsolution.belian.general.dm.Organization;
-import com.kratonsolution.belian.inventory.dm.Facility;
-import com.kratonsolution.belian.inventory.dm.FacilityOrganization;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**

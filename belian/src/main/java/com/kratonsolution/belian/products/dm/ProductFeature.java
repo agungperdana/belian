@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.inventory.dm;
+package com.kratonsolution.belian.products.dm;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -11,8 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -26,28 +24,24 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="product_code")
-public class ProductCode implements Serializable
+@Table(name="product_feature")
+public class ProductFeature implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@Column(name="code",nullable=false,unique=true)
-	private String code;
-	
-	@Column(name="type")
-	@Enumerated(EnumType.STRING)
-	private ProductCodeType type = ProductCodeType.STANDARD;
-	
+	@Column(name="value")
+	private String value;
+
 	@Column(name="note")
 	private String note;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_product")
-	private Product product;
+	@Enumerated(EnumType.STRING)
+	@Column(name="type")
+	private ProductFeatureType type = ProductFeatureType.OTHER;
 	
 	@Version
 	private Long version;
 	
-	public ProductCode(){}
+	public ProductFeature(){}
 }

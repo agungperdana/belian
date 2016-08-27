@@ -19,10 +19,10 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductPrice;
-import com.kratonsolution.belian.inventory.dm.ProductPriceType;
-import com.kratonsolution.belian.inventory.dm.ProductRepository;
+import com.kratonsolution.belian.products.dm.Product;
+import com.kratonsolution.belian.products.dm.PriceComponent;
+import com.kratonsolution.belian.products.dm.PriceComponentType;
+import com.kratonsolution.belian.products.dm.ProductRepository;
 import com.kratonsolution.belian.sales.dm.BillableItem;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -45,7 +45,7 @@ public class MedicalServiceRow extends Row implements HasAmount
 
 	private Map<String,Product> maps = new HashMap<>();
 
-	private Map<ProductPriceType,BigDecimal> prices = new HashMap<>();
+	private Map<PriceComponentType,BigDecimal> prices = new HashMap<>();
 
 	public MedicalServiceRow()
 	{
@@ -94,7 +94,7 @@ public class MedicalServiceRow extends Row implements HasAmount
 		if(Strings.isNullOrEmpty(products.getValue()) || !maps.containsKey(products.getValue()))
 			throw new RuntimeException("Please select product first");
 		
-		for(ProductPrice pro:maps.get(products.getValue()).getPrices())
+		for(PriceComponent pro:maps.get(products.getValue()).getPrices())
 		{
 			switch (pro.getType())
 			{
@@ -107,7 +107,7 @@ public class MedicalServiceRow extends Row implements HasAmount
 				case REFERENCE:
 					if(!isBPJS && !isClinic && isRef)
 						return pro.getPrice();
-				case BASE:
+				case BASE_PRICE:
 					if(!isBPJS && !isClinic && !isRef)
 						return pro.getPrice();
 				default:
@@ -120,16 +120,16 @@ public class MedicalServiceRow extends Row implements HasAmount
 	
 	public BigDecimal getCharge()
 	{
-		if(prices.containsKey(ProductPriceType.CHARGE))
-			return prices.get(ProductPriceType.CHARGE);
+		if(prices.containsKey(PriceComponentType.CHARGE))
+			return prices.get(PriceComponentType.CHARGE);
 		
 		return BigDecimal.ZERO;
 	}
 	
 	public BigDecimal getDiscount()
 	{
-		if(prices.containsKey(ProductPriceType.DISCOUNT))
-			return prices.get(ProductPriceType.DISCOUNT);
+		if(prices.containsKey(PriceComponentType.DISCOUNT))
+			return prices.get(PriceComponentType.DISCOUNT);
 		
 		return BigDecimal.ZERO;
 	}

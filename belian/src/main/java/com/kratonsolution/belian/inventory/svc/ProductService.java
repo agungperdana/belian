@@ -24,15 +24,15 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.IndustrySegmentation;
 import com.kratonsolution.belian.inventory.dm.InventoryItemRepository;
-import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductCode;
 import com.kratonsolution.belian.inventory.dm.ProductComponent;
 import com.kratonsolution.belian.inventory.dm.ProductCost;
-import com.kratonsolution.belian.inventory.dm.ProductFeature;
-import com.kratonsolution.belian.inventory.dm.ProductPrice;
-import com.kratonsolution.belian.inventory.dm.ProductRepository;
 import com.kratonsolution.belian.inventory.dm.ProductSupplier;
 import com.kratonsolution.belian.inventory.dm.ProductType;
+import com.kratonsolution.belian.products.dm.Product;
+import com.kratonsolution.belian.products.dm.ProductFeature;
+import com.kratonsolution.belian.products.dm.ProductIdentification;
+import com.kratonsolution.belian.products.dm.PriceComponent;
+import com.kratonsolution.belian.products.dm.ProductRepository;
 
 /**
  * 
@@ -192,10 +192,10 @@ public class ProductService
 	
 	@Secured("ROLE_PRODUCT_UPDATE")
 	public void edit(Product product,
-					 Collection<ProductCode> codes,
+					 Collection<ProductIdentification> codes,
 					 Collection<ProductFeature> features,
 					 Collection<ProductComponent> components,
-					 Collection<ProductPrice> prices,
+					 Collection<PriceComponent> prices,
 					 Collection<ProductCost> costs,
 					 Collection<ProductSupplier> suppliers)
 	{
@@ -216,7 +216,7 @@ public class ProductService
 	}
 	
 	@Secured("ROLE_PRODUCT_UPDATE")
-	public void addCode(Product product,ProductCode code)
+	public void addCode(Product product,ProductIdentification code)
 	{
 		code.setId(UUID.randomUUID().toString());
 		code.setProduct(product);
@@ -226,21 +226,21 @@ public class ProductService
 	}
 	
 	@Secured("ROLE_PRODUCT_UPDATE")
-	public void editCode(ProductCode code)
+	public void editCode(ProductIdentification code)
 	{
 		edit(code.getProduct());
 	}
 	
 	@Secured("ROLE_PRODUCT_READ")
-	public ProductCode findCode(Product product,String codeId)
+	public ProductIdentification findCode(Product product,String codeId)
 	{
 		Product on = repository.findOne(product.getId());
 		if(on != null)
 		{
-			Iterator<ProductCode> iterator = on.getCodes().iterator();
+			Iterator<ProductIdentification> iterator = on.getCodes().iterator();
 			while (iterator.hasNext())
 			{
-				ProductCode productCode = (ProductCode) iterator.next();
+				ProductIdentification productCode = (ProductIdentification) iterator.next();
 				if(productCode.getId().equals(codeId))
 					return productCode;
 			}
@@ -367,7 +367,7 @@ public class ProductService
 	}
 	
 	@Secured("ROLE_PRODUCT_UPDATE")
-	public void addPrice(Product product,ProductPrice price)
+	public void addPrice(Product product,PriceComponent price)
 	{
 		price.setProduct(product);
 		product.getPrices().add(price);
@@ -376,21 +376,21 @@ public class ProductService
 	}
 	
 	@Secured("ROLE_PRODUCT_UPDATE")
-	public void editPrice(ProductPrice supplier)
+	public void editPrice(PriceComponent supplier)
 	{
 		edit(supplier.getProduct());
 	}
 	
 	@Secured("ROLE_PRODUCT_READ")
-	public ProductPrice findPrice(Product product,String priceId)
+	public PriceComponent findPrice(Product product,String priceId)
 	{
 		Product on = repository.findOne(product.getId());
 		if(on != null)
 		{
-			Iterator<ProductPrice> iterator = on.getPrices().iterator();
+			Iterator<PriceComponent> iterator = on.getPrices().iterator();
 			while (iterator.hasNext())
 			{
-				ProductPrice price = (ProductPrice) iterator.next();
+				PriceComponent price = (PriceComponent) iterator.next();
 				if(price.getId().equals(priceId))
 					return price;
 			}

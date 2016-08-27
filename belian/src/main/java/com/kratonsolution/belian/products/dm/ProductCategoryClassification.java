@@ -1,15 +1,14 @@
 /**
  * 
  */
-package com.kratonsolution.belian.inventory.dm;
+package com.kratonsolution.belian.products.dm;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -26,21 +25,27 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="product_feature")
-public class ProductFeature implements Serializable
+@Table(name="product_category_classification")
+public class ProductCategoryClassification implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@Column(name="value")
-	private String value;
+	@Column(name="start")
+	private Date start;
 	
-	@Column(name="type")
-	@Enumerated(EnumType.STRING)
-	private ProductFeatureType type = ProductFeatureType.WEIGH;
-
-	@Column(name="note")
-	private String note;
+	@Column(name="start")
+	private Date end;
+	
+	@Column(name="is_primary")
+	private boolean primary;
+	
+	@Column(name="comment")
+	private String comment;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_category")
+	private ProductCategory category;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_product")
@@ -49,5 +54,5 @@ public class ProductFeature implements Serializable
 	@Version
 	private Long version;
 	
-	public ProductFeature(){}
+	public ProductCategoryClassification(){}
 }

@@ -10,8 +10,8 @@ import org.zkoss.zul.Listbox;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.Party;
-import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.svc.ProductService;
+import com.kratonsolution.belian.products.dm.Product;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**

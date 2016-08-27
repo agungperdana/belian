@@ -1,23 +1,23 @@
 /**
  * 
  */
-package com.kratonsolution.belian.inventory.dm;
+package com.kratonsolution.belian.facility.dm;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-
-import com.kratonsolution.belian.general.dm.Organization;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -29,27 +29,33 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="facility_organization")
-public class FacilityOrganization implements Serializable
+@Table(name="Container")
+public class Container implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@Column(name="enabled")
-	private boolean enabled;
+	@Column(name="name")
+	private String name;
+	
+	@Column(name="note")
+	private String note;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="type")
+	private ContainerType type;
+
+	@ManyToOne
+	@JoinColumn(name="parent")
+	private Container parent;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_facility")
-	@NotFound(action=NotFoundAction.IGNORE)
 	private Facility facility;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_organization")
-	@NotFound(action=NotFoundAction.IGNORE)
-	private Organization organization;
 	
 	@Version
 	private Long version;
 	
-	public FacilityOrganization(){}
+	@OneToMany(mappedBy="parent")
+	private Set<Container> childs = new HashSet<>();
 }

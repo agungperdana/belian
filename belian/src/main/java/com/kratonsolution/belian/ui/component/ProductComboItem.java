@@ -5,7 +5,7 @@ package com.kratonsolution.belian.ui.component;
 
 import org.zkoss.zul.Comboitem;
 
-import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.products.dm.Product;
 
 import lombok.Getter;
 

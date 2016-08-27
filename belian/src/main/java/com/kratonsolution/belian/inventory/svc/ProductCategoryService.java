@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.kratonsolution.belian.inventory.dm.ProductCategory;
-import com.kratonsolution.belian.inventory.dm.ProductCategoryRepository;
+import com.kratonsolution.belian.products.dm.ProductCategory;
+import com.kratonsolution.belian.products.dm.ProductCategoryRepository;
 
 /**
  * 

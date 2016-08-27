@@ -19,7 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.kratonsolution.belian.global.dm.ApproveAndReviewableItem;
-import com.kratonsolution.belian.inventory.dm.Product;
+import com.kratonsolution.belian.products.dm.Product;
 
 import lombok.Getter;
 import lombok.Setter;

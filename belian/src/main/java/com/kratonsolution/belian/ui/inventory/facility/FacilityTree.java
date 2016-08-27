@@ -12,7 +12,7 @@ import org.zkoss.zul.Treecol;
 import org.zkoss.zul.Treecols;
 
 import com.kratonsolution.belian.common.Language;
-import com.kratonsolution.belian.inventory.dm.Facility;
+import com.kratonsolution.belian.facility.dm.Facility;
 import com.kratonsolution.belian.inventory.svc.FacilityService;
 import com.kratonsolution.belian.ui.util.Springs;
 

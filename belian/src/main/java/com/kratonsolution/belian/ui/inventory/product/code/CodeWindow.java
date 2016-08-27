@@ -18,10 +18,10 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vlayout;
 
-import com.kratonsolution.belian.inventory.dm.Product;
-import com.kratonsolution.belian.inventory.dm.ProductCode;
-import com.kratonsolution.belian.inventory.dm.ProductCodeType;
 import com.kratonsolution.belian.inventory.svc.ProductService;
+import com.kratonsolution.belian.products.dm.IDType;
+import com.kratonsolution.belian.products.dm.Product;
+import com.kratonsolution.belian.products.dm.ProductIdentification;
 import com.kratonsolution.belian.ui.AbstractWindow;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.inventory.product.ProductEditContent;
@@ -83,10 +83,10 @@ public class CodeWindow extends AbstractWindow
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				ProductCode productCode = new ProductCode();
+				ProductIdentification productCode = new ProductIdentification();
 				productCode.setCode(code.getText());
 				productCode.setNote(note.getText());
-				productCode.setType(ProductCodeType.valueOf(types.getSelectedItem().getValue().toString()));
+				productCode.setType(IDType.valueOf(types.getSelectedItem().getValue().toString()));
 				
 				service.addCode(product,productCode);
 				
@@ -115,7 +115,7 @@ public class CodeWindow extends AbstractWindow
 		
 		note.setWidth("300px");
 		
-		for(ProductCodeType type:ProductCodeType.values())
+		for(IDType type:IDType.values())
 			types.appendChild(new Listitem(type.name(),type.name()));
 		
 		types.setMold("select");
