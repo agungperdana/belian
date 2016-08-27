@@ -39,7 +39,7 @@ public enum InvoiceItemType
 	
 	public String display(String lang)
 	{
-		if(lang == null || lang.equals("") || lang.equalsIgnoreCase("en_US"))
+		if(lang == null || lang.equals("") || lang.equalsIgnoreCase("en_us"))
 			return this.enUS;
 		
 		return this.inID;

@@ -20,7 +20,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class AssetModel implements ListModel<Asset>
 {
-	private final AssetService service = Springs.get(AssetService.class);
+	private AssetService service = Springs.get(AssetService.class);
 	
 	private List<Asset> data = new ArrayList<Asset>();
 	

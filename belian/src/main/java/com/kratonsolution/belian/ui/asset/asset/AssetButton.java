@@ -5,6 +5,9 @@ package com.kratonsolution.belian.ui.asset.asset;
 
 import org.zkoss.zul.Toolbarbutton;
 
+import com.kratonsolution.belian.common.Language;
+import com.kratonsolution.belian.ui.util.Springs;
+
 /**
  * 
  * @author Agung Dodi Perdana
@@ -12,10 +15,12 @@ import org.zkoss.zul.Toolbarbutton;
  */
 public class AssetButton extends Toolbarbutton
 {
+	private Language lang = Springs.get(Language.class);
+	
 	public AssetButton()
 	{
 		setImage("/icons/asset.png");
-		setTooltip("Asset Management");
+		setTooltiptext(lang.get("navbar.menu.asset.asset"));
 		setHeight("38px");
 	}
 }

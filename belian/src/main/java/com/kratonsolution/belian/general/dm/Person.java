@@ -3,11 +3,16 @@
  */
 package com.kratonsolution.belian.general.dm;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -36,9 +41,14 @@ public class Person extends Party
 	@Enumerated(EnumType.STRING)
 	private Gender gender = Gender.MALE;
 	
-	@Column(name="marital_status")
-	@Enumerated(EnumType.STRING)
-	private MaritalStatus maritalStatus = MaritalStatus.SINGLE;
+	@OneToMany(mappedBy="person",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<MaritalStatus> maritalStatuses = new HashSet<>();
+	
+	@OneToMany(mappedBy="person",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<PhysicalCharacteristic> physicalCharacteristics = new HashSet<>();
+	
+	@OneToMany(mappedBy="person",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<Citizenship> citizenships = new HashSet<>();
 	
 	public Person()
 	{

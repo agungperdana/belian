@@ -7,20 +7,18 @@ package com.kratonsolution.belian.general.dm;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public enum ContactType
+public enum MaritalStatusType
 {
-	CELL_PHONE("No HP","Cellphone"),
-	HOME_PHONE("Telp Rumah","Home Phone"),
-	OFFICE_PHONE("Telp Kantor","Office Phone"),
-	PAGER("Pager","Pager"),
-	EMAIL("Surat Elektronil","Email"),
-	POSTBOX("Kotak Pos","Post Box");
-
+	SINGLE("Lajang","Single"),
+	MARRIED("Menikah","Married"),
+	DIVORCED("Cerai","Divorced"),
+	WIDOWED("","Widowed");
+	
 	private String inID;
 
 	private String enUS;
 
-	private ContactType(String inID,String enUS)
+	private MaritalStatusType(String inID,String enUS)
 	{
 		this.inID = inID;
 		this.enUS = enUS;

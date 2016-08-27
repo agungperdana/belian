@@ -41,7 +41,7 @@ public class Geographic implements Serializable,Listable
 	
 	@Column(name="type")
 	@Enumerated(EnumType.STRING)
-	private GeographicType type = GeographicType.COUNTRY;
+	private GeographicType type = GeographicType.CITY;
 	
 	@Column(name="note")
 	private String note;

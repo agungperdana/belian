@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,7 +37,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Cacheable
 @Table(name="party")
 @Inheritance(strategy=InheritanceType.JOINED)
 public class Party implements Serializable, Listable
@@ -81,6 +79,9 @@ public class Party implements Serializable, Listable
 	
 	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
 	private Set<PartySkill> skills = new HashSet<>();
+	
+	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
+	private Set<PartyClassification> classifications = new HashSet<>();
 	
 	@Override
 	public String getLabel()

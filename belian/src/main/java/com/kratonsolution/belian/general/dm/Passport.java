@@ -9,8 +9,6 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -27,28 +25,27 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="marital_status")
-public class MaritalStatus implements Serializable
+@Table(name="passport")
+public class Passport implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 
-	@Column(name="start")
-	private Date start;
+	@Column(name="number")
+	private String number;
 	
-	@Column(name="end")
-	private Date end;
+	@Column(name="issued_date")
+	private Date issuedDate;
 	
-	@Enumerated(EnumType.STRING)
-	@Column(name="type")
-	private MaritalStatusType type = MaritalStatusType.SINGLE;
+	@Column(name="expiration_date")
+	private Date expirationDate;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_person")
-	private Person person;
+	@JoinColumn(name="fk_country")
+	private Country country;
 	
 	@Version
 	private Long version;
 	
-	public MaritalStatus(){}
+	public Passport(){}
 }

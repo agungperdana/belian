@@ -49,16 +49,16 @@ public class Address implements Serializable,Listable
 	private AddressType type = AddressType.OFFICE;
 
 	@ManyToOne
-	@JoinColumn(name="fk_geographic_city")
-	private Geographic city;
+	@JoinColumn(name="fk_country")
+	private Country country;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_geographic_province")
+	@JoinColumn(name="fk_province")
 	private Geographic province;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_geographic_country")
-	private Geographic country;
+	@JoinColumn(name="fk_city")
+	private Geographic city;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_party")

@@ -7,20 +7,18 @@ package com.kratonsolution.belian.general.dm;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public enum ContactType
+public enum PhysicalCharacteristicType
 {
-	CELL_PHONE("No HP","Cellphone"),
-	HOME_PHONE("Telp Rumah","Home Phone"),
-	OFFICE_PHONE("Telp Kantor","Office Phone"),
-	PAGER("Pager","Pager"),
-	EMAIL("Surat Elektronil","Email"),
-	POSTBOX("Kotak Pos","Post Box");
-
+	HEIGHT("Tinggi Badan","Height"),
+	WEIGHT("Berat Badan","Weight"),
+	BLOOD_PREASURE("Tekanan Darah","Blood Preasure"),
+	BLOOD_TYPE("Golongan Darah","Blood Type");
+	
 	private String inID;
 
 	private String enUS;
 
-	private ContactType(String inID,String enUS)
+	private PhysicalCharacteristicType(String inID,String enUS)
 	{
 		this.inID = inID;
 		this.enUS = enUS;

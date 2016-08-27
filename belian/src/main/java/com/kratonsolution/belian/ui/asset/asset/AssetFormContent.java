@@ -24,7 +24,6 @@ import com.kratonsolution.belian.asset.dm.Asset;
 import com.kratonsolution.belian.asset.svc.AssetService;
 import com.kratonsolution.belian.asset.svc.AssetTypeService;
 import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.Removeable;
 import com.kratonsolution.belian.ui.component.OrganizationList;
@@ -43,11 +42,9 @@ public class AssetFormContent extends FormContent implements Removeable
 	
 	private AssetTypeService typeService = Springs.get(AssetTypeService.class);
 	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
+	private Textbox code = Components.mandatoryTextBox(false);
 	
-	private Textbox code = Components.stdTextBox(null,false);
-	
-	private Textbox name = Components.stdTextBox(null,false);
+	private Textbox name = Components.mandatoryTextBox(false);
 	
 	private Datebox acquired = Components.currentDatebox();
 	
@@ -57,15 +54,15 @@ public class AssetFormContent extends FormContent implements Removeable
 	
 	private Doublebox price = Components.stdDoubleBox(0);
 	
-	private Checkbox active = new Checkbox("Active");
+	private Checkbox active = new Checkbox(lang.get("asset.grid.column.active"));
 	
-	private Checkbox disposed = new Checkbox("Disposed");
+	private Checkbox disposed = new Checkbox(lang.get("asset.grid.column.disposed"));
 	
 	private Listbox types = Components.newSelect(typeService.findAll(),false);
 	
 	private OrganizationList companys = new OrganizationList();
 	
-	private Textbox note = new Textbox();
+	private Textbox note = Components.stdTextBox(null, false);
 	
 	public AssetFormContent()
 	{
@@ -92,10 +89,13 @@ public class AssetFormContent extends FormContent implements Removeable
 			public void onEvent(Event event) throws Exception
 			{
 				if(Strings.isNullOrEmpty(code.getText()))
-					throw new WrongValueException(code,"Code cannot be empty");
+					throw new WrongValueException(code,lang.get("message.field.empty"));
 			
 				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
+					throw new WrongValueException(name,lang.get("message.field.empty"));
+				
+				if(companys.getOrganization() == null)
+					throw new WrongValueException(companys,lang.get("message.field.empty"));
 				
 				Asset asset = new Asset();
 				asset.setCode(code.getText());
@@ -106,7 +106,7 @@ public class AssetFormContent extends FormContent implements Removeable
 				asset.setLastServiced(DateTimes.sql(lastServiced.getValue()));
 				asset.setNextServiced(DateTimes.sql(nextServiced.getValue()));
 				asset.setNote(note.getText());
-				asset.setOrganization(utils.getOrganization());
+				asset.setOrganization(companys.getOrganization());
 				asset.setPrice(BigDecimal.valueOf(price.doubleValue()));
 				asset.setType(typeService.findOne(Components.string(types)));
 				asset.setOrganization(companys.getOrganization());
@@ -121,60 +121,52 @@ public class AssetFormContent extends FormContent implements Removeable
 	@Override
 	public void initForm()
 	{
-		code.setConstraint("no empty");
-		code.setWidth("200px");
-		
-		name.setConstraint("no empty");
-		name.setWidth("300px");
-		
-		note.setWidth("350px");
-		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row0 = new Row();
-		row0.appendChild(new Label("Owner "));
+		row0.appendChild(new Label(lang.get("asset.grid.column.company")));
 		row0.appendChild(companys);
 		
 		Row row1 = new Row();
-		row1.appendChild(new Label("Code"));
+		row1.appendChild(new Label(lang.get("asset.grid.column.code")));
 		row1.appendChild(code);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label("Name"));
+		row2.appendChild(new Label(lang.get("asset.grid.column.name")));
 		row2.appendChild(name);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label("Acquired Date"));
+		row3.appendChild(new Label(lang.get("asset.grid.column.acquired")));
 		row3.appendChild(acquired);
 		
 		Row row4 = new Row();
-		row4.appendChild(new Label("Last service"));
+		row4.appendChild(new Label(lang.get("asset.grid.column.lastservice")));
 		row4.appendChild(lastServiced);
 		
 		Row row5 = new Row();
-		row5.appendChild(new Label("Next Service"));
+		row5.appendChild(new Label(lang.get("asset.grid.column.nextservice")));
 		row5.appendChild(nextServiced);
 		
 		Row row6 = new Row();
-		row6.appendChild(new Label("Used Status"));
+		row6.appendChild(new Label(lang.get("asset.grid.column.status")));
 		row6.appendChild(active);
 		
 		Row row7 = new Row();
-		row7.appendChild(new Label("Dispose Status"));
+		row7.appendChild(new Label(lang.get("asset.grid.column.disposed")));
 		row7.appendChild(disposed);
 		
 		Row row8 = new Row();
-		row8.appendChild(new Label("Price"));
+		row8.appendChild(new Label(lang.get("asset.grid.column.price")));
 		row8.appendChild(price);
 		
 		Row row9 = new Row();
-		row9.appendChild(new Label("Types"));
+		row9.appendChild(new Label(lang.get("asset.grid.column.type")));
 		row9.appendChild(types);
 		
 		Row row10 = new Row();
-		row10.appendChild(new Label("Note"));
+		row10.appendChild(new Label(lang.get("asset.grid.column.note")));
 		row10.appendChild(note);
 		
 		rows.appendChild(row0);

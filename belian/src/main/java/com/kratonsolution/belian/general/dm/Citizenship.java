@@ -10,8 +10,6 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -27,29 +25,28 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="party_relationship")
-@Inheritance(strategy=InheritanceType.JOINED)
-public class PartyRelationship implements Serializable
+@Table(name="citizenship")
+public class Citizenship implements Serializable
 {
 	@Id
-	protected String id = UUID.randomUUID().toString();
-	
-	@Column(name="start",nullable=false)
-	protected Date start;
+	private String id = UUID.randomUUID().toString();
+
+	@Column(name="start")
+	private Date start;
 	
 	@Column(name="end")
-	protected Date end;
+	private Date end;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_from_role")
-	protected PartyRole fromRole;
-	
+	@JoinColumn(name="fk_passport")
+	private Passport passport;
+
 	@ManyToOne
-	@JoinColumn(name="fk_to_role")
-	protected PartyRole toRole;
+	@JoinColumn(name="fk_person")
+	private Person person;
 	
 	@Version
-	protected Long version;
+	private Long version;
 	
-	public PartyRelationship(){}
+	public Citizenship(){}
 }

@@ -24,7 +24,7 @@ import com.kratonsolution.belian.ui.nav.IconBar;
  */
 public class AssetWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
 {
-	private final Caption caption = new Caption("Asset Management");
+	private Caption caption = new Caption(lang.get("navbar.menu.asset.asset"));
 	
 	private AssetButton status = new AssetButton();
 	

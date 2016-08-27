@@ -7,20 +7,18 @@ package com.kratonsolution.belian.general.dm;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public enum ContactType
+public enum PartyRelationshipType
 {
-	CELL_PHONE("No HP","Cellphone"),
-	HOME_PHONE("Telp Rumah","Home Phone"),
-	OFFICE_PHONE("Telp Kantor","Office Phone"),
-	PAGER("Pager","Pager"),
-	EMAIL("Surat Elektronil","Email"),
-	POSTBOX("Kotak Pos","Post Box");
-
+	EMPLOYMENT_RELATIONSHIP("Kepegawaian","Employment Relationship"),
+	CUSTOMER_RELATIONSHIP("Hubungan Pelanggan","Customer Relationship"),
+	SUPPLIER_RELATIONSHIP("Hubungan Pemasok","Supplier Relationship"),
+	CONTACT_PERSON_RELATIONSHIP("Kontak","Contact Person Relationship");
+	
 	private String inID;
 
 	private String enUS;
 
-	private ContactType(String inID,String enUS)
+	private PartyRelationshipType(String inID,String enUS)
 	{
 		this.inID = inID;
 		this.enUS = enUS;
