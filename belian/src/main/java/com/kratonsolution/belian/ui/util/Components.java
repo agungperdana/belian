@@ -477,6 +477,21 @@ public class Components implements Serializable
 		return textbox;
 	}
 	
+	public static final Textbox textArea(String text,boolean readonly,boolean fullspan)
+	{
+		Textbox textbox = new Textbox(text);
+		textbox.setRows(5);
+		textbox.setCols(45);
+
+		if(fullspan)
+			textbox.setWidth("100%");
+		
+		textbox.setWidth("250px");
+		textbox.setReadonly(readonly);
+		
+		return textbox;
+	}
+	
 	public static final Textbox stdTextBox(String text,boolean readonly)
 	{
 		Textbox textbox = new Textbox(text);

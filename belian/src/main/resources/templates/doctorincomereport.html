@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:inline='text'>
+	<meta charset="UTF-8"/>
+	<script type="text/javascript">
+    	function onprint()
+    	{
+    		window.print();
+    	}
+    </script>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/print-report.css}"/>
+</head>
+<body th:inline="text">
+	<table id='outer'>
+	<tr>
+		<td width="100%" align="center"><img th:src="@{/icons/print.png}" onclick="onprint()"/></td>
+	</tr>
+	<tr>
+		<td id='comp-title'>[[${company.name}]]</td>
+	</tr>
+	<tr>
+		<td id='comp-title'>[[${doctor.name}]]</td>
+	</tr>
+	<tr>
+		<td id='comp-title'>[[${date}]]</td>
+	</tr>
+	<tr>
+		<td>
+			<table id='content'>
+			<tbody>
+			<tr th:each="map:${contents}">
+				<td width="20%" align="left">[[${map.date}]]</td>
+				<td width="60%" align="left">[[${map.patient}]]</td>
+				<td width="20%" align="right">[[${map.amount}]]</td>
+			</tr>
+			<tr>
+				<td id='black-title' colspan="2">TOTAL</td>
+				<td id='black-total-blue'>[[${#numbers.formatDecimal(total,1,'COMMA',0,'POINT')}]]</td>
+			</tr>
+			</tbody>
+			</table>
+		</td>
+	</tr>
+	</table>
+</body>
+</html>

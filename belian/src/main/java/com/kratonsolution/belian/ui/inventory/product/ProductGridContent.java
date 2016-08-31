@@ -14,6 +14,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
+import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.inventory.svc.ProductService;
@@ -143,6 +144,30 @@ public class ProductGridContent extends GridContent
 			{
 			}
 		});
+		
+		Toolbarbutton subCost = new Toolbarbutton("Substract Cost 10%","/icons/close24.png");
+		subCost.addEventListener(Events.ON_CLICK, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event arg0) throws Exception
+			{
+				service.subsCost();
+			}
+		});
+		
+		Toolbarbutton subPrice = new Toolbarbutton("Substract Price 10%","/icons/close24.png");
+		subPrice.addEventListener(Events.ON_CLICK, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event arg0) throws Exception
+			{
+				service.subsPrices();
+			}
+		});
+		
+		
+		gridToolbar.appendChild(subCost);
+		gridToolbar.appendChild(subPrice);
 
 	}
 	

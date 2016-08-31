@@ -400,6 +400,9 @@ public class NavigationMenu extends Window
 		if(modules.containsKey("ROLE_CLINIC_SALES_READ"))
 			list.appendChild(new ClinicSalesMenu());
 		
+		if(modules.containsKey("ROLE_CLINIC_SALES_READ"))
+			list.appendChild(new DoctorIncomeReportMenu());
+		
 		if(!list.getChildren().isEmpty())
 		{
 			Tabpanel healtcare = new Tabpanel();

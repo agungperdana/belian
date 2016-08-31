@@ -19,6 +19,7 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
+import com.kratonsolution.belian.general.dm.Organization;
 import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.healtcare.dm.DoctorRelationship;
 import com.kratonsolution.belian.healtcare.dm.DoctorRelationshipRepository;
@@ -43,7 +44,9 @@ public class DoctorBox extends Hbox implements DoctorRegistrationListener
 
 	private A link = new A(lang.get("doctor.grid.column.new"));
 	
-	private Map<String,DoctorRelationship> maps = new HashMap<String, DoctorRelationship>(); 
+	private Map<String,DoctorRelationship> maps = new HashMap<String, DoctorRelationship>();
+	
+	private Organization organization = utils.getOrganization();
 
 	public DoctorBox(boolean showCreateLink)
 	{
@@ -75,7 +78,7 @@ public class DoctorBox extends Hbox implements DoctorRegistrationListener
 				
 				if(!Strings.isNullOrEmpty(input.getValue()))
 				{
-					for(DoctorRelationship relationship:repository.findAll(input.getValue(),utils.getOrganization().getId()))
+					for(DoctorRelationship relationship:repository.findAll(input.getValue(),organization.getId()))
 					{
 						String key = relationship.getCategory().getCode()+"."+relationship.getDoctor().getPerson().getName();
 						
@@ -122,6 +125,12 @@ public class DoctorBox extends Hbox implements DoctorRegistrationListener
 			if(!maps.containsKey(key))
 				maps.put(key,dr);
 		}
+	}
+	
+	public void setOrganization(Organization organization)
+	{
+		if(organization != null)
+			this.organization = organization;
 	}
 	
 	public void setDoctor(Person person)

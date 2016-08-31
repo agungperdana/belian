@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.finance.view;
+package com.kratonsolution.belian.healtcare.view;
 
 import java.util.Date;
 
@@ -13,19 +13,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.finance.svc.ProfitLossReportService;
+import com.kratonsolution.belian.healtcare.svc.DoctorIncomeReportService;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
 @Controller
-public class ProfitLossReportView
+public class DoctorIncomeReportView
 {
 	@Autowired
-	private ProfitLossReportService service;
+	private DoctorIncomeReportService service;
 	
-	@RequestMapping({"/profitlossreport"})
+	@RequestMapping({"/doctorincomereport"})
 	public String print(Model model,
 			@RequestParam("start")
 			@DateTimeFormat(pattern="dd-MM-yyyy")
@@ -33,9 +33,10 @@ public class ProfitLossReportView
 			@RequestParam("end")
 			@DateTimeFormat(pattern="dd-MM-yyyy")
 			Date end,
+			@RequestParam("doctor")String doctor,
 			@RequestParam("company")String company)
 	{
-		model.addAllAttributes(service.generate(company,DateTimes.sql(start),DateTimes.sql(end)));
-		return "profitlossreport";
+		model.addAllAttributes(service.generate(company,doctor,DateTimes.sql(start),DateTimes.sql(end)));
+		return "doctorincomereport";
 	}
 }

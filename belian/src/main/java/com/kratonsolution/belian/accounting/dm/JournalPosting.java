@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.UUID;
 
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -29,7 +28,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Cacheable
 @Table(name="journal_posting")
 public class JournalPosting implements Serializable
 {

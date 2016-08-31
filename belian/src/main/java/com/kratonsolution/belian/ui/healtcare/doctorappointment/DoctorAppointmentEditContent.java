@@ -17,6 +17,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Toolbarbutton;
 
+import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.general.svc.OrganizationService;
 import com.kratonsolution.belian.global.svc.CodeGenerator;
 import com.kratonsolution.belian.healtcare.dm.DoctorAppointment;
@@ -52,7 +53,7 @@ public class DoctorAppointmentEditContent extends FormContent
 
 	private OrganizationList companys = new OrganizationList();
 
-	private Textbox note = Components.stdTextBox(null, false);
+	private Textbox note = Components.stdTextBox(null,false);
 
 	private DoctorBox doctors = new DoctorBox(true);
 
@@ -86,23 +87,27 @@ public class DoctorAppointmentEditContent extends FormContent
 			}
 		});
 
-
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				DoctorAppointment appointment = service.findOne(RowUtils.string(row, 6));
-				if(appointment != null)
+				DoctorAppointment appointment = service.findOne(RowUtils.id(row));
+				if(appointment != null && !appointment.getStatus().equals(DoctorAppointmentStatus.DONE))
 				{
 					appointment.setStatus(DoctorAppointmentStatus.valueOf(Components.string(statuses)));
+					appointment.setCompany(companys.getOrganization());
+					appointment.setNote(note.getText());
+					appointment.setDate(DateTimes.sql(date.getValue()));
+					
 					service.edit(appointment);
 				}
 
 				Flow.next(getParent(), new DoctorAppointmentGridContent());
 			}
 		});
-		DoctorAppointment appointment = service.findOne(RowUtils.string(row, 6));
+		
+		DoctorAppointment appointment = service.findOne(RowUtils.id(row));
 		if(appointment != null && appointment.getStatus().equals(DoctorAppointmentStatus.PROGRESS))
 		{
 
@@ -127,6 +132,9 @@ public class DoctorAppointmentEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
+		note.setRows(5);
+		note.setCols(45);
+		
 		DoctorAppointment appointment = service.findOne(RowUtils.id(row));
 		if(appointment != null)
 		{
@@ -136,7 +144,6 @@ public class DoctorAppointmentEditContent extends FormContent
 
 			queue.setWidth("75px");
 			queue.setValue(appointment.getQueue());
-			note.setWidth("300px");
 			note.setText(appointment.getNote());
 			date.setValue(appointment.getDate());
 

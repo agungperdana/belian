@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.kratonsolution.belian.ui.financial.profitloss;
+package com.kratonsolution.belian.ui.healtcare.doctorincomereport;
 
 import java.sql.Date;
 
@@ -19,19 +19,22 @@ import com.kratonsolution.belian.ui.util.Flow;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class ProfitLossResultContent extends ReportContent
+public class DoctorIncomeReportResultContent extends ReportContent
 {		
-	private String organization;
+	private String company;
+	
+	private String docter;
 	
 	private Date start;
 	
 	private Date end;
 	
-	public ProfitLossResultContent(String organization,Date start,Date end)
+	public DoctorIncomeReportResultContent(String company,String doctor,Date start,Date end)
 	{
 		super();
 		
-		this.organization = organization;
+		this.company = company;
+		this.docter = doctor;
 		this.start = start;
 		this.end = end;
 
@@ -47,7 +50,7 @@ public class ProfitLossResultContent extends ReportContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Flow.next(getParent(), new ProfitLossFormContent());
+				Flow.next(getParent(), new DoctorIncomeReportFormContent());
 			}
 		});
 	}
@@ -55,7 +58,7 @@ public class ProfitLossResultContent extends ReportContent
 	@Override
 	protected void initContent()
 	{
-		if(!Strings.isNullOrEmpty(this.organization) && this.start != null && this.end != null)
-			frame.setSrc("/profitlossreport.htm?start="+DateTimes.format(this.start)+"&end="+DateTimes.format(this.end)+"&company="+this.organization);
+		if(!Strings.isNullOrEmpty(this.docter) && this.start != null && this.end != null)
+			frame.setSrc("/doctorincomereport.htm?start="+DateTimes.format(this.start)+"&end="+DateTimes.format(this.end)+"&doctor="+this.docter+"&company="+this.company);
 	}
 }

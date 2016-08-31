@@ -58,7 +58,7 @@ public class GeneralLedgerReportFormContent extends ReportForm
 				if(end.getValue() == null)
 					throw new WrongValueException(end,lang.get("message.field.empty"));
 					
-				Flow.next(getParent(), new GeneralLedgerReportResultContent(companys.getOrganization().getId(),accounts.getAccount()!=null?accounts.getAccount().getId():null,DateTimes.sql(start.getValue()),DateTimes.sql(start.getValue())));
+				Flow.next(getParent(), new GeneralLedgerReportResultContent(companys.getOrganization().getId(),accounts.getAccount()!=null?accounts.getAccount().getId():null,DateTimes.sql(start.getValue()),DateTimes.sql(end.getValue())));
 			}
 		});
 	}

@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.JournalEntryRepository;
+import com.kratonsolution.belian.accounting.dm.JournalPosting;
+import com.kratonsolution.belian.accounting.dm.JournalPostingRepository;
 import com.kratonsolution.belian.accounting.dm.OGLAccount;
 import com.kratonsolution.belian.accounting.dm.OGLAccountRepository;
 import com.kratonsolution.belian.accounting.dm.OrganizationAccount;
@@ -48,6 +50,9 @@ public class GeneralLedgerService
 	private OrganizationAccountRepository oatRepo;
 	
 	@Autowired
+	private JournalPostingRepository postingRepo;
+	
+	@Autowired
 	private Language lang;
 
 	@Autowired
@@ -61,36 +66,44 @@ public class GeneralLedgerService
 		OrganizationAccount oat = oatRepo.findOne(company);
 		if(oat != null)
 		{
+			List<Map<String,Object>> contents = new ArrayList<>();
+			
+			if(!Strings.isNullOrEmpty(account))
+			{
+				List<JournalPosting> list = postingRepo.findAll(account, start, end);
+				if(!list.isEmpty())
+				{
+					Map<String,Object> resultMap = new HashMap<>();
+					resultMap.put("account",accountRepo.findOne(account));
+					resultMap.put("postings", list);
+					
+					contents.add(resultMap);
+				}
+			}
+			else
+			{
+				for(OGLAccount oglAccount:oat.getAccounts())
+				{
+					if(oglAccount.isSelected())
+					{
+						List<JournalPosting> list = postingRepo.findAll(oglAccount.getId(), start, end);
+						if(!list.isEmpty())
+						{
+							Map<String,Object> resultMap = new HashMap<>();
+							resultMap.put("account",oglAccount);
+							resultMap.put("postings",list);
+							
+							contents.add(resultMap);
+						}
+					}
+				}
+			}
+			
 			map.put("company", oat.getOrganization());
 			map.put("title",lang.get("generalledger.label.title"));
 			map.put("date", lang.get("journalentry.grid.column.date"));
 			map.put("debet", lang.get("journalentry.grid.column.debet"));
 			map.put("credit", lang.get("journalentry.grid.column.credit"));
-			
-			List<Map<String,Object>> contents = new ArrayList<>();
-
-			List<OGLAccount> postings = new ArrayList<>();
-			
-			if(Strings.isNullOrEmpty(account))
-			{
-				for(OGLAccount oglAccount:oat.getAccounts())
-				{
-					if(oglAccount.isSelected() && !oglAccount.getPostings().isEmpty())
-						postings.add(oglAccount);
-				}
-			}
-			else
-				postings.add(accountRepo.findOne(account));
-			
-			if(!postings.isEmpty())
-			{
-				Map<String,Object> content = new HashMap<>();
-				content.put("company", oat.getOrganization());
-				content.put("accounts",postings);
-				
-				contents.add(content);
-			}
-			
 			map.put("contents", contents);
 		}
 

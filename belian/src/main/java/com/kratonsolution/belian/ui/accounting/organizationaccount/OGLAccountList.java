@@ -79,7 +79,7 @@ public class OGLAccountList extends Listbox
 		{
 			if(account.isSelected())
 			{
-				appendItem(account.getLabel(), account.getValue());
+				appendItem(account.getLabel(), account.getId());
 				
 				if(!maps.containsKey(account.getId()))
 					maps.put(account.getId(), account);

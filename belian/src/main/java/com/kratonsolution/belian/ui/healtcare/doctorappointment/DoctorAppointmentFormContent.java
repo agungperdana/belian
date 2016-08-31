@@ -54,7 +54,7 @@ public class DoctorAppointmentFormContent extends FormContent
 	
 	private OrganizationList companys = new OrganizationList();
 	
-	private Textbox note = Components.stdTextBox(null, false);
+	private Textbox note = Components.stdTextBox(null,false);
 
 	private DoctorBox doctors = new DoctorBox(true);
 	
@@ -122,6 +122,9 @@ public class DoctorAppointmentFormContent extends FormContent
 	@Override
 	public void initForm()
 	{
+		note.setRows(5);
+		note.setCols(45);
+		
 		queue.setText(generator.nextQueue(Code.DrApt)+"");
 		
 		for(DoctorAppointmentStatus status:DoctorAppointmentStatus.values())

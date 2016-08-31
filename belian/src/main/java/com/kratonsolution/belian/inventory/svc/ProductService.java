@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.inventory.svc;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.util.Collection;
 import java.util.Iterator;
@@ -431,5 +432,27 @@ public class ProductService
 		}
 		
 		return null;
+	}
+	
+	public void subsCost()
+	{
+		for(Product product:repository.findAll())
+		{
+			for(ProductCost cost:product.getCosts())
+				cost.setEstimated(cost.getEstimated().divide(BigDecimal.valueOf(1.1),RoundingMode.UP));
+		
+			repository.saveAndFlush(product);
+		}
+	}
+	
+	public void subsPrices()
+	{
+		for(Product product:repository.findAll())
+		{
+			for(ProductPrice price:product.getPrices())
+				price.setPrice(price.getPrice().divide(BigDecimal.valueOf(1.1),RoundingMode.UP));
+				
+			repository.saveAndFlush(product);
+		}
 	}
 }
