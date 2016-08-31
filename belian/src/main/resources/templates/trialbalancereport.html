@@ -35,18 +35,21 @@
 				<th>[[${account}]]</th>
 				<th>[[${debet}]]</th>
 				<th>[[${credit}]]</th>
+				<th>Balance</th>
 			</tr>
 			</thead>
 			<tbody>
 			<tr th:each="content:${contents}">
-				<td width="70%" align="left">[[${content.account.account.name}]]</td>
+				<td width="60%" align="left">[[${content.account.account.name}]]</td>
 				<td width="10%" align="right">[[${#numbers.formatDecimal(content.debet,1,'COMMA',0,'POINT')}]]</td>
 				<td width="10%" align="right">[[${#numbers.formatDecimal(content.credit,1,'COMMA',0,'POINT')}]]</td>
+				<td width="10%" align="right">[[${#numbers.formatDecimal(content.balance,1,'COMMA',0,'POINT')}]]</td>
 			</tr>
 			<tr id="black-total">
-				<td width="70%" align="left">&nbsp;</td>
+				<td width="60%" align="left">&nbsp;</td>
 				<td width="10%" align="right">[[${#numbers.formatDecimal(tdebet,1,'COMMA',0,'POINT')}]]</td>
 				<td width="10%" align="right">[[${#numbers.formatDecimal(tcredit,1,'COMMA',0,'POINT')}]]</td>
+				<td width="10%" align="right">[[${#numbers.formatDecimal(tbalance,1,'COMMA',0,'POINT')}]]</td>
 			</tr>
 			</tbody>
 			</table>

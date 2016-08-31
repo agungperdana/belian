@@ -30,7 +30,7 @@ public class DoctorIncomeReportMenu extends Listitem
 	public void init()
 	{
 		setLabel(language.get("navbar.menu.healtcare.doctorincomereport"));
-		setImage("/icons/profitloss.png");
+		setImage("/icons/doctorinvoicereport.png");
 		
 		addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{

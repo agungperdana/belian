@@ -66,6 +66,7 @@ public class TrialBalanceService
 				map.put("account",account);
 				map.put("debet",debet);
 				map.put("credit",credit);
+				map.put("balance",debet.subtract(credit));
 
 				contents.add(map);
 				
@@ -77,6 +78,7 @@ public class TrialBalanceService
 		maps.put("contents", contents);
 		maps.put("tdebet", tDebet);
 		maps.put("tcredit", tCredit);
+		maps.put("tbalance", tDebet.subtract(tCredit));
 		
 		return maps;
 	}

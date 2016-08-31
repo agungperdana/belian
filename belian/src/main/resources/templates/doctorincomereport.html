@@ -14,7 +14,9 @@
 <body th:inline="text">
 	<table id='outer'>
 	<tr>
-		<td width="100%" align="center"><img th:src="@{/icons/print.png}" onclick="onprint()"/></td>
+		<td width="100%" align="center">
+			<span id='toolbar'><img th:src="@{/icons/print.png}" onclick="onprint()"/></span>
+		</td>
 	</tr>
 	<tr>
 		<td id='comp-title'>[[${company.name}]]</td>

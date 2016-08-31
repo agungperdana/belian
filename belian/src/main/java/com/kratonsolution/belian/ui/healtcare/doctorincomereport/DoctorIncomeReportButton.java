@@ -19,7 +19,7 @@ public class DoctorIncomeReportButton extends Toolbarbutton
 	
 	public DoctorIncomeReportButton()
 	{
-		setImage("/icons/profitloss.png");
+		setImage("/icons/doctorinvoicereport.png");
 		setHeight("38px");
 		setTooltiptext(lang.get("navbar.menu.healtcare.doctorincomereport"));
 	}

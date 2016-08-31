@@ -50,7 +50,7 @@ public class DoctorIncomeReportWindow extends AbstractWindow implements HasGrid,
 	
 	protected void init()
 	{
-		caption.setImage("/icons/profitloss.png");
+		caption.setImage("/icons/doctorinvoicereport.png");
 		appendChild(caption);
 		insertCreateForm();
 		insertStatus();
