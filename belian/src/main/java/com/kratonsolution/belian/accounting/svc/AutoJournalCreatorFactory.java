@@ -22,11 +22,15 @@ public class AutoJournalCreatorFactory
 	
 	public JournalEntry create(Journalable journalable)
 	{
-		for(AutoJournalCreator creator:creators)
+		try
 		{
-			if(creator.isSupported(journalable))
-				return creator.generate(journalable);
+			for(AutoJournalCreator creator:creators)
+			{
+				if(creator.isSupported(journalable))
+					return creator.generate(journalable);
+			}
 		}
+		catch (Exception e){}
 		
 		return null;
 	}

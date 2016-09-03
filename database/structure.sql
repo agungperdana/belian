@@ -1,8 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `belian` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `belian`;
+CREATE DATABASE  IF NOT EXISTS `belianeducation` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `belianeducation`;
 -- MySQL dump 10.13  Distrib 5.7.12, for osx10.9 (x86_64)
 --
--- Host: localhost    Database: belian
+-- Host: localhost    Database: belianeducation
 -- ------------------------------------------------------
 -- Server version	5.7.13
 
@@ -40,44 +40,6 @@ CREATE TABLE `access_role` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `access_role`
---
-
-LOCK TABLES `access_role` WRITE;
-/*!40000 ALTER TABLE `access_role` DISABLE KEYS */;
-INSERT INTO `access_role` VALUES ('0442dff1-c1dd-45e7-8634-2b9d90904469','7bef1d92-0f15-43ef-b59b-5bc3e769d896','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('060d3480-7c9a-44c7-b572-d7b2c4067359','916b22eb-48fa-4000-b7a2-7fc1d47ced4e','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('0e9073d1-2be3-4a8a-9a82-5bd1166757e2','847a8df6-bc04-4de6-8d7d-28e41c00f422','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('195dd074-a5e5-4abe-bc9f-5e913229bbb6','2d7e5641-511d-43fd-a6d6-a482120f8aa5','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('1aa3a48c-ab0c-4949-945e-e9852a9b9a93','95dd39dd-512e-414e-b95c-0fc251887f98','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('22fbdfec-6afe-4f2f-bd69-ac6a9974ae82','5c37296e-ab30-4d07-bba3-342d4c403f48','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('2d52482a-0a7a-4e49-83c6-9db73e4e051b','80aebe74-399c-4273-9145-956a077d3f5d','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('3202f4e4-fd87-41a8-ae71-fbefce6a2ef4','b54c8e49-c820-4292-9f74-9e47bd55711f','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('32915e9c-96bf-44b3-881a-2f7c917a4c92','d33784ca-abd5-422b-b45a-8c8ee13ddc0a','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('331300a2-cc8e-4417-abb3-45dadf814422','fca1cfcf-d199-4729-a321-e1ed01deb0f1','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('37484efd-9cb6-4f79-903f-e7d6687658cc','6861d3b3-8110-46ed-8a3a-830963597fa7','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('3a225b38-8dbd-482a-9c14-2f7f1c535068','88bf4008-c84a-4089-88c6-e9d8f077a196','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('48c06de3-442f-4125-a438-e370fabade36','f50dd16d-0e25-44b6-bd69-c28dfcc55300','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('48c4056e-33f6-4082-af20-0139f3e66371','8217c196-16b9-44fb-9662-8323220ee705','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('490e4434-7ea2-475e-a66c-ea7296b82c54','29ec80f0-0d4c-451c-ae5e-f195c4be1a27','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('4fffeab2-b09c-47fb-92b4-3981da252637','9e644628-121d-4954-8a66-8002cc866bda','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('541dd297-fd64-44ae-bcf4-fed612227962','4b3bb551-173e-46f5-b1e9-bdd719e3045e','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('59d88282-5a3f-481b-9bb8-91679fbf4d91','f53b80db-1b89-4779-86e7-b065b5287bbb','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('5a2ce59a-60c2-4203-9d3b-7c5d038fe635','e916392a-0b3c-4543-ada7-93054383bb3b','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('5c2ddb84-b28c-40f6-81d5-351e0ea1037d','627fb961-6cf0-4148-9451-0d1422095eb7','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('5c9ab463-dc50-47a5-a601-f074734adf3c','abfd9a02-3b4b-47a0-9048-a65b6be0b3aa','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('6179118a-ff80-452a-a89d-8e0154725095','b662de02-f4a3-4f1a-819b-5d2aaf6a342b','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('6416ea67-8c7b-477e-811f-c5e4e45ca9c0','99623cbd-066f-4cc2-b9b3-1961bed131cc','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('6655f91e-4928-4c6f-b83a-f43b28f04454','770c420c-f809-43f7-969c-b493f0b4ef48','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('6adcd07b-62da-4e75-a076-80520a58eb32','5cdd1545-8fdb-4a79-b2a3-0662ed6fec30','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('711417b0-a5ea-4c2e-8ab3-e5a96576b45b','8f6ec9c8-e9ed-49e1-ab7a-c4a868b8391e','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('724b174d-96ec-4152-a42c-2d03097b9aa9','342b0b64-291f-4d12-bdb8-77186895d21d','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('79450f94-0cbf-4c0d-ad76-3362a4abe180','4eca5501-a650-41d5-87c1-c091391d3608','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('89c3b455-3c46-4bc4-9a13-77c171e129b6','a4c43802-436f-407c-8793-323600c181d7','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('94863d4d-7d07-41d2-bc78-4f65260776d6','13989b38-ac2c-47b8-8708-5e27477af18d','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('9659ee34-7845-4078-89bd-9ee9b9e37b78','855aab16-cb45-41c3-b62c-55185ff77dfc','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('9728b76b-eac0-44c4-9ba9-afca669e0a76','e8f89299-2138-4167-b5b7-52f6ae1667ca','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('9f52d7a0-217e-4084-9bb3-78c5c81dd536','07452775-a048-4071-8798-21dc943fe926','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('9fa511a1-e704-4018-a90a-57acea0ac5da','1adc4b8b-ad93-4658-8476-6bb13e2e810d','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('a055f787-df6a-4c93-af22-12797bf5ec39','69443009-4a15-4061-b9f0-08c08c8f50aa','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('a3e8ba06-d955-4929-bd36-f658f3796b6c','a4aa9ae0-5166-4d06-afd1-d2eea6f2417c','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('a7951344-6b9e-438f-af5c-7b94dee26b2d','83b19678-9f2f-49f4-ba25-0f31a8dee078','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('a8a90cc0-470f-456c-879b-77c0ed469dd7','9df71b1a-0e52-4445-98ea-b9a59ad81ac9','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('a91848d3-83d1-485a-9846-c83ff3699ac2','322d37f6-a667-481e-bc22-db212d0154ea','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('abecab92-51cb-4ca9-88a0-9446c1bc5ae3','4eb93eb7-2100-49ae-bd96-a39995ed5670','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('ac144c04-22c4-47fb-8fd4-3783a4f29a90','1cf392fc-4f93-4e38-9709-2beb84434951','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('ad389302-f250-4270-a937-75cf984c2f80','2bdc3f95-c5bd-47d9-adce-9e9df1042e2f','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('b4f04a2c-d9a4-4b30-b75b-4572685e35a8','9178e8cd-4063-4fe9-a060-d2e3ac818ed1','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('bf839209-25d9-4ea7-8e4a-d771f7599e2e','6cbaf072-6925-46e9-b417-17326f3d8584','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('c655e02a-f2a3-4132-8bd7-9428cc1ce3af','0b503053-31eb-410d-90a6-ec6a9977bc1e','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('c836928e-da88-414e-b572-db436cc948a4','4939e42f-06b5-4e44-b3ba-4106964f1f68','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('c9681985-0b2a-4537-822b-8f477bc15104','65414caf-3a73-4e3f-9a58-2d70c723b5bc','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('ce77f072-7ad1-4cb5-9e9e-0d9b89a853bd','314a3f13-a982-4915-a5cb-455eacbc27ae','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('cf2437ad-5e59-4f7a-8190-f537beabc623','58621810-2c8f-44ae-b9aa-b1e05ad32743','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('cff3c8ef-bd79-4d32-be37-b4a2e7dab027','90195ecb-4674-4614-a429-eebc24ffe773','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('d8a71d8e-344a-4c18-88ff-9ca2cffed715','b9935030-f5c1-479e-9ec1-795afc1c1e7e','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('e1ae7cc5-aab3-4271-a744-9d17fca44e9c','9b9e014c-7a23-40c1-8841-30044564bf7f','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('e1ae7cc5-aab3-4271-a744-9d17fca44e9x','9b9e014c-7a23-40c1-8841-30044564bf7x','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('e51c5ad1-38c7-4699-9c92-50f070f7a7f3','4bf39427-b32a-434c-bd71-4d9493ea6eef','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('e9b3d5e4-1259-48bc-b521-7abb7d72bc30','e4307d82-f3fa-4916-9e6b-7a4f894d847e','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('ed0df929-8852-42ca-9006-e0ad6fd37a90','55b7e0fb-a178-478b-a09e-4b753f161aeb','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('f0c0441f-80df-4405-8927-c114d9c61edb','e4d249e1-4bd5-4291-9050-62a99f70f64c','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('f0f949d7-f756-4fdc-bacd-b6e145b9829d','5e8c4a66-e46a-4000-ae1c-bf536686b30f','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('f6e69991-8825-41e8-a6e7-24a4c6257c4d','dbc9175e-eb27-45e9-9e43-a1c12d6354e4','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('fe2ef334-8861-41af-887a-a95992d46b74','8c7e1020-0824-4239-9a4e-46301c80b9cd','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1);
-/*!40000 ALTER TABLE `access_role` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `accessible_organization`
---
-
-DROP TABLE IF EXISTS `accessible_organization`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `accessible_organization` (
-  `id` char(50) NOT NULL,
-  `fk_role` char(50) DEFAULT NULL,
-  `fk_organization` char(50) DEFAULT NULL,
-  `is_selected` char(1) DEFAULT '0',
-  `version` bigint(20) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `accessible_organization`
---
-
-LOCK TABLES `accessible_organization` WRITE;
-/*!40000 ALTER TABLE `accessible_organization` DISABLE KEYS */;
-INSERT INTO `accessible_organization` VALUES ('af888d98-5c12-4ddd-b792-450ba5f3c660','096b0105-de76-492c-9bb0-5e518b46d69c','541e778c-d93b-4b99-95c1-0bfbdb6027e9','0',0),('b1fa99fe-7db5-4306-a90f-03042ebf270b','096b0105-de76-492c-9bb0-5e518b46d69c','0b7252be-8c14-42bf-b7bc-6e67ffb882d1','0',0),('b304024d-5933-401c-a303-e138ca14333a','096b0105-de76-492c-9bb0-5e518b46d69c','0da3d8c0-b756-4b86-93c7-1c4ecdb8dc86','0',0),('e17751e4-20f0-48ab-bfe4-3986f12453a9','096b0105-de76-492c-9bb0-5e518b46d69c','3b9d7ef1-d0dc-40b5-9e1e-e92e0e452b08','0',0);
-/*!40000 ALTER TABLE `accessible_organization` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `accounting_period`
 --
 
@@ -91,21 +53,14 @@ CREATE TABLE `accounting_period` (
   `date_from` date DEFAULT NULL,
   `date_to` date DEFAULT NULL,
   `month` char(10) DEFAULT 'January',
+  `is_closed` char(1) DEFAULT '0',
   `fk_accounting_period_parent` char(50) DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
   `version` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `accounting_period`
---
-
-LOCK TABLES `accounting_period` WRITE;
-/*!40000 ALTER TABLE `accounting_period` DISABLE KEYS */;
-/*!40000 ALTER TABLE `accounting_period` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `address`
@@ -131,15 +86,6 @@ CREATE TABLE `address` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `address`
---
-
-LOCK TABLES `address` WRITE;
-/*!40000 ALTER TABLE `address` DISABLE KEYS */;
-/*!40000 ALTER TABLE `address` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `approve_and_reviewable`
 --
 
@@ -157,15 +103,6 @@ CREATE TABLE `approve_and_reviewable` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `approve_and_reviewable`
---
-
-LOCK TABLES `approve_and_reviewable` WRITE;
-/*!40000 ALTER TABLE `approve_and_reviewable` DISABLE KEYS */;
-/*!40000 ALTER TABLE `approve_and_reviewable` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `approveable`
@@ -188,15 +125,6 @@ CREATE TABLE `approveable` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `approveable`
---
-
-LOCK TABLES `approveable` WRITE;
-/*!40000 ALTER TABLE `approveable` DISABLE KEYS */;
-/*!40000 ALTER TABLE `approveable` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `asset`
@@ -226,15 +154,6 @@ CREATE TABLE `asset` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `asset`
---
-
-LOCK TABLES `asset` WRITE;
-/*!40000 ALTER TABLE `asset` DISABLE KEYS */;
-/*!40000 ALTER TABLE `asset` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `asset_type`
 --
 
@@ -253,13 +172,47 @@ CREATE TABLE `asset_type` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `asset_type`
+-- Table structure for table `audit_trail`
 --
 
-LOCK TABLES `asset_type` WRITE;
-/*!40000 ALTER TABLE `asset_type` DISABLE KEYS */;
-/*!40000 ALTER TABLE `asset_type` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `audit_trail`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `audit_trail` (
+  `id` char(50) NOT NULL,
+  `date` varchar(45) DEFAULT NULL,
+  `type` char(6) DEFAULT NULL,
+  `user` varchar(150) DEFAULT NULL,
+  `company` varchar(150) DEFAULT NULL,
+  `service` varchar(150) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `auto_journal_sales`
+--
+
+DROP TABLE IF EXISTS `auto_journal_sales`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auto_journal_sales` (
+  `id` char(50) NOT NULL,
+  `fk_cash_account` char(50) DEFAULT NULL,
+  `fk_service_sales_account` char(50) DEFAULT NULL,
+  `fk_goods_sales_account` char(50) DEFAULT NULL,
+  `fk_tax_sales_account` char(50) DEFAULT NULL,
+  `fk_receivable_account` char(50) DEFAULT NULL,
+  `fk_tuslah_payable_account` char(50) DEFAULT NULL,
+  `fk_branch_cash_account` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `benefit`
@@ -285,15 +238,6 @@ CREATE TABLE `benefit` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `benefit`
---
-
-LOCK TABLES `benefit` WRITE;
-/*!40000 ALTER TABLE `benefit` DISABLE KEYS */;
-/*!40000 ALTER TABLE `benefit` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `benefit_type`
 --
 
@@ -310,15 +254,6 @@ CREATE TABLE `benefit_type` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `benefit_type`
---
-
-LOCK TABLES `benefit_type` WRITE;
-/*!40000 ALTER TABLE `benefit_type` DISABLE KEYS */;
-/*!40000 ALTER TABLE `benefit_type` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `billable`
@@ -338,20 +273,12 @@ CREATE TABLE `billable` (
   `fk_person_customer` char(50) DEFAULT NULL,
   `fk_tax` char(50) DEFAULT NULL,
   `fk_cashier_shift` char(50) DEFAULT NULL,
+  `rounding` decimal(10,0) DEFAULT NULL,
   `version` bigint(20) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `billable`
---
-
-LOCK TABLES `billable` WRITE;
-/*!40000 ALTER TABLE `billable` DISABLE KEYS */;
-/*!40000 ALTER TABLE `billable` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `bpjs`
@@ -371,15 +298,6 @@ CREATE TABLE `bpjs` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `bpjs`
---
-
-LOCK TABLES `bpjs` WRITE;
-/*!40000 ALTER TABLE `bpjs` DISABLE KEYS */;
-/*!40000 ALTER TABLE `bpjs` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `budget`
 --
 
@@ -395,15 +313,6 @@ CREATE TABLE `budget` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `budget`
---
-
-LOCK TABLES `budget` WRITE;
-/*!40000 ALTER TABLE `budget` DISABLE KEYS */;
-/*!40000 ALTER TABLE `budget` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `budget_item`
@@ -426,15 +335,6 @@ CREATE TABLE `budget_item` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `budget_item`
---
-
-LOCK TABLES `budget_item` WRITE;
-/*!40000 ALTER TABLE `budget_item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `budget_item` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `budget_review`
 --
 
@@ -448,15 +348,6 @@ CREATE TABLE `budget_review` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `budget_review`
---
-
-LOCK TABLES `budget_review` WRITE;
-/*!40000 ALTER TABLE `budget_review` DISABLE KEYS */;
-/*!40000 ALTER TABLE `budget_review` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `budget_revision`
@@ -478,15 +369,6 @@ CREATE TABLE `budget_revision` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `budget_revision`
---
-
-LOCK TABLES `budget_revision` WRITE;
-/*!40000 ALTER TABLE `budget_revision` DISABLE KEYS */;
-/*!40000 ALTER TABLE `budget_revision` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `budget_revision_item`
 --
 
@@ -506,15 +388,6 @@ CREATE TABLE `budget_revision_item` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `budget_revision_item`
---
-
-LOCK TABLES `budget_revision_item` WRITE;
-/*!40000 ALTER TABLE `budget_revision_item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `budget_revision_item` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `budget_role`
 --
 
@@ -528,15 +401,6 @@ CREATE TABLE `budget_role` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `budget_role`
---
-
-LOCK TABLES `budget_role` WRITE;
-/*!40000 ALTER TABLE `budget_role` DISABLE KEYS */;
-/*!40000 ALTER TABLE `budget_role` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `budget_status`
@@ -554,15 +418,6 @@ CREATE TABLE `budget_status` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `budget_status`
---
-
-LOCK TABLES `budget_status` WRITE;
-/*!40000 ALTER TABLE `budget_status` DISABLE KEYS */;
-/*!40000 ALTER TABLE `budget_status` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `cash_purchase_order`
 --
 
@@ -578,15 +433,6 @@ CREATE TABLE `cash_purchase_order` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `cash_purchase_order`
---
-
-LOCK TABLES `cash_purchase_order` WRITE;
-/*!40000 ALTER TABLE `cash_purchase_order` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cash_purchase_order` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `cash_purchase_order_item`
 --
 
@@ -600,15 +446,6 @@ CREATE TABLE `cash_purchase_order_item` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cash_purchase_order_item`
---
-
-LOCK TABLES `cash_purchase_order_item` WRITE;
-/*!40000 ALTER TABLE `cash_purchase_order_item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cash_purchase_order_item` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `cash_sales`
@@ -627,15 +464,6 @@ CREATE TABLE `cash_sales` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cash_sales`
---
-
-LOCK TABLES `cash_sales` WRITE;
-/*!40000 ALTER TABLE `cash_sales` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cash_sales` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `cash_sales_line`
@@ -661,15 +489,6 @@ CREATE TABLE `cash_sales_line` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `cash_sales_line`
---
-
-LOCK TABLES `cash_sales_line` WRITE;
-/*!40000 ALTER TABLE `cash_sales_line` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cash_sales_line` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `cashier_shift`
 --
 
@@ -685,6 +504,7 @@ CREATE TABLE `cashier_shift` (
   `capital` decimal(10,0) DEFAULT NULL,
   `start` time DEFAULT NULL,
   `end` time DEFAULT NULL,
+  `fk_currency` char(50) DEFAULT NULL,
   `version` bigint(20) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
@@ -692,13 +512,21 @@ CREATE TABLE `cashier_shift` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `cashier_shift`
+-- Table structure for table `clinic_sales`
 --
 
-LOCK TABLES `cashier_shift` WRITE;
-/*!40000 ALTER TABLE `cashier_shift` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cashier_shift` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `clinic_sales`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `clinic_sales` (
+  `id` char(50) NOT NULL,
+  `is_bpjs` char(1) DEFAULT '0',
+  `bpjs_payment_status` char(10) DEFAULT NULL,
+  `medication_status` char(10) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `company_structure`
@@ -721,15 +549,6 @@ CREATE TABLE `company_structure` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `company_structure`
---
-
-LOCK TABLES `company_structure` WRITE;
-/*!40000 ALTER TABLE `company_structure` DISABLE KEYS */;
-/*!40000 ALTER TABLE `company_structure` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `contact`
 --
 
@@ -749,13 +568,161 @@ CREATE TABLE `contact` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `contact`
+-- Table structure for table `course_attendance`
 --
 
-LOCK TABLES `contact` WRITE;
-/*!40000 ALTER TABLE `contact` DISABLE KEYS */;
-/*!40000 ALTER TABLE `contact` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `course_attendance`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `course_attendance` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `fk_Schedule` char(50) DEFAULT NULL,
+  `fk_staff` char(50) DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `course_attendance_item`
+--
+
+DROP TABLE IF EXISTS `course_attendance_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `course_attendance_item` (
+  `id` char(50) NOT NULL,
+  `fk_person` char(50) DEFAULT NULL,
+  `status` char(10) DEFAULT 'LEAVE',
+  `fk_attendance` char(50) DEFAULT NULL,
+  `fk_time_entry` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `course_discount`
+--
+
+DROP TABLE IF EXISTS `course_discount`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `course_discount` (
+  `id` char(50) NOT NULL,
+  `amount` decimal(10,0) DEFAULT NULL,
+  `fk_discount` char(50) DEFAULT NULL,
+  `fk_registration` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `course_installment`
+--
+
+DROP TABLE IF EXISTS `course_installment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `course_installment` (
+  `id` char(50) NOT NULL,
+  `amount` decimal(10,0) DEFAULT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `fk_course_registration` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `course_installment_item`
+--
+
+DROP TABLE IF EXISTS `course_installment_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `course_installment_item` (
+  `id` char(50) NOT NULL,
+  `resource` char(50) DEFAULT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `uom` char(50) DEFAULT NULL,
+  `unit_price` decimal(10,0) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `fk_course_installment` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `course_item`
+--
+
+DROP TABLE IF EXISTS `course_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `course_item` (
+  `id` char(50) NOT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `price` decimal(10,0) DEFAULT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  `fk_product_feature` char(50) DEFAULT NULL,
+  `fk_course_registration` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `course_registration`
+--
+
+DROP TABLE IF EXISTS `course_registration`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `course_registration` (
+  `id` char(50) NOT NULL,
+  `fk_study_day` char(50) DEFAULT NULL,
+  `fk_study_time` char(50) DEFAULT NULL,
+  `fk_study_period` char(50) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `number` char(50) DEFAULT NULL,
+  `fk_currency` char(50) DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  `fk_staff` char(50) DEFAULT NULL,
+  `fk_student` char(50) DEFAULT NULL,
+  `fk_tax` char(50) DEFAULT NULL,
+  `fk_room` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `course_schedule`
+--
+
+DROP TABLE IF EXISTS `course_schedule`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `course_schedule` (
+  `id` char(50) NOT NULL,
+  `day` char(15) DEFAULT NULL,
+  `fk_room` char(50) DEFAULT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `currency`
@@ -768,21 +735,12 @@ CREATE TABLE `currency` (
   `id` char(50) NOT NULL,
   `code` char(15) DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
+  `is_default` char(1) DEFAULT '0',
   `version` bigint(20) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `currency`
---
-
-LOCK TABLES `currency` WRITE;
-/*!40000 ALTER TABLE `currency` DISABLE KEYS */;
-INSERT INTO `currency` VALUES ('82159e7e-7d44-44e9-acc6-09f85e99bac0','RMY','Ringgit Malaysia',0),('85c90912-97ff-47ce-9d6a-7d1650ab3ea9','IDR','Rupiah',0),('f4e2e57c-be85-49a8-b19b-66ed812b2785','USD','US Dollar',0);
-/*!40000 ALTER TABLE `currency` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `deduction`
@@ -803,15 +761,6 @@ CREATE TABLE `deduction` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `deduction`
---
-
-LOCK TABLES `deduction` WRITE;
-/*!40000 ALTER TABLE `deduction` DISABLE KEYS */;
-/*!40000 ALTER TABLE `deduction` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `deduction_type`
 --
 
@@ -829,15 +778,6 @@ CREATE TABLE `deduction_type` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `deduction_type`
---
-
-LOCK TABLES `deduction_type` WRITE;
-/*!40000 ALTER TABLE `deduction_type` DISABLE KEYS */;
-/*!40000 ALTER TABLE `deduction_type` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `disbursement`
 --
 
@@ -852,13 +792,24 @@ CREATE TABLE `disbursement` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `disbursement`
+-- Table structure for table `discount`
 --
 
-LOCK TABLES `disbursement` WRITE;
-/*!40000 ALTER TABLE `disbursement` DISABLE KEYS */;
-/*!40000 ALTER TABLE `disbursement` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `discount`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `discount` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `value` decimal(10,0) DEFAULT NULL,
+  `is_percent` char(1) DEFAULT '0',
+  `version` bigint(20) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `doctor`
@@ -874,15 +825,6 @@ CREATE TABLE `doctor` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `doctor`
---
-
-LOCK TABLES `doctor` WRITE;
-/*!40000 ALTER TABLE `doctor` DISABLE KEYS */;
-/*!40000 ALTER TABLE `doctor` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `doctor_appointment`
@@ -908,15 +850,6 @@ CREATE TABLE `doctor_appointment` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `doctor_appointment`
---
-
-LOCK TABLES `doctor_appointment` WRITE;
-/*!40000 ALTER TABLE `doctor_appointment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `doctor_appointment` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `doctor_relationship`
 --
 
@@ -932,15 +865,6 @@ CREATE TABLE `doctor_relationship` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `doctor_relationship`
---
-
-LOCK TABLES `doctor_relationship` WRITE;
-/*!40000 ALTER TABLE `doctor_relationship` DISABLE KEYS */;
-/*!40000 ALTER TABLE `doctor_relationship` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `doctor_type`
@@ -961,15 +885,6 @@ CREATE TABLE `doctor_type` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `doctor_type`
---
-
-LOCK TABLES `doctor_type` WRITE;
-/*!40000 ALTER TABLE `doctor_type` DISABLE KEYS */;
-/*!40000 ALTER TABLE `doctor_type` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `employee`
 --
 
@@ -983,15 +898,6 @@ CREATE TABLE `employee` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `employee`
---
-
-LOCK TABLES `employee` WRITE;
-/*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-/*!40000 ALTER TABLE `employee` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `employment`
@@ -1008,15 +914,6 @@ CREATE TABLE `employment` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `employment`
---
-
-LOCK TABLES `employment` WRITE;
-/*!40000 ALTER TABLE `employment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `employment` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `employment_application`
@@ -1040,13 +937,20 @@ CREATE TABLE `employment_application` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `employment_application`
+-- Table structure for table `erp_mode`
 --
 
-LOCK TABLES `employment_application` WRITE;
-/*!40000 ALTER TABLE `employment_application` DISABLE KEYS */;
-/*!40000 ALTER TABLE `employment_application` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `erp_mode`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `erp_mode` (
+  `id` char(50) NOT NULL,
+  `segmentation` char(15) DEFAULT 'GENERAL',
+  `version` bigint(20) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `facility`
@@ -1069,15 +973,6 @@ CREATE TABLE `facility` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `facility`
---
-
-LOCK TABLES `facility` WRITE;
-/*!40000 ALTER TABLE `facility` DISABLE KEYS */;
-/*!40000 ALTER TABLE `facility` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `facility_organization`
 --
 
@@ -1096,15 +991,6 @@ CREATE TABLE `facility_organization` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `facility_organization`
---
-
-LOCK TABLES `facility_organization` WRITE;
-/*!40000 ALTER TABLE `facility_organization` DISABLE KEYS */;
-/*!40000 ALTER TABLE `facility_organization` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `family_folder`
 --
 
@@ -1120,15 +1006,6 @@ CREATE TABLE `family_folder` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `family_folder`
---
-
-LOCK TABLES `family_folder` WRITE;
-/*!40000 ALTER TABLE `family_folder` DISABLE KEYS */;
-/*!40000 ALTER TABLE `family_folder` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `family_member`
@@ -1149,15 +1026,6 @@ CREATE TABLE `family_member` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `family_member`
---
-
-LOCK TABLES `family_member` WRITE;
-/*!40000 ALTER TABLE `family_member` DISABLE KEYS */;
-/*!40000 ALTER TABLE `family_member` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `geographic`
 --
 
@@ -1175,16 +1043,6 @@ CREATE TABLE `geographic` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `geographic`
---
-
-LOCK TABLES `geographic` WRITE;
-/*!40000 ALTER TABLE `geographic` DISABLE KEYS */;
-INSERT INTO `geographic` VALUES ('','RSJ','Rasa Jaya','CITY','',0),('68309a5f-4606-46d3-ad20-996ed6c782d0','KAL-BAR','Kalimantan Barat','PROVINCE','',0),('c4c10aee-a3a1-4e6c-a08b-62d4e26414df','PNK','Pontianak','CITY','',0),('f5a12273-368d-4d39-851a-05da7bb04ab9','IN-ID','Indonesia','COUNTRY','',0);
-/*!40000 ALTER TABLE `geographic` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `gl_account`
@@ -1207,15 +1065,6 @@ CREATE TABLE `gl_account` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `gl_account`
---
-
-LOCK TABLES `gl_account` WRITE;
-/*!40000 ALTER TABLE `gl_account` DISABLE KEYS */;
-/*!40000 ALTER TABLE `gl_account` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `gl_account_balance`
 --
 
@@ -1234,15 +1083,6 @@ CREATE TABLE `gl_account_balance` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `gl_account_balance`
---
-
-LOCK TABLES `gl_account_balance` WRITE;
-/*!40000 ALTER TABLE `gl_account_balance` DISABLE KEYS */;
-/*!40000 ALTER TABLE `gl_account_balance` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `goods_issue`
@@ -1265,15 +1105,6 @@ CREATE TABLE `goods_issue` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `goods_issue`
---
-
-LOCK TABLES `goods_issue` WRITE;
-/*!40000 ALTER TABLE `goods_issue` DISABLE KEYS */;
-/*!40000 ALTER TABLE `goods_issue` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `goods_issue_item`
 --
 
@@ -1291,15 +1122,6 @@ CREATE TABLE `goods_issue_item` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `goods_issue_item`
---
-
-LOCK TABLES `goods_issue_item` WRITE;
-/*!40000 ALTER TABLE `goods_issue_item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `goods_issue_item` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `goods_receive`
@@ -1323,15 +1145,6 @@ CREATE TABLE `goods_receive` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `goods_receive`
---
-
-LOCK TABLES `goods_receive` WRITE;
-/*!40000 ALTER TABLE `goods_receive` DISABLE KEYS */;
-/*!40000 ALTER TABLE `goods_receive` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `goods_receive_item`
 --
 
@@ -1349,15 +1162,6 @@ CREATE TABLE `goods_receive_item` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `goods_receive_item`
---
-
-LOCK TABLES `goods_receive_item` WRITE;
-/*!40000 ALTER TABLE `goods_receive_item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `goods_receive_item` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `goods_transfer`
@@ -1383,15 +1187,6 @@ CREATE TABLE `goods_transfer` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `goods_transfer`
---
-
-LOCK TABLES `goods_transfer` WRITE;
-/*!40000 ALTER TABLE `goods_transfer` DISABLE KEYS */;
-/*!40000 ALTER TABLE `goods_transfer` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `goods_transfer_item`
 --
 
@@ -1409,15 +1204,6 @@ CREATE TABLE `goods_transfer_item` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `goods_transfer_item`
---
-
-LOCK TABLES `goods_transfer_item` WRITE;
-/*!40000 ALTER TABLE `goods_transfer_item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `goods_transfer_item` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `inbox`
@@ -1442,15 +1228,6 @@ CREATE TABLE `inbox` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `inbox`
---
-
-LOCK TABLES `inbox` WRITE;
-/*!40000 ALTER TABLE `inbox` DISABLE KEYS */;
-/*!40000 ALTER TABLE `inbox` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `internal_organization`
 --
 
@@ -1463,15 +1240,6 @@ CREATE TABLE `internal_organization` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `internal_organization`
---
-
-LOCK TABLES `internal_organization` WRITE;
-/*!40000 ALTER TABLE `internal_organization` DISABLE KEYS */;
-/*!40000 ALTER TABLE `internal_organization` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `inventory_item`
@@ -1492,15 +1260,6 @@ CREATE TABLE `inventory_item` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `inventory_item`
---
-
-LOCK TABLES `inventory_item` WRITE;
-/*!40000 ALTER TABLE `inventory_item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `inventory_item` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `journal_entry`
@@ -1528,15 +1287,6 @@ CREATE TABLE `journal_entry` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `journal_entry`
---
-
-LOCK TABLES `journal_entry` WRITE;
-/*!40000 ALTER TABLE `journal_entry` DISABLE KEYS */;
-/*!40000 ALTER TABLE `journal_entry` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `journal_entry_detail`
 --
 
@@ -1558,15 +1308,6 @@ CREATE TABLE `journal_entry_detail` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `journal_entry_detail`
---
-
-LOCK TABLES `journal_entry_detail` WRITE;
-/*!40000 ALTER TABLE `journal_entry_detail` DISABLE KEYS */;
-/*!40000 ALTER TABLE `journal_entry_detail` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `journal_posting`
 --
 
@@ -1586,15 +1327,6 @@ CREATE TABLE `journal_posting` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `journal_posting`
---
-
-LOCK TABLES `journal_posting` WRITE;
-/*!40000 ALTER TABLE `journal_posting` DISABLE KEYS */;
-/*!40000 ALTER TABLE `journal_posting` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `journal_setting`
 --
 
@@ -1604,23 +1336,13 @@ DROP TABLE IF EXISTS `journal_setting`;
 CREATE TABLE `journal_setting` (
   `id` char(50) NOT NULL,
   `fk_organization` char(50) DEFAULT NULL,
-  `fk_gl_account_cash` char(50) DEFAULT NULL,
-  `fk_gl_account_sales` char(50) DEFAULT NULL,
-  `fk_gl_account_ppn_payable` char(50) DEFAULT NULL,
+  `fk_auto_journal_sales` char(50) DEFAULT NULL,
+  `note` varchar(150) DEFAULT NULL,
   `version` bigint(20) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `journal_setting`
---
-
-LOCK TABLES `journal_setting` WRITE;
-/*!40000 ALTER TABLE `journal_setting` DISABLE KEYS */;
-/*!40000 ALTER TABLE `journal_setting` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `laboratory`
@@ -1639,15 +1361,6 @@ CREATE TABLE `laboratory` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `laboratory`
---
-
-LOCK TABLES `laboratory` WRITE;
-/*!40000 ALTER TABLE `laboratory` DISABLE KEYS */;
-/*!40000 ALTER TABLE `laboratory` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `laboratory_item`
@@ -1672,13 +1385,22 @@ CREATE TABLE `laboratory_item` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `laboratory_item`
+-- Table structure for table `laboratory_sales`
 --
 
-LOCK TABLES `laboratory_item` WRITE;
-/*!40000 ALTER TABLE `laboratory_item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `laboratory_item` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `laboratory_sales`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `laboratory_sales` (
+  `id` char(50) NOT NULL,
+  `is_bpjs` char(1) DEFAULT '0',
+  `bpjs_payment_status` char(10) DEFAULT NULL,
+  `lab_handling_status` char(10) DEFAULT NULL,
+  `is_personal` char(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `medical_record`
@@ -1706,15 +1428,6 @@ CREATE TABLE `medical_record` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `medical_record`
---
-
-LOCK TABLES `medical_record` WRITE;
-/*!40000 ALTER TABLE `medical_record` DISABLE KEYS */;
-/*!40000 ALTER TABLE `medical_record` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `medical_sales`
 --
 
@@ -1726,19 +1439,28 @@ CREATE TABLE `medical_sales` (
   `queue` int(11) DEFAULT NULL,
   `time` time DEFAULT NULL,
   `status` char(15) DEFAULT 'Registered',
+  `is_bpjs` char(1) DEFAULT '0',
+  `tuslah` decimal(10,0) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `medical_sales`
+-- Table structure for table `medical_treatment_sales`
 --
 
-LOCK TABLES `medical_sales` WRITE;
-/*!40000 ALTER TABLE `medical_sales` DISABLE KEYS */;
-/*!40000 ALTER TABLE `medical_sales` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `medical_treatment_sales`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `medical_treatment_sales` (
+  `id` char(50) NOT NULL,
+  `is_bpjs` char(1) DEFAULT '0',
+  `bpjs_payment_status` char(10) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `medication`
@@ -1756,15 +1478,6 @@ CREATE TABLE `medication` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `medication`
---
-
-LOCK TABLES `medication` WRITE;
-/*!40000 ALTER TABLE `medication` DISABLE KEYS */;
-/*!40000 ALTER TABLE `medication` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `medication_item`
@@ -1789,15 +1502,6 @@ CREATE TABLE `medication_item` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `medication_item`
---
-
-LOCK TABLES `medication_item` WRITE;
-/*!40000 ALTER TABLE `medication_item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `medication_item` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `message`
 --
 
@@ -1818,15 +1522,6 @@ CREATE TABLE `message` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `message`
---
-
-LOCK TABLES `message` WRITE;
-/*!40000 ALTER TABLE `message` DISABLE KEYS */;
-/*!40000 ALTER TABLE `message` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `message_receiver`
 --
 
@@ -1842,15 +1537,6 @@ CREATE TABLE `message_receiver` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `message_receiver`
---
-
-LOCK TABLES `message_receiver` WRITE;
-/*!40000 ALTER TABLE `message_receiver` DISABLE KEYS */;
-/*!40000 ALTER TABLE `message_receiver` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `module`
@@ -1873,16 +1559,6 @@ CREATE TABLE `module` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `module`
---
-
-LOCK TABLES `module` WRITE;
-/*!40000 ALTER TABLE `module` DISABLE KEYS */;
-INSERT INTO `module` VALUES ('07452775-a048-4071-8798-21dc943fe926','PRODUCT','Product','','INVENTORY','0',0),('0b503053-31eb-410d-90a6-ec6a9977bc1e','FAMILY_FOLDER','Family Folder','','CLINIC','0',0),('13989b38-ac2c-47b8-8708-5e27477af18d','BENEFIT_TYPE','Benefit Type','','HR','0',0),('1adc4b8b-ad93-4658-8476-6bb13e2e810d','PURCHASE_ORDER_REQUEST','Purchase Order Request','','PROCUREMENT','0',0),('1cf392fc-4f93-4e38-9709-2beb84434951','DOCTORTYPE','Doctor Type','','CLINIC','0',0),('29ec80f0-0d4c-451c-ae5e-f195c4be1a27','COMPANY_STRUCTURE','Company Structure','','GENERAL','0',0),('2bdc3f95-c5bd-47d9-adce-9e9df1042e2f','BUDGET_APPROVER','Budget Approver','','ACCOUNTING','0',0),('2d7e5641-511d-43fd-a6d6-a482120f8aa5','BUDGET','Budget','','ACCOUNTING','0',0),('314a3f13-a982-4915-a5cb-455eacbc27ae','INBOX','Inbox Message','','SYSTEM','0',0),('322d37f6-a667-481e-bc22-db212d0154ea','EMPYAPP','Employment Application','','HR','0',0),('342b0b64-291f-4d12-bdb8-77186895d21d','SALES_REPORT','Sales Report','','SALES','0',0),('4939e42f-06b5-4e44-b3ba-4106964f1f68','ACCOUNTINGPERIOD','Accounting Period','','ACCOUNTING','0',0),('4b3bb551-173e-46f5-b1e9-bdd719e3045e','COA','General Chart of Account','','ACCOUNTING','0',0),('4bf39427-b32a-434c-bd71-4d9493ea6eef','STOCK_OPNAME','Stock Opname','','INVENTORY','0',0),('4eb93eb7-2100-49ae-bd96-a39995ed5670','USER','User','Application User Module','SECURITY','1',0),('4eca5501-a650-41d5-87c1-c091391d3608','CASHSALES','Cash Sales','','SALES','0',0),('55b7e0fb-a178-478b-a09e-4b753f161aeb','MEDICATION','Medication','','CLINIC','0',0),('58621810-2c8f-44ae-b9aa-b1e05ad32743','SUPPLIER','Supplier','','PROCUREMENT','0',0),('5c37296e-ab30-4d07-bba3-342d4c403f48','INVITEM','Inventory Item','','INVENTORY','0',0),('5cdd1545-8fdb-4a79-b2a3-0662ed6fec30','POSITIONTYPERATE','Position Type Rate','','HR','0',0),('5e8c4a66-e46a-4000-ae1c-bf536686b30f','TRN_ORDER_REQ','Transfer Order Request','','INVENTORY','0',0),('627fb961-6cf0-4148-9451-0d1422095eb7','PURCHASE_ORDER_APPROVER','Purchase Order Request Approver','','PROCUREMENT','0',0),('65414caf-3a73-4e3f-9a58-2d70c723b5bc','CURRENCY','Currency','GENERAL','ACCOUNTING','0',1),('6861d3b3-8110-46ed-8a3a-830963597fa7','TAX','Tax','','ACCOUNTING','0',0),('69443009-4a15-4061-b9f0-08c08c8f50aa','JOURNALENTRY','Journal Entry','','ACCOUNTING','0',0),('6cbaf072-6925-46e9-b417-17326f3d8584','EMPLOYMENT','Employment','','HR','0',0),('770c420c-f809-43f7-969c-b493f0b4ef48','CASHIER','Cashier','','SALES','0',0),('7bef1d92-0f15-43ef-b59b-5bc3e769d896','UOM','Unit of Measure','','INVENTORY','0',0),('80aebe74-399c-4273-9145-956a077d3f5d','ACCESS_ROLE','Role','Application Access Role','SECURITY','1',0),('8217c196-16b9-44fb-9662-8323220ee705','ASSET','Asset Management','','ASSET','0',0),('83b19678-9f2f-49f4-ba25-0f31a8dee078','PHARMACY_ORDER','Pharmacy Order','','PHARMACY','0',0),('847a8df6-bc04-4de6-8d7d-28e41c00f422','DOCTOR_APPOINTMENT','Doctor Appointment','','CLINIC','0',0),('855aab16-cb45-41c3-b62c-55185ff77dfc','PHARMACY_SALES','Pharmacy Sales','','PHARMACY','0',0),('88bf4008-c84a-4089-88c6-e9d8f077a196','JOURNALSETTING','Journal Setting','','ACCOUNTING','0',0),('8c7e1020-0824-4239-9a4e-46301c80b9cd','PAYMENT_METHOD_TYPE','Payment Method Type','','PAYMENT','0',0),('8f6ec9c8-e9ed-49e1-ab7a-c4a868b8391e','ORGANIZATIONACCOUNT','Organization Account','','ACCOUNTING','0',0),('90195ecb-4674-4614-a429-eebc24ffe773','POSITIONTYPE','Position Type','','HR','0',0),('916b22eb-48fa-4000-b7a2-7fc1d47ced4e','STOCK_ADJUSTMENT','Stock Adjustment','','INVENTORY','0',0),('9178e8cd-4063-4fe9-a060-d2e3ac818ed1','PAYCHECK','Paycheck','','PAYMENT','0',0),('95dd39dd-512e-414e-b95c-0fc251887f98','PRDCATEGORY','Product Category','','INVENTORY','0',0),('99623cbd-066f-4cc2-b9b3-1961bed131cc','GOODS_TRANSFER','Goods Transfer','','INVENTORY','0',0),('9b9e014c-7a23-40c1-8841-30044564bf7f','MODULE','Module','Application Module','SECURITY','1',0),('9b9e014c-7a23-40c1-8841-30044564bf7x','SYSTEM','System Access','System Access','SYSTEM','1',0),('9df71b1a-0e52-4445-98ea-b9a59ad81ac9','PATIENT','Patient','','CLINIC','0',0),('9e644628-121d-4954-8a66-8002cc866bda','STOCK_ADMIN','Stock Admin','','INVENTORY','0',0),('a4aa9ae0-5166-4d06-afd1-d2eea6f2417c','PERSON','Person Management','','GENERAL','0',0),('a4c43802-436f-407c-8793-323600c181d7','GOODS_RECEIVE','Goods Receive','','INVENTORY','0',0),('abfd9a02-3b4b-47a0-9048-a65b6be0b3aa','PRODUCT_RETUR','Product Retur','','INVENTORY','0',0),('b54c8e49-c820-4292-9f74-9e47bd55711f','CASH_PURCHASE_ORDER','Cash Purchase Order','','PROCUREMENT','0',0),('b662de02-f4a3-4f1a-819b-5d2aaf6a342b','GOODS_ISSUE','Goods Issue','','INVENTORY','0',0),('b9935030-f5c1-479e-9ec1-795afc1c1e7e','FACILITY','Facility','','INVENTORY','0',0),('d33784ca-abd5-422b-b45a-8c8ee13ddc0a','DEDUCTION_TYPE','Deduction Type','','PAYMENT','0',0),('dbc9175e-eb27-45e9-9e43-a1c12d6354e4','DOCTOR','Doctor','','CLINIC','0',0),('e4307d82-f3fa-4916-9e6b-7a4f894d847e','ORGANIZATION','Organization','','GENERAL','0',0),('e4d249e1-4bd5-4291-9050-62a99f70f64c','CLINIC_REPORT','Clinic Reports','','CLINIC','0',0),('e8f89299-2138-4167-b5b7-52f6ae1667ca','POSITION','Position','','HR','0',0),('e916392a-0b3c-4543-ada7-93054383bb3b','MESSAGE','Message','','SYSTEM','0',0),('f50dd16d-0e25-44b6-bd69-c28dfcc55300','GEOGRAPHIC','Geographic','','GENERAL','0',0),('f53b80db-1b89-4779-86e7-b065b5287bbb','ASSET_TYPE','Asset Type','','ASSET','0',0),('fca1cfcf-d199-4729-a321-e1ed01deb0f1','LABS_REGISTRATION','Laboratory Registration','','MEDICALLAB','0',0);
-/*!40000 ALTER TABLE `module` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `order_item`
 --
 
@@ -1897,15 +1573,6 @@ CREATE TABLE `order_item` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `order_item`
---
-
-LOCK TABLES `order_item` WRITE;
-/*!40000 ALTER TABLE `order_item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `order_item` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `order_payment`
@@ -1925,15 +1592,6 @@ CREATE TABLE `order_payment` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `order_payment`
---
-
-LOCK TABLES `order_payment` WRITE;
-/*!40000 ALTER TABLE `order_payment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `order_payment` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `organization`
 --
 
@@ -1947,15 +1605,6 @@ CREATE TABLE `organization` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `organization`
---
-
-LOCK TABLES `organization` WRITE;
-/*!40000 ALTER TABLE `organization` DISABLE KEYS */;
-/*!40000 ALTER TABLE `organization` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `organization_account`
@@ -1977,15 +1626,6 @@ CREATE TABLE `organization_account` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `organization_account`
---
-
-LOCK TABLES `organization_account` WRITE;
-/*!40000 ALTER TABLE `organization_account` DISABLE KEYS */;
-/*!40000 ALTER TABLE `organization_account` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `organization_gl_account`
 --
 
@@ -2004,13 +1644,22 @@ CREATE TABLE `organization_gl_account` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `organization_gl_account`
+-- Table structure for table `organization_period`
 --
 
-LOCK TABLES `organization_gl_account` WRITE;
-/*!40000 ALTER TABLE `organization_gl_account` DISABLE KEYS */;
-/*!40000 ALTER TABLE `organization_gl_account` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `organization_period`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `organization_period` (
+  `id` char(50) NOT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  `fk_accounting_period` char(50) DEFAULT NULL,
+  `is_closed` char(1) DEFAULT '0',
+  `version` bigint(20) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `party`
@@ -2021,26 +1670,17 @@ DROP TABLE IF EXISTS `party`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `party` (
   `id` char(50) NOT NULL,
+  `identity` varchar(50) DEFAULT NULL,
   `name` varchar(150) DEFAULT NULL,
   `fk_geographic_birth_place` char(50) DEFAULT NULL,
   `birth_date` date DEFAULT NULL,
   `tax_code` char(50) DEFAULT NULL,
+  `is_removeable` char(1) DEFAULT '1',
   `version` bigint(20) DEFAULT '0',
-  `identity` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `party`
---
-
-LOCK TABLES `party` WRITE;
-/*!40000 ALTER TABLE `party` DISABLE KEYS */;
-INSERT INTO `party` VALUES ('10fe16f0-3f2c-4995-b6c3-5f5447597a12','Anonymous',NULL,'2000-06-18','',0,'00000');
-/*!40000 ALTER TABLE `party` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `party_relationship`
@@ -2062,16 +1702,6 @@ CREATE TABLE `party_relationship` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `party_relationship`
---
-
-LOCK TABLES `party_relationship` WRITE;
-/*!40000 ALTER TABLE `party_relationship` DISABLE KEYS */;
-INSERT INTO `party_relationship` VALUES ('3ae6cf16-f92c-4e02-92c1-eea98256c531','2016-06-18',NULL,NULL,NULL,0),('4b188994-6162-4c81-86fc-4895fe09f445','2016-06-18',NULL,NULL,NULL,0),('7a87f7e9-7927-450c-aa77-799f1d7076ef','2016-06-18',NULL,NULL,NULL,0),('a3d56d5f-4315-4db6-969c-f9f472c718ec','2016-06-18',NULL,NULL,NULL,0),('bea15201-d706-45ec-9126-5057b04827fd','2016-06-18',NULL,NULL,NULL,0),('dc6daf21-1de1-44d0-ad0d-6ff8dfe5cba7','2010-06-17',NULL,NULL,NULL,0);
-/*!40000 ALTER TABLE `party_relationship` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `party_role`
 --
 
@@ -2090,16 +1720,6 @@ CREATE TABLE `party_role` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `party_role`
---
-
-LOCK TABLES `party_role` WRITE;
-/*!40000 ALTER TABLE `party_role` DISABLE KEYS */;
-INSERT INTO `party_role` VALUES ('16ba1052-801c-4b80-9731-e23a6bc24f8b','2010-06-17',NULL,'a60c79fb-e54b-41fe-aaab-a715e42edef4',0),('6e869f14-99a9-4b38-882c-843cf0268d93','2016-06-18',NULL,'504c9e43-02ff-4034-96ea-e76ca764231e',0),('9e59f471-f728-4439-8f51-4dae16868327','2016-06-18',NULL,'a60c79fb-e54b-41fe-aaab-a715e42edef4',0),('9f2528c0-ba70-4841-864c-05d820c9fec3','2016-06-18',NULL,'3b9d7ef1-d0dc-40b5-9e1e-e92e0e452b08',0),('a30768a9-ca5f-4906-aa18-1a50155e881b','2010-06-17',NULL,'541e778c-d93b-4b99-95c1-0bfbdb6027e9',0),('c3543237-5b5a-4879-bbda-5ca90ef47146','2016-06-18',NULL,'504c9e43-02ff-4034-96ea-e76ca764231e',0);
-/*!40000 ALTER TABLE `party_role` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `patient`
 --
 
@@ -2113,15 +1733,6 @@ CREATE TABLE `patient` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `patient`
---
-
-LOCK TABLES `patient` WRITE;
-/*!40000 ALTER TABLE `patient` DISABLE KEYS */;
-/*!40000 ALTER TABLE `patient` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `patient_relationship`
@@ -2140,15 +1751,6 @@ CREATE TABLE `patient_relationship` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `patient_relationship`
---
-
-LOCK TABLES `patient_relationship` WRITE;
-/*!40000 ALTER TABLE `patient_relationship` DISABLE KEYS */;
-/*!40000 ALTER TABLE `patient_relationship` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `pay_history`
 --
 
@@ -2160,22 +1762,13 @@ CREATE TABLE `pay_history` (
   `start` date DEFAULT NULL,
   `end` date DEFAULT NULL,
   `amount` decimal(10,0) DEFAULT NULL,
-  `period_type` char(15) DEFAULT NULL,
+  `fk_uom` char(50) DEFAULT NULL,
   `fk_employment` char(50) DEFAULT NULL,
   `version` bigint(20) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `pay_history`
---
-
-LOCK TABLES `pay_history` WRITE;
-/*!40000 ALTER TABLE `pay_history` DISABLE KEYS */;
-/*!40000 ALTER TABLE `pay_history` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `payable`
@@ -2193,15 +1786,6 @@ CREATE TABLE `payable` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `payable`
---
-
-LOCK TABLES `payable` WRITE;
-/*!40000 ALTER TABLE `payable` DISABLE KEYS */;
-/*!40000 ALTER TABLE `payable` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `paycheck`
 --
 
@@ -2210,21 +1794,33 @@ DROP TABLE IF EXISTS `paycheck`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `paycheck` (
   `id` char(50) NOT NULL,
-  `fk_employee` char(50) DEFAULT NULL,
-  `fk_employer` char(50) DEFAULT NULL,
+  `fk_empployment` char(50) DEFAULT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `paycheck`
+-- Table structure for table `paycheck_item`
 --
 
-LOCK TABLES `paycheck` WRITE;
-/*!40000 ALTER TABLE `paycheck` DISABLE KEYS */;
-/*!40000 ALTER TABLE `paycheck` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `paycheck_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `paycheck_item` (
+  `id` char(50) NOT NULL,
+  `method` char(15) DEFAULT NULL,
+  `account` char(50) DEFAULT NULL,
+  `bank` varchar(150) DEFAULT NULL,
+  `fk_paycheck` char(50) DEFAULT NULL,
+  `amount` decimal(10,0) DEFAULT NULL,
+  `version` bigint(20) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `payment`
@@ -2238,8 +1834,12 @@ CREATE TABLE `payment` (
   `reference` char(50) DEFAULT NULL,
   `date` date DEFAULT NULL,
   `amount` decimal(10,0) DEFAULT NULL,
-  `fk_payment_method_type` char(50) DEFAULT NULL,
+  `fk_staff` char(50) DEFAULT NULL,
   `note` varchar(250) DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  `fk_currency` char(50) DEFAULT NULL,
+  `fk_tax` char(50) DEFAULT NULL,
+  `fk_payment_type` char(50) DEFAULT NULL,
   `version` bigint(20) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
@@ -2247,13 +1847,22 @@ CREATE TABLE `payment` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `payment`
+-- Table structure for table `payment_application`
 --
 
-LOCK TABLES `payment` WRITE;
-/*!40000 ALTER TABLE `payment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `payment` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `payment_application`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `payment_application` (
+  `id` char(50) NOT NULL,
+  `amount` decimal(10,0) DEFAULT NULL,
+  `fk_billing` char(50) DEFAULT NULL,
+  `fk_receipt` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `payment_item`
@@ -2269,15 +1878,6 @@ CREATE TABLE `payment_item` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `payment_item`
---
-
-LOCK TABLES `payment_item` WRITE;
-/*!40000 ALTER TABLE `payment_item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `payment_item` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `payment_method_type`
@@ -2297,15 +1897,6 @@ CREATE TABLE `payment_method_type` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `payment_method_type`
---
-
-LOCK TABLES `payment_method_type` WRITE;
-/*!40000 ALTER TABLE `payment_method_type` DISABLE KEYS */;
-/*!40000 ALTER TABLE `payment_method_type` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `payroll_preference`
 --
 
@@ -2322,20 +1913,12 @@ CREATE TABLE `payroll_preference` (
   `bank_number` char(50) DEFAULT NULL,
   `bank_name` varchar(150) DEFAULT NULL,
   `period_type` char(50) DEFAULT NULL,
+  `fk_employee` char(50) DEFAULT NULL,
   `version` bigint(20) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `payroll_preference`
---
-
-LOCK TABLES `payroll_preference` WRITE;
-/*!40000 ALTER TABLE `payroll_preference` DISABLE KEYS */;
-/*!40000 ALTER TABLE `payroll_preference` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `person`
@@ -2354,16 +1937,6 @@ CREATE TABLE `person` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `person`
---
-
-LOCK TABLES `person` WRITE;
-/*!40000 ALTER TABLE `person` DISABLE KEYS */;
-INSERT INTO `person` VALUES ('10fe16f0-3f2c-4995-b6c3-5f5447597a12','MALE','SINGLE');
-/*!40000 ALTER TABLE `person` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `pharmacy_sales`
 --
 
@@ -2377,15 +1950,6 @@ CREATE TABLE `pharmacy_sales` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `pharmacy_sales`
---
-
-LOCK TABLES `pharmacy_sales` WRITE;
-/*!40000 ALTER TABLE `pharmacy_sales` DISABLE KEYS */;
-/*!40000 ALTER TABLE `pharmacy_sales` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `pharmacy_sales_item`
@@ -2408,15 +1972,6 @@ CREATE TABLE `pharmacy_sales_item` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `pharmacy_sales_item`
---
-
-LOCK TABLES `pharmacy_sales_item` WRITE;
-/*!40000 ALTER TABLE `pharmacy_sales_item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `pharmacy_sales_item` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `position`
@@ -2445,15 +2000,6 @@ CREATE TABLE `position` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `position`
---
-
-LOCK TABLES `position` WRITE;
-/*!40000 ALTER TABLE `position` DISABLE KEYS */;
-/*!40000 ALTER TABLE `position` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `position_fulfillment`
 --
 
@@ -2472,15 +2018,6 @@ CREATE TABLE `position_fulfillment` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `position_fulfillment`
---
-
-LOCK TABLES `position_fulfillment` WRITE;
-/*!40000 ALTER TABLE `position_fulfillment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `position_fulfillment` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `position_reporting_structure`
@@ -2504,15 +2041,6 @@ CREATE TABLE `position_reporting_structure` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `position_reporting_structure`
---
-
-LOCK TABLES `position_reporting_structure` WRITE;
-/*!40000 ALTER TABLE `position_reporting_structure` DISABLE KEYS */;
-/*!40000 ALTER TABLE `position_reporting_structure` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `position_responsibility`
 --
 
@@ -2532,15 +2060,6 @@ CREATE TABLE `position_responsibility` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `position_responsibility`
---
-
-LOCK TABLES `position_responsibility` WRITE;
-/*!40000 ALTER TABLE `position_responsibility` DISABLE KEYS */;
-/*!40000 ALTER TABLE `position_responsibility` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `position_type`
 --
 
@@ -2556,15 +2075,6 @@ CREATE TABLE `position_type` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `position_type`
---
-
-LOCK TABLES `position_type` WRITE;
-/*!40000 ALTER TABLE `position_type` DISABLE KEYS */;
-/*!40000 ALTER TABLE `position_type` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `position_type_rate`
@@ -2590,15 +2100,6 @@ CREATE TABLE `position_type_rate` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `position_type_rate`
---
-
-LOCK TABLES `position_type_rate` WRITE;
-/*!40000 ALTER TABLE `position_type_rate` DISABLE KEYS */;
-/*!40000 ALTER TABLE `position_type_rate` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `product`
 --
 
@@ -2607,7 +2108,7 @@ DROP TABLE IF EXISTS `product`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `product` (
   `id` char(50) NOT NULL,
-  `code` char(50) DEFAULT NULL,
+  `code` varchar(150) DEFAULT NULL,
   `name` varchar(150) DEFAULT NULL,
   `start` date DEFAULT NULL,
   `end` date DEFAULT NULL,
@@ -2620,15 +2121,6 @@ CREATE TABLE `product` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `product`
---
-
-LOCK TABLES `product` WRITE;
-/*!40000 ALTER TABLE `product` DISABLE KEYS */;
-/*!40000 ALTER TABLE `product` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `product_category`
@@ -2650,15 +2142,6 @@ CREATE TABLE `product_category` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `product_category`
---
-
-LOCK TABLES `product_category` WRITE;
-/*!40000 ALTER TABLE `product_category` DISABLE KEYS */;
-/*!40000 ALTER TABLE `product_category` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `product_code`
 --
 
@@ -2678,15 +2161,6 @@ CREATE TABLE `product_code` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `product_code`
---
-
-LOCK TABLES `product_code` WRITE;
-/*!40000 ALTER TABLE `product_code` DISABLE KEYS */;
-/*!40000 ALTER TABLE `product_code` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `product_component`
 --
 
@@ -2704,15 +2178,6 @@ CREATE TABLE `product_component` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `product_component`
---
-
-LOCK TABLES `product_component` WRITE;
-/*!40000 ALTER TABLE `product_component` DISABLE KEYS */;
-/*!40000 ALTER TABLE `product_component` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `product_cost`
@@ -2737,15 +2202,6 @@ CREATE TABLE `product_cost` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `product_cost`
---
-
-LOCK TABLES `product_cost` WRITE;
-/*!40000 ALTER TABLE `product_cost` DISABLE KEYS */;
-/*!40000 ALTER TABLE `product_cost` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `product_feature`
 --
 
@@ -2765,15 +2221,6 @@ CREATE TABLE `product_feature` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `product_feature`
---
-
-LOCK TABLES `product_feature` WRITE;
-/*!40000 ALTER TABLE `product_feature` DISABLE KEYS */;
-/*!40000 ALTER TABLE `product_feature` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `product_price`
 --
 
@@ -2790,20 +2237,13 @@ CREATE TABLE `product_price` (
   `fk_geographic` char(50) DEFAULT NULL,
   `fk_party` char(50) DEFAULT NULL,
   `fk_product` char(50) DEFAULT NULL,
+  `fk_product_feature` char(50) DEFAULT NULL,
+  `is_percent` char(1) DEFAULT '0',
   `version` bigint(20) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `product_price`
---
-
-LOCK TABLES `product_price` WRITE;
-/*!40000 ALTER TABLE `product_price` DISABLE KEYS */;
-/*!40000 ALTER TABLE `product_price` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `product_receivable`
@@ -2825,15 +2265,6 @@ CREATE TABLE `product_receivable` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `product_receivable`
---
-
-LOCK TABLES `product_receivable` WRITE;
-/*!40000 ALTER TABLE `product_receivable` DISABLE KEYS */;
-/*!40000 ALTER TABLE `product_receivable` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `product_retur`
 --
 
@@ -2851,15 +2282,6 @@ CREATE TABLE `product_retur` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `product_retur`
---
-
-LOCK TABLES `product_retur` WRITE;
-/*!40000 ALTER TABLE `product_retur` DISABLE KEYS */;
-/*!40000 ALTER TABLE `product_retur` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `product_retur_item`
@@ -2881,15 +2303,6 @@ CREATE TABLE `product_retur_item` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `product_retur_item`
---
-
-LOCK TABLES `product_retur_item` WRITE;
-/*!40000 ALTER TABLE `product_retur_item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `product_retur_item` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `product_supplier`
 --
 
@@ -2908,15 +2321,6 @@ CREATE TABLE `product_supplier` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `product_supplier`
---
-
-LOCK TABLES `product_supplier` WRITE;
-/*!40000 ALTER TABLE `product_supplier` DISABLE KEYS */;
-/*!40000 ALTER TABLE `product_supplier` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `purchase_order`
@@ -2944,15 +2348,6 @@ CREATE TABLE `purchase_order` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `purchase_order`
---
-
-LOCK TABLES `purchase_order` WRITE;
-/*!40000 ALTER TABLE `purchase_order` DISABLE KEYS */;
-/*!40000 ALTER TABLE `purchase_order` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `purchase_order_item`
 --
 
@@ -2973,15 +2368,6 @@ CREATE TABLE `purchase_order_item` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `purchase_order_item`
---
-
-LOCK TABLES `purchase_order_item` WRITE;
-/*!40000 ALTER TABLE `purchase_order_item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `purchase_order_item` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `purchase_order_request`
 --
 
@@ -2995,15 +2381,6 @@ CREATE TABLE `purchase_order_request` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `purchase_order_request`
---
-
-LOCK TABLES `purchase_order_request` WRITE;
-/*!40000 ALTER TABLE `purchase_order_request` DISABLE KEYS */;
-/*!40000 ALTER TABLE `purchase_order_request` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `purchase_order_request_item`
@@ -3025,15 +2402,6 @@ CREATE TABLE `purchase_order_request_item` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `purchase_order_request_item`
---
-
-LOCK TABLES `purchase_order_request_item` WRITE;
-/*!40000 ALTER TABLE `purchase_order_request_item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `purchase_order_request_item` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `purchase_order_request_review`
 --
 
@@ -3047,15 +2415,6 @@ CREATE TABLE `purchase_order_request_review` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `purchase_order_request_review`
---
-
-LOCK TABLES `purchase_order_request_review` WRITE;
-/*!40000 ALTER TABLE `purchase_order_request_review` DISABLE KEYS */;
-/*!40000 ALTER TABLE `purchase_order_request_review` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `purchase_order_request_role`
@@ -3073,15 +2432,6 @@ CREATE TABLE `purchase_order_request_role` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `purchase_order_request_role`
---
-
-LOCK TABLES `purchase_order_request_role` WRITE;
-/*!40000 ALTER TABLE `purchase_order_request_role` DISABLE KEYS */;
-/*!40000 ALTER TABLE `purchase_order_request_role` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `purchase_order_request_status`
 --
 
@@ -3097,15 +2447,6 @@ CREATE TABLE `purchase_order_request_status` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `purchase_order_request_status`
---
-
-LOCK TABLES `purchase_order_request_status` WRITE;
-/*!40000 ALTER TABLE `purchase_order_request_status` DISABLE KEYS */;
-/*!40000 ALTER TABLE `purchase_order_request_status` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `receipt`
 --
 
@@ -3114,20 +2455,69 @@ DROP TABLE IF EXISTS `receipt`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `receipt` (
   `id` char(50) NOT NULL,
-  `fk_billable` char(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `receipt`
+-- Table structure for table `recurring_payment`
 --
 
-LOCK TABLES `receipt` WRITE;
-/*!40000 ALTER TABLE `receipt` DISABLE KEYS */;
-/*!40000 ALTER TABLE `receipt` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `recurring_payment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `recurring_payment` (
+  `id` char(50) NOT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `requirement`
+--
+
+DROP TABLE IF EXISTS `requirement`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `requirement` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `required_date` date DEFAULT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `reason` varchar(250) DEFAULT NULL,
+  `requirement_type` char(15) DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  `fk_staff` char(50) DEFAULT NULL,
+  `status` char(15) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `requirement_role`
+--
+
+DROP TABLE IF EXISTS `requirement_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `requirement_role` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `type` char(15) DEFAULT NULL,
+  `fk_requirement` char(50) DEFAULT NULL,
+  `fk_party` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `review`
@@ -3148,15 +2538,6 @@ CREATE TABLE `review` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `review`
---
-
-LOCK TABLES `review` WRITE;
-/*!40000 ALTER TABLE `review` DISABLE KEYS */;
-/*!40000 ALTER TABLE `review` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `role`
 --
 
@@ -3173,16 +2554,6 @@ CREATE TABLE `role` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `role`
---
-
-LOCK TABLES `role` WRITE;
-/*!40000 ALTER TABLE `role` DISABLE KEYS */;
-INSERT INTO `role` VALUES ('096b0105-de76-492c-9bb0-5e518b46d69c','Sys Admin','System Administrator','System Administrator',NULL);
-/*!40000 ALTER TABLE `role` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `roled`
@@ -3203,15 +2574,6 @@ CREATE TABLE `roled` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `roled`
---
-
-LOCK TABLES `roled` WRITE;
-/*!40000 ALTER TABLE `roled` DISABLE KEYS */;
-/*!40000 ALTER TABLE `roled` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `sequence_number`
 --
 
@@ -3225,20 +2587,13 @@ CREATE TABLE `sequence_number` (
   `organization_id` char(50) DEFAULT NULL,
   `code` char(10) DEFAULT NULL,
   `sequence` bigint(20) DEFAULT '1',
+  `year` int(11) DEFAULT NULL,
+  `month` int(11) DEFAULT NULL,
   `version` bigint(20) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sequence_number`
---
-
-LOCK TABLES `sequence_number` WRITE;
-/*!40000 ALTER TABLE `sequence_number` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sequence_number` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `statuses`
@@ -3260,15 +2615,6 @@ CREATE TABLE `statuses` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `statuses`
---
-
-LOCK TABLES `statuses` WRITE;
-/*!40000 ALTER TABLE `statuses` DISABLE KEYS */;
-/*!40000 ALTER TABLE `statuses` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `stock_adjustment`
 --
 
@@ -3285,15 +2631,6 @@ CREATE TABLE `stock_adjustment` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `stock_adjustment`
---
-
-LOCK TABLES `stock_adjustment` WRITE;
-/*!40000 ALTER TABLE `stock_adjustment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `stock_adjustment` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `stock_adjustment_item`
@@ -3315,15 +2652,6 @@ CREATE TABLE `stock_adjustment_item` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `stock_adjustment_item`
---
-
-LOCK TABLES `stock_adjustment_item` WRITE;
-/*!40000 ALTER TABLE `stock_adjustment_item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `stock_adjustment_item` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `stock_admin`
 --
 
@@ -3338,15 +2666,6 @@ CREATE TABLE `stock_admin` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `stock_admin`
---
-
-LOCK TABLES `stock_admin` WRITE;
-/*!40000 ALTER TABLE `stock_admin` DISABLE KEYS */;
-/*!40000 ALTER TABLE `stock_admin` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `stock_opname`
@@ -3365,15 +2684,6 @@ CREATE TABLE `stock_opname` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `stock_opname`
---
-
-LOCK TABLES `stock_opname` WRITE;
-/*!40000 ALTER TABLE `stock_opname` DISABLE KEYS */;
-/*!40000 ALTER TABLE `stock_opname` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `stock_opname_item`
@@ -3396,13 +2706,118 @@ CREATE TABLE `stock_opname_item` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `stock_opname_item`
+-- Table structure for table `student`
 --
 
-LOCK TABLES `stock_opname_item` WRITE;
-/*!40000 ALTER TABLE `stock_opname_item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `stock_opname_item` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `student`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `student` (
+  `id` char(50) NOT NULL,
+  `parent_name` varchar(150) DEFAULT NULL,
+  `school_name` varchar(150) DEFAULT NULL,
+  `source` char(15) DEFAULT 'Friend',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `student_relationship`
+--
+
+DROP TABLE IF EXISTS `student_relationship`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `student_relationship` (
+  `id` char(50) NOT NULL,
+  `fk_student` char(50) DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `study_day`
+--
+
+DROP TABLE IF EXISTS `study_day`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `study_day` (
+  `id` char(50) NOT NULL,
+  `is_sunday` char(1) DEFAULT '0',
+  `is_monday` char(1) DEFAULT '0',
+  `is_tuesday` char(1) DEFAULT '0',
+  `is_wednesday` char(1) DEFAULT '0',
+  `is_thrusday` char(1) DEFAULT '0',
+  `is_friday` char(1) DEFAULT '0',
+  `is_saturday` char(1) DEFAULT '0',
+  `version` bigint(20) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `study_period`
+--
+
+DROP TABLE IF EXISTS `study_period`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `study_period` (
+  `id` char(50) NOT NULL,
+  `name` varchar(150) NOT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `name_UNIQUE` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `study_room`
+--
+
+DROP TABLE IF EXISTS `study_room`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `study_room` (
+  `id` char(50) NOT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `fk_room` char(50) DEFAULT NULL,
+  `fk_period` char(50) DEFAULT NULL,
+  `fk_day` char(50) DEFAULT NULL,
+  `fk_time` char(50) DEFAULT NULL,
+  `fk_course` char(50) DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  `fk_feature` char(50) DEFAULT NULL,
+  `fk_staff` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `study_time`
+--
+
+DROP TABLE IF EXISTS `study_time`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `study_time` (
+  `id` char(50) NOT NULL,
+  `start` time DEFAULT NULL,
+  `end` time DEFAULT NULL,
+  `version` bigint(20) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `supplier`
@@ -3417,15 +2832,6 @@ CREATE TABLE `supplier` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `supplier`
---
-
-LOCK TABLES `supplier` WRITE;
-/*!40000 ALTER TABLE `supplier` DISABLE KEYS */;
-/*!40000 ALTER TABLE `supplier` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `supplier_relationship`
@@ -3444,15 +2850,6 @@ CREATE TABLE `supplier_relationship` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `supplier_relationship`
---
-
-LOCK TABLES `supplier_relationship` WRITE;
-/*!40000 ALTER TABLE `supplier_relationship` DISABLE KEYS */;
-/*!40000 ALTER TABLE `supplier_relationship` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `tax`
 --
 
@@ -3465,6 +2862,7 @@ CREATE TABLE `tax` (
   `name` varchar(150) DEFAULT NULL,
   `note` varchar(250) DEFAULT NULL,
   `amount` decimal(10,0) DEFAULT NULL,
+  `is_default` char(1) DEFAULT '0',
   `version` bigint(20) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
@@ -3472,14 +2870,46 @@ CREATE TABLE `tax` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tax`
+-- Table structure for table `time_entry`
 --
 
-LOCK TABLES `tax` WRITE;
-/*!40000 ALTER TABLE `tax` DISABLE KEYS */;
-INSERT INTO `tax` VALUES ('b685e80a-5257-49c7-9c7d-11b986a49b29','PPN','PPN',NULL,10,0),('d4921463-e9ff-4c8e-b6ff-9a1730688fbb','R-PPN','R-PPN',NULL,10,0);
-/*!40000 ALTER TABLE `tax` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `time_entry`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `time_entry` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `start` time DEFAULT NULL,
+  `end` time DEFAULT NULL,
+  `hour` int(11) DEFAULT NULL,
+  `comment` varchar(250) DEFAULT NULL,
+  `fk_timesheet` char(50) DEFAULT NULL,
+  `fk_work_effort` char(50) DEFAULT NULL,
+  `is_paid` char(1) DEFAULT '0',
+  `version` bigint(20) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `timesheet`
+--
+
+DROP TABLE IF EXISTS `timesheet`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `timesheet` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `fk_employee` char(50) DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `transfer_order_request`
@@ -3494,15 +2924,6 @@ CREATE TABLE `transfer_order_request` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `transfer_order_request`
---
-
-LOCK TABLES `transfer_order_request` WRITE;
-/*!40000 ALTER TABLE `transfer_order_request` DISABLE KEYS */;
-/*!40000 ALTER TABLE `transfer_order_request` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `transfer_order_request_item`
@@ -3523,15 +2944,6 @@ CREATE TABLE `transfer_order_request_item` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `transfer_order_request_item`
---
-
-LOCK TABLES `transfer_order_request_item` WRITE;
-/*!40000 ALTER TABLE `transfer_order_request_item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `transfer_order_request_item` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `treatment`
 --
 
@@ -3546,15 +2958,6 @@ CREATE TABLE `treatment` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `treatment`
---
-
-LOCK TABLES `treatment` WRITE;
-/*!40000 ALTER TABLE `treatment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `treatment` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `treatment_item`
@@ -3579,15 +2982,6 @@ CREATE TABLE `treatment_item` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `treatment_item`
---
-
-LOCK TABLES `treatment_item` WRITE;
-/*!40000 ALTER TABLE `treatment_item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `treatment_item` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `unit_of_measure`
 --
 
@@ -3599,6 +2993,7 @@ CREATE TABLE `unit_of_measure` (
   `code` char(25) DEFAULT NULL,
   `name` varchar(150) DEFAULT NULL,
   `note` varchar(250) DEFAULT NULL,
+  `type` char(10) DEFAULT NULL,
   `version` bigint(20) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
@@ -3606,13 +3001,22 @@ CREATE TABLE `unit_of_measure` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `unit_of_measure`
+-- Table structure for table `uom_factor`
 --
 
-LOCK TABLES `unit_of_measure` WRITE;
-/*!40000 ALTER TABLE `unit_of_measure` DISABLE KEYS */;
-/*!40000 ALTER TABLE `unit_of_measure` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `uom_factor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `uom_factor` (
+  `id` char(50) NOT NULL,
+  `factor` decimal(10,0) DEFAULT NULL,
+  `fk_uom_from` char(50) DEFAULT NULL,
+  `fk_uom_to` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `user`
@@ -3635,16 +3039,6 @@ CREATE TABLE `user` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user`
---
-
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('97dc9715-47eb-45d5-96ba-0a582fabdf3b','admin@belian.com','jIfSsj+ceSsamqTfmru/ZlLSRsjwUijQK4CJqi86fLNWb/nqSv2eY2rRrJxgpdDM','1',NULL,'0',0);
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `user_role`
 --
 
@@ -3661,16 +3055,6 @@ CREATE TABLE `user_role` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user_role`
---
-
-LOCK TABLES `user_role` WRITE;
-/*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
-INSERT INTO `user_role` VALUES ('849138a5-4b4e-41ea-8f24-e4586e7f8ab9','096b0105-de76-492c-9bb0-5e518b46d69c','97dc9715-47eb-45d5-96ba-0a582fabdf3b','1',0);
-/*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `user_setting`
@@ -3699,13 +3083,26 @@ CREATE TABLE `user_setting` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user_setting`
+-- Table structure for table `work_effort`
 --
 
-LOCK TABLES `user_setting` WRITE;
-/*!40000 ALTER TABLE `user_setting` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_setting` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `work_effort`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `work_effort` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `work_effort_type` char(15) DEFAULT NULL,
+  `work_effort_purpose` char(15) DEFAULT NULL,
+  `fk_requirement` char(50) DEFAULT NULL,
+  `fk_person` char(50) DEFAULT NULL,
+  `start` time DEFAULT NULL,
+  `end` time DEFAULT NULL,
+  `version` bigint(20) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `working_shift`
@@ -3725,15 +3122,6 @@ CREATE TABLE `working_shift` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `working_shift`
---
-
-LOCK TABLES `working_shift` WRITE;
-/*!40000 ALTER TABLE `working_shift` DISABLE KEYS */;
-/*!40000 ALTER TABLE `working_shift` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -3744,4 +3132,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-06-23  7:26:31
+-- Dump completed on 2016-09-02 21:22:20

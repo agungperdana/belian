@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.ui.education.courseregistration;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.UUID;
 
 import org.zkoss.zk.ui.Component;
@@ -192,12 +193,15 @@ public class CourseRegistrationFormContent extends FormContent implements Displa
 					installment.setSales(reg.getStaff());
 					installment.setTax(reg.getTax());
 					
-					CourseInstallmentItem item = new CourseInstallmentItem();
-					item.setInstallment(installment);
-					item.setPrice(installment.getAmount());
-					item.setProduct(installment.getRegistration().getRoom().getCourse());
-					
-					installment.getItems().add(item);
+					for(CourseItem ci:reg.getItems())
+					{
+						CourseInstallmentItem item = new CourseInstallmentItem();
+						item.setInstallment(installment);
+						item.setPrice(installment.getAmount().divide(BigDecimal.valueOf(reg.getItems().size()),RoundingMode.HALF_EVEN));
+						item.setProduct(ci.getProduct());
+						
+						installment.getItems().add(item);
+					}
 					
 					reg.getInstallments().add(installment);
 				

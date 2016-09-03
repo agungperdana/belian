@@ -54,7 +54,10 @@ public class PersonService
 	@Secured({"ROLE_PERSON_READ","ROLE_SYSTEM_READ"})
 	public List<Person> findAll(String key)
 	{
-		return repository.findAll();
+		if(Strings.isNullOrEmpty(key))
+			return repository.findAll();
+		
+		return repository.findAll(key);
 	}
 
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)

@@ -175,6 +175,7 @@ public class StudentGridContent extends GridContent
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
 		grid.getColumns().appendChild(new Column(lang.get("student.grid.column.identity"),null,"125px"));
 		grid.getColumns().appendChild(new Column(lang.get("student.grid.column.name"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("student.grid.column.grade"),null,"100px"));
 		grid.getColumns().appendChild(new Column(lang.get("student.grid.column.parent"),null,"150px"));
 		grid.getColumns().appendChild(new Column(lang.get("student.grid.column.school"),null,"150px"));
 		grid.getColumns().appendChild(new Column(null,null,"1px"));

@@ -33,6 +33,12 @@ public interface PersonRepository extends JpaRepository<Person, String>
 			+ "person.identity LIKE %:key% "
 			+ "OR person.name LIKE %:key% "
 			+ "ORDER By person.identity ASC,person.name ASC")
+	public List<Person> findAll(@Param("key")String key);
+	
+	@Query("FROM Person person WHERE "
+			+ "person.identity LIKE %:key% "
+			+ "OR person.name LIKE %:key% "
+			+ "ORDER By person.identity ASC,person.name ASC")
 	public List<Person> findAll(Pageable pageable,@Param("key")String key);
 	
 	@Query("SELECT COUNT(person) FROM Person person WHERE "

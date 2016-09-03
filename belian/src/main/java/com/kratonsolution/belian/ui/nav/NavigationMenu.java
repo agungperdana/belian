@@ -80,6 +80,8 @@ public class NavigationMenu extends Window
 			initMedicalLab(modules);
 		}
 		
+		System.out.println(mode.getSegmentation());
+		
 		if(mode.getSegmentation().equals(IndustrySegmentation.EDUCATION))
 		{
 			initEducation(modules);

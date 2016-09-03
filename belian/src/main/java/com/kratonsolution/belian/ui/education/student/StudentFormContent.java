@@ -21,6 +21,7 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.education.dm.InfoSource;
 import com.kratonsolution.belian.education.dm.Student;
+import com.kratonsolution.belian.education.dm.StudentGrade;
 import com.kratonsolution.belian.education.dm.StudentRelationship;
 import com.kratonsolution.belian.education.svc.StudentRelationshipService;
 import com.kratonsolution.belian.general.dm.InternalOrganization;
@@ -58,6 +59,8 @@ public class StudentFormContent extends FormContent implements Listenable<ModelL
 	private Textbox school = Components.mandatoryTextBox(false);
 	
 	private Listbox sources = Components.newSelect();
+	
+	private Listbox grades = Components.newSelect();
 	
 	private Vector<ModelListener<Student>> listeners = new Vector<>();
 
@@ -101,6 +104,7 @@ public class StudentFormContent extends FormContent implements Listenable<ModelL
 				student.setParty(person.getPerson());
 				student.setSchoolName(school.getText());
 				student.setSource(InfoSource.valueOf(Components.string(sources)));
+				student.setGrade(StudentGrade.valueOf(Components.string(grades)));
 				
 				InternalOrganization organization = new InternalOrganization();
 				organization.setStart(DateTimes.sql(start.getValue()));
@@ -131,6 +135,9 @@ public class StudentFormContent extends FormContent implements Listenable<ModelL
 			sources.appendItem(source.name(), source.name());
 			sources.setSelectedIndex(0);
 		}
+		
+		for(StudentGrade grade:StudentGrade.values())
+			grades.setSelectedItem(grades.appendItem(grade.display(utils.getLanguage()), grade.name()));
 				
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"135px"));
@@ -161,8 +168,12 @@ public class StudentFormContent extends FormContent implements Listenable<ModelL
 		row6.appendChild(school);
 		
 		Row row7 = new Row();
-		row7.appendChild(new Label(lang.get("student.grid.column.source")));
-		row7.appendChild(sources);
+		row7.appendChild(new Label(lang.get("student.grid.column.grade")));
+		row7.appendChild(grades);
+		
+		Row row8 = new Row();
+		row8.appendChild(new Label(lang.get("student.grid.column.source")));
+		row8.appendChild(sources);
 
 		rows.appendChild(row1);
 		rows.appendChild(row2);
@@ -171,6 +182,7 @@ public class StudentFormContent extends FormContent implements Listenable<ModelL
 		rows.appendChild(row5);
 		rows.appendChild(row6);
 		rows.appendChild(row7);
+		rows.appendChild(row8);
 	}
 
 	@Override

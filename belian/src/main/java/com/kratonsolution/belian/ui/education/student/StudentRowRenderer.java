@@ -9,6 +9,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
 import com.kratonsolution.belian.common.Language;
+import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.education.dm.StudentRelationship;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -21,6 +22,8 @@ public class StudentRowRenderer implements RowRenderer<StudentRelationship>
 {
 	private Language lang = Springs.get(Language.class);
 	
+	private SessionUtils utils = Springs.get(SessionUtils.class);
+	
 	@Override
 	public void render(Row row, StudentRelationship data, int index) throws Exception
 	{
@@ -29,6 +32,7 @@ public class StudentRowRenderer implements RowRenderer<StudentRelationship>
 			row.appendChild(new Checkbox());
 			row.appendChild(new Label(data.getStudent().getParty().getIdentity()));
 			row.appendChild(new Label(data.getStudent().getParty().getName()));
+			row.appendChild(new Label(data.getStudent().getGrade().display(utils.getLanguage())));
 			row.appendChild(new Label(data.getStudent().getParentName()));
 			row.appendChild(new Label(data.getStudent().getSchoolName()));
 			row.appendChild(new Label(data.getId()));

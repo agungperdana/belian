@@ -18,7 +18,7 @@ public interface StudentRelationshipRepository extends JpaRepository<StudentRela
 {
 	@Query("FROM StudentRelationship ship WHERE "
 			+ "ship.organization.party.id IN(:company) "
-			+ "ORDER BY ship.student.party.identity ASC,ship.student.party.name ASC")
+			+ "ORDER BY ship.student.party.name ASC,ship.student.grade ASC")
 	public List<StudentRelationship> findAll(Pageable pageable,@Param("company")List<String> company);
 	
 	@Query("SELECT COUNT(ship) "
@@ -30,7 +30,7 @@ public interface StudentRelationshipRepository extends JpaRepository<StudentRela
 			+ "(ship.student.party.identity LIKE %:key% "
 			+ "OR ship.student.party.name LIKE %:key%) "
 			+ "AND ship.organization.party.id IN(:company) "
-			+ "ORDER BY ship.student.party.identity ASC,ship.student.party.name ASC")
+			+ "ORDER BY ship.student.party.name ASC,ship.student.grade ASC")
 	public List<StudentRelationship> findAll(Pageable pageable,@Param("company")List<String> company,@Param("key")String key);
 	
 	@Query("SELECT COUNT(ship) FROM StudentRelationship ship WHERE "

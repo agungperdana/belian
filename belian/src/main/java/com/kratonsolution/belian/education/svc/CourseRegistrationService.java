@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.accounting.dm.JournalEntry;
 import com.kratonsolution.belian.accounting.svc.AutoJournalCreatorFactory;
 import com.kratonsolution.belian.accounting.svc.JournalEntryService;
 import com.kratonsolution.belian.common.SessionUtils;
@@ -92,13 +91,6 @@ public class CourseRegistrationService
 	public void add(CourseRegistration reg)
 	{
 		repository.save(reg);
-		
-		for(CourseInstallment installment:reg.getInstallments())
-		{
-			JournalEntry entry = journalCreatorFactory.create(installment);
-			if(entry != null)
-				entryService.silence(entry);
-		}
 	}
 
 	@Secured("ROLE_COURSE_REGISTRATION_UPDATE")

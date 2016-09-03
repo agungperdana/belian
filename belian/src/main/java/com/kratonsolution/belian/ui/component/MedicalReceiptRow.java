@@ -50,7 +50,7 @@ public class MedicalReceiptRow extends Row
 		for(PaymentMethodType type:service.findAll())
 		{
 			Listitem listitem = types.appendItem(type.getName(), type.getId());
-			if(type.getName().equals("Cash"))
+			if(type.getName().equalsIgnoreCase("Cash"))
 				types.setSelectedItem(listitem);
 		}
 		

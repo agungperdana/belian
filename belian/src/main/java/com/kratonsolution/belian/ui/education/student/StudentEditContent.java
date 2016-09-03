@@ -12,11 +12,14 @@ import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.education.dm.InfoSource;
+import com.kratonsolution.belian.education.dm.StudentGrade;
 import com.kratonsolution.belian.education.dm.StudentRelationship;
 import com.kratonsolution.belian.education.svc.StudentRelationshipService;
 import com.kratonsolution.belian.general.dm.Person;
@@ -53,6 +56,8 @@ public class StudentEditContent extends FormContent
 	private Textbox school = Components.mandatoryTextBox(false);
 
 	private Listbox sources = Components.newSelect();
+	
+	private Listbox grades = Components.newSelect();
 
 	private Row row;
 
@@ -93,7 +98,9 @@ public class StudentEditContent extends FormContent
 					relationship.setEnd(DateTimes.sql(end.getValue()));
 					relationship.getStudent().setParentName(parent.getText());
 					relationship.getStudent().setSchoolName(school.getText());
-
+					relationship.getStudent().setSource(InfoSource.valueOf(Components.string(sources)));
+					relationship.getStudent().setGrade(StudentGrade.valueOf(Components.string(grades)));
+					
 					service.add(relationship);
 				}
 
@@ -105,6 +112,12 @@ public class StudentEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
+		for(InfoSource source:InfoSource.values())
+			sources.appendItem(source.name(), source.name());
+		
+		for(StudentGrade grade:StudentGrade.values())
+			grades.setSelectedItem(grades.appendItem(grade.display(utils.getLanguage()), grade.name()));
+		
 		StudentRelationship relationship = service.findOne(RowUtils.id(row));
 		if(relationship != null)
 		{
@@ -113,8 +126,24 @@ public class StudentEditContent extends FormContent
 			person.setPerson((Person)relationship.getStudent().getParty());
 			parent.setText(relationship.getStudent().getParentName());
 			school.setText(relationship.getStudent().getSchoolName());
-			sources.appendItem(relationship.getStudent().getSource().name(), relationship.getStudent().getSource().name());
-			sources.setSelectedIndex(0);
+			
+			for(Listitem src:sources.getItems())
+			{
+				if(relationship.getStudent().getSource().name().equals(src.getValue().toString()))
+				{
+					sources.setSelectedItem(src);
+					break;
+				}
+			}
+			
+			for(Listitem grd:grades.getItems())
+			{
+				if(relationship.getStudent().getGrade().name().equals(grd.getValue().toString()))
+				{
+					grades.setSelectedItem(grd);
+					break;
+				}
+			}
 		}
 
 		grid.appendChild(new Columns());
@@ -146,8 +175,12 @@ public class StudentEditContent extends FormContent
 		row6.appendChild(school);
 		
 		Row row7 = new Row();
-		row7.appendChild(new Label(lang.get("student.grid.column.source")));
-		row7.appendChild(sources);
+		row7.appendChild(new Label(lang.get("student.grid.column.grade")));
+		row7.appendChild(grades);
+		
+		Row row8 = new Row();
+		row8.appendChild(new Label(lang.get("student.grid.column.source")));
+		row8.appendChild(sources);
 
 		rows.appendChild(row1);
 		rows.appendChild(row2);
@@ -156,5 +189,6 @@ public class StudentEditContent extends FormContent
 		rows.appendChild(row5);
 		rows.appendChild(row6);
 		rows.appendChild(row7);
+		rows.appendChild(row8);
 	}
 }

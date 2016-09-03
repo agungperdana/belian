@@ -37,7 +37,7 @@ public class PersonBox extends Hbox implements PersonRegistrationListener,Listen
 	
 	private PersonService service = Springs.get(PersonService.class);
 
-	private Combobox identity = new Combobox();
+	private Combobox criteria = new Combobox();
 
 	private A link = new A(lang.get("label.component.button.newperson"));
 
@@ -51,15 +51,15 @@ public class PersonBox extends Hbox implements PersonRegistrationListener,Listen
 
 		Handler handler = new Handler();
 		
-		identity.setPlaceholder(lang.get("message.filter.placeholder"));
-		identity.setAutodrop(true);
-		identity.setAutocomplete(false);
-		identity.setWidth("290px");
-		identity.addEventListener(Events.ON_CHANGING, handler);
-		identity.addEventListener(Events.ON_SELECT, handler);
-		identity.addEventListener(Events.ON_BLUR, handler);
+		criteria.setPlaceholder(lang.get("message.filter.placeholder"));
+		criteria.setAutodrop(true);
+		criteria.setAutocomplete(false);
+		criteria.setWidth("290px");
+		criteria.addEventListener(Events.ON_CHANGING, handler);
+		criteria.addEventListener(Events.ON_SELECT, handler);
+		criteria.addEventListener(Events.ON_BLUR, handler);
 		
-		appendChild(identity);
+		appendChild(criteria);
 
 		if(showCreateLink)
 			appendChild(link);
@@ -83,16 +83,16 @@ public class PersonBox extends Hbox implements PersonRegistrationListener,Listen
 
 	public Person getPerson()
 	{
-		if(Strings.isNullOrEmpty(identity.getValue()) || !maps.containsKey(identity.getValue()))
+		if(Strings.isNullOrEmpty(criteria.getValue()) || !maps.containsKey(criteria.getValue()))
 			throw new RuntimeException(lang.get("message.field.empty"));
 
-		return maps.get(identity.getValue());
+		return maps.get(criteria.getValue());
 	}
 	
 	public Person getNullablePerson()
 	{
-		if(!Strings.isNullOrEmpty(identity.getValue()) && maps.containsKey(identity.getValue()))
-			return maps.get(identity.getValue());
+		if(!Strings.isNullOrEmpty(criteria.getValue()) && maps.containsKey(criteria.getValue()))
+			return maps.get(criteria.getValue());
 	
 		return null;
 	}
@@ -120,9 +120,9 @@ public class PersonBox extends Hbox implements PersonRegistrationListener,Listen
 		{
 			String key = person.getIdentity()+" - "+person.getName();
 			
-			Comboitem item = identity.appendItem(key);
-			identity.setSelectedItem(item);
-			identity.getAttributes().put(person.getIdentity()+" - "+person.getName(), person.getId());
+			Comboitem item = criteria.appendItem(key);
+			criteria.setSelectedItem(item);
+			criteria.getAttributes().put(person.getIdentity()+" - "+person.getName(), person.getId());
 			
 			if(!maps.containsKey(key))
 				maps.put(key, person);
@@ -151,13 +151,13 @@ public class PersonBox extends Hbox implements PersonRegistrationListener,Listen
 			{
 				InputEvent ie = (InputEvent)event;
 
-				identity.getChildren().clear();
+				criteria.getChildren().clear();
 
 				for(Person person:service.findAll(ie.getValue()))
 				{
 					String key = person.getIdentity()+" - "+person.getName();
-					identity.appendItem(key);
-					identity.getAttributes().put(person.getIdentity()+" - "+person.getName(), person.getId());
+					criteria.appendItem(key);
+					criteria.getAttributes().put(person.getIdentity()+" - "+person.getName(), person.getId());
 					
 					if(!maps.containsKey(key))
 						maps.put(key, person);
@@ -165,10 +165,10 @@ public class PersonBox extends Hbox implements PersonRegistrationListener,Listen
 			}
 			else
 			{
-				if(!Strings.isNullOrEmpty(identity.getValue()) && maps.containsKey(identity.getValue()))
+				if(!Strings.isNullOrEmpty(criteria.getValue()) && maps.containsKey(criteria.getValue()))
 				{
 					for(ModelListener<Person> listener:listeners)
-						listener.fireEvent(maps.get(identity.getValue()));
+						listener.fireEvent(maps.get(criteria.getValue()));
 				}
 			}
 		}

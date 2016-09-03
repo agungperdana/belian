@@ -34,5 +34,9 @@ public class Student extends PartyRole
 	@Column(name="source")
 	private InfoSource source = InfoSource.Friend;
 	
+	@Enumerated(EnumType.STRING)
+	@Column(name="grade")
+	private StudentGrade grade = StudentGrade.JUNIOR_1;
+	
 	public Student(){}
 }

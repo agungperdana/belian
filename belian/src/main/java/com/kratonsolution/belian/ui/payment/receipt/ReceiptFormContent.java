@@ -253,7 +253,7 @@ public class ReceiptFormContent extends FormContent implements ModelListener<Per
 				});
 				
 				row.appendChild(checkbox);
-				row.appendChild(Components.label(billable.getNumber()));
+				row.appendChild(Components.label(billable.getName()+" ("+DateTimes.format(billable.getDate())+")"));
 				row.appendChild(Components.label(billable.getBillingAmount().add(billable.getTaxAmount())));
 				row.appendChild(Components.label(billable.getId()));
 				

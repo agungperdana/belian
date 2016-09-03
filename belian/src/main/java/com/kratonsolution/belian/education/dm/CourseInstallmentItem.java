@@ -34,7 +34,8 @@ public class CourseInstallmentItem implements BillableItem
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@Column(name="resource")
+	@ManyToOne
+	@JoinColumn(name="resource")
 	private Product product;
 
 	@Column(name="quantity")

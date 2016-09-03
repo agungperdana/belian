@@ -136,8 +136,6 @@ public class CashierShiftService
 				asset.setUsedBy(null);
 				assetRepo.save(asset);
 			}
-
-			journalService.silence(journalFactory.create(shift));
 			
 			audit.create("Cashier Shift", "Closed shift session for cashier on "+shift.getMachine().getName());
 		}
