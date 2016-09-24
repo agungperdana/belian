@@ -51,6 +51,8 @@ import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.component.ProductServiceRow;
 import com.kratonsolution.belian.ui.component.TaxList;
 import com.kratonsolution.belian.ui.education.student.StudentBox;
+import com.kratonsolution.belian.ui.education.studyday.StudyDayList;
+import com.kratonsolution.belian.ui.education.studytime.StudyTimeList;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Numbers;
@@ -88,9 +90,9 @@ public class CourseRegistrationFormContent extends FormContent implements Displa
 	
 	private Listbox periods = Components.newSelect(periodService.findAll(),true);
 	
-	private Listbox days = Components.newSelect(dayService.findAll(),true);
+	private StudyDayList days = new StudyDayList(false);
 	
-	private Listbox times = Components.newSelect(timeService.findAll(),true);
+	private StudyTimeList times = new StudyTimeList(false);
 	
 	private Tabbox tabbox = new Tabbox();
 	
@@ -138,13 +140,13 @@ public class CourseRegistrationFormContent extends FormContent implements Displa
 				CourseRegistration reg = new CourseRegistration();
 				reg.setCurrency(currencys.getCurrency());
 				reg.setDate(DateTimes.sql(date.getValue()));
-				reg.setDay(dayService.findOne(Components.string(days)));
 				reg.setOrganization(companys.getOrganization());
 				reg.setPeriod(periodService.findOne(Components.string(periods)));
 				reg.setStaff(utils.getEmployee());
 				reg.setStudent(studentBox.getStudent());
 				reg.setTax(taxs.getTax());
-				reg.setTime(timeService.findOne(Components.string(times)));
+				reg.setDay(days.getStudyDay());
+				reg.setTime(times.getStudyTime());
 				reg.setNumber(generator.generate(reg.getDate(),reg.getOrganization(),Code.CRS));
 				
 				for(Component com:items.getRows().getChildren())
@@ -250,14 +252,10 @@ public class CourseRegistrationFormContent extends FormContent implements Displa
 		Row row4 = new Row();
 		row4.appendChild(new Label(lang.get("generic.grid.column.currency")));
 		row4.appendChild(currencys);
-//		row4.appendChild(new Label(lang.get("course.grid.paid")));
-//		row4.appendChild(paid);
 		
 		Row row5 = new Row();
 		row5.appendChild(new Label(lang.get("generic.grid.column.tax")));
 		row5.appendChild(taxs);
-//		row5.appendChild(new Label(lang.get("course.grid.unpaid")));
-//		row5.appendChild(unpaid);
 		
 		Row row6 = new Row();
 		row6.appendChild(new Label(lang.get("navbar.menu.education.period")));

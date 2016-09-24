@@ -47,10 +47,12 @@ import com.kratonsolution.belian.production.dm.WorkEffortPurpose;
 import com.kratonsolution.belian.production.dm.WorkEffortType;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
-import com.kratonsolution.belian.ui.component.FacilityList;
 import com.kratonsolution.belian.ui.component.ModelListener;
 import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.education.courseregistration.CourseClassBox;
+import com.kratonsolution.belian.ui.education.studyday.StudyDayList;
+import com.kratonsolution.belian.ui.education.studytime.StudyTimeList;
+import com.kratonsolution.belian.ui.inventory.facility.FacilityList;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
@@ -83,13 +85,13 @@ public class StudyRoomFormContent extends FormContent implements ModelListener<P
 	
 	private OrganizationList companys = new OrganizationList();
 	
-	private FacilityList rooms = new FacilityList();
+	private FacilityList rooms = new FacilityList(false);
 	
 	private Listbox periods = Components.newSelect(periodService.findAll(),false);
 	
-	private Listbox days = Components.newSelect(dayService.findAll(),false);
-	
-	private Listbox times = Components.newSelect(timeService.findAll(),false);
+	private StudyDayList days = new StudyDayList(false);
+
+	private StudyTimeList times = new StudyTimeList(false);
 	
 	private CourseClassBox courses = new CourseClassBox(false);
 	

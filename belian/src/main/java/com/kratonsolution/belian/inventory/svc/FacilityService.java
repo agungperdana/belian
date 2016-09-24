@@ -8,8 +8,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,7 +81,7 @@ public class FacilityService
 	@Secured("ROLE_FACILITY_READ")
 	public List<Facility> findAll()
 	{
-		return repository.findAll(new Sort(Direction.ASC, "code","name"));
+		return repository.findAll();
 	}
 	
 	@Secured("ROLE_FACILITY_READ")

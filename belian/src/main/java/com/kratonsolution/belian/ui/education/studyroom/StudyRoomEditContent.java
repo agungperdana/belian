@@ -43,9 +43,11 @@ import com.kratonsolution.belian.inventory.dm.Product;
 import com.kratonsolution.belian.inventory.svc.ProductService;
 import com.kratonsolution.belian.ui.FormContent;
 import com.kratonsolution.belian.ui.NRCToolbar;
-import com.kratonsolution.belian.ui.component.FacilityList;
 import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.education.courseregistration.CourseClassBox;
+import com.kratonsolution.belian.ui.education.studyday.StudyDayList;
+import com.kratonsolution.belian.ui.education.studytime.StudyTimeList;
+import com.kratonsolution.belian.ui.inventory.facility.FacilityList;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
@@ -78,13 +80,13 @@ public class StudyRoomEditContent extends FormContent
 
 	private OrganizationList companys = new OrganizationList();
 
-	private FacilityList rooms = new FacilityList();
+	private FacilityList rooms = new FacilityList(false);
 
 	private Listbox periods = Components.newSelect();
 
-	private Listbox days = Components.newSelect();
+	private StudyDayList days = new StudyDayList(false);
 
-	private Listbox times = Components.newSelect();
+	private StudyTimeList times = new StudyTimeList(false);
 
 	private CourseClassBox courses = new CourseClassBox(false);
 
@@ -187,17 +189,15 @@ public class StudyRoomEditContent extends FormContent
 		{
 			name.setText(room.getName());
 			companys.setOrganization(room.getOrganization());
-			rooms.appendItem(room.getRoom().getLabel(), room.getRoom().getValue());
-			rooms.setSelectedIndex(0);
 			periods.appendItem(room.getPeriod().getLabel(), room.getPeriod().getValue());
 			periods.setSelectedIndex(0);
-			days.appendItem(room.getDay().getLabel(), room.getDay().getValue());
-			days.setSelectedIndex(0);
-			times.appendItem(room.getTime().getLabel(), room.getTime().getValue());
-			times.setSelectedIndex(0);
 			courses.setProduct(room.getCourse());
 			feature.appendItem(room.getFeature().getValue(), room.getFeature().getId());
 			feature.setSelectedIndex(0);
+			
+			rooms.setFacility(room.getRoom());
+			days.setStudyDay(room.getDay());
+			times.setStudyTime(room.getTime());
 		}
 
 		grid.appendChild(new Columns());

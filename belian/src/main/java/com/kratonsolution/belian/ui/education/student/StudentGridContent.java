@@ -18,6 +18,7 @@ import org.zkoss.zul.event.PagingEvent;
 
 import com.kratonsolution.belian.education.svc.StudentRelationshipService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -44,8 +45,7 @@ public class StudentGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				refresh(new StudentModel(utils.getRowPerPage()));
+				Flow.next(getParent(), new StudentGridContent());
 			}
 		});
 		

@@ -31,14 +31,11 @@ public class Language
 	public String get(String name)
 	{
 		String lang = "in_id";
+
 		if(!Strings.isNullOrEmpty(utils.getLanguage()))
 			lang = utils.getLanguage();
 		
-		log.debug("Lang "+lang+" key:"+name);
-		
 		Locale locale = new Locale(lang);
-		log.debug("###"+locale.getLanguage());
-		log.debug("###"+locale.getCountry());
 		
 		return messageSource.getMessage(name,new Object[]{},locale);
 	}

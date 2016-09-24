@@ -50,6 +50,8 @@ import com.kratonsolution.belian.ui.component.OrganizationList;
 import com.kratonsolution.belian.ui.component.ProductServiceRow;
 import com.kratonsolution.belian.ui.component.TaxList;
 import com.kratonsolution.belian.ui.education.student.StudentBox;
+import com.kratonsolution.belian.ui.education.studyday.StudyDayList;
+import com.kratonsolution.belian.ui.education.studytime.StudyTimeList;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Numbers;
@@ -87,9 +89,9 @@ public class CourseRegistrationEditContent extends FormContent implements Displa
 
 	private Listbox periods = Components.newSelect();
 
-	private Listbox days = Components.newSelect();
+	private StudyDayList days = new StudyDayList(false);
 
-	private Listbox times = Components.newSelect();
+	private StudyTimeList times = new StudyTimeList(false);
 
 	private Tabbox tabbox = new Tabbox();
 
@@ -143,50 +145,50 @@ public class CourseRegistrationEditContent extends FormContent implements Displa
 					Vector<CourseItem> vItems = new Vector<>();
 					Vector<CourseDiscount> vDiscounts = new Vector<>();
 					Vector<CourseInstallment> vInstallments = new Vector<>();
-					
+
 					reg.setCurrency(currencys.getCurrency());
 					reg.setDate(DateTimes.sql(date.getValue()));
-					reg.setDay(dayService.findOne(Components.string(days)));
 					reg.setOrganization(companys.getOrganization());
 					reg.setPeriod(periodService.findOne(Components.string(periods)));
 					reg.setStaff(utils.getEmployee());
 					reg.setStudent(studentBox.getStudent());
 					reg.setTax(taxs.getTax());
-					reg.setTime(timeService.findOne(Components.string(times)));
+					reg.setDay(days.getStudyDay());
+					reg.setTime(times.getStudyTime());
 					reg.setNumber(generator.generate(reg.getDate(),reg.getOrganization(),Code.CRS));
-					
+
 					for(Component com:items.getRows().getChildren())
 					{
 						ProductServiceRow row = (ProductServiceRow)com;
-						
+
 						CourseItem item = new CourseItem();
 						item.setFeature(row.getFeature());
 						item.setPrice(row.getPrice());
 						item.setProduct(row.getProduct());
 						item.setQuantity(row.getQuantity());
 						item.setRegistration(reg);
-						
+
 						vItems.add(item);
 					}
-					
+
 					for(Component com:discounts.getRows().getChildren())
 					{
 						Row row = (Row)com;
-						
+
 						CourseDiscount discount = new CourseDiscount();
 						discount.setAmount(RowUtils.decimal(row, 2));
 						discount.setDiscount(discountService.findOne(RowUtils.string(row, 1)));
 						discount.setRegistration(reg);
-						
+
 						vDiscounts.add(discount);
 					}
-					
+
 					BigDecimal iAmount = BigDecimal.ZERO;
-					
+
 					for(Component com:installments.getRows().getChildren())
 					{
 						Row row = (Row)com;
-						
+
 						CourseInstallment installment = new CourseInstallment();
 						installment.setId(RowUtils.id(row));
 						installment.setRegistration(reg);
@@ -201,18 +203,18 @@ public class CourseRegistrationEditContent extends FormContent implements Displa
 						installment.setRegistration(reg);
 						installment.setSales(reg.getStaff());
 						installment.setTax(reg.getTax());
-						
+
 						vInstallments.add(installment);
-					
+
 						iAmount = iAmount.add(installment.getAmount());
 					}
-					
+
 					if((reg.getBilledAmount().subtract(reg.getDiscountAmount())).compareTo(iAmount) != 0)
 						throw new WrongValueException("Installment amount not equal billed amount");
-				
+
 					service.edit(reg,vItems,vDiscounts,vInstallments);
 				}
-				
+
 				Flow.next(getParent(),new CourseRegistrationGridContent());
 			}
 		});
@@ -232,17 +234,14 @@ public class CourseRegistrationEditContent extends FormContent implements Displa
 			periods.appendItem(registration.getPeriod().getLabel(),registration.getPeriod().getValue());
 			days.appendItem(registration.getDay().getLabel(), registration.getDay().getValue());
 			times.appendItem(registration.getTime().getLabel(), registration.getTime().getValue());
-			
+
 			if(periods.getItemCount() > 0)
 				periods.setSelectedIndex(0);
-			
-			if(days.getItemCount() > 0)
-				days.setSelectedIndex(0);
-			
-			if(times.getItemCount() > 0)
-				times.setSelectedIndex(0);
+
+			days.setStudyDay(registration.getDay());
+			times.setStudyTime(registration.getTime());
 		}
-		
+
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
@@ -486,7 +485,7 @@ public class CourseRegistrationEditContent extends FormContent implements Displa
 				Textbox name = Components.mandatoryTextBox(true);
 				name.setText(ins.getName());
 				name.setReadonly(ins.isPaid());
-				
+
 				Row row = new Row();
 				row.appendChild(ins.isPaid()?Components.readOnlyCheckbox():Components.checkbox(false));
 				row.appendChild(name);
@@ -521,7 +520,7 @@ public class CourseRegistrationEditContent extends FormContent implements Displa
 		BigDecimal bAmt = BigDecimal.ZERO;
 		BigDecimal dAmt = BigDecimal.ZERO;
 		BigDecimal pAmt = BigDecimal.ZERO;
-		
+
 		for(Component com:items.getRows().getChildren())
 		{
 			ProductServiceRow row = (ProductServiceRow)com;
@@ -533,7 +532,7 @@ public class CourseRegistrationEditContent extends FormContent implements Displa
 			Row row = (Row)com;
 			dAmt = dAmt.add(RowUtils.decimal(row, 2));
 		}
-		
+
 		CourseRegistration registration = service.findOne(RowUtils.id(row));
 		if(registration != null)
 		{

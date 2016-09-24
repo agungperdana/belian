@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.education.dm.Student;
+import com.kratonsolution.belian.education.dm.StudentGrade;
 import com.kratonsolution.belian.education.dm.StudentRelationship;
 import com.kratonsolution.belian.education.dm.StudentRelationshipRepository;
 import com.kratonsolution.belian.education.dm.StudentRepository;
@@ -79,6 +80,9 @@ public class StudentRelationshipService
 	{
 		if(Strings.isNullOrEmpty(key))
 			return findAll(pageIndex, pageSize);
+		
+		if(!Strings.isNullOrEmpty(StudentGrade.ELEMENTARTY_1.toGradeString(key)))
+			key = StudentGrade.ELEMENTARTY_1.toGradeString(key);
 		
 		return repository.findAll(new PageRequest(pageIndex, pageSize), utils.getOrganizationIds(),key);
 	}
