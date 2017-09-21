@@ -4,23 +4,23 @@
 package com.kratonsolution.belian.shipment.dm;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.inventory.dm.InventoryItem;
+import com.kratonsolution.belian.api.dm.IDValueRef;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -38,34 +38,41 @@ public class ShipmentReceipt implements Serializable
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@Column(name="date_received")
-	private Timestamp dateReceived;
+	@Column(name="date")
+	private Date date;
 	
-	@Column(name="item_description")
-	private String description;
+	@Column(name="number")
+	private String number;
 	
-	@Column(name="quantity_accepted")
-	private BigDecimal accepted;
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="id",column=@Column(name="organization_id")),
+		@AttributeOverride(name="value",column=@Column(name="organization_value"))
+	})
+	private IDValueRef organization;
 	
-	@Column(name="quantity_rejected")
-	private BigDecimal rejected;
-
-	@ManyToOne
-	@JoinColumn(name="fk_shipment_package")
-	private ShipmentPackage packaging;
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="id",column=@Column(name="source_party_id")),
+		@AttributeOverride(name="value",column=@Column(name="source_party_value"))
+	})
+	private IDValueRef source;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_inventory_item")
-	private InventoryItem inventoryItem;
-	
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="id",column=@Column(name="shipment_id")),
+		@AttributeOverride(name="value",column=@Column(name="shipment_value"))
+	})
+	private IDValueRef shipment;
+		
 	@Version
 	private Long version;
 	
 	@OneToMany(mappedBy="receipt",cascade=CascadeType.ALL,orphanRemoval=true)
-	private Set<ShipmentReceiptRole> roles = new HashSet<>();
+	private Set<ShipmentReceiptItem> items = new HashSet<>();
 	
 	@OneToMany(mappedBy="receipt",cascade=CascadeType.ALL,orphanRemoval=true)
-	private Set<ShipmentRejectionReason> rejectionReasons = new HashSet<>();
+	private Set<ShipmentReceiptRole> roles = new HashSet<>();
 	
 	public ShipmentReceipt(){}
 }

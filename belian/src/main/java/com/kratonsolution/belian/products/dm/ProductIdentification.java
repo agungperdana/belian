@@ -4,7 +4,6 @@
 package com.kratonsolution.belian.products.dm;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,14 +29,14 @@ import lombok.Setter;
 public class ProductIdentification implements Serializable
 {
 	@Id
-	private String id = UUID.randomUUID().toString();
+	private String id = "0";
 	
 	@Column(name="value")
 	private String value;
 	
 	@Column(name="type")
 	@Enumerated(EnumType.STRING)
-	private IDType type = IDType.MANUFACTURE;
+	private ProductIdentificationType type = ProductIdentificationType.MANUFACTURE;
 	
 	@Column(name="note")
 	private String note;

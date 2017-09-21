@@ -18,7 +18,7 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.GeographicType;
 import com.kratonsolution.belian.general.svc.GeographicService;
-import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
@@ -29,7 +29,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class GeographicEditContent extends FormContent
+public class GeographicEditContent extends AbstractForm
 {	
 	private GeographicService service = Springs.get(GeographicService.class);
 	

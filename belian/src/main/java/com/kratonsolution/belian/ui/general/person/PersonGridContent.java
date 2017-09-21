@@ -3,6 +3,9 @@
  */
 package com.kratonsolution.belian.ui.general.person;
 
+import java.util.Vector;
+
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -10,15 +13,17 @@ import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
-import org.zkoss.zul.Label;
+import org.zkoss.zul.Grid;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
+import org.zkoss.zul.event.ZulEvents;
 
-import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.partys.svc.PersonService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Flow;
+import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -39,9 +44,9 @@ public class PersonGridContent extends GridContent
 	
 	protected void initToolbar()
 	{
-		appendChild(gridToolbar);
+		appendChild(toolbar);
 		
-		gridToolbar.getRefresh().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		toolbar.getRefresh().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
@@ -50,18 +55,16 @@ public class PersonGridContent extends GridContent
 			}
 		});
 		
-		gridToolbar.getNew().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		toolbar.getNew().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PersonWindow window = (PersonWindow)getParent();
-				window.removeGrid();
-				window.insertCreateForm();
+				Flow.next(getParent(), new PersonFormContent());
 			}
 		});
 		
-		gridToolbar.getSelect().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		toolbar.getSelect().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
@@ -77,13 +80,13 @@ public class PersonGridContent extends GridContent
 						checkbox.setChecked(true);
 					}
 					
-					gridToolbar.removeChild(gridToolbar.getSelect());
-					gridToolbar.insertBefore(gridToolbar.getDeselect(),gridToolbar.getDelete());
+					toolbar.removeChild(toolbar.getSelect());
+					toolbar.insertBefore(toolbar.getDeselect(),toolbar.getDelete());
 				}
 			}
 		});
 		
-		gridToolbar.getDeselect().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		toolbar.getDeselect().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
@@ -98,49 +101,43 @@ public class PersonGridContent extends GridContent
 						checkbox.setChecked(false);						
 					}
 				
-					gridToolbar.removeChild(gridToolbar.getDeselect());
-					gridToolbar.insertBefore(gridToolbar.getSelect(),gridToolbar.getDelete());
+					toolbar.removeChild(toolbar.getDeselect());
+					toolbar.insertBefore(toolbar.getSelect(),toolbar.getDelete());
 				}
 			}
 		});
 		
-		gridToolbar.getDelete().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		toolbar.getDelete().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
 					{
 						if(event.getName().equals("onOK"))
 						{
+							Vector<String> ids = new Vector<>();
+							
 							for(Object object:grid.getRows().getChildren())
 							{
 								Row row = (Row)object;
-								
-								if(row.getFirstChild() instanceof Checkbox)
-								{
-									Checkbox check = (Checkbox)row.getFirstChild();
-									if(check.isChecked())
-									{
-										Label label = (Label)row.getLastChild();
-										service.delete(label.getValue());
-									}
-								}
+								if(RowUtils.isChecked(row))
+									ids.add(RowUtils.id(row));
 							}
 							
-							PersonWindow window = (PersonWindow)getParent();
-							window.removeGrid();
-							window.insertGrid();
+							service.delete(ids);
+							
+							Flow.next(getParent(), new PersonGridContent());
 						}
 					}
 				});
 			}
 		});
 		
-		gridToolbar.getSearch().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		toolbar.getSearch().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
@@ -152,13 +149,13 @@ public class PersonGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		filter.setPlaceholder("Type identity or name to filter");
+		filter.setPlaceholder(lang.get("message.filter.placeholder"));
 		filter.addEventListener(Events.ON_CHANGING, new EventListener<InputEvent>()
 		{
 			@Override
 			public void onEvent(InputEvent input) throws Exception
 			{
-				refresh(new PersonModel(utils.getRowPerPage(),input.getValue()));
+				grid.setModel(new PersonModel(utils.getRowPerPage(),input.getValue()));
 			}
 		});
 		
@@ -177,28 +174,44 @@ public class PersonGridContent extends GridContent
 		grid.appendChild(new Columns());
 		
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column(lang.get("person.grid.column.identity"),null,"125px"));
+		grid.getColumns().appendChild(new Column(lang.get("person.grid.column.code"),null,"125px"));
 		grid.getColumns().appendChild(new Column(lang.get("person.grid.column.name"),null,"125px"));
+		grid.getColumns().appendChild(new Column(lang.get("person.grid.column.birthplace"),null,"100px"));
 		grid.getColumns().appendChild(new Column(lang.get("person.grid.column.birthdate"),null,"75px"));
-		grid.getColumns().appendChild(new Column(lang.get("person.grid.column.gender"),null,"75px"));
-		grid.getColumns().appendChild(new Column(lang.get("person.grid.column.marital"),null,"75px"));
 		grid.getColumns().appendChild(new Column(lang.get("person.grid.column.tax"),null,"100px"));
-		grid.getColumns().appendChild(new Column(null,null,"0px"));
+		grid.getColumns().appendChild(new Column(lang.get("person.grid.column.gender"),null,"75px"));
+		grid.getColumns().appendChild(new Column());
 		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("2");
 		grid.appendChild(getFoot(8));
-		
-		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
+		grid.addEventListener(ZulEvents.ON_AFTER_RENDER, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				Grid target = (Grid)event.getTarget();
+				for(Component com:target.getRows().getChildren())
+				{
+					com.addEventListener(Events.ON_CLICK,new EventListener<Event>()
+					{
+						@Override
+						public void onEvent(Event ev) throws Exception
+						{
+							Row row = (Row)ev.getTarget();
+							Flow.next(getParent(), new PersonEditContent(row));
+						}
+					});
+				}
+			}
+		});
+		grid.addEventListener(ZulEvents.ON_PAGING,new EventListener<PagingEvent>()
 		{
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
 				model.next(event.getActivePage(), utils.getRowPerPage(),filter.getText());
 				grid.setModel(model);
-				refresh(model);
 			}
 		});
-		
-		refresh(new PersonModel(utils.getRowPerPage()));
 	}
 }

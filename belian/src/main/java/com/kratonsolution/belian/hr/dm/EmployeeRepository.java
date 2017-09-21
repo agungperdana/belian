@@ -15,7 +15,12 @@ import org.springframework.data.repository.query.Param;
  */
 public interface EmployeeRepository extends JpaRepository<Employee,String>
 {
+	@Query("FROM Employee emp WHERE emp.party.id =:person AND emp.type = 'EMPLOYEE' ")
+	public Employee findEmployee(@Param("person")String person);
+	
 	public Employee findOneByPartyId(String personId);
+	
+	public Employee findOneByUsername(String username);
 	
 	@Query("FROM Employee emp WHERE emp.party.name LIKE %:name% ORDER BY emp.party.name ASC")
 	public List<Employee> findAll(@Param("name")String name);

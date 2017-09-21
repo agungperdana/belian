@@ -3,7 +3,9 @@
  */
 package com.kratonsolution.belian.ui;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
@@ -14,6 +16,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 
+import com.kratonsolution.belian.api.dm.IDValueRef;
+import com.kratonsolution.belian.api.dm.Observable;
+import com.kratonsolution.belian.api.dm.Observer;
 import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -23,7 +28,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class NRCToolbar extends Toolbar
+public class NRCToolbar extends Toolbar implements Observable
 {
 	private Language lang = Springs.get(Language.class);
 	
@@ -34,6 +39,8 @@ public class NRCToolbar extends Toolbar
 	private Toolbarbutton clear = new Toolbarbutton(lang.get("label.component.button.clear"),"/icons/refresh.png");
 	
 	private Grid parent;
+	
+	private List<Observer> observers = new ArrayList<>();
 	
 	public NRCToolbar(Grid grid)
 	{
@@ -81,6 +88,9 @@ public class NRCToolbar extends Toolbar
 					if(RowUtils.isChecked(row, 0))
 						iterator.remove();
 				}
+			
+				for(Observer observer:observers)
+					observer.valueChange(IDValueRef.empty());
 			}
 		}
 	}
@@ -107,5 +117,12 @@ public class NRCToolbar extends Toolbar
 		newData.setDisabled(false);
 		remove.setDisabled(false);
 		clear.setDisabled(false);
+	}
+
+	@Override
+	public void addObserver(Observer observer)
+	{
+		if(observer != null)
+			observers.add(observer);
 	}
 }

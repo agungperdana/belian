@@ -7,16 +7,20 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.asset.dm.Asset;
+import com.kratonsolution.belian.api.dm.IDValueRef;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -31,6 +35,9 @@ import lombok.Setter;
 @Table(name="shipment_route_segment")
 public class ShipmentRouteSegment implements Serializable
 {
+	@Id
+	private String id = "0";
+	
 	@Column(name="est_start_date")
 	private Date estStartDate;
 	
@@ -54,15 +61,21 @@ public class ShipmentRouteSegment implements Serializable
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="type")
-	private ShipmentMethodType type = ShipmentMethodType.Ground;
+	private ShipmentMethodType type = ShipmentMethodType.GROUND;
 
-	@ManyToOne
-	@JoinColumn(name="fk_vehicle")
-	private Asset vehicle;
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="id",column=@Column(name="vehicle_id")),
+		@AttributeOverride(name="value",column=@Column(name="vehicle_value"))
+	})
+	protected IDValueRef vehicle;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_carrier")
-	private Carrier carrier;
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="id",column=@Column(name="carrier_id")),
+		@AttributeOverride(name="value",column=@Column(name="carrier_value"))
+	})
+	protected IDValueRef carrier;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_shipment")

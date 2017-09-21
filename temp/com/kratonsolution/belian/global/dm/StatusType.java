@@ -1,0 +1,13 @@
+/**
+ * 
+ */
+package com.kratonsolution.belian.global.dm;
+
+/**
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
+ */
+public enum StatusType
+{
+	Created,Submitted,Reviewed,Returned,Approved,Rejected
+}

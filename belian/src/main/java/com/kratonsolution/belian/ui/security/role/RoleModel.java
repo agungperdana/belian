@@ -20,7 +20,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class RoleModel implements ListModel<Role>
 {
-	private final RoleService service = Springs.get(RoleService.class);
+	private RoleService service = Springs.get(RoleService.class);
 	
 	private List<Role> data = new ArrayList<Role>();
 	

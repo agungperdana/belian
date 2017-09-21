@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.kratonsolution.belian.partys.dm.Organization;
+
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
@@ -30,4 +32,7 @@ public interface CompanyStructureRepository extends JpaRepository<CompanyStructu
 			+ "OR (com.from <= :date AND com.to IS NULL)) "
 			+ "ORDER BY com.organization.name ASC ")
 	public List<CompanyStructure> findAllCompany(@Param("date")Date date); 
+
+	@Query("SELECT com.organization FROM CompanyStructure com")
+	public List<Organization> findAllAsOrganizations();
 }

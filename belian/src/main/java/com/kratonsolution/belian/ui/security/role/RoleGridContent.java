@@ -3,21 +3,24 @@
  */
 package com.kratonsolution.belian.ui.security.role;
 
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
+import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
+import org.zkoss.zul.event.ZulEvents;
 
-import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.security.svc.RoleService;
 import com.kratonsolution.belian.ui.GridContent;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -29,8 +32,6 @@ public class RoleGridContent extends GridContent
 {
 	private RoleService service = Springs.get(RoleService.class);
 	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
-	
 	public RoleGridContent()
 	{
 		super();
@@ -40,29 +41,26 @@ public class RoleGridContent extends GridContent
 	
 	protected void initToolbar()
 	{
-		gridToolbar.setParent(this);
-		gridToolbar.getRefresh().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		toolbar.setParent(this);
+		toolbar.getRefresh().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				refresh(new RoleModel(utils.getRowPerPage()));
+				Flow.next(getParent(), new RoleGridContent());
 			}
 		});
 		
-		gridToolbar.getNew().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		toolbar.getNew().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				RoleWindow window = (RoleWindow)getParent();
-				window.removeGrid();
-				window.insertCreateForm();
+				Flow.next(getParent(), new RoleFormContent());
 			}
 		});
 		
-		gridToolbar.getSelect().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		toolbar.getSelect().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
@@ -78,13 +76,13 @@ public class RoleGridContent extends GridContent
 						checkbox.setChecked(true);
 					}
 					
-					gridToolbar.removeChild(gridToolbar.getSelect());
-					gridToolbar.insertBefore(gridToolbar.getDeselect(),gridToolbar.getDelete());
+					toolbar.removeChild(toolbar.getSelect());
+					toolbar.insertBefore(toolbar.getDeselect(),toolbar.getDelete());
 				}
 			}
 		});
 		
-		gridToolbar.getDeselect().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		toolbar.getDeselect().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
@@ -99,18 +97,18 @@ public class RoleGridContent extends GridContent
 						checkbox.setChecked(false);						
 					}
 				
-					gridToolbar.removeChild(gridToolbar.getDeselect());
-					gridToolbar.insertBefore(gridToolbar.getSelect(),gridToolbar.getDelete());
+					toolbar.removeChild(toolbar.getDeselect());
+					toolbar.insertBefore(toolbar.getSelect(),toolbar.getDelete());
 				}
 			}
 		});
 		
-		gridToolbar.getDelete().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		toolbar.getDelete().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",
+				Messagebox.show(lang.get("message.removedata"),"Warning",
 						Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 						{
 							@Override
@@ -133,14 +131,14 @@ public class RoleGridContent extends GridContent
 										}
 									}
 									
-									refresh(new RoleModel(utils.getRowPerPage()));
+									Flow.next(getParent(), new RoleGridContent());
 								}
 							}
 						});
 			}
 		});
 		
-		gridToolbar.getSearch().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		toolbar.getSearch().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
@@ -156,7 +154,7 @@ public class RoleGridContent extends GridContent
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No Role data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new RoleRowRenderer());
 		grid.setPagingPosition("both");
@@ -165,25 +163,42 @@ public class RoleGridContent extends GridContent
 		grid.appendChild(new Columns());
 		
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Code",null,"100px"));
-		grid.getColumns().appendChild(new Column("Name",null,"150px"));
-		grid.getColumns().appendChild(new Column("Note"));
-		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getChildren().get(4).setVisible(false);
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.code"),null,"100px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.name"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("generic.grid.column.note")));
+		grid.getColumns().appendChild(new Column());
+		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("3");
 		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
+		grid.addEventListener(ZulEvents.ON_AFTER_RENDER, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				Grid target = (Grid)event.getTarget();
+				for(Component com:target.getRows().getChildren())
+				{
+					com.addEventListener(Events.ON_CLICK,new EventListener<Event>()
+					{
+						@Override
+						public void onEvent(Event ev) throws Exception
+						{
+							Row row = (Row)ev.getTarget();
+							Flow.next(getParent(), new RoleEditContent(row));
+						}
+					});
+				}
+			}
+		});
 		
-		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
+		grid.addEventListener(ZulEvents.ON_PAGING,new EventListener<PagingEvent>()
 		{
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
 				model.next(event.getActivePage(), utils.getRowPerPage());
 				grid.setModel(model);
-				refresh(model);
 			}
 		});
-		
-		refresh(new RoleModel(utils.getRowPerPage()));
 	}
 }

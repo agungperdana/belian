@@ -3,20 +3,11 @@
  */
 package com.kratonsolution.belian.hr.dm;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.kratonsolution.belian.effort.dm.Timesheet;
-import com.kratonsolution.belian.effort.dm.Worker;
-import com.kratonsolution.belian.security.dm.User;
+import com.kratonsolution.belian.partys.dm.PartyRole;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -29,17 +20,10 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="employee")
-public class Employee extends Worker
+public class Employee extends PartyRole
 {
-	@OneToOne(cascade=CascadeType.ALL,orphanRemoval=true,optional=true)
-	@JoinColumn(name="fk_user")
-	private User user;
-	
-	@OneToMany(mappedBy="employee",fetch=FetchType.EAGER)
-	private Set<Employment> employments = new HashSet<>();
-	
-	@OneToMany(mappedBy="employee",cascade=CascadeType.ALL,orphanRemoval=true)
-	private Set<Timesheet> timesheet = new HashSet<>();
+	@Column(name="username",unique=true)
+	private String username;
 	
 	public Employee(){}
 }

@@ -6,14 +6,17 @@ package com.kratonsolution.belian.ui.util;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.Date;
 
+import org.zkoss.util.Dates;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
@@ -24,10 +27,8 @@ import org.zkoss.zul.Timebox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.Organization;
-import com.kratonsolution.belian.global.dm.Listable;
-import com.kratonsolution.belian.products.dm.Product;
-import com.kratonsolution.belian.ui.component.ProductBox;
+import com.kratonsolution.belian.common.dm.Referenceable;
+import com.kratonsolution.belian.partys.dm.Organization;
 
 /**
  * 
@@ -46,16 +47,25 @@ public class Components implements Serializable
 	
 	public static final BigDecimal decimal(Component component)
 	{
-		if(component != null && (component instanceof Listbox) && !component.getChildren().isEmpty())
+		if(component == null)
+			return BigDecimal.ZERO;
+		
+		if((component instanceof Listbox) && !component.getChildren().isEmpty())
 		{
 			Listbox listbox = (Listbox)component;
 			if(listbox.getSelectedItem() != null)
 				return new BigDecimal(listbox.getSelectedItem().getValue().toString());
 		}
-		else if(component != null && (component instanceof Doublebox))
+		else if(component instanceof Doublebox)
 		{
 			Doublebox doublebox = (Doublebox)component;
 			return BigDecimal.valueOf(doublebox.doubleValue());
+		}
+		else if(component instanceof Textbox)
+		{
+			Textbox textbox = (Textbox)component;
+			if(!Strings.isNullOrEmpty(textbox.getText()))
+				return new BigDecimal(textbox.getText().replace(",", ""));
 		}
 		
 		return BigDecimal.ZERO;
@@ -89,7 +99,7 @@ public class Components implements Serializable
 		return listbox;
 	}
 	
-	public static final Listbox newSelect(Listable listable)
+	public static final Listbox newSelect(Referenceable listable)
 	{
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");
@@ -116,14 +126,14 @@ public class Components implements Serializable
 		return listbox;
 	}
 	
-	public static final Listbox newSelect(Collection<? extends Listable> collections,boolean setDefault)
+	public static final Listbox newSelect(Collection<? extends Referenceable> collections,boolean setDefault)
 	{
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");
 		listbox.setStyle("text-align:center;");
 		listbox.setWidth("250px");
 		
-		for(Listable object:collections)
+		for(Referenceable object:collections)
 			listbox.appendChild(new Listitem(object.getLabel(), object.getValue()));
 		
 		if(setDefault && listbox.getItemCount() > 0)
@@ -141,7 +151,7 @@ public class Components implements Serializable
 		
 		if(Springs.get(SessionUtils.class) != null)
 		{
-			for(Organization organization:Springs.get(SessionUtils.class).getOrganizations())
+			for(Organization organization:Springs.get(SessionUtils.class).getGrantedOrganizations())
 			{
 				Listitem item = listbox.appendItem(organization.getLabel(), organization.getValue());
 				if(Springs.get(SessionUtils.class).getOrganization() != null && organization.getId().equals(Springs.get(SessionUtils.class).getOrganization().getId()))
@@ -152,14 +162,14 @@ public class Components implements Serializable
 		return listbox;
 	}
 	
-	public static final Listbox fullSpanSelect(Collection<? extends Listable> collections,Listable setDefault)
+	public static final Listbox fullSpanSelect(Collection<? extends Referenceable> collections,Referenceable setDefault)
 	{
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");
 		listbox.setStyle("text-align:center;");
 		listbox.setWidth("100%");
 		
-		for(Listable object:collections)
+		for(Referenceable object:collections)
 		{
 			Listitem listitem = listbox.appendItem(object.getLabel(), object.getValue());
 			if(setDefault != null && object.getValue().equals(setDefault.getValue()))
@@ -169,14 +179,14 @@ public class Components implements Serializable
 		return listbox;
 	}
 	
-	public static final Listbox fullSpanSelect(Collection<? extends Listable> collections,boolean setDefault)
+	public static final Listbox fullSpanSelect(Collection<? extends Referenceable> collections,boolean setDefault)
 	{
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");
 		listbox.setStyle("text-align:center;");
 		listbox.setWidth("100%");
 		
-		for(Listable object:collections)
+		for(Referenceable object:collections)
 			listbox.appendChild(new Listitem(object.getLabel(), object.getValue()));
 		
 		if(setDefault)
@@ -185,7 +195,7 @@ public class Components implements Serializable
 		return listbox;
 	}
 	
-	public static final Listbox fullSpanSelect(Listable listable)
+	public static final Listbox fullSpanSelect(Referenceable listable)
 	{
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");
@@ -221,7 +231,7 @@ public class Components implements Serializable
 	{
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");
-		listbox.setWidth("100%");
+		listbox.setHflex("1");
 		
 		return listbox;
 	}
@@ -375,6 +385,61 @@ public class Components implements Serializable
 		return box;
 	}
 	
+	public static final Decimalbox decimalbox(BigDecimal value)
+	{
+		Decimalbox box = new Decimalbox();
+		box.setWidth("200px");
+		box.setStyle("text-align:right;display:block;");
+		box.setFormat("#,##0");
+		
+		if(value != null)
+			box.setValue(value);
+		
+		return box;
+	}
+	
+	public static final Decimalbox decimalbox(BigDecimal value,boolean readonly)
+	{
+		Decimalbox box = new Decimalbox();
+		box.setWidth("200px");
+		box.setStyle("text-align:right;display:block;");
+		box.setReadonly(readonly);
+		box.setFormat("#,##0");
+		
+		if(value != null)
+			box.setValue(value);
+		
+		return box;
+	}
+	
+	public static final Decimalbox fullspanDecimalbox(BigDecimal value)
+	{
+		Decimalbox box = new Decimalbox();
+		box.setWidth("100%");
+		box.setStyle("text-align:right;display:block;");
+		box.setFormat("#,##0");
+
+		if(value != null)
+			box.setValue(value);
+		
+		return box;
+	}
+	
+	public static final Decimalbox fullspanReadonlyDecimalbox(BigDecimal value)
+	{
+		Decimalbox box = new Decimalbox();
+		box.setWidth("100%");
+		box.setStyle("text-align:right;display:block;");
+		box.setReadonly(true);
+		box.setFormat("#,##0");
+
+		if(value != null)
+			box.setValue(value);
+		
+		return box;
+	}
+	
+	
 	public static final Doublebox stdDoubleBox(double value)
 	{
 		Doublebox box = new Doublebox(0d);
@@ -415,6 +480,30 @@ public class Components implements Serializable
 		return checkbox;
 	}
 	
+	public static final Checkbox status(boolean active)
+	{
+		Checkbox checkbox = new Checkbox("Active");
+		checkbox.setChecked(active);
+		
+		return checkbox;
+	}
+	
+	public static final Textbox textarea(String text,boolean readonly,boolean mandatory)
+	{
+		Textbox textbox = new Textbox();
+		textbox.setRows(4);
+		textbox.setCols(60);
+		textbox.setReadonly(readonly);
+		
+		if(!Strings.isNullOrEmpty(text))
+			textbox.setText(text);
+		
+		if(mandatory)
+			textbox.setConstraint("no empty");
+		
+		return textbox;
+	}
+	
 	public static final Checkbox checkbox(boolean readonly,boolean isChecked)
 	{
 		Checkbox checkbox = new Checkbox();
@@ -440,7 +529,7 @@ public class Components implements Serializable
 		if(fullspan)
 			textbox.setWidth("100%");
 		else
-			textbox.setWidth("250px");
+			textbox.setWidth("350px");
 		
 		return textbox;
 	}
@@ -469,6 +558,15 @@ public class Components implements Serializable
 		Textbox textbox = new Textbox(text);
 		textbox.setWidth("250px");
 		textbox.setReadonly(readonly);
+		
+		return textbox;
+	}
+	
+	public static final Textbox autonumber()
+	{
+		Textbox textbox = new Textbox("Auto Number");
+		textbox.setWidth("250px");
+		textbox.setReadonly(true);
 		
 		return textbox;
 	}
@@ -548,10 +646,52 @@ public class Components implements Serializable
 	
 	public static final Datebox currentDatebox()
 	{
-		Datebox datebox = new Datebox(new Date());
+		Datebox datebox = new Datebox();
 		datebox.setWidth("150px");
-		datebox.setConstraint("no empty");
-		datebox.setFormat("dd/MM/yyyy");
+		datebox.setFormat("dd-MM-yyyy");
+		datebox.setValue(Dates.now());
+		
+		return datebox;
+	}
+	
+	public static final Datebox currentDatetime(boolean fullspan)
+	{
+		Datebox datebox = new Datebox();
+		datebox.setFormat("dd-MM-yyyy HH:mm");
+		datebox.setValue(Dates.now());
+		
+		if(fullspan)
+			datebox.setWidth("100%");
+		else
+			datebox.setWidth("150px");
+		
+		return datebox;
+	}
+	
+	public static final Datebox datetime(boolean fullspan)
+	{
+		Datebox datebox = new Datebox();
+		datebox.setFormat("dd-MM-yyyy HH:mm");
+		
+		if(fullspan)
+			datebox.setWidth("100%");
+		else
+			datebox.setWidth("150px");
+		
+		return datebox;
+	}
+	
+	public static final Datebox datetime(Timestamp timestamp,boolean fullspan)
+	{
+		Datebox datebox = new Datebox();
+		datebox.setFormat("dd-MM-yyyy HH:mm");
+		if(timestamp != null)
+			datebox.setValue(timestamp);
+		
+		if(fullspan)
+			datebox.setWidth("100%");
+		else
+			datebox.setWidth("150px");
 		
 		return datebox;
 	}
@@ -560,8 +700,7 @@ public class Components implements Serializable
 	{
 		Datebox datebox = new Datebox(new Date());
 		datebox.setWidth("150px");
-		datebox.setConstraint("no empty");
-		datebox.setFormat("dd/MM/yyyy");
+		datebox.setFormat("dd-MM-yyyy");
 		datebox.setReadonly(readonly);
 		
 		return datebox;
@@ -571,7 +710,7 @@ public class Components implements Serializable
 	{
 		Datebox datebox = new Datebox();
 		datebox.setWidth("150px");
-		datebox.setFormat("dd/MM/yyyy");
+		datebox.setFormat("dd-MM-yyyy");
 		
 		return datebox;
 	}
@@ -580,7 +719,7 @@ public class Components implements Serializable
 	{
 		Datebox datebox = new Datebox();
 		datebox.setWidth("100%");
-		datebox.setFormat("dd/MM/yyyy");
+		datebox.setFormat("dd-MM-yyyy");
 		if(date != null)
 			datebox.setValue(date);
 		
@@ -591,7 +730,7 @@ public class Components implements Serializable
 	{
 		Datebox datebox = new Datebox(date);
 		datebox.setWidth("100%");
-		datebox.setFormat("dd/MM/yyyy");
+		datebox.setFormat("dd-MM-yyyy");
 		datebox.setReadonly(true);
 		datebox.setDisabled(true);
 
@@ -634,7 +773,7 @@ public class Components implements Serializable
 		return new Listitem(Numbers.format(decimal), decimal);
 	}
 	
-	public static final Listitem newListitem(Listable listable)
+	public static final Listitem newListitem(Referenceable listable)
 	{
 		return new Listitem(listable.getLabel(),listable.getValue());
 	}
@@ -650,14 +789,32 @@ public class Components implements Serializable
 		return row;
 	}
 	
-	public static final Product product(Row row,int index)
+	public static final Label blueNumeric(BigDecimal value)
 	{
-		if(row.getChildren().get(index) != null && row.getChildren().get(index) instanceof ProductBox)
-		{
-			ProductBox box = (ProductBox)row.getChildren().get(index);
-			return box.getProduct();
-		}
+		Label label = new Label();
+		label.setWidth("100%");
+		label.setStyle("text-align:right;display:block;color:blue;font-weight:bold;");
 		
-		return null;
+		if(value != null)
+			label.setValue(Numbers.format(value));
+		
+		return label;
+	}
+	
+	public static final Textbox blueText(BigDecimal value,boolean fullspan)
+	{
+		Textbox label = new Textbox();
+		
+		if(fullspan)
+			label.setWidth("100%");
+		else
+			label.setWidth("200px");
+		
+		label.setStyle("text-align:right;display:block;color:blue;font-weight:bold;");
+		
+		if(value != null)
+			label.setValue(Numbers.format(value));
+		
+		return label;
 	}
 }

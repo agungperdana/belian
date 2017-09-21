@@ -19,8 +19,9 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.security.dm.Module;
 import com.kratonsolution.belian.security.dm.ModuleGroup;
 import com.kratonsolution.belian.security.svc.ModuleService;
-import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -29,15 +30,15 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class ModuleEditContent extends FormContent
+public class ModuleEditContent extends AbstractForm
 {	
-	private final ModuleService service = Springs.get(ModuleService.class);
+	private ModuleService service = Springs.get(ModuleService.class);
 	
-	private Textbox code = new Textbox();
+private Textbox code = Components.mandatoryTextBox(false);
 	
-	private Textbox name = new Textbox();
+	private Textbox name = Components.mandatoryTextBox(false);
 	
-	private Textbox note = new Textbox();
+	private Textbox note = Components.stdTextBox(null, false);
 	
 	private Listbox groups = Components.newSelect();
 	
@@ -59,9 +60,7 @@ public class ModuleEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				ModuleWindow window = (ModuleWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new ModuleGridContent());
 			}
 		});
 		
@@ -71,12 +70,12 @@ public class ModuleEditContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				if(Strings.isNullOrEmpty(code.getText()))
-					throw new WrongValueException(code,"Code cannot be empty");
+					throw new WrongValueException(code,lang.get("message.field.empty"));
 			
 				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,"Name cannot be empty");
+					throw new WrongValueException(name,lang.get("message.field.empty"));
 			
-				Module module = service.findOne(RowUtils.string(row, 4));
+				Module module = service.findOne(RowUtils.id(row));
 				if(module != null)
 				{
 					module.setCode(code.getText());
@@ -87,9 +86,7 @@ public class ModuleEditContent extends FormContent
 					service.edit(module);
 				}
 				
-				ModuleWindow window = (ModuleWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new ModuleGridContent());
 			}
 		});
 	}
@@ -97,16 +94,12 @@ public class ModuleEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		Module module = service.findOne(RowUtils.string(row, 4));
+		Module module = service.findOne(RowUtils.id(row));
 		if(module != null)
 		{
-			code.setConstraint("no empty");
-			code.setText(RowUtils.string(this.row,1));
-			
-			name.setConstraint("no empty");
-			name.setText(RowUtils.string(row, 2));
-			
-			note.setText(RowUtils.string(row,3));
+			code.setText(module.getCode());
+			name.setText(module.getName());
+			note.setText(module.getNote());
 			
 			for(ModuleGroup group:ModuleGroup.values())
 			{
@@ -116,23 +109,23 @@ public class ModuleEditContent extends FormContent
 			}
 			
 			grid.appendChild(new Columns());
-			grid.getColumns().appendChild(new Column(null,null,"75px"));
+			grid.getColumns().appendChild(new Column(null,null,"100px"));
 			grid.getColumns().appendChild(new Column());
 			
 			Row row1 = new Row();
-			row1.appendChild(new Label("Code"));
+			row1.appendChild(new Label(lang.get("module.grid.column.code")));
 			row1.appendChild(code);
 			
 			Row row2 = new Row();
-			row2.appendChild(new Label("Name"));
+			row2.appendChild(new Label(lang.get("module.grid.column.name")));
 			row2.appendChild(name);
 			
 			Row row3 = new Row();
-			row3.appendChild(new Label("Note"));
+			row3.appendChild(new Label(lang.get("module.grid.column.note")));
 			row3.appendChild(note);
 			
 			Row row4 = new Row();
-			row4.appendChild(new Label("Group"));
+			row4.appendChild(new Label(lang.get("module.grid.column.group")));
 			row4.appendChild(groups);
 			
 			rows.appendChild(row1);

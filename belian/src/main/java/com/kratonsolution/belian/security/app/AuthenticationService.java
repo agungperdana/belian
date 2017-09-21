@@ -54,20 +54,23 @@ public class AuthenticationService implements UserDetailsService
 			{
 				for(AccessRole accessRole : userRole.getRole().getAccesses())
 				{
-					if(accessRole.isCanCreate())
-						list.add(new Authority("ROLE_"+accessRole.getModule().getCode()+"_CREATE"));
-					
-					if(accessRole.isCanDelete())
-						list.add(new Authority("ROLE_"+accessRole.getModule().getCode()+"_DELETE"));
-					
-					if(accessRole.isCanPrint())
-						list.add(new Authority("ROLE_"+accessRole.getModule().getCode()+"_PRINT"));
-					
-					if(accessRole.isCanRead())
-						list.add(new Authority("ROLE_"+accessRole.getModule().getCode()+"_READ"));
-					
-					if(accessRole.isCanUpdate())
-						list.add(new Authority("ROLE_"+accessRole.getModule().getCode()+"_UPDATE"));
+					if(accessRole.getModule() != null)
+					{
+						if(accessRole.isCanCreate())
+							list.add(new Authority("ROLE_"+accessRole.getModule().getCode()+"_CREATE"));
+						
+						if(accessRole.isCanDelete())
+							list.add(new Authority("ROLE_"+accessRole.getModule().getCode()+"_DELETE"));
+						
+						if(accessRole.isCanPrint())
+							list.add(new Authority("ROLE_"+accessRole.getModule().getCode()+"_PRINT"));
+						
+						if(accessRole.isCanRead())
+							list.add(new Authority("ROLE_"+accessRole.getModule().getCode()+"_READ"));
+						
+						if(accessRole.isCanUpdate())
+							list.add(new Authority("ROLE_"+accessRole.getModule().getCode()+"_UPDATE"));
+					}
 				}
 			}
 		}

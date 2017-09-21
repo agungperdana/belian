@@ -20,7 +20,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.common.dm.Referenceable;
+import com.kratonsolution.belian.partys.dm.Organization;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -34,7 +35,7 @@ import lombok.Setter;
 @Entity
 @Table(name="product_receivable")
 @Inheritance(strategy=InheritanceType.JOINED)
-public abstract class ProductReceiveable implements Serializable,Listable
+public abstract class ProductReceiveable implements Serializable,Referenceable
 {
 	@Id
 	protected String id = UUID.randomUUID().toString();

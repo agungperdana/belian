@@ -19,7 +19,7 @@ import org.zkoss.zul.Textbox;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.accounting.svc.TaxService;
-import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
@@ -30,7 +30,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class TaxEditContent extends FormContent
+public class TaxEditContent extends AbstractForm
 {	
 	private TaxService service = Springs.get(TaxService.class);
 	

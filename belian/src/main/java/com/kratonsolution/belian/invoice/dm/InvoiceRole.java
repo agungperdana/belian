@@ -7,7 +7,10 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.UUID;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -17,8 +20,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.general.dm.Party;
-import com.kratonsolution.belian.order.dm.RoleType;
+import com.kratonsolution.belian.api.dm.IDValueRef;
+import com.kratonsolution.belian.orders.dm.RoleType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -43,9 +46,12 @@ public class InvoiceRole implements Serializable
 	@Column(name="type")
 	private RoleType type = RoleType.ENTERED_BY;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_party")
-	private Party party;
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="id",column=@Column(name="party_id")),
+		@AttributeOverride(name="value",column=@Column(name="party_value"))
+	})
+	private IDValueRef party;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_invoice")

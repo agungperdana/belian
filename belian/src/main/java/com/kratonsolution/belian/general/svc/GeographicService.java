@@ -52,7 +52,10 @@ public class GeographicService
 	@Secured("ROLE_GEOGRAPHIC_READ")
 	public List<Geographic> findAllByType(GeographicType type)
 	{
-		return repository.findAllByType(type);
+		if(type != null)
+			return repository.findAllByType(type);
+		else
+			return findAll();
 	}
 	
 	@Secured("ROLE_GEOGRAPHIC_CREATE")

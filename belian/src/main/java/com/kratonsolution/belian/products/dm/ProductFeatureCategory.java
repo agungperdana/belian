@@ -12,7 +12,7 @@ public enum ProductFeatureCategory
 	STANDARD_FEATURE("Fitur Standar","Standard Feature"), 
 	REQUIRED_FEATURE("Fitur Utama","Required Feature"), 
 	SELECTABLE_FEATURE("Fitur Pilihan","Selectable Feature"),
-	OPTIONAL_FEATURE("Fitur Pilihan","Optional Feature");
+	OPTIONAL_FEATURE("Fitur Tidak Wajib","Optional Feature");
 	
 	private String inID;
 

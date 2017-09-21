@@ -9,7 +9,8 @@ package com.kratonsolution.belian.products.dm;
  */
 public enum SaleType
 {
-	STANDARD_RETAIL_SALES("Punjualan Langsung","Standard Retail Sales"),
+	STANDARD_RETAIL_SALES("Punjualan Biasa","Standard Retail Sales"),
+	STANDARD_REFERENCE_SALES("Dengan Referensi","Reference Sales"),
 	INTERNET_SALES("Penjualan Online","Internate Sales");
 	
 	private String inID;

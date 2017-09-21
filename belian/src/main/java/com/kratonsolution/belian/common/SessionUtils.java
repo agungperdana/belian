@@ -3,12 +3,12 @@
  */
 package com.kratonsolution.belian.common;
 
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.Vector;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,39 +17,31 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.accounting.dm.AccountingPeriod;
-import com.kratonsolution.belian.accounting.dm.AccountingPeriodRepository;
-import com.kratonsolution.belian.accounting.dm.AutoJournalSetting;
-import com.kratonsolution.belian.accounting.dm.AutoJournalSettingRepository;
 import com.kratonsolution.belian.accounting.dm.Currency;
-import com.kratonsolution.belian.accounting.dm.OrganizationAccount;
-import com.kratonsolution.belian.accounting.dm.OrganizationAccountRepository;
 import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.accounting.svc.TaxService;
-import com.kratonsolution.belian.facility.dm.FacilityOrganization;
-import com.kratonsolution.belian.general.dm.Address;
-import com.kratonsolution.belian.general.dm.CompanyStructure;
+import com.kratonsolution.belian.api.dm.IDValueRef;
 import com.kratonsolution.belian.general.dm.CompanyStructureRepository;
-import com.kratonsolution.belian.general.dm.CompanyStructureType;
 import com.kratonsolution.belian.general.dm.Geographic;
-import com.kratonsolution.belian.general.dm.Organization;
-import com.kratonsolution.belian.general.dm.Person;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
-import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.general.svc.PersonService;
 import com.kratonsolution.belian.global.dm.PrinterType;
-import com.kratonsolution.belian.global.svc.UserSettingService;
-import com.kratonsolution.belian.healtcare.dm.DoctorRelationship;
-import com.kratonsolution.belian.healtcare.dm.DoctorRelationshipRepository;
+import com.kratonsolution.belian.global.dm.UserSettingRepository;
+import com.kratonsolution.belian.hr.dm.Employee;
+import com.kratonsolution.belian.hr.dm.EmployeeRepository;
 import com.kratonsolution.belian.hr.dm.Employment;
-import com.kratonsolution.belian.inventory.dm.StockAdmin;
-import com.kratonsolution.belian.payment.svc.StockAdminService;
+import com.kratonsolution.belian.hr.dm.EmploymentRepository;
+import com.kratonsolution.belian.inventory.dm.Facility;
+import com.kratonsolution.belian.partys.dm.Organization;
+import com.kratonsolution.belian.partys.dm.Party;
+import com.kratonsolution.belian.partys.dm.Person;
+import com.kratonsolution.belian.partys.svc.OrganizationService;
+import com.kratonsolution.belian.partys.svc.PartyService;
+import com.kratonsolution.belian.partys.svc.PersonService;
 import com.kratonsolution.belian.security.app.Authority;
 import com.kratonsolution.belian.security.app.SecurityInformation;
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.security.svc.UserService;
-import com.kratonsolution.belian.ui.util.Springs;
 
 
 /**
@@ -62,10 +54,13 @@ import com.kratonsolution.belian.ui.util.Springs;
 public class SessionUtils
 {
 	@Autowired
+	private Language lang;
+	
+	@Autowired
 	private UserService service;
 	
 	@Autowired
-	private UserSettingService settingService;
+	private UserSettingRepository settingRepo;
 
 	@Autowired
 	private CurrencyService currencyService;
@@ -80,232 +75,96 @@ public class SessionUtils
 	private CompanyStructureService companyStructureService;
 	
 	@Autowired
-	protected AutoJournalSettingRepository repository;
-	
-	@Autowired
-	protected OrganizationAccountRepository coaRepo;
-	
-	@Autowired
-	protected AccountingPeriodRepository periodRepo;
+	private EmployeeRepository employeeRepo;
 
 	@Autowired
-	protected CompanyStructureRepository structureRepo;
+	private CompanyStructureRepository structureRepo;
+	
+	@Autowired
+	private EmploymentRepository employmentRepo;
 	
 	@Autowired
 	private TaxService taxService;
 	
-	public boolean isEmployee()
-	{
-		return getEmployee() != null;
-	}
-	
-	public Person getEmployee()
-	{
-		if(isSysAdmin())
-		{
-			return personService.findOne("78171b13-766f-495b-939d-e01b79e21931");
-		}
+	@Autowired
+	private PartyService partyService;
 		
-		return getUser().getPerson();
-	}
-
-	public boolean isSysAdmin()
-	{
-		return getUser().getEmail().equals("admin@belian.com");
-	}
-	
 	public User getUser()
 	{
 		SecurityInformation information = (SecurityInformation)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
+		if(information.getUser() == null)
+			throw new RuntimeException(lang.get("message.user.empty"));
+		
 		//Update user setting with latest from database
 		if(information.getUser().getSetting() != null)
-			information.getUser().setSetting(settingService.findOne(information.getUser().getSetting().getId()));
+			information.getUser().setSetting(settingRepo.findOne(information.getUser().getSetting().getId()));
 		
 		return information.getUser();
 	}
-
-	public List<Organization> getOrganizations()
-	{
-		Map<String,Organization> maps = new HashMap<String,Organization>();
-		
-		if(getUser() != null)
-		{
-			if(getUser().getEmail().equals("admin@belian.com"))
-			{
-				for(CompanyStructure com:companyStructureService.findAll())
-					maps.put(com.getOrganization().getName(),com.getOrganization());
-			}
-			else
-			{
-				for(Employment employment:getUser().getEmployee().getEmployments())
-				{
-					if(DateTimes.inActiveState(employment.getStart(),employment.getEnd()))
-					{
-						CompanyStructure structure = companyStructureService.byOrganization(employment.getInternalOrganization().getOrganization().getId());
-						extractStructure(maps, structure);
-					}
-				}
-			}
-		}
-
-		return new ArrayList<Organization>(maps.values());
-	}
 	
-	public List<Organization> getCurrentOrganizations()
+	public Collection<Organization> getGrantedOrganizations()
 	{
-		Map<String,Organization> maps = new HashMap<String,Organization>();
+		Vector<Organization> vectors = new Vector<>();
 		
-		if(getUser() != null && getOrganization() == null)
-		{
-			if(getUser().getEmail().equals("admin@belian.com"))
-			{
-				for(CompanyStructure com:companyStructureService.findAll())
-					maps.put(com.getOrganization().getName(),com.getOrganization());
-			}
-			else
-			{
-				for(Employment employment:getUser().getEmployee().getEmployments())
-				{
-					if(DateTimes.inActiveState(employment.getStart(),employment.getEnd()))
-					{
-						CompanyStructure structure = companyStructureService.byOrganization(employment.getInternalOrganization().getOrganization().getId());
-						extractStructure(maps, structure);
-					}
-				}
-			}
-		}
+		User logedin = getUser();
+
+		if(logedin.getUserName().equals("admin@belian.com"))
+			vectors.addAll(companyStructureService.findAllAsOrganizations());
 		else
-			maps.put(getOrganization().getName(),getOrganization());
-
-		return new ArrayList<Organization>(maps.values());
-	}
-
-	public void extractStructure(Map<String, Organization> maps,CompanyStructure structure)
-	{
-		if(structure != null && !maps.containsKey(structure.getOrganization().getName()))
 		{
-			maps.put(structure.getOrganization().getName(), structure.getOrganization());
-			if(!structure.getChilds().isEmpty())
+			Employee employee = employeeRepo.findOneByUsername(logedin.getUserName());
+			if(employee != null)
 			{
-				for(CompanyStructure com:structure.getChilds())
-					extractStructure(maps, com);
+				List<Employment> employments = employmentRepo.findAll(employee.getId(),employee.getParty().getId(), DateTimes.currentDate());
+				for(Employment emp:employments)
+				{
+					if(emp.getToParty() instanceof Organization)
+					{
+						Organization parent = (Organization)emp.getToParty();
+						vectors.add(parent);
+						vectors.addAll(companyStructureService.findAllChild(parent));
+					}
+				}
 			}
 		}
-	}
-	
-	public void extractStructure(Set<Organization> set,CompanyStructure structure)
-	{
-		if(structure != null && !set.contains(structure.getOrganization()))
-		{
-			set.add(structure.getOrganization());
-			if(!structure.getChilds().isEmpty())
-			{
-				for(CompanyStructure com:structure.getChilds())
-					extractStructure(set, com);
-			}
-		}
+		
+		return vectors;
 	}
 
 	public List<String> getOrganizationIds()
 	{
-		Map<String,String> maps = new HashMap<String,String>();
+		List<String> granted = new ArrayList();
 
-		if(getUser() != null)
-		{
-			if(getUser().getEmail().equals("admin@belian.com"))
-			{
-				for(CompanyStructure com:companyStructureService.findAll())
-					maps.put(com.getOrganization().getName(),com.getOrganization().getId());
-			}
-			else
-			{
-				for(Employment employment:getUser().getEmployee().getEmployments())
-				{
-					if(DateTimes.inActiveState(employment.getStart(), employment.getEnd()))
-					{				
-						CompanyStructure structure = companyStructureService.byOrganization(employment.getInternalOrganization().getOrganization().getId());
-						extractOrganizationId(maps, structure);
-					}
-				}
-			}
-		}
-
-		return new ArrayList<String>(maps.values());
-	}
-	
-	public List<String> getOrgChild()
-	{
-		Map<String,String> maps = new HashMap<String,String>();
+		for(Organization organization:getGrantedOrganizations())
+			granted.add(organization.getId());
 		
-		for(Employment employment:getUser().getEmployee().getEmployments())
-		{
-			if(DateTimes.inActiveState(employment.getStart(), employment.getEnd()) &&
-					getOrganization() != null && 
-					employment.getInternalOrganization().getOrganization().getId().equals(getOrganization().getId()))
-			{				
-				CompanyStructure structure = companyStructureService.byOrganization(employment.getInternalOrganization().getOrganization().getId());
-				extractOrganizationId(maps, structure);
-			}
-		}
-		
-		return new ArrayList<>(maps.values());
-	}
-	
-	public List<String> getAccessibleOrganizations(String organization)
-	{
-		List<String> companys = new ArrayList<>();
-		
-		CompanyStructure companyStructure = companyStructureService.byOrganization(organization);
-		if(companyStructure != null)
-		{
-			Map<String,String> maps = new HashMap<>();
-			extractOrganizationId(maps, companyStructure);
-			
-			companys.addAll(maps.values());
-		}
-		
-		return companys;
-	}
-
-	public void extractOrganizationId(Map<String, String> maps,CompanyStructure structure)
-	{
-		if(structure != null && !maps.containsKey(structure.getOrganization().getName()))
-		{
-			maps.put(structure.getOrganization().getName(),structure.getOrganization().getId());
-			if(!structure.getChilds().isEmpty())
-			{
-				for(CompanyStructure com:structure.getChilds())
-					extractOrganizationId(maps,com);
-			}
-		}
-	}
-
-	public boolean hasDefaultOrganization()
-	{
-		return getOrganization() != null;
-	}
-	
-	public void checkDefaultOrganization()
-	{
-		if(!hasDefaultOrganization())
-			throw new RuntimeException("Please select default working company first");
+		return granted;
 	}
 	
 	public Organization getOrganization()
 	{
-		if(getUser() != null && getUser().getSetting() != null && !Strings.isNullOrEmpty(getUser().getSetting().getOrganizationId()))
+		if(getUser() != null && getUser().getSetting() != null && 
+		   getUser().getSetting().getOrganization()!= null && 
+		   !Strings.isNullOrEmpty(getUser().getSetting().getOrganization().getId()))
 		{
-			Organization organization = organizationService.findOne(getUser().getSetting().getOrganizationId());
+			Organization organization = organizationService.findOne(getUser().getSetting().getOrganization().getId());
 			if(organization == null)
 			{
 				organization = new Organization();
-				organization.setId(getUser().getSetting().getOrganizationId());
-				organization.setName(getUser().getSetting().getOrganizationName());
+				organization.setId(getUser().getSetting().getOrganization().getId());
+				organization.setName(getUser().getSetting().getOrganization().getValue());
 			}
 
 			return organization;
 		}
+
+		return null;
+	}
+	
+	public Facility getFacility()
+	{
+		if(getUser() != null && getUser().getSetting() != null && getUser().getSetting().getFacility()!= null && !Strings.isNullOrEmpty(getUser().getSetting().getFacility().getId()))
+			return new Facility(getUser().getSetting().getFacility());
 
 		return null;
 	}
@@ -314,25 +173,21 @@ public class SessionUtils
 	{
 		List<Geographic> locations = new ArrayList<Geographic>();
 
-		for(Organization organization:getOrganizations())
-		{
-			for(Address address:organization.getAddresses())
-				locations.add(address.getCity());
-		}
-
 		return locations;
 	}
 
 	public Currency getCurrency()
 	{
-		if(getUser() != null && getUser().getSetting() != null && !Strings.isNullOrEmpty(getUser().getSetting().getCurrencyId()))
+		if(getUser() != null && getUser().getSetting() != null && 
+		   getUser().getSetting().getCurrency() != null &&
+		  !Strings.isNullOrEmpty(getUser().getSetting().getCurrency().getId()))
 		{
-			Currency currency = currencyService.findOne(getUser().getSetting().getCurrencyId());
+			Currency currency = currencyService.findOne(getUser().getSetting().getCurrency().getId());
 			if(currency == null)
 			{
 				currency = new Currency();
-				currency.setId(getUser().getSetting().getCurrencyId());
-				currency.setName(getUser().getSetting().getCurrencyName());
+				currency.setId(getUser().getSetting().getCurrency().getId());
+				currency.setName(getUser().getSetting().getCurrency().getValue());
 			}
 			
 			return currency;
@@ -343,11 +198,13 @@ public class SessionUtils
 
 	public Geographic getLocation()
 	{
-		if(getUser() != null && getUser().getSetting() != null && !Strings.isNullOrEmpty(getUser().getSetting().getLocationId()))
+		if(getUser() != null && getUser().getSetting() != null && 
+		   getUser().getSetting().getLocation() != null &&
+		  !Strings.isNullOrEmpty(getUser().getSetting().getLocation().getId()))
 		{
 			Geographic geographic = new Geographic();
-			geographic.setId(getUser().getSetting().getLocationId());
-			geographic.setName(getUser().getSetting().getLocationName());
+			geographic.setId(getUser().getSetting().getLocation().getId());
+			geographic.setName(getUser().getSetting().getLocation().getValue());
 
 			return geographic;
 		}
@@ -387,8 +244,11 @@ public class SessionUtils
 
 	public Tax getTax()
 	{
-		if(getUser() != null && getUser().getSetting() != null && !Strings.isNullOrEmpty(getUser().getSetting().getTaxId()))
-			return taxService.findOne(getUser().getSetting().getTaxId());
+		if(getUser() != null && getUser().getSetting() != null && 
+		   getUser().getSetting().getTax() != null &&
+		   !Strings.isNullOrEmpty(getUser().getSetting().getTax().getId()))
+
+			return taxService.findOne(getUser().getSetting().getTax().getId());
 
 		return null;
 	}
@@ -406,86 +266,34 @@ public class SessionUtils
 		return getPrinterType().equals(PrinterType.POS);
 	}
 	
-	public boolean isDoctor()
+	public String getPersonId()
 	{
-		if(getUser() != null && getUser().getPerson() != null && getOrganization() != null)
-		{
-			DoctorRelationshipRepository repository = Springs.get(DoctorRelationshipRepository.class);
-			List<DoctorRelationship> doc = repository.findAll(getUser().getPerson().getId(), getOrganization().getId(),DateTimes.currentDate());
-			if(!doc.isEmpty())
-				return true;
-		}
-		
-		return false;
+		Employee employee = employeeRepo.findOneByUsername(getUser().getUserName());
+		if(employee != null)
+			return employee.getParty().getId();
+	
+		return null;
 	}
 	
-	public boolean isStockAdmin()
+	public Person getPerson()
 	{
-		if(getUser() != null && getUser().getPerson() != null)
-		{
-			StockAdminService service = Springs.get(StockAdminService.class);
-			StockAdmin admin = service.findOne();
-			if(admin != null)
-				return DateTimes.inActiveState(admin.getStart(), admin.getEnd());
-		}
-		
-		return false;
+		Employee employee = employeeRepo.findOneByUsername(getUser().getUserName());
+		if(employee != null && employee.getParty() instanceof Person)
+			return (Person)employee.getParty();
+	
+		return null;
 	}
 	
-	public List<String> getFacilitys()
+	public IDValueRef getAnonymouseCustomer()
 	{
-		List<String> list = new ArrayList<>();
+		Party party = partyService.findByCode("ANS");
+		if(party != null)
+			return party.toRef();
 		
-		if(getOrganization() != null)
-		{
-			for(FacilityOrganization facilityOrganization:getOrganization().getFacilitys())
-			{
-				if(facilityOrganization.isEnabled())
-					list.add(facilityOrganization.getFacility().getId());
-			}
-		}
+		IDValueRef ref = new IDValueRef();
+		ref.setId("0");
+		ref.setValue("ANONYMOUS");
 		
-		return list;
-	}
-	
-	public AutoJournalSetting getAutoJournalSetting(Organization organization)
-	{
-		CompanyStructure structure = structureRepo.findOneByOrganizationId(organization.getId());
-		if(structure == null)
-			throw new RuntimeException();
-
-		if(!structure.getType().equals(CompanyStructureType.BRANCH))
-			return getAutoJournalSetting(structure.getParent().getOrganization());
-		else
-			return repository.findOneByOrganizationId(organization.getId());
-	}
-
-	public OrganizationAccount getCOA(Organization organization)
-	{
-		CompanyStructure structure = structureRepo.findOneByOrganizationId(organization.getId());
-		if(structure == null)
-			throw new RuntimeException();
-		
-		if(!structure.getType().equals(CompanyStructureType.BRANCH))
-			return getCOA(structure.getParent().getOrganization());
-		else
-			return coaRepo.findOneByOrganizationId(organization.getId());
-	}
-	
-	public OrganizationAccount getCOA(String organization)
-	{
-		return getCOA(organizationService.findOne(organization));
-	}
-	
-	public AccountingPeriod getAccountingPeriod(Organization organization,Date date)
-	{
-		CompanyStructure structure = structureRepo.findOneByOrganizationId(organization.getId());
-		if(structure == null)
-			throw new RuntimeException();
-		
-		if(!structure.getType().equals(CompanyStructureType.BRANCH))
-			return getAccountingPeriod(structure.getParent().getOrganization(),date);
-		else
-			return periodRepo.findOneOpenChild(organization.getId(),date);
+		return ref;
 	}
 }

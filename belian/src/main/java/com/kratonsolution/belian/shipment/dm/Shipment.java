@@ -3,15 +3,19 @@
  */
 package com.kratonsolution.belian.shipment.dm;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -19,12 +23,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.general.dm.Address;
-import com.kratonsolution.belian.general.dm.Contact;
-import com.kratonsolution.belian.general.dm.Party;
+import com.kratonsolution.belian.api.dm.IDValueRef;
+import com.kratonsolution.belian.common.dm.Referenceable;
+import com.kratonsolution.belian.orders.dm.OrderType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -37,11 +42,14 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="shipment")
-public class Shipment implements Serializable
+public class Shipment implements Referenceable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
-
+	
+	@Column(name="number")
+	private String number;
+	
 	@Column(name="entry_date")
 	private Date entryDate;
 	
@@ -71,33 +79,55 @@ public class Shipment implements Serializable
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="type")
-	private ShipmentType type = ShipmentType.Transfer;
+	private ShipmentType type = ShipmentType.CUSTOMER_SHIPMENT;
 	
-	@ManyToOne
-	@JoinColumn(name="ship_from_party")
-	private Party shipFromParty;
+	@Enumerated(EnumType.STRING)
+	@Column(name="flow")
+	private OrderType flow = OrderType.DROPSHIP;
 	
-	@ManyToOne
-	@JoinColumn(name="ship_to_party")
-	private Party shipToParty;
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="id",column=@Column(name="ship_from_party_id")),
+		@AttributeOverride(name="value",column=@Column(name="ship_from_party_value"))
+	})
+	private IDValueRef shipFromParty;
+
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="id",column=@Column(name="ship_from_address_id")),
+		@AttributeOverride(name="value",column=@Column(name="ship_from_address_value"))
+	})
+	private IDValueRef shipFromAddress;
+
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="id",column=@Column(name="ship_from_contact_id")),
+		@AttributeOverride(name="value",column=@Column(name="ship_from_contact_value"))
+	})
+	private IDValueRef shipFromContact;
 	
-	@ManyToOne
-	@JoinColumn(name="ship_from_address")
-	private Address shipFromAddress;
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="id",column=@Column(name="ship_to_party_id")),
+		@AttributeOverride(name="value",column=@Column(name="ship_to_party_value"))
+	})
+	private IDValueRef shipToParty;
 	
-	@ManyToOne
-	@JoinColumn(name="ship_to_address")
-	private Address shipToAddress;
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="id",column=@Column(name="ship_to_address_id")),
+		@AttributeOverride(name="value",column=@Column(name="ship_to_address_value"))
+	})
+	private IDValueRef shipToAddress;
 	
-	@ManyToOne
-	@JoinColumn(name="ship_from_contact")
-	private Contact shipFromContact;
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="id",column=@Column(name="ship_to_contact_id")),
+		@AttributeOverride(name="value",column=@Column(name="ship_to_contact_value"))
+	})
+	private IDValueRef shipToContact;
 	
-	@ManyToOne
-	@JoinColumn(name="ship_to_contact")
-	private Contact shipToContact;
-	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="fk_shipping_document")
 	private ShippingDocument document;
 	
@@ -108,6 +138,7 @@ public class Shipment implements Serializable
 	private Set<ShipmentItem> items = new HashSet<>();
 	
 	@OneToMany(mappedBy="shipment",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OrderBy("date DESC")
 	private Set<ShipmentStatus> statuses = new HashSet<>();
 	
 
@@ -115,4 +146,108 @@ public class Shipment implements Serializable
 	private Set<ShipmentRouteSegment> routes = new HashSet<>();
 	
 	public Shipment(){}
+	
+	public boolean isEditable()
+	{
+		for(ShipmentStatus status:getStatuses())
+		{
+			if(!status.getType().equals(ShipmentStatusType.SCHEDULED))
+				return false;
+		}
+		
+		return true;
+	}
+	
+	public boolean isDelivered()
+	{
+		for(ShipmentStatus status:getStatuses())
+		{
+			if(status.getType().equals(ShipmentStatusType.DELIVERED))
+				return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean isShipped()
+	{
+		for(ShipmentStatus status:getStatuses())
+		{
+			if(status.getType().equals(ShipmentStatusType.SHIPPED))
+				return true;
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public String getLabel()
+	{
+		return getNumber();
+	}
+
+	@Override
+	public String getValue()
+	{
+		return getId();
+	}
+	
+	/**
+	 * used for shipment type customer purchase & purchase retur
+	 * internal organization able to send invoice after item shipped into customer/supplier
+	 * 
+	 * @param isShipped
+	 */
+	public void setShipped(boolean isShipped)
+	{
+		if(isShipped)
+		{
+			ShipmentStatus status = new ShipmentStatus();
+			status.setDate(new Timestamp(System.currentTimeMillis()));
+			status.setShipment(this);
+			status.setType(ShipmentStatusType.SHIPPED);
+			
+			getStatuses().add(status);
+		}
+		else
+		{
+			Iterator<ShipmentStatus> iterator = getStatuses().iterator();
+			while (iterator.hasNext())
+			{
+				ShipmentStatus status = (ShipmentStatus) iterator.next();
+				if(status.getType().equals(ShipmentStatusType.SHIPPED))
+					iterator.remove();
+			}
+		}
+	}
+	
+	/**
+	 * used for shipment for customer retur & purchase order
+	 * internal organization will accept invoice from outside party
+	 * if item already receipted.
+	 * 
+	 * @param isdelivered
+	 */
+	public void setDelivered(boolean isdelivered)
+	{
+		if(isdelivered)
+		{
+			ShipmentStatus status = new ShipmentStatus();
+			status.setDate(new Timestamp(System.currentTimeMillis()));
+			status.setShipment(this);
+			status.setType(ShipmentStatusType.DELIVERED);
+			
+			getStatuses().add(status);
+		}
+		else
+		{
+			Iterator<ShipmentStatus> iterator = getStatuses().iterator();
+			while (iterator.hasNext())
+			{
+				ShipmentStatus status = (ShipmentStatus) iterator.next();
+				if(status.getType().equals(ShipmentStatusType.DELIVERED))
+					iterator.remove();
+			}
+		}
+	}
 }

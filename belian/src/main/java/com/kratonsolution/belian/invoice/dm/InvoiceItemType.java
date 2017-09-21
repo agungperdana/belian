@@ -9,13 +9,16 @@ package com.kratonsolution.belian.invoice.dm;
  */
 public enum InvoiceItemType
 {
-	INVOICE_ADJUSTMENT("Perubahan Tagihan","Invoice Adjustment"),
+	
 	INVOICE_PRODUCT("Tagihan Produk","Invoice Product"),
 	INVOICE_PRODUCT_FEATURE("Tagihan Fitur Produk","Invoice Product Feature"),
+	
 	INVOICE_WORK_EFFORT("Tagihan Jasa Pekerjaan","Invoice Work Effort"),
 	INVOICE_TIME_ENTRY("Tagihan Penggunaan Waktu","Invoice Time Entry"),
+	
+	INVOICE_ADJUSTMENT("Penyesuaian","Invoice Adjustment"),
 	MISCELLANEOUS_CHARGE_ADJUSTMENT("Biaya Penyesuaian Lain lain","Miscellaneous Charge Adjustment"),
-	SALES_TAX_ADJUSTMENT("Biaya Pajak Penjualan","Sales Tax Adjustment"),
+	TAX_ADJUSTMENT("Biaya Pajak","Tax Adjustment"),
 	DISCOUNT_ADJUSTMENT("Penyesuaian Potongan Harga","Discount Adjustment"),
 	SHIPPING_AND_HANDLING_CHARGE_ADJUSTMENT("Penyesuaian biaya Pengiriman & Penanganan","Shipping & Handling Adjustment"),
 	SURCHARGE_ADJUSTMENT("Penyesuaian Biaya","Surcharge Adjustment"),

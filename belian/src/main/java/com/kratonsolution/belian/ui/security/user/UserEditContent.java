@@ -24,14 +24,15 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.partys.svc.PersonService;
 import com.kratonsolution.belian.security.dm.Role;
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.security.dm.UserRole;
 import com.kratonsolution.belian.security.svc.RoleService;
 import com.kratonsolution.belian.security.svc.UserService;
-import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -40,7 +41,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class UserEditContent extends FormContent
+public class UserEditContent extends AbstractForm
 {	
 	private UserService service = Springs.get(UserService.class);
 
@@ -48,11 +49,11 @@ public class UserEditContent extends FormContent
 	
 	private RoleService roleService = Springs.get(RoleService.class);
 
-	private Textbox email = new Textbox();
+	private Textbox email = Components.mandatoryTextBox(false);
 
-	private A link = new A("Change Password");
+	private A link = new A(lang.get("generic.grid.column.changepassword"));
 
-	private Checkbox enabled = new Checkbox("Active");
+	private Checkbox enabled = new Checkbox(lang.get("generic.grid.column.active"));
 
 	private Row row;
 
@@ -75,9 +76,7 @@ public class UserEditContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				UserWindow window = (UserWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new UserGridContent());
 			}
 		});
 
@@ -87,12 +86,12 @@ public class UserEditContent extends FormContent
 			public void onEvent(Event event) throws Exception
 			{
 				if(Strings.isNullOrEmpty(email.getText()))
-					throw new WrongValueException(email,"Name cannot be empty");
+					throw new WrongValueException(email,lang.get("message.field.empty"));
 
-				User user = service.findOne(RowUtils.string(row, 4));
+				User user = service.findOne(RowUtils.id(row));
 				if(user != null)
 				{
-					user.setEmail(email.getText());
+					user.setUserName(email.getText());
 					user.setEnabled(enabled.isChecked());
 
 					for(Object object:roles.getRows().getChildren())
@@ -109,12 +108,9 @@ public class UserEditContent extends FormContent
 					}
 
 					service.edit(user);
-					personService.edit(user.getPerson());
 				}
 
-				UserWindow window = (UserWindow)getParent();
-				window.removeEditForm();
-				window.insertGrid();
+				Flow.next(getParent(), new UserGridContent());
 			}
 		});
 	}
@@ -122,7 +118,7 @@ public class UserEditContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		User user = service.findOne(RowUtils.string(row, 4));
+		User user = service.findOne(RowUtils.id(row));
 		if(user != null)
 		{
 			link.addEventListener(Events.ON_CLICK,new EventListener<Event>()
@@ -130,20 +126,14 @@ public class UserEditContent extends FormContent
 				@Override
 				public void onEvent(Event event) throws Exception
 				{
-					UserWindow window = (UserWindow)getParent();
-					window.removeEditForm();
-					window.appendChild(new ChangePassword(row));
+					Flow.next(getParent(), new ChangePassword(row,false));
 				}
 			});
 
 			email.setConstraint("no empty");
-			email.setText(user.getEmail());
+			email.setText(user.getUserName());
 			email.setWidth("250px");
-			
-			if(RowUtils.string(row, 3).equals("Active"))
-				enabled.setChecked(true);
-			else
-				enabled.setChecked(false);
+			enabled.setChecked(user.isEnabled());
 
 			grid.appendChild(new Columns());
 			grid.getColumns().appendChild(new Column(null,null,"150px"));
@@ -151,7 +141,7 @@ public class UserEditContent extends FormContent
 			grid.setSpan("2");
 
 			Row row2 = new Row();
-			row2.appendChild(new Label("Email"));
+			row2.appendChild(new Label(lang.get("generic.grid.column.username")));
 			row2.appendChild(email);
 
 			Row row4 = new Row();
@@ -159,7 +149,7 @@ public class UserEditContent extends FormContent
 			row4.appendChild(link);
 
 			Row row5 = new Row();
-			row5.appendChild(new Label("Status"));
+			row5.appendChild(new Label(lang.get("generic.grid.column.status")));
 			row5.appendChild(enabled);
 
 			rows.appendChild(row2);
@@ -171,16 +161,16 @@ public class UserEditContent extends FormContent
 	protected void initRoles()
 	{
 		Auxhead head = new Auxhead();
-		Auxheader header = new Auxheader("User Role");
+		Auxheader header = new Auxheader(lang.get("generic.grid.column.userrole"));
 		header.setColspan(3);
 		header.setRowspan(1);
 
 		head.appendChild(header);
 
-		Column col1 = new Column("Role");
+		Column col1 = new Column(lang.get("generic.grid.column.role"));
 		col1.setWidth("175px");
 
-		Checkbox all = new Checkbox("Enable All");
+		Checkbox all = new Checkbox(lang.get("generic.grid.column.enableall"));
 		all.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override

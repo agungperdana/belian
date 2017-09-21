@@ -9,8 +9,8 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
-import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.partys.dm.Person;
+import com.kratonsolution.belian.partys.svc.PersonService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -20,7 +20,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class PersonModel implements ListModel<Person>
 {
-	private PersonService controller = Springs.get(PersonService.class);
+	private PersonService service = Springs.get(PersonService.class);
 	
 	private List<Person> data = new ArrayList<Person>();
 	
@@ -49,7 +49,7 @@ public class PersonModel implements ListModel<Person>
 	@Override
 	public int getSize()
 	{
-		return controller.size(this.key);
+		return service.size(this.key);
 	}
 
 	@Override
@@ -69,6 +69,6 @@ public class PersonModel implements ListModel<Person>
 	public void next(int pageIndex,int itemSize,String key)
 	{
 		data.clear();
-		data.addAll(controller.findAll(0, (itemSize*pageIndex)+itemSize,key));
+		data.addAll(service.findAll(0, (itemSize*pageIndex)+itemSize,key));
 	}
 }

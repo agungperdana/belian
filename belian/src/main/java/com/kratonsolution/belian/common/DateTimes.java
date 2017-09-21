@@ -6,6 +6,8 @@ package com.kratonsolution.belian.common;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Time;
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Period;
@@ -25,6 +27,13 @@ public class DateTimes implements Serializable
 	
 	private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
+	private static final SimpleDateFormat fullFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+	
+	public static final Timestamp timestamp()
+	{
+		return new Timestamp(System.currentTimeMillis());
+	}
+	
 	public static final java.sql.Date firstDay(java.sql.Date date)
 	{
 		Calendar calendar = Calendar.getInstance();
@@ -123,6 +132,22 @@ public class DateTimes implements Serializable
 		return timeFormat.format(time);
 	}
 	
+	public static final String formatDateTime(Timestamp timestamp)
+	{
+		if(timestamp == null)
+			return "";
+
+		return fullFormat.format(timestamp);
+	}
+	
+	public static final String formatTime(Timestamp timestamp)
+	{
+		if(timestamp == null)
+			return "";
+
+		return timeFormat.format(timestamp);
+	}
+	
 	public static final String format(Date date)
 	{
 		if(date == null)
@@ -153,6 +178,14 @@ public class DateTimes implements Serializable
 		return null;
 	}
 	
+	public static java.sql.Timestamp timestamp(Date date)
+	{
+		if(date != null)
+			return new java.sql.Timestamp(date.getTime());
+
+		return null;
+	}
+	
 	public static java.sql.Date sql(String date)
 	{
 		if(!Strings.isNullOrEmpty(date))
@@ -179,11 +212,14 @@ public class DateTimes implements Serializable
 		return null;
 	}
 	
-	public static java.sql.Time time(Date date)
+	public static java.sql.Time time(Date date,boolean nulable)
 	{
 		if(date != null)
 			return new java.sql.Time(date.getTime());
 
+		if(!nulable)
+			return new Time(System.currentTimeMillis());
+		
 		return null;
 	}
 	
@@ -194,5 +230,10 @@ public class DateTimes implements Serializable
 		calendar.add(Calendar.MONTH, 1);
 		
 		return sql(calendar.getTime());
+	}
+	
+	public static java.sql.Date parse(String date) throws ParseException
+	{
+		return sql(format.parse(date));
 	}
 }

@@ -21,6 +21,22 @@ public interface StockAdjustmentRepository extends JpaRepository<StockAdjustment
 			+ "ORDER BY stock.date DESC")
 	public List<StockAdjustment> findAll(Pageable pageable,@Param("company")List<String> company);
 	
+	@Query("FROM StockAdjustment stock WHERE "
+			+ "stock.organization.id IN(:company) "
+			+ "AND (stock.organization.value LIKE %:key% "
+			+ "OR stock.facility LIKE %:key% "
+			+ "OR stock.log.creator LIKE %:key%) "
+			+ "ORDER BY stock.date DESC")
+	public List<StockAdjustment> findAll(Pageable pageable,@Param("company")List<String> company,@Param("key")String key);
+	
 	@Query("SELECT COUNT(stock) FROM StockAdjustment stock WHERE stock.organization.id IN(:company)")
 	public Long count(@Param("company")List<String> company);
+	
+	@Query("SELECT COUNT(stock) FROM StockAdjustment stock WHERE "
+			+ "stock.organization.id IN(:company) "
+			+ "AND (stock.organization.value LIKE %:key% "
+			+ "OR stock.facility LIKE %:key% "
+			+ "OR stock.log.creator LIKE %:key%) "
+			+ "ORDER BY stock.date DESC")
+	public Long count(@Param("company")List<String> company,@Param("key")String key);
 }

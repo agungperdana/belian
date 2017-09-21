@@ -18,7 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.global.dm.Listable;
+import com.kratonsolution.belian.api.dm.IDValueRef;
+import com.kratonsolution.belian.common.dm.Referenceable;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -32,7 +33,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="product_category")
-public class ProductCategory implements Serializable,Listable
+public class ProductCategory implements Serializable,Referenceable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -55,6 +56,15 @@ public class ProductCategory implements Serializable,Listable
 	
 	public ProductCategory(){}
 
+	public ProductCategory(IDValueRef ref)
+	{
+		if(ref != null)
+		{
+			setId(ref.getId());
+			setName(ref.getValue());
+		}
+	}
+	
 	@Override
 	public String getLabel()
 	{

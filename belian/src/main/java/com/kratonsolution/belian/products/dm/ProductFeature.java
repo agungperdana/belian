@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.api.dm.IDValueRef;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -44,4 +46,13 @@ public class ProductFeature implements Serializable
 	private Long version;
 	
 	public ProductFeature(){}
+	
+	public ProductFeature(IDValueRef ref)
+	{
+		if(ref != null)
+		{
+			setId(ref.getId());
+			setValue(ref.getValue());
+		}
+	}
 }

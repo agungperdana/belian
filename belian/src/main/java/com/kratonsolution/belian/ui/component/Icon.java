@@ -32,8 +32,8 @@ public class Icon extends Vbox
 		label.setWidth("100%");
 		label.setStyle("align:right");
 		
-		setWidth("70px");
-		setHeight("70px");
+		setWidth("50px");
+		setHeight("50px");
 		setSpacing("0px");
 		setAlign("center");
 		setPack("center");

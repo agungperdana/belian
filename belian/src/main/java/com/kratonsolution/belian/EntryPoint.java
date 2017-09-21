@@ -1,7 +1,8 @@
 package com.kratonsolution.belian;
 
-import org.springframework.boot.SpringApplication;
+import org.springframework.boot.Banner;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -14,13 +15,15 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan
 @EnableTransactionManagement
 @EnableCaching
+@ComponentScan
 public class EntryPoint
 {
     public static void main( String[] args )
     {
-    	SpringApplication.run(EntryPoint.class, args);
+    	new SpringApplicationBuilder(EntryPoint.class).bannerMode(Banner.Mode.OFF).run(args);
+    	
+//    	SpringApplication.run(EntryPoint.class, args);
     }
 }

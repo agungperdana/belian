@@ -23,10 +23,9 @@ import org.zkoss.zul.Window;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.general.dm.Gender;
-import com.kratonsolution.belian.general.dm.MaritalStatus;
-import com.kratonsolution.belian.general.dm.Person;
-import com.kratonsolution.belian.general.svc.PersonService;
+import com.kratonsolution.belian.partys.dm.Gender;
+import com.kratonsolution.belian.partys.dm.Person;
+import com.kratonsolution.belian.partys.svc.PersonService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.RowUtils;
@@ -88,8 +87,8 @@ public class PersonRegistration extends Window
 		for(Gender gender:Gender.values())
 			genders.appendItem(gender.name(), gender.name());
 		
-		for(MaritalStatus status:MaritalStatus.values())
-			maritals.appendItem(status.name(),status.name());
+//		for(MaritalStatus status:MaritalStatus.values())
+//			maritals.appendItem(status.name(),status.name());
 		
 		Components.setDefault(genders);
 		Components.setDefault(maritals);
@@ -117,11 +116,11 @@ public class PersonRegistration extends Window
 					throw new WrongValueException(identity,"Name cannot be empty.");
 				
 				Person person = new Person();
-				person.setIdentity(identity.getText());
+				person.setCode(identity.getText());
 				person.setBirthDate(DateTimes.sql(date.getValue()));
 				person.setName(name.getText());
 				person.setGender(Gender.valueOf(Components.string(genders)));
-				person.setMaritalStatus(MaritalStatus.valueOf(Components.string(maritals)));
+//				person.setMaritalStatus(MaritalStatus.valueOf(Components.string(maritals)));
 				
 				service.add(person);
 				

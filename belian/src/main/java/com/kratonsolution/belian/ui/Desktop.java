@@ -5,13 +5,15 @@ package com.kratonsolution.belian.ui;
 
 import org.zkoss.zk.ui.GenericRichlet;
 import org.zkoss.zk.ui.Page;
+import org.zkoss.zul.Style;
+import org.zkoss.zul.Timer;
+import org.zkoss.zul.Vbox;
+import org.zkoss.zul.Vlayout;
 
-import com.google.common.base.Strings;
-import com.kratonsolution.belian.ui.healtcare.doctorappointment.DoctorAppointmentTimer;
-import com.kratonsolution.belian.ui.inventory.stockadmin.StockExpiredReminder;
-import com.kratonsolution.belian.ui.inventory.stockadmin.StockReminder;
-import com.kratonsolution.belian.ui.nav.IconBar;
-import com.kratonsolution.belian.ui.nav.NavigationMenu;
+import com.kratonsolution.belian.tools.view.KernelTask;
+import com.kratonsolution.belian.ui.nav.BMenuBar;
+import com.kratonsolution.belian.ui.nav.Fisheyes;
+import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * 
@@ -26,24 +28,34 @@ public class Desktop extends GenericRichlet
 	@Override
 	public void service(Page page) throws Exception
 	{
-		page.setTitle("BelianERP - 1.0");
+		Timer timer = new Timer(3600000);
+		timer.start();
 		
-		String device = page.getDesktop().getSession().getAttribute("device")!=null?page.getDesktop().getSession().getAttribute("device").toString():"";
-
-		if(!Strings.isNullOrEmpty(device) && !device.equalsIgnoreCase("NORMAL"))
-		{
-			/**
-			 * todo: handle request using mobile or tablet
-			 */
-		}
-		else
-		{
-			IconBar.injectInto(page);
-			NavigationMenu.injectInto(page);
-			
-			new DoctorAppointmentTimer().setPage(page);
-			new StockReminder().setPage(page);
-			new StockExpiredReminder().setPage(page);
-		}
+		KernelTask task = Springs.get(KernelTask.class);
+		
+		if(task != null)
+			task.clears();
+		
+		page.setTitle("BelianERP 1.0");
+		
+		Style style = new Style("/css/belian.css");
+		style.setPage(page);
+		
+		Vlayout midle = new Vlayout();
+		midle.setVflex("1");
+		
+		Vbox canvas = new Vbox();
+		canvas.setSclass("frmaedisplay");
+		canvas.setHflex("1");
+		canvas.setVflex("1");
+		canvas.setAlign("center");
+		canvas.setPack("center");
+		canvas.appendChild(new BMenuBar());
+		canvas.appendChild(midle);
+		canvas.appendChild((Fisheyes)Springs.get(KernelTask.class).setDocks(new Fisheyes()));
+	
+//		canvas.setPage(page);
+		
+		new UIDashboard().setPage(page);
 	}
 }

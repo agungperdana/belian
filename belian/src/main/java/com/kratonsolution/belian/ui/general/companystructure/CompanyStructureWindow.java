@@ -3,36 +3,24 @@
  */
 package com.kratonsolution.belian.ui.general.companystructure;
 
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Page;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zul.Caption;
-import org.zkoss.zul.Row;
 
 import com.kratonsolution.belian.ui.AbstractWindow;
-import com.kratonsolution.belian.ui.HasCreateForm;
-import com.kratonsolution.belian.ui.HasEditForm;
-import com.kratonsolution.belian.ui.HasGrid;
-import com.kratonsolution.belian.ui.nav.IconBar;
 
 /**
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class CompanyStructureWindow extends AbstractWindow implements HasGrid,HasCreateForm,HasEditForm
+public class CompanyStructureWindow extends AbstractWindow
 {
-	private Caption caption = new Caption(lang.get("navbar.menu.general.companystructure"));
-	
-	private CompanyStructureButton status = new CompanyStructureButton();
-	
-	public static CompanyStructureWindow injectInto(Page page)
+	public static CompanyStructureWindow newInstance(Page page)
 	{
 		CompanyStructureWindow window = new CompanyStructureWindow();
-		window.setPage(page);
 		window.init();
+		window.setDock(new CompanyStructureDock());
+		window.setPage(page);
+		window.doOverlapped();
 		
 		return window;
 	}
@@ -40,109 +28,12 @@ public class CompanyStructureWindow extends AbstractWindow implements HasGrid,Ha
 	private CompanyStructureWindow()
 	{
 		super();
-		setWidth("750px");
-		setHeight("480px");
 	}
 	
 	protected void init()
 	{
-		caption.setImage("/icons/companystructure.png");
-		appendChild(caption);
-		insertGrid();
-		insertStatus();
-		status.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				if(!isVisible())
-					setVisible(true);
-				else
-					setTopmost();
-			}
-		});
-	}
-	
-	@Override
-	public void onClose()
-	{
-		setVisible(false);
-		removeStatus();
-		setPage(null);
-	}
-
-	@Override
-	public void insertStatus()
-	{
-		for(Component component:getPage().getRoots())
-		{
-			if(component instanceof IconBar)
-				component.appendChild(status);
-		}
-	}
-
-	@Override
-	public void removeStatus()
-	{
-		for(Component component:getPage().getRoots())
-		{
-			if(component instanceof IconBar)
-				component.removeChild(status);
-		}
-	}
-
-	@Override
-	public void insertEditForm(Row row)
-	{
-	}
-
-	@Override
-	public void removeEditForm()
-	{
-		for(Component component:getChildren())
-		{
-			if(component instanceof CompanyStructureEditContent)
-			{
-				removeChild(component);
-				break;
-			}
-		}
-	}
-
-	@Override
-	public void insertCreateForm()
-	{
-	}
-
-	@Override
-	public void removeCreateForm()
-	{
-		for(Component component:getChildren())
-		{
-			if(component instanceof CompanyStructureFormContent)
-			{
-				removeChild(component);
-				break;
-			}
-		}
-	}
-
-	@Override
-	public void insertGrid()
-	{
+		caption.setLabel(lang.get("navbar.menu.general.companystructure"));
+		caption.setImage("/icons/companystructure32.png");
 		appendChild(new CompanyStructureContent());
 	}
-
-	@Override
-	public void removeGrid()
-	{
-		for(Component component:getChildren())
-		{
-			if(component instanceof CompanyStructureContent)
-			{
-				removeChild(component);
-				break;
-			}
-		}
-	}	
 }

@@ -3,7 +3,7 @@
  */
 package com.kratonsolution.belian.ui.component;
 
-import com.kratonsolution.belian.general.dm.UnitOfMeasure;
+import com.kratonsolution.belian.products.dm.UnitOfMeasure;
 
 /**
  * @author Agung Dodi Perdana

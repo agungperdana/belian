@@ -10,11 +10,7 @@ package com.kratonsolution.belian.products.dm;
 public enum PriceComponentType
 {
 	BASE_PRICE("Harga Dasar Penjualan","Base Price"),
-	DISCOUNT_COMPONENT("Potongan Harga","Discount Component"),
-	SURCHARGE("Biaya Tambahan","Surcharge Component"),
-	MANUFACTURE("Harga Saran Pabrik","Manufacture Sugested Price"),
-	ONE_TIME_CHARGE("Biaya Langsung","One Time Charge Component"),
-	RECURRING_CHARGE("Biaya Berulang","Recurring Charge Component");
+	MANUFACTURE("Harga Saran Pabrik","Manufacture Sugested Price");
 
 	private String inID;
 

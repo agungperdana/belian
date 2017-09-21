@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.global.dm.UserSettingRepository;
+import com.kratonsolution.belian.hr.dm.EmployeeRepository;
 import com.kratonsolution.belian.security.dm.User;
 import com.kratonsolution.belian.security.dm.UserRepository;
 
@@ -29,6 +30,9 @@ public class UserService
 {
 	@Autowired
 	private UserRepository repository;
+	
+	@Autowired
+	private EmployeeRepository employeeRepo;
 	
 	@Autowired
 	private UserSettingRepository settingRepository;
@@ -64,6 +68,9 @@ public class UserService
 	{
 		user.setPassword(encryptor.encryptPassword(user.getPassword()));
 		repository.save(user);
+		
+		user.getEmployee().setUsername(user.getUserName());
+		employeeRepo.saveAndFlush(user.getEmployee());
 	}
 	
 	@Secured("ROLE_USER_UPDATE")

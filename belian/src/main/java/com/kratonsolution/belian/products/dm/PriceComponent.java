@@ -9,8 +9,11 @@ import java.sql.Date;
 import java.text.NumberFormat;
 import java.util.UUID;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -20,10 +23,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.accounting.dm.Currency;
-import com.kratonsolution.belian.general.dm.Geographic;
-import com.kratonsolution.belian.general.dm.Party;
-import com.kratonsolution.belian.global.dm.Listable;
+import com.kratonsolution.belian.api.dm.IDValueRef;
+import com.kratonsolution.belian.common.dm.Referenceable;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -37,7 +38,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="price_component")
-public class PriceComponent implements Serializable,Listable
+public class PriceComponent implements Serializable,Referenceable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -51,24 +52,30 @@ public class PriceComponent implements Serializable,Listable
 	@Column(name="price")
 	private BigDecimal price = BigDecimal.ONE;
 	
-	@Column(name="percent")
-	private BigDecimal percent = BigDecimal.ONE;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_currency")
-	private Currency currency;
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="id",column=@Column(name="currency_id")),
+		@AttributeOverride(name="value",column=@Column(name="currency_value"))
+	})
+	private IDValueRef currency;
 	
 	@Column(name="type")
 	@Enumerated(EnumType.STRING)
 	private PriceComponentType type = PriceComponentType.BASE_PRICE;
 
-	@ManyToOne
-	@JoinColumn(name="fk_geographic")
-	private Geographic geographic;
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="id",column=@Column(name="area_id")),
+		@AttributeOverride(name="value",column=@Column(name="area_value"))
+	})
+	private IDValueRef area;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_category")
-	private ProductCategory category;
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="id",column=@Column(name="category_id")),
+		@AttributeOverride(name="value",column=@Column(name="category_value"))
+	})
+	private IDValueRef category;
 	
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="fk_quantity_break")
@@ -82,22 +89,42 @@ public class PriceComponent implements Serializable,Listable
 	@Column(name="sales_type")
 	private SaleType saleType = SaleType.STANDARD_RETAIL_SALES;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_party")
-	private Party party;
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="id",column=@Column(name="organization_id")),
+		@AttributeOverride(name="value",column=@Column(name="organization_value"))
+	})
+	private IDValueRef organization;
+	
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="id",column=@Column(name="customer_id")),
+		@AttributeOverride(name="value",column=@Column(name="customer_value"))
+	})
+	private IDValueRef customer;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_product")
 	private Product product;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_product_feature")
-	private ProductFeature feature;
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="id",column=@Column(name="feature_id")),
+		@AttributeOverride(name="value",column=@Column(name="feature_value"))
+	})
+	private IDValueRef feature;
 	
 	@Version
 	private Long version;
 	
-	public PriceComponent(){}
+	public PriceComponent()
+	{
+		setCurrency(new IDValueRef());
+		setArea(new IDValueRef());
+		setOrganization(new IDValueRef());
+		setCategory(new IDValueRef());
+		setFeature(new IDValueRef());
+	}
 
 	@Override
 	public String getLabel()
@@ -112,5 +139,25 @@ public class PriceComponent implements Serializable,Listable
 	public String getValue()
 	{
 		return price.toString();
+	}
+	
+	public boolean isValidArea(IDValueRef area)
+	{
+		return area != null && this.area != null && area.getId().equals(this.area.getId());
+	}
+	
+	public boolean isValidFeature(IDValueRef feature)
+	{
+		return feature != null && this.feature != null && feature.getId().equals(this.feature.getId());
+	}
+	
+	public boolean isValidParty(IDValueRef party)
+	{
+		return party != null && this.organization != null && party.getId().equals(this.organization.getId());
+	}
+	
+	public boolean isBasic()
+	{
+		return this.feature == null && this.area == null && this.organization == null;
 	}
 }

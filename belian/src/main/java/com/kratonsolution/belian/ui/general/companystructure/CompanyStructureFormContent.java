@@ -3,9 +3,6 @@
  */
 package com.kratonsolution.belian.ui.general.companystructure;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -21,8 +18,8 @@ import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.general.dm.CompanyStructure;
 import com.kratonsolution.belian.general.dm.CompanyStructureType;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
-import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.partys.svc.OrganizationService;
+import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -32,7 +29,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class CompanyStructureFormContent extends FormContent
+public class CompanyStructureFormContent extends AbstractForm
 {	
 	private CompanyStructureService service = Springs.get(CompanyStructureService.class);
 	
@@ -45,8 +42,6 @@ public class CompanyStructureFormContent extends FormContent
 	private Listbox organizations = Components.newSelect(organizationService.findAllNotIn(service.findAllOrganizationId()), false);
 	
 	private Listbox types = Components.newSelect();
-	
-	private Collection<CompanyStructureDataListener> listeners = new ArrayList<CompanyStructureDataListener>();
 	
 	private CompanyStructure parent;
 	
@@ -61,7 +56,14 @@ public class CompanyStructureFormContent extends FormContent
 	@Override
 	public void initToolbar()
 	{
-		toolbar.removeChild(toolbar.getCancel());
+		toolbar.getCancel().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				Flow.next(getParent(),null);
+			}
+		});
 		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
@@ -113,11 +115,5 @@ public class CompanyStructureFormContent extends FormContent
 		rows.appendChild(row2);
 		rows.appendChild(row3);
 		rows.appendChild(row4);
-	}
-	
-	public void addDataListener(CompanyStructureDataListener listener)
-	{
-		if(listener != null)
-			listeners.add(listener);
 	}
 }

@@ -30,14 +30,14 @@ import org.zkoss.zul.Textbox;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.CompanyStructure;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
-import com.kratonsolution.belian.general.svc.OrganizationService;
+import com.kratonsolution.belian.partys.svc.OrganizationService;
 import com.kratonsolution.belian.security.dm.AccessRole;
 import com.kratonsolution.belian.security.dm.Module;
 import com.kratonsolution.belian.security.dm.ModuleGroup;
 import com.kratonsolution.belian.security.dm.Role;
 import com.kratonsolution.belian.security.svc.ModuleService;
 import com.kratonsolution.belian.security.svc.RoleService;
-import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
@@ -48,7 +48,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class RoleFormContent extends FormContent
+public class RoleFormContent extends AbstractForm
 {	
 	private RoleService service = Springs.get(RoleService.class);
 	
@@ -58,11 +58,11 @@ public class RoleFormContent extends FormContent
 	
 	private CompanyStructureService structure = Springs.get(CompanyStructureService.class);
 	
-	private Textbox code = new Textbox();
+	private Textbox code = Components.mandatoryTextBox(false);
 	
-	private Textbox name = new Textbox();
+	private Textbox name = Components.mandatoryTextBox(false);
 	
-	private Textbox note = new Textbox();
+	private Textbox note = Components.stdTextBox(null,false);
 	
 	private Tabbox tabbox = new Tabbox();
 	
@@ -145,16 +145,8 @@ public class RoleFormContent extends FormContent
 	@Override
 	public void initForm()
 	{
-		code.setConstraint("no empty");
-		code.setWidth("250px");
-
-		name.setConstraint("no empty");
-		name.setWidth("250px");
-		
-		note.setWidth("300px");
-		
 		grid.appendChild(new Columns());
-		grid.getColumns().appendChild(new Column(null,null,"75px"));
+		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
 		
 		Row row1 = new Row();

@@ -27,11 +27,20 @@ public class FormToolbar extends Toolbar
 	
 	private Toolbarbutton print = new Toolbarbutton(lang.get("label.component.button.print"),"/icons/print.png");
 	
+	private Toolbarbutton approve = new Toolbarbutton(lang.get("label.component.button.accept"),"/icons/approved.png");
+	
+	private Toolbarbutton reject = new Toolbarbutton(lang.get("label.component.button.reject"),"/icons/rejected.png");
+	
+	private Toolbarbutton pending = new Toolbarbutton(lang.get("label.component.button.pending"),"/icons/pending24.png");
+	
+	private Toolbarbutton review = new Toolbarbutton(lang.get("label.component.button.review"),"/icons/review24.png");
+	
+	private Toolbarbutton close = new Toolbarbutton(lang.get("label.component.button.close"),"/icons/close24.png");
+	
 	public FormToolbar()
 	{
 		setWidth("100%");
-		setLeft("0px");
-		setHeight("20%");
+		setHeight("36px");
 	
 		appendChild(cancel);
 		appendChild(save);

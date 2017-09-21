@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.general.dm;
 
-import java.io.Serializable;
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,7 +23,8 @@ import javax.persistence.Version;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
-import com.kratonsolution.belian.global.dm.Listable;
+import com.kratonsolution.belian.common.dm.Referenceable;
+import com.kratonsolution.belian.partys.dm.Organization;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -37,7 +37,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="company_structure")
-public class CompanyStructure implements Serializable,Listable
+public class CompanyStructure implements Referenceable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();

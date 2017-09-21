@@ -3,9 +3,6 @@
  */
 package com.kratonsolution.belian.ui.general.companystructure;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -24,8 +21,8 @@ import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.general.dm.CompanyStructure;
 import com.kratonsolution.belian.general.dm.CompanyStructureType;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
-import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.partys.svc.OrganizationService;
+import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -34,7 +31,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class CompanyStructureEditContent extends FormContent
+public class CompanyStructureEditContent extends AbstractForm
 {	
 	private CompanyStructureService service = Springs.get(CompanyStructureService.class);
 	
@@ -47,8 +44,6 @@ public class CompanyStructureEditContent extends FormContent
 	private Listbox organizations = Components.newSelect(organizationService.findAll(), false);
 	
 	private Listbox types = Components.newSelect();
-	
-	private Collection<CompanyStructureDataListener> listeners = new ArrayList<CompanyStructureDataListener>();
 	
 	private CompanyStructure structure;
 
@@ -78,10 +73,7 @@ public class CompanyStructureEditContent extends FormContent
 					structure.setTo(DateTimes.sql(to.getValue()));
 					service.edit(structure);
 				
-					for(CompanyStructureDataListener listener:listeners)
-						listener.fireDataUpdated(structure);
-				
-					Clients.showNotification("Data successfully updated.");
+					Clients.showNotification(lang.get("message.updatedata"));
 				}
 			}
 		});
@@ -94,10 +86,7 @@ public class CompanyStructureEditContent extends FormContent
 			{
 				if(structure != null)
 				{
-					CompanyStructureFormContent form = new CompanyStructureFormContent(structure);
-					for(CompanyStructureDataListener listener:listeners)
-						form.addDataListener(listener);
-					
+					CompanyStructureFormContent form = new CompanyStructureFormContent(structure);					
 					canvas.getChildren().clear();
 					canvas.appendChild(form);
 				}
@@ -157,10 +146,5 @@ public class CompanyStructureEditContent extends FormContent
 			rows.appendChild(row3);
 			rows.appendChild(row4);
 		}
-	}
-	
-	public void addDataListener(CompanyStructureDataListener listener)
-	{
-		listeners.add(listener);
 	}
 }

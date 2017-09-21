@@ -15,7 +15,10 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.security.svc.UserService;
-import com.kratonsolution.belian.ui.FormContent;
+import com.kratonsolution.belian.ui.AbstractForm;
+import com.kratonsolution.belian.ui.setting.SettingForm;
+import com.kratonsolution.belian.ui.util.Components;
+import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
@@ -24,22 +27,25 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class ChangePassword extends FormContent
+public class ChangePassword extends AbstractForm
 {
-	private final UserService controller = Springs.get(UserService.class);
+	private UserService service = Springs.get(UserService.class);
 	
 	private Row row;
 	
-	private Textbox oldPassword = new Textbox();
+	private Textbox oldPassword = Components.mandatoryTextBox(false);
 	
-	private Textbox newPassword = new Textbox();
+	private Textbox newPassword = Components.mandatoryTextBox(false);
 	
-	private Textbox renewPassword = new Textbox();
+	private Textbox renewPassword = Components.mandatoryTextBox(false);
 	
-	public ChangePassword(Row row)
+	private boolean setting;
+	
+	public ChangePassword(Row row,boolean setting)
 	{
 		super();
 		this.row = row;
+		this.setting = setting;
 		initToolbar();
 		initForm();
 	}
@@ -55,9 +61,10 @@ public class ChangePassword extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				UserWindow window = (UserWindow)getParent();
-				window.removeChild(get());
-				window.insertEditForm(row);
+				if(!setting)
+					Flow.next(getParent(), new UserEditContent(row));
+				else
+					Flow.next(getParent(), new SettingForm());
 			}
 		});
 		
@@ -70,11 +77,12 @@ public class ChangePassword extends FormContent
 					Messagebox.show("New Password not equal");
 				else
 				{
-					controller.changePassword(RowUtils.string(row,4), newPassword.getText(), renewPassword.getText());
+					service.changePassword(RowUtils.id(row), newPassword.getText(), renewPassword.getText());
 					
-					UserWindow window = (UserWindow)getParent();
-					window.removeChild(get());
-					window.insertEditForm(row);
+					if(!setting)
+						Flow.next(getParent(), new UserEditContent(row));
+					else
+						Flow.next(getParent(), new SettingForm());
 				}
 			}
 		});
@@ -88,14 +96,10 @@ public class ChangePassword extends FormContent
 	{
 		oldPassword.setType("password");
 		oldPassword.setReadonly(true);
-		oldPassword.setWidth("250px");
 		oldPassword.setText("user password");
 		
 		newPassword.setType("password");
-		newPassword.setWidth("250px");
-		
 		renewPassword.setType("password");
-		renewPassword.setWidth("250px");
 		
 		Row row1 = new Row();
 		row1.appendChild(new Label("Current Password"));
@@ -123,5 +127,4 @@ public class ChangePassword extends FormContent
 	{
 		return this;
 	}
-
 }

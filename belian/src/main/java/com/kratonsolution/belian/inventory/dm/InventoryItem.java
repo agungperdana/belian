@@ -3,22 +3,26 @@
  */
 package com.kratonsolution.belian.inventory.dm;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.facility.dm.Container;
-import com.kratonsolution.belian.facility.dm.Facility;
-import com.kratonsolution.belian.products.dm.Product;
+import com.kratonsolution.belian.api.dm.IDValueRef;
+import com.kratonsolution.belian.common.dm.AuditLog;
+import com.kratonsolution.belian.common.dm.Logable;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -32,7 +36,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="inventory_item")
-public class InventoryItem implements Serializable
+public class InventoryItem implements Logable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -40,26 +44,56 @@ public class InventoryItem implements Serializable
 	@Column(name="expired_date")
 	private Date expiredDate;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_product")
-	private Product product;
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="id",column=@Column(name="product_id")),
+		@AttributeOverride(name="value",column=@Column(name="product_value"))
+	})
+	private IDValueRef product;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_facility")
-	private Facility facility;
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="id",column=@Column(name="facility_id")),
+		@AttributeOverride(name="value",column=@Column(name="facility_value"))
+	})
+	private IDValueRef facility;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_container")
-	private Container container;
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="id",column=@Column(name="container_id")),
+		@AttributeOverride(name="value",column=@Column(name="container_value"))
+	})
+	private IDValueRef container;
 	
 	@Column(name="serial_number")
 	private String serialNumber;
 	
-	@Column(name="onhand")
+	@Column(name="on_hand")
 	private BigDecimal onhand = BigDecimal.ZERO;
+	
+	@Column(name="on_order")
+	private BigDecimal onorder = BigDecimal.ZERO;
+	
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="id",column=@Column(name="organization_id")),
+		@AttributeOverride(name="value",column=@Column(name="organization_value"))
+	})
+	private IDValueRef organization;
+	
+	@Embedded
+	private AuditLog log;
 	
 	@Version
 	private Long version;
 	
-	public InventoryItem(){}
+	@OneToMany(mappedBy="item",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<StockHistory> historys = new HashSet<>();
+	
+	public InventoryItem()
+	{
+		setOrganization(new IDValueRef());
+		setContainer(new IDValueRef());
+		setLog(new AuditLog());
+	}
 }

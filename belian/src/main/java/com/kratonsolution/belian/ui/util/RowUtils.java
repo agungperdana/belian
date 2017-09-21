@@ -5,12 +5,14 @@ package com.kratonsolution.belian.ui.util;
 
 import java.math.BigDecimal;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Cell;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
@@ -20,8 +22,6 @@ import org.zkoss.zul.Timebox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.ui.AbstractWindow;
-import com.kratonsolution.belian.ui.HasEditForm;
 
 /**
  * 
@@ -39,7 +39,7 @@ public class RowUtils
 		if(com != null && com instanceof Timebox)
 		{
 			Timebox timebox = (Timebox)com;
-			return DateTimes.time(timebox.getValue());
+			return DateTimes.time(timebox.getValue(),true);
 		}
 		
 		return null;
@@ -98,11 +98,20 @@ public class RowUtils
 		if(object != null)
 		{
 			if(object instanceof Label)
-				return new BigDecimal(((Label)object).getValue());
+			{
+				if(Strings.isNullOrEmpty(((Label)object).getValue()))
+					return BigDecimal.ZERO;
+
+				String txt = ((Label)object).getValue().replace(",", "");
+				
+				return new BigDecimal(txt);
+			}
 			if(object instanceof Doublebox)
 				return BigDecimal.valueOf(((Doublebox)object).doubleValue());
 			if(object instanceof Listbox)
 				return Components.decimal((Listbox)object);
+			if(object instanceof Decimalbox)
+				return ((Decimalbox)object).getValue();
 		}
 		
 		return BigDecimal.ZERO;
@@ -122,6 +131,18 @@ public class RowUtils
 		Object object = row.getChildren().get(index);
 		if(object != null && object instanceof Datebox)
 			return ((Datebox)object).getValue();
+		
+		return null;
+	}
+	
+	public static Timestamp timestam(Row row,int index)
+	{
+		Object object = row.getChildren().get(index);
+		if(object != null && object instanceof Datebox && ((Datebox)object).getValue() != null)
+		{
+			Date date = ((Datebox)object).getValue();
+			return new Timestamp(date.getTime());
+		}
 		
 		return null;
 	}
@@ -149,6 +170,15 @@ public class RowUtils
 		
 		return false;
 	}
+	
+	public static boolean isChecked(Row row)
+	{
+		Component com = row.getFirstChild();
+		if(com != null && com instanceof Checkbox)
+			return ((Checkbox)com).isChecked();
+		
+		return false;
+	}
 
 	public static void checked(Row row,int idex)
 	{
@@ -167,18 +197,6 @@ public class RowUtils
 			((Checkbox)component).setChecked(false);
 		}
 	}
-	
-	public static AbstractWindow window(Row row)
-	{
-		if(row.getParent() != null && row.getParent().getParent() != null && 
-		   row.getParent().getParent().getParent() != null && row.getParent().getParent().getParent().getParent() != null)
-		{
-			if(row.getParent().getParent().getParent().getParent() instanceof HasEditForm)
-				return (AbstractWindow)row.getParent().getParent().getParent().getParent();
-		}
-			
-		return null;
-	}
 
 	public static Row row(String label,String value)
 	{
@@ -187,6 +205,26 @@ public class RowUtils
 			Row row = new Row();
 			row.appendChild(new Label(label));
 			row.appendChild(new Label(value));
+			
+			return row;
+		}
+		
+		return new Row();
+	}
+	
+	public static Row row(String label,String value,String align)
+	{
+		if(!Strings.isNullOrEmpty(label))
+		{
+			Label lb = new Label(label);
+			lb.setStyle("float:"+align+";font-weight:bolder");
+			
+			Label con = new Label(value);
+			con.setStyle("float:"+align+";font-weight:bolder");
+			
+			Row row = new Row();
+			row.appendChild(lb);
+			row.appendChild(con);
 			
 			return row;
 		}

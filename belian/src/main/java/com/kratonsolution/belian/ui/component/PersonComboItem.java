@@ -5,7 +5,7 @@ package com.kratonsolution.belian.ui.component;
 
 import org.zkoss.zul.Comboitem;
 
-import com.kratonsolution.belian.general.dm.Person;
+import com.kratonsolution.belian.partys.dm.Person;
 
 import lombok.Getter;
 
@@ -21,6 +21,6 @@ public class PersonComboItem extends Comboitem
 	public PersonComboItem(Person person)
 	{
 		this.person = person;
-		setLabel(person.getIdentity()+" - "+person.getName());
+		setLabel(person.getCode()+" - "+person.getName());
 	}
 }

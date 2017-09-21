@@ -16,6 +16,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,6 +39,7 @@ public class AccessRole implements Serializable
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="fk_module")
+	@NotFound(action=NotFoundAction.IGNORE)
 	private Module module;
 	
 	@ManyToOne(fetch=FetchType.LAZY)

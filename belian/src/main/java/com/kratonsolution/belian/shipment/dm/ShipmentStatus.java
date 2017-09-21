@@ -4,7 +4,7 @@
 package com.kratonsolution.belian.shipment.dm;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -34,14 +34,14 @@ public class ShipmentStatus implements Serializable
 	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="date")
-	private Date date;
+	private Timestamp date;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="type")
-	private ShipmentStatusType type = ShipmentStatusType.Scheduled;
+	private ShipmentStatusType type = ShipmentStatusType.SCHEDULED;
 
 	@ManyToOne
-	@JoinColumn(name="sk_shipment")
+	@JoinColumn(name="fk_shipment")
 	private Shipment shipment;
 	
 	@Version

@@ -5,9 +5,11 @@ package com.kratonsolution.belian.products.dm;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.UUID;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -16,6 +18,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
+import com.kratonsolution.belian.api.dm.IDValueRef;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +35,7 @@ import lombok.Setter;
 public class ProductFeatureApplicability implements Serializable
 {
 	@Id
-	private String id = UUID.randomUUID().toString();
+	private String id = "0";
 	
 	@Column(name="start")
 	private Date start;
@@ -47,9 +51,12 @@ public class ProductFeatureApplicability implements Serializable
 	@JoinColumn(name="fk_product")
 	private Product product;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_feature")
-	private ProductFeature feature;
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="id",column=@Column(name="feature_id")),
+		@AttributeOverride(name="value",column=@Column(name="feature_value"))
+	})
+	private IDValueRef feature;
 	
 	@Version
 	private Long version;

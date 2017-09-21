@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.general.dm;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -14,7 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.global.dm.Listable;
+import com.kratonsolution.belian.api.dm.IDValueRef;
+import com.kratonsolution.belian.common.dm.Referenceable;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -28,7 +28,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="geographic")
-public class Geographic implements Serializable,Listable
+public class Geographic implements Referenceable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -48,6 +48,17 @@ public class Geographic implements Serializable,Listable
 	
 	@Version
 	private Long version;
+	
+	public Geographic(){}
+	
+	public Geographic(IDValueRef ref)
+	{
+		if(ref != null)
+		{
+			setId(ref.getId());
+			setName(ref.getValue());
+		}
+	}
 
 	@Override
 	public String getLabel()

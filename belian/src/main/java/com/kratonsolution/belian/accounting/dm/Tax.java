@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.accounting.dm;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -14,7 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.global.dm.Listable;
+import com.kratonsolution.belian.common.dm.Referenceable;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -29,7 +28,7 @@ import lombok.Setter;
 @Entity
 @Cacheable
 @Table(name="tax")
-public class Tax implements Serializable,Listable
+public class Tax implements Referenceable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();

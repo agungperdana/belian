@@ -19,7 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.general.dm.Party;
+import com.kratonsolution.belian.partys.dm.Party;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -46,7 +46,7 @@ public abstract class Statuses implements Serializable
 	
 	@Column(name="type")
 	@Enumerated(EnumType.STRING)
-	protected StatusType type = StatusType.Created;
+	protected StatusType type = StatusType.CREATED;
 
 	@ManyToOne
 	@JoinColumn(name="fk_party")

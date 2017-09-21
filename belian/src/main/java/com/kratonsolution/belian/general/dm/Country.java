@@ -3,7 +3,6 @@
  */
 package com.kratonsolution.belian.general.dm;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -11,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
+import com.kratonsolution.belian.common.dm.Referenceable;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +24,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="country")
-public class Country implements Serializable
+public class Country implements Referenceable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
@@ -38,4 +39,17 @@ public class Country implements Serializable
 	private Long version;
 	
 	public Country(){}
+
+	@Override
+	public String getLabel()
+	{
+		return getName();
+	}
+
+	@Override
+	public String getValue()
+	{
+		// TODO Auto-generated method stub
+		return getId();
+	}
 }

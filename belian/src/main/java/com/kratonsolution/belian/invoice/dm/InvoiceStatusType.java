@@ -11,6 +11,7 @@ public enum InvoiceStatusType
 {
 	SEND("Terkirim","Send"),
 	VOID("Tidak Berlaku","Void"),
+	PAID("Lunas","Paid"),
 	APPROVED("Disetujui","Approved");
 
 	private String inID;

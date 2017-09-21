@@ -3,17 +3,20 @@
  */
 package com.kratonsolution.belian.ui.hr.employment;
 
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
+import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
+import org.zkoss.zul.event.ZulEvents;
 
 import com.kratonsolution.belian.hr.svc.EmploymentService;
 import com.kratonsolution.belian.ui.GridContent;
@@ -38,29 +41,26 @@ public class EmploymentGridContent extends GridContent
 
 	protected void initToolbar()
 	{
-		gridToolbar.setParent(this);
-		gridToolbar.getRefresh().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		toolbar.setParent(this);
+		toolbar.getRefresh().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				grid.getPagingChild().setActivePage(0);
-				grid.setModel(new EmploymentModel(8));
+				Flow.next(getParent(), new EmploymentGridContent());
 			}
 		});
 		
-		gridToolbar.getNew().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		toolbar.getNew().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				EmploymentWindow window = (EmploymentWindow)getParent();
-				window.removeGrid();
-				window.insertCreateForm();
+				Flow.next(getParent(), new EmploymentFormContent());
 			}
 		});
 		
-		gridToolbar.getSelect().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		toolbar.getSelect().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
@@ -76,13 +76,13 @@ public class EmploymentGridContent extends GridContent
 						checkbox.setChecked(true);
 					}
 					
-					gridToolbar.removeChild(gridToolbar.getSelect());
-					gridToolbar.insertBefore(gridToolbar.getDeselect(),gridToolbar.getDelete());
+					toolbar.removeChild(toolbar.getSelect());
+					toolbar.insertBefore(toolbar.getDeselect(),toolbar.getDelete());
 				}
 			}
 		});
 		
-		gridToolbar.getDeselect().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		toolbar.getDeselect().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
@@ -97,18 +97,18 @@ public class EmploymentGridContent extends GridContent
 						checkbox.setChecked(false);						
 					}
 				
-					gridToolbar.removeChild(gridToolbar.getDeselect());
-					gridToolbar.insertBefore(gridToolbar.getSelect(),gridToolbar.getDelete());
+					toolbar.removeChild(toolbar.getDeselect());
+					toolbar.insertBefore(toolbar.getSelect(),toolbar.getDelete());
 				}
 			}
 		});
 		
-		gridToolbar.getDelete().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		toolbar.getDelete().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("Are you sure want to remove the data(s) ?","Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
+				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 				{
 					@Override
 					public void onEvent(Event event) throws Exception
@@ -130,14 +130,14 @@ public class EmploymentGridContent extends GridContent
 								}
 							}
 							
-							grid.setModel(new EmploymentModel(8));
+							Flow.next(getParent(), new EmploymentGridContent());
 						}
 					}
 				});
 			}
 		});
 		
-		gridToolbar.getSearch().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		toolbar.getSearch().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
@@ -149,49 +149,54 @@ public class EmploymentGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final EmploymentModel model = new EmploymentModel(8);
+		final EmploymentModel model = new EmploymentModel(utils.getRowPerPage());
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
-		grid.setEmptyMessage("No Employment data exist.");
+		grid.setEmptyMessage(lang.get("message.grid.empty"));
 		grid.setModel(model);
 		grid.setRowRenderer(new EmploymentRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
-		grid.setPageSize(8);
+		grid.setPageSize(utils.getRowPerPage());
 		grid.appendChild(new Columns());
 		
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Start",null,"85px"));
-		grid.getColumns().appendChild(new Column("End",null,"85px"));
-		grid.getColumns().appendChild(new Column("Name",null,"150px"));
-		grid.getColumns().appendChild(new Column("Company",null,"150px"));
-		grid.getColumns().appendChild(new Column(null,null,"1px"));
+		grid.getColumns().appendChild(new Column(lang.get("employment.grid.column.start"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("employment.grid.column.end"),null,"85px"));
+		grid.getColumns().appendChild(new Column(lang.get("employment.grid.column.employee"),null,"150px"));
+		grid.getColumns().appendChild(new Column(lang.get("employment.grid.column.employer"),null,"150px"));
+		grid.getColumns().appendChild(new Column());
 		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("4");
-		
+		grid.addEventListener(ZulEvents.ON_AFTER_RENDER, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				Grid target = (Grid)event.getTarget();
+				for(Component com:target.getRows().getChildren())
+				{
+					com.addEventListener(Events.ON_CLICK,new EventListener<Event>()
+					{
+						@Override
+						public void onEvent(Event ev) throws Exception
+						{
+							Row row = (Row)ev.getTarget();
+							Flow.next(getParent(), new EmploymentEditContent(row));
+						}
+					});
+				}
+			}
+		});
 		grid.addEventListener("onPaging",new EventListener<PagingEvent>()
 		{
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), 8);
+				model.next(event.getActivePage(), utils.getRowPerPage());
 				grid.setModel(model);
 			}
 		});
-		
-		Rows rows = grid.getRows();
-		for(Object object:rows.getChildren())
-		{
-			final Row row = (Row)object;
-			row.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-			{
-				@Override
-				public void onEvent(Event event) throws Exception
-				{
-					Flow.next(getParent(), new EmploymentEditContent(row));
-				}
-			});
-		}
 	}
 }

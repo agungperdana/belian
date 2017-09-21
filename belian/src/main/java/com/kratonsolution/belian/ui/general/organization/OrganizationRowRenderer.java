@@ -9,7 +9,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
 import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.general.dm.Organization;
+import com.kratonsolution.belian.partys.dm.Organization;
 
 /**
  * 
@@ -24,11 +24,11 @@ public class OrganizationRowRenderer implements RowRenderer<Organization>
 		if(data != null)
 		{
 			row.appendChild(new Checkbox());
-			row.appendChild(new Label(data.getIdentity()));
+			row.appendChild(new Label(data.getCode()));
 			row.appendChild(new Label(data.getName()));
+			row.appendChild(new Label(data.getBirthPlace()!=null?data.getBirthPlace().getName():""));
 			row.appendChild(new Label(DateTimes.format(data.getBirthDate())));
 			row.appendChild(new Label(data.getTaxCode()));
-			row.appendChild(new Label(data.getType() != null?data.getType().name():""));
 			row.appendChild(new Label(data.getId()));
 		}
 	}

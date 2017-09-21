@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/invoice.css}"/>
+</head>
+<body>
+	<table>
+	<thead>
+	<tr style="border-bottom: solid silver 1px;">
+		<th class="doc-head" th:text="${title}"/>
+		<th align="right" width="30%">
+			<table style="width: 100%" border="1">
+				<tr><td>Organisasi</td><td th:text="${company?.name}"/></tr>
+				<tr><td>Dari Tanggal </td><td th:text="${from}"/></tr>
+				<tr><td>Sampai Tanggal </td><td th:text="${to}"/></tr>
+			</table>
+		</th>
+	</tr>
+	<tr><th colspan="2">&nbsp;</th></tr>
+	</thead>
+	<tbody>
+	<tr>
+		<td colspan="2">
+			<table style="width: 100%" th:each="data:${datas}">
+			<thead style="border-bottom: solid silver 1px;">
+				<tr>
+					<th align="center" colspan="5" th:text="${data.company?.name}"/>
+				</tr>
+				<tr>
+					<th align="left">Tanggal</th>
+					<th align="left">Nomor</th>
+					<th align="left">Pelanggan</th>
+					<th align="left">Tipe</th>
+					<th align="left">Pembayaran</th>
+					<th align="right">Total</th>
+				</tr>
+			</thead>
+			<tbody style="border-bottom: solid silver 1px;">
+			<tr th:each="receipt:${data.payments}">
+				<td align="left" width="10%" th:text="${#dates.format(receipt.efectiveDate,'dd-MM-yyyy')}"/>
+				<td align="left" width="15%" th:text="${receipt.number}"/>
+				<td align="left" width="55%" th:text="${receipt.payer?.value}"/>
+				<td align="left" width="55%" th:text="${receipt.getType()}"/>
+				<td align="left" width="10%" th:text="${receipt.method}"/>
+				<td align="right" width="10%" th:text="${#numbers.formatDecimal(receipt.amount,1,'POINT',0,'COMMA')}"/>
+			</tr>
+			</tbody>
+			<tfoot>
+			<tr>
+				<td align="right" style="font-weight: bolder;" colspan="4">&nbsp;</td>
+				<td align="left" style="font-weight: bolder;color:orange;">TUNAI</td>
+				<td align="right" style="font-weight: bolder;color:orange;" th:text="${#numbers.formatDecimal(data.cash,1,'POINT',0,'COMMA')}"/>
+			</tr>
+			<tr>
+				<td align="right" style="font-weight: bolder;" colspan="4">&nbsp;</td>
+				<td align="left" style="font-weight: bolder;color:orange;">DEBIT</td>
+				<td align="right" style="font-weight: bolder;color:orange;" th:text="${#numbers.formatDecimal(data.debit,1,'POINT',0,'COMMA')}"/>
+			</tr>
+			<tr>
+				<td align="right" style="font-weight: bolder;" colspan="4">&nbsp;</td>
+				<td align="left" style="font-weight: bolder;color:orange;">CREDIT CARD</td>
+				<td align="right" style="font-weight: bolder;color:orange;" th:text="${#numbers.formatDecimal(data.cc,1,'POINT',0,'COMMA')}"/>
+			</tr>
+			<tr>
+				<td align="right" style="font-weight: bolder;" colspan="4">&nbsp;</td>
+				<td align="left" style="font-weight: bolder;color:blue;">TOTAL</td>
+				<td align="right" style="font-weight: bolder;color:blue;text-decoration: underline;" th:text="${#numbers.formatDecimal(data.total,1,'POINT',0,'COMMA')}"/>
+			</tr>
+			</tfoot>
+			</table>
+		</td>
+	</tr>
+	</tbody>
+	</table>
+</body>
+</html>

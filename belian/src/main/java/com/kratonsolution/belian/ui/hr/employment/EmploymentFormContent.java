@@ -3,6 +3,7 @@
  */
 package com.kratonsolution.belian.ui.hr.employment;
 
+import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -10,23 +11,15 @@ import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Label;
-import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Row;
 
 import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.general.dm.InternalOrganization;
-import com.kratonsolution.belian.general.svc.OrganizationService;
-import com.kratonsolution.belian.hr.dm.Employee;
-import com.kratonsolution.belian.hr.dm.Employment;
-import com.kratonsolution.belian.hr.svc.EmploymentApplicationService;
 import com.kratonsolution.belian.hr.svc.EmploymentService;
-import com.kratonsolution.belian.ui.FormContent;
-import com.kratonsolution.belian.ui.component.OrganizationList;
-import com.kratonsolution.belian.ui.component.PersonBox;
+import com.kratonsolution.belian.ui.AbstractForm;
+import com.kratonsolution.belian.ui.general.companystructure.CompanyStructureList;
+import com.kratonsolution.belian.ui.general.party.PartyBox;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
-import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -34,25 +27,17 @@ import com.kratonsolution.belian.ui.util.Springs;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class EmploymentFormContent extends FormContent
+public class EmploymentFormContent extends AbstractForm
 {	
 	private EmploymentService service = Springs.get(EmploymentService.class);
-	
-	private OrganizationService organizationService = Springs.get(OrganizationService.class);
-	
-	private EmploymentApplicationService applicationService = Springs.get(EmploymentApplicationService.class);
-	
-	private SessionUtils utils = Springs.get(SessionUtils.class);
 	
 	private Datebox start = Components.currentDatebox();
 	
 	private Datebox end = Components.datebox();
 	
-	private Listbox applications = Components.newSelect();
+	private CompanyStructureList employer = new CompanyStructureList(false);
 	
-	private PersonBox persons = new PersonBox(true);
-	
-	private OrganizationList employer = new OrganizationList();
+	private PartyBox employee = new PartyBox(true,true);
 	
 	public EmploymentFormContent()
 	{
@@ -78,21 +63,18 @@ public class EmploymentFormContent extends FormContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Employee employee = new Employee();
-				employee.setParty(persons.getPerson());
+				if(start.getValue() == null)
+					throw new WrongValueException(start, lang.get("message.field.empty"));
 				
-				InternalOrganization employeer = new InternalOrganization();
-				employeer.setParty(employer.getOrganization());
+				if(employer.getDomain() == null)
+					throw new WrongValueException(employer, lang.get("message.field.empty"));
 				
-				Employment employment = new Employment();
-				employment.setStart(DateTimes.sql(start.getValue()));
-				employment.setEnd(DateTimes.sql(end.getValue()));
-				employment.setEmployee(employee);
-				employment.setInternalOrganization(employeer);
+				if(employee.getDomain() == null)
+					throw new WrongValueException(employee, lang.get("message.field.empty"));
 				
-				service.add(employment);
+				service.add(DateTimes.sql(start.getValue()),DateTimes.sql(end.getValue()),employee.getDomainAsRef(),employer.getDomainAsRef());
 				
-				Flow.next(getParent(), new EmploymentEditContent(RowUtils.shield(employment.getId())));
+				Flow.next(getParent(), new EmploymentGridContent());
 			}
 		});
 	}
@@ -100,6 +82,8 @@ public class EmploymentFormContent extends FormContent
 	@Override
 	public void initForm()
 	{		
+		employer.setDomain(utils.getOrganization());
+		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"125px"));
 		grid.getColumns().appendChild(new Column());
@@ -118,16 +102,11 @@ public class EmploymentFormContent extends FormContent
 		
 		Row row4 = new Row();
 		row4.appendChild(new Label(lang.get("employment.grid.column.employee")));
-		row4.appendChild(persons);
+		row4.appendChild(employee);
 		
-		Row row5 = new Row();
-		row5.appendChild(new Label(lang.get("employment.grid.column.application")));
-		row5.appendChild(applications);
-
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
 		rows.appendChild(row4);
-		rows.appendChild(row5);
 	}
 }
