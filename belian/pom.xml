@@ -9,7 +9,7 @@
 	<parent>
     	<groupId>org.springframework.boot</groupId>
     	<artifactId>spring-boot-starter-parent</artifactId>
-    	<version>1.5.4.RELEASE</version>
+    	<version>1.5.9.RELEASE</version>
 	</parent>
   	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -33,47 +33,9 @@
 		</plugins>
 	</build>
   	<dependencies>
-	    <dependency>
-	    	<groupId>org.springframework.boot</groupId>
-	    	<artifactId>spring-boot-starter-web</artifactId>
-			<!-- 
-	    	<exclusions>
-	        	<exclusion>
-	            	<groupId>org.springframework.boot</groupId>
-	            	<artifactId>spring-boot-starter-tomcat</artifactId>
-	        	</exclusion>
-	    	</exclusions>
-	    	 -->
-		</dependency>
-		<dependency>
-	    	<groupId>org.springframework.boot</groupId>
-	    	<artifactId>spring-boot-starter</artifactId>
-	    	<exclusions>
-	        	<exclusion>
-	            	<groupId>org.springframework.boot</groupId>
-	            	<artifactId>spring-boot-starter-logging</artifactId>
-	        	</exclusion>
-	    	</exclusions>
-		</dependency>
-		<dependency>
-	    	<groupId>org.springframework.boot</groupId>
-	    	<artifactId>spring-boot-starter-log4j2</artifactId>
-		</dependency>
-		<!-- 
-		<dependency>
-	    	<groupId>org.springframework.boot</groupId>
-	    	<artifactId>spring-boot-starter-jetty</artifactId>
-		</dependency>
-		 -->
 		<dependency>
 	  		<groupId>org.springframework.boot</groupId>
 	  		<artifactId>spring-boot-starter-security</artifactId>
-	  		<exclusions>
-	      		<exclusion>
-	         		<groupId>ch.qos.logback</groupId>
-	         		<artifactId>logback-classic</artifactId>
-	      		</exclusion>
-	   		</exclusions>
 	  	</dependency>
 	  	<dependency>
 	  		<groupId>org.springframework.boot</groupId>
@@ -94,7 +56,7 @@
 	    <dependency>
 	    	<groupId>com.google.guava</groupId>
 	    	<artifactId>guava</artifactId>
-	    	<version>19.0</version>
+	    	<version>23.6-jre</version>
 	    </dependency>
 	  	<dependency>
 	  		<groupId>org.jasypt</groupId>
@@ -105,12 +67,6 @@
 	    	<groupId>org.zkoss.zk</groupId>
 	      	<artifactId>zkplus</artifactId>
 	      	<version>8.0.2.2</version>
-	      	<exclusions>
-	      		<exclusion>
-	      			<artifactId>slf4j-jdk14</artifactId>
-	      			<groupId>org.slf4j</groupId>
-	      		</exclusion>
-	      	</exclusions>
 	  	</dependency>
 	    <dependency>
 	      	<groupId>org.zkoss.zk</groupId>
@@ -140,11 +96,6 @@
     		<artifactId>poi-ooxml</artifactId>
     		<version>3.14</version>
 		</dependency>
-		<dependency>
-      		<groupId>junit</groupId>
-      		<artifactId>junit</artifactId>
-      		<scope>test</scope>
-    	</dependency>
     	<dependency>
       		<groupId>org.glassfish.web</groupId>
       		<artifactId>javax.el</artifactId>
