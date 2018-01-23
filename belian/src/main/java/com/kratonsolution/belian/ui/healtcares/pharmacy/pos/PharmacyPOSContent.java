@@ -12,13 +12,14 @@ import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zul.A;
 import org.zkoss.zul.Borderlayout;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Center;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
+import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Hbox;
@@ -35,6 +36,7 @@ import org.zkoss.zul.Tabpanel;
 import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Vbox;
+import org.zkoss.zul.Vlayout;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.api.dm.IDValueRef;
@@ -70,8 +72,6 @@ public class PharmacyPOSContent extends POSOrder
 	private Button standard = new Button(lang.get("order.pos.grid.column.standard"),"/icons/standarorder48.png");
 
 	private Button prescrip = new Button(lang.get("order.pos.grid.column.prescription"),"/icons/prescription48.png");
-	
-	private Button drop = new Button(lang.get("order.pos.grid.column.drop"),"/icons/dropship48.png");
 
 	private Tabbox tabbox = new Tabbox();
 
@@ -107,7 +107,7 @@ public class PharmacyPOSContent extends POSOrder
 
 	private IDValueRef location;
 	
-	private boolean isDropship = false;
+	private Combobox filter = new Combobox();
 	
 	public PharmacyPOSContent()
 	{
@@ -191,44 +191,6 @@ public class PharmacyPOSContent extends POSOrder
 				prescription.doModal();
 			}
 		});
-		
-		drop.setOrient("vertical");
-		drop.setWidth("110px");
-		drop.addEventListener(Events.ON_CLICK, new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event arg0) throws Exception
-			{
-				PharmacyPOSDropship dropship = new PharmacyPOSDropship();
-				dropship.getOk().addEventListener(Events.ON_CLICK, new EventListener<Event>()
-				{
-					@Override
-					public void onEvent(Event arg0) throws Exception
-					{
-						if(dropship.getShipto().getDomain() == null)
-							throw new WrongValueException(dropship.getShipto(),lang.get("message.field.empty"));
-						
-						if(dropship.getBillto().getDomain() == null)
-							throw new WrongValueException(dropship.getShipto(),lang.get("message.field.empty"));
-					
-						saleType = SaleType.STANDARD_RETAIL_SALES;
-						saleTypeDisplay.setValue(saleType.display(utils.getLanguage()));
-						
-						isDropship = true;
-
-						customer = dropship.getBillto().getDomainAsRef();
-						customerDisplay.setValue(customer.getValue());
-						
-						shipto = dropship.getShipto().getDomainAsRef();
-						
-						dropship.detach();
-					}
-				});
-				
-				dropship.setPage(getPage());
-				dropship.doModal();
-			}
-		});
 
 		grandtotal.setStyle("color:red;font-size:60px;font-weight:bolder;");
 
@@ -243,7 +205,6 @@ public class PharmacyPOSContent extends POSOrder
 		topcontent.setHeight("55px");
 		topcontent.appendChild(standard);
 		topcontent.appendChild(prescrip);
-		topcontent.appendChild(drop);
 		topcontent.appendChild(display);
 
 		info.setHflex("1");
@@ -453,8 +414,45 @@ public class PharmacyPOSContent extends POSOrder
 		north.setSize("27%");
 		north.setMargins("2,2,2,2");
 
+		filter.setHflex("1");
+		filter.setAutodrop(true);
+		filter.setAutocomplete(false);
+		filter.addEventListener(Events.ON_CHANGING, event -> {
+			
+			if(event instanceof InputEvent) {
+				
+				InputEvent evt = (InputEvent) event;
+				if(!Strings.isNullOrEmpty(evt.getValue())) {
+
+					filter.getItems().clear();
+					productService.findAll(evt.getValue()).stream().forEach(prod -> {
+						filter.appendItem(prod.getName());
+					});
+				}
+			}
+		});
+		
+		filter.addEventListener(Events.ON_CHANGE, event -> {
+			
+			if(!Strings.isNullOrEmpty(filter.getText())) {
+				
+				Product product = productService.findByName(filter.getText());
+				if(product != null) {
+					showSelectedItem(product);
+				}
+				
+				filter.setText(null);
+			}
+		});
+				
+		Vlayout centerLayout = new Vlayout();
+		centerLayout.setVflex("1");
+		centerLayout.setHflex("1");
+		centerLayout.appendChild(filter);
+		centerLayout.appendChild(items);
+		
 		Center center = new Center();
-		center.appendChild(items);
+		center.appendChild(centerLayout);
 		center.setBorder("none");
 		center.setMargins("2,2,2,2");
 
@@ -568,58 +566,48 @@ public class PharmacyPOSContent extends POSOrder
 				Row rw2 = (Row)result.getRows().getChildren().get(2);
 				Decimalbox tot = (Decimalbox)rw2.getChildren().get(3);
 
-				if(isDropship)
+				PharmacyPOSPayment payment = new PharmacyPOSPayment(tot.getValue(), false);
+				payment.getOk().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 				{
-					createOrder(PaymentMethodInfo.createInfo(PaymentMethodType.TERM, null));
-					Clients.showNotification("Order created.");
-					items.getRows().getChildren().clear();
-					calculateResult();
-				}
-				else
-				{
-					PharmacyPOSPayment payment = new PharmacyPOSPayment(tot.getValue(),isDropship);
-					payment.getOk().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+					@Override
+					public void onEvent(Event arg0) throws Exception
 					{
-						@Override
-						public void onEvent(Event arg0) throws Exception
-						{
-							if((payment.getMethod().getSelectedIndex() == 1 || payment.getMethod().getSelectedIndex() == 2) && Strings.isNullOrEmpty(payment.getCardNumber().getText()))
-								throw new WrongValueException(payment.getCardNumber(),lang.get("message.field.empty"));
-							
-							if(payment.getPaid().getValue() == null || payment.getPaid().getValue().compareTo(BigDecimal.ZERO) <= 0)
-								throw new WrongValueException(payment.getPaid(),lang.get("message.field.empty"));
-							
-							if(payment.getChange().getValue() == null || payment.getChange().getValue().compareTo(BigDecimal.ZERO) < 0)
-								throw new WrongValueException(payment.getChange(),lang.get("message.field.empty"));
+						if((payment.getMethod().getSelectedIndex() == 1 || payment.getMethod().getSelectedIndex() == 2) && Strings.isNullOrEmpty(payment.getCardNumber().getText()))
+							throw new WrongValueException(payment.getCardNumber(),lang.get("message.field.empty"));
+						
+						if(payment.getPaid().getValue() == null || payment.getPaid().getValue().compareTo(BigDecimal.ZERO) <= 0)
+							throw new WrongValueException(payment.getPaid(),lang.get("message.field.empty"));
+						
+						if(payment.getChange().getValue() == null || payment.getChange().getValue().compareTo(BigDecimal.ZERO) < 0)
+							throw new WrongValueException(payment.getChange(),lang.get("message.field.empty"));
 
-							PaymentMethodInfo info = PaymentMethodInfo.createInfo(null, null);
-							
-							if(payment.isDebit())
-							{
-								info.setPaymentMethod(PaymentMethodType.TRANSFER);
-								info.setReference(payment.getReference());
-							}
-							else if(payment.isCreditCard())
-							{
-								info.setPaymentMethod(PaymentMethodType.CREDITCARD);
-								info.setReference(payment.getReference());
-							}
-							
-							String receiptId = createOrder(info);
-							
-							payment.detach();
-							
-							PrintWindow print = new PrintWindow("/receiptprint?id="+receiptId);
-							print.setPage(getPage());
-							print.doModal();
-							print.getPrint().setFocus(true);
+						PaymentMethodInfo info = PaymentMethodInfo.createInfo(null, null);
+						
+						if(payment.isDebit())
+						{
+							info.setPaymentMethod(PaymentMethodType.TRANSFER);
+							info.setReference(payment.getReference());
 						}
-					});
-					
-					payment.setPage(getPage());
-					payment.doModal();
-					payment.getPaid().setFocus(true);
-				}
+						else if(payment.isCreditCard())
+						{
+							info.setPaymentMethod(PaymentMethodType.CREDITCARD);
+							info.setReference(payment.getReference());
+						}
+						
+						String receiptId = createOrder(info);
+						
+						payment.detach();
+						
+						PrintWindow print = new PrintWindow("/receiptprint?id="+receiptId);
+						print.setPage(getPage());
+						print.doModal();
+						print.getPrint().setFocus(true);
+					}
+				});
+				
+				payment.setPage(getPage());
+				payment.doModal();
+				payment.getPaid().setFocus(true);
 			}
 		});
 
@@ -695,79 +683,7 @@ public class PharmacyPOSContent extends POSOrder
 					@Override
 					public void onEvent(Event arg0) throws Exception
 					{
-						Decimalbox quan = Components.fullspanReadonlyDecimalbox(BigDecimal.ONE);
-						Decimalbox up = Components.fullspanReadonlyDecimalbox(BigDecimal.ZERO);
-						Decimalbox tot = Components.fullspanReadonlyDecimalbox(BigDecimal.ZERO);
-
-						A min = new A();
-						min.setIconSclass("z-icon-minus-circle z-icon-2x");
-						min.addEventListener(Events.ON_CLICK, new EventListener<Event>()
-						{
-							@Override
-							public void onEvent(Event arg0) throws Exception
-							{
-								if(quan.getValue().compareTo(BigDecimal.ZERO) > 0)
-									quan.setValue(quan.getValue().subtract(BigDecimal.ONE));
-
-								tot.setValue(up.getValue().multiply(quan.getValue()));
-								calculateResult();
-							}
-						});
-
-						A plus = new A();
-						plus.setIconSclass("z-icon-plus-circle z-icon-2x");
-						plus.addEventListener(Events.ON_CLICK, new EventListener<Event>()
-						{
-							@Override
-							public void onEvent(Event arg0) throws Exception
-							{
-								quan.setValue(quan.getValue().add(BigDecimal.ONE));
-								tot.setValue(up.getValue().multiply(quan.getValue()));
-								calculateResult();
-							}
-						});
-
-						Row row = new Row();
-
-						A close = new A();
-						close.setIconSclass("z-icon-remove z-icon-2x");
-						close.addEventListener(Events.ON_CLICK, new EventListener<Event>()
-						{
-							@Override
-							public void onEvent(Event arg0) throws Exception
-							{
-								items.getRows().removeChild(row);
-								calculateResult();
-							}
-						});
-
-						row.appendChild(new Label(product.getName()));
-						row.appendChild(min);
-						row.appendChild(quan);
-						row.appendChild(plus);
-						row.appendChild(up);
-						row.appendChild(tot);
-						row.appendChild(close);
-						row.appendChild(new Label(product.getId()));
-
-						items.getRows().appendChild(row);
-
-						Product fresh = productService.findOne(product.getId());
-						if(fresh != null && utils.getOrganization() != null)
-						{
-							for(PriceComponent price:fresh.getPrices())
-							{
-								if(DateTimes.inRange(DateTimes.currentDate(),price.getStart(), price.getEnd()) && 
-										price.getSaleType().equals(saleType) && 
-										price.getCustomer().getId().equals(customer.getId()) &&
-										price.getOrganization().getId().equals(utils.getOrganization().getId()))
-								{
-									up.setValue(price.getPrice());
-									tot.setValue(quan.getValue().multiply(price.getPrice()));
-									calculateResult();
-								}
-							}
-						}
+						showSelectedItem(product);
 
 					}
 				});
@@ -779,6 +695,83 @@ public class PharmacyPOSContent extends POSOrder
 		tabpanel.appendChild(listbox);
 	}
 
+	private void showSelectedItem(Product product)
+	{
+		Decimalbox quan = Components.fullspanReadonlyDecimalbox(BigDecimal.ONE);
+		Decimalbox up = Components.fullspanReadonlyDecimalbox(BigDecimal.ZERO);
+		Decimalbox tot = Components.fullspanReadonlyDecimalbox(BigDecimal.ZERO);
+
+		A min = new A();
+		min.setIconSclass("z-icon-minus-circle z-icon-2x");
+		min.addEventListener(Events.ON_CLICK, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event arg0) throws Exception
+			{
+				if(quan.getValue().compareTo(BigDecimal.ZERO) > 0)
+					quan.setValue(quan.getValue().subtract(BigDecimal.ONE));
+
+				tot.setValue(up.getValue().multiply(quan.getValue()));
+				calculateResult();
+			}
+		});
+
+		A plus = new A();
+		plus.setIconSclass("z-icon-plus-circle z-icon-2x");
+		plus.addEventListener(Events.ON_CLICK, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event arg0) throws Exception
+			{
+				quan.setValue(quan.getValue().add(BigDecimal.ONE));
+				tot.setValue(up.getValue().multiply(quan.getValue()));
+				calculateResult();
+			}
+		});
+
+		Row row = new Row();
+
+		A close = new A();
+		close.setIconSclass("z-icon-remove z-icon-2x");
+		close.addEventListener(Events.ON_CLICK, new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event arg0) throws Exception
+			{
+				items.getRows().removeChild(row);
+				calculateResult();
+			}
+		});
+
+		row.appendChild(new Label(product.getName()));
+		row.appendChild(min);
+		row.appendChild(quan);
+		row.appendChild(plus);
+		row.appendChild(up);
+		row.appendChild(tot);
+		row.appendChild(close);
+		row.appendChild(new Label(product.getId()));
+
+		items.getRows().appendChild(row);
+
+		Product fresh = productService.findOne(product.getId());
+		if(fresh != null && utils.getOrganization() != null)
+		{
+			for(PriceComponent price:fresh.getPrices())
+			{
+				if(DateTimes.inRange(DateTimes.currentDate(),price.getStart(), price.getEnd()) && 
+						price.getSaleType().equals(saleType) && 
+						price.getCustomer().getId().equals(customer.getId()) &&
+						price.getOrganization().getId().equals(utils.getOrganization().getId()))
+				{
+					up.setValue(price.getPrice());
+					tot.setValue(quan.getValue().multiply(price.getPrice()));
+					calculateResult();
+				}
+			}
+		}
+	}
+	
 	public void calculateResult()
 	{
 		BigDecimal subtotal = BigDecimal.ZERO;
@@ -859,18 +852,14 @@ public class PharmacyPOSContent extends POSOrder
 	
 	private String createOrder(PaymentMethodInfo info)
 	{
-		SalesOrder order = isDropship?SalesOrder.dropship():SalesOrder.pos();
+		SalesOrder order = SalesOrder.pos();
 		order.setCurrency(utils.getCurrency().toRef());
 		order.setEntryDate(DateTimes.currentDate());
 		order.setOrderDate(order.getEntryDate());
 		order.addSalesPerson(utils.getPerson().toRef());
 		order.setPartyTakingOrder(utils.getOrganization().toRef());
 		order.setPartyPlacingOrder(customer);
-
-		if(isDropship)
-			order.addMonthTerm();
-		else
-			order.addCashTerm();
+		order.addCashTerm();
 		
 		/**
 		 * Payer Information
@@ -926,7 +915,6 @@ public class PharmacyPOSContent extends POSOrder
 			}
 		}
 		
-		String invoiceId = salesOrderService.pos(order,info);
-		return invoiceId;
+		return salesOrderService.pos(order,info);
 	}
 }

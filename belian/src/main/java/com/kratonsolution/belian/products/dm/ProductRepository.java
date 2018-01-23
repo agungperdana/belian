@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import lombok.NonNull;
+
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
@@ -32,8 +34,8 @@ public interface ProductRepository extends JpaRepository<Product, String>
 			+ "ORDER BY prd.name ASC")
 	public List<Product> byCategorys(@Param("categorys")Collection<String> categorys);
 	
-	@Query("FROM Product prd WHERE prd.name LIKE %:key% ORDER BY prd.name ASC")
-	public List<Product> findAll(@Param("key")String key);
+	@Query("FROM Product prd WHERE prd.name LIKE :key% ORDER BY prd.name ASC")
+	public List<Product> findAll(@NonNull @Param("key")String key);
 	
 
 }
