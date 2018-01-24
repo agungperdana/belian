@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.NumberFormat;
+import java.util.Calendar;
 import java.util.UUID;
 
 import javax.persistence.AttributeOverride;
@@ -159,5 +160,11 @@ public class PriceComponent implements Serializable,Referenceable
 	public boolean isBasic()
 	{
 		return this.feature == null && this.area == null && this.organization == null;
+	}
+	
+	public boolean isActive() {
+		
+		Date now = new Date(Calendar.getInstance().getTimeInMillis());
+		return (start.compareTo(now) <= 0 && end == null) || (start.compareTo(now) <= 0 && end.compareTo(now) >= 0);
 	}
 }

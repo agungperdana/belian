@@ -4,6 +4,7 @@
 package com.kratonsolution.belian.ui.healthcares.clinic.pos;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.Vector;
 
 import org.zkoss.zk.ui.Component;
@@ -822,18 +823,15 @@ public class ClinicPOSContent extends POSOrder
 		Product fresh = productService.findOne(product.getId());
 		if(fresh != null)
 		{
-			for(PriceComponent price:fresh.getPrices())
-			{
-				if(DateTimes.inActiveState(price.getStart(), price.getEnd()) && 
-						price.getOrganization().getId().equals(utils.getOrganization().getId()) && 
-						((insurance != null && insurance.getId().equals(price.getCustomer().getId())) ||
-								(price.getCustomer().getId().equals(customer.getId()))))
-				{
-					up.setValue(price.getPrice());
-					tot.setValue(quan.getValue().multiply(price.getPrice()));
+			Optional<PriceComponent> com = fresh.getPrice(utils.getOrganization().getId(), utils.getLocation().getId(),
+					insurance!=null?insurance.getId():null, customer!=null?customer.getId():null, null);
+			
+			if(com.isPresent()) {
+				
+				up.setValue(com.get().getPrice());
+				tot.setValue(quan.getValue().multiply(com.get().getPrice()));
 
-					calculateResult();
-				}
+				calculateResult();
 			}
 		}
 	}

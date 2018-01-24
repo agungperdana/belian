@@ -61,8 +61,8 @@ public class ClinicPOSPayment extends Window
 	
 	public ClinicPOSPayment(BigDecimal amount,boolean dropship)
 	{
-		setHeight("210px");
-		setWidth("450px");
+		setHeight("250px");
+		setWidth("475px");
 		setPosition("center");
 		setMaximizable(false);
 		setMinimizable(false);

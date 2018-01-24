@@ -6,6 +6,7 @@ package com.kratonsolution.belian.products.dm;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
@@ -22,10 +23,12 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.api.dm.IDValueRef;
 import com.kratonsolution.belian.common.dm.Referenceable;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 /**
@@ -116,5 +119,38 @@ public class Product implements Referenceable, Serializable
 	public boolean isService()
 	{
 		return type.equals(ProductType.SERVICE);
+	}
+	
+	public Optional<PriceComponent> getPrice(@NonNull String organization, @NonNull String location, 
+			String insurance, String customer, SaleType saleType) {
+		
+		return Optional.ofNullable(prices.stream().filter(p -> {
+			
+			if(!p.isActive()) {
+				return false;
+			}
+			
+			if(p.getOrganization() == null || !p.getOrganization().getId().equals(organization)) {
+				return false;
+			}
+			
+			if(p.getArea() != null && !p.getArea().getId().equals(location)) {
+				return false;
+			}
+			
+			if(p.getCustomer() != null && !Strings.isNullOrEmpty(insurance) && !p.getCustomer().getId().equals(insurance)) {
+				return false;
+			}
+			
+			if(p.getCustomer() != null && !Strings.isNullOrEmpty(customer) && !p.getCustomer().getId().equals(customer)) {
+				return false;
+			}
+			
+			if(p.getSaleType() != null && saleType != null && !p.getSaleType().equals(saleType)) {
+				return false;
+			}
+			
+			return true;
+		} ).findFirst().orElse(null));
 	}
 }
