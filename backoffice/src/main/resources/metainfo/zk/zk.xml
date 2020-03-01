@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk>
+<config-name>Belian ERP 2.0</config-name>
+<richlet>
+    <richlet-name>Login</richlet-name><!-- your preferred name -->
+    <richlet-class>com.kratonsolution.belian.backoffice.ui.LoginRichlet</richlet-class>
+</richlet>
+<richlet-mapping>
+    <richlet-name>Login</richlet-name>
+    <url-pattern>/secure/login</url-pattern>
+</richlet-mapping>
+
+<richlet>
+    <richlet-name>Desktop</richlet-name>
+    <richlet-class>com.kratonsolution.belian.backoffice.ui.Desktop</richlet-class>
+</richlet>
+<richlet-mapping>
+    <richlet-name>Desktop</richlet-name>
+    <url-pattern>/secure/home</url-pattern>
+</richlet-mapping>
+</zk>
