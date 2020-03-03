@@ -10,7 +10,6 @@ apply plugin: 'io.spring.dependency-management'
 repositories {
 	maven{url 'https://mavensync.zkoss.org/maven2'}
 	maven{url 'https://mavensync.zkoss.org/eval'}
-	maven{url 'http://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/'}
 }
 
 dependencies {
@@ -18,8 +17,8 @@ dependencies {
 	compile project(':security-impl')
 	
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	//implementation 'com.vaadin:vaadin-spring-boot-starter:14.1.17'
 	implementation 'org.jasypt:jasypt:1.9.2'
 	implementation 'com.google.guava:guava:28.2-jre'
 	implementation 'org.mariadb.jdbc:mariadb-java-client:2.5.4'

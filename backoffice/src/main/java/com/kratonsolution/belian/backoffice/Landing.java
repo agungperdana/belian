@@ -1,7 +1,7 @@
 package com.kratonsolution.belian.backoffice;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * @author Agung Dodi Perdana
@@ -10,8 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class Landing {
     
-    @RequestMapping("/")
+    @GetMapping(name = "/")
     public String landing() {
-        return "redirect:/secure/login";
+        return "redirect:/login";
+    }
+    
+    @GetMapping("/login")
+    public String showLogin() {
+    	return "login";
     }
 }
