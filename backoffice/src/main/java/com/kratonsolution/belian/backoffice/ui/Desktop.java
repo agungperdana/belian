@@ -25,11 +25,12 @@ public class Desktop extends GenericRichlet
 		
 		Vlayout midle = new Vlayout();
 		midle.setVflex("1");
+		midle.setHflex("1");
 		
 		Vbox canvas = new Vbox();
 		canvas.setSclass("frmaedisplay");
-		canvas.setHflex("1");
-		canvas.setVflex("1");
+		canvas.setWidth("99%");
+		canvas.setHeight("99%");
 		canvas.setAlign("center");
 		canvas.setPack("center");
 		canvas.appendChild(new BMenuBar());
@@ -37,7 +38,5 @@ public class Desktop extends GenericRichlet
 		canvas.appendChild((Fisheyes)Springs.get(KernelTask.class).setDocks(new Fisheyes()));
 	
 		canvas.setPage(page);
-		
-		new UIDashboard().setPage(page);
 	}
 }

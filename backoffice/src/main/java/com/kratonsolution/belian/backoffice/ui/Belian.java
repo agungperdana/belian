@@ -19,8 +19,7 @@ public class Belian extends AbstractMenu
 
 	private SessionUtils util = Springs.get(SessionUtils.class);
 	
-	private Menuitem about = new Menuitem(lang.get("navbar.menu.about"),"/icons/images16.png");
-
+	private Menuitem about = new Menuitem(lang.get("navbar.menu.about"),"/images/about16.png");
 	private Menuitem logout = new Menuitem(lang.get("navbar.menu.logout")+" "+util.getActiveUserName(), "/images/logout16.png");
 
 	public Belian()

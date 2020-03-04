@@ -14,8 +14,8 @@ public class Fisheyes extends Toolbar implements Docks
 
 	public Fisheyes()
 	{
-		setWidth("60%");
-		setHeight("40px");
+		setWidth("50%");
+		setHeight("50px");
 		setStyle("border:solid silver 1px;padding-left:2px;padding-right:2px;");
 
 		Space sep = new Space();

@@ -18,7 +18,8 @@ public class SessionUtils
 	public String getActiveUserName()
 	{
 		SecurityInformation information = (SecurityInformation)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Preconditions.checkState(information == null || information.getUser() == null, "Please login");
+		Preconditions.checkState(information != null, "Please login");
+		Preconditions.checkState(information.getUser() != null, "Unknown user");
 		return information.getUser().getName();
 	}
 }

@@ -19,8 +19,8 @@ public class BMenuBar extends Menubar
 
 	}
 
-	public void clear()
-	{
+	public void clear() {
+		
 		getChildren().clear();
 		appendChild(belian);
 	}

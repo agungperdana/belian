@@ -24,13 +24,16 @@ dependencies {
 	implementation 'org.mariadb.jdbc:mariadb-java-client:2.5.4'
     implementation 'org.projectlombok:lombok:1.18.10'
 	annotationProcessor 'org.projectlombok:lombok:1.18.10'
-	
-	implementation("org.zkoss.zkspringboot:zkspringboot-starter:1.0.4") {
-		exclude module: "spring-boot-starter-tomcat"
-	}
-	
+		
 	def withoutSlf4J = { exclude group: "org.slf4j", module: "slf4j-jdk14" }
 	implementation 'org.zkoss.zk:zkplus:9.0.0', withoutSlf4J
+	implementation 'org.zkoss.zk:zhtml:9.0.0', withoutSlf4J
+	implementation 'org.zkoss.zk:zkbind:9.0.0', withoutSlf4J
+	implementation 'org.zkoss.zk:zul:9.0.0', withoutSlf4J
+	implementation 'org.zkoss.theme:breeze:9.0.0'
+	implementation 'org.zkoss.theme:silvertail:9.0.0'
+	implementation 'org.zkoss.theme:atlantic:9.0.0'
+	implementation 'org.zkoss.theme:sapphire:9.0.0'
 }
 
 bootJar {
