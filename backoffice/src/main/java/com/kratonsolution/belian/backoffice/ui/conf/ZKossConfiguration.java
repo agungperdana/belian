@@ -1,4 +1,4 @@
-package com.kratonsolution.belian.backoffice.ui;
+package com.kratonsolution.belian.backoffice.ui.conf;
 
 import java.util.ArrayList;
 import java.util.HashMap;

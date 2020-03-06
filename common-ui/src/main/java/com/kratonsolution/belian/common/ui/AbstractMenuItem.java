@@ -1,4 +1,4 @@
-package com.kratonsolution.belian.backoffice.ui;
+package com.kratonsolution.belian.common.ui;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -11,8 +11,4 @@ import org.zkoss.zul.Menuitem;
 public abstract class AbstractMenuItem extends Menuitem implements EventListener<Event>
 {
 	private static final long serialVersionUID = 1L;
-
-	protected Language lang = Springs.get(Language.class);
-	
-	protected KernelTask kernel = Springs.get(KernelTask.class);
 }

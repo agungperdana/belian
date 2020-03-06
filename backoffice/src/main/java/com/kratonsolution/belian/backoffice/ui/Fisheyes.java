@@ -4,6 +4,9 @@ import org.zkoss.zul.Space;
 import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 
+import com.kratonsolution.belian.common.ui.Dock;
+import com.kratonsolution.belian.common.ui.Docks;
+
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com

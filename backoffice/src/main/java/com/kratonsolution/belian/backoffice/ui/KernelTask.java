@@ -7,9 +7,11 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 import org.zkoss.zk.ui.Component;
-import com.kratonsolution.belian.backoffice.ui.Watchable;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.common.ui.Dock;
+import com.kratonsolution.belian.common.ui.Docks;
+import com.kratonsolution.belian.common.ui.Watchable;
 
 /**
  * @author Agung Dodi Perdana

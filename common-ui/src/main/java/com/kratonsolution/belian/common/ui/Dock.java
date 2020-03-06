@@ -1,4 +1,4 @@
-package com.kratonsolution.belian.backoffice.ui;
+package com.kratonsolution.belian.common.ui;
 
 /**
  * @author Agung Dodi Perdana

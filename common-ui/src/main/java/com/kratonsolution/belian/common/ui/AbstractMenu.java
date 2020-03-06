@@ -1,4 +1,4 @@
-package com.kratonsolution.belian.backoffice.ui;
+package com.kratonsolution.belian.common.ui;
 
 import org.zkoss.zul.Menu;
 import org.zkoss.zul.Menupopup;
@@ -10,8 +10,6 @@ import org.zkoss.zul.Menupopup;
 public abstract class AbstractMenu extends Menu
 {
 	private static final long serialVersionUID = 1L;
-
-	protected Language lang = Springs.get(Language.class);
 
 	protected Menupopup popup = new Menupopup();
 	

@@ -33,7 +33,7 @@ public class Desktop extends GenericRichlet
 		canvas.setHeight("99%");
 		canvas.setAlign("center");
 		canvas.setPack("center");
-		canvas.appendChild(new BMenuBar());
+		canvas.appendChild(new TopMenu());
 		canvas.appendChild(midle);
 		canvas.appendChild((Fisheyes)Springs.get(KernelTask.class).setDocks(new Fisheyes()));
 	
