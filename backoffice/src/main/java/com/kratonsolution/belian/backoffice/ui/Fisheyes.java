@@ -14,6 +14,8 @@ import com.kratonsolution.belian.common.ui.Docks;
 public class Fisheyes extends Toolbar implements Docks
 {
 	private static final long serialVersionUID = 1L;
+	
+	private Toolbarbutton moduleRegistry = new Toolbarbutton();
 
 	public Fisheyes()
 	{
@@ -23,6 +25,11 @@ public class Fisheyes extends Toolbar implements Docks
 
 		Space sep = new Space();
 		sep.setBar(true);
+		
+		moduleRegistry.setIconSclass("z-icon-navicon");
+		
+		appendChild(moduleRegistry);
+		appendChild(sep);
 	}
 
 	@Override

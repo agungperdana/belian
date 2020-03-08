@@ -2,6 +2,8 @@ package com.kratonsolution.belian.backoffice.ui;
 
 import org.zkoss.zul.Menubar;
 
+import com.kratonsolution.belian.backoffice.ui.menu.Belian;
+
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
