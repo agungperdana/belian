@@ -4,14 +4,11 @@ import org.zkoss.zul.Space;
 import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 
-import com.kratonsolution.belian.common.ui.Dock;
-import com.kratonsolution.belian.common.ui.Docks;
-
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class Fisheyes extends Toolbar implements Docks
+public class Fisheyes extends Toolbar
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -22,35 +19,18 @@ public class Fisheyes extends Toolbar implements Docks
 		setWidth("50%");
 		setHeight("50px");
 		setStyle("border:solid silver 1px;padding-left:2px;padding-right:2px;");
-
-		Space sep = new Space();
-		sep.setBar(true);
 		
-		moduleRegistry.setIconSclass("z-icon-navicon");
+		moduleRegistry.setImage("/images/module-launcher.png");;
 		
 		appendChild(moduleRegistry);
-		appendChild(sep);
+		appendChild(InsertSpace(true));
 	}
-
-	@Override
-	public void register(Dock dock)
-	{
-		if(!contain(dock))
-		{
-			appendChild((Toolbarbutton)dock);
-		}
-	}
-
-	@Override
-	public void unregister(Dock dock)
-	{
-		if(contain(dock))
-			removeChild((Toolbarbutton)dock);
-	}
-
-	@Override
-	public boolean contain(Dock dock)
-	{
-		return this.getChildren().contains((Toolbarbutton)dock);
+	
+	public Space InsertSpace(boolean isBar) {
+		
+		Space sep = new Space();
+		sep.setBar(isBar);
+		
+		return sep;
 	}
 }

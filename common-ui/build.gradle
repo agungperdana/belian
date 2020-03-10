@@ -1,0 +1,26 @@
+plugins {
+	
+	id 'java'
+	id 'eclipse'
+}
+
+repositories {
+	maven{url 'https://mavensync.zkoss.org/maven2'}
+}
+
+dependencies {
+		
+	def withoutSlf4J = { exclude group: "org.slf4j", module: "slf4j-jdk14" }
+	implementation 'org.zkoss.zk:zkplus:9.0.0', withoutSlf4J
+	implementation 'org.zkoss.zk:zhtml:9.0.0', withoutSlf4J
+	implementation 'org.zkoss.zk:zkbind:9.0.0', withoutSlf4J
+	implementation 'org.zkoss.zk:zul:9.0.0', withoutSlf4J
+	implementation 'org.zkoss.theme:breeze:9.0.0'
+	implementation 'org.zkoss.theme:silvertail:9.0.0'
+	implementation 'org.zkoss.theme:atlantic:9.0.0'
+	implementation 'org.zkoss.theme:sapphire:9.0.0'
+}
+
+jar {
+	enabled=true
+}
