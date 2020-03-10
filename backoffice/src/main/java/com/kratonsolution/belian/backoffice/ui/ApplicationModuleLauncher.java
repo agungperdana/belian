@@ -66,7 +66,7 @@ public class ApplicationModuleLauncher implements ApplicationModule {
 		if(remote == null) {
 			
 			remote = new Toolbarbutton();
-			remote.setImage(getIcon());
+			remote.setImage(getFisheyesImage());
 		}
 		
 		remote.addEventListener(Events.ON_CLICK, click -> {
