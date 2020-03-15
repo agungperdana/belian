@@ -17,8 +17,10 @@ include 'services:webservice'
 
 rootProject.name = 'belian'
 
+include 'common-spring'
 include 'common'
 include 'security-api'
 include 'security-impl'
 include 'common-ui'
+include 'security-ui'
 include 'backoffice'

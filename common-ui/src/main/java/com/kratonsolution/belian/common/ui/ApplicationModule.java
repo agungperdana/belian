@@ -1,5 +1,6 @@
 package com.kratonsolution.belian.common.ui;
 
+import org.zkoss.zk.ui.Page;
 import org.zkoss.zul.Toolbarbutton;
 
 /**
@@ -15,12 +16,8 @@ public interface ApplicationModule {
 	public String getRegistryImage();
 	
 	public void open();
-
-	public void show();
 	
-	public void hide();
+	public void close();
 	
-	public void exit();
-	
-	public Toolbarbutton getRemoteControl();
+	public Toolbarbutton getRemoteControl(Page page);
 }

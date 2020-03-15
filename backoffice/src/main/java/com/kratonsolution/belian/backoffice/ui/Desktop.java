@@ -26,6 +26,15 @@ public class Desktop extends GenericRichlet
 		Vlayout midle = new Vlayout();
 		midle.setVflex("1");
 		midle.setHflex("1");
+
+		Launcher moduleLauncher = new Launcher();
+		
+		SystemMonitor monitor = SystemMonitor.attach(new SystemMonitor(), page.getDesktop());
+		monitor.register(moduleLauncher);
+		
+		Fisheyes fisheyes = new Fisheyes();
+		fisheyes.appendChild(moduleLauncher.getRemoteControl(page));
+		fisheyes.insertSpace(true);
 		
 		Vbox canvas = new Vbox();
 		canvas.setSclass("frmaedisplay");
@@ -35,7 +44,7 @@ public class Desktop extends GenericRichlet
 		canvas.setPack("center");
 		canvas.appendChild(new TopMenu());
 		canvas.appendChild(midle);
-		canvas.appendChild(new Fisheyes());
+		canvas.appendChild(fisheyes);
 	
 		canvas.setPage(page);
 	}

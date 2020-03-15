@@ -14,8 +14,9 @@ repositories {
 
 dependencies {
 
+	compile project(':common-spring')
 	compile project(':common-ui')
-	compile project(':security-impl')
+	compile project(':security-ui')
 	
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'

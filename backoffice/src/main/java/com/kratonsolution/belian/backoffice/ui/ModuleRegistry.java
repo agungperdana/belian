@@ -1,7 +1,9 @@
-package com.kratonsolution.belian.common.ui;
+package com.kratonsolution.belian.backoffice.ui;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.kratonsolution.belian.common.ui.ApplicationModule;
 
 /**
  * @author Agung Dodi Perdana
