@@ -33,7 +33,7 @@ public class Desktop extends GenericRichlet
 		monitor.register(moduleLauncher);
 		
 		Fisheyes fisheyes = new Fisheyes();
-		fisheyes.appendChild(moduleLauncher.getRemoteControl(page));
+		fisheyes.appendChild(moduleLauncher.getFisheyeButton(page));
 		fisheyes.insertSpace(true);
 		
 		Vbox canvas = new Vbox();

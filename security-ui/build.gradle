@@ -9,15 +9,14 @@ apply plugin: 'io.spring.dependency-management'
 
 repositories {
 	maven{url 'https://mavensync.zkoss.org/maven2'}
-	maven{url 'https://mavensync.zkoss.org/eval'}
 }
 
 dependencies {
 
-	compile project(':common-spring')
 	compile project(':common-ui')
 	compile project(':security-impl')
 	
+	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.projectlombok:lombok:1.18.10'
 	annotationProcessor 'org.projectlombok:lombok:1.18.10'
 		

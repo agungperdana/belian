@@ -3,8 +3,8 @@ package com.kratonsolution.belian.backoffice.ui;
 import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Toolbarbutton;
-import org.zkoss.zul.Window;
 
+import com.kratonsolution.belian.backoffice.ui.window.LauncherWindow;
 import com.kratonsolution.belian.common.ui.ApplicationModule;
 
 import lombok.NonNull;
@@ -15,7 +15,7 @@ import lombok.NonNull;
  */
 public class Launcher implements ApplicationModule {
 
-	private Window window;
+	private LauncherWindow window;
 	
 	private Toolbarbutton remote;
 	
@@ -30,7 +30,7 @@ public class Launcher implements ApplicationModule {
 	@Override
 	public String getFisheyesImage() {
 		// TODO Auto-generated method stub
-		return "/images/module-launcher.png";
+		return "/images/fisheye/launcher.png";
 	}
 
 	@Override
@@ -38,14 +38,10 @@ public class Launcher implements ApplicationModule {
 
 		if(window == null) {
 			
-			window = new Window("", "none", false);
-			window.setWidth("50%");
-			window.setHeight("40%");
+			window = new LauncherWindow();
 		}
 
 		window.setPage(page);
-		window.setPosition("center");
-		window.setTopmost();
 		window.doOverlapped();
 	}
 
@@ -57,8 +53,7 @@ public class Launcher implements ApplicationModule {
 		window.detach();
 	}
 
-	@Override
-	public Toolbarbutton getRemoteControl(@NonNull Page page) {
+	public Toolbarbutton getFisheyeButton(@NonNull Page page) {
 		
 		this.page = page;
 		
@@ -85,6 +80,6 @@ public class Launcher implements ApplicationModule {
 	@Override
 	public String getRegistryImage() {
 		// TODO Auto-generated method stub
-		return "/images/module-launcher48.png";
+		return "/images/registry/launcher.png";
 	}
 }

@@ -11,10 +11,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Preconditions;
-import com.kratonsolution.belian.api.security.UserData;
-import com.kratonsolution.belian.api.security.RoleData;
-import com.kratonsolution.belian.api.security.application.RoleService;
-import com.kratonsolution.belian.api.security.application.UserService;
+import com.kratonsolution.belian.security.api.RoleData;
+import com.kratonsolution.belian.security.api.UserData;
+import com.kratonsolution.belian.security.api.application.RoleService;
+import com.kratonsolution.belian.security.api.application.UserService;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;

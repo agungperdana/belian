@@ -2,10 +2,7 @@ plugins {
 	
 	id 'java'
 	id 'eclipse'
-	//id 'org.springframework.boot' version '2.2.4.RELEASE'
 }
-
-//apply plugin: 'io.spring.dependency-management'
 
 dependencies {
 
@@ -16,10 +13,6 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.10'
 	annotationProcessor 'org.projectlombok:lombok:1.18.10'
 }
-
-//bootJar {
-//	enabled=false
-//}
 
 jar {
 	enabled=true //needed

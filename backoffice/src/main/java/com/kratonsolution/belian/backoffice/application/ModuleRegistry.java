@@ -1,10 +1,13 @@
 package com.kratonsolution.belian.backoffice.application;
 
-import java.util.Collection;
-import java.util.Vector;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
+import com.kratonsolution.belian.common.ui.ModuleRegistryInformation;
+
+import lombok.Getter;
 import lombok.NonNull;
 
 /**
@@ -14,17 +17,13 @@ import lombok.NonNull;
 @Service
 public class ModuleRegistry {
 
-	private Vector<String> names = new Vector<>();
+	@Getter
+	private Set<ModuleRegistryInformation> registyrs = new HashSet<>();
 	
-	public void register(@NonNull String moduleName) {
+	public void registerModule(@NonNull ModuleRegistryInformation information) {
 		
-		if(!names.contains(moduleName)) {
-			names.add(moduleName);
+		if(!registyrs.contains(information)) {
+			registyrs.add(information);
 		}
-	}
-	
-	public Collection<String> getRegisteredModules() {
-		
-		return names;
 	}
 }

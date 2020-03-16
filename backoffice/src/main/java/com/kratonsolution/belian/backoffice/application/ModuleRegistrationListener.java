@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
-import com.kratonsolution.belian.commonspring.ModuleRegistrationEvent;
+import com.kratonsolution.belian.common.ui.ModuleRegistrationEvent;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -18,12 +18,12 @@ import lombok.extern.slf4j.Slf4j;
 public class ModuleRegistrationListener implements ApplicationListener<ModuleRegistrationEvent> {
 
 	@Autowired
-	private ModuleRegistry registry;
+	private ModuleRegistry manager;
 	
 	@Override
 	public void onApplicationEvent(@NonNull ModuleRegistrationEvent event) {
 		
-		registry.register(event.getModuleName());
-		log.info("Module named {} activated", event.getModuleName());
+		manager.registerModule(event.getModuleInformation());
+		log.info("Module named {} activated", event.getModuleInformation());
 	}
 }
