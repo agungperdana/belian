@@ -35,19 +35,19 @@ public class SecurityModuleInitializer implements ApplicationListener<ContextRef
 		moduleInfo.setName(SECURITY_MODULE);
 		moduleInfo.setNickName("Module");
 		moduleInfo.setFisheyeImage("/images/fisheye/module.png");
-		moduleInfo.setLauncherImage("/images/registry/module.png");
+		moduleInfo.setLauncherImage(getClass().getResource("/images/registry/module.png"));
 		
 		ModuleRegistryInformation userInfo = new ModuleRegistryInformation();
 		userInfo.setName(SECURITY_USER);
 		userInfo.setNickName("User");
 		userInfo.setFisheyeImage("/images/fisheye/user.png");
-		userInfo.setLauncherImage("/images/registrt/user.png");
+		userInfo.setLauncherImage(getClass().getResource("/images/registrt/user.png"));
 		
 		ModuleRegistryInformation roleInfo = new ModuleRegistryInformation();
 		roleInfo.setName(SECURITY_ROLE);
 		roleInfo.setNickName("Role");
 		roleInfo.setFisheyeImage("/images/fisheye/role.png");
-		roleInfo.setLauncherImage("/images/registrt/role.png");
+		roleInfo.setLauncherImage(getClass().getResource("/images/registrt/role.png"));
 		
 		publisher.publishEvent(new ModuleRegistrationEvent(this, moduleInfo));
 		publisher.publishEvent(new ModuleRegistrationEvent(this, userInfo));

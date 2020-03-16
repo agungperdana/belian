@@ -1,5 +1,6 @@
 package com.kratonsolution.belian.backoffice.ui.window;
 
+import org.zkoss.image.AImage;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Hbox;
@@ -52,20 +53,24 @@ public class LauncherWindow extends Window {
 
 				for(ModuleRegistryInformation info:registry.getRegistyrs()) {
 
-					Button button = new Button();
-					button.setImage(info.getLauncherImage());
-					button.setLabel(info.nickName);
-					button.setOrient("vertical");
-					button.setDir("reverse");
-					button.addEventListener(Events.ON_CLICK, e -> {
+					try {
+						
+						Button button = new Button();
+						button.setImageContent(new AImage(info.getLauncherImage()));
+						button.setLabel(info.nickName);
+						button.setOrient("vertical");
+						button.addEventListener(Events.ON_CLICK, e -> {
 
-						publisher.publish(new ModuleCommunicationEvent(this, info.name, ModuleCommunicationEvent.Type.OPEN));
+							publisher.publish(new ModuleCommunicationEvent(this, info.name, ModuleCommunicationEvent.Type.OPEN));
 
-						LauncherWindow.this.setVisible(false);
-						LauncherWindow.this.detach();
-					});
-					
-					hbox.appendChild(button);
+							LauncherWindow.this.setVisible(false);
+							LauncherWindow.this.detach();
+						});
+						
+						hbox.appendChild(button);
+						
+					} catch (Exception e) {
+					}
 				}
 				
 				box.appendChild(hbox);

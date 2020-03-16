@@ -29,6 +29,10 @@ dependencies {
 	implementation 'org.zkoss.theme:sapphire:9.0.0'
 }
 
+bootJar {
+	enabled=false
+}
+
 jar {
 	enabled=true
 }

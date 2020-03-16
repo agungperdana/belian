@@ -1,5 +1,7 @@
 package com.kratonsolution.belian.common.ui;
 
+import java.net.URL;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +17,7 @@ public class ModuleRegistryInformation {
 
 	public String fisheyeImage;
 
-	public String launcherImage;
+	public URL launcherImage;
 	
 	public String nickName;
 
