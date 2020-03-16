@@ -1,7 +1,9 @@
 package com.kratonsolution.belian.backoffice.ui.window;
 
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Hbox;
+import org.zkoss.zul.Vbox;
 import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.backoffice.application.ModuleRegistry;
@@ -18,40 +20,55 @@ public class LauncherWindow extends Window {
 
 	private static final long serialVersionUID = 1L;
 
-	private Listbox listbox = new Listbox();
-	
+	private Vbox box = new Vbox();
+
 	public LauncherWindow() {
-		
+
 		setBorder(false);
 		setWidth("50%");
 		setHeight("40%");
 		setPosition("center");
 		setTopmost();
-		
-		listbox.setHflex("1");
-		listbox.setVflex("1");
-		
-		appendChild(listbox);
-		
+
+		box.setHflex("1");
+		box.setVflex("1");
+
+		appendChild(box);
+
 		initContent();
 	}
-	
+
 	private void initContent() {
-		
+
 		PublisherAdapter publisher = Springs.get(PublisherAdapter.class);
 		if(publisher != null) {
-			
+
 			ModuleRegistry registry = Springs.get(ModuleRegistry.class);
 			if(registry != null) {
-				
+
+				Hbox hbox = new Hbox();
+				hbox.setHeight("70px");
+				hbox.setHflex("1");
+
 				for(ModuleRegistryInformation info:registry.getRegistyrs()) {
+
+					Button button = new Button();
+					button.setImage(info.getLauncherImage());
+					button.setLabel(info.nickName);
+					button.setOrient("vertical");
+					button.setDir("reverse");
+					button.addEventListener(Events.ON_CLICK, e -> {
+
+						publisher.publish(new ModuleCommunicationEvent(this, info.name, ModuleCommunicationEvent.Type.OPEN));
+
+						LauncherWindow.this.setVisible(false);
+						LauncherWindow.this.detach();
+					});
 					
-					listbox.appendItem(info.getNickName(), info.getLauncherImage())
-						.addEventListener(Events.ON_CLICK, e -> {
-							
-							publisher.publish(new ModuleCommunicationEvent(this, info.name, ModuleCommunicationEvent.Type.OPEN));
-						});
+					hbox.appendChild(button);
 				}
+				
+				box.appendChild(hbox);
 			}
 		}
 	}
