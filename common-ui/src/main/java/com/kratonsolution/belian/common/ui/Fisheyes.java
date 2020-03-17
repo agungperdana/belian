@@ -18,11 +18,11 @@ public class Fisheyes extends Toolbar
 		setStyle("border:solid silver 1px;padding-left:2px;padding-right:2px;");
 	}
 	
-	public Space insertSpace(boolean isBar) {
+	public void insertSpace(boolean isBar) {
 		
 		Space sep = new Space();
 		sep.setBar(isBar);
 		
-		return sep;
+		appendChild(sep);
 	}
 }

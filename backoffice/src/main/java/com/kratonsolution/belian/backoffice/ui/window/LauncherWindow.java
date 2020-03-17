@@ -10,7 +10,7 @@ import org.zkoss.zul.Window;
 import com.kratonsolution.belian.backoffice.application.ModuleRegistry;
 import com.kratonsolution.belian.backoffice.application.PublisherAdapter;
 import com.kratonsolution.belian.backoffice.ui.Springs;
-import com.kratonsolution.belian.common.ui.ModuleCommunicationEvent;
+import com.kratonsolution.belian.common.ui.ModuleOpenWindowEvent;
 import com.kratonsolution.belian.common.ui.ModuleRegistryInformation;
 
 /**
@@ -59,11 +59,11 @@ public class LauncherWindow extends Window {
 						
 						Button button = new Button();
 						button.setImageContent(new AImage(info.getLauncherImage()));
-						button.setLabel(info.nickName);
+						button.setLabel(info.getNickName());
 						button.setOrient("vertical");
 						button.addEventListener(Events.ON_CLICK, e -> {
 
-							publisher.publish(new ModuleCommunicationEvent(this, info.name, ModuleCommunicationEvent.Type.OPEN));
+							publisher.publish(new ModuleOpenWindowEvent(this, info.getName()));
 
 							LauncherWindow.this.setVisible(false);
 							LauncherWindow.this.detach();

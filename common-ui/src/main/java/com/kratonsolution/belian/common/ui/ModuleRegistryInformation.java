@@ -13,13 +13,13 @@ import lombok.Setter;
 @Setter
 public class ModuleRegistryInformation {
 
-	public String name;
+	private String name;
 
-	public URL fisheyeImage;
+	private URL fisheyeImage;
 
-	public URL launcherImage;
+	private URL launcherImage;
 	
-	public String nickName;
+	private String nickName;
 
 	@Override
 	public boolean equals(Object obj) {

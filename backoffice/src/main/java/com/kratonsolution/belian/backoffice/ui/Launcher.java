@@ -1,11 +1,11 @@
 package com.kratonsolution.belian.backoffice.ui;
 
-import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Toolbarbutton;
 
 import com.kratonsolution.belian.backoffice.ui.window.LauncherWindow;
 import com.kratonsolution.belian.common.ui.ApplicationModule;
+import com.kratonsolution.belian.common.ui.UIHelper;
 
 /**
  * @author Agung Dodi Perdana
@@ -37,8 +37,9 @@ public class Launcher implements ApplicationModule {
 			window = new LauncherWindow();
 		}
 
-		window.setPage(Executions.getCurrent().getDesktop().getFirstPage());
+		window.setPage(UIHelper.getPage());
 		window.doOverlapped();
+		window.setTopmost();
 	}
 
 	@Override
