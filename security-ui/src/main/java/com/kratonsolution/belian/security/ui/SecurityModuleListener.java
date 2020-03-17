@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import com.kratonsolution.belian.common.ui.ModuleOpenWindowEvent;
 import com.kratonsolution.belian.security.ui.handler.SecurityModuleHandler;
 import com.kratonsolution.belian.security.ui.handler.SecurityRoleHandler;
-import com.kratonsolution.belian.security.ui.handler.SecurityUserHandler;
+import com.kratonsolution.belian.security.ui.user.SecurityUserHandler;
 
 /**
  * @author Agung Dodi Perdana

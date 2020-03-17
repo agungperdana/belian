@@ -5,7 +5,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Toolbarbutton;
 
 import com.kratonsolution.belian.common.ui.Fisheyes;
-import com.kratonsolution.belian.common.ui.UIHelper;
+import com.kratonsolution.belian.common.ui.util.UIHelper;
 import com.kratonsolution.belian.security.ui.window.RoleWindow;
 
 /**

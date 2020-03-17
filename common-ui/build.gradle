@@ -14,6 +14,7 @@ repositories {
 dependencies {
 	
 	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.projectlombok:lombok:1.18.10'
 	
 	annotationProcessor 'org.projectlombok:lombok:1.18.10'
@@ -23,10 +24,6 @@ dependencies {
 	implementation 'org.zkoss.zk:zhtml:9.0.0', withoutSlf4J
 	implementation 'org.zkoss.zk:zkbind:9.0.0', withoutSlf4J
 	implementation 'org.zkoss.zk:zul:9.0.0', withoutSlf4J
-	implementation 'org.zkoss.theme:breeze:9.0.0'
-	implementation 'org.zkoss.theme:silvertail:9.0.0'
-	implementation 'org.zkoss.theme:atlantic:9.0.0'
-	implementation 'org.zkoss.theme:sapphire:9.0.0'
 }
 
 bootJar {

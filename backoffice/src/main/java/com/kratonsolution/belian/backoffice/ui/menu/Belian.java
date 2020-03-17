@@ -1,5 +1,6 @@
 package com.kratonsolution.belian.backoffice.ui.menu;
 
+import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -19,9 +20,9 @@ public class Belian extends AbstractMenu
 {
 	private static final long serialVersionUID = 1L;
 
-	private Menuitem about = new Menuitem("About");
-	private Menuitem preferences = new Menuitem("Preferences");
-	private Menuitem logout = new Menuitem("Logout");
+	private Menuitem about = new Menuitem(Labels.getLabel("menu.top.about"));
+	private Menuitem settings = new Menuitem(Labels.getLabel("menu.top.settings"));
+	private Menuitem logout = new Menuitem(Labels.getLabel("menu.top.logout"));
 
 	public Belian() {
 		
@@ -37,7 +38,7 @@ public class Belian extends AbstractMenu
 			}
 		});
 
-		preferences.setIconSclass("z-icon-gears");
+		settings.setIconSclass("z-icon-gears");
 		
 		logout.setIconSclass("z-icon-sign-out");
 		logout.addEventListener(Events.ON_CLICK,new EventListener<Event>()
@@ -51,7 +52,7 @@ public class Belian extends AbstractMenu
 
 		Menupopup menupopup = new Menupopup();
 		menupopup.appendChild(about);
-		menupopup.appendChild(preferences);
+		menupopup.appendChild(settings);
 		menupopup.appendChild(new Menuseparator());
 		menupopup.appendChild(logout);
 

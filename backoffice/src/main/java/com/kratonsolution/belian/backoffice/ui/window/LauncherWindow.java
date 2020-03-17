@@ -9,9 +9,9 @@ import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.backoffice.application.ModuleRegistry;
 import com.kratonsolution.belian.backoffice.application.PublisherAdapter;
-import com.kratonsolution.belian.backoffice.ui.Springs;
 import com.kratonsolution.belian.common.ui.ModuleOpenWindowEvent;
 import com.kratonsolution.belian.common.ui.ModuleRegistryInformation;
+import com.kratonsolution.belian.common.ui.util.Springs;
 
 /**
  * @author Agung Dodi Perdana
@@ -67,6 +67,7 @@ public class LauncherWindow extends Window {
 
 							LauncherWindow.this.setVisible(false);
 							LauncherWindow.this.detach();
+							LauncherWindow.this.setPage(null);
 						});
 						
 						hbox.appendChild(button);

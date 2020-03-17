@@ -2,6 +2,7 @@ package com.kratonsolution.belian.backoffice.ui;
 
 import org.zkoss.zul.Vlayout;
 
+import com.kratonsolution.belian.backoffice.ui.menu.TopMenuBar;
 import com.kratonsolution.belian.common.ui.AbstractScreen;
 import com.kratonsolution.belian.common.ui.Fisheyes;
 
@@ -15,7 +16,7 @@ public class Screen extends AbstractScreen {
 
 	private Vlayout midle = new Vlayout();
 
-	private TopMenu menubar = new TopMenu();
+	private TopMenuBar menubar = new TopMenuBar();
 
 	private Fisheyes fisheyes = new Fisheyes();
 
@@ -49,12 +50,7 @@ public class Screen extends AbstractScreen {
 
 	private void initFisheye() {
 
-		Launcher moduleLauncher = new Launcher();
-
-		SystemMonitor monitor = SystemMonitor.attach(new SystemMonitor());
-		monitor.register(moduleLauncher);
-
-		fisheyes.appendChild(moduleLauncher.getFisheyeButton());
+		fisheyes.appendChild(new Launcher());
 		fisheyes.insertSpace(true);
 		
 		appendChild(fisheyes);

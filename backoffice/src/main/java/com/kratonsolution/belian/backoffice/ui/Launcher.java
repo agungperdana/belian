@@ -1,80 +1,53 @@
 package com.kratonsolution.belian.backoffice.ui;
 
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Toolbarbutton;
+import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.backoffice.ui.window.LauncherWindow;
-import com.kratonsolution.belian.common.ui.ApplicationModule;
-import com.kratonsolution.belian.common.ui.UIHelper;
+import com.kratonsolution.belian.common.ui.util.UIHelper;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
-public class Launcher implements ApplicationModule {
+public class Launcher extends Toolbarbutton {
 
-	private LauncherWindow window;
-	
-	private Toolbarbutton remote;
-	
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return "com.kratonsolution.belian.module.applicationlauncher";
-	}
+	private static final long serialVersionUID = 1L;
 
-	@Override
-	public String getFisheyesImage() {
-		// TODO Auto-generated method stub
-		return "/images/fisheye/launcher.png";
-	}
-
-	@Override
-	public void open() {
-
-		if(window == null) {
-			
-			window = new LauncherWindow();
-		}
-
-		window.setPage(UIHelper.getPage());
-		window.doOverlapped();
-		window.setTopmost();
-	}
-
-	@Override
-	public void close() {
+	public Launcher() {
 		
-		window.setVisible(false);
-		window.setPage(null);
-		window.detach();
-	}
-
-	public Toolbarbutton getFisheyeButton() {
-		
-		if(remote == null) {
+		setImage("/images/fisheye/launcher.png");
+		addEventListener(Events.ON_CLICK, e->{
 			
-			remote = new Toolbarbutton();
-			remote.setImage(getFisheyesImage());
-		}
-		
-		remote.addEventListener(Events.ON_CLICK, click -> {
+			boolean exist = false;
 			
-			if(window == null || !window.isVisible()) {
-				open();
+			Page page = UIHelper.getPage();
+			if(page != null) {
+				
+				for(Component com:page.getRoots()) {
+					
+					if(com instanceof LauncherWindow) {
+						
+						com.setVisible(false);
+						com.detach();
+						com.setPage(null);
+						
+						exist = true;
+						break;
+					}
+				}
+				
+				if(!exist) {
+					
+					Window window = new LauncherWindow();
+					window.setPage(page);
+					window.doOverlapped();
+					window.setTopmost();
+				}
 			}
-			else {
-				close();
-			}
-
 		});
-		
-		return remote;
-	}
-
-	@Override
-	public String getRegistryImage() {
-		// TODO Auto-generated method stub
-		return "/images/registry/launcher.png";
 	}
 }
