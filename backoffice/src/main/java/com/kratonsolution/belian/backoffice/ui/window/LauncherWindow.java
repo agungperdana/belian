@@ -33,6 +33,7 @@ public class LauncherWindow extends Window {
 
 		box.setHflex("1");
 		box.setVflex("1");
+		box.setSpacing("10px");
 
 		appendChild(box);
 
@@ -50,6 +51,7 @@ public class LauncherWindow extends Window {
 				Hbox hbox = new Hbox();
 				hbox.setHeight("70px");
 				hbox.setHflex("1");
+				hbox.setSpacing("10px");
 
 				for(ModuleRegistryInformation info:registry.getRegistyrs()) {
 
@@ -70,6 +72,7 @@ public class LauncherWindow extends Window {
 						hbox.appendChild(button);
 						
 					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
 				

@@ -11,7 +11,7 @@ public class ModuleWindow extends Window {
 	private static final long serialVersionUID = 1L;
 
 	public ModuleWindow() {
-		
+
 		setWidth("80%");
 		setHeight("65%");
 		setPosition("center");

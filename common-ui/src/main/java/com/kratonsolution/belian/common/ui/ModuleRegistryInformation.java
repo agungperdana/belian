@@ -15,7 +15,7 @@ public class ModuleRegistryInformation {
 
 	public String name;
 
-	public String fisheyeImage;
+	public URL fisheyeImage;
 
 	public URL launcherImage;
 	

@@ -1,13 +1,11 @@
 package com.kratonsolution.belian.backoffice.ui;
 
-import org.zkoss.zk.ui.Page;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Toolbarbutton;
 
 import com.kratonsolution.belian.backoffice.ui.window.LauncherWindow;
 import com.kratonsolution.belian.common.ui.ApplicationModule;
-
-import lombok.NonNull;
 
 /**
  * @author Agung Dodi Perdana
@@ -18,8 +16,6 @@ public class Launcher implements ApplicationModule {
 	private LauncherWindow window;
 	
 	private Toolbarbutton remote;
-	
-	private Page page;
 	
 	@Override
 	public String getName() {
@@ -41,7 +37,7 @@ public class Launcher implements ApplicationModule {
 			window = new LauncherWindow();
 		}
 
-		window.setPage(page);
+		window.setPage(Executions.getCurrent().getDesktop().getFirstPage());
 		window.doOverlapped();
 	}
 
@@ -53,9 +49,7 @@ public class Launcher implements ApplicationModule {
 		window.detach();
 	}
 
-	public Toolbarbutton getFisheyeButton(@NonNull Page page) {
-		
-		this.page = page;
+	public Toolbarbutton getFisheyeButton() {
 		
 		if(remote == null) {
 			

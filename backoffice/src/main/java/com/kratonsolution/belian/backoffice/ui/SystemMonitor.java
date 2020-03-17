@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.zkoss.zk.ui.Desktop;
+import org.zkoss.zk.ui.Executions;
 
 import com.kratonsolution.belian.common.ui.ApplicationModule;
 
@@ -28,13 +29,19 @@ public class SystemMonitor {
 		}
 	}
 	
-	public static SystemMonitor attach(@NonNull SystemMonitor monitor, @NonNull Desktop desktop) {
+	public static SystemMonitor attach(@NonNull SystemMonitor monitor) {
 		
-		desktop.setAttribute(SYSTEM_MONITOR, monitor);
+		Desktop desktop = Executions.getCurrent().getDesktop();
+		if(desktop != null) {
+			desktop.setAttribute(SYSTEM_MONITOR, monitor);
+		}
+
 		return monitor;
 	}
 	
-	public static SystemMonitor get(@NonNull Desktop desktop) {
+	public static SystemMonitor get() {
+		
+		Desktop desktop = Executions.getCurrent().getDesktop();
 		return (SystemMonitor)desktop.getAttribute(SYSTEM_MONITOR);
 	}
 }
