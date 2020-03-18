@@ -8,9 +8,9 @@ import org.zkoss.zul.Vbox;
 import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.backoffice.application.ModuleRegistry;
-import com.kratonsolution.belian.backoffice.application.PublisherAdapter;
 import com.kratonsolution.belian.common.ui.ModuleRegistryInformation;
 import com.kratonsolution.belian.common.ui.event.ModuleOpenWindowEvent;
+import com.kratonsolution.belian.common.ui.util.PublisherAdapter;
 import com.kratonsolution.belian.common.ui.util.Springs;
 
 /**

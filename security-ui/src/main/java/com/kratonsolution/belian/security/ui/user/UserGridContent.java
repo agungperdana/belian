@@ -17,6 +17,8 @@ import org.zkoss.zul.event.PagingEvent;
 import org.zkoss.zul.event.ZulEvents;
 
 import com.kratonsolution.belian.common.ui.GridContent;
+import com.kratonsolution.belian.common.ui.event.WindowContentChangeEvent;
+import com.kratonsolution.belian.common.ui.util.PublisherAdapter;
 import com.kratonsolution.belian.common.ui.util.Springs;
 import com.kratonsolution.belian.common.ui.util.UIHelper;
 import com.kratonsolution.belian.security.api.application.UserService;
@@ -29,6 +31,8 @@ import com.kratonsolution.belian.security.api.application.UserService;
 public class UserGridContent extends GridContent
 {
 	private static final long serialVersionUID = 6355501178171697053L;
+	
+	private PublisherAdapter adapter = Springs.get(PublisherAdapter.class);
 	
 	private UserService controller = Springs.get(UserService.class);
 	
@@ -47,7 +51,7 @@ public class UserGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-//				Flow.next(getParent(), new UserGridContent());
+				adapter.publish(new WindowContentChangeEvent(this, WindowContentChangeEvent.Type.GRID));
 			}
 		});
 		
@@ -56,7 +60,7 @@ public class UserGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-//				Flow.next(getParent(), new UserFormContent());
+				adapter.publish(new WindowContentChangeEvent(this, WindowContentChangeEvent.Type.ADD_FORM));
 			}
 		});
 		
@@ -131,7 +135,7 @@ public class UserGridContent extends GridContent
 										}
 									}
 									
-//									Flow.next(getParent(), new UserGridContent());
+									adapter.publish(new WindowContentChangeEvent(this, WindowContentChangeEvent.Type.GRID));
 								}
 							}
 						});
@@ -180,18 +184,19 @@ public class UserGridContent extends GridContent
 						public void onEvent(Event ev) throws Exception
 						{
 							Row row = (Row)ev.getTarget();
-//							Flow.next(getParent(), new UserEditContent(row));
+							adapter.publish(new WindowContentChangeEvent(this, WindowContentChangeEvent.Type.EDIT_FORM));
 						}
 					});
 				}
 			}
 		});
+
 		grid.addEventListener(ZulEvents.ON_PAGING,new EventListener<PagingEvent>()
 		{
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-//				model.next(event.getActivePage(), utils.getRowPerPage());
+				model.next(event.getActivePage());
 				grid.setModel(model);
 			}
 		});

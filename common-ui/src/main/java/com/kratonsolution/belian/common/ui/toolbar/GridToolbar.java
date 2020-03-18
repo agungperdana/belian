@@ -1,4 +1,4 @@
-package com.kratonsolution.belian.common.ui;
+package com.kratonsolution.belian.common.ui.toolbar;
 
 import org.zkoss.image.AImage;
 import org.zkoss.util.resource.Labels;
