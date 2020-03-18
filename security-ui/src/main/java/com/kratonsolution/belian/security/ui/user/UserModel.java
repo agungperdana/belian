@@ -1,7 +1,4 @@
-/**
- * 
- */
-package com.kratonsolution.belian.ui.security.user;
+package com.kratonsolution.belian.security.ui.user;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,28 +6,32 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
-import com.kratonsolution.belian.security.dm.User;
-import com.kratonsolution.belian.security.svc.UserService;
-import com.kratonsolution.belian.ui.util.Springs;
+import com.kratonsolution.belian.common.ui.UISetting;
+import com.kratonsolution.belian.common.ui.util.Springs;
+import com.kratonsolution.belian.common.ui.util.UIHelper;
+import com.kratonsolution.belian.security.api.UserData;
+import com.kratonsolution.belian.security.api.application.UserService;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0
  */
-public class UserModel implements ListModel<User>
+public class UserModel implements ListModel<UserData>
 {
-	private final UserService controller = Springs.get(UserService.class);
+	private final UserService service = Springs.get(UserService.class);
 	
-	private List<User> data = new ArrayList<User>();
+	private final UISetting setting = UIHelper.getSetting();
 	
-	public UserModel(int itemSize)
-	{
-		next(0, itemSize);
+	private List<UserData> data = new ArrayList<>();
+	
+	public UserModel() {
+		
+		next(0);
 	}
 	
 	@Override
-	public User getElementAt(int index)
+	public UserData getElementAt(int index)
 	{
 		if(index >= data.size())
 			return null;
@@ -41,7 +42,7 @@ public class UserModel implements ListModel<User>
 	@Override
 	public int getSize()
 	{
-		return controller.size();
+		return service.count();
 	}
 
 	@Override
@@ -58,9 +59,9 @@ public class UserModel implements ListModel<User>
 		
 	}
 
-	public void next(int pageIndex,int itemSize)
+	public void next(int pageIndex)
 	{
 		data.clear();
-		data.addAll(controller.findAll(0, (itemSize*pageIndex)+itemSize));
+		data.addAll(service.getAllUsers(pageIndex, (setting.getMaxRow()*pageIndex)+setting.getMaxRow()));
 	}
 }

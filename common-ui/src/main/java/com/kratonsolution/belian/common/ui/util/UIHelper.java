@@ -6,7 +6,9 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Page;
 
 import com.kratonsolution.belian.common.ui.AbstractScreen;
+import com.kratonsolution.belian.common.ui.DefaultSettings;
 import com.kratonsolution.belian.common.ui.Fisheyes;
+import com.kratonsolution.belian.common.ui.UISetting;
 
 /**
  * @author Agung Dodi Perdana
@@ -31,5 +33,15 @@ public class UIHelper {
 		}
 		
 		return null;
+	}
+	
+	public static UISetting getSetting() {
+		
+		Desktop desktop = getDesktop();
+		if(desktop != null && desktop.getAttributes().containsKey(UISetting.UI_SETTING_KEY)) {
+			return (UISetting)desktop.getAttribute(UISetting.UI_SETTING_KEY);
+		}
+		
+		return new DefaultSettings();
 	}
 }

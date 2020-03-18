@@ -1,5 +1,6 @@
 package com.kratonsolution.belian.security.ui.user;
 
+import org.zkoss.image.AImage;
 import org.zkoss.util.resource.Labels;
 
 import com.kratonsolution.belian.common.ui.AbstractWindow;
@@ -19,8 +20,11 @@ public class UserWindow extends AbstractWindow
 	
 	protected void init()
 	{
-		caption.setLabel(Labels.getLabel("security.user.caption"));
-		caption.setImage("/images/fisheye/user.png");
+		try {
+			caption.setImageContent(new AImage(getClass().getResource("/images/fisheye/user.png")));
+		} catch (Exception e) {}
+		
+		caption.setLabel(Labels.getLabel("user.caption"));
 		appendChild(new UserGridContent());
 	}
 }

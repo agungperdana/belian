@@ -18,6 +18,7 @@ import org.zkoss.zul.event.ZulEvents;
 
 import com.kratonsolution.belian.common.ui.GridContent;
 import com.kratonsolution.belian.common.ui.util.Springs;
+import com.kratonsolution.belian.common.ui.util.UIHelper;
 import com.kratonsolution.belian.security.api.application.UserService;
 
 /**
@@ -46,16 +47,16 @@ public class UserGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Flow.next(getParent(), new UserGridContent());
+//				Flow.next(getParent(), new UserGridContent());
 			}
 		});
 		
-		toolbar.getNew().addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		toolbar.getNewData().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Flow.next(getParent(), new UserFormContent());
+//				Flow.next(getParent(), new UserFormContent());
 			}
 		});
 		
@@ -107,7 +108,7 @@ public class UserGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show(lang.get("message.removedata"),"Warning",
+				Messagebox.show(Labels.getLabel("message.removedata"),"Warning",
 						Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 						{
 							@Override
@@ -125,12 +126,12 @@ public class UserGridContent extends GridContent
 											if(check.isChecked())
 											{
 												Label label = (Label)row.getLastChild();
-												controller.delete(label.getValue());
+//												controller.delete(label.getValue());
 											}
 										}
 									}
 									
-									Flow.next(getParent(), new UserGridContent());
+//									Flow.next(getParent(), new UserGridContent());
 								}
 							}
 						});
@@ -149,7 +150,7 @@ public class UserGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final UserModel model = new UserModel(utils.getRowPerPage());
+		final UserModel model = new UserModel();
 		
 		grid.setParent(this);
 		grid.setHeight("80%");
@@ -158,14 +159,12 @@ public class UserGridContent extends GridContent
 		grid.setRowRenderer(new UserRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
-		grid.setPageSize(utils.getRowPerPage());
+		grid.setPageSize(UIHelper.getSetting().getMaxRow());
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"25px"));
-		grid.getColumns().appendChild(new Column("Name"));
-		grid.getColumns().appendChild(new Column("Email"));
-		grid.getColumns().appendChild(new Column("Status"));
-		grid.getColumns().appendChild(new Column(null,null,"1px"));
-		grid.getColumns().getLastChild().setVisible(false);
+		grid.getColumns().appendChild(new Column(Labels.getLabel("user.grid.name")));
+		grid.getColumns().appendChild(new Column(Labels.getLabel("user.grid.email")));
+		grid.getColumns().appendChild(new Column(Labels.getLabel("user.grid.status")));
 		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
 		grid.addEventListener(ZulEvents.ON_AFTER_RENDER, new EventListener<Event>()
 		{
@@ -181,7 +180,7 @@ public class UserGridContent extends GridContent
 						public void onEvent(Event ev) throws Exception
 						{
 							Row row = (Row)ev.getTarget();
-							Flow.next(getParent(), new UserEditContent(row));
+//							Flow.next(getParent(), new UserEditContent(row));
 						}
 					});
 				}
@@ -192,7 +191,7 @@ public class UserGridContent extends GridContent
 			@Override
 			public void onEvent(PagingEvent event) throws Exception
 			{
-				model.next(event.getActivePage(), utils.getRowPerPage());
+//				model.next(event.getActivePage(), utils.getRowPerPage());
 				grid.setModel(model);
 			}
 		});

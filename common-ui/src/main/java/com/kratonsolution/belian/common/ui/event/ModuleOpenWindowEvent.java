@@ -1,4 +1,4 @@
-package com.kratonsolution.belian.common.ui;
+package com.kratonsolution.belian.common.ui.event;
 
 import org.springframework.context.ApplicationEvent;
 
@@ -8,6 +8,7 @@ import lombok.NonNull;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 2.0
  */
 @Getter
 public class ModuleOpenWindowEvent extends ApplicationEvent {

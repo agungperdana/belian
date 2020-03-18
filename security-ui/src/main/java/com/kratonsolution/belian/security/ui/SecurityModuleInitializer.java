@@ -6,8 +6,8 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 
-import com.kratonsolution.belian.common.ui.ModuleRegistrationEvent;
 import com.kratonsolution.belian.common.ui.ModuleRegistryInformation;
+import com.kratonsolution.belian.common.ui.event.ModuleRegistrationEvent;
 
 import lombok.extern.slf4j.Slf4j;
 

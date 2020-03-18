@@ -1,8 +1,11 @@
 package com.kratonsolution.belian.common.ui;
 
+import org.zkoss.image.AImage;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
+
+import lombok.Getter;
 
 /**
  * 
@@ -10,21 +13,22 @@ import org.zkoss.zul.Toolbarbutton;
  * @email agung.dodi.perdana@gmail.com
  * @since 1.0
  */
+@Getter
 public class GridToolbar extends Toolbar
 {
 	private static final long serialVersionUID = -8553580636645989598L;
 
-	private final Toolbarbutton refresh = new Toolbarbutton(Labels.getLabel("label.component.button.refresh"),"/icons/refresh.png");
+	private final Toolbarbutton refresh = new Toolbarbutton(Labels.getLabel("toolbar.refresh"));
 	
-	private final Toolbarbutton newData = new Toolbarbutton(Labels.getLabel("label.component.button.new"),"/icons/new.png");
+	private final Toolbarbutton newData = new Toolbarbutton(Labels.getLabel("toolbar.new"));
 
-	private final Toolbarbutton select = new Toolbarbutton(Labels.getLabel("label.component.button.selectall"),"/icons/selectall.png");
+	private final Toolbarbutton select = new Toolbarbutton(Labels.getLabel("toolbar.select"));
 	
-	private final Toolbarbutton deselect = new Toolbarbutton(Labels.getLabel("label.component.button.deselectall"),"/icons/deselect.png");
+	private final Toolbarbutton deselect = new Toolbarbutton(Labels.getLabel("toolbar.deselect"));
 	
-	private final Toolbarbutton delete = new Toolbarbutton(Labels.getLabel("label.component.button.delete"),"/icons/delete.png");
+	private final Toolbarbutton delete = new Toolbarbutton(Labels.getLabel("toolbar.delete"));
 	
-	private final Toolbarbutton search = new Toolbarbutton(Labels.getLabel("label.component.button.refresh"),"/icons/search.png");
+	private final Toolbarbutton search = new Toolbarbutton(Labels.getLabel("toolbar.search"));
 	
 	public GridToolbar()
 	{
@@ -32,45 +36,21 @@ public class GridToolbar extends Toolbar
 		setLeft("0px");
 		setHeight("20%");
 		
+		try {
+			
+			newData.setImageContent(new AImage(getClass().getResource("/images/toolbar/new.png")));
+			select.setImageContent(new AImage(getClass().getResource("/images/toolbar/selectall.png")));
+			deselect.setImageContent(new AImage(getClass().getResource("/images/toolbar/deselect.png")));
+			delete.setImageContent(new AImage(getClass().getResource("/images/toolbar/delete.png")));
+			search.setImageContent(new AImage(getClass().getResource("/images/toolbar/search.png")));
+			refresh.setImageContent(new AImage(getClass().getResource("/images/toolbar/refresh.png")));
+		} catch (Exception e) {}
+		
 		appendChild(refresh);
 		appendChild(newData);
 		appendChild(select);
 		appendChild(delete);
-	}
-	
-	public Toolbarbutton getRefresh()
-	{
-		return this.refresh;
-	}
-	
-	public Toolbarbutton getNew()
-	{
-		return this.newData;
-	}
-	
-	public Toolbarbutton getSelect()
-	{
-		return this.select;
-	}
-	
-	public Toolbarbutton getDeselect()
-	{
-		return this.deselect;
-	}
-	
-	public Toolbarbutton getDelete()
-	{
-		return this.delete;
-	}
-
-	public Toolbarbutton getNewData()
-	{
-		return newData;
-	}
-
-	public Toolbarbutton getSearch()
-	{
-		return search;
+		appendChild(search);
 	}
 	
 	public void disabled()
