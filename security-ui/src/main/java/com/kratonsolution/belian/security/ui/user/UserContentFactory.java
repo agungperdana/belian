@@ -14,7 +14,7 @@ public class UserContentFactory {
 	}
 	
 	public static Component createAddFormContent() {
-		return new UserGridContent();
+		return new UserFormContent();
 	}
 	
 	public static Component createEditFormContent() {

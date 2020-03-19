@@ -1,29 +1,25 @@
 package com.kratonsolution.belian.common.ui;
 
-
-import org.springframework.context.ApplicationListener;
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Window;
-
-import com.kratonsolution.belian.common.ui.event.WindowContentChangeEvent;
 
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0
  */
 @Getter
 @Setter
-public abstract class AbstractWindow extends Window implements ApplicationListener<WindowContentChangeEvent>
+public abstract class AbstractWindow extends Window
 {		
 	private static final long serialVersionUID = 1L;
 	
-	
-	
 	protected Caption caption = new Caption();
+	
+	protected WindowContentManager manager;
 	
 	public AbstractWindow()
 	{
@@ -39,4 +35,14 @@ public abstract class AbstractWindow extends Window implements ApplicationListen
 		
 		setSclass("frmaedisplay");
 	}
+	
+	public void clearContent() {
+		getChildren().forEach(e -> {
+			if(!(e instanceof Caption)) {
+				e.detach();
+			}
+		});
+	}
+	
+	public abstract void fireWindowContentChange(String event);
 }

@@ -26,16 +26,18 @@ public class UserWindow extends AbstractWindow
 	}
 
 	@Override
-	public void onApplicationEvent(WindowContentChangeEvent event) {
+	public void fireWindowContentChange(String event) {
 		
-		if(event.getType().equals(WindowContentChangeEvent.Type.GRID)) {
+		clearContent();
+		
+		if(event.equals(WindowContentChangeEvent.GRID)) {
 			appendChild(UserContentFactory.createGridContent());
 		}
-		else if(event.getType().equals(WindowContentChangeEvent.Type.ADD_FORM)) {
-			appendChild(UserContentFactory.createGridContent());
+		else if(event.equals(WindowContentChangeEvent.ADD_FORM)) {
+			appendChild(UserContentFactory.createAddFormContent());
 		}
 		else {
-			appendChild(UserContentFactory.createGridContent());
+			appendChild(UserContentFactory.createAddFormContent());
 		}
 	}
 }

@@ -5,7 +5,6 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Toolbarbutton;
 
 import com.kratonsolution.belian.common.ui.Fisheyes;
-import com.kratonsolution.belian.common.ui.event.WindowContentChangeEvent;
 import com.kratonsolution.belian.common.ui.util.UIHelper;
 
 /**
@@ -14,10 +13,11 @@ import com.kratonsolution.belian.common.ui.util.UIHelper;
  */
 public class SecurityUserHandler {
 
+	private UserWindow window = new UserWindow();
+	
 	public SecurityUserHandler() {
 		
-		UserWindow window = new UserWindow();
-		window.appendChild(UserContentFactory.createGridContent());
+		window.appendChild(new UserGridContent());
 		window.setPage(UIHelper.getPage());
 		window.doOverlapped();
 
@@ -44,6 +44,7 @@ public class SecurityUserHandler {
 				fisheyes.appendChild(button);
 				
 				window.addEventListener(Events.ON_CLOSE, e ->{
+					
 					fisheyes.removeChild(button);
 					window.detach();
 					window.setPage(null);

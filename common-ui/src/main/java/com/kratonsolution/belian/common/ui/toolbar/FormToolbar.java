@@ -27,8 +27,8 @@ public class FormToolbar extends Toolbar
 		setHeight("36px");
 		
 		try {
-			cancel.setImageContent(new AImage(getClass().getResource("/images/cancel.png")));
-			save.setImageContent(new AImage(getClass().getResource("/images/save.png")));
+			cancel.setImageContent(new AImage(getClass().getResource("/images/toolbar/cancel.png")));
+			save.setImageContent(new AImage(getClass().getResource("/images/toolbar/save.png")));
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

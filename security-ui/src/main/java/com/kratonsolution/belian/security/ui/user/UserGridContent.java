@@ -18,10 +18,8 @@ import org.zkoss.zul.event.ZulEvents;
 
 import com.kratonsolution.belian.common.ui.GridContent;
 import com.kratonsolution.belian.common.ui.event.WindowContentChangeEvent;
-import com.kratonsolution.belian.common.ui.util.PublisherAdapter;
-import com.kratonsolution.belian.common.ui.util.Springs;
+import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.UIHelper;
-import com.kratonsolution.belian.security.api.application.UserService;
 
 /**
  * @author Agung Dodi Perdana
@@ -31,10 +29,6 @@ import com.kratonsolution.belian.security.api.application.UserService;
 public class UserGridContent extends GridContent
 {
 	private static final long serialVersionUID = 6355501178171697053L;
-	
-	private PublisherAdapter adapter = Springs.get(PublisherAdapter.class);
-	
-	private UserService controller = Springs.get(UserService.class);
 	
 	public UserGridContent()
 	{
@@ -51,7 +45,7 @@ public class UserGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				adapter.publish(new WindowContentChangeEvent(this, WindowContentChangeEvent.Type.GRID));
+				FlowHelper.next(getParent(), WindowContentChangeEvent.GRID);
 			}
 		});
 		
@@ -60,7 +54,7 @@ public class UserGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				adapter.publish(new WindowContentChangeEvent(this, WindowContentChangeEvent.Type.ADD_FORM));
+				FlowHelper.next(getParent(), WindowContentChangeEvent.ADD_FORM);
 			}
 		});
 		
@@ -135,7 +129,6 @@ public class UserGridContent extends GridContent
 										}
 									}
 									
-									adapter.publish(new WindowContentChangeEvent(this, WindowContentChangeEvent.Type.GRID));
 								}
 							}
 						});
@@ -184,7 +177,6 @@ public class UserGridContent extends GridContent
 						public void onEvent(Event ev) throws Exception
 						{
 							Row row = (Row)ev.getTarget();
-							adapter.publish(new WindowContentChangeEvent(this, WindowContentChangeEvent.Type.EDIT_FORM));
 						}
 					});
 				}
