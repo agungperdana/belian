@@ -53,7 +53,7 @@ public class ModuleServiceImpl implements ModuleService {
         log.info("Creating new Module {}", module);
         
         ModelEvent event = new ModelEvent("MODULE", EventType.ADD);
-        event.getPayload().put("code", command.getCode());
+        event.getPayload().put("id", module.getId());
         
         publisher.publishEvent(event);
         

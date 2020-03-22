@@ -38,6 +38,7 @@ public class User extends Auditable
     @Column(name = "name")
 	private String name;
     
+    @Setter
     @Column(name = "email")
     private String email;
     

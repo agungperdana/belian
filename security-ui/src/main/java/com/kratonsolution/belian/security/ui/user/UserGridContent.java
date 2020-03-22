@@ -1,5 +1,8 @@
 package com.kratonsolution.belian.security.ui.user;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
@@ -19,6 +22,7 @@ import org.zkoss.zul.event.ZulEvents;
 import com.kratonsolution.belian.common.ui.GridContent;
 import com.kratonsolution.belian.common.ui.event.WindowContentChangeEvent;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
+import com.kratonsolution.belian.common.ui.util.RowUtils;
 import com.kratonsolution.belian.common.ui.util.UIHelper;
 
 /**
@@ -114,21 +118,18 @@ public class UserGridContent extends GridContent
 							{
 								if(event.getName().equals("onOK"))
 								{
-									for(Object object:grid.getRows().getChildren())
-									{
-										Row row = (Row)object;
+									grid.getRows().getChildren().stream().forEach(object -> {
 										
+										Row row = (Row)object;
 										if(row.getFirstChild() instanceof Checkbox)
 										{
 											Checkbox check = (Checkbox)row.getFirstChild();
 											if(check.isChecked())
 											{
 												Label label = (Label)row.getLastChild();
-//												controller.delete(label.getValue());
 											}
 										}
-									}
-									
+									});
 								}
 							}
 						});
@@ -177,6 +178,11 @@ public class UserGridContent extends GridContent
 						public void onEvent(Event ev) throws Exception
 						{
 							Row row = (Row)ev.getTarget();
+							
+							Map<String, String> param = new HashMap<>();
+							param.put("username", RowUtils.string(row, 1));
+							
+							FlowHelper.next(getParent(), WindowContentChangeEvent.EDIT_FORM, param);
 						}
 					});
 				}

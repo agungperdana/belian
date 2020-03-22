@@ -62,6 +62,7 @@ public class UserServiceImpl implements UserService
         Preconditions.checkState(userOpt.isPresent(), "User does not exist.");
         
         userOpt.get().setEnabled(command.isEnabled());
+        userOpt.get().setEmail(command.getEmail());
         
         repo.save(userOpt.get());
         

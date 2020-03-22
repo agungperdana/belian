@@ -1,5 +1,7 @@
 package com.kratonsolution.belian.security.ui.user;
 
+import java.util.Map;
+
 import org.zkoss.image.AImage;
 import org.zkoss.util.resource.Labels;
 
@@ -26,7 +28,7 @@ public class UserWindow extends AbstractWindow
 	}
 
 	@Override
-	public void fireWindowContentChange(String event) {
+	public void fireWindowContentChange(String event, Map<String, String> map) {
 		
 		clearContent();
 		
@@ -37,7 +39,7 @@ public class UserWindow extends AbstractWindow
 			appendChild(UserContentFactory.createAddFormContent());
 		}
 		else {
-			appendChild(UserContentFactory.createAddFormContent());
+			appendChild(UserContentFactory.createEditFormContent(map.get("username")));
 		}
 	}
 }

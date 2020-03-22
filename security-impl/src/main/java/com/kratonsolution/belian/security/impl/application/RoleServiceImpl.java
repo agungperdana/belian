@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.PayloadApplicationEvent;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
@@ -12,12 +14,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Preconditions;
+import com.kratonsolution.belian.common.application.EventType;
+import com.kratonsolution.belian.common.application.ModelEvent;
 import com.kratonsolution.belian.security.api.RoleData;
 import com.kratonsolution.belian.security.api.application.RoleCreateCommand;
 import com.kratonsolution.belian.security.api.application.RoleDeleteCommand;
 import com.kratonsolution.belian.security.api.application.RoleFilter;
 import com.kratonsolution.belian.security.api.application.RoleService;
 import com.kratonsolution.belian.security.api.application.RoleUpdateCommand;
+import com.kratonsolution.belian.security.impl.model.Module;
 import com.kratonsolution.belian.security.impl.model.Role;
 import com.kratonsolution.belian.security.impl.model.RoleModule;
 import com.kratonsolution.belian.security.impl.repository.ModuleRepository;
@@ -29,17 +34,19 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com 
+ * @since 2.0
  */
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class RoleServiceImpl implements RoleService {
+public class RoleServiceImpl implements RoleService, ApplicationListener<PayloadApplicationEvent<ModelEvent>> {
     
     @Autowired
     private RoleRepository roleRepo;
     
+    @Autowired
     private ModuleRepository moduleRepo;
-        
+    
     @Override
     public RoleData create(RoleCreateCommand command) {
         
@@ -141,4 +148,31 @@ public class RoleServiceImpl implements RoleService {
     	
     	return roleRepo.count("%"+filter.getKey()+"%").intValue();
     }
+
+	@Transactional
+	public void onApplicationEvent(PayloadApplicationEvent<ModelEvent> event) {
+
+		ModelEvent model = event.getPayload();
+		if(model.getPayload().containsKey("id")) {
+			
+			if(model.getType().equals(EventType.ADD)) {
+				
+				roleRepo.findAll().forEach(role -> {
+					
+					Module mod = moduleRepo.getOne(model.getPayload().get("id").toString());
+					role.getModules().add(new RoleModule(role, mod,false, false, false, false, false)); 
+
+					roleRepo.save(role);
+				});
+			}
+			else {
+				
+				roleRepo.findAll().forEach(role -> {
+					
+					role.getModules().removeIf(mod -> mod.getModule().getId().equals(model.getPayload().get("id")));
+					roleRepo.save(role);
+				});
+			}
+		}
+	}
 }

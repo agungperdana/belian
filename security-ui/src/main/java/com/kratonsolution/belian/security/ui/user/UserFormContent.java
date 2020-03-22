@@ -5,11 +5,15 @@ import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Auxhead;
+import org.zkoss.zul.Auxheader;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
+import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
+import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
@@ -17,8 +21,11 @@ import com.kratonsolution.belian.common.ui.AbstractForm;
 import com.kratonsolution.belian.common.ui.event.WindowContentChangeEvent;
 import com.kratonsolution.belian.common.ui.util.Components;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
+import com.kratonsolution.belian.common.ui.util.RowUtils;
 import com.kratonsolution.belian.common.ui.util.Springs;
+import com.kratonsolution.belian.security.api.RoleData;
 import com.kratonsolution.belian.security.api.application.CreateUserCommand;
+import com.kratonsolution.belian.security.api.application.RoleService;
 import com.kratonsolution.belian.security.api.application.UserService;
 
 /**
@@ -28,7 +35,6 @@ import com.kratonsolution.belian.security.api.application.UserService;
  */
 public class UserFormContent extends AbstractForm
 {	
-	
 	private static final long serialVersionUID = -7413880943776472L;
 
 	private Textbox name = Components.mandatoryTextBox(false);
@@ -41,13 +47,18 @@ public class UserFormContent extends AbstractForm
 	
 	private Checkbox enabled = new Checkbox("Active");
 	
+	private Grid roles = new Grid();
+	
 	private UserService service = Springs.get(UserService.class);
+	
+	private RoleService roleService = Springs.get(RoleService.class);
 	
 	public UserFormContent()
 	{
 		super();
 		initToolbar();
 		initForm();
+		initRoles();
 	}
 
 	@Override
@@ -132,5 +143,64 @@ public class UserFormContent extends AbstractForm
 		rows.appendChild(row3);
 		rows.appendChild(row4);
 
+	}
+	
+	protected void initRoles()
+	{
+		Auxhead head = new Auxhead();
+		Auxheader header = new Auxheader(Labels.getLabel("form.userrole"));
+		header.setColspan(2);
+		header.setRowspan(1);
+		
+		head.appendChild(header);
+		
+		Column col1 = new Column(Labels.getLabel("form.role"));
+		col1.setWidth("175px");
+		
+		Checkbox all = new Checkbox(Labels.getLabel("form.selectall"));
+		all.addEventListener(Events.ON_CLICK,new EventListener<Event>()
+		{
+			@Override
+			public void onEvent(Event event) throws Exception
+			{
+				Checkbox source = (Checkbox)event.getTarget();
+				
+				Rows rows = grid.getRows();
+				for(Object object:rows.getChildren())
+				{
+					Row row = (Row)object;
+					if(source.isChecked())
+						RowUtils.checked(row,1);
+					else
+						RowUtils.unchecked(row, 1);
+				}
+			}
+		});
+		
+		Column col2 = new Column();
+		col2.appendChild(all);
+		
+		Column col3 = new Column();
+		col3.setVisible(false);
+		
+		Columns columns = new Columns();
+		columns.appendChild(col1);
+		columns.appendChild(col2);
+
+		Rows _rows = new Rows();
+		for(RoleData role:roleService.getAllRoles())
+		{
+			Row row = new Row();
+			row.appendChild(new Label(role.getName()));
+			row.appendChild(new Checkbox());
+			
+			_rows.appendChild(row);
+		}
+		
+		roles.appendChild(head);
+		roles.appendChild(columns);
+		roles.appendChild(_rows);
+		
+		appendChild(roles);
 	}
 }
