@@ -1,6 +1,9 @@
 package com.kratonsolution.belian.security.ui.user;
 
-import org.zkoss.zk.ui.Component;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -12,9 +15,14 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.ui.AbstractForm;
+import com.kratonsolution.belian.common.ui.event.WindowContentChangeEvent;
 import com.kratonsolution.belian.common.ui.util.Components;
+import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.Springs;
+import com.kratonsolution.belian.security.api.application.ChangePasswordCommand;
 import com.kratonsolution.belian.security.api.application.UserService;
+
+import lombok.NonNull;
 
 /**
  * @author Agung Dodi Perdana
@@ -27,21 +35,18 @@ public class ChangePassword extends AbstractForm
 
 	private UserService service = Springs.get(UserService.class);
 	
-	private Row row;
-	
 	private Textbox oldPassword = Components.mandatoryTextBox(false);
 	
 	private Textbox newPassword = Components.mandatoryTextBox(false);
 	
 	private Textbox renewPassword = Components.mandatoryTextBox(false);
+
+	private String userName;
 	
-	private boolean setting;
-	
-	public ChangePassword(Row row, boolean setting)
+	public ChangePassword(@NonNull String userName)
 	{
 		super();
-		this.row = row;
-		this.setting = setting;
+		this.userName = userName;
 		initToolbar();
 		initForm();
 	}
@@ -52,15 +57,15 @@ public class ChangePassword extends AbstractForm
 	@Override
 	public void initToolbar()
 	{
+		Map<String, String> param = new HashMap<>();
+		param.put("username", this.userName);
+		
 		toolbar.getCancel().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				if(!setting)
-					Flow.next(getParent(), new UserEditContent(row));
-				else
-					Flow.next(getParent(), new SettingForm());
+				FlowHelper.next(getParent(), WindowContentChangeEvent.EDIT_FORM, param);
 			}
 		});
 		
@@ -73,12 +78,14 @@ public class ChangePassword extends AbstractForm
 					Messagebox.show("New Password not equal");
 				else
 				{
-					service.changePassword(RowUtils.id(row), newPassword.getText(), renewPassword.getText());
+					ChangePasswordCommand command = new ChangePasswordCommand();
+					command.setName(userName);
+					command.setOldPassword(new StrongPasswordEncryptor().encryptPassword(oldPassword.getText()));
+					command.setNewPassword(newPassword.getText());
 					
-					if(!setting)
-						Flow.next(getParent(), new UserEditContent(row));
-					else
-						Flow.next(getParent(), new SettingForm());
+					service.changePassword(command);
+					
+					FlowHelper.next(getParent(), WindowContentChangeEvent.EDIT_FORM, param);
 				}
 			}
 		});
@@ -91,11 +98,13 @@ public class ChangePassword extends AbstractForm
 	public void initForm()
 	{
 		oldPassword.setType("password");
-		oldPassword.setReadonly(true);
-		oldPassword.setText("user password");
+		oldPassword.setConstraint("no empty");
 		
 		newPassword.setType("password");
+		newPassword.setConstraint("no empty");
+		
 		renewPassword.setType("password");
+		renewPassword.setConstraint("no empty");
 		
 		Row row1 = new Row();
 		row1.appendChild(new Label("Current Password"));
@@ -117,10 +126,5 @@ public class ChangePassword extends AbstractForm
 		grid.getColumns().appendChild(new Column(null,null,"150px"));
 		grid.getColumns().appendChild(new Column());
 		grid.setSpan("1");
-	}
-	
-	protected Component get()
-	{
-		return this;
 	}
 }

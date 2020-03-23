@@ -1,5 +1,7 @@
 package com.kratonsolution.belian.security.ui.user;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.zkoss.util.resource.Labels;
@@ -130,6 +132,10 @@ public class UserEditContent extends AbstractForm
 				@Override
 				public void onEvent(Event event) throws Exception
 				{
+					Map<String, String> param = new HashMap<>();
+					param.put("username", userName);
+					
+					FlowHelper.next(getParent(), WindowContentChangeEvent.OTHER, param);
 				}
 			});
 

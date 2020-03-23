@@ -22,4 +22,8 @@ public class UserContentFactory {
 	public static Component createEditFormContent(@NonNull String key) {
 		return new UserEditContent(key);
 	}
+	
+	public static Component createChangePasswordFormContent(@NonNull String key) {
+		return new ChangePassword(key);
+	}
 }

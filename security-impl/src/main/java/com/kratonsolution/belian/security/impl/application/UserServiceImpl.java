@@ -92,8 +92,9 @@ public class UserServiceImpl implements UserService
         
         Preconditions.checkState(userOpt.isPresent(), "User does not exist.");
         
-        userOpt.get().changePassword(command.getNewPassword(), command.getOldPassword());
-
+        boolean ok = userOpt.get().changePassword(command.getNewPassword(), command.getOldPassword());
+        Preconditions.checkState(ok, "Change password failed, wrong password.");
+        
         log.debug("User {} changed password", userOpt.get());
         
         return Optional.ofNullable(UserMapper.INSTANCE.toData(userOpt.get()));

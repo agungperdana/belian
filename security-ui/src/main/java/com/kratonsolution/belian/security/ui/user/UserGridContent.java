@@ -12,7 +12,6 @@ import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Grid;
-import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
@@ -23,7 +22,10 @@ import com.kratonsolution.belian.common.ui.GridContent;
 import com.kratonsolution.belian.common.ui.event.WindowContentChangeEvent;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.RowUtils;
+import com.kratonsolution.belian.common.ui.util.Springs;
 import com.kratonsolution.belian.common.ui.util.UIHelper;
+import com.kratonsolution.belian.security.api.application.DeleteUserCommand;
+import com.kratonsolution.belian.security.api.application.UserService;
 
 /**
  * @author Agung Dodi Perdana
@@ -33,6 +35,8 @@ import com.kratonsolution.belian.common.ui.util.UIHelper;
 public class UserGridContent extends GridContent
 {
 	private static final long serialVersionUID = 6355501178171697053L;
+	
+	private UserService service = Springs.get(UserService.class);
 	
 	public UserGridContent()
 	{
@@ -126,7 +130,11 @@ public class UserGridContent extends GridContent
 											Checkbox check = (Checkbox)row.getFirstChild();
 											if(check.isChecked())
 											{
-												Label label = (Label)row.getLastChild();
+												DeleteUserCommand command = new DeleteUserCommand();
+												command.setName(RowUtils.string(row, 1));
+												
+												service.delete(command);
+												grid.setModel(new UserModel());
 											}
 										}
 									});
@@ -199,4 +207,6 @@ public class UserGridContent extends GridContent
 			}
 		});
 	}
+	
+	
 }

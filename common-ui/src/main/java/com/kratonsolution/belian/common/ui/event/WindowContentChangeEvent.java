@@ -18,6 +18,8 @@ public class WindowContentChangeEvent extends ApplicationEvent {
 	
 	public static String EDIT_FORM = "EDIT_FORM";
 	
+	public static String OTHER = "OTHER";
+	
 	@Getter
 	private String type;
 	

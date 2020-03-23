@@ -38,8 +38,12 @@ public class UserWindow extends AbstractWindow
 		else if(event.equals(WindowContentChangeEvent.ADD_FORM)) {
 			appendChild(UserContentFactory.createAddFormContent());
 		}
-		else {
+		else if(event.equals(WindowContentChangeEvent.EDIT_FORM)) {
 			appendChild(UserContentFactory.createEditFormContent(map.get("username")));
+		}
+		else {
+			
+			appendChild(UserContentFactory.createChangePasswordFormContent(map.get("username")));
 		}
 	}
 }
