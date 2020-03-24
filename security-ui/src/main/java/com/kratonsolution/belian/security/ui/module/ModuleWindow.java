@@ -36,5 +36,11 @@ public class ModuleWindow extends AbstractWindow
 		if(event.equals(WindowContentChangeEvent.GRID)) {
 			appendChild(ModuleContentFactory.createGridContent());
 		}
+		else if(event.equals(WindowContentChangeEvent.EDIT_FORM)) {
+			appendChild(ModuleContentFactory.createEditFormContent(parameter.get("code")));
+		}
+		else {
+			appendChild(ModuleContentFactory.createAddFormContent());
+		}
 	}
 }

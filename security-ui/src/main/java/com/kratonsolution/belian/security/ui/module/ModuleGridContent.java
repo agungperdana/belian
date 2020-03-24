@@ -9,16 +9,20 @@ import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Grid;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 import org.zkoss.zul.event.ZulEvents;
 
+import com.kratonsolution.belian.common.application.MapHelper;
 import com.kratonsolution.belian.common.ui.GridContent;
 import com.kratonsolution.belian.common.ui.event.WindowContentChangeEvent;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
+import com.kratonsolution.belian.common.ui.util.RowUtils;
 import com.kratonsolution.belian.common.ui.util.Springs;
 import com.kratonsolution.belian.common.ui.util.UIHelper;
+import com.kratonsolution.belian.security.api.application.ModuleDeleteCommand;
 import com.kratonsolution.belian.security.api.application.ModuleService;
 
 /**
@@ -56,7 +60,7 @@ public class ModuleGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-//				Flow.next(getParent(), new ModuleFormContent());
+				FlowHelper.next(getParent(), WindowContentChangeEvent.ADD_FORM);
 			}
 		});
 		
@@ -108,25 +112,31 @@ public class ModuleGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-//				Messagebox.show(lang.get("message.removedata"),"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
-//				{
-//					@Override
-//					public void onEvent(Event event) throws Exception
-//					{
-//						if(event.getName().equals("onOK"))
-//						{
-//							for(Object object:grid.getRows().getChildren())
-//							{
-//								Row row = (Row)object;
-//
-//								if(RowUtils.isChecked(row,0))
-//									service.delete(RowUtils.string(row, 4));
-//							}
-//							
-//							Flow.next(getParent(), new ModuleGridContent());
-//						}
-//					}
-//				});
+				Messagebox.show(Labels.getLabel("warning.remove"),
+						"Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION, 
+						new EventListener<Event>()
+				{
+					@Override
+					public void onEvent(Event event) throws Exception
+					{
+						if(event.getName().equals("onOK"))
+						{
+							for(Object object:grid.getRows().getChildren())
+							{
+								Row row = (Row)object;
+
+								if(RowUtils.isChecked(row,0)) {
+									
+									ModuleDeleteCommand command = new ModuleDeleteCommand();
+									command.setCode(RowUtils.string(row, 1));
+									service.delete(command);
+								}
+							}
+							
+							FlowHelper.next(getParent(), WindowContentChangeEvent.GRID);
+						}
+					}
+				});
 			}
 		});
 		
@@ -143,18 +153,7 @@ public class ModuleGridContent extends GridContent
 	protected void initGrid()
 	{
 		final ModuleModel model = new ModuleModel();
-		
-//		filter.setPlaceholder(lang.get("message.filter.placeholder"));
-//		filter.addEventListener(Events.ON_CHANGING,new EventListener<InputEvent>()
-//		{
-//			@Override
-//			public void onEvent(InputEvent input) throws Exception
-//			{
-//				grid.setModel(new ModuleModel(utils.getRowPerPage(),input.getValue()));
-//			}
-//		});
-		
-		appendChild(filter);
+
 		appendChild(grid);
 		
 		grid.setHeight("80%");
@@ -187,7 +186,9 @@ public class ModuleGridContent extends GridContent
 						public void onEvent(Event ev) throws Exception
 						{
 							Row row = (Row)ev.getTarget();
-//							Flow.next(getParent(), new ModuleEditContent(row));
+							FlowHelper.next(getParent(), 
+									WindowContentChangeEvent.EDIT_FORM, 
+									MapHelper.build("code", RowUtils.string(row, 1)));
 						}
 					});
 				}
