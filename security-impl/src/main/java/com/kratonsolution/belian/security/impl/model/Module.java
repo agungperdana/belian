@@ -34,10 +34,12 @@ public class Module extends Auditable
     @Column(name = "code")
     private String code;
     
+    @Setter
     @Column(name = "name")
     private String name;
     
-    @Column(name = "group")
+    @Setter
+    @Column(name = "module_group")
     @Enumerated(EnumType.STRING)
     private ModuleGroup group = ModuleGroup.SECURITY;
     

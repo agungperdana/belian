@@ -143,8 +143,13 @@ public class ModuleGroupList extends Listbox {
 	}
 	
 	public void setSelected(@NonNull ModuleGroup group) {
-		
-		Listitem listitem = new Listitem(group.name(), group.name());
-		setSelectedItem(listitem);
+
+		getItems().forEach(item -> {
+			
+			if(item.getValue() != null && item.getValue().equals(group)) {
+				setSelectedItem(item);
+				return;
+			}
+		});
 	}
 }

@@ -49,6 +49,7 @@ public class ModuleServiceImpl implements ModuleService {
         Module module = new Module(command.getCode(), command.getName(), command.getGroup(), 
                 command.getNote(), command.isEnabled());
         
+        log.info("Creating new Module {}", module);
         repo.save(module);
         log.info("Creating new Module {}", module);
         
@@ -66,6 +67,8 @@ public class ModuleServiceImpl implements ModuleService {
         Optional<Module> opt = repo.findOneByCode(command.getCode());
         Preconditions.checkState(opt.isPresent(), "Module with code [%s] not exist", command.getCode());
         
+        opt.get().setName(command.getName());
+        opt.get().setGroup(command.getGroup());
         opt.get().setEnabled(command.isEnabled());
         opt.get().setNote(command.getNote());
         
