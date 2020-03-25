@@ -11,6 +11,7 @@ import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
@@ -45,7 +46,7 @@ public class ModuleEditContent extends AbstractForm
 	
 	private Checkbox enabled = new Checkbox(Labels.getLabel("label.active"));
 
-	private ModuleGroupList groups = new ModuleGroupList();
+	private Listbox groups = ModuleGroupUIHelper.get();
 
 	private String moduleCode;
 	
@@ -86,7 +87,7 @@ public class ModuleEditContent extends AbstractForm
 				command.setName(name.getText());
 				command.setEnabled(enabled.isChecked());
 				command.setNote(note.getText());
-				command.setGroup(groups.getSelectedItem().getValue());
+				command.setGroup(ModuleGroupUIHelper.get(groups));
 				
 				service.update(command);
 				
@@ -105,7 +106,8 @@ public class ModuleEditContent extends AbstractForm
 			name.setText(opt.get().getName());
 			note.setText(opt.get().getNote());
 			enabled.setChecked(opt.get().isEnabled());
-			groups.setSelected(opt.get().getGroup());
+			
+			ModuleGroupUIHelper.select(groups, opt.get().getGroup());
 		}
 		
 		grid.appendChild(new Columns());

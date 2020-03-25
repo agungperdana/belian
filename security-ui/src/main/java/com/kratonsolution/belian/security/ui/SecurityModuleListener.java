@@ -4,8 +4,8 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
 import com.kratonsolution.belian.common.ui.event.ModuleOpenWindowEvent;
-import com.kratonsolution.belian.security.ui.handler.SecurityRoleHandler;
 import com.kratonsolution.belian.security.ui.module.SecurityModuleHandler;
+import com.kratonsolution.belian.security.ui.role.SecurityRoleHandler;
 import com.kratonsolution.belian.security.ui.user.SecurityUserHandler;
 
 /**
