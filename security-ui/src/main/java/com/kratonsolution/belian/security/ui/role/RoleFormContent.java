@@ -2,6 +2,7 @@ package com.kratonsolution.belian.security.ui.role;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Vector;
 
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.WrongValueException;
@@ -34,8 +35,11 @@ import com.kratonsolution.belian.common.ui.util.RowUtils;
 import com.kratonsolution.belian.common.ui.util.Springs;
 import com.kratonsolution.belian.security.api.ModuleData;
 import com.kratonsolution.belian.security.api.ModuleGroup;
+import com.kratonsolution.belian.security.api.RoleModuleData;
 import com.kratonsolution.belian.security.api.application.ModuleService;
+import com.kratonsolution.belian.security.api.application.RoleCreateCommand;
 import com.kratonsolution.belian.security.api.application.RoleService;
+import com.kratonsolution.belian.security.impl.model.RoleModule;
 
 /**
  * @author Agung Dodi Perdana
@@ -98,36 +102,25 @@ public class RoleFormContent extends AbstractForm
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,Labels.getLabel("message.field.empty"));
 			
-//				Role role = new Role();
-//				role.setCode(code.getText());
-//				role.setName(name.getText());
-//				role.setNote(note.getText());
-//				
-//				for(Grid grid:modules)
-//				{
-//					Rows moduleRows = grid.getRows();
-//					for(Object object:moduleRows.getChildren())
-//					{
-//						Row _row = (Row)object;
-//						
-//						Module module = moduleService.findOne(RowUtils.string(_row, 6));
-//						if(module != null)
-//						{
-//							AccessRole accessRole = new AccessRole();
-//							accessRole.setModule(module);
-//							accessRole.setRole(role);
-//							accessRole.setCanCreate(RowUtils.isChecked(_row, 1));
-//							accessRole.setCanRead(RowUtils.isChecked(_row, 2));
-//							accessRole.setCanUpdate(RowUtils.isChecked(_row, 3));
-//							accessRole.setCanDelete(RowUtils.isChecked(_row, 4));
-//							accessRole.setCanPrint(RowUtils.isChecked(_row, 5));
-//							
-//							role.getAccesses().add(accessRole);
-//						}
-//					}
-//				}
-//				
-//				service.add(role);
+				RoleCreateCommand command = new RoleCreateCommand();
+				command.setCode(code.getText());
+				command.setName(name.getText());
+				command.setNote(note.getText());
+				command.setEnabled(status.isChecked());
+				
+				modules.stream().forEach(grid -> {
+					
+					grid.getRows().getChildren().stream().forEach(obj ->{
+						
+						Row row = (Row)obj;
+						
+						ModuleData md = new ModuleData();
+						md.setCode(RowUtils.string(row, index));
+						
+						RoleModuleData rmd = new RoleModuleData();
+						rmd.set
+					});
+				});
 				
 				FlowHelper.next(getParent(), WindowContentChangeEvent.GRID);
 			}
@@ -186,21 +179,19 @@ public class RoleFormContent extends AbstractForm
 			Column canDelete = new Column(null,null,"85px");
 			Column canPrint = new Column(null,null,"85px");
 			
+			Vector<Checkbox> reads = new Vector<>();
+			Vector<Checkbox> adds = new Vector<>();
+			Vector<Checkbox> edits = new Vector<>();
+			Vector<Checkbox> deletes = new Vector<>();
+			Vector<Checkbox> prints = new Vector<>();
+			
 			Checkbox createChk = new Checkbox(Labels.getLabel("label.create"));
 			createChk.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
 			{
 				@Override
 				public void onEvent(CheckEvent event) throws Exception
 				{
-					Rows rows = grid.getRows();
-					for(Object object:rows.getChildren())
-					{
-						Row _row = (Row)object;
-						if(event.isChecked())
-							RowUtils.checked(_row, 1);
-						else
-							RowUtils.unchecked(_row, 1);
-					}
+					adds.stream().forEach(box -> box.setChecked(event.isChecked()));
 				}
 			});
 			
@@ -210,15 +201,7 @@ public class RoleFormContent extends AbstractForm
 				@Override
 				public void onEvent(CheckEvent event) throws Exception
 				{
-					Rows rows = grid.getRows();
-					for(Object object:rows.getChildren())
-					{
-						Row _row = (Row)object;
-						if(event.isChecked())
-							RowUtils.checked(_row, 2);
-						else
-							RowUtils.unchecked(_row, 2);
-					}
+					reads.stream().forEach(box -> box.setChecked(event.isChecked()));
 				}
 			});
 			
@@ -228,15 +211,7 @@ public class RoleFormContent extends AbstractForm
 				@Override
 				public void onEvent(CheckEvent event) throws Exception
 				{
-					Rows rows = grid.getRows();
-					for(Object object:rows.getChildren())
-					{
-						Row _row = (Row)object;
-						if(event.isChecked())
-							RowUtils.checked(_row, 3);
-						else
-							RowUtils.unchecked(_row, 3);
-					}
+					edits.stream().forEach(box -> box.setChecked(event.isChecked()));
 				}
 			});
 			
@@ -246,15 +221,7 @@ public class RoleFormContent extends AbstractForm
 				@Override
 				public void onEvent(CheckEvent event) throws Exception
 				{
-					Rows rows = grid.getRows();
-					for(Object object:rows.getChildren())
-					{
-						Row _row = (Row)object;
-						if(event.isChecked())
-							RowUtils.checked(_row, 4);
-						else
-							RowUtils.unchecked(_row, 4);
-					}
+					deletes.stream().forEach(box -> box.setChecked(event.isChecked()));
 				}
 			});
 			
@@ -264,15 +231,7 @@ public class RoleFormContent extends AbstractForm
 				@Override
 				public void onEvent(CheckEvent event) throws Exception
 				{
-					Rows rows = grid.getRows();
-					for(Object object:rows.getChildren())
-					{
-						Row _row = (Row)object;
-						if(event.isChecked())
-							RowUtils.checked(_row, 5);
-						else
-							RowUtils.unchecked(_row, 5);
-					}
+					prints.stream().forEach(box -> box.setChecked(event.isChecked()));
 				}
 			});
 			
@@ -283,6 +242,7 @@ public class RoleFormContent extends AbstractForm
 			canPrint.appendChild(printChk);
 			
 			grid.getColumns().appendChild(new Column(Labels.getLabel("module.Caption"), null, "175px"));
+			grid.getColumns().appendChild(new Column());
 			grid.getColumns().appendChild(canCreate);
 			grid.getColumns().appendChild(canRead);
 			grid.getColumns().appendChild(canUpdate);
@@ -296,11 +256,24 @@ public class RoleFormContent extends AbstractForm
 					Row row = new Row();
 					row.appendChild(new Label(module.getCode()));
 					row.appendChild(new Label(module.getName()));
-					row.appendChild(Components.checkbox(module.getGroup().equals(ModuleGroup.SYSTEM)));
-					row.appendChild(Components.checkbox(module.getGroup().equals(ModuleGroup.SYSTEM)));
-					row.appendChild(Components.checkbox(module.getGroup().equals(ModuleGroup.SYSTEM)));
-					row.appendChild(Components.checkbox(module.getGroup().equals(ModuleGroup.SYSTEM)));
-					row.appendChild(Components.checkbox(module.getGroup().equals(ModuleGroup.SYSTEM)));
+					
+					Checkbox add = Components.checkbox(module.getGroup().equals(ModuleGroup.SYSTEM));
+					Checkbox read = Components.checkbox(module.getGroup().equals(ModuleGroup.SYSTEM));
+					Checkbox edit = Components.checkbox(module.getGroup().equals(ModuleGroup.SYSTEM));
+					Checkbox delete = Components.checkbox(module.getGroup().equals(ModuleGroup.SYSTEM));
+					Checkbox print = Components.checkbox(module.getGroup().equals(ModuleGroup.SYSTEM));
+					
+					row.appendChild(add);
+					row.appendChild(read);
+					row.appendChild(edit);
+					row.appendChild(delete);
+					row.appendChild(print);
+					
+					adds.add(add);
+					reads.add(read);
+					edits.add(edit);
+					deletes.add(delete);
+					prints.add(print);
 					
 					grid.getRows().appendChild(row);
 				}

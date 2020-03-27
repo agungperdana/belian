@@ -35,15 +35,11 @@ public class RoleWindow extends AbstractWindow
 		if(event.equals(WindowContentChangeEvent.GRID)) {
 			appendChild(RoleContentFactory.createGridContent());
 		}
-//		else if(event.equals(WindowContentChangeEvent.ADD_FORM)) {
-//			appendChild(RoleContentFactory.createAddFormContent());
-//		}
-//		else if(event.equals(WindowContentChangeEvent.EDIT_FORM)) {
-//			appendChild(RoleContentFactory.createEditFormContent(map.get("username")));
-//		}
-//		else {
-//			
-//			appendChild(RoleContentFactory.createChangePasswordFormContent(map.get("username")));
-//		}
+		else if(event.equals(WindowContentChangeEvent.ADD_FORM)) {
+			appendChild(RoleContentFactory.createAddFormContent());
+		}
+		else if(event.equals(WindowContentChangeEvent.EDIT_FORM)) {
+			appendChild(RoleContentFactory.createEditFormContent(map.get("code")));
+		}
 	}
 }

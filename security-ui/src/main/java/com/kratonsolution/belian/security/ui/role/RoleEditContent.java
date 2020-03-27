@@ -2,8 +2,6 @@ package com.kratonsolution.belian.security.ui.role;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Optional;
 
 import org.zkoss.util.resource.Labels;
@@ -33,9 +31,10 @@ import com.kratonsolution.belian.common.ui.AbstractForm;
 import com.kratonsolution.belian.common.ui.event.WindowContentChangeEvent;
 import com.kratonsolution.belian.common.ui.util.Components;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
+import com.kratonsolution.belian.common.ui.util.RowUtils;
 import com.kratonsolution.belian.common.ui.util.Springs;
+import com.kratonsolution.belian.security.api.ModuleGroup;
 import com.kratonsolution.belian.security.api.RoleData;
-import com.kratonsolution.belian.security.api.application.ModuleService;
 import com.kratonsolution.belian.security.api.application.RoleService;
 
 import lombok.NonNull;
@@ -50,8 +49,6 @@ public class RoleEditContent extends AbstractForm
 	private static final long serialVersionUID = 4266050630661061597L;
 
 	private RoleService service = Springs.get(RoleService.class);
-
-	private ModuleService moduleService = Springs.get(ModuleService.class);
 	
 	private Textbox code = Components.mandatoryTextBox(false);
 
@@ -168,20 +165,25 @@ public class RoleEditContent extends AbstractForm
 		grid.getColumns().appendChild(new Column());
 
 		Row row1 = new Row();
-		row1.appendChild(new Label(Labels.getLabel("generic.grid.column.code")));
+		row1.appendChild(new Label(Labels.getLabel("label.code")));
 		row1.appendChild(code);
 		
 		Row row2 = new Row();
-		row2.appendChild(new Label(Labels.getLabel("generic.grid.column.name")));
+		row2.appendChild(new Label(Labels.getLabel("label.name")));
 		row2.appendChild(name);
 		
 		Row row3 = new Row();
-		row3.appendChild(new Label(Labels.getLabel("generic.grid.column.note")));
+		row3.appendChild(new Label(Labels.getLabel("label.note")));
 		row3.appendChild(note);
+		
+		Row row4 = new Row();
+		row4.appendChild(new Label(Labels.getLabel("label.status")));
+		row4.appendChild(status);
 
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
+		rows.appendChild(row4);
 	}
 
 	protected void initModules()
@@ -196,21 +198,18 @@ public class RoleEditContent extends AbstractForm
 			
 			Auxhead head = new Auxhead();
 			Auxheader header = new Auxheader("Module Access");
-			header.setColspan(8);
+			header.setColspan(7);
 			header.setRowspan(1);
 
 			head.appendChild(header);
 
-			grid.getColumns().appendChild(new Column("Module",null,"175px"));
+			grid.getColumns().appendChild(new Column("Code",null,"75px"));
+			grid.getColumns().appendChild(new Column("Name",null,"175px"));
 			grid.getColumns().appendChild(new Column(null,null,"85px"));
 			grid.getColumns().appendChild(new Column(null,null,"85px"));
 			grid.getColumns().appendChild(new Column(null,null,"85px"));
 			grid.getColumns().appendChild(new Column(null,null,"85px"));
 			grid.getColumns().appendChild(new Column(null,null,"85px"));
-			grid.getColumns().appendChild(new Column());
-			grid.getColumns().appendChild(new Column());
-			grid.getColumns().getChildren().get(6).setVisible(false);
-			grid.getColumns().getChildren().get(7).setVisible(false);
 
 			Checkbox check1 = new Checkbox("Create");
 			check1.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
@@ -308,78 +307,38 @@ public class RoleEditContent extends AbstractForm
 			grid.getColumns().getChildren().get(4).appendChild(check4);
 			grid.getColumns().getChildren().get(5).appendChild(check5);
 
-			List<Module> newModules = new ArrayList<Module>();
-
-			Role role = service.findOne(RowUtils.string(this.row, 4));
-			for(AccessRole accessRole:role.getAccesses())
-			{
-				if(accessRole.getModule() != null)
+			Optional<RoleData> role = service.getByCode(roleCode);
+			role.get().getModules().stream().forEach(mod -> {
+				
+				if(mod.getModule().getGroup().equals(group))
 				{
-					Module module = moduleService.findOne(accessRole.getModule().getId());
-					if(module != null && module.getGroup().equals(group))
-					{
-						Checkbox create = new Checkbox();
-						create.setChecked(accessRole.isCanCreate());
+					Checkbox create = new Checkbox();
+					create.setChecked(mod.isAdd());
 
-						Checkbox read = new Checkbox();
-						read.setChecked(accessRole.isCanRead());
+					Checkbox read = new Checkbox();
+					read.setChecked(mod.isRead());
 
-						Checkbox update = new Checkbox();
-						update.setChecked(accessRole.isCanUpdate());
+					Checkbox update = new Checkbox();
+					update.setChecked(mod.isEdit());
 
-						Checkbox delete = new Checkbox();
-						delete.setChecked(accessRole.isCanDelete());
+					Checkbox delete = new Checkbox();
+					delete.setChecked(mod.isDelete());
 
-						Checkbox print = new Checkbox();
-						print.setChecked(accessRole.isCanPrint());
+					Checkbox print = new Checkbox();
+					print.setChecked(mod.isPrint());
 
-						Row row = new Row();
-						row.appendChild(new Label(module.getName()));
-						row.appendChild(create);
-						row.appendChild(read);
-						row.appendChild(update);
-						row.appendChild(delete);
-						row.appendChild(print);
-						row.appendChild(new Label(module.getId()));
-						row.appendChild(new Label(accessRole.getId()));
+					Row row = new Row();
+					row.appendChild(new Label(mod.getModule().getCode()));
+					row.appendChild(new Label(mod.getModule().getName()));
+					row.appendChild(create);
+					row.appendChild(read);
+					row.appendChild(update);
+					row.appendChild(delete);
+					row.appendChild(print);
 
-						grid.getRows().appendChild(row);
-					}
+					grid.getRows().appendChild(row);
 				}
-			}
-
-			for(Module module:moduleService.findAll())
-			{
-				boolean exist = false;
-				for(AccessRole accessRole:role.getAccesses())
-				{
-					if(accessRole.getModule() != null && accessRole.getModule().getId().equals(module.getId()))
-						exist = true;
-				}
-
-				if(!exist)
-					newModules.add(module);
-			}
-
-			if(!newModules.isEmpty())
-			{
-				for(Module module:newModules)
-				{
-					if(module.getGroup().equals(group))
-					{
-						Row row = new Row();
-						row.appendChild(new Label(module.getName()));
-						row.appendChild(new Checkbox());
-						row.appendChild(new Checkbox());
-						row.appendChild(new Checkbox());
-						row.appendChild(new Checkbox());
-						row.appendChild(new Checkbox());
-						row.appendChild(new Label(module.getId()));
-
-						grid.getRows().appendChild(row);
-					}
-				}
-			}
+			});
 
 			grid.appendChild(head);
 
