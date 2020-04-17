@@ -39,7 +39,6 @@ import com.kratonsolution.belian.security.api.RoleModuleData;
 import com.kratonsolution.belian.security.api.application.ModuleService;
 import com.kratonsolution.belian.security.api.application.RoleCreateCommand;
 import com.kratonsolution.belian.security.api.application.RoleService;
-import com.kratonsolution.belian.security.impl.model.RoleModule;
 
 /**
  * @author Agung Dodi Perdana
@@ -115,12 +114,21 @@ public class RoleFormContent extends AbstractForm
 						Row row = (Row)obj;
 						
 						ModuleData md = new ModuleData();
-						md.setCode(RowUtils.string(row, index));
+						md.setCode(RowUtils.string(row, 0));
 						
 						RoleModuleData rmd = new RoleModuleData();
-						rmd.set
+						rmd.setModule(md);
+						rmd.setAdd(RowUtils.isChecked(row, 2));
+						rmd.setRead(RowUtils.isChecked(row, 3));
+						rmd.setEdit(RowUtils.isChecked(row, 4));
+						rmd.setDelete(RowUtils.isChecked(row, 5));
+						rmd.setPrint(RowUtils.isChecked(row, 6));
+						
+						command.getModules().add(rmd);
 					});
 				});
+				
+				service.create(command);
 				
 				FlowHelper.next(getParent(), WindowContentChangeEvent.GRID);
 			}
