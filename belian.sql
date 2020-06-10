@@ -28,7 +28,7 @@ CREATE TABLE `module` (
   `id` varchar(100) NOT NULL,
   `code` varchar(100) DEFAULT NULL,
   `name` varchar(200) DEFAULT NULL,
-  `group` varchar(100) DEFAULT NULL,
+  `module_group` varchar(100) CHARACTER SET cp1250 DEFAULT NULL,
   `note` varchar(250) DEFAULT NULL,
   `is_enabled` char(1) DEFAULT '0',
   `created_by` varchar(100) DEFAULT NULL,
@@ -48,6 +48,7 @@ CREATE TABLE `module` (
 
 LOCK TABLES `module` WRITE;
 /*!40000 ALTER TABLE `module` DISABLE KEYS */;
+INSERT INTO `module` VALUES ('8221d147-2540-4910-b05c-3ae1a7d76add','SCR-USR','Security User','SECURITY','','0',NULL,NULL,NULL,NULL,0),('aaf82d44-cce5-4c7a-9d3f-bbf328b01381','SCR-ROLE','Security Role','SECURITY','','0',NULL,NULL,NULL,NULL,0),('fc283c30-3f7e-4bb3-ad37-7fb27640df69','SCR-MDL','Security Module','SECURITY','','0',NULL,NULL,NULL,NULL,0);
 /*!40000 ALTER TABLE `module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,6 +83,7 @@ CREATE TABLE `role` (
 
 LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
+INSERT INTO `role` VALUES ('6325ecc3-f6d5-47b2-a53c-cfcbd5404e55','SYS-ADM','System Administrator',NULL,'','1',NULL,NULL,NULL,NULL,0);
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,6 +115,7 @@ CREATE TABLE `role_module` (
 
 LOCK TABLES `role_module` WRITE;
 /*!40000 ALTER TABLE `role_module` DISABLE KEYS */;
+INSERT INTO `role_module` VALUES ('06be7231-3c3d-469a-95e9-3a13b28ec20d','6325ecc3-f6d5-47b2-a53c-cfcbd5404e55','fc283c30-3f7e-4bb3-ad37-7fb27640df69','0','1','1','1','1','1',0),('c54894c1-39ae-4198-8ab8-aad399987b78','6325ecc3-f6d5-47b2-a53c-cfcbd5404e55','8221d147-2540-4910-b05c-3ae1a7d76add','0','1','1','1','1','1',0),('e72e0997-52ab-419a-8cfc-556ba14c523d','6325ecc3-f6d5-47b2-a53c-cfcbd5404e55','aaf82d44-cce5-4c7a-9d3f-bbf328b01381','0','1','1','1','1','1',0);
 /*!40000 ALTER TABLE `role_module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -186,4 +189,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-10  7:46:47
+-- Dump completed on 2020-06-10 15:05:45
