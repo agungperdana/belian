@@ -3,12 +3,16 @@ package com.kratonsolution.belian.security.impl.model;
 import java.util.UUID;
 
 import javax.persistence.Cacheable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
+
+import org.jasypt.util.password.StrongPasswordEncryptor;
 
 import com.google.common.base.MoreObjects;
 
@@ -20,6 +24,7 @@ import lombok.Setter;
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0
  */
 @Getter
 @Entity
@@ -39,19 +44,27 @@ public class RoleModule
 	private Module module;
 	
     @Setter
+    @Column(name = "is_read")
     private boolean read;
     
     @Setter
+    @Column(name = "is_add")
     private boolean add;
     
     @Setter
+    @Column(name = "is_edit")
     private boolean edit;
     
     @Setter
+    @Column(name = "is_delete")
     private boolean delete;
     
     @Setter
+    @Column(name = "is_print")
     private boolean print;
+    
+    @Version
+    private Long version;
     
     RoleModule(){
     }
@@ -80,4 +93,8 @@ public class RoleModule
                 .add("print", print)
                 .toString();
     }
+    
+    public static void main(String[] args) {
+		System.out.println(new StrongPasswordEncryptor().encryptPassword("adminadmin"));
+	}
 }
