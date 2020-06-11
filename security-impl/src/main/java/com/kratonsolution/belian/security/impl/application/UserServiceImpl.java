@@ -21,6 +21,7 @@ import com.kratonsolution.belian.security.api.application.DeleteUserCommand;
 import com.kratonsolution.belian.security.api.application.UpdateUserCommand;
 import com.kratonsolution.belian.security.api.application.UserService;
 import com.kratonsolution.belian.security.impl.model.User;
+import com.kratonsolution.belian.security.impl.model.UserRole;
 import com.kratonsolution.belian.security.impl.repository.UserRepository;
 
 import lombok.NonNull;
@@ -63,6 +64,14 @@ public class UserServiceImpl implements UserService
         
         userOpt.get().setEnabled(command.isEnabled());
         userOpt.get().setEmail(command.getEmail());
+        
+        command.getRoles().forEach(obj -> {
+        	
+            if(!userOpt.get().getRoles().stream().anyMatch(role -> role.getRole().getCode().equals(obj.getRoleCode()))) {
+            	
+           }
+        });
+
         
         repo.save(userOpt.get());
         

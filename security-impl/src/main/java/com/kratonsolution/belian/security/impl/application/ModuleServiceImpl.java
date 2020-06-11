@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Preconditions;
 import com.kratonsolution.belian.common.application.EventType;
-import com.kratonsolution.belian.common.application.ModelEvent;
+import com.kratonsolution.belian.common.application.TaskEvent;
 import com.kratonsolution.belian.security.api.ModuleData;
 import com.kratonsolution.belian.security.api.ModuleGroup;
 import com.kratonsolution.belian.security.api.application.ModuleCreateCommand;
@@ -53,7 +53,7 @@ public class ModuleServiceImpl implements ModuleService {
         repo.save(module);
         log.info("Creating new Module {}", module);
         
-        ModelEvent event = new ModelEvent("MODULE", EventType.ADD);
+        TaskEvent event = new TaskEvent("MODULE", EventType.ADD);
         event.getPayload().put("id", module.getId());
         
         publisher.publishEvent(event);
@@ -89,7 +89,7 @@ public class ModuleServiceImpl implements ModuleService {
         
         log.info("Deleting module {}", opt.get());
         
-        ModelEvent event = new ModelEvent("MODULE", EventType.DELETE);
+        TaskEvent event = new TaskEvent("MODULE", EventType.DELETE);
         event.getPayload().put("code", command.getCode());
         
         publisher.publishEvent(event);

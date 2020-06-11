@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.PayloadApplicationEvent;
 import org.springframework.data.domain.Example;
@@ -15,8 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Preconditions;
 import com.kratonsolution.belian.common.application.EventType;
-import com.kratonsolution.belian.common.application.ModelEvent;
+import com.kratonsolution.belian.common.application.TaskEvent;
 import com.kratonsolution.belian.security.api.RoleData;
+import com.kratonsolution.belian.security.api.RoleEvent;
 import com.kratonsolution.belian.security.api.application.RoleCreateCommand;
 import com.kratonsolution.belian.security.api.application.RoleDeleteCommand;
 import com.kratonsolution.belian.security.api.application.RoleFilter;
@@ -39,13 +41,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class RoleServiceImpl implements RoleService, ApplicationListener<PayloadApplicationEvent<ModelEvent>> {
+public class RoleServiceImpl implements RoleService, ApplicationListener<PayloadApplicationEvent<TaskEvent>> {
     
     @Autowired
     private RoleRepository roleRepo;
     
     @Autowired
     private ModuleRepository moduleRepo;
+    
+    @Autowired
+    private ApplicationEventPublisher publisher;
     
     @Override
     public RoleData create(RoleCreateCommand command) {
@@ -63,9 +68,14 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
         });
         
         roleRepo.save(role);
+        
+        RoleData data = RoleMapper.INSTANCE.toData(role);
+        
+        publisher.publishEvent(RoleEvent.newRole(data));
+        
         log.info("Creating new Role {}", role);
         
-        return RoleMapper.INSTANCE.toData(role);
+        return data;
     }
     
     @Override
@@ -150,9 +160,9 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
     }
 
 	@Transactional
-	public void onApplicationEvent(PayloadApplicationEvent<ModelEvent> event) {
+	public void onApplicationEvent(PayloadApplicationEvent<TaskEvent> event) {
 
-		ModelEvent model = event.getPayload();
+		TaskEvent model = event.getPayload();
 		if(model.getPayload().containsKey("id")) {
 			
 			if(model.getType().equals(EventType.ADD)) {

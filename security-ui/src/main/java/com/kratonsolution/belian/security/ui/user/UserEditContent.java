@@ -39,7 +39,6 @@ import lombok.NonNull;
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  * @since 1.0
- * @version 2.0
  */
 public class UserEditContent extends AbstractForm
 {	
