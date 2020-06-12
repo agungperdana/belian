@@ -3,6 +3,7 @@ package com.kratonsolution.belian.security.impl.application;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
@@ -87,10 +88,14 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
         opt.get().setEnabled(command.isEnabled());
         opt.get().setNote(command.getNote());
         
+        if(Strings.isNotBlank(command.getName())) {
+        	opt.get().setName(command.getName());
+        }
+        
         command.getModules().forEach(m -> {
             
             RoleModule module = new RoleModule(opt.get(), 
-            		moduleRepo.findOneByCode(m.getModule().getCode()).orElse(null), 
+            		moduleRepo.findOneByCode(m.getModuleCode()).orElse(null), 
                     m.isRead(), m.isAdd(), m.isEdit(), 
                     m.isDelete(), m.isPrint());
             
@@ -98,10 +103,16 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
         });
         
         roleRepo.save(opt.get());
-        
+
         log.info("Updating role {}", opt.get());
         
-        return RoleMapper.INSTANCE.toData(opt.get());
+        RoleData data = RoleMapper.INSTANCE.toData(opt.get());
+        
+        if(Strings.isNotBlank(command.getName())) {
+            publisher.publishEvent(RoleEvent.updateRole(data));
+        }
+        
+        return data;
     }
     
     @Override
@@ -114,7 +125,11 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
         
         log.info("Deleting role {}", opt.get());
         
-        return RoleMapper.INSTANCE.toData(opt.get());
+        RoleData data = RoleMapper.INSTANCE.toData(opt.get());
+    
+        publisher.publishEvent(RoleEvent.deleteRole(data));
+        
+        return data;
     }
     
     @Override

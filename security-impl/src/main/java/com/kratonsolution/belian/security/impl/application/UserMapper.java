@@ -3,7 +3,6 @@ package com.kratonsolution.belian.security.impl.application;
 import java.util.List;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import com.kratonsolution.belian.security.api.UserData;
@@ -26,7 +25,6 @@ public interface UserMapper {
     
     List<UserData> toDatas(@NonNull List<User> users);
     
-    @Mapping(source = "role.code", target = "roleCode")
     UserRoleData toRoleData(@NonNull UserRole userRole);
 
     List<UserRoleData> toRoleDatas(@NonNull List<UserRole> userRoles);

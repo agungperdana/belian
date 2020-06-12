@@ -39,6 +39,7 @@ public class Role extends Auditable
     @Column(name = "code")
     private String code;
     
+    @Setter
     @Column(name = "name")
     private String name;
     

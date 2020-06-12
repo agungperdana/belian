@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Optional;
 
 import org.zkoss.util.resource.Labels;
-import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.CheckEvent;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -35,7 +34,9 @@ import com.kratonsolution.belian.common.ui.util.RowUtils;
 import com.kratonsolution.belian.common.ui.util.Springs;
 import com.kratonsolution.belian.security.api.ModuleGroup;
 import com.kratonsolution.belian.security.api.RoleData;
+import com.kratonsolution.belian.security.api.application.RoleModuleUpdateCommand;
 import com.kratonsolution.belian.security.api.application.RoleService;
+import com.kratonsolution.belian.security.api.application.RoleUpdateCommand;
 
 import lombok.NonNull;
 
@@ -96,45 +97,27 @@ public class RoleEditContent extends AbstractForm
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				if(Strings.isNullOrEmpty(code.getText()))
-					throw new WrongValueException(code, Labels.getLabel("warning.empty"));
 
-				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name, Labels.getLabel("warning.empty"));
+				RoleUpdateCommand command = new RoleUpdateCommand();
+				command.setCode(RoleEditContent.this.roleCode);
+				command.setEnabled(status.isChecked());
+				command.setNote(note.getText());
+				
+				if(!Strings.isNullOrEmpty(name.getText())) {
+					command.setName(name.getText());
+				}
 
-//				Role role = service.findOne(RowUtils.id(row));
-//				if(role != null)
-//				{
-//					role.setCode(code.getText());
-//					role.setName(name.getText());
-//					role.setNote(note.getText());
-//
-//					for(Grid grid:modules)
-//					{
-//						Rows moduleRows = grid.getRows();
-//						for(Object object:moduleRows.getChildren())
-//						{
-//							Row _row = (Row)object;
-//
-//							Iterator<AccessRole> iterator = role.getAccesses().iterator();
-//							while (iterator.hasNext())
-//							{
-//								AccessRole accessRole = (AccessRole) iterator.next();
-//								if(accessRole.getId().equals(RowUtils.string(_row, 7)))
-//								{
-//									accessRole.setCanCreate(RowUtils.isChecked(_row, 1));
-//									accessRole.setCanRead(RowUtils.isChecked(_row, 2));
-//									accessRole.setCanUpdate(RowUtils.isChecked(_row, 3));
-//									accessRole.setCanDelete(RowUtils.isChecked(_row, 4));
-//									accessRole.setCanPrint(RowUtils.isChecked(_row, 5));
-//								}
-//							}
-//						}
-//					}
-//
-//					service.edit(role);
-//				}
-
+				modules.forEach(grd -> {
+					
+					grd.getRows().getChildren().forEach(com -> {
+						
+						RoleModuleUpdateCommand cmd = new RoleModuleUpdateCommand();
+						cmd.setModuleCode(RowUtils.string((Row)com, 0));
+//						cmd.setAdd();
+						
+					});
+				});
+				
 				FlowHelper.next(getParent(), WindowContentChangeEvent.GRID);
 			}
 		});
@@ -144,7 +127,7 @@ public class RoleEditContent extends AbstractForm
 	public void initForm()
 	{
 		Optional<RoleData> opt = service.getByCode(this.roleCode);
-		if(!opt.isPresent()) {
+		if(opt.isPresent()) {
 			
 			code.setConstraint("no empty");
 			code.setWidth("250px");
@@ -222,24 +205,6 @@ public class RoleEditContent extends AbstractForm
 					{
 						Row _row = (Row)object;
 						if(event.isChecked())
-							RowUtils.checked(_row, 1);
-						else
-							RowUtils.unchecked(_row, 1);
-					}
-				}
-			});
-
-			Checkbox check2 = new Checkbox("Read");
-			check2.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
-			{
-				@Override
-				public void onEvent(CheckEvent event) throws Exception
-				{
-					Rows rows = grid.getRows();
-					for(Object object:rows.getChildren())
-					{
-						Row _row = (Row)object;
-						if(event.isChecked())
 							RowUtils.checked(_row, 2);
 						else
 							RowUtils.unchecked(_row, 2);
@@ -247,8 +212,8 @@ public class RoleEditContent extends AbstractForm
 				}
 			});
 
-			Checkbox check3 = new Checkbox("Update");
-			check3.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
+			Checkbox check2 = new Checkbox("Read");
+			check2.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
 			{
 				@Override
 				public void onEvent(CheckEvent event) throws Exception
@@ -265,8 +230,8 @@ public class RoleEditContent extends AbstractForm
 				}
 			});
 
-			Checkbox check4 = new Checkbox("Delete");
-			check4.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
+			Checkbox check3 = new Checkbox("Update");
+			check3.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
 			{
 				@Override
 				public void onEvent(CheckEvent event) throws Exception
@@ -283,8 +248,8 @@ public class RoleEditContent extends AbstractForm
 				}
 			});
 
-			Checkbox check5 = new Checkbox("Print");
-			check5.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
+			Checkbox check4 = new Checkbox("Delete");
+			check4.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
 			{
 				@Override
 				public void onEvent(CheckEvent event) throws Exception
@@ -301,11 +266,29 @@ public class RoleEditContent extends AbstractForm
 				}
 			});
 
-			grid.getColumns().getChildren().get(1).appendChild(check1);
-			grid.getColumns().getChildren().get(2).appendChild(check2);
-			grid.getColumns().getChildren().get(3).appendChild(check3);
-			grid.getColumns().getChildren().get(4).appendChild(check4);
-			grid.getColumns().getChildren().get(5).appendChild(check5);
+			Checkbox check5 = new Checkbox("Print");
+			check5.addEventListener(Events.ON_CHECK,new EventListener<CheckEvent>()
+			{
+				@Override
+				public void onEvent(CheckEvent event) throws Exception
+				{
+					Rows rows = grid.getRows();
+					for(Object object:rows.getChildren())
+					{
+						Row _row = (Row)object;
+						if(event.isChecked())
+							RowUtils.checked(_row, 6);
+						else
+							RowUtils.unchecked(_row, 6);
+					}
+				}
+			});
+
+			grid.getColumns().getChildren().get(2).appendChild(check1);
+			grid.getColumns().getChildren().get(3).appendChild(check2);
+			grid.getColumns().getChildren().get(4).appendChild(check3);
+			grid.getColumns().getChildren().get(5).appendChild(check4);
+			grid.getColumns().getChildren().get(6).appendChild(check5);
 
 			Optional<RoleData> role = service.getByCode(roleCode);
 			role.get().getModules().stream().forEach(mod -> {

@@ -14,6 +14,9 @@ public class UserRoleData {
     
     @NonNull
     private String roleCode;
+    
+    @NonNull
+    private String roleName;
             
     private boolean enabled;
 }

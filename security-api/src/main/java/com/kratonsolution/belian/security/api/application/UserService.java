@@ -11,6 +11,7 @@ import lombok.NonNull;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com 
+ * @since 1.0
  */
 public interface UserService {
     
@@ -35,4 +36,10 @@ public interface UserService {
     public int count();
     
     public int count(@NonNull UserFilter filter);
+    
+    public Optional<UserData> addNewUserRole(@NonNull RegisterNewUserRoleCommand command);
+    
+    public Optional<UserData> updateUserRole(@NonNull UpdateUserRoleCommand command);
+    
+    public Optional<UserData> deleteUserRole(@NonNull DeleteUserRoleCommand command);
 }

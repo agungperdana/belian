@@ -18,19 +18,21 @@ import com.kratonsolution.belian.security.api.UserFilter;
 import com.kratonsolution.belian.security.api.application.ChangePasswordCommand;
 import com.kratonsolution.belian.security.api.application.CreateUserCommand;
 import com.kratonsolution.belian.security.api.application.DeleteUserCommand;
+import com.kratonsolution.belian.security.api.application.DeleteUserRoleCommand;
+import com.kratonsolution.belian.security.api.application.RegisterNewUserRoleCommand;
 import com.kratonsolution.belian.security.api.application.UpdateUserCommand;
+import com.kratonsolution.belian.security.api.application.UpdateUserRoleCommand;
 import com.kratonsolution.belian.security.api.application.UserService;
 import com.kratonsolution.belian.security.impl.model.User;
-import com.kratonsolution.belian.security.impl.model.UserRole;
 import com.kratonsolution.belian.security.impl.repository.UserRepository;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0
  */
 @Slf4j
 @Service
@@ -65,13 +67,6 @@ public class UserServiceImpl implements UserService
         userOpt.get().setEnabled(command.isEnabled());
         userOpt.get().setEmail(command.getEmail());
         
-        command.getRoles().forEach(obj -> {
-        	
-            if(!userOpt.get().getRoles().stream().anyMatch(role -> role.getRole().getCode().equals(obj.getRoleCode()))) {
-            	
-           }
-        });
-
         
         repo.save(userOpt.get());
         
@@ -109,25 +104,21 @@ public class UserServiceImpl implements UserService
         return Optional.ofNullable(UserMapper.INSTANCE.toData(userOpt.get()));
     }
     
-    @Override
     public Optional<UserData> getByName(@NonNull String name) {
         
         return Optional.ofNullable(UserMapper.INSTANCE.toData(repo.findOneByName(name).orElse(null)));
     }
     
-    @Override
     public List<UserData> getAllUsers() {
         
         return UserMapper.INSTANCE.toDatas(repo.findAll());
     }
     
-    @Override
     public List<UserData> getAllUsers(int page, int size) {
         
         return UserMapper.INSTANCE.toDatas(repo.findAll(PageRequest.of(page, size)).getContent());
     }
     
-    @Override
     public List<UserData> getAllUsers(@NonNull UserFilter filter, int page, int size) {
         
         ExampleMatcher matcher = ExampleMatcher.matchingAny();
@@ -154,4 +145,41 @@ public class UserServiceImpl implements UserService
 
         return Optional.ofNullable(UserMapper.INSTANCE.toData(repo.findOneByEmail(email).orElse(null)));
     }
+
+	@Override
+	public Optional<UserData> addNewUserRole(@NonNull RegisterNewUserRoleCommand command) {
+		
+		Optional<User> opt = repo.findOneByName(command.getUserName());
+		Preconditions.checkState(opt.isPresent(), "User with name/email {} does not exist", command.getUserName());
+		opt.get().addNewRole(command.getRoleCode(), command.getRoleName());
+
+		repo.save(opt.get());
+		
+		return Optional.ofNullable(UserMapper.INSTANCE.toData(opt.get()));
+	}
+
+	@Override
+	public Optional<UserData> updateUserRole(@NonNull UpdateUserRoleCommand command) {
+
+		Optional<User> opt = repo.findOneByName(command.getUserName());
+		Preconditions.checkState(opt.isPresent(), "User with name/email {} does not exist", command.getUserName());
+		
+		opt.get().updateRole(command.getRoleCode(), command.getRoleName(), command.getEnabled());
+		repo.save(opt.get());
+		
+		return Optional.ofNullable(UserMapper.INSTANCE.toData(opt.get()));
+	}
+
+	@Override
+	public Optional<UserData> deleteUserRole(@NonNull DeleteUserRoleCommand command) {
+
+		Optional<User> opt = repo.findOneByName(command.getUserName());
+		Preconditions.checkState(opt.isPresent(), "User with name/email {} does not exist", command.getUserName());
+		
+		opt.get().deleteRole(command.getRoleCode());
+		
+		repo.save(opt.get());
+		
+		return Optional.ofNullable(UserMapper.INSTANCE.toData(opt.get()));
+	}
 }

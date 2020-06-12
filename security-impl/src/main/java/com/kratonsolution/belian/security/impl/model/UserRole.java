@@ -30,11 +30,14 @@ public class UserRole {
 	@ManyToOne
 	@JoinColumn(name = "fk_user")
     private User user;
-    
-	@ManyToOne
-	@JoinColumn(name = "fk_role")
-    private Role role;
-    
+    	
+	@Column(name = "role_code")
+	private String roleCode;
+	
+	@Setter
+	@Column(name = "role_name")
+	private String roleName;
+	
     @Setter
     @Column(name = "is_enabled")
     private boolean enabled;
@@ -42,10 +45,11 @@ public class UserRole {
     UserRole() {
     }
     
-    public UserRole(@NonNull User user, @NonNull Role role) {
+    public UserRole(@NonNull User user, @NonNull String roleCode, @NonNull String roleName) {
     	
     	this.user = user;
-    	this.role = role;
+    	this.roleCode = roleCode;
+    	this.roleName = roleName;
     	this.enabled = true;
     }
 }
