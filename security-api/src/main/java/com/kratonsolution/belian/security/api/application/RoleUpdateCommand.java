@@ -24,5 +24,5 @@ public class RoleUpdateCommand {
     
     private boolean enabled;
     
-    private Set<RoleModuleUpdateCommand> modules = new HashSet<RoleModuleUpdateCommand>();
+    private Set<RoleModuleCommand> modules = new HashSet<RoleModuleCommand>();
 }

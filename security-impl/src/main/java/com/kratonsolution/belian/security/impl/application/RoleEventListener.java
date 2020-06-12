@@ -6,9 +6,9 @@ import org.springframework.context.PayloadApplicationEvent;
 import org.springframework.stereotype.Service;
 
 import com.kratonsolution.belian.common.application.EventType;
-import com.kratonsolution.belian.security.api.RoleEvent;
 import com.kratonsolution.belian.security.api.application.DeleteUserRoleCommand;
 import com.kratonsolution.belian.security.api.application.RegisterNewUserRoleCommand;
+import com.kratonsolution.belian.security.api.application.RoleEvent;
 import com.kratonsolution.belian.security.api.application.UpdateUserRoleCommand;
 import com.kratonsolution.belian.security.api.application.UserService;
 

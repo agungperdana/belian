@@ -113,10 +113,17 @@ public class RoleEditContent extends AbstractForm
 						
 						RoleModuleUpdateCommand cmd = new RoleModuleUpdateCommand();
 						cmd.setModuleCode(RowUtils.string((Row)com, 0));
-//						cmd.setAdd();
+						cmd.setAdd(RowUtils.isChecked((Row)com, 2));
+						cmd.setRead(RowUtils.isChecked((Row)com, 3));
+						cmd.setEdit(RowUtils.isChecked((Row)com, 4));
+						cmd.setDelete(RowUtils.isChecked((Row)com, 5));
+						cmd.setPrint(RowUtils.isChecked((Row)com, 6));
 						
+						command.getModules().add(cmd);
 					});
 				});
+				
+				service.update(command);
 				
 				FlowHelper.next(getParent(), WindowContentChangeEvent.GRID);
 			}

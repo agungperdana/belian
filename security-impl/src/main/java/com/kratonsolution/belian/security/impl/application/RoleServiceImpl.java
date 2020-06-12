@@ -19,12 +19,13 @@ import com.google.common.base.Preconditions;
 import com.kratonsolution.belian.common.application.EventType;
 import com.kratonsolution.belian.common.application.TaskEvent;
 import com.kratonsolution.belian.security.api.RoleData;
-import com.kratonsolution.belian.security.api.RoleEvent;
 import com.kratonsolution.belian.security.api.application.RoleCreateCommand;
 import com.kratonsolution.belian.security.api.application.RoleDeleteCommand;
+import com.kratonsolution.belian.security.api.application.RoleEvent;
 import com.kratonsolution.belian.security.api.application.RoleFilter;
 import com.kratonsolution.belian.security.api.application.RoleService;
 import com.kratonsolution.belian.security.api.application.RoleUpdateCommand;
+import com.kratonsolution.belian.security.api.application.RoleModuleCommand;
 import com.kratonsolution.belian.security.impl.model.Module;
 import com.kratonsolution.belian.security.impl.model.Role;
 import com.kratonsolution.belian.security.impl.model.RoleModule;
@@ -60,8 +61,7 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
         
         command.getModules().forEach(m -> {
             
-            RoleModule module = new RoleModule(role,
-            		moduleRepo.findOneByCode(m.getModule().getCode()).orElse(null), 
+            RoleModule module = new RoleModule(role, m.getModuleCode(), m.getModuleName(), 
                     m.isRead(), m.isAdd(), m.isEdit(), 
                     m.isDelete(), m.isPrint());
             
@@ -92,14 +92,20 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
         	opt.get().setName(command.getName());
         }
         
-        command.getModules().forEach(m -> {
-            
-            RoleModule module = new RoleModule(opt.get(), 
-            		moduleRepo.findOneByCode(m.getModuleCode()).orElse(null), 
-                    m.isRead(), m.isAdd(), m.isEdit(), 
-                    m.isDelete(), m.isPrint());
-            
-            opt.get().addModule(module);
+        opt.get().getModules().forEach(mod -> {
+        	
+        	Optional<RoleModuleCommand> cmd = command.getModules().stream()
+        			.filter(p->p.getModuleCode().equals(mod.getModuleCode()))
+        			.findFirst();
+        	
+        	if(cmd.isPresent()) {
+        		
+        		mod.setAdd(cmd.get().isAdd());
+        		mod.setDelete(cmd.get().isDelete());
+        		mod.setEdit(cmd.get().isEdit());
+        		mod.setPrint(cmd.get().isPrint());
+        		mod.setRead(cmd.get().isRead());
+        	}
         });
         
         roleRepo.save(opt.get());
@@ -185,7 +191,7 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
 				roleRepo.findAll().forEach(role -> {
 					
 					Module mod = moduleRepo.getOne(model.getPayload().get("id").toString());
-					role.getModules().add(new RoleModule(role, mod,false, false, false, false, false)); 
+					role.getModules().add(new RoleModule(role, mod.getCode(), mod.getName(), false, false, false, false, false)); 
 
 					roleRepo.save(role);
 				});
@@ -194,7 +200,7 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
 				
 				roleRepo.findAll().forEach(role -> {
 					
-					role.getModules().removeIf(mod -> mod.getModule().getId().equals(model.getPayload().get("id")));
+					role.getModules().removeIf(mod -> mod.getModuleCode().equals(model.getPayload().get("id")));
 					roleRepo.save(role);
 				});
 			}

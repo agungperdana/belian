@@ -39,9 +39,11 @@ public class RoleModule
 	@JoinColumn(name="fk_role")
 	private Role role;
  
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="fk_module")
-	private Module module;
+	@Column(name = "module_code")
+	private String moduleCode;
+	
+	@Column(name = "moduleName")
+	private String moduleName;
 	
     @Setter
     @Column(name = "is_read")
@@ -69,10 +71,11 @@ public class RoleModule
     RoleModule(){
     }
     
-    public RoleModule(@NonNull Role role, @NonNull Module module, boolean read, boolean add, boolean edit, boolean delete, boolean print) {
+    public RoleModule(@NonNull Role role, @NonNull String moduleCode, @NonNull String moduleName, boolean read, boolean add, boolean edit, boolean delete, boolean print) {
         
     	this.role = role;
-    	this.module = module;
+    	this.moduleCode = moduleCode;
+    	this.moduleName = moduleName;
         this.read = read;
         this.add = add;
         this.edit = edit;
@@ -84,8 +87,8 @@ public class RoleModule
     public String toString() {
         
         return MoreObjects.toStringHelper(this)
-                .add("Module Code", module.getCode())
-                .add("Module Name", module.getName())
+                .add("Module Code", moduleCode)
+                .add("Module Name", moduleName)
                 .add("read", read)
                 .add("add", add)
                 .add("edit", edit)

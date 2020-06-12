@@ -3,8 +3,6 @@ package com.kratonsolution.belian.security.api.application;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.kratonsolution.belian.security.api.RoleModuleData;
-
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -27,5 +25,5 @@ public class RoleCreateCommand {
     
     private boolean enabled;    
     
-    private Set<RoleModuleData> modules = new HashSet<RoleModuleData>();
+    private Set<RoleModuleCommand> modules = new HashSet<RoleModuleCommand>();
 }

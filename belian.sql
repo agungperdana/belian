@@ -97,7 +97,7 @@ DROP TABLE IF EXISTS `role_module`;
 CREATE TABLE `role_module` (
   `id` varchar(100) NOT NULL,
   `fk_role` varchar(100) DEFAULT NULL,
-  `fk_module` varchar(100) DEFAULT NULL,
+  `module_code` varchar(100) DEFAULT NULL,
   `is_enabled` char(1) DEFAULT '0',
   `is_read` char(1) DEFAULT '0',
   `is_edit` char(1) DEFAULT '0',
@@ -105,6 +105,7 @@ CREATE TABLE `role_module` (
   `is_delete` char(1) DEFAULT '0',
   `is_print` char(1) DEFAULT '0',
   `version` bigint(10) DEFAULT 0,
+  `module_name` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -115,7 +116,7 @@ CREATE TABLE `role_module` (
 
 LOCK TABLES `role_module` WRITE;
 /*!40000 ALTER TABLE `role_module` DISABLE KEYS */;
-INSERT INTO `role_module` VALUES ('5fe614e5-2ec5-4918-b277-2a2c588604de','9c1c08d7-6472-4819-9700-e6d6d0d80cad','aaf82d44-cce5-4c7a-9d3f-bbf328b01381','0','1','1','1','1','1',0),('6129d7c5-2578-4fdc-964e-f9b5651a99da','9c1c08d7-6472-4819-9700-e6d6d0d80cad','fc283c30-3f7e-4bb3-ad37-7fb27640df69','0','1','1','1','1','1',0),('72a3f762-46f8-4ee8-ab9b-0150f2cd5961','9c1c08d7-6472-4819-9700-e6d6d0d80cad','8221d147-2540-4910-b05c-3ae1a7d76add','0','1','1','1','1','1',0);
+INSERT INTO `role_module` VALUES ('5fe614e5-2ec5-4918-b277-2a2c588604de','9c1c08d7-6472-4819-9700-e6d6d0d80cad','aaf82d44-cce5-4c7a-9d3f-bbf328b01381','0','1','1','1','1','1',6,NULL),('6129d7c5-2578-4fdc-964e-f9b5651a99da','9c1c08d7-6472-4819-9700-e6d6d0d80cad','fc283c30-3f7e-4bb3-ad37-7fb27640df69','0','1','1','1','1','1',6,NULL),('72a3f762-46f8-4ee8-ab9b-0150f2cd5961','9c1c08d7-6472-4819-9700-e6d6d0d80cad','8221d147-2540-4910-b05c-3ae1a7d76add','0','1','1','1','1','1',6,NULL);
 /*!40000 ALTER TABLE `role_module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -191,4 +192,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-12  9:03:10
+-- Dump completed on 2020-06-12 15:38:18
