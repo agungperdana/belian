@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.jasypt.util.password.StrongPasswordEncryptor;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.model.Auditable;
@@ -24,9 +26,9 @@ import lombok.NonNull;
 import lombok.Setter;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0
  */
 @Getter
 @Entity
@@ -80,8 +82,9 @@ public class User extends Auditable
 
 	public boolean changePassword(@NonNull String newPassword, @NonNull String oldPassword) {
 
-		if(this.password.equals(oldPassword)) {
-			this.password = newPassword;
+		if(new StrongPasswordEncryptor().checkPassword(oldPassword, this.password)) {
+
+			this.password = new StrongPasswordEncryptor().encryptPassword(newPassword);
 			return true;
 		}
 

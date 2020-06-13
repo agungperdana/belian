@@ -77,6 +77,7 @@ public class ModuleFormContent extends AbstractForm
 				command.setCode(code.getText());
 				command.setName(name.getText());
 				command.setNote(note.getText());
+				command.setEnabled(enabled.isChecked());
 				command.setGroup(ModuleGroupUIHelper.get(groups));
 				
 				service.create(command);

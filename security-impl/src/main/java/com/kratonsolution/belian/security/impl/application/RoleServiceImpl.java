@@ -61,9 +61,8 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
         
         command.getModules().forEach(m -> {
             
-            RoleModule module = new RoleModule(role, m.getModuleCode(), m.getModuleName(), 
-                    m.isRead(), m.isAdd(), m.isEdit(), 
-                    m.isDelete(), m.isPrint());
+            RoleModule module = new RoleModule(role, m.getModuleCode(), m.getModuleName(), m.getModuleGroup(),
+                    m.isRead(), m.isAdd(), m.isEdit(), m.isDelete(), m.isPrint());
             
             role.addRoleModule(module);
         });
@@ -191,7 +190,8 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
 				roleRepo.findAll().forEach(role -> {
 					
 					Module mod = moduleRepo.getOne(model.getPayload().get("id").toString());
-					role.getModules().add(new RoleModule(role, mod.getCode(), mod.getName(), false, false, false, false, false)); 
+					role.getModules().add(new RoleModule(role, mod.getCode(), mod.getName(), mod.getGroup(), 
+							false, false, false, false, false)); 
 
 					roleRepo.save(role);
 				});

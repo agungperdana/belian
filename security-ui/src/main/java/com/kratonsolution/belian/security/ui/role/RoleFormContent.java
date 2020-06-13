@@ -121,6 +121,7 @@ public class RoleFormContent extends AbstractForm
 						rmd.setEdit(RowUtils.isChecked(row, 4));
 						rmd.setDelete(RowUtils.isChecked(row, 5));
 						rmd.setPrint(RowUtils.isChecked(row, 6));
+						rmd.setModuleGroup(ModuleGroup.valueOf(RowUtils.string(row, 7)));
 						
 						command.getModules().add(rmd);
 					});
@@ -254,6 +255,8 @@ public class RoleFormContent extends AbstractForm
 			grid.getColumns().appendChild(canUpdate);
 			grid.getColumns().appendChild(canDelete);
 			grid.getColumns().appendChild(canPrint);
+			grid.getColumns().appendChild(new Column());
+			grid.getColumns().getLastChild().setVisible(false);
 			
 			for(ModuleData module:moduleService.getAllModules())
 			{
@@ -274,6 +277,7 @@ public class RoleFormContent extends AbstractForm
 					row.appendChild(edit);
 					row.appendChild(delete);
 					row.appendChild(print);
+					row.appendChild(new Label(group.name()));
 					
 					adds.add(add);
 					reads.add(read);

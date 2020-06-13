@@ -80,7 +80,7 @@ public class ChangePassword extends AbstractForm
 				{
 					ChangePasswordCommand command = new ChangePasswordCommand();
 					command.setName(userName);
-					command.setOldPassword(new StrongPasswordEncryptor().encryptPassword(oldPassword.getText()));
+					command.setOldPassword(oldPassword.getText());
 					command.setNewPassword(newPassword.getText());
 					
 					service.changePassword(command);

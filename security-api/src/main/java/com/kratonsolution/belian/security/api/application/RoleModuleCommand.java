@@ -1,5 +1,7 @@
 package com.kratonsolution.belian.security.api.application;
 
+import com.kratonsolution.belian.security.api.ModuleGroup;
+
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -18,6 +20,8 @@ public class RoleModuleCommand {
     
     @NonNull
     private String moduleName;
+    
+    private ModuleGroup moduleGroup;
     
     private boolean read;
     

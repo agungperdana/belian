@@ -83,7 +83,6 @@ CREATE TABLE `role` (
 
 LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
-INSERT INTO `role` VALUES ('9c1c08d7-6472-4819-9700-e6d6d0d80cad','SYS-ADM','System Administrator',NULL,'','1',NULL,NULL,NULL,NULL,0);
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -106,6 +105,7 @@ CREATE TABLE `role_module` (
   `is_print` char(1) DEFAULT '0',
   `version` bigint(10) DEFAULT 0,
   `module_name` varchar(150) DEFAULT NULL,
+  `module_group` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -116,7 +116,6 @@ CREATE TABLE `role_module` (
 
 LOCK TABLES `role_module` WRITE;
 /*!40000 ALTER TABLE `role_module` DISABLE KEYS */;
-INSERT INTO `role_module` VALUES ('5fe614e5-2ec5-4918-b277-2a2c588604de','9c1c08d7-6472-4819-9700-e6d6d0d80cad','aaf82d44-cce5-4c7a-9d3f-bbf328b01381','0','1','1','1','1','1',6,NULL),('6129d7c5-2578-4fdc-964e-f9b5651a99da','9c1c08d7-6472-4819-9700-e6d6d0d80cad','fc283c30-3f7e-4bb3-ad37-7fb27640df69','0','1','1','1','1','1',6,NULL),('72a3f762-46f8-4ee8-ab9b-0150f2cd5961','9c1c08d7-6472-4819-9700-e6d6d0d80cad','8221d147-2540-4910-b05c-3ae1a7d76add','0','1','1','1','1','1',6,NULL);
 /*!40000 ALTER TABLE `role_module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -179,7 +178,6 @@ CREATE TABLE `user_role` (
 
 LOCK TABLES `user_role` WRITE;
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
-INSERT INTO `user_role` VALUES ('8bef0358-fc91-488f-a152-2e57ccd95a25','0000000000','SYS-ADM','1','System Administrator');
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -192,4 +190,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-12 15:38:18
+-- Dump completed on 2020-06-13  9:53:10

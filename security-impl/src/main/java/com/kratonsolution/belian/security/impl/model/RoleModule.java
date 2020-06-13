@@ -45,7 +45,7 @@ public class RoleModule
 	@Column(name = "module_code")
 	private String moduleCode;
 	
-	@Column(name = "moduleName")
+	@Column(name = "module_name")
 	private String moduleName;
 	
 	@Enumerated(EnumType.STRING)
@@ -78,11 +78,14 @@ public class RoleModule
     RoleModule(){
     }
     
-    public RoleModule(@NonNull Role role, @NonNull String moduleCode, @NonNull String moduleName, boolean read, boolean add, boolean edit, boolean delete, boolean print) {
+    public RoleModule(@NonNull Role role, @NonNull String moduleCode, @NonNull String moduleName, 
+    		@NonNull ModuleGroup group, boolean read, boolean add, 
+    		boolean edit, boolean delete, boolean print) {
         
     	this.role = role;
     	this.moduleCode = moduleCode;
     	this.moduleName = moduleName;
+    	this.moduleGroup = group;
         this.read = read;
         this.add = add;
         this.edit = edit;
