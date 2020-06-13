@@ -14,7 +14,11 @@ import lombok.Setter;
 public class RoleModuleData {
     
 	@NonNull
-	private ModuleData module;
+	private String moduleCode;
+	
+	private String moduleName;
+	
+	private ModuleGroup moduleGroup;
 	
     private boolean read;
     

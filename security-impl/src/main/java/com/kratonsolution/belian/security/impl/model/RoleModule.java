@@ -5,6 +5,8 @@ import java.util.UUID;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -15,6 +17,7 @@ import javax.persistence.Version;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 
 import com.google.common.base.MoreObjects;
+import com.kratonsolution.belian.security.api.ModuleGroup;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -44,6 +47,10 @@ public class RoleModule
 	
 	@Column(name = "moduleName")
 	private String moduleName;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "module_group")
+	private ModuleGroup moduleGroup;
 	
     @Setter
     @Column(name = "is_read")

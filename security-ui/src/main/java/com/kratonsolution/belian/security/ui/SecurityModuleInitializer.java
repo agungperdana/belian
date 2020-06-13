@@ -32,22 +32,25 @@ public class SecurityModuleInitializer implements ApplicationListener<ContextRef
 		log.info("Publisher {}", publisher);
 		
 		ModuleRegistryInformation moduleInfo = new ModuleRegistryInformation();
+		moduleInfo.setPosition(1);
 		moduleInfo.setName(SECURITY_MODULE);
 		moduleInfo.setNickName("Module");
 		moduleInfo.setFisheyeImage(getClass().getResource("/images/fisheye/module.png"));
 		moduleInfo.setLauncherImage(getClass().getResource("/images/registry/module.png"));
-		
-		ModuleRegistryInformation userInfo = new ModuleRegistryInformation();
-		userInfo.setName(SECURITY_USER);
-		userInfo.setNickName("User");
-		userInfo.setFisheyeImage(getClass().getResource("/images/fisheye/user.png"));
-		userInfo.setLauncherImage(getClass().getResource("/images/registry/user.png"));
-		
+
 		ModuleRegistryInformation roleInfo = new ModuleRegistryInformation();
+		roleInfo.setPosition(2);
 		roleInfo.setName(SECURITY_ROLE);
 		roleInfo.setNickName("Role");
 		roleInfo.setFisheyeImage(getClass().getResource("/images/fisheye/role.png"));
 		roleInfo.setLauncherImage(getClass().getResource("/images/registry/role.png"));
+		
+		ModuleRegistryInformation userInfo = new ModuleRegistryInformation();
+		userInfo.setPosition(3);
+		userInfo.setName(SECURITY_USER);
+		userInfo.setNickName("User");
+		userInfo.setFisheyeImage(getClass().getResource("/images/fisheye/user.png"));
+		userInfo.setLauncherImage(getClass().getResource("/images/registry/user.png"));
 		
 		publisher.publishEvent(new ModuleRegistrationEvent(this, moduleInfo));
 		publisher.publishEvent(new ModuleRegistrationEvent(this, userInfo));

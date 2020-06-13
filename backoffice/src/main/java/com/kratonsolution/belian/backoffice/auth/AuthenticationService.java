@@ -59,23 +59,23 @@ public class AuthenticationService implements UserDetailsService
                     rd.get().getModules().forEach(m -> {
                         
                         if(m.isRead()) {
-                            list.add(new Authority("ROLE_"+m.getModule().getCode().toUpperCase()));
+                            list.add(new Authority("ROLE_"+m.getModuleCode().toUpperCase()));
                         }
                         
                         if(m.isAdd()) {
-                            list.add(new Authority("ROLE_"+m.getModule().getCode().toUpperCase()+"_ADD"));
+                            list.add(new Authority("ROLE_"+m.getModuleCode().toUpperCase()+"_ADD"));
                         }
                         
                         if(m.isEdit()) {
-                            list.add(new Authority("ROLE_"+m.getModule().getCode().toUpperCase()+"_EDIT"));
+                            list.add(new Authority("ROLE_"+m.getModuleCode().toUpperCase()+"_EDIT"));
                         }
                         
                         if(m.isDelete()) {
-                            list.add(new Authority("ROLE_"+m.getModule().getCode().toUpperCase()+"_DELETE"));
+                            list.add(new Authority("ROLE_"+m.getModuleCode().toUpperCase()+"_DELETE"));
                         }
                         
                         if(m.isPrint()) {
-                            list.add(new Authority("ROLE_"+m.getModule().getCode().toUpperCase()+"_PRINT"));
+                            list.add(new Authority("ROLE_"+m.getModuleCode().toUpperCase()+"_PRINT"));
                         }
                     });
                 }

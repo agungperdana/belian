@@ -34,7 +34,7 @@ import com.kratonsolution.belian.common.ui.util.RowUtils;
 import com.kratonsolution.belian.common.ui.util.Springs;
 import com.kratonsolution.belian.security.api.ModuleGroup;
 import com.kratonsolution.belian.security.api.RoleData;
-import com.kratonsolution.belian.security.api.application.RoleModuleUpdateCommand;
+import com.kratonsolution.belian.security.api.application.RoleModuleCommand;
 import com.kratonsolution.belian.security.api.application.RoleService;
 import com.kratonsolution.belian.security.api.application.RoleUpdateCommand;
 
@@ -111,8 +111,9 @@ public class RoleEditContent extends AbstractForm
 					
 					grd.getRows().getChildren().forEach(com -> {
 						
-						RoleModuleUpdateCommand cmd = new RoleModuleUpdateCommand();
+						RoleModuleCommand cmd = new RoleModuleCommand();
 						cmd.setModuleCode(RowUtils.string((Row)com, 0));
+						cmd.setModuleName(RowUtils.string((Row)com, 1));
 						cmd.setAdd(RowUtils.isChecked((Row)com, 2));
 						cmd.setRead(RowUtils.isChecked((Row)com, 3));
 						cmd.setEdit(RowUtils.isChecked((Row)com, 4));
@@ -300,7 +301,7 @@ public class RoleEditContent extends AbstractForm
 			Optional<RoleData> role = service.getByCode(roleCode);
 			role.get().getModules().stream().forEach(mod -> {
 				
-				if(mod.getModule().getGroup().equals(group))
+				if(mod.getModuleGroup().equals(group))
 				{
 					Checkbox create = new Checkbox();
 					create.setChecked(mod.isAdd());
@@ -318,8 +319,8 @@ public class RoleEditContent extends AbstractForm
 					print.setChecked(mod.isPrint());
 
 					Row row = new Row();
-					row.appendChild(new Label(mod.getModule().getCode()));
-					row.appendChild(new Label(mod.getModule().getName()));
+					row.appendChild(new Label(mod.getModuleCode()));
+					row.appendChild(new Label(mod.getModuleName()));
 					row.appendChild(create);
 					row.appendChild(read);
 					row.appendChild(update);

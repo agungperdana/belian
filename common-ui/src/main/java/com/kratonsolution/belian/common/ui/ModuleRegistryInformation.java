@@ -8,11 +8,14 @@ import lombok.Setter;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 2.0
  */
 @Getter
 @Setter
 public class ModuleRegistryInformation {
 
+	private int position = 1000;
+	
 	private String name;
 
 	private URL fisheyeImage;

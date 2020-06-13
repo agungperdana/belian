@@ -78,12 +78,12 @@ public class Role extends Auditable
     public Role(@NonNull String code, @NonNull String name, String note, boolean enabled, @NonNull Set<RoleModule> modules) {
         
         this(code, name, note, enabled);
-        modules.forEach(module -> addModule(module));
+        modules.forEach(module -> addRoleModule(module));
     }
     
-    public void addModule(@NonNull RoleModule module) {
+    public void addRoleModule(@NonNull RoleModule module) {
         
-        Optional<RoleModule> model = modules.stream().filter(m -> m.getModule().getCode().equals(module.getModule().getCode())).findFirst();
+        Optional<RoleModule> model = modules.stream().filter(m -> m.getModuleCode().equals(module.getModuleCode())).findFirst();
         
         if(model.isPresent()) {
             

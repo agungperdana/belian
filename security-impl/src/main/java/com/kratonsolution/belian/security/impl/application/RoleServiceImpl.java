@@ -65,7 +65,7 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
                     m.isRead(), m.isAdd(), m.isEdit(), 
                     m.isDelete(), m.isPrint());
             
-            role.addModule(module);
+            role.addRoleModule(module);
         });
         
         roleRepo.save(role);

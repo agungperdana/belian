@@ -35,9 +35,9 @@ import com.kratonsolution.belian.common.ui.util.RowUtils;
 import com.kratonsolution.belian.common.ui.util.Springs;
 import com.kratonsolution.belian.security.api.ModuleData;
 import com.kratonsolution.belian.security.api.ModuleGroup;
-import com.kratonsolution.belian.security.api.RoleModuleData;
 import com.kratonsolution.belian.security.api.application.ModuleService;
 import com.kratonsolution.belian.security.api.application.RoleCreateCommand;
+import com.kratonsolution.belian.security.api.application.RoleModuleCommand;
 import com.kratonsolution.belian.security.api.application.RoleService;
 
 /**
@@ -113,11 +113,9 @@ public class RoleFormContent extends AbstractForm
 						
 						Row row = (Row)obj;
 						
-						ModuleData md = new ModuleData();
-						md.setCode(RowUtils.string(row, 0));
-						
-						RoleModuleData rmd = new RoleModuleData();
-						rmd.setModule(md);
+						RoleModuleCommand rmd = new RoleModuleCommand();
+						rmd.setModuleCode(RowUtils.string(row, 0));
+						rmd.setModuleName(RowUtils.string(row, 1));
 						rmd.setAdd(RowUtils.isChecked(row, 2));
 						rmd.setRead(RowUtils.isChecked(row, 3));
 						rmd.setEdit(RowUtils.isChecked(row, 4));
