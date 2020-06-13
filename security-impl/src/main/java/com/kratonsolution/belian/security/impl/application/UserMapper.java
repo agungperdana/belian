@@ -14,7 +14,8 @@ import lombok.NonNull;
 
 /**
  * @author Agung Dodi Perdana
- * @email agung.dodi.perdana@gmail.com 
+ * @email agung.dodi.perdana@gmail.com
+ * @sinch 2.0
  */
 @Mapper
 public interface UserMapper {

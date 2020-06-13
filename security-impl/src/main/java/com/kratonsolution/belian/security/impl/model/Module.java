@@ -10,6 +10,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import com.google.common.base.MoreObjects;
 import com.kratonsolution.belian.common.model.Auditable;
 import com.kratonsolution.belian.security.api.ModuleGroup;
@@ -27,6 +30,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "module")
 @Cacheable 
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Module extends Auditable
 {
     @Id

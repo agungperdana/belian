@@ -39,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com 
- * @since 2.0
+ * @since 1.0
  */
 @Slf4j
 @Service

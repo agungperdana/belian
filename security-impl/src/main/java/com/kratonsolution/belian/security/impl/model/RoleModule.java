@@ -2,7 +2,6 @@ package com.kratonsolution.belian.security.impl.model;
 
 import java.util.UUID;
 
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -32,7 +31,6 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name = "role_module")
-@Cacheable 
 public class RoleModule
 {
 	@Id

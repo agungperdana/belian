@@ -15,6 +15,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import com.google.common.base.MoreObjects;
 import com.kratonsolution.belian.common.model.Auditable;
 
@@ -30,7 +33,8 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name = "role")
-@Cacheable 
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Role extends Auditable
 {
     @Id

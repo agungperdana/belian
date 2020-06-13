@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 
 import com.google.common.base.MoreObjects;
@@ -34,6 +36,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "user")
 @Cacheable 
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class User extends Auditable
 {
 	@Id

@@ -2,7 +2,6 @@ package com.kratonsolution.belian.security.impl.model;
 
 import java.util.UUID;
 
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -21,7 +20,6 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name = "user_role")
-@Cacheable 
 public class UserRole {
  
 	@Id

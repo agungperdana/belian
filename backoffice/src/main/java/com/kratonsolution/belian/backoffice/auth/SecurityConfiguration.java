@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0
  */
 @Configuration
 @EnableWebSecurity
