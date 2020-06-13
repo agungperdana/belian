@@ -20,6 +20,11 @@ rootProject.name = 'belian'
 include 'common'
 include 'security-api'
 include 'security-impl'
+include 'party-api'
+include 'party-impl'
+
 include 'common-ui'
 include 'security-ui'
+include 'party-ui'
+
 include 'backoffice'
