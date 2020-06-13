@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.google.common.base.Preconditions;
-import com.kratonsolution.belian.api.security.UserData;
+import com.kratonsolution.belian.security.api.UserData;
 
 import lombok.Getter;
 import lombok.Setter;

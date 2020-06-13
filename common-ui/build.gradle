@@ -1,0 +1,35 @@
+plugins {
+	
+	id 'java'
+	id 'eclipse'
+	id 'org.springframework.boot' version '2.2.4.RELEASE'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+repositories {
+	maven{url 'https://mavensync.zkoss.org/maven2'}
+}
+
+dependencies {
+	
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.projectlombok:lombok:1.18.10'
+	
+	annotationProcessor 'org.projectlombok:lombok:1.18.10'
+	
+	def withoutSlf4J = { exclude group: "org.slf4j", module: "slf4j-jdk14" }
+	implementation 'org.zkoss.zk:zkplus:9.0.0', withoutSlf4J
+	implementation 'org.zkoss.zk:zhtml:9.0.0', withoutSlf4J
+	implementation 'org.zkoss.zk:zkbind:9.0.0', withoutSlf4J
+	implementation 'org.zkoss.zk:zul:9.0.0', withoutSlf4J
+}
+
+bootJar {
+	enabled=false
+}
+
+jar {
+	enabled=true
+}

@@ -6,5 +6,5 @@ package com.kratonsolution.belian.common.application;
  */
 public enum EventType {
  
-    ADD, UPDATE, DELETE
+    ADD, UPDATE, DELETE, PRINT
 }

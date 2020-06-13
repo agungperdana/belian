@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zk>
-<config-name>Belian ERP 2.0</config-name>
-<richlet>
-    <richlet-name>Desktop</richlet-name>
-    <richlet-class>com.kratonsolution.belian.backoffice.ui.Desktop</richlet-class>
-</richlet>
-<richlet-mapping>
-    <richlet-name>Desktop</richlet-name>
-    <url-pattern>/secure/home</url-pattern>
-</richlet-mapping>
+	<config-name>Belian ERP 2.0</config-name>
+	<richlet>
+    	<richlet-name>Desktop</richlet-name>
+    	<richlet-class>com.kratonsolution.belian.backoffice.ui.Desktop</richlet-class>
+	</richlet>
+	<richlet-mapping>
+    	<richlet-name>Desktop</richlet-name>
+    	<url-pattern>/home</url-pattern>
+	</richlet-mapping>
+	
+	<library-property>
+    	<name>org.zkoss.theme.preferred</name>
+    	<value>breeze</value> <!-- or silvertail, atlantic, deepsea, gardensalad etc. -->
+	</library-property>
+	
 </zk>

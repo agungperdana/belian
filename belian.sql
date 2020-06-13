@@ -1,13 +1,15 @@
--- MariaDB dump 10.17  Distrib 10.4.6-MariaDB, for Linux (x86_64)
+CREATE DATABASE  IF NOT EXISTS `belian` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `belian`;
+-- MariaDB dump 10.17  Distrib 10.4.12-MariaDB, for Linux (x86_64)
 --
--- Host: localhost    Database: belian
+-- Host: 127.0.0.1    Database: belian
 -- ------------------------------------------------------
--- Server version	10.4.6-MariaDB
+-- Server version	10.4.12-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -26,7 +28,7 @@ CREATE TABLE `module` (
   `id` varchar(100) NOT NULL,
   `code` varchar(100) DEFAULT NULL,
   `name` varchar(200) DEFAULT NULL,
-  `group` varchar(100) DEFAULT NULL,
+  `module_group` varchar(100) CHARACTER SET cp1250 DEFAULT NULL,
   `note` varchar(250) DEFAULT NULL,
   `is_enabled` char(1) DEFAULT '0',
   `created_by` varchar(100) DEFAULT NULL,
@@ -46,6 +48,7 @@ CREATE TABLE `module` (
 
 LOCK TABLES `module` WRITE;
 /*!40000 ALTER TABLE `module` DISABLE KEYS */;
+INSERT INTO `module` VALUES ('8221d147-2540-4910-b05c-3ae1a7d76add','SCR-USR','Security User','SECURITY','','0',NULL,NULL,NULL,NULL,0),('aaf82d44-cce5-4c7a-9d3f-bbf328b01381','SCR-ROLE','Security Role','SECURITY','','0',NULL,NULL,NULL,NULL,0),('fc283c30-3f7e-4bb3-ad37-7fb27640df69','SCR-MDL','Security Module','SECURITY','','0',NULL,NULL,NULL,NULL,0);
 /*!40000 ALTER TABLE `module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -93,8 +96,16 @@ DROP TABLE IF EXISTS `role_module`;
 CREATE TABLE `role_module` (
   `id` varchar(100) NOT NULL,
   `fk_role` varchar(100) DEFAULT NULL,
-  `fk_module` varchar(100) DEFAULT NULL,
+  `module_code` varchar(100) DEFAULT NULL,
   `is_enabled` char(1) DEFAULT '0',
+  `is_read` char(1) DEFAULT '0',
+  `is_edit` char(1) DEFAULT '0',
+  `is_add` char(1) DEFAULT '0',
+  `is_delete` char(1) DEFAULT '0',
+  `is_print` char(1) DEFAULT '0',
+  `version` bigint(10) DEFAULT 0,
+  `module_name` varchar(150) DEFAULT NULL,
+  `module_group` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -140,6 +151,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES ('0000000000','admin','admin@belian.com','b0mneBIP3GjwF7Z8G0C/dkQmg1eiMLpeD03tFPX5N4/pG+25IuP7XMcBT2Q8psv+','1','0','0','0000000000',NULL,NULL,NULL,0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -153,8 +165,9 @@ DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE `user_role` (
   `id` varchar(100) NOT NULL,
   `fk_user` varchar(100) DEFAULT NULL,
-  `fk_role` varchar(100) DEFAULT NULL,
+  `role_code` varchar(100) DEFAULT NULL,
   `is_enabled` char(1) DEFAULT '0',
+  `role_name` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -177,4 +190,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-02-24  5:59:40
+-- Dump completed on 2020-06-13  9:53:10

@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class Landing {
     
-    @GetMapping(name = "/")
+    @GetMapping("/")
     public String landing() {
         return "redirect:/login";
     }
     
     @GetMapping("/login")
     public String showLogin() {
-    	return "login";
+        return "login";
     }
 }
