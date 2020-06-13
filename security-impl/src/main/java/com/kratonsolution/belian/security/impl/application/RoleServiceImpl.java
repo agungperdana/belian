@@ -12,6 +12,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,9 +24,9 @@ import com.kratonsolution.belian.security.api.application.RoleCreateCommand;
 import com.kratonsolution.belian.security.api.application.RoleDeleteCommand;
 import com.kratonsolution.belian.security.api.application.RoleEvent;
 import com.kratonsolution.belian.security.api.application.RoleFilter;
+import com.kratonsolution.belian.security.api.application.RoleModuleCommand;
 import com.kratonsolution.belian.security.api.application.RoleService;
 import com.kratonsolution.belian.security.api.application.RoleUpdateCommand;
-import com.kratonsolution.belian.security.api.application.RoleModuleCommand;
 import com.kratonsolution.belian.security.impl.model.Module;
 import com.kratonsolution.belian.security.impl.model.Role;
 import com.kratonsolution.belian.security.impl.model.RoleModule;
@@ -54,7 +55,7 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
     @Autowired
     private ApplicationEventPublisher publisher;
     
-    @Override
+    @Secured({"ROLE_SCR-ROLE_ADD"})
     public RoleData create(RoleCreateCommand command) {
         
         Role role = new Role(command.getCode(), command.getName(), command.getNote(), command.isEnabled());
@@ -78,7 +79,7 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
         return data;
     }
     
-    @Override
+    @Secured({"ROLE_SCR-ROLE_UPDATE"})
     public RoleData update(RoleUpdateCommand command) {
         
         Optional<Role> opt = roleRepo.findOneByCode(command.getCode());
@@ -120,7 +121,7 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
         return data;
     }
     
-    @Override
+    @Secured({"ROLE_SCR-ROLE_DELETE"})
     public RoleData delete(RoleDeleteCommand command) {
         
         Optional<Role> opt = roleRepo.findOneByCode(command.getCode());
@@ -137,25 +138,24 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
         return data;
     }
     
-    @Override
     public Optional<RoleData> getByCode(String code) {
         
         return Optional.ofNullable(RoleMapper.INSTANCE.toData(roleRepo.findOneByCode(code).orElse(null)));
     }
     
-    @Override
+    @Secured({"ROLE_SCR-ROLE_READ"})
     public List<RoleData> getAllRoles() {
         
         return RoleMapper.INSTANCE.toRoleDatas(roleRepo.findAll());
     }
     
-    @Override
+    @Secured({"ROLE_SCR-ROLE_READ"})
     public List<RoleData> getAllRoles(int page, int size) {
         
         return RoleMapper.INSTANCE.toRoleDatas(roleRepo.findAll(PageRequest.of(page, size)).getContent());
     }
     
-    @Override
+    @Secured({"ROLE_SCR-ROLE_READ"})
     public List<RoleData> getAllRoles(@NonNull RoleFilter filter, int page, int size) {
         
     	ExampleMatcher matcher = ExampleMatcher.matchingAny();
@@ -167,19 +167,20 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
         				PageRequest.of(page, size)).getContent());
     }
     
-    @Override
+    @Secured({"ROLE_SCR-ROLE_READ"})
     public int count() {
         
         return (int)roleRepo.count();
     }
     
-    @Override
+    @Secured({"ROLE_SCR-ROLE_READ"})
     public int count(@NonNull RoleFilter filter) {
     	
     	return roleRepo.count("%"+filter.getKey()+"%").intValue();
     }
 
 	@Transactional
+    @Secured({"ROLE_SCR-ROLE_READ"})
 	public void onApplicationEvent(PayloadApplicationEvent<TaskEvent> event) {
 
 		TaskEvent model = event.getPayload();

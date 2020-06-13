@@ -9,6 +9,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,7 +44,7 @@ public class ModuleServiceImpl implements ModuleService {
     @Autowired
     private ApplicationEventPublisher publisher;
         
-    @Override
+    @Secured("ROLE_SCR-MDL_ADD")
     public ModuleData create(ModuleCreateCommand command) {
 
         Module module = new Module(command.getCode(), command.getName(), command.getGroup(), 
@@ -62,6 +63,7 @@ public class ModuleServiceImpl implements ModuleService {
     }
     
     @Override
+    @Secured("ROLE_SCR-MDL_UPDATE")
     public ModuleData update(ModuleUpdateCommand command) {
 
         Optional<Module> opt = repo.findOneByCode(command.getCode());
@@ -79,7 +81,7 @@ public class ModuleServiceImpl implements ModuleService {
         return ModuleMapper.INSTANCE.toData(opt.get());
     }
     
-    @Override
+    @Secured("ROLE_SCR-MDL_DELETE")
     public ModuleData delete(ModuleDeleteCommand command) {
 
         Optional<Module> opt = repo.findOneByCode(command.getCode());
@@ -97,25 +99,25 @@ public class ModuleServiceImpl implements ModuleService {
         return ModuleMapper.INSTANCE.toData(opt.get());
     }
     
-    @Override
+    @Secured("ROLE_SCR-MDL_READ")
     public Optional<ModuleData> getByCode(String code) {
 
         return Optional.ofNullable(ModuleMapper.INSTANCE.toData(repo.findOneByCode(code).orElse(null)));
     }
     
-    @Override
+    @Secured("ROLE_SCR-MDL_READ")
     public List<ModuleData> getAllModules() {
 
         return ModuleMapper.INSTANCE.toDatas(repo.findAll());
     }
     
-    @Override
+    @Secured("ROLE_SCR-MDL_READ")
     public List<ModuleData> getAllModules(int page, int size) {
 
         return ModuleMapper.INSTANCE.toDatas(repo.findAll(PageRequest.of(page, size)).getContent());
     }
     
-    @Override
+    @Secured("ROLE_SCR-MDL_READ")
     public List<ModuleData> getAllModules(@NonNull ModuleFilter filter, int page, int size) {
 
     	ExampleMatcher matcher = ExampleMatcher.matchingAny();
@@ -128,13 +130,13 @@ public class ModuleServiceImpl implements ModuleService {
     					PageRequest.of(page, size)).getContent());
     }
     
-    @Override
+    @Secured("ROLE_SCR-MDL_READ")
     public int count() {
 
         return (int)repo.count();
     }
     
-    @Override
+    @Secured("ROLE_SCR-MDL_READ")
     public int count(@NonNull ModuleFilter filter) {
     	
     	return repo.count(filter.getKey()).intValue();
