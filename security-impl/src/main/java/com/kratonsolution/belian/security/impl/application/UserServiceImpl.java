@@ -9,6 +9,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService
     
     private StrongPasswordEncryptor enc = new StrongPasswordEncryptor();
     
-    @Override
+    @Secured({"ROLE_SCR-USR_ADD"})
     public Optional<UserData> create(@NonNull CreateUserCommand command) {
         
         User user = new User(command.getName(), command.getEmail(),
@@ -57,7 +58,7 @@ public class UserServiceImpl implements UserService
         return Optional.ofNullable(UserMapper.INSTANCE.toData(user));
     }
     
-    @Override
+    @Secured({"ROLE_SCR-USR_UPDATE"})
     public Optional<UserData> update(@NonNull UpdateUserCommand command) {
         
         Optional<User> userOpt = repo.findOneByName(command.getName());
@@ -75,7 +76,7 @@ public class UserServiceImpl implements UserService
         return Optional.ofNullable(UserMapper.INSTANCE.toData(userOpt.get()));
     }
     
-    @Override
+    @Secured({"ROLE_SCR-USR_DELETE"})
     public Optional<UserData> delete(@NonNull DeleteUserCommand command) {
         
         Optional<User> userOpt = repo.findOneByName(command.getName());
@@ -89,7 +90,7 @@ public class UserServiceImpl implements UserService
         return Optional.ofNullable(UserMapper.INSTANCE.toData(userOpt.get()));
     }
     
-    @Override
+    @Secured({"ROLE_SCR-USR_UPDATE"})
     public Optional<UserData> changePassword(@NonNull ChangePasswordCommand command) {
         
         Optional<User> userOpt = repo.findOneByName(command.getName());
@@ -109,16 +110,19 @@ public class UserServiceImpl implements UserService
         return Optional.ofNullable(UserMapper.INSTANCE.toData(repo.findOneByName(name).orElse(null)));
     }
     
+    @Secured({"ROLE_SCR-USR_READ"})
     public List<UserData> getAllUsers() {
         
         return UserMapper.INSTANCE.toDatas(repo.findAll());
     }
     
+    @Secured({"ROLE_SCR-USR_READ"})
     public List<UserData> getAllUsers(int page, int size) {
         
         return UserMapper.INSTANCE.toDatas(repo.findAll(PageRequest.of(page, size)).getContent());
     }
     
+    @Secured({"ROLE_SCR-USR_READ"})
     public List<UserData> getAllUsers(@NonNull UserFilter filter, int page, int size) {
         
         ExampleMatcher matcher = ExampleMatcher.matchingAny();
@@ -140,13 +144,12 @@ public class UserServiceImpl implements UserService
         return repo.count("%"+filter.getKey()+"%").intValue();
     }
 
-    @Override
     public Optional<UserData> getByEmail(@NonNull String email) {
 
         return Optional.ofNullable(UserMapper.INSTANCE.toData(repo.findOneByEmail(email).orElse(null)));
     }
 
-	@Override
+    @Secured({"ROLE_SCR-USR_UPDATE"})
 	public Optional<UserData> addNewUserRole(@NonNull RegisterNewUserRoleCommand command) {
 		
 		Optional<User> opt = repo.findOneByName(command.getUserName());
@@ -158,7 +161,7 @@ public class UserServiceImpl implements UserService
 		return Optional.ofNullable(UserMapper.INSTANCE.toData(opt.get()));
 	}
 
-	@Override
+    @Secured({"ROLE_SCR-USR_UPDATE"})
 	public Optional<UserData> updateUserRole(@NonNull UpdateUserRoleCommand command) {
 
 		Optional<User> opt = repo.findOneByName(command.getUserName());
@@ -170,7 +173,7 @@ public class UserServiceImpl implements UserService
 		return Optional.ofNullable(UserMapper.INSTANCE.toData(opt.get()));
 	}
 
-	@Override
+    @Secured({"ROLE_SCR-USR_UPDATE"})
 	public Optional<UserData> deleteUserRole(@NonNull DeleteUserRoleCommand command) {
 
 		Optional<User> opt = repo.findOneByName(command.getUserName());

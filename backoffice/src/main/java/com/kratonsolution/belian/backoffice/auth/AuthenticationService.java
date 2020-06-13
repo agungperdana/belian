@@ -59,7 +59,7 @@ public class AuthenticationService implements UserDetailsService
                     rd.get().getModules().forEach(m -> {
                         
                         if(m.isRead()) {
-                            list.add(new Authority("ROLE_"+m.getModuleCode().toUpperCase()));
+                            list.add(new Authority("ROLE_"+m.getModuleCode().toUpperCase()+"_READ"));
                         }
                         
                         if(m.isAdd()) {
@@ -81,6 +81,8 @@ public class AuthenticationService implements UserDetailsService
                 }
             }
         });
+        
+        log.info("Authorized for {}", list);
         
         return new SecurityInformation(userOpt.get(), list);
     }

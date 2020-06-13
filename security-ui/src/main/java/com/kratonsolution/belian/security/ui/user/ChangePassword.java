@@ -3,7 +3,6 @@ package com.kratonsolution.belian.security.ui.user;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
