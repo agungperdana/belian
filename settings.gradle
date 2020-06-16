@@ -19,6 +19,7 @@ rootProject.name = 'belian'
 
 include 'common'
 include 'common-ui'
+include 'common-spring'
 include 'security-api'
 include 'security-impl'
 include 'security-ui'

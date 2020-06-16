@@ -16,6 +16,7 @@ dependencies {
 
 	compile project(':common-ui')
 	compile project(':security-ui')
+	compile project(':geographic-ui')
 	
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'

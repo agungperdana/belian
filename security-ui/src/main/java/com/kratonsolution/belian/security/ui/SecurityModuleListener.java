@@ -11,6 +11,7 @@ import com.kratonsolution.belian.security.ui.user.SecurityUserHandler;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 2.0
  */
 @Service
 public class SecurityModuleListener implements ApplicationListener<ModuleOpenWindowEvent> {
