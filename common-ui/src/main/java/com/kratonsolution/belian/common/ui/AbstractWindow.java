@@ -46,5 +46,6 @@ public abstract class AbstractWindow extends Window
 		});
 	}
 	
+	@Deprecated
 	public abstract void fireWindowContentChange(String event, Map<String, String> parameter);
 }

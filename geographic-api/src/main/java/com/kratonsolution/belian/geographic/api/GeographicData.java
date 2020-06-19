@@ -22,6 +22,8 @@ public class GeographicData {
 	private String name;
 
 	private String note;
+	
+	private String parent;
 
 	private GeographicType type;
 	

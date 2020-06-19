@@ -9,7 +9,8 @@ import org.zkoss.zul.Treecol;
 import org.zkoss.zul.Treecols;
 
 import com.kratonsolution.belian.common.ui.TreeContent;
-import com.kratonsolution.belian.common.ui.event.WindowContentChangeEvent;
+import com.kratonsolution.belian.common.ui.event.ContentEvent;
+import com.kratonsolution.belian.common.ui.event.GeographicUIContentEvent;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
 
 /**
@@ -37,7 +38,7 @@ public class GeographicContent extends TreeContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				FlowHelper.next(getParent(), WindowContentChangeEvent.GRID);
+				FlowHelper.next(GeographicUIContentEvent.toGrid());
 			}
 		});
 
@@ -45,7 +46,7 @@ public class GeographicContent extends TreeContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				FlowHelper.next(getParent(), WindowContentChangeEvent.ADD_FORM);
+				FlowHelper.next(GeographicUIContentEvent.newForm());
 			}
 		});
 
@@ -99,9 +100,13 @@ public class GeographicContent extends TreeContent
 		Treecols cols = new Treecols();
 		cols.appendChild(new Treecol(Labels.getLabel("geographic.label.code")));
 		cols.appendChild(new Treecol(Labels.getLabel("geographic.label.name")));
+		cols.appendChild(new Treecol(Labels.getLabel("geographic.label.type")));
 		cols.appendChild(new Treecol(Labels.getLabel("geographic.label.note")));
 
 		tree.appendChild(cols);
 		tree.setModel(GeographicTreeModel.buid());
+		tree.setItemRenderer(new GeographicTreeItemRenderer());
+		
+		appendChild(tree);
 	}
 }

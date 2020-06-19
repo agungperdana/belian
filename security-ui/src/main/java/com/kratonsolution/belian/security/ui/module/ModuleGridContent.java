@@ -17,7 +17,7 @@ import org.zkoss.zul.event.ZulEvents;
 
 import com.kratonsolution.belian.common.application.MapHelper;
 import com.kratonsolution.belian.common.ui.GridContent;
-import com.kratonsolution.belian.common.ui.event.WindowContentChangeEvent;
+import com.kratonsolution.belian.common.ui.event.ContentEvent;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.RowUtils;
 import com.kratonsolution.belian.common.ui.util.Springs;
@@ -52,7 +52,7 @@ public class ModuleGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				FlowHelper.next(getParent(), WindowContentChangeEvent.GRID);
+				FlowHelper.next(getParent(), ContentEvent.GRID);
 			}
 		});
 		
@@ -60,7 +60,7 @@ public class ModuleGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				FlowHelper.next(getParent(), WindowContentChangeEvent.ADD_FORM);
+				FlowHelper.next(getParent(), ContentEvent.ADD_FORM);
 			}
 		});
 		
@@ -133,7 +133,7 @@ public class ModuleGridContent extends GridContent
 								}
 							}
 							
-							FlowHelper.next(getParent(), WindowContentChangeEvent.GRID);
+							FlowHelper.next(getParent(), ContentEvent.GRID);
 						}
 					}
 				});
@@ -187,7 +187,7 @@ public class ModuleGridContent extends GridContent
 						{
 							Row row = (Row)ev.getTarget();
 							FlowHelper.next(getParent(), 
-									WindowContentChangeEvent.EDIT_FORM, 
+									ContentEvent.EDIT_FORM, 
 									MapHelper.build("code", RowUtils.string(row, 1)));
 						}
 					});

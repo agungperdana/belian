@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `belian` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `belian`;
--- MariaDB dump 10.17  Distrib 10.4.12-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.17  Distrib 10.4.13-MariaDB, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: belian
 -- ------------------------------------------------------
--- Server version	10.4.12-MariaDB
+-- Server version	10.4.13-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -35,6 +33,7 @@ CREATE TABLE `geographic` (
   `last_updated_by` varchar(150) DEFAULT NULL,
   `last_updated_date` timestamp NULL DEFAULT NULL,
   `version` bigint(20) DEFAULT NULL,
+  `type` char(35) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -46,6 +45,7 @@ CREATE TABLE `geographic` (
 
 LOCK TABLES `geographic` WRITE;
 /*!40000 ALTER TABLE `geographic` DISABLE KEYS */;
+INSERT INTO `geographic` VALUES ('6741fa4c-7d4a-43dd-8db6-1c73e9caf409','PNK-KT-SEKIP','Darat Sekip','','8df3435a-e52f-4c2d-86df-90edd0d5fe05',NULL,NULL,NULL,NULL,0,'KELURAHAN'),('7b9080b4-ba94-4939-91c8-74da3525bb57','PNK','Pontianak','','afd1b3c4-5db7-4089-9b73-43f69f91c417',NULL,NULL,NULL,NULL,0,'KOTA'),('82564cd2-f84f-4ac4-8175-b41a830943ab','PNK-KT-SEKIP-RW05-02','RT 02','','c39b285a-c5f6-40fb-bb58-d0d099faf21d',NULL,NULL,NULL,NULL,0,'RT'),('8df3435a-e52f-4c2d-86df-90edd0d5fe05','PNK-KT','Pontianak Kota','','7b9080b4-ba94-4939-91c8-74da3525bb57',NULL,NULL,NULL,NULL,0,'KECAMATAN'),('afd1b3c4-5db7-4089-9b73-43f69f91c417','KAL BAR','Kalimantan Barat','','b81c17c2-182b-49ee-8689-dfdc1982d8fc',NULL,NULL,NULL,NULL,0,'PROVINSI'),('b81c17c2-182b-49ee-8689-dfdc1982d8fc','INA','Indonesia','',NULL,NULL,NULL,NULL,NULL,0,'NEGARA'),('c39b285a-c5f6-40fb-bb58-d0d099faf21d','PNK-KT-SEKIP-RW05','RW 05','','6741fa4c-7d4a-43dd-8db6-1c73e9caf409',NULL,NULL,NULL,NULL,0,'RW');
 /*!40000 ALTER TABLE `geographic` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,7 +149,7 @@ CREATE TABLE `role_module` (
 
 LOCK TABLES `role_module` WRITE;
 /*!40000 ALTER TABLE `role_module` DISABLE KEYS */;
-INSERT INTO `role_module` VALUES ('283eefd4-287e-4f1f-87b3-25a7ab7bcede','aaec1e72-07e7-4591-a0c2-04065f255f6c','SCR-ROLE','0','1','1','1','1','1',0,'Security Role','SECURITY'),('53d11ba0-edba-4cd4-8ce4-479afd495e31','aaec1e72-07e7-4591-a0c2-04065f255f6c','SCR-USR','0','1','1','1','1','1',0,'Security User','SECURITY'),('5c63ea4a-8259-4bf9-a09a-51b82f883583','aaec1e72-07e7-4591-a0c2-04065f255f6c','SCR-MDL','0','1','1','1','1','1',0,'Security Module','SECURITY'),('a6ee2c61-da8a-4fcf-9d41-a3291b721554','aaec1e72-07e7-4591-a0c2-04065f255f6c','AUTHENTICATION','0','1','1','1','1','1',1,'User Authentication','SYSTEM'),('dacc4b4b-21df-4d8e-b344-f3fb80257fc2','aaec1e72-07e7-4591-a0c2-04065f255f6c','AUTHORIZATION','0','1','1','1','1','1',1,'User Authorization','SYSTEM'),('fdae3a5a-1cf5-40a7-85ad-2d2fd023095e','aaec1e72-07e7-4591-a0c2-04065f255f6c','GEOGRAPHIC','0','0','0','0','0','0',0,'Geographic','SECURITY');
+INSERT INTO `role_module` VALUES ('283eefd4-287e-4f1f-87b3-25a7ab7bcede','aaec1e72-07e7-4591-a0c2-04065f255f6c','SCR-ROLE','0','1','1','1','1','1',0,'Security Role','SECURITY'),('53d11ba0-edba-4cd4-8ce4-479afd495e31','aaec1e72-07e7-4591-a0c2-04065f255f6c','SCR-USR','0','1','1','1','1','1',0,'Security User','SECURITY'),('5c63ea4a-8259-4bf9-a09a-51b82f883583','aaec1e72-07e7-4591-a0c2-04065f255f6c','SCR-MDL','0','1','1','1','1','1',0,'Security Module','SECURITY'),('a6ee2c61-da8a-4fcf-9d41-a3291b721554','aaec1e72-07e7-4591-a0c2-04065f255f6c','AUTHENTICATION','0','1','1','1','1','1',1,'User Authentication','SYSTEM'),('dacc4b4b-21df-4d8e-b344-f3fb80257fc2','aaec1e72-07e7-4591-a0c2-04065f255f6c','AUTHORIZATION','0','1','1','1','1','1',1,'User Authorization','SYSTEM'),('fdae3a5a-1cf5-40a7-85ad-2d2fd023095e','aaec1e72-07e7-4591-a0c2-04065f255f6c','GEOGRAPHIC','0','1','1','1','1','1',1,'Geographic','SECURITY');
 /*!40000 ALTER TABLE `role_module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -225,4 +225,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-16 10:28:16
+-- Dump completed on 2020-06-19  7:17:42

@@ -22,7 +22,7 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.ui.AbstractForm;
-import com.kratonsolution.belian.common.ui.event.WindowContentChangeEvent;
+import com.kratonsolution.belian.common.ui.event.ContentEvent;
 import com.kratonsolution.belian.common.ui.util.Components;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.GridHelper;
@@ -75,7 +75,7 @@ public class UserEditContent extends AbstractForm
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				FlowHelper.next(getParent(), WindowContentChangeEvent.GRID);
+				FlowHelper.next(getParent(), ContentEvent.GRID);
 			}
 		});
 
@@ -115,7 +115,7 @@ public class UserEditContent extends AbstractForm
 					service.update(command);
 				}
 
-				FlowHelper.next(getParent(), WindowContentChangeEvent.GRID);
+				FlowHelper.next(getParent(), ContentEvent.GRID);
 			}
 		});
 	}
@@ -134,7 +134,7 @@ public class UserEditContent extends AbstractForm
 					Map<String, String> param = new HashMap<>();
 					param.put("username", userName);
 					
-					FlowHelper.next(getParent(), WindowContentChangeEvent.OTHER, param);
+					FlowHelper.next(getParent(), ContentEvent.OTHER, param);
 				}
 			});
 

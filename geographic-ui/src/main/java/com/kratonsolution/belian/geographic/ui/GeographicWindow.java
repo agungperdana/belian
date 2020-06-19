@@ -4,9 +4,11 @@ import java.util.Map;
 
 import org.zkoss.image.AImage;
 import org.zkoss.util.resource.Labels;
+import org.zkoss.zk.ui.event.EventQueues;
 
 import com.kratonsolution.belian.common.ui.AbstractWindow;
-import com.kratonsolution.belian.common.ui.event.WindowContentChangeEvent;
+import com.kratonsolution.belian.common.ui.event.ContentEvent;
+import com.kratonsolution.belian.common.ui.event.GeographicUIContentEvent;
 
 
 /**
@@ -26,21 +28,26 @@ public class GeographicWindow extends AbstractWindow
 		} catch (Exception e) {}
 
 		caption.setLabel(Labels.getLabel("geographic.label.caption"));
+		EventQueues.lookup(GeographicUIContentEvent.class.getSimpleName()).subscribe(e->{
+			
+			GeographicUIContentEvent event = (GeographicUIContentEvent) e;
+			
+			clearContent();
+
+			if(event.getType().equals(ContentEvent.ADD_FORM)) {
+				appendChild(new GeographicFormContent());
+			}
+			else if(event.getType().equals(ContentEvent.EDIT_FORM)) {
+				appendChild(new GeographicUpdateContent(event.getCode()));
+			}
+			else {
+				appendChild(new GeographicContent());
+			}
+		});
 	}
 
 	@Override
 	public void fireWindowContentChange(String event, Map<String, String> parameter) {
-
-		clearContent();
-
-		if(event.equals(WindowContentChangeEvent.GRID)) {
-			appendChild(GeographicContentFactory.createGridContent());
-		}
-//		else if(event.equals(WindowContentChangeEvent.EDIT_FORM)) {
-//			appendChild(GeographicContentFactory.createEditFormContent(parameter.get("code")));
-//		}
-//		else {
-//			appendChild(GeographicContentFactory.createAddFormContent());
-//		}
 	}
+
 }

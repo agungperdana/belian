@@ -1,7 +1,7 @@
 package com.kratonsolution.belian.geographic.ui;
 
-import java.util.Collection;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.zkoss.zul.DefaultTreeModel;
 import org.zkoss.zul.DefaultTreeNode;
@@ -93,13 +93,32 @@ public class GeographicTreeModel extends DefaultTreeModel<GeographicData>
     	
     	GeographicService service = Springs.get(GeographicService.class);
     	
-    	Collection<GeographicTreeNode> nodes = new Vector<>();
+    	List<GeographicData> _roots = service.getAllGeographicRoots();
     	
-    	service.getAllGeographicRoots().forEach(data -> {
+    	GeographicTreeNode nodes[] = new GeographicTreeNode[_roots.size()];
+    	for(int idx=0;idx<_roots.size();idx++) {
     		
-    		nodes.add(new GeographicTreeNode(data));
-    	}); 
+    		GeographicData data = _roots.get(idx);
+    		nodes[idx] = new GeographicTreeNode(data, toNode(new ArrayList<>(data.getChilds())));
+    	}
     	
-    	return new GeographicTreeModel(new GeographicTreeNode(null, (GeographicTreeNode[])nodes.toArray()));
+    	return new GeographicTreeModel(new GeographicTreeNode(null, nodes));
+    }
+    
+    private static GeographicTreeNode[] toNode(List<GeographicData> childs) {
+    	
+    	if(childs != null && !childs.isEmpty()) {
+    		
+    		GeographicTreeNode nodes[] = new GeographicTreeNode[childs.size()];
+    		for(int idx=0;idx<childs.size();idx++) {
+    			
+    			GeographicData data = childs.get(idx);
+    			nodes[idx] = new GeographicTreeNode(data, toNode(new ArrayList<>(data.getChilds())));
+    		}
+    		
+    		return nodes;
+    	}
+    	
+    	return null;
     }
 }
