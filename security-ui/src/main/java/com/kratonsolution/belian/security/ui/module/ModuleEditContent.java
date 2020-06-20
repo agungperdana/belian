@@ -17,7 +17,7 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.ui.AbstractForm;
-import com.kratonsolution.belian.common.ui.event.WindowContentChangeEvent;
+import com.kratonsolution.belian.common.ui.event.ContentEvent;
 import com.kratonsolution.belian.common.ui.util.Components;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.Springs;
@@ -66,7 +66,7 @@ public class ModuleEditContent extends AbstractForm
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				FlowHelper.next(getParent(), WindowContentChangeEvent.GRID);
+				FlowHelper.next(getParent(), ContentEvent.GRID);
 			}
 		});
 
@@ -91,7 +91,7 @@ public class ModuleEditContent extends AbstractForm
 				
 				service.update(command);
 				
-				FlowHelper.next(getParent(), WindowContentChangeEvent.GRID);
+				FlowHelper.next(getParent(), ContentEvent.GRID);
 			}
 		});
 	}

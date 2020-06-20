@@ -67,7 +67,7 @@ public class AuthenticationService implements UserDetailsService
                         }
                         
                         if(m.isEdit()) {
-                            list.add(new Authority("ROLE_"+m.getModuleCode().toUpperCase()+"_EDIT"));
+                            list.add(new Authority("ROLE_"+m.getModuleCode().toUpperCase()+"_UPDATE"));
                         }
                         
                         if(m.isDelete()) {

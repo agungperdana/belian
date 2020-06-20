@@ -6,7 +6,7 @@ import org.zkoss.image.AImage;
 import org.zkoss.util.resource.Labels;
 
 import com.kratonsolution.belian.common.ui.AbstractWindow;
-import com.kratonsolution.belian.common.ui.event.WindowContentChangeEvent;
+import com.kratonsolution.belian.common.ui.event.ContentEvent;
 
 /**
  * @author Agung Dodi Perdana
@@ -32,13 +32,13 @@ public class UserWindow extends AbstractWindow
 		
 		clearContent();
 		
-		if(event.equals(WindowContentChangeEvent.GRID)) {
+		if(event.equals(ContentEvent.GRID)) {
 			appendChild(UserContentFactory.createGridContent());
 		}
-		else if(event.equals(WindowContentChangeEvent.ADD_FORM)) {
+		else if(event.equals(ContentEvent.ADD_FORM)) {
 			appendChild(UserContentFactory.createAddFormContent());
 		}
-		else if(event.equals(WindowContentChangeEvent.EDIT_FORM)) {
+		else if(event.equals(ContentEvent.EDIT_FORM)) {
 			appendChild(UserContentFactory.createEditFormContent(map.get("username")));
 		}
 		else {

@@ -16,6 +16,7 @@ import com.kratonsolution.belian.security.api.application.ModuleService;
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0
  */
 public class ModuleModel implements ListModel<ModuleData>
 {

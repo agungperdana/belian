@@ -19,7 +19,7 @@ import org.zkoss.zul.event.PagingEvent;
 import org.zkoss.zul.event.ZulEvents;
 
 import com.kratonsolution.belian.common.ui.GridContent;
-import com.kratonsolution.belian.common.ui.event.WindowContentChangeEvent;
+import com.kratonsolution.belian.common.ui.event.ContentEvent;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.RowUtils;
 import com.kratonsolution.belian.common.ui.util.Springs;
@@ -53,7 +53,7 @@ public class UserGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				FlowHelper.next(getParent(), WindowContentChangeEvent.GRID);
+				FlowHelper.next(getParent(), ContentEvent.GRID);
 			}
 		});
 		
@@ -62,7 +62,7 @@ public class UserGridContent extends GridContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				FlowHelper.next(getParent(), WindowContentChangeEvent.ADD_FORM);
+				FlowHelper.next(getParent(), ContentEvent.ADD_FORM);
 			}
 		});
 		
@@ -190,7 +190,7 @@ public class UserGridContent extends GridContent
 							Map<String, String> param = new HashMap<>();
 							param.put("username", RowUtils.string(row, 1));
 							
-							FlowHelper.next(getParent(), WindowContentChangeEvent.EDIT_FORM, param);
+							FlowHelper.next(getParent(), ContentEvent.EDIT_FORM, param);
 						}
 					});
 				}

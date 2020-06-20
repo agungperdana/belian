@@ -1,0 +1,19 @@
+plugins {
+	
+	id 'java'
+	id 'eclipse'
+}
+
+dependencies {
+
+	compile project(':common')
+	
+	implementation 'com.google.guava:guava:28.2-jre'
+	
+	compileOnly 'org.projectlombok:lombok:1.18.10'
+	annotationProcessor 'org.projectlombok:lombok:1.18.10'
+}
+
+jar {
+	enabled=true //needed
+}
