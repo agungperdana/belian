@@ -27,6 +27,7 @@ import com.google.common.base.MoreObjects;
 import com.kratonsolution.belian.geographic.impl.model.Geographic;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 /**
@@ -45,33 +46,33 @@ public class Party implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	protected String id = UUID.randomUUID().toString();
+	private String id = UUID.randomUUID().toString();
 	
 	@Column(name="code")
-	protected String code;
+	private String code;
 	
 	@Column(name="name")
-	protected String name;
+	private String name;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_geographic_birth_place")
 	@NotFound(action=NotFoundAction.IGNORE)
-	protected Geographic birthPlace;
+	private Geographic birthPlace;
 	
 	@Column(name="birth_date")
-	protected Instant birthDate;
+	private Instant birthDate;
 
 	@Column(name="tax_code")
-	protected String taxCode;
+	private String taxCode;
 	
 	@Version
-	protected Long version;
+	private Long version;
+	
+	@OneToMany(mappedBy="party", cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.LAZY)
+	private Set<Address> addresses = new HashSet<Address>();
 	
 	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
-	protected Set<Address> addresses = new HashSet<Address>();
-	
-	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
-	protected Set<Contact> contacts = new HashSet<Contact>();
+	private Set<Contact> contacts = new HashSet<Contact>();
 	
 	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
 	private Set<PartyRole> partyRoles = new HashSet<>();
@@ -82,7 +83,16 @@ public class Party implements Serializable
 	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
 	private Set<PartyClassification> classifications = new HashSet<>();
 	
-	public Party(){}
+	Party(){}
+	
+	public Party(@NonNull String code, @NonNull String name, @NonNull String taxCode, Geographic birthPlace, Instant birthDate)
+	{
+		this.code = code;
+		this.name = name;
+		this.taxCode = taxCode;
+		this.birthDate = birthDate;
+		this.birthPlace = birthPlace;
+	}
 	
 	@Override
 	public String toString()

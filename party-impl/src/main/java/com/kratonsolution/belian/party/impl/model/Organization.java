@@ -1,6 +1,7 @@
 package com.kratonsolution.belian.party.impl.model;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.UUID;
 
 import javax.persistence.Cacheable;
@@ -18,8 +19,10 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import com.kratonsolution.belian.common.model.Auditable;
+import com.kratonsolution.belian.geographic.impl.model.Geographic;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 /**
@@ -48,5 +51,10 @@ public class Organization extends Auditable implements Serializable
 	@Version
 	private Long version;
 	
-	public Organization(){}
+	Organization(){}
+	
+	public Organization(@NonNull String code, @NonNull String name, String taxCode, Instant birthDate, Geographic birthPlace) {
+		
+		this.party = new Party(code, name, taxCode, birthPlace, birthDate);
+	}
 }

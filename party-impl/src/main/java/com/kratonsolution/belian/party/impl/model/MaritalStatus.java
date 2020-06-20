@@ -18,6 +18,8 @@ import javax.persistence.Version;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import com.kratonsolution.belian.party.api.model.MaritalStatusType;
+
 import lombok.Getter;
 import lombok.Setter;
 

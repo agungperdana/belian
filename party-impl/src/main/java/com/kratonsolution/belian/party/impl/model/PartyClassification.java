@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.kratonsolution.belian.party.api.model.PartyClassificationType;
+
 import lombok.Getter;
 import lombok.Setter;
 

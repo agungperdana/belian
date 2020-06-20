@@ -17,6 +17,7 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import com.kratonsolution.belian.geographic.impl.model.Geographic;
+import com.kratonsolution.belian.party.api.model.AddressType;
 
 import lombok.Getter;
 import lombok.Setter;

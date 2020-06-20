@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.kratonsolution.belian.party.impl.model.Gender;
+import com.kratonsolution.belian.party.api.model.Gender;
 import com.kratonsolution.belian.party.impl.model.Person;
 
 /**
