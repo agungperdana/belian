@@ -20,6 +20,8 @@ import javax.persistence.Version;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
+import com.kratonsolution.belian.common.model.Auditable;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,14 +34,14 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="person")
-public class Person implements Serializable
+public class Person extends Auditable implements Serializable
 {
 	private static final long serialVersionUID = 304354227477648871L;
 
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "fk_party")
 	@NotFound(action = NotFoundAction.IGNORE)
 	private Party party;

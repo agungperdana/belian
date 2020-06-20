@@ -18,6 +18,64 @@ USE `belian`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `Person`
+--
+
+DROP TABLE IF EXISTS `Person`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Person` (
+  `id` char(50) NOT NULL,
+  `fk_party` char(50) DEFAULT NULL,
+  `gender` char(25) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  `created_date` timestamp NULL DEFAULT NULL,
+  `created_by` varchar(200) DEFAULT NULL,
+  `last_updated_date` timestamp NULL DEFAULT NULL,
+  `last_updated_by` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Person`
+--
+
+LOCK TABLES `Person` WRITE;
+/*!40000 ALTER TABLE `Person` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Person` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `citizenship`
+--
+
+DROP TABLE IF EXISTS `citizenship`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `citizenship` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `nopassport_number` varchar(100) DEFAULT NULL,
+  `fk_person` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `citizenship`
+--
+
+LOCK TABLES `citizenship` WRITE;
+/*!40000 ALTER TABLE `citizenship` DISABLE KEYS */;
+/*!40000 ALTER TABLE `citizenship` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `geographic`
 --
 
@@ -48,6 +106,34 @@ CREATE TABLE `geographic` (
 LOCK TABLES `geographic` WRITE;
 /*!40000 ALTER TABLE `geographic` DISABLE KEYS */;
 /*!40000 ALTER TABLE `geographic` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `marital_status`
+--
+
+DROP TABLE IF EXISTS `marital_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `marital_status` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `type` char(35) DEFAULT NULL,
+  `fk_person` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `marital_status`
+--
+
+LOCK TABLES `marital_status` WRITE;
+/*!40000 ALTER TABLE `marital_status` DISABLE KEYS */;
+/*!40000 ALTER TABLE `marital_status` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -83,6 +169,35 @@ LOCK TABLES `module` WRITE;
 /*!40000 ALTER TABLE `module` DISABLE KEYS */;
 INSERT INTO `module` VALUES ('13b174ef-fed6-4b16-98a1-d9bf3047988e','AUTHENTICATION','User Authentication','SYSTEM','','1',NULL,NULL,NULL,NULL,0),('8221d147-2540-4910-b05c-3ae1a7d76add','SCR-USR','Security User','SECURITY','','0',NULL,NULL,NULL,NULL,0),('a2151307-2c74-48ff-868d-24364126a14d','AUTHORIZATION','User Authorization','SYSTEM','','1',NULL,NULL,NULL,NULL,0),('aaf82d44-cce5-4c7a-9d3f-bbf328b01381','SCR-ROLE','Security Role','SECURITY','','0',NULL,NULL,NULL,NULL,0),('bbd4e3e4-ddb7-497e-862f-c5e3fdee44e7','GEOGRAPHIC','Geographic','SECURITY','','1',NULL,NULL,NULL,NULL,0),('fc283c30-3f7e-4bb3-ad37-7fb27640df69','SCR-MDL','Security Module','SECURITY','','0',NULL,NULL,NULL,NULL,0);
 /*!40000 ALTER TABLE `module` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `organization`
+--
+
+DROP TABLE IF EXISTS `organization`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `organization` (
+  `id` char(50) NOT NULL,
+  `fk_party` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  `created_by` varchar(200) DEFAULT NULL,
+  `created_date` timestamp NULL DEFAULT NULL,
+  `last_updated_by` varchar(200) DEFAULT NULL,
+  `last_updated_date` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `organization`
+--
+
+LOCK TABLES `organization` WRITE;
+/*!40000 ALTER TABLE `organization` DISABLE KEYS */;
+/*!40000 ALTER TABLE `organization` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -268,6 +383,88 @@ LOCK TABLES `party_role` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `party_skill`
+--
+
+DROP TABLE IF EXISTS `party_skill`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `party_skill` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `fk_type` char(50) DEFAULT NULL,
+  `fk_party` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `party_skill`
+--
+
+LOCK TABLES `party_skill` WRITE;
+/*!40000 ALTER TABLE `party_skill` DISABLE KEYS */;
+/*!40000 ALTER TABLE `party_skill` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `party_skill_type`
+--
+
+DROP TABLE IF EXISTS `party_skill_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `party_skill_type` (
+  `id` char(50) NOT NULL,
+  `name` varchar(200) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `party_skill_type`
+--
+
+LOCK TABLES `party_skill_type` WRITE;
+/*!40000 ALTER TABLE `party_skill_type` DISABLE KEYS */;
+/*!40000 ALTER TABLE `party_skill_type` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `physical_characteristic`
+--
+
+DROP TABLE IF EXISTS `physical_characteristic`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `physical_characteristic` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `type` char(35) DEFAULT NULL,
+  `value` varchar(150) DEFAULT NULL,
+  `fk_person` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `physical_characteristic`
+--
+
+LOCK TABLES `physical_characteristic` WRITE;
+/*!40000 ALTER TABLE `physical_characteristic` DISABLE KEYS */;
+/*!40000 ALTER TABLE `physical_characteristic` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `role`
 --
 
@@ -408,4 +605,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-20 10:05:25
+-- Dump completed on 2020-06-20 12:40:24
