@@ -1,11 +1,9 @@
-/**
- * 
- */
-package com.kratonsolution.belian.partys.dm;
+package com.kratonsolution.belian.party.impl.model;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0
  */
 public enum PartyRoleType
 {
@@ -26,14 +24,14 @@ public enum PartyRoleType
 	DIVISION("Divisi","Division"),
 	DEPARTMENT("Departemen","Department"),
 	HEALTCARE_PRACTITIONER("Praktisi Kesehatan","Healtcare Practitioner"),
-	HEALTCARE_PROVICER("Penyedia Jasa Kesehatan","Healtcare Provider"),
+	HEALTCARE_PROVIDER("Penyedia Jasa Kesehatan","Healtcare Provider"),
 	INTERNAL_ORGANIZATION("Linkar Dalam Organisasi ","Internal Organisasi");
 	
 	private String inID;
 
 	private String enUS;
 
-	private PartyRoleType(String inID,String enUS)
+	private PartyRoleType(String inID, String enUS)
 	{
 		this.inID = inID;
 		this.enUS = enUS;

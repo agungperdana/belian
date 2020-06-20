@@ -1,10 +1,7 @@
-/**
- * 
- */
-package com.kratonsolution.belian.partys.dm;
+package com.kratonsolution.belian.party.impl.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.Instant;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -23,6 +20,7 @@ import lombok.Setter;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0
  */
 @Getter
 @Setter
@@ -30,14 +28,16 @@ import lombok.Setter;
 @Table(name="party_classification")
 public class PartyClassification implements Serializable
 {
+	private static final long serialVersionUID = -3738615250193814386L;
+
 	@Id
 	private String id = UUID.randomUUID().toString();
 
 	@Column(name="start")
-	private Date start;
+	private Instant start;
 	
 	@Column(name="end")
-	private Date end;
+	private Instant end;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name="type")

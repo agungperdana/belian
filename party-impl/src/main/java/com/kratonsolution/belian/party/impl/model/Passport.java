@@ -1,7 +1,4 @@
-/**
- * 
- */
-package com.kratonsolution.belian.partys.dm;
+package com.kratonsolution.belian.party.impl.model;
 
 import java.io.Serializable;
 import java.sql.Date;
@@ -15,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.general.dm.Country;
+import com.kratonsolution.belian.common.model.Country;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +27,8 @@ import lombok.Setter;
 @Table(name="passport")
 public class Passport implements Serializable
 {
+	private static final long serialVersionUID = 7679815085218407895L;
+
 	@Id
 	private String id = UUID.randomUUID().toString();
 

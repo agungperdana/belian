@@ -1,8 +1,6 @@
-/**
- * 
- */
-package com.kratonsolution.belian.partys.dm;
+package com.kratonsolution.belian.party.impl.model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -15,23 +13,22 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.api.dm.IDValueRef;
-import com.kratonsolution.belian.common.dm.Referenceable;
-
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @sinch 1.0
  */
 @Getter
 @Setter
 @Entity
 @Table(name="contact")
-public class Contact implements Referenceable
+public class Contact implements Serializable
 {
+	private static final long serialVersionUID = -3119257260126834977L;
+
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
@@ -42,7 +39,7 @@ public class Contact implements Referenceable
 	@Enumerated(EnumType.STRING)
 	private ContactType type = ContactType.OFFICE_PHONE;
 	
-	@Column(name="status")
+	@Column(name="is_active")
 	private boolean active;
 
 	@ManyToOne
@@ -53,25 +50,4 @@ public class Contact implements Referenceable
 	private Long version;
 	
 	public Contact(){}
-	
-	public Contact(IDValueRef ref)
-	{
-		if(ref != null)
-		{
-			setId(ref.getId());
-			setContact(ref.getValue());
-		}
-	}
-
-	@Override
-	public String getLabel()
-	{
-		return getContact()+" ("+type.display()+")";
-	}
-
-	@Override
-	public String getValue()
-	{
-		return getId();
-	}
 }

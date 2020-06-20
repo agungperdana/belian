@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `belian` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `belian`;
 -- MariaDB dump 10.17  Distrib 10.4.13-MariaDB, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: belian
@@ -45,7 +47,6 @@ CREATE TABLE `geographic` (
 
 LOCK TABLES `geographic` WRITE;
 /*!40000 ALTER TABLE `geographic` DISABLE KEYS */;
-INSERT INTO `geographic` VALUES ('6741fa4c-7d4a-43dd-8db6-1c73e9caf409','PNK-KT-SEKIP','Darat Sekip','','8df3435a-e52f-4c2d-86df-90edd0d5fe05',NULL,NULL,NULL,NULL,0,'KELURAHAN'),('7b9080b4-ba94-4939-91c8-74da3525bb57','PNK','Pontianak','','afd1b3c4-5db7-4089-9b73-43f69f91c417',NULL,NULL,NULL,NULL,0,'KOTA'),('82564cd2-f84f-4ac4-8175-b41a830943ab','PNK-KT-SEKIP-RW05-02','RT 02','','c39b285a-c5f6-40fb-bb58-d0d099faf21d',NULL,NULL,NULL,NULL,0,'RT'),('8df3435a-e52f-4c2d-86df-90edd0d5fe05','PNK-KT','Pontianak Kota','','7b9080b4-ba94-4939-91c8-74da3525bb57',NULL,NULL,NULL,NULL,0,'KECAMATAN'),('afd1b3c4-5db7-4089-9b73-43f69f91c417','KAL BAR','Kalimantan Barat','','b81c17c2-182b-49ee-8689-dfdc1982d8fc',NULL,NULL,NULL,NULL,0,'PROVINSI'),('b81c17c2-182b-49ee-8689-dfdc1982d8fc','INA','Indonesia','',NULL,NULL,NULL,NULL,NULL,0,'NEGARA'),('c39b285a-c5f6-40fb-bb58-d0d099faf21d','PNK-KT-SEKIP-RW05','RW 05','','6741fa4c-7d4a-43dd-8db6-1c73e9caf409',NULL,NULL,NULL,NULL,0,'RW');
 /*!40000 ALTER TABLE `geographic` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,6 +83,188 @@ LOCK TABLES `module` WRITE;
 /*!40000 ALTER TABLE `module` DISABLE KEYS */;
 INSERT INTO `module` VALUES ('13b174ef-fed6-4b16-98a1-d9bf3047988e','AUTHENTICATION','User Authentication','SYSTEM','','1',NULL,NULL,NULL,NULL,0),('8221d147-2540-4910-b05c-3ae1a7d76add','SCR-USR','Security User','SECURITY','','0',NULL,NULL,NULL,NULL,0),('a2151307-2c74-48ff-868d-24364126a14d','AUTHORIZATION','User Authorization','SYSTEM','','1',NULL,NULL,NULL,NULL,0),('aaf82d44-cce5-4c7a-9d3f-bbf328b01381','SCR-ROLE','Security Role','SECURITY','','0',NULL,NULL,NULL,NULL,0),('bbd4e3e4-ddb7-497e-862f-c5e3fdee44e7','GEOGRAPHIC','Geographic','SECURITY','','1',NULL,NULL,NULL,NULL,0),('fc283c30-3f7e-4bb3-ad37-7fb27640df69','SCR-MDL','Security Module','SECURITY','','0',NULL,NULL,NULL,NULL,0);
 /*!40000 ALTER TABLE `module` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `party`
+--
+
+DROP TABLE IF EXISTS `party`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `party` (
+  `id` char(50) NOT NULL,
+  `code` char(50) DEFAULT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `fk_geographic_birth_place` char(50) DEFAULT NULL,
+  `birth_date` date DEFAULT NULL,
+  `tax_code` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `party`
+--
+
+LOCK TABLES `party` WRITE;
+/*!40000 ALTER TABLE `party` DISABLE KEYS */;
+/*!40000 ALTER TABLE `party` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `party_address`
+--
+
+DROP TABLE IF EXISTS `party_address`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `party_address` (
+  `id` char(50) NOT NULL,
+  `address` varchar(250) DEFAULT NULL,
+  `postal` char(15) DEFAULT NULL,
+  `status` char(1) DEFAULT '0',
+  `type` char(35) DEFAULT NULL,
+  `fk_country` char(50) DEFAULT NULL,
+  `fk_province` char(50) DEFAULT NULL,
+  `fk_city` char(50) DEFAULT NULL,
+  `fk_district` char(50) DEFAULT NULL,
+  `fk_sub_district` char(50) DEFAULT NULL,
+  `fk_rw` char(50) DEFAULT NULL,
+  `fk_rt` char(50) DEFAULT NULL,
+  `fk_party` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `party_address`
+--
+
+LOCK TABLES `party_address` WRITE;
+/*!40000 ALTER TABLE `party_address` DISABLE KEYS */;
+/*!40000 ALTER TABLE `party_address` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `party_classification`
+--
+
+DROP TABLE IF EXISTS `party_classification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `party_classification` (
+  `id` char(50) NOT NULL,
+  `start` timestamp NULL DEFAULT NULL,
+  `end` timestamp NULL DEFAULT NULL,
+  `type` char(50) DEFAULT NULL,
+  `value` varchar(200) DEFAULT NULL,
+  `fk_party` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `party_classification`
+--
+
+LOCK TABLES `party_classification` WRITE;
+/*!40000 ALTER TABLE `party_classification` DISABLE KEYS */;
+/*!40000 ALTER TABLE `party_classification` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `party_contact`
+--
+
+DROP TABLE IF EXISTS `party_contact`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `party_contact` (
+  `id` char(50) NOT NULL,
+  `contact` varchar(200) DEFAULT NULL,
+  `type` char(50) DEFAULT NULL,
+  `is_active` char(1) DEFAULT NULL,
+  `fk_party` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `party_contact`
+--
+
+LOCK TABLES `party_contact` WRITE;
+/*!40000 ALTER TABLE `party_contact` DISABLE KEYS */;
+/*!40000 ALTER TABLE `party_contact` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `party_relationship`
+--
+
+DROP TABLE IF EXISTS `party_relationship`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `party_relationship` (
+  `id` char(50) NOT NULL,
+  `start` timestamp NULL DEFAULT NULL,
+  `end` timestamp NULL DEFAULT NULL,
+  `fk_from_party` char(50) DEFAULT NULL,
+  `fk_to_party` char(50) DEFAULT NULL,
+  `fk_from_role` char(50) DEFAULT NULL,
+  `fk_to_role` char(50) DEFAULT NULL,
+  `type` char(50) DEFAULT NULL,
+  `status` char(25) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `party_relationship`
+--
+
+LOCK TABLES `party_relationship` WRITE;
+/*!40000 ALTER TABLE `party_relationship` DISABLE KEYS */;
+/*!40000 ALTER TABLE `party_relationship` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `party_role`
+--
+
+DROP TABLE IF EXISTS `party_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `party_role` (
+  `id` char(50) NOT NULL,
+  `start` timestamp NULL DEFAULT NULL,
+  `end` timestamp NULL DEFAULT NULL,
+  `type` char(35) DEFAULT NULL,
+  `fk_party` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `party_role`
+--
+
+LOCK TABLES `party_role` WRITE;
+/*!40000 ALTER TABLE `party_role` DISABLE KEYS */;
+/*!40000 ALTER TABLE `party_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -225,4 +408,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-19  7:17:42
+-- Dump completed on 2020-06-20 10:05:25

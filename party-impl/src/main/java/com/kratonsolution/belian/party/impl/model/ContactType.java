@@ -1,11 +1,9 @@
-/**
- * 
- */
-package com.kratonsolution.belian.partys.dm;
+package com.kratonsolution.belian.party.impl.model;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @sinch 1.0
  */
 public enum ContactType
 {

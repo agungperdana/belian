@@ -1,7 +1,4 @@
-/**
- * 
- */
-package com.kratonsolution.belian.partys.dm;
+package com.kratonsolution.belian.party.impl.model;
 
 import java.io.Serializable;
 import java.sql.Date;
@@ -23,6 +20,7 @@ import lombok.Setter;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0
  */
 @Getter
 @Setter
@@ -30,6 +28,8 @@ import lombok.Setter;
 @Table(name="physical_characteristic")
 public class PhysicalCharacteristic implements Serializable
 {
+	private static final long serialVersionUID = -946015937785544608L;
+
 	@Id
 	private String id = UUID.randomUUID().toString();
 

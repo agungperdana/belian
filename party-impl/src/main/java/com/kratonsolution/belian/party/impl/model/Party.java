@@ -1,11 +1,12 @@
 package com.kratonsolution.belian.party.impl.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,8 +18,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+
+import com.google.common.base.MoreObjects;
+import com.kratonsolution.belian.geographic.impl.model.Geographic;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +38,8 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="party")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Party implements Serializable
 {	
 	private static final long serialVersionUID = 1L;
@@ -39,7 +47,7 @@ public class Party implements Serializable
 	@Id
 	protected String id = UUID.randomUUID().toString();
 	
-	@Column(name="code",unique=true,nullable=false)
+	@Column(name="code")
 	protected String code;
 	
 	@Column(name="name")
@@ -51,80 +59,36 @@ public class Party implements Serializable
 	protected Geographic birthPlace;
 	
 	@Column(name="birth_date")
-	protected Date birthDate;
+	protected Instant birthDate;
 
 	@Column(name="tax_code")
 	protected String taxCode;
 	
-	@Column(name="is_system")
-	protected boolean system;
-	
 	@Version
 	protected Long version;
 	
-	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
 	protected Set<Address> addresses = new HashSet<Address>();
 	
-	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
 	protected Set<Contact> contacts = new HashSet<Contact>();
 	
-	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
 	private Set<PartyRole> partyRoles = new HashSet<>();
 	
-	@OneToMany(mappedBy="fromParty",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="fromParty",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
 	private Set<PartyRelationship> relationships = new HashSet<>();
 	
-	@OneToMany(mappedBy="toParty",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
-	private Set<PartyRelationship> structures = new HashSet<>();
-	
-	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
-	private Set<PartySkill> skills = new HashSet<>();
-	
-	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
 	private Set<PartyClassification> classifications = new HashSet<>();
 	
 	public Party(){}
 	
-	public Party(IDValueRef ref)
-	{
-		if(ref != null)
-		{
-			setId(ref.getId());
-			setName(ref.getValue());
-		}
-	}
-	
-	@Override
-	public String getLabel()
-	{
-		return getName();
-	}
-
-	@Override
-	public String getValue()
-	{
-		return getId();
-	}
-	
-	public IDValueRef getFirstAddress()
-	{
-		for(Address address:getAddresses())
-			return address.toRef();
-			
-		return null;
-	}
-	
-	public IDValueRef getFirstContact()
-	{
-		for(Contact contact:getContacts())
-			return contact.toRef();
-			
-		return null;
-	}
-	
 	@Override
 	public String toString()
 	{
-		return getId();
+		return MoreObjects.toStringHelper(this)
+				.add("code", this.code)
+				.add("name", this.name).toString();
 	}
 }

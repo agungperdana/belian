@@ -1,7 +1,4 @@
-/**
- * 
- */
-package com.kratonsolution.belian.partys.dm;
+package com.kratonsolution.belian.party.impl.model;
 
 import java.io.Serializable;
 import java.sql.Date;
@@ -28,6 +25,8 @@ import lombok.Setter;
 @Table(name="citizenship")
 public class Citizenship implements Serializable
 {
+	private static final long serialVersionUID = 5343761111880173663L;
+
 	@Id
 	private String id = UUID.randomUUID().toString();
 

@@ -1,26 +1,27 @@
-/**
- * 
- */
 package com.kratonsolution.belian.party.impl.repository;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.kratonsolution.belian.party.impl.model.Gender;
+import com.kratonsolution.belian.party.impl.model.Person;
+
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0
  */
 public interface PersonRepository extends JpaRepository<Person, String>
 {
-	public Person findOneByName(String name);
+	public Optional<Person> findOneByName(String name);
 		
-	public Person findOneByCode(String code);
+	public Optional<Person> findOneByCode(String code);
 	
 	public List<Person> findAllByNameNot(String name);
 	

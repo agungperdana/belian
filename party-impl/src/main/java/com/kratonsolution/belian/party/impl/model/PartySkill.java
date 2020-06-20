@@ -1,7 +1,4 @@
-/**
- * 
- */
-package com.kratonsolution.belian.partys.dm;
+package com.kratonsolution.belian.party.impl.model;
 
 import java.io.Serializable;
 import java.sql.Date;
@@ -21,6 +18,7 @@ import lombok.Setter;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0
  */
 @Getter
 @Setter
@@ -28,6 +26,8 @@ import lombok.Setter;
 @Table(name="party_skill")
 public class PartySkill implements Serializable
 {
+	private static final long serialVersionUID = 4506941101593072678L;
+
 	@Id
 	private String id = UUID.randomUUID().toString();
 
