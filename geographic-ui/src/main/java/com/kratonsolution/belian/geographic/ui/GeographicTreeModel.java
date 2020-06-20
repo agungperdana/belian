@@ -28,6 +28,7 @@ public class GeographicTreeModel extends DefaultTreeModel<GeographicData>
 	
 	public GeographicTreeModel(GeographicTreeNode root) {
 		super(root);
+		setMultiple(true);
 		setRoot(root);
 	}
 	

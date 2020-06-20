@@ -18,7 +18,6 @@ import org.zkoss.zul.Textbox;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.ui.AbstractForm;
-import com.kratonsolution.belian.common.ui.event.ContentEvent;
 import com.kratonsolution.belian.common.ui.event.GeographicUIContentEvent;
 import com.kratonsolution.belian.common.ui.util.Components;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
@@ -88,7 +87,7 @@ public class GeographicUpdateContent extends AbstractForm
 				command.setCode(code.getText());
 				command.setName(Optional.ofNullable(name.getText()));
 				command.setNote(Optional.ofNullable(note.getText()));
-				command.setType(types.getSelectedItem().getValue());
+				command.setType(Optional.ofNullable(types.getSelectedItem().getValue()));
 				
 				service.update(command);
 				

@@ -69,7 +69,7 @@ public class Geographic extends Auditable implements Serializable {
 	@Version
 	private Long version;
 
-	@OneToMany(mappedBy = "parent", cascade = CascadeType.DETACH, fetch = FetchType.LAZY, orphanRemoval = false)
+	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	private Set<Geographic> childs = new HashSet<>();
 
 	Geographic(){

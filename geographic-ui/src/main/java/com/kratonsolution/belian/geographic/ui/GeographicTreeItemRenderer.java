@@ -31,7 +31,7 @@ public class GeographicTreeItemRenderer implements TreeitemRenderer<GeographicTr
 		row.appendChild(new Treecell(node.getData().getName()));
 		row.appendChild(new Treecell(node.getData().getType().name()));
 		row.appendChild(new Treecell(node.getData().getNote()));
-		row.addEventListener(Events.ON_CLICK, e->{
+		row.addEventListener(Events.ON_DOUBLE_CLICK, e->{
 			
 			GeographicUIContentEvent event = new GeographicUIContentEvent(ContentEvent.EDIT_FORM);
 			event.setCode(node.getData().getCode());

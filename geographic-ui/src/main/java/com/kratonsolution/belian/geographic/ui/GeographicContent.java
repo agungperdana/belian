@@ -9,9 +9,11 @@ import org.zkoss.zul.Treecol;
 import org.zkoss.zul.Treecols;
 
 import com.kratonsolution.belian.common.ui.TreeContent;
-import com.kratonsolution.belian.common.ui.event.ContentEvent;
 import com.kratonsolution.belian.common.ui.event.GeographicUIContentEvent;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
+import com.kratonsolution.belian.common.ui.util.Springs;
+import com.kratonsolution.belian.geographic.api.application.GeographicDeleteCommand;
+import com.kratonsolution.belian.geographic.api.application.GeographicService;
 
 /**
  * @author Agung Dodi Perdana
@@ -22,6 +24,8 @@ public class GeographicContent extends TreeContent
 {
 	private static final long serialVersionUID = -7191047588399258066L;
 
+	private GeographicTreeModel model = GeographicTreeModel.buid();
+	
 	public GeographicContent()
 	{
 		super();
@@ -79,6 +83,14 @@ public class GeographicContent extends TreeContent
 					@Override
 					public void onEvent(Event event) throws Exception
 					{
+						model.getSelection().forEach(node -> {
+							
+							GeographicDeleteCommand command = new GeographicDeleteCommand();
+							command.setCode(node.getData().getCode());
+							
+							Springs.get(GeographicService.class).delete(command);
+							FlowHelper.next(GeographicUIContentEvent.toGrid());
+						});
 					}
 				});
 			}
@@ -102,10 +114,11 @@ public class GeographicContent extends TreeContent
 		cols.appendChild(new Treecol(Labels.getLabel("geographic.label.name")));
 		cols.appendChild(new Treecol(Labels.getLabel("geographic.label.type")));
 		cols.appendChild(new Treecol(Labels.getLabel("geographic.label.note")));
-
+		
 		tree.appendChild(cols);
-		tree.setModel(GeographicTreeModel.buid());
+		tree.setModel(model);
 		tree.setItemRenderer(new GeographicTreeItemRenderer());
+		tree.setCheckmark(true);
 		
 		appendChild(tree);
 	}
