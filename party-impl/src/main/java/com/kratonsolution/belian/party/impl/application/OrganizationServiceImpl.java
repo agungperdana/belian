@@ -4,81 +4,184 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Preconditions;
+import com.kratonsolution.belian.common.spring.SpecificationBuilder;
+import com.kratonsolution.belian.common.spring.SpecificationBuilder.Operator;
+import com.kratonsolution.belian.geographic.impl.repository.GeographicRepository;
 import com.kratonsolution.belian.party.api.OrganizationData;
 import com.kratonsolution.belian.party.api.application.OrganizationCreateCommand;
 import com.kratonsolution.belian.party.api.application.OrganizationDeleteCommand;
 import com.kratonsolution.belian.party.api.application.OrganizationFilter;
 import com.kratonsolution.belian.party.api.application.OrganizationService;
 import com.kratonsolution.belian.party.api.application.OrganizationUpdateCommand;
+import com.kratonsolution.belian.party.impl.model.Organization;
 import com.kratonsolution.belian.party.impl.repository.OrganizationRepository;
 
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  * @since 1.0
  */
+@Slf4j
 @Service
 @Transactional(rollbackFor=Exception.class)
 public class OrganizationServiceImpl implements OrganizationService
 {	
 	@Autowired
-	private OrganizationRepository repository;
+	private OrganizationRepository repo;
+
+	private GeographicRepository geoRepo;
 
 	@Override
-	public void add(OrganizationCreateCommand command) {
-		
+	public OrganizationData add(@NonNull OrganizationCreateCommand command) {
+
+		Optional<Organization> ondb = repo.findByCode(command.getCode());
+		Preconditions.checkState(!ondb.isPresent(), "Organization with code {} already exist", command.getCode());
+
+		Organization organization = new Organization(command.getCode(), command.getName());
+
+		if(command.getTaxCode().isPresent()) {
+
+			organization.getParty().setTaxCode(command.getTaxCode().get());
+		}
+
+		if(command.getBirthDate().isPresent()) {
+
+			organization.getParty().setBirthDate(command.getBirthDate().get());
+		}
+
+		if(command.getBirthPlace().isPresent() && geoRepo.findOneByCode(command.getBirthPlace().get()).isPresent()) {
+
+			organization.getParty()
+			.setBirthPlace(geoRepo.findOneByCode(command.getBirthPlace().get()).get());
+		}
+
+		repo.save(organization);
+		log.info("Create new organization data {}", organization);
+
+		return OrganizationMapper.INSTANCE.toData(organization);
 	}
 
 	@Override
-	public void edit(OrganizationUpdateCommand organization) {
-		// TODO Auto-generated method stub
-		
+	public OrganizationData edit(@NonNull OrganizationUpdateCommand command) {
+
+		Optional<Organization> opt = repo.findByCode(command.getCode());
+		Preconditions.checkState(opt.isPresent(), "Organization with code {} does not exist", command.getCode());
+
+		if(command.getBirthDate().isPresent()) {
+			opt.get().getParty().setBirthDate(command.getBirthDate().get());
+		}
+
+		if(command.getBirthPlace().isPresent() && geoRepo.findOneByCode(command.getBirthPlace().get()).isPresent()) {
+			opt.get().getParty()
+			.setBirthPlace(geoRepo.findOneByCode(command.getBirthPlace().get()).get());
+		}
+
+		if(command.getName().isPresent()) {
+			opt.get().getParty().setName(command.getName().get());
+		}
+
+		if(command.getTaxCode().isPresent()) {
+			opt.get().getParty().setTaxCode(command.getTaxCode().get());
+		}
+
+		repo.save(opt.get());
+		log.info("Updating organization data {}", opt.get());
+
+		return OrganizationMapper.INSTANCE.toData(opt.get());
+
 	}
 
 	@Override
-	public void delete(OrganizationDeleteCommand command) {
-		// TODO Auto-generated method stub
-		
+	public OrganizationData delete(@NonNull OrganizationDeleteCommand command) {
+
+		Optional<Organization> ondb = repo.findByCode(command.getCode());
+		Preconditions.checkState(!ondb.isPresent(), "Organization with code {} already exist", command.getCode());
+
+		repo.delete(ondb.get());
+		log.info("Removing organization data {}", ondb.get());
+
+		return OrganizationMapper.INSTANCE.toData(ondb.get());
 	}
 
 	@Override
 	public int count() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Long.valueOf(repo.count()).intValue();
 	}
 
 	@Override
 	public int count(@NonNull OrganizationFilter filter) {
-		// TODO Auto-generated method stub
+		
+		if(filter.isValid()) {
+
+			SpecificationBuilder<Organization> builder = new SpecificationBuilder<>();
+
+			if(filter.getCode().isPresent()) {
+
+				builder.combine((root, query, cb) -> {return cb.like(root.get("party.code"), filter.getCode().get());}, Operator.OR);
+			}
+
+			if(filter.getName().isPresent()) {
+
+				builder.combine((root, query, cb) -> {return cb.like(root.get("party.name"), filter.getName().get());}, Operator.OR);
+			}
+
+			if(builder.getParent().isPresent()) {
+
+				return Long.valueOf(repo.count(Specification.where(builder.getParent().get()))).intValue();
+			}
+		}
+		
 		return 0;
 	}
 
 	@Override
 	public Optional<OrganizationData> getByCode(@NonNull String code) {
-		// TODO Auto-generated method stub
-		return null;
+		return Optional.ofNullable(OrganizationMapper.INSTANCE.toData(repo.findByCode(code).orElse(null)));
 	}
 
 	@Override
 	public List<OrganizationData> getAllOrganizations() {
 		// TODO Auto-generated method stub
-		return null;
+		return OrganizationMapper.INSTANCE.toDatas(repo.findAll());
 	}
 
 	@Override
 	public List<OrganizationData> getAllOrganizations(int page, int size) {
-		// TODO Auto-generated method stub
-		return null;
+		return OrganizationMapper.INSTANCE.toDatas(repo.findAll(PageRequest.of(page, size)).getContent());
 	}
 
 	@Override
 	public List<OrganizationData> getAllOrganizations(@NonNull OrganizationFilter filter, int page, int size) {
-		// TODO Auto-generated method stub
-		return null;
+
+		if(filter.isValid()) {
+
+			SpecificationBuilder<Organization> builder = new SpecificationBuilder<>();
+
+			if(filter.getCode().isPresent()) {
+
+				builder.combine((root, query, cb) -> {return cb.like(root.get("party.code"), filter.getCode().get());}, Operator.OR);
+			}
+
+			if(filter.getName().isPresent()) {
+
+				builder.combine((root, query, cb) -> {return cb.like(root.get("party.name"), filter.getName().get());}, Operator.OR);
+			}
+
+			if(builder.getParent().isPresent()) {
+
+				return OrganizationMapper.INSTANCE.toDatas(repo.findAll(Specification.where(builder.getParent().get()), PageRequest.of(page, size)).getContent());
+			}
+		}
+
+		return getAllOrganizations(page, size);
 	}
 }

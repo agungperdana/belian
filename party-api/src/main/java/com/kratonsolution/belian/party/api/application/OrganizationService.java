@@ -14,11 +14,11 @@ import lombok.NonNull;
  */
 public interface OrganizationService {
 
-	public void add(OrganizationCreateCommand command);
+	public OrganizationData add(@NonNull OrganizationCreateCommand command);
 
-	public void edit(OrganizationUpdateCommand organization);
+	public OrganizationData edit(@NonNull OrganizationUpdateCommand command);
 
-	public void delete(OrganizationDeleteCommand command);
+	public OrganizationData delete(@NonNull OrganizationDeleteCommand command);
 	
 	public int count();
 

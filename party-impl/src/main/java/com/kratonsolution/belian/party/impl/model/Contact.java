@@ -16,6 +16,7 @@ import javax.persistence.Version;
 import com.kratonsolution.belian.party.api.model.ContactType;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 /**
@@ -24,7 +25,6 @@ import lombok.Setter;
  * @sinch 1.0
  */
 @Getter
-@Setter
 @Entity
 @Table(name="contact")
 public class Contact implements Serializable
@@ -37,10 +37,12 @@ public class Contact implements Serializable
 	@Column(name="contact",nullable=false)
 	private String contact;
 
+	@Setter
 	@Column(name="type",nullable=false)
 	@Enumerated(EnumType.STRING)
 	private ContactType type = ContactType.OFFICE_PHONE;
 	
+	@Setter
 	@Column(name="is_active")
 	private boolean active;
 
@@ -51,5 +53,12 @@ public class Contact implements Serializable
 	@Version
 	private Long version;
 	
-	public Contact(){}
+	Contact(){}
+	
+	public Contact(@NonNull Party parent, @NonNull String contact, @NonNull ContactType type) {
+		
+		this.party = parent;
+		this.contact = contact;
+		this.type = type;
+	}
 }

@@ -17,6 +17,7 @@ import javax.persistence.Version;
 import com.kratonsolution.belian.party.api.model.PartyClassificationType;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 /**
@@ -25,7 +26,6 @@ import lombok.Setter;
  * @since 1.0
  */
 @Getter
-@Setter
 @Entity
 @Table(name="party_classification")
 public class PartyClassification implements Serializable
@@ -37,7 +37,8 @@ public class PartyClassification implements Serializable
 
 	@Column(name="start")
 	private Instant start;
-	
+
+	@Setter
 	@Column(name="end")
 	private Instant end;
 
@@ -45,6 +46,7 @@ public class PartyClassification implements Serializable
 	@Column(name="type")
 	private PartyClassificationType type = PartyClassificationType.INDUSTRY_CLASSIFICATION;
 
+	@Setter
 	@Column(name="value")
 	private String value;
 	
@@ -54,4 +56,14 @@ public class PartyClassification implements Serializable
 	
 	@Version
 	private Long version;
+	
+	PartyClassification() {}
+	
+	public PartyClassification(@NonNull Party party, @NonNull Instant start, @NonNull String value, @NonNull PartyClassificationType type) {
+		
+		this.party = party;
+		this.start = start;
+		this.value = value;
+		this.type = type;
+	}
 }

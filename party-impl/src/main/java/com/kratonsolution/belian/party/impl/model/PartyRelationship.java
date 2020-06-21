@@ -21,6 +21,7 @@ import com.kratonsolution.belian.party.api.model.PartyRelationshipStatusType;
 import com.kratonsolution.belian.party.api.model.PartyRelationshipType;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 /**
@@ -29,7 +30,6 @@ import lombok.Setter;
  * @since 1.0
  */
 @Getter
-@Setter
 @Entity
 @Table(name="party_relationship")
 public class PartyRelationship implements Serializable
@@ -42,6 +42,7 @@ public class PartyRelationship implements Serializable
 	@Column(name="start")
 	private Instant start;
 	
+	@Setter
 	@Column(name="end")
 	private Instant end;
 
@@ -54,20 +55,11 @@ public class PartyRelationship implements Serializable
 	@NotFound(action = NotFoundAction.IGNORE)
 	private Party toParty;
 	
-	@ManyToOne
-	@JoinColumn(name="fk_from_role")
-	@NotFound(action = NotFoundAction.IGNORE)
-	private PartyRole fromRole;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_to_role")
-	@NotFound(action = NotFoundAction.IGNORE)
-	private PartyRole toRole;
-	
 	@Enumerated(EnumType.STRING)
 	@Column(name="type")
 	private PartyRelationshipType type;
 	
+	@Setter
 	@Enumerated(EnumType.STRING)
 	@Column(name="status")
 	private PartyRelationshipStatusType status = PartyRelationshipStatusType.ACTIVE;
@@ -75,5 +67,13 @@ public class PartyRelationship implements Serializable
 	@Version
 	private Long version;
 	
-	public PartyRelationship(){}
+	PartyRelationship(){}
+	
+	public PartyRelationship(@NonNull Party parent, @NonNull Party toParty, @NonNull Instant start, @NonNull PartyRelationshipType type){
+		
+		this.fromParty = parent;
+		this.toParty = toParty;
+		this.start = start;
+		this.type = type;
+	}
 }

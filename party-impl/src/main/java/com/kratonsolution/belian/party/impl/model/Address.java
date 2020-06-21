@@ -20,6 +20,7 @@ import com.kratonsolution.belian.geographic.impl.model.Geographic;
 import com.kratonsolution.belian.party.api.model.AddressType;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 /**
@@ -28,7 +29,6 @@ import lombok.Setter;
  * @since 1.0
  */
 @Getter
-@Setter
 @Entity
 @Table(name="party_address")
 public class Address implements Serializable
@@ -40,13 +40,16 @@ public class Address implements Serializable
 	
 	@Column(name="address",nullable=false)
 	private String address;
-		
+
+	@Setter
 	@Column(name="postal",nullable=false)
 	private String postal;
 	
+	@Setter
 	@Column(name="status",nullable=false)
 	private boolean active;
 	
+	@Setter
 	@Column(name="type",nullable=false)
 	@Enumerated(EnumType.STRING)
 	private AddressType type = AddressType.OFFICE;
@@ -54,6 +57,7 @@ public class Address implements Serializable
 	/**
 	 * Negara
 	 */
+	@Setter
 	@ManyToOne
 	@JoinColumn(name="fk_country")
 	@NotFound(action = NotFoundAction.IGNORE)
@@ -62,6 +66,7 @@ public class Address implements Serializable
 	/**
 	 * Provinsi
 	 */
+	@Setter
 	@ManyToOne
 	@JoinColumn(name="fk_province")
 	@NotFound(action = NotFoundAction.IGNORE)
@@ -70,6 +75,7 @@ public class Address implements Serializable
 	/**
 	 * Kota/kabupaten
 	 */
+	@Setter
 	@ManyToOne
 	@JoinColumn(name="fk_city")
 	@NotFound(action = NotFoundAction.IGNORE)
@@ -78,6 +84,7 @@ public class Address implements Serializable
 	/**
 	 * Kecamatan
 	 */
+	@Setter
 	@ManyToOne
 	@JoinColumn(name="fk_district")
 	@NotFound(action = NotFoundAction.IGNORE)
@@ -86,6 +93,7 @@ public class Address implements Serializable
 	/**
 	 * Kelurahan
 	 */
+	@Setter
 	@ManyToOne
 	@JoinColumn(name="fk_sub_district")
 	@NotFound(action = NotFoundAction.IGNORE)
@@ -94,6 +102,7 @@ public class Address implements Serializable
 	/**
 	 * RW
 	 */
+	@Setter
 	@ManyToOne
 	@JoinColumn(name="fk_rw")
 	@NotFound(action = NotFoundAction.IGNORE)
@@ -102,6 +111,7 @@ public class Address implements Serializable
 	/**
 	 * RT
 	 */
+	@Setter
 	@ManyToOne
 	@JoinColumn(name="fk_rt")
 	@NotFound(action = NotFoundAction.IGNORE)
@@ -115,5 +125,12 @@ public class Address implements Serializable
 	@Version
 	private Long version;
 	
-	public Address(){}
+	Address(){}
+	
+	public Address(@NonNull Party parent, @NonNull String address, @NonNull AddressType type) {
+		
+		this.party = parent;
+		this.address = address;
+		this.type = type;
+	}
 }

@@ -1,6 +1,7 @@
 package com.kratonsolution.belian.party.api.application;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 /**
@@ -12,4 +13,6 @@ import lombok.Setter;
 @Setter
 public class OrganizationDeleteCommand {
 
+	@NonNull
+	private String code;
 }
