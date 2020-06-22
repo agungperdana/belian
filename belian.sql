@@ -211,7 +211,8 @@ CREATE TABLE `party` (
   `id` char(50) NOT NULL,
   `code` char(50) DEFAULT NULL,
   `name` varchar(150) DEFAULT NULL,
-  `fk_geographic_birth_place` char(50) DEFAULT NULL,
+  `birth_place_code` varchar(100) DEFAULT NULL,
+  `birth_place_name` varchar(200) DEFAULT NULL,
   `birth_date` date DEFAULT NULL,
   `tax_code` char(50) DEFAULT NULL,
   `version` bigint(20) DEFAULT NULL,
@@ -242,15 +243,22 @@ CREATE TABLE `party_address` (
   `postal` char(15) DEFAULT NULL,
   `status` char(1) DEFAULT '0',
   `type` char(35) DEFAULT NULL,
-  `fk_country` char(50) DEFAULT NULL,
-  `fk_province` char(50) DEFAULT NULL,
-  `fk_city` char(50) DEFAULT NULL,
-  `fk_district` char(50) DEFAULT NULL,
-  `fk_sub_district` char(50) DEFAULT NULL,
-  `fk_rw` char(50) DEFAULT NULL,
-  `fk_rt` char(50) DEFAULT NULL,
+  `country_code` varchar(100) DEFAULT NULL,
+  `country_name` varchar(200) DEFAULT NULL,
+  `province_code` varchar(100) DEFAULT NULL,
+  `province_name` varchar(200) DEFAULT NULL,
+  `city_code` varchar(100) DEFAULT NULL,
+  `city_name` varchar(200) DEFAULT NULL,
+  `district_code` varchar(100) DEFAULT NULL,
+  `district_name` varchar(200) DEFAULT NULL,
+  `sub_district_code` varchar(100) DEFAULT NULL,
+  `sub_district_name` varchar(200) DEFAULT NULL,
+  `rw_code` varchar(100) DEFAULT NULL,
+  `rw_name` varchar(200) DEFAULT NULL,
+  `rt_code` varchar(100) DEFAULT NULL,
+  `rt_name` varchar(200) DEFAULT NULL,
   `fk_party` char(50) DEFAULT NULL,
-  `version` bigint(20) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -605,4 +613,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-20 12:40:24
+-- Dump completed on 2020-06-23  6:18:46

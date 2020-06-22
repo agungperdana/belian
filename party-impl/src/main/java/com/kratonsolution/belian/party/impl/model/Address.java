@@ -3,6 +3,8 @@ package com.kratonsolution.belian.party.impl.model;
 import java.io.Serializable;
 import java.util.UUID;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,7 +18,6 @@ import javax.persistence.Version;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
-import com.kratonsolution.belian.geographic.impl.model.Geographic;
 import com.kratonsolution.belian.party.api.model.AddressType;
 
 import lombok.Getter;
@@ -58,64 +59,64 @@ public class Address implements Serializable
 	 * Negara
 	 */
 	@Setter
-	@ManyToOne
-	@JoinColumn(name="fk_country")
-	@NotFound(action = NotFoundAction.IGNORE)
-	private Geographic country;
+	@AttributeOverrides({
+		@AttributeOverride(name = "code", column = @Column(name="country_code")),
+		@AttributeOverride(name = "name", column = @Column(name="country_name"))})
+	private PartyGeographicInfo country;
 	
 	/**
 	 * Provinsi
 	 */
 	@Setter
-	@ManyToOne
-	@JoinColumn(name="fk_province")
-	@NotFound(action = NotFoundAction.IGNORE)
-	private Geographic province;
+	@AttributeOverrides({
+		@AttributeOverride(name = "code", column = @Column(name="province_code")),
+		@AttributeOverride(name = "name", column = @Column(name="province_name"))})
+	private PartyGeographicInfo province;
 	
 	/**
 	 * Kota/kabupaten
 	 */
 	@Setter
-	@ManyToOne
-	@JoinColumn(name="fk_city")
-	@NotFound(action = NotFoundAction.IGNORE)
-	private Geographic city;
+	@AttributeOverrides({
+		@AttributeOverride(name = "code", column = @Column(name="city_code")),
+		@AttributeOverride(name = "name", column = @Column(name="city_name"))})
+	private PartyGeographicInfo city;
 	
 	/**
 	 * Kecamatan
 	 */
 	@Setter
-	@ManyToOne
-	@JoinColumn(name="fk_district")
-	@NotFound(action = NotFoundAction.IGNORE)
-	private Geographic district;
+	@AttributeOverrides({
+		@AttributeOverride(name = "code", column = @Column(name="district_code")),
+		@AttributeOverride(name = "name", column = @Column(name="district_name"))})
+	private PartyGeographicInfo district;
 	
 	/**
 	 * Kelurahan
 	 */
 	@Setter
-	@ManyToOne
-	@JoinColumn(name="fk_sub_district")
-	@NotFound(action = NotFoundAction.IGNORE)
-	private Geographic subDistrict;
+	@AttributeOverrides({
+		@AttributeOverride(name = "code", column = @Column(name="sub_district_code")),
+		@AttributeOverride(name = "name", column = @Column(name="sub_district_name"))})
+	private PartyGeographicInfo subDistrict;
 	
 	/**
 	 * RW
 	 */
 	@Setter
-	@ManyToOne
-	@JoinColumn(name="fk_rw")
-	@NotFound(action = NotFoundAction.IGNORE)
-	private Geographic rw;
+	@AttributeOverrides({
+		@AttributeOverride(name = "code", column = @Column(name="rw_code")),
+		@AttributeOverride(name = "name", column = @Column(name="rw_name"))})
+	private PartyGeographicInfo rw;
 	
 	/**
 	 * RT
 	 */
 	@Setter
-	@ManyToOne
-	@JoinColumn(name="fk_rt")
-	@NotFound(action = NotFoundAction.IGNORE)
-	private Geographic rt;
+	@AttributeOverrides({
+		@AttributeOverride(name = "code", column = @Column(name="rt_code")),
+		@AttributeOverride(name = "name", column = @Column(name="rt_name"))})
+	private PartyGeographicInfo rt;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_party")

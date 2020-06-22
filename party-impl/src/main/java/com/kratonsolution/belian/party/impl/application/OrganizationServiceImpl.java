@@ -12,7 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.base.Preconditions;
 import com.kratonsolution.belian.common.spring.SpecificationBuilder;
 import com.kratonsolution.belian.common.spring.SpecificationBuilder.Operator;
-import com.kratonsolution.belian.geographic.impl.repository.GeographicRepository;
+import com.kratonsolution.belian.geographic.api.GeographicData;
+import com.kratonsolution.belian.geographic.api.application.GeographicService;
 import com.kratonsolution.belian.party.api.OrganizationData;
 import com.kratonsolution.belian.party.api.application.OrganizationCreateCommand;
 import com.kratonsolution.belian.party.api.application.OrganizationDeleteCommand;
@@ -20,6 +21,7 @@ import com.kratonsolution.belian.party.api.application.OrganizationFilter;
 import com.kratonsolution.belian.party.api.application.OrganizationService;
 import com.kratonsolution.belian.party.api.application.OrganizationUpdateCommand;
 import com.kratonsolution.belian.party.impl.model.Organization;
+import com.kratonsolution.belian.party.impl.model.PartyGeographicInfo;
 import com.kratonsolution.belian.party.impl.repository.OrganizationRepository;
 
 import lombok.NonNull;
@@ -38,7 +40,7 @@ public class OrganizationServiceImpl implements OrganizationService
 	@Autowired
 	private OrganizationRepository repo;
 
-	private GeographicRepository geoRepo;
+	private GeographicService geoRepo;
 
 	@Override
 	public OrganizationData add(@NonNull OrganizationCreateCommand command) {
@@ -58,10 +60,11 @@ public class OrganizationServiceImpl implements OrganizationService
 			organization.getParty().setBirthDate(command.getBirthDate().get());
 		}
 
-		if(command.getBirthPlace().isPresent() && geoRepo.findOneByCode(command.getBirthPlace().get()).isPresent()) {
+		if(command.getBirthPlace().isPresent() && geoRepo.getByCode(command.getBirthPlace().get()).isPresent()) {
 
-			organization.getParty()
-			.setBirthPlace(geoRepo.findOneByCode(command.getBirthPlace().get()).get());
+			GeographicData geo = geoRepo.getByCode(command.getBirthPlace().get()).get();
+			
+			organization.getParty().setBirthPlace(new PartyGeographicInfo(geo.getCode(), geo.getName()));
 		}
 
 		repo.save(organization);
@@ -80,9 +83,10 @@ public class OrganizationServiceImpl implements OrganizationService
 			opt.get().getParty().setBirthDate(command.getBirthDate().get());
 		}
 
-		if(command.getBirthPlace().isPresent() && geoRepo.findOneByCode(command.getBirthPlace().get()).isPresent()) {
-			opt.get().getParty()
-			.setBirthPlace(geoRepo.findOneByCode(command.getBirthPlace().get()).get());
+		if(command.getBirthPlace().isPresent() && geoRepo.getByCode(command.getBirthPlace().get()).isPresent()) {
+			
+			GeographicData geo = geoRepo.getByCode(command.getBirthPlace().get()).get();
+			opt.get().getParty().setBirthPlace(new PartyGeographicInfo(geo.getCode(), geo.getName()));
 		}
 
 		if(command.getName().isPresent()) {

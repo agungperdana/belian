@@ -7,26 +7,23 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
-import com.kratonsolution.belian.geographic.impl.model.Geographic;
 import com.kratonsolution.belian.party.api.model.AddressType;
 import com.kratonsolution.belian.party.api.model.ContactType;
 import com.kratonsolution.belian.party.api.model.PartyClassificationType;
@@ -65,10 +62,10 @@ public class Party implements Serializable
 
 	@Getter
 	@Setter
-	@ManyToOne
-	@JoinColumn(name="fk_geographic_birth_place")
-	@NotFound(action=NotFoundAction.IGNORE)
-	private Geographic birthPlace;
+	@AttributeOverrides({
+		@AttributeOverride(name = "code", column = @Column(name="birth_place_code")),
+		@AttributeOverride(name = "name", column = @Column(name="birth_place_name"))})
+	private PartyGeographicInfo birthPlace;
 
 	@Getter
 	@Setter
