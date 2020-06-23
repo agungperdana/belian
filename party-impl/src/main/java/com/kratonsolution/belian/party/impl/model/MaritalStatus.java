@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.UUID;
 
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,25 +14,20 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import com.kratonsolution.belian.party.api.model.MaritalStatusType;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
- * @since
+ * @since 1.0
  */
 @Getter
-@Setter
 @Entity
 @Table(name="marital_status")
-@Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class MaritalStatus implements Serializable
 {
 	private static final long serialVersionUID = 3433856008412192489L;
@@ -43,7 +37,8 @@ public class MaritalStatus implements Serializable
 
 	@Column(name="start")
 	private Instant start;
-	
+
+	@Setter
 	@Column(name="end")
 	private Instant end;
 	
@@ -58,5 +53,12 @@ public class MaritalStatus implements Serializable
 	@Version
 	private Long version;
 	
-	public MaritalStatus(){}
+	MaritalStatus(){}
+	
+	public MaritalStatus(@NonNull Person parent, @NonNull Instant start, @NonNull MaritalStatusType type) {
+		
+		this.person = parent;
+		this.start = start;
+		this.type = type;
+	}
 }

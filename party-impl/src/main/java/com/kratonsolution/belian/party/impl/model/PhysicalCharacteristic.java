@@ -17,6 +17,7 @@ import javax.persistence.Version;
 import com.kratonsolution.belian.party.api.model.PhysicalCharacteristicType;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 /**
@@ -25,7 +26,6 @@ import lombok.Setter;
  * @since 1.0
  */
 @Getter
-@Setter
 @Entity
 @Table(name="physical_characteristic")
 public class PhysicalCharacteristic implements Serializable
@@ -37,7 +37,8 @@ public class PhysicalCharacteristic implements Serializable
 
 	@Column(name="start")
 	private Instant start;
-	
+
+	@Setter
 	@Column(name="end")
 	private Instant end;
 	
@@ -45,6 +46,7 @@ public class PhysicalCharacteristic implements Serializable
 	@Column(name="type")
 	private PhysicalCharacteristicType type = PhysicalCharacteristicType.HEIGHT;
 	
+	@Setter
 	@Column(name="value")
 	private String value;
 	
@@ -55,5 +57,13 @@ public class PhysicalCharacteristic implements Serializable
 	@Version
 	private Long version;
 	
-	public PhysicalCharacteristic(){}
+	PhysicalCharacteristic(){}
+	
+	public PhysicalCharacteristic(@NonNull Person person, @NonNull Instant start, @NonNull String value, @NonNull PhysicalCharacteristicType type) {
+		
+		this.person = person;
+		this.start = start;
+		this.value = value;
+		this.type = type;
+	}
 }

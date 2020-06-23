@@ -1,7 +1,9 @@
 package com.kratonsolution.belian.party.impl.model;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -20,10 +22,14 @@ import javax.persistence.Version;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
+import com.google.common.base.Preconditions;
 import com.kratonsolution.belian.common.model.Auditable;
+import com.kratonsolution.belian.party.api.model.AddressType;
 import com.kratonsolution.belian.party.api.model.Gender;
+import com.kratonsolution.belian.party.api.model.MaritalStatusType;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 /**
@@ -32,7 +38,6 @@ import lombok.Setter;
  * @since 1.0
  */
 @Getter
-@Setter
 @Entity
 @Table(name="person")
 public class Person extends Auditable implements Serializable
@@ -47,6 +52,7 @@ public class Person extends Auditable implements Serializable
 	@NotFound(action = NotFoundAction.IGNORE)
 	private Party party;
 	
+	@Setter
 	@Column(name="gender")
 	@Enumerated(EnumType.STRING)
 	private Gender gender = Gender.MALE;
@@ -63,5 +69,63 @@ public class Person extends Auditable implements Serializable
 	@Version
 	private Long version;
 	
-	public Person(){}
+	Person(){}
+	
+	public Person(@NonNull String code, @NonNull String name){
+		
+		this.party = new Party(code, name);
+	}
+	
+	public MaritalStatus createMaritalStatus(@NonNull Instant start, Instant end, @NonNull MaritalStatusType type) {
+
+		Optional<MaritalStatus> status = this.maritalStatuses
+				.stream()
+				.filter(p-> p.getStart().equals(start) 
+						&& p.getType().equals(type)).findAny();
+
+		Preconditions.checkState(!status.isPresent(), "MaritalStatus already exist");
+
+		MaritalStatus obj = new MaritalStatus(this, start, type);
+		this.maritalStatuses.add(obj);
+
+		return obj;
+	}
+
+	public Optional<MaritalStatus> updateMaritalStatus(@NonNull Instant start, @NonNull Instant end , @NonNull AddressType type) {
+
+		Optional<MaritalStatus> status = this.maritalStatuses
+											.stream()
+											.filter(p-> p.getStart().equals(start) 
+													&& p.getType().equals(type)).findAny();
+		
+		if(status.isPresent()) {
+			status.get().setEnd(end);
+		}
+		
+		return status;
+	}
+
+	public void removeMaritalStatus(@NonNull Instant start, @NonNull Optional<Instant> end, @NonNull MaritalStatusType type) {
+		
+		if(end.isPresent()) {
+			
+			this.maritalStatuses.removeIf(p->p.getStart().equals(start)
+					&& p.getEnd().equals(end.get())
+					&& p.getType().equals(type));
+		}
+		else {
+			
+			this.maritalStatuses.removeIf(p->p.getStart().equals(start) && p.getType().equals(type));
+		}
+
+	}
+
+	/**
+	 * for creating new MaritalStatus use createMaritalStatus() method\n
+	 * calling getMaritalStatuses().add() will not add newly created MaritalStatus\n
+	 * @return new Set containing MaritalStatus
+	 */
+	public Set<MaritalStatus> getMaritalStatuses() {
+		return new HashSet<>(this.maritalStatuses);
+	}
 }
