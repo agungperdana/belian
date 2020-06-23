@@ -24,9 +24,9 @@ import org.hibernate.annotations.NotFoundAction;
 
 import com.google.common.base.Preconditions;
 import com.kratonsolution.belian.common.model.Auditable;
-import com.kratonsolution.belian.party.api.model.AddressType;
 import com.kratonsolution.belian.party.api.model.Gender;
 import com.kratonsolution.belian.party.api.model.MaritalStatusType;
+import com.kratonsolution.belian.party.api.model.PhysicalCharacteristicType;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -91,7 +91,7 @@ public class Person extends Auditable implements Serializable
 		return obj;
 	}
 
-	public Optional<MaritalStatus> updateMaritalStatus(@NonNull Instant start, @NonNull Instant end , @NonNull AddressType type) {
+	public Optional<MaritalStatus> updateMaritalStatus(@NonNull Instant start, @NonNull Instant end , @NonNull MaritalStatusType type) {
 
 		Optional<MaritalStatus> status = this.maritalStatuses
 											.stream()
@@ -127,5 +127,121 @@ public class Person extends Auditable implements Serializable
 	 */
 	public Set<MaritalStatus> getMaritalStatuses() {
 		return new HashSet<>(this.maritalStatuses);
+	}
+	
+	public PhysicalCharacteristic createPhysicalCharacteristic(@NonNull Instant start, Instant end, @NonNull String value, @NonNull PhysicalCharacteristicType type) {
+
+		Optional<PhysicalCharacteristic> status = this.physicalCharacteristics
+				.stream()
+				.filter(p-> p.getStart().equals(start) 
+						&& p.getValue().equals(value)
+						&& p.getType().equals(type)).findAny();
+
+		Preconditions.checkState(!status.isPresent(), "PhysicalCharacteristic already exist");
+
+		PhysicalCharacteristic obj = new PhysicalCharacteristic(this, start, value, type);
+		obj.setEnd(end);
+		this.physicalCharacteristics.add(obj);
+
+		return obj;
+	}
+
+	public Optional<PhysicalCharacteristic> updatePhysicalCharacteristic(@NonNull Instant start, @NonNull Instant end, @NonNull String value , @NonNull PhysicalCharacteristicType type) {
+
+		Optional<PhysicalCharacteristic> status = this.physicalCharacteristics
+											.stream()
+											.filter(p-> p.getStart().equals(start) 
+													&& p.getType().equals(type)).findAny();
+		
+		if(status.isPresent()) {
+			status.get().setEnd(end);
+			status.get().setValue(value);
+		}
+		
+		return status;
+	}
+
+	public void removePhysicalCharacteristic(@NonNull Instant start, @NonNull Optional<Instant> end, @NonNull String value, @NonNull PhysicalCharacteristicType type) {
+		
+		if(end.isPresent()) {
+			
+			this.physicalCharacteristics.removeIf(p->p.getStart().equals(start)
+					&& p.getEnd().equals(end.get())
+					&& p.getValue().equals(value)
+					&& p.getType().equals(type));
+		}
+		else {
+			
+			this.physicalCharacteristics.removeIf(p->p.getStart().equals(start)
+					&& p.getValue().equals(value)
+					&& p.getType().equals(type));
+		}
+	}
+
+	/**
+	 * for creating new PhysicalCharacteristic use createPhysicalCharacteristic() method\n
+	 * calling getMPhysicalCharacteristics().add() will not add newly created PhysicalCharacteristic\n
+	 * @return new Set containing PhysicalCharacteristic
+	 */
+	public Set<PhysicalCharacteristic> getPhysicalCharacteristic() {
+		return new HashSet<>(this.physicalCharacteristics);
+	}
+	
+	public Citizenship createCitizenship(@NonNull Instant start, Instant end, @NonNull String passport, @NonNull String countryCode, @NonNull String countryName) {
+
+		Optional<Citizenship> status = this.citizenships
+				.stream()
+				.filter(p-> p.getStart().equals(start) 
+						&& p.getPassport().equals(passport)
+						&& p.getCountry().getCode().equals(countryCode)).findAny();
+
+		Preconditions.checkState(!status.isPresent(), "Citizenship already exist");
+
+		Citizenship obj = new Citizenship(this, start, passport, countryCode, countryName);
+		obj.setEnd(end);
+		this.citizenships.add(obj);
+
+		return obj;
+	}
+
+	public Optional<Citizenship> updateCitizenship(@NonNull Instant start, @NonNull Instant end, @NonNull String passport , @NonNull PartyGeographicInfo country) {
+
+		Optional<Citizenship> status = this.citizenships
+											.stream()
+											.filter(p-> p.getStart().equals(start) 
+													&& p.getCountry().getCode().equals(country.getCode())
+													&& p.getPassport().equals(passport)).findAny();
+		
+		if(status.isPresent()) {
+			status.get().setEnd(end);
+		}
+		
+		return status;
+	}
+
+	public void removeCitizenship(@NonNull Instant start, @NonNull Optional<Instant> end, @NonNull String passport, @NonNull PartyGeographicInfo country) {
+		
+		if(end.isPresent()) {
+			
+			this.citizenships.removeIf(p->p.getStart().equals(start)
+					&& p.getEnd().equals(end.get())
+					&& p.getPassport().equals(passport)
+					&& p.getCountry().getCode().equals(country.getCode()));
+		}
+		else {
+			
+			this.citizenships.removeIf(p->p.getStart().equals(start)
+					&& p.getPassport().equals(passport)
+					&& p.getCountry().getCode().equals(country.getCode()));
+		}
+	}
+
+	/**
+	 * for creating new Citizenship use createCitizenship() method\n
+	 * calling getCitizenships().add() will not add newly created Citizenship\n
+	 * @return new Set containing Citizenship
+	 */
+	public Set<Citizenship> getCitizenships() {
+		return new HashSet<>(this.citizenships);
 	}
 }

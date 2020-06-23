@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.UUID;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -13,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 /**
@@ -33,12 +37,20 @@ public class Citizenship implements Serializable
 	@Column(name="start")
 	private Instant start;
 	
+	@Setter
 	@Column(name="end")
 	private Instant end;
 	
-	@Column(name="nopassport_number")
+	@Column(name="passport_number")
 	private String passport;
 
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name = "code", column = @Column(name="country_code")),
+		@AttributeOverride(name = "name", column = @Column(name="country_name"))
+	})
+	private PartyGeographicInfo country;
+	
 	@ManyToOne
 	@JoinColumn(name="fk_person")
 	private Person person;
@@ -46,5 +58,14 @@ public class Citizenship implements Serializable
 	@Version
 	private Long version;
 	
-	public Citizenship(){}
+	Citizenship(){}
+	
+	public Citizenship(@NonNull Person parent, @NonNull Instant start, @NonNull String passportNumber,
+			@NonNull String countryCode, @NonNull String countryName){
+		
+		this.person = parent;
+		this.start = start;
+		this.passport = passportNumber;
+		this.country = new PartyGeographicInfo(countryCode, countryName); 
+	}
 }

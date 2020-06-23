@@ -58,8 +58,10 @@ CREATE TABLE `citizenship` (
   `id` char(50) NOT NULL,
   `start` date DEFAULT NULL,
   `end` date DEFAULT NULL,
-  `nopassport_number` varchar(100) DEFAULT NULL,
+  `passport_number` varchar(100) DEFAULT NULL,
   `fk_person` char(50) DEFAULT NULL,
+  `country_code` varchar(100) DEFAULT NULL,
+  `country_name` varchar(200) DEFAULT NULL,
   `version` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
@@ -613,4 +615,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-23  6:18:46
+-- Dump completed on 2020-06-23 15:04:43
