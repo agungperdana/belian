@@ -16,11 +16,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OrganizationHandler {
 
-	private OrganizationWindow window = new OrganizationWindow();
+	private OrganizationHandler() {}
 	
-	public OrganizationHandler() {
+	public static void build() {
 		
-		window.appendChild(new ModuleGridContent());
+		OrganizationWindow window = new OrganizationWindow();
+		window.appendChild(new OrganizationGridContent());
 		window.setPage(UIHelper.getPage());
 		window.doOverlapped();
 		
@@ -30,7 +31,7 @@ public class OrganizationHandler {
 			try {
 
 				Toolbarbutton button = new Toolbarbutton();
-				button.setImageContent(new AImage(getClass().getResource("/images/fisheye/organization.png")));
+				button.setImageContent(new AImage(OrganizationHandler.class.getResource("/images/fisheye/organization.png")));
 				button.addEventListener(Events.ON_CLICK, e -> {
 					
 					if(window.isVisible()) {

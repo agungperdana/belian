@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.kratonsolution.belian.common.model.Auditable;
 import com.kratonsolution.belian.party.api.model.Gender;
 
 import lombok.Getter;
@@ -17,7 +16,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class PersonData extends Auditable implements Serializable
+public class PersonData implements Serializable
 {
 	private static final long serialVersionUID = 304354227477648871L;
 

@@ -2,8 +2,6 @@ package com.kratonsolution.belian.party.api;
 
 import java.io.Serializable;
 
-import com.kratonsolution.belian.common.model.Auditable;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +12,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class OrganizationData extends Auditable implements Serializable
+public class OrganizationData implements Serializable
 {
 	private static final long serialVersionUID = -8776380253280140352L;
 	

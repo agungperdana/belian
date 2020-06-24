@@ -7,12 +7,8 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
-import com.kratonsolution.belian.common.model.Country;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +16,7 @@ import lombok.Setter;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0
  */
 @Getter
 @Setter
@@ -40,11 +37,7 @@ public class Passport implements Serializable
 	
 	@Column(name="expiration_date")
 	private Date expirationDate;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_country")
-	private Country country;
-	
+		
 	@Version
 	private Long version;
 	

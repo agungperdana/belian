@@ -6,9 +6,13 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 import org.zkoss.util.resource.Labels;
+import org.zkoss.zk.ui.event.EventQueues;
 
 import com.kratonsolution.belian.common.ui.ModuleRegistryInformation;
+import com.kratonsolution.belian.common.ui.event.ContentEvent;
 import com.kratonsolution.belian.common.ui.event.ModuleRegistrationEvent;
+import com.kratonsolution.belian.security.ui.module.OrganizationHandler;
+import com.kratonsolution.belian.security.ui.module.OrganizationUIEvent;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,5 +43,12 @@ public class PartyModuleInitializer implements ApplicationListener<ContextRefres
 		organizationInfo.setLauncherImage(getClass().getResource("/images/registry/organization.png"));
 		
 		publisher.publishEvent(new ModuleRegistrationEvent(this, organizationInfo));
+		EventQueues.lookup(OrganizationUIEvent.class.getSimpleName()).subscribe(e -> {
+			
+			ContentEvent ev = (ContentEvent)e;
+			if(ev.getType().equals(ContentEvent.OPEN_WINDOW)) {
+				OrganizationHandler.build();
+			}
+		});
 	}
 }

@@ -27,6 +27,8 @@ public class ContentEvent extends Event {
 	
 	public static String NAME = "WINDOW_CONTENT_CHANGE_EVENT";
 	
+	public static String OPEN_WINDOW = "OPEN WINDOW";
+	
 	@Getter
 	private String type;
 	
