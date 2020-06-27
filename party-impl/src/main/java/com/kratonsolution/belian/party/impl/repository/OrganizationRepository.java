@@ -17,7 +17,7 @@ import lombok.NonNull;
  */
 public interface OrganizationRepository extends JpaRepository<Organization, String>, JpaSpecificationExecutor<Organization>
 {
-	@Query("FROM Organization org WHERE org.party.code = ?")
+	@Query("FROM Organization org WHERE org.party.code = ?1")
 	public Optional<Organization> findByCode(@NonNull String code);
 	
 }

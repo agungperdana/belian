@@ -187,30 +187,29 @@ public class Person extends Auditable implements Serializable
 		return new HashSet<>(this.physicalCharacteristics);
 	}
 	
-	public Citizenship createCitizenship(@NonNull Instant start, Instant end, @NonNull String passport, @NonNull String countryCode, @NonNull String countryName) {
+	public Citizenship createCitizenship(@NonNull Instant start, Instant end, @NonNull String countryCode, @NonNull String countryName) {
 
 		Optional<Citizenship> status = this.citizenships
 				.stream()
 				.filter(p-> p.getStart().equals(start) 
-						&& p.getPassport().equals(passport)
 						&& p.getCountry().getCode().equals(countryCode)).findAny();
 
 		Preconditions.checkState(!status.isPresent(), "Citizenship already exist");
 
-		Citizenship obj = new Citizenship(this, start, passport, countryCode, countryName);
+		Citizenship obj = new Citizenship(this, start, countryCode, countryName);
 		obj.setEnd(end);
 		this.citizenships.add(obj);
 
 		return obj;
 	}
 
-	public Optional<Citizenship> updateCitizenship(@NonNull Instant start, @NonNull Instant end, @NonNull String passport , @NonNull PartyGeographicInfo country) {
+	public Optional<Citizenship> updateCitizenship(@NonNull Instant start, @NonNull Instant end, @NonNull PartyGeographicInfo country) {
 
 		Optional<Citizenship> status = this.citizenships
 											.stream()
 											.filter(p-> p.getStart().equals(start) 
-													&& p.getCountry().getCode().equals(country.getCode())
-													&& p.getPassport().equals(passport)).findAny();
+													&& p.getCountry().getCode().equals(country.getCode()))
+											.findAny();
 		
 		if(status.isPresent()) {
 			status.get().setEnd(end);
@@ -219,19 +218,17 @@ public class Person extends Auditable implements Serializable
 		return status;
 	}
 
-	public void removeCitizenship(@NonNull Instant start, @NonNull Optional<Instant> end, @NonNull String passport, @NonNull PartyGeographicInfo country) {
+	public void removeCitizenship(@NonNull Instant start, @NonNull Optional<Instant> end, @NonNull PartyGeographicInfo country) {
 		
 		if(end.isPresent()) {
 			
 			this.citizenships.removeIf(p->p.getStart().equals(start)
 					&& p.getEnd().equals(end.get())
-					&& p.getPassport().equals(passport)
 					&& p.getCountry().getCode().equals(country.getCode()));
 		}
 		else {
 			
 			this.citizenships.removeIf(p->p.getStart().equals(start)
-					&& p.getPassport().equals(passport)
 					&& p.getCountry().getCode().equals(country.getCode()));
 		}
 	}

@@ -9,13 +9,14 @@ import org.zkoss.zul.Window;
 
 import com.kratonsolution.belian.backoffice.application.ModuleRegistry;
 import com.kratonsolution.belian.common.ui.ModuleRegistryInformation;
-import com.kratonsolution.belian.common.ui.event.ModuleOpenWindowEvent;
+import com.kratonsolution.belian.common.ui.event.ModuleEvent;
 import com.kratonsolution.belian.common.ui.util.PublisherAdapter;
 import com.kratonsolution.belian.common.ui.util.Springs;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 2.0
  */
 public class LauncherWindow extends Window {
 
@@ -63,7 +64,7 @@ public class LauncherWindow extends Window {
 						button.setOrient("vertical");
 						button.addEventListener(Events.ON_CLICK, e -> {
 
-							publisher.publish(new ModuleOpenWindowEvent(this, info.getName()));
+							publisher.publish(new ModuleEvent(this, info.getName()));
 
 							LauncherWindow.this.setVisible(false);
 							LauncherWindow.this.detach();

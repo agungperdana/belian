@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -41,8 +42,10 @@ public class Citizenship implements Serializable
 	@Column(name="end")
 	private Instant end;
 	
-	@Column(name="passport_number")
-	private String passport;
+	@Setter
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "fk_passport")
+	private Passport passport;
 
 	@Embedded
 	@AttributeOverrides({
@@ -60,12 +63,11 @@ public class Citizenship implements Serializable
 	
 	Citizenship(){}
 	
-	public Citizenship(@NonNull Person parent, @NonNull Instant start, @NonNull String passportNumber,
+	public Citizenship(@NonNull Person parent, @NonNull Instant start,
 			@NonNull String countryCode, @NonNull String countryName){
 		
 		this.person = parent;
 		this.start = start;
-		this.passport = passportNumber;
 		this.country = new PartyGeographicInfo(countryCode, countryName); 
 	}
 }

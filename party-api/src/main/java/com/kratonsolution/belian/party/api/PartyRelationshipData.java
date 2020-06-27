@@ -28,10 +28,6 @@ public class PartyRelationshipData implements Serializable
 	
 	private String toPartyName;
 	
-	private PartyRoleData fromRole;
-	
-	private PartyRoleData toRole;
-	
 	private PartyRelationshipType type;
 	
 	private PartyRelationshipStatusType status;

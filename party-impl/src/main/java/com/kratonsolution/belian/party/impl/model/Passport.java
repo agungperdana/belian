@@ -1,17 +1,20 @@
 package com.kratonsolution.belian.party.impl.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.Instant;
 import java.util.UUID;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NonNull;
 
 /**
  * @author Agung Dodi Perdana
@@ -19,7 +22,6 @@ import lombok.Setter;
  * @since 1.0
  */
 @Getter
-@Setter
 @Entity
 @Table(name="passport")
 public class Passport implements Serializable
@@ -33,13 +35,28 @@ public class Passport implements Serializable
 	private String number;
 	
 	@Column(name="issued_date")
-	private Date issuedDate;
+	private Instant issuedDate;
 	
-	@Column(name="expiration_date")
-	private Date expirationDate;
+	@Column(name="expired_date")
+	private Instant expirationDate;
 		
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name = "code", column = @Column(name="country_code")),
+		@AttributeOverride(name = "name", column = @Column(name="country_name"))
+	})
+	private PartyGeographicInfo country;
+	
 	@Version
 	private Long version;
 	
-	public Passport(){}
+	Passport(){}
+	
+	public Passport(@NonNull String number, @NonNull Instant issued, @NonNull Instant expired, @NonNull String countryCode, @NonNull String countryName){
+		
+		this.number = number;
+		this.issuedDate = issued;
+		this.expirationDate = expired;
+		this.country = new PartyGeographicInfo(countryCode, countryName);
+	}
 }

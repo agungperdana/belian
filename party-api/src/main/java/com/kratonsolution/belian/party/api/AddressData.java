@@ -2,7 +2,6 @@ package com.kratonsolution.belian.party.api;
 
 import java.io.Serializable;
 
-import com.kratonsolution.belian.geographic.api.GeographicData;
 import com.kratonsolution.belian.party.api.model.AddressType;
 
 import lombok.Getter;
@@ -30,37 +29,37 @@ public class AddressData implements Serializable
 	/**
 	 * Negara
 	 */
-	private GeographicData country;
+	private PartyGeographicInfoData country;
 	
 	/**
 	 * Provinsi
 	 */
-	private GeographicData province;
+	private PartyGeographicInfoData province;
 	
 	/**
 	 * Kota/kabupaten
 	 */
-	private GeographicData city;
+	private PartyGeographicInfoData city;
 	
 	/**
 	 * Kecamatan
 	 */
-	private GeographicData district;
+	private PartyGeographicInfoData district;
 	
 	/**
 	 * Kelurahan
 	 */
-	private GeographicData subDistrict;
+	private PartyGeographicInfoData subDistrict;
 	
 	/**
 	 * RW
 	 */
-	private GeographicData rw;
+	private PartyGeographicInfoData rw;
 	
 	/**
 	 * RT
 	 */
-	private GeographicData rt;
+	private PartyGeographicInfoData rt;
 	
 	public AddressData(){}
 }

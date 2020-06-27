@@ -12,6 +12,7 @@ import com.kratonsolution.belian.common.ui.util.UIHelper;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 2.0
  */
 public class Launcher extends Toolbarbutton {
 

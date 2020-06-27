@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.google.common.base.MoreObjects;
-import com.kratonsolution.belian.geographic.api.GeographicData;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -30,7 +29,7 @@ public class PartyData implements Serializable
 
 	private Instant birthDate;
 	
-	private GeographicData birthPlace;
+	private PartyGeographicInfoData birthPlace;
 	
 	private Set<AddressData> addresses = new HashSet<AddressData>();
 	

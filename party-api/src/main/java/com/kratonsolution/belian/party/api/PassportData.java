@@ -3,8 +3,6 @@ package com.kratonsolution.belian.party.api;
 import java.io.Serializable;
 import java.time.Instant;
 
-import com.kratonsolution.belian.geographic.api.GeographicData;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,7 +23,7 @@ public class PassportData implements Serializable
 	
 	private Instant expirationDate;
 	
-	private GeographicData country;
+	private PartyGeographicInfoData country;
 	
 	public PassportData(){}
 }

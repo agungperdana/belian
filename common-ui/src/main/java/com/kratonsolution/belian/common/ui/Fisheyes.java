@@ -6,6 +6,7 @@ import org.zkoss.zul.Toolbar;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0
  */
 public class Fisheyes extends Toolbar
 {

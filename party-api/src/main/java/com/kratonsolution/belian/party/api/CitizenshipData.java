@@ -21,7 +21,7 @@ public class CitizenshipData implements Serializable
 	
 	private Instant end;
 	
-	private String passport;
+	private PassportData passport;
 	
 	public CitizenshipData(){}
 }
