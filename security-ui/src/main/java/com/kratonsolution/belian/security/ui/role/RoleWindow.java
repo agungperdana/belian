@@ -6,7 +6,7 @@ import org.zkoss.image.AImage;
 import org.zkoss.util.resource.Labels;
 
 import com.kratonsolution.belian.common.ui.AbstractWindow;
-import com.kratonsolution.belian.common.ui.event.ContentEvent;
+import com.kratonsolution.belian.common.ui.event.UIEvent;
 
 /**
  * @author Agung Dodi Perdana
@@ -32,13 +32,13 @@ public class RoleWindow extends AbstractWindow
 		
 		clearContent();
 		
-		if(event.equals(ContentEvent.GRID)) {
+		if(event.equals(UIEvent.GRID)) {
 			appendChild(RoleContentFactory.createGridContent());
 		}
-		else if(event.equals(ContentEvent.ADD_FORM)) {
+		else if(event.equals(UIEvent.ADD_FORM)) {
 			appendChild(RoleContentFactory.createAddFormContent());
 		}
-		else if(event.equals(ContentEvent.EDIT_FORM)) {
+		else if(event.equals(UIEvent.EDIT_FORM)) {
 			appendChild(RoleContentFactory.createEditFormContent(map.get("code")));
 		}
 	}

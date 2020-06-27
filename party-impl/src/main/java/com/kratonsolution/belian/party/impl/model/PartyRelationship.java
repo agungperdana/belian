@@ -1,10 +1,7 @@
-/**
- * 
- */
-package com.kratonsolution.belian.partys.dm;
+package com.kratonsolution.belian.party.impl.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.Instant;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -12,62 +9,71 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
+import com.kratonsolution.belian.party.api.model.PartyRelationshipStatusType;
+import com.kratonsolution.belian.party.api.model.PartyRelationshipType;
+
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0
  */
 @Getter
-@Setter
 @Entity
 @Table(name="party_relationship")
-@Inheritance(strategy=InheritanceType.JOINED)
 public class PartyRelationship implements Serializable
 {
+	private static final long serialVersionUID = -3810420990043934420L;
+
 	@Id
-	protected String id = UUID.randomUUID().toString();
+	private String id = UUID.randomUUID().toString();
 	
-	@Column(name="start",nullable=false)
-	protected Date start;
+	@Column(name="start")
+	private Instant start;
 	
+	@Setter
 	@Column(name="end")
-	protected Date end;
-	
+	private Instant end;
+
 	@ManyToOne
 	@JoinColumn(name="fk_from_party")
-	protected Party fromParty;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_from_role")
-	protected PartyRole fromRole;
+	private Party fromParty;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_to_party")
-	protected Party toParty;
-	
-	@ManyToOne
-	@JoinColumn(name="fk_to_role")
-	protected PartyRole toRole;
+	@NotFound(action = NotFoundAction.IGNORE)
+	private Party toParty;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="type")
-	protected PartyRelationshipType type = PartyRelationshipType.ORGANIZATION_ROLLUP;
+	private PartyRelationshipType type;
 	
+	@Setter
 	@Enumerated(EnumType.STRING)
 	@Column(name="status")
-	protected PartyRelationshipStatusType status = PartyRelationshipStatusType.ACTIVE;
+	private PartyRelationshipStatusType status = PartyRelationshipStatusType.ACTIVE;
 	
 	@Version
-	protected Long version;
+	private Long version;
 	
-	public PartyRelationship(){}
+	PartyRelationship(){}
+	
+	public PartyRelationship(@NonNull Party parent, @NonNull Party toParty, @NonNull Instant start, @NonNull PartyRelationshipType type){
+		
+		this.fromParty = parent;
+		this.toParty = toParty;
+		this.start = start;
+		this.type = type;
+	}
 }

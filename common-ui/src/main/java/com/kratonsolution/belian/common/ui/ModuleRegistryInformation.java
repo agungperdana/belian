@@ -3,6 +3,7 @@ package com.kratonsolution.belian.common.ui;
 import java.net.URL;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 /**
@@ -16,18 +17,22 @@ public class ModuleRegistryInformation {
 
 	private int position = 1000;
 	
+	@NonNull
 	private String name;
 
+	@NonNull
 	private URL fisheyeImage;
 
+	@NonNull
 	private URL launcherImage;
 	
+	@NonNull
 	private String nickName;
 
 	@Override
 	public boolean equals(Object obj) {
 
-		if(obj == null || !(obj instanceof ModuleRegistryInformation) || name == null)
+		if(obj == null || !(obj instanceof ModuleRegistryInformation) || name == null || name.equals(""))
 			return false;
 
 		ModuleRegistryInformation info = (ModuleRegistryInformation)obj;

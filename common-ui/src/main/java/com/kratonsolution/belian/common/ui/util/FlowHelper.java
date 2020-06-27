@@ -7,7 +7,7 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.EventQueues;
 
 import com.kratonsolution.belian.common.ui.AbstractWindow;
-import com.kratonsolution.belian.common.ui.event.ContentEvent;
+import com.kratonsolution.belian.common.ui.event.UIEvent;
 
 import lombok.NonNull;
 
@@ -18,7 +18,7 @@ import lombok.NonNull;
  */
 public class FlowHelper {
 
-	public static void next(@NonNull ContentEvent event) {
+	public static void next(@NonNull UIEvent event) {
 		
 		EventQueues.lookup(event.getClass().getSimpleName()).publish(event);
 	}

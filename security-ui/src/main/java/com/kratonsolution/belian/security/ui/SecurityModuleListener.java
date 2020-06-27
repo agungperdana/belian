@@ -3,7 +3,7 @@ package com.kratonsolution.belian.security.ui;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
-import com.kratonsolution.belian.common.ui.event.ModuleOpenWindowEvent;
+import com.kratonsolution.belian.common.ui.event.ModuleEvent;
 import com.kratonsolution.belian.security.ui.module.SecurityModuleHandler;
 import com.kratonsolution.belian.security.ui.role.SecurityRoleHandler;
 import com.kratonsolution.belian.security.ui.user.SecurityUserHandler;
@@ -14,10 +14,10 @@ import com.kratonsolution.belian.security.ui.user.SecurityUserHandler;
  * @since 2.0
  */
 @Service
-public class SecurityModuleListener implements ApplicationListener<ModuleOpenWindowEvent> {
+public class SecurityModuleListener implements ApplicationListener<ModuleEvent> {
 
 	@Override
-	public void onApplicationEvent(ModuleOpenWindowEvent event) {
+	public void onApplicationEvent(ModuleEvent event) {
 
 		if(event.getModuleName().equals(SecurityModuleInitializer.SECURITY_MODULE)) {
 			new SecurityModuleHandler();

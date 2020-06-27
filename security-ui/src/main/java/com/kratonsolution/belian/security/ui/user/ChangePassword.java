@@ -14,7 +14,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.ui.AbstractForm;
-import com.kratonsolution.belian.common.ui.event.ContentEvent;
+import com.kratonsolution.belian.common.ui.event.UIEvent;
 import com.kratonsolution.belian.common.ui.util.Components;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.Springs;
@@ -64,7 +64,7 @@ public class ChangePassword extends AbstractForm
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				FlowHelper.next(getParent(), ContentEvent.EDIT_FORM, param);
+				FlowHelper.next(getParent(), UIEvent.EDIT_FORM, param);
 			}
 		});
 		
@@ -84,7 +84,7 @@ public class ChangePassword extends AbstractForm
 					
 					service.changePassword(command);
 					
-					FlowHelper.next(getParent(), ContentEvent.EDIT_FORM, param);
+					FlowHelper.next(getParent(), UIEvent.EDIT_FORM, param);
 				}
 			}
 		});

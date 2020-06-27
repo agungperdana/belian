@@ -7,6 +7,7 @@ plugins {
 dependencies {
 
 	compile project(':common')
+	compile project(':geographic-api')
 	
 	implementation 'com.google.guava:guava:28.2-jre'
 	

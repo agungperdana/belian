@@ -9,7 +9,7 @@ import lombok.Setter;
  * @email agung.dodi.perdana@gmail.com
  * @sinch 2.0
  */
-public class GeographicUIContentEvent extends ContentEvent {
+public class GeographicUIContentEvent extends UIEvent {
 
 	private static final long serialVersionUID = -5482938099623621988L;
 	
@@ -22,16 +22,16 @@ public class GeographicUIContentEvent extends ContentEvent {
 	}
 	
 	public static GeographicUIContentEvent toGrid() {
-		return new GeographicUIContentEvent(ContentEvent.GRID);
+		return new GeographicUIContentEvent(UIEvent.GRID);
 	}
 	
 	public static GeographicUIContentEvent newForm() {
-		return new GeographicUIContentEvent(ContentEvent.ADD_FORM);
+		return new GeographicUIContentEvent(UIEvent.ADD_FORM);
 	}
 	
 	public static GeographicUIContentEvent editForm(@NonNull String code) {
 		
-		GeographicUIContentEvent ev = new GeographicUIContentEvent(ContentEvent.EDIT_FORM);
+		GeographicUIContentEvent ev = new GeographicUIContentEvent(UIEvent.EDIT_FORM);
 		ev.setCode(code);
 		
 		return ev;

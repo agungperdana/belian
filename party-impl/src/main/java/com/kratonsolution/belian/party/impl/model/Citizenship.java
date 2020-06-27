@@ -1,13 +1,14 @@
-/**
- * 
- */
-package com.kratonsolution.belian.partys.dm;
+package com.kratonsolution.belian.party.impl.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.Instant;
 import java.util.UUID;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -16,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 /**
@@ -28,18 +30,30 @@ import lombok.Setter;
 @Table(name="citizenship")
 public class Citizenship implements Serializable
 {
+	private static final long serialVersionUID = 5343761111880173663L;
+
 	@Id
 	private String id = UUID.randomUUID().toString();
 
 	@Column(name="start")
-	private Date start;
+	private Instant start;
 	
+	@Setter
 	@Column(name="end")
-	private Date end;
+	private Instant end;
 	
-	@Column(name="nopassport")
-	private String passport;
+	@Setter
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "fk_passport")
+	private Passport passport;
 
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name = "code", column = @Column(name="country_code")),
+		@AttributeOverride(name = "name", column = @Column(name="country_name"))
+	})
+	private PartyGeographicInfo country;
+	
 	@ManyToOne
 	@JoinColumn(name="fk_person")
 	private Person person;
@@ -47,5 +61,13 @@ public class Citizenship implements Serializable
 	@Version
 	private Long version;
 	
-	public Citizenship(){}
+	Citizenship(){}
+	
+	public Citizenship(@NonNull Person parent, @NonNull Instant start,
+			@NonNull String countryCode, @NonNull String countryName){
+		
+		this.person = parent;
+		this.start = start;
+		this.country = new PartyGeographicInfo(countryCode, countryName); 
+	}
 }

@@ -7,7 +7,7 @@ import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.event.EventQueues;
 
 import com.kratonsolution.belian.common.ui.AbstractWindow;
-import com.kratonsolution.belian.common.ui.event.ContentEvent;
+import com.kratonsolution.belian.common.ui.event.UIEvent;
 import com.kratonsolution.belian.common.ui.event.GeographicUIContentEvent;
 
 
@@ -34,10 +34,10 @@ public class GeographicWindow extends AbstractWindow
 			
 			clearContent();
 
-			if(event.getType().equals(ContentEvent.ADD_FORM)) {
+			if(event.getType().equals(UIEvent.ADD_FORM)) {
 				appendChild(new GeographicFormContent());
 			}
-			else if(event.getType().equals(ContentEvent.EDIT_FORM)) {
+			else if(event.getType().equals(UIEvent.EDIT_FORM)) {
 				appendChild(new GeographicUpdateContent(event.getCode()));
 			}
 			else {

@@ -6,7 +6,7 @@ import org.zkoss.image.AImage;
 import org.zkoss.util.resource.Labels;
 
 import com.kratonsolution.belian.common.ui.AbstractWindow;
-import com.kratonsolution.belian.common.ui.event.ContentEvent;
+import com.kratonsolution.belian.common.ui.event.UIEvent;
 
 
 /**
@@ -33,10 +33,10 @@ public class ModuleWindow extends AbstractWindow
 
 		clearContent();
 
-		if(event.equals(ContentEvent.GRID)) {
+		if(event.equals(UIEvent.GRID)) {
 			appendChild(ModuleContentFactory.createGridContent());
 		}
-		else if(event.equals(ContentEvent.EDIT_FORM)) {
+		else if(event.equals(UIEvent.EDIT_FORM)) {
 			appendChild(ModuleContentFactory.createEditFormContent(parameter.get("code")));
 		}
 		else {
