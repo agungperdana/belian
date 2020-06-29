@@ -58,7 +58,7 @@ CREATE TABLE `citizenship` (
   `id` char(50) NOT NULL,
   `start` date DEFAULT NULL,
   `end` date DEFAULT NULL,
-  `passport_number` varchar(100) DEFAULT NULL,
+  `fk_passport` char(50) DEFAULT NULL,
   `fk_person` char(50) DEFAULT NULL,
   `country_code` varchar(100) DEFAULT NULL,
   `country_name` varchar(200) DEFAULT NULL,
@@ -75,6 +75,34 @@ CREATE TABLE `citizenship` (
 LOCK TABLES `citizenship` WRITE;
 /*!40000 ALTER TABLE `citizenship` DISABLE KEYS */;
 /*!40000 ALTER TABLE `citizenship` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `contact`
+--
+
+DROP TABLE IF EXISTS `contact`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `contact` (
+  `id` char(50) NOT NULL,
+  `contact` varchar(250) DEFAULT NULL,
+  `type` char(50) DEFAULT NULL,
+  `is_active` char(1) DEFAULT '0',
+  `fk_party` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `contact`
+--
+
+LOCK TABLES `contact` WRITE;
+/*!40000 ALTER TABLE `contact` DISABLE KEYS */;
+/*!40000 ALTER TABLE `contact` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -107,6 +135,7 @@ CREATE TABLE `geographic` (
 
 LOCK TABLES `geographic` WRITE;
 /*!40000 ALTER TABLE `geographic` DISABLE KEYS */;
+INSERT INTO `geographic` VALUES ('24b65ed5-911a-4e5e-bdf9-040a82d2a04c','KAL BAR','Kalimantan Barat','','ee07b82c-4b2e-4817-bc34-88e0577b8c8f',NULL,NULL,NULL,NULL,0,'PROVINSI'),('2a164893-a571-4b96-8f2e-a7410f6490db','RW05','RW 05','','c94836ae-bff5-474a-a333-f8ccc8737278',NULL,NULL,NULL,NULL,0,'RW'),('56135657-99cb-4549-b7d1-2bc535e629e4','PNK','Pontianak','','24b65ed5-911a-4e5e-bdf9-040a82d2a04c',NULL,NULL,NULL,NULL,0,'KOTA'),('69359a1e-3af7-4b1e-9fb5-7d2125a4f420','RT01','RT 01','','2a164893-a571-4b96-8f2e-a7410f6490db',NULL,NULL,NULL,NULL,0,'RT'),('bf2efe57-fbdc-4307-9733-b9d89203f2c5','PNK-KT','Pontianak Kota','','56135657-99cb-4549-b7d1-2bc535e629e4',NULL,NULL,NULL,NULL,0,'KECAMATAN'),('c94836ae-bff5-474a-a333-f8ccc8737278','DRT-SKIP','Darat Sekip','','bf2efe57-fbdc-4307-9733-b9d89203f2c5',NULL,NULL,NULL,NULL,0,'KELURAHAN'),('ee07b82c-4b2e-4817-bc34-88e0577b8c8f','INA','Indonesia','',NULL,NULL,NULL,NULL,NULL,0,'NEGARA');
 /*!40000 ALTER TABLE `geographic` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -199,6 +228,7 @@ CREATE TABLE `organization` (
 
 LOCK TABLES `organization` WRITE;
 /*!40000 ALTER TABLE `organization` DISABLE KEYS */;
+INSERT INTO `organization` VALUES ('19c546c7-f0cb-4b74-bf8a-9562607ee0c5','7a7c06d8-d510-4437-9b0c-0e57fb3f977a',0,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `organization` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -229,6 +259,7 @@ CREATE TABLE `party` (
 
 LOCK TABLES `party` WRITE;
 /*!40000 ALTER TABLE `party` DISABLE KEYS */;
+INSERT INTO `party` VALUES ('7a7c06d8-d510-4437-9b0c-0e57fb3f977a','KS','Keraton Solution','PNK','Pontianak','2020-06-29','',1);
 /*!40000 ALTER TABLE `party` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -446,6 +477,35 @@ LOCK TABLES `party_skill_type` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `passport`
+--
+
+DROP TABLE IF EXISTS `passport`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `passport` (
+  `id` char(50) NOT NULL,
+  `number` varchar(150) DEFAULT NULL,
+  `issued_date` date DEFAULT NULL,
+  `expired_date` date DEFAULT NULL,
+  `country_code` char(25) DEFAULT NULL,
+  `country_name` varchar(200) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `passport`
+--
+
+LOCK TABLES `passport` WRITE;
+/*!40000 ALTER TABLE `passport` DISABLE KEYS */;
+/*!40000 ALTER TABLE `passport` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `physical_characteristic`
 --
 
@@ -615,4 +675,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-23 15:04:43
+-- Dump completed on 2020-06-29 15:48:32
