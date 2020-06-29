@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
+import com.kratonsolution.belian.geographic.api.GeographicType;
 import com.kratonsolution.belian.geographic.impl.model.Geographic;
 
 import lombok.NonNull;
@@ -22,4 +23,6 @@ public interface GeographicRepository extends JpaRepository<Geographic, String>,
 	
 	@Query("FROM Geographic geo WHERE geo.parent IS NULL ORDER BY geo.code, geo.name ASC")
 	public List<Geographic> findAllRoots();
+	
+	public List<Geographic> findAllByType(@NonNull GeographicType type);
 }

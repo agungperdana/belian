@@ -14,6 +14,7 @@ import com.google.common.base.Preconditions;
 import com.kratonsolution.belian.common.spring.SpecificationBuilder;
 import com.kratonsolution.belian.common.spring.SpecificationBuilder.Operator;
 import com.kratonsolution.belian.geographic.api.GeographicData;
+import com.kratonsolution.belian.geographic.api.GeographicType;
 import com.kratonsolution.belian.geographic.api.application.GeographicCreateCommand;
 import com.kratonsolution.belian.geographic.api.application.GeographicDeleteCommand;
 import com.kratonsolution.belian.geographic.api.application.GeographicFilter;
@@ -183,5 +184,10 @@ public class GeographicServiceImpl implements GeographicService {
 	@Secured("ROLE_GEOGRAPHIC_READ")
 	public List<GeographicData> getAllGeographicRoots() {
 		return GeographicMapper.INSTANCE.toDatas(repo.findAllRoots());
+	}
+
+	@Override
+	public List<GeographicData> getAllByType(@NonNull GeographicType type) {
+		return GeographicMapper.INSTANCE.toDatas(repo.findAllByType(type));
 	}
 }

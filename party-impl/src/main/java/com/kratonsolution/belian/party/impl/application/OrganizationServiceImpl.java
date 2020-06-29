@@ -40,10 +40,11 @@ public class OrganizationServiceImpl implements OrganizationService
 	@Autowired
 	private OrganizationRepository repo;
 
-	private GeographicService geoRepo;
+	@Autowired
+	private GeographicService geoService;
 
 	@Override
-	public OrganizationData add(@NonNull OrganizationCreateCommand command) {
+	public OrganizationData create(@NonNull OrganizationCreateCommand command) {
 
 		Optional<Organization> ondb = repo.findByCode(command.getCode());
 		Preconditions.checkState(!ondb.isPresent(), "Organization with code {} already exist", command.getCode());
@@ -60,10 +61,9 @@ public class OrganizationServiceImpl implements OrganizationService
 			organization.getParty().setBirthDate(command.getBirthDate().get());
 		}
 
-		if(command.getBirthPlace().isPresent() && geoRepo.getByCode(command.getBirthPlace().get()).isPresent()) {
+		if(command.getBirthPlace().isPresent() && geoService.getByCode(command.getBirthPlace().get()).isPresent()) {
 
-			GeographicData geo = geoRepo.getByCode(command.getBirthPlace().get()).get();
-			
+			GeographicData geo = geoService.getByCode(command.getBirthPlace().get()).get();
 			organization.getParty().setBirthPlace(new PartyGeographicInfo(geo.getCode(), geo.getName()));
 		}
 
@@ -74,7 +74,7 @@ public class OrganizationServiceImpl implements OrganizationService
 	}
 
 	@Override
-	public OrganizationData edit(@NonNull OrganizationUpdateCommand command) {
+	public OrganizationData update(@NonNull OrganizationUpdateCommand command) {
 
 		Optional<Organization> opt = repo.findByCode(command.getCode());
 		Preconditions.checkState(opt.isPresent(), "Organization with code {} does not exist", command.getCode());
@@ -83,9 +83,9 @@ public class OrganizationServiceImpl implements OrganizationService
 			opt.get().getParty().setBirthDate(command.getBirthDate().get());
 		}
 
-		if(command.getBirthPlace().isPresent() && geoRepo.getByCode(command.getBirthPlace().get()).isPresent()) {
+		if(command.getBirthPlace().isPresent() && geoService.getByCode(command.getBirthPlace().get()).isPresent()) {
 			
-			GeographicData geo = geoRepo.getByCode(command.getBirthPlace().get()).get();
+			GeographicData geo = geoService.getByCode(command.getBirthPlace().get()).get();
 			opt.get().getParty().setBirthPlace(new PartyGeographicInfo(geo.getCode(), geo.getName()));
 		}
 

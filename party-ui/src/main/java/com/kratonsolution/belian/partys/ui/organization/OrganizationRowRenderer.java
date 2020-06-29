@@ -21,14 +21,14 @@ public class OrganizationRowRenderer implements RowRenderer<OrganizationData>
 	public void render(Row row, OrganizationData data, int index) throws Exception
 	{
 		row.appendChild(new Checkbox());
-		row.appendChild(new Label(data.getParty().getCode()));
-		row.appendChild(new Label(data.getParty().getName()));
-		row.appendChild(new Label(data.getParty().getTaxCode()));
+		row.appendChild(new Label(data.getCode()));
+		row.appendChild(new Label(data.getName()));
+		row.appendChild(new Label(data.getTaxCode()));
 		
 		row.addEventListener(Events.ON_DOUBLE_CLICK, e->{
 			
 			EventQueues.lookup(OrganizationUIEvent.class.getSimpleName())
-						.publish(new OrganizationUIEvent(UIEvent.EDIT_FORM, data.getParty().getCode()));
+						.publish(new OrganizationUIEvent(UIEvent.EDIT_FORM, data.getCode()));
 		});
 	}
 }

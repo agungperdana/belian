@@ -90,10 +90,10 @@ public class Party implements Serializable
 	private Set<PartyRole> partyRoles = new HashSet<>();
 
 	@OneToMany(mappedBy="fromParty",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
-	private Set<PartyRelationship> relationships = new HashSet<>();
+	private Set<PartyRelationship> partyRelationships = new HashSet<>();
 
 	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
-	private Set<PartyClassification> classifications = new HashSet<>();
+	private Set<PartyClassification> partyClassifications = new HashSet<>();
 
 	Party(){}
 
@@ -218,7 +218,7 @@ public class Party implements Serializable
 	
 	public PartyRelationship createPartyRelationship(@NonNull Party toParty, @NonNull Instant start, @NonNull PartyRelationshipType type) {
 
-		Optional<PartyRelationship> opt = this.relationships.stream()
+		Optional<PartyRelationship> opt = this.partyRelationships.stream()
 				.filter(p->p.getStart().equals(start) 
 						&& p.getType().equals(type)
 						&& p.getToParty().getId().equals(toParty.getId())).findAny();
@@ -226,14 +226,14 @@ public class Party implements Serializable
 		Preconditions.checkState(!opt.isPresent(), "Party Relationship already exist");
 
 		PartyRelationship obj = new PartyRelationship(this, toParty, start, type);
-		this.relationships.add(obj);
+		this.partyRelationships.add(obj);
 
 		return obj;
 	}
 
 	public void updatePartyRelationship(@NonNull Party toParty, @NonNull Instant start, @NonNull Instant end, @NonNull PartyRelationshipType type) {
 
-		Optional<PartyRelationship> opt = this.relationships.stream()
+		Optional<PartyRelationship> opt = this.partyRelationships.stream()
 									.filter(p->p.getStart().equals(start) 
 											&& p.getType().equals(type)
 											&& p.getToParty().getId().equals(toParty.getId()))
@@ -247,13 +247,13 @@ public class Party implements Serializable
 	public void removePartyRelationship(@NonNull Party toParty, @NonNull Instant start, @NonNull Optional<Instant> end, @NonNull PartyRelationshipType type) {
 		
 		if(end.isPresent()) {
-			this.relationships.removeIf(p-> p.getStart().equals(start) 
+			this.partyRelationships.removeIf(p-> p.getStart().equals(start) 
 					&& p.getEnd().equals(end.get()) 
 					&& p.getType().equals(type)
 					&& p.getToParty().getId().equals(toParty.getId()));
 		}
 		else {
-			this.relationships.removeIf(p-> p.getStart().equals(start) 
+			this.partyRelationships.removeIf(p-> p.getStart().equals(start) 
 												&& p.getType().equals(type)
 												&& p.getToParty().getId().equals(toParty.getId()));
 		}
@@ -265,12 +265,12 @@ public class Party implements Serializable
 	 * @return new Set containing PartyRelationship
 	 */
 	public Set<PartyRelationship> getPartyRelationships() {
-		return new HashSet<>(this.relationships);
+		return new HashSet<>(this.partyRelationships);
 	}
 	
 	public PartyClassification createPartyClassification(@NonNull Instant start, @NonNull String value, @NonNull PartyClassificationType type) {
 
-		Optional<PartyClassification> opt = this.classifications.stream()
+		Optional<PartyClassification> opt = this.partyClassifications.stream()
 				.filter(p->p.getStart().equals(start) 
 						&& p.getType().equals(type)
 						&& p.getValue().equals(value)).findAny();
@@ -278,14 +278,14 @@ public class Party implements Serializable
 		Preconditions.checkState(!opt.isPresent(), "Party Classification already exist");
 
 		PartyClassification obj = new PartyClassification(this, start, value, type);
-		this.classifications.add(obj);
+		this.partyClassifications.add(obj);
 
 		return obj;
 	}
 
 	public void updatePartyClassification(@NonNull Instant start, @NonNull Instant end, @NonNull String value, @NonNull PartyClassificationType type) {
 
-		Optional<PartyClassification> opt = this.classifications.stream()
+		Optional<PartyClassification> opt = this.partyClassifications.stream()
 									.filter(p->p.getStart().equals(start) 
 											&& p.getType().equals(type)
 											&& p.getValue().equals(value))
@@ -299,13 +299,13 @@ public class Party implements Serializable
 	public void removePartyClassification(@NonNull Instant start, @NonNull Optional<Instant> end, @NonNull String value, @NonNull PartyClassificationType type) {
 		
 		if(end.isPresent()) {
-			this.classifications.removeIf(p-> p.getStart().equals(start) 
+			this.partyClassifications.removeIf(p-> p.getStart().equals(start) 
 					&& p.getEnd().equals(end.get()) 
 					&& p.getType().equals(type)
 					&& p.getValue().equals(value));
 		}
 		else {
-			this.classifications.removeIf(p-> p.getStart().equals(start) 
+			this.partyClassifications.removeIf(p-> p.getStart().equals(start) 
 											&& p.getType().equals(type)
 											&& p.getValue().equals(value));
 		}
@@ -316,8 +316,8 @@ public class Party implements Serializable
 	 * calling getPartyClassification().add() will not add newly created PartyClassification
 	 * @return new Set containing PartyClassification
 	 */
-	public Set<PartyClassification> getPartyClassification() {
-		return new HashSet<>(this.classifications);
+	public Set<PartyClassification> getPartyClassifications() {
+		return new HashSet<>(this.partyClassifications);
 	}
 
 	@Override
