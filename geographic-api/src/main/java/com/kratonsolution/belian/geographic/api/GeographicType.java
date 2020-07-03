@@ -7,5 +7,34 @@ package com.kratonsolution.belian.geographic.api;
  */
 public enum GeographicType {
 
-	NEGARA, PROVINSI, KABUPATEN, KOTA, DESA, DUSUN, KECAMATAN, KELURAHAN, RT, RW
+	/*NEGARA*/
+	COUNTRY, 
+	
+	/*PROVINSI*/
+	PROVINCE, 
+	
+	/*KABUPATEN*/
+	REGENCY, 
+	
+	/*KOTA*/
+	CITY, 
+	
+	/*DESA*/
+	VILLAGE,
+	
+	/*DUSUN*/
+	BACKWOODS,
+	
+	/*KECAMATAN*/
+	DISTRICT, 
+	
+	/*KELURAHAN*/
+	SUBDISTRICT, 
+	
+	/*RW*/
+	HAMLET,
+	
+	/*RT*/
+	NEIGHBOURHOOD
+	
 }

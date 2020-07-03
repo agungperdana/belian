@@ -82,7 +82,7 @@ public class OrganizationFormContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		for(GeographicData data:Springs.get(GeographicService.class).getAllByType(GeographicType.KOTA)) {
+		for(GeographicData data:Springs.get(GeographicService.class).getAllByType(GeographicType.CITY)) {
 			
 			birthPlace.appendItem(data.getCode()+" - "+data.getName(), data.getCode());
 		}

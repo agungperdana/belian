@@ -13,6 +13,8 @@ import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -24,11 +26,13 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
+import com.kratonsolution.belian.geographic.api.GeographicData;
 import com.kratonsolution.belian.party.api.model.AddressType;
 import com.kratonsolution.belian.party.api.model.ContactType;
 import com.kratonsolution.belian.party.api.model.PartyClassificationType;
 import com.kratonsolution.belian.party.api.model.PartyRelationshipType;
 import com.kratonsolution.belian.party.api.model.PartyRoleType;
+import com.kratonsolution.belian.party.api.model.PartyType;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -59,6 +63,11 @@ public class Party implements Serializable
 	@Setter
 	@Column(name="name")
 	private String name;
+	
+	@Getter
+	@Enumerated(EnumType.STRING)
+	@Column(name = "type")
+	private PartyType type;
 
 	@Getter
 	@Setter
@@ -97,32 +106,36 @@ public class Party implements Serializable
 
 	Party(){}
 
-	public Party(@NonNull String code, @NonNull String name)
+	public Party(@NonNull String code, @NonNull String name, @NonNull PartyType type)
 	{
 		this.code = code;
 		this.name = name;
+		this.type = type;
 	}
 
-	public Address createAddress(@NonNull String address, @NonNull AddressType type) {
+	public Address createAddress(@NonNull String description, @NonNull AddressType type, GeographicData location) {
 
 		Optional<Address> opt = this.addresses.stream()
-				.filter(p->p.getAddress().equals(address)&&p.getType().equals(type)).findAny();
+				.filter(p->p.getDescription().equals(description)&&p.getType().equals(type)).findAny();
 
 		Preconditions.checkState(!opt.isPresent(), "Address already exist");
 
-		Address obj = new Address(this, address, type);
+		Address obj = new Address(this, description, type, new PartyGeographicInfo(location.getCode(), location.getName()));
 		this.addresses.add(obj);
 
 		return obj;
 	}
 
-	public Optional<Address> updateAddress(@NonNull String address, @NonNull AddressType type) {
+	public Address updateAddress(@NonNull String description, @NonNull AddressType type) {
 
-		return this.addresses.stream().filter(p->p.getAddress().equals(address)&&p.getType().equals(type)).findAny();
+		Optional<Address> opt = this.addresses.stream().filter(p->p.getDescription().equals(description)&&p.getType().equals(type)).findAny();
+		Preconditions.checkState(opt.isPresent(), "Address not found");
+
+		return opt.get();
 	}
 
-	public void removeAddress(@NonNull String address, @NonNull AddressType type) {
-		this.addresses.removeIf(p->p.getAddress().equals(address)&&p.getType().equals(type));
+	public void removeAddress(@NonNull String description, @NonNull AddressType type) {
+		this.addresses.removeIf(p->p.getDescription().equals(description)&&p.getType().equals(type));
 	}
 
 	/**

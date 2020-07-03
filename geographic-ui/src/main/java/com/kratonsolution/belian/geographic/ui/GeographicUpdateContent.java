@@ -18,7 +18,6 @@ import org.zkoss.zul.Textbox;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.ui.AbstractForm;
-import com.kratonsolution.belian.common.ui.event.GeographicUIContentEvent;
 import com.kratonsolution.belian.common.ui.util.Components;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.Springs;
@@ -68,7 +67,7 @@ public class GeographicUpdateContent extends AbstractForm
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				FlowHelper.next(GeographicUIContentEvent.toGrid());
+				FlowHelper.next(GeographicUIEvent.toGrid());
 			}
 		});
 		
@@ -91,7 +90,7 @@ public class GeographicUpdateContent extends AbstractForm
 				
 				service.update(command);
 				
-				FlowHelper.next(GeographicUIContentEvent.toGrid());
+				FlowHelper.next(GeographicUIEvent.toGrid());
 			}
 		});
 	}

@@ -18,6 +18,7 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import com.kratonsolution.belian.common.model.Auditable;
+import com.kratonsolution.belian.party.api.model.PartyType;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -51,6 +52,6 @@ public class Organization extends Auditable implements Serializable
 	
 	public Organization(@NonNull String code, @NonNull String name) {
 		
-		this.party = new Party(code, name);
+		this.party = new Party(code, name, PartyType.ORGANIZATION);
 	}
 }

@@ -27,6 +27,7 @@ import com.kratonsolution.belian.geographic.api.application.GeographicService;
 import com.kratonsolution.belian.party.api.OrganizationData;
 import com.kratonsolution.belian.party.api.application.OrganizationService;
 import com.kratonsolution.belian.party.api.application.OrganizationUpdateCommand;
+import com.kratonsolution.belian.partys.ui.PartyDetailTab;
 
 import lombok.NonNull;
 
@@ -49,14 +50,17 @@ public class OrganizationEditContent extends AbstractForm
 
 	private Listbox birthPlace = Components.newSelect();
 
-	private String data;
+	private String partyCode;
 	
-	public OrganizationEditContent(@NonNull String code)
+	private PartyDetailTab tab;
+	
+	public OrganizationEditContent(@NonNull String partyCode)
 	{
 		super();
-		this.data = code;
+		this.partyCode = partyCode;
 		initToolbar();
 		initForm();
+		initTab();
 	}
 
 	@Override
@@ -73,7 +77,7 @@ public class OrganizationEditContent extends AbstractForm
 				throw new WrongValueException(name,Labels.getLabel("warning.empty"));
 			
 			OrganizationUpdateCommand command = new OrganizationUpdateCommand();
-			command.setCode(this.data);
+			command.setCode(this.partyCode);
 			command.setName(Optional.ofNullable(name.getText()));
 			command.setTaxCode(Optional.ofNullable(tax.getText()));
 			command.setBirthDate(Optional.ofNullable(Instant.from(birthDate.getValueInZonedDateTime())));
@@ -88,7 +92,7 @@ public class OrganizationEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		Optional<OrganizationData> opt = Springs.get(OrganizationService.class).getByCode(this.data);
+		Optional<OrganizationData> opt = Springs.get(OrganizationService.class).getByCode(this.partyCode);
 		if(opt.isPresent()) {
 			
 			code.setText(opt.get().getCode());
@@ -99,7 +103,7 @@ public class OrganizationEditContent extends AbstractForm
 				birthDate.setValue(Date.from(opt.get().getBirthDate()));
 			}
 			
-			Springs.get(GeographicService.class).getAllByType(GeographicType.KOTA).forEach(geo -> {
+			Springs.get(GeographicService.class).getAllByType(GeographicType.CITY).forEach(geo -> {
 				
 				Listitem item = birthPlace.appendItem(geo.getCode()+" - "+geo.getName(), geo.getCode());
 				if(opt.get().getBirthPlace() != null && geo.getCode().equals(opt.get().getBirthPlace().getCode())) {
@@ -137,5 +141,18 @@ public class OrganizationEditContent extends AbstractForm
 		rows.appendChild(row3);
 		rows.appendChild(row4);
 		rows.appendChild(row5);
+	}
+	
+	private void initTab() {
+		
+		Optional<OrganizationData> opt = Springs.get(OrganizationService.class).getByCode(this.partyCode);
+		if(opt.isPresent()) {
+			
+			tab = new PartyDetailTab(this.partyCode, opt.get().getAddresses(), 
+					opt.get().getContacts(), opt.get().getPartyRoles(), 
+					opt.get().getPartyRelationships(), opt.get().getPartyClassifications());
+			
+			appendChild(tab);
+		}
 	}
 }

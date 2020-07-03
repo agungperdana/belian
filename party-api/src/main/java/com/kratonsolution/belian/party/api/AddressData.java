@@ -1,6 +1,7 @@
 package com.kratonsolution.belian.party.api;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import com.kratonsolution.belian.party.api.model.AddressType;
 
@@ -18,6 +19,8 @@ public class AddressData implements Serializable
 {
 	private static final long serialVersionUID = 5974009777137751638L;
 	
+	private final String dataID = UUID.randomUUID().toString();
+	
 	private String address;
 		
 	private String postal;
@@ -26,40 +29,7 @@ public class AddressData implements Serializable
 	
 	private AddressType type;
 
-	/**
-	 * Negara
-	 */
-	private PartyGeographicInfoData country;
-	
-	/**
-	 * Provinsi
-	 */
-	private PartyGeographicInfoData province;
-	
-	/**
-	 * Kota/kabupaten
-	 */
-	private PartyGeographicInfoData city;
-	
-	/**
-	 * Kecamatan
-	 */
-	private PartyGeographicInfoData district;
-	
-	/**
-	 * Kelurahan
-	 */
-	private PartyGeographicInfoData subDistrict;
-	
-	/**
-	 * RW
-	 */
-	private PartyGeographicInfoData rw;
-	
-	/**
-	 * RT
-	 */
-	private PartyGeographicInfoData rt;
+	private PartyGeographicInfoData location;
 	
 	public AddressData(){}
 }

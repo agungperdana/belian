@@ -8,7 +8,6 @@ import org.zkoss.zul.TreeitemRenderer;
 import org.zkoss.zul.Treerow;
 
 import com.kratonsolution.belian.common.ui.event.UIEvent;
-import com.kratonsolution.belian.common.ui.event.GeographicUIContentEvent;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,9 +32,9 @@ public class GeographicTreeItemRenderer implements TreeitemRenderer<GeographicTr
 		row.appendChild(new Treecell(node.getData().getNote()));
 		row.addEventListener(Events.ON_DOUBLE_CLICK, e->{
 			
-			GeographicUIContentEvent event = new GeographicUIContentEvent(UIEvent.EDIT_FORM);
+			GeographicUIEvent event = new GeographicUIEvent(UIEvent.EDIT_FORM);
 			event.setCode(node.getData().getCode());
-			EventQueues.lookup(GeographicUIContentEvent.class.getSimpleName()).publish(event);
+			EventQueues.lookup(GeographicUIEvent.class.getSimpleName()).publish(event);
 		});
 		
 		item.appendChild(row);
