@@ -37,9 +37,9 @@ public class PartyData implements Serializable
 	
 	private Set<PartyRoleData> partyRoles = new HashSet<>();
 	
-	private Set<PartyRelationshipData> relationships = new HashSet<>();
+	private Set<PartyRelationshipData> partyRelationships = new HashSet<>();
 	
-	private Set<PartyClassificationData> classifications = new HashSet<>();
+	private Set<PartyClassificationData> partyClassifications = new HashSet<>();
 	
 	public PartyData(){}
 	

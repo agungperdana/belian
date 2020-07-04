@@ -26,6 +26,10 @@ import com.kratonsolution.belian.partys.ui.address.AddressModel;
 import com.kratonsolution.belian.partys.ui.address.AddressRowRenderer;
 import com.kratonsolution.belian.partys.ui.contact.ContactModel;
 import com.kratonsolution.belian.partys.ui.contact.ContactRowRenderer;
+import com.kratonsolution.belian.partys.ui.partyclassification.PartyClassificationModel;
+import com.kratonsolution.belian.partys.ui.partyclassification.PartyClassificationRowRenderer;
+import com.kratonsolution.belian.partys.ui.partyrelationship.PartyRelationshipModel;
+import com.kratonsolution.belian.partys.ui.partyrelationship.PartyRelationshipRowRenderer;
 import com.kratonsolution.belian.partys.ui.partyrole.PartyRoleModel;
 import com.kratonsolution.belian.partys.ui.partyrole.PartyRoleRowRenderer;
 
@@ -75,8 +79,8 @@ public class PartyDetailTab extends Tabbox {
 		initAddress(partyCode, addresses);
 		initContacts(partyCode, contacts);
 		initRoles(partyCode, roles);
-		//		initRelationships(partyCode, relationships);
-		//		initClassification(partyCode, classifications);
+		initRelationships(partyCode, relationships);
+		initClassification(partyCode, classifications);
 	}
 
 	private void initAddress(@NonNull String partyCode, @NonNull Set<AddressData> set)
@@ -175,115 +179,62 @@ public class PartyDetailTab extends Tabbox {
 		getTabpanels().getChildren().get(2).appendChild(roles);
 	}
 
-	//	private void initRelationships(@NonNull String partyCode, @NonNull Set<PartyRelationshipData> set)
-	//	{
-	//		relationships.setWidth("100%");
-	//		relationships.setEmptyMessage(Labels.getLabel("message.grid.empty"));
-	//		relationships.appendChild(new Columns());
-	//		relationships.appendChild(new Rows());
-	//		relationships.getColumns().appendChild(new Column(null,null,"25px"));
-	//		relationships.getColumns().appendChild(new Column(Labels.getLabel("organization.grid.column.start"),null,"125px"));
-	//		relationships.getColumns().appendChild(new Column(Labels.getLabel("organization.grid.column.end"),null,"125px"));
-	//		relationships.getColumns().appendChild(new Column(Labels.getLabel("organization.grid.column.toparty"),null,"125px"));
-	//		relationships.getColumns().appendChild(new Column(Labels.getLabel("organization.grid.column.fromrole"),null,"125px"));
-	//		relationships.getColumns().appendChild(new Column(Labels.getLabel("organization.grid.column.torole"),null,"125px"));
-	//		relationships.getColumns().appendChild(new Column(Labels.getLabel("organization.grid.column.type"),null,"100px"));
-	//		relationships.getColumns().appendChild(new Column());
-	//		relationships.getColumns().getLastChild().setVisible(false);
-	//		relationships.setSpan("3");
-	//
-	//		Organization organization = service.findOne(RowUtils.id(row));
-	//		if(organization != null)
-	//		{
-	//			for(PartyRelationship role:organization.getRelationships())
-	//			{
-	//				Row row = new Row();
-	//				row.appendChild(Components.checkbox(false));
-	//				row.appendChild(Components.mandatoryDatebox(role.getStart()));
-	//				row.appendChild(Components.fullSpanDatebox(role.getEnd()));
-	//				row.appendChild(new PartyBox(false,true,role.getToParty()));
-	//				row.appendChild(new PartyRoleList(true, role.getFromParty(),role.getFromRole()));
-	//				row.appendChild(new PartyRoleList(true, role.getToParty(),role.getToRole()));
-	//				row.appendChild(new PartyRelationshipTypeList(true,role.getType()));
-	//				row.appendChild(new Label(role.getId()));
-	//
-	//				relationships.getRows().appendChild(row);
-	//			}
-	//		}
-	//
-	//		NRCToolbar nrc = new NRCToolbar(relationships);
-	//		nrc.getNew().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-	//		{
-	//			@Override
-	//			public void onEvent(Event arg0) throws Exception
-	//			{
-	//				PartyRoleList torole = new PartyRoleList(true, organization);
-	//
-	//				PartyBox toparty = new PartyBox(false,true);
-	//				toparty.addListSelectionListener(torole);
-	//
-	//				Row row = new Row();
-	//				row.appendChild(Components.checkbox(false));
-	//				row.appendChild(Components.mandatoryDatebox());
-	//				row.appendChild(Components.fullSpanDatebox(null));
-	//				row.appendChild(toparty);
-	//				row.appendChild(new PartyRoleList(true, organization));
-	//				row.appendChild(torole);
-	//				row.appendChild(new PartyRelationshipTypeList(true));
-	//				row.appendChild(new Label());
-	//
-	//				relationships.getRows().appendChild(row);
-	//			}
-	//		});
-	//
-	//		getTabpanels().getChildren().get(3).appendChild(nrc);
-	//		getTabpanels().getChildren().get(3).appendChild(relationships);
-	//	}
-	//
-	//	private void initClassification(@NonNull String partyCode, @NonNull Set<PartyClassificationData> set)
-	//	{
-	//		classifications.setWidth("100%");
-	//		classifications.setEmptyMessage(Labels.getLabel("message.grid.empty"));
-	//		classifications.appendChild(new Columns());
-	//		classifications.appendChild(new Rows());
-	//		classifications.getColumns().appendChild(new Column(null,null,"25px"));
-	//		classifications.getColumns().appendChild(new Column(Labels.getLabel("partyclassification.label.start"),null,"125px"));
-	//		classifications.getColumns().appendChild(new Column(Labels.getLabel("partyclassification.label.end"),null,"125px"));
-	//		classifications.getColumns().appendChild(new Column(Labels.getLabel("partyclassification.label.value"),null,"150px"));
-	//		classifications.getColumns().appendChild(new Column(Labels.getLabel("partyclassification.label.type"),null,"150px"));
-	//		classifications.setSpan("3");
-	//
-	//		set.forEach(obj->{
-	//			
-	//			Row row = new Row();
-	//			row.appendChild(Components.checkbox(false));
-	//			row.appendChild(Components.mandatoryDatebox(Date.from(obj.getStart())));
-	//			row.appendChild(Components.fullSpanDatebox(obj.getEnd()!=null?Date.from(obj.getEnd()):null));
-	//			row.appendChild(Components.mandatoryTextBox(obj.getValue()));
-	//			row.appendChild(new PartyClassificationTypeList(true,cls.getType()));
-	//			
-	//			classifications.getRows().appendChild(row);
-	//		});
-	//		
-	//		NRCToolbar nrc = new NRCToolbar(classifications);
-	//		nrc.getNew().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-	//		{
-	//			@Override
-	//			public void onEvent(Event arg0) throws Exception
-	//			{
-	//				Row row = new Row();
-	//				row.appendChild(Components.checkbox(false));
-	//				row.appendChild(Components.mandatoryDatebox());
-	//				row.appendChild(Components.fullSpanDatebox(null));
-	//				row.appendChild(Components.mandatoryTextBox(true));
-	//				row.appendChild(new PartyClassificationTypeList(true));
-	//				row.appendChild(new Label());
-	//
-	//				classifications.getRows().appendChild(row);
-	//			}
-	//		});
-	//
-	//		getTabpanels().getChildren().get(5).appendChild(nrc);
-	//		getTabpanels().getChildren().get(5).appendChild(classifications);
-	//	}
+	private void initRelationships(@NonNull String partyCode, @NonNull Set<PartyRelationshipData> set)
+	{
+		relationships.setWidth("100%");
+		relationships.setEmptyMessage(Labels.getLabel("message.grid.empty"));
+		relationships.appendChild(new Columns());
+		relationships.appendChild(new Rows());
+		relationships.setModel(PartyRelationshipModel.build(set));
+		relationships.setRowRenderer(new PartyRelationshipRowRenderer());
+		relationships.getColumns().appendChild(new Column(null,null,"25px"));
+		relationships.getColumns().appendChild(new Column(Labels.getLabel("partyrelationship.label.start"),null,"125px"));
+		relationships.getColumns().appendChild(new Column(Labels.getLabel("partyrelationship.label.end"),null,"125px"));
+		relationships.getColumns().appendChild(new Column(Labels.getLabel("partyrelationship.label.toparty"),null,"125px"));
+		relationships.getColumns().appendChild(new Column(Labels.getLabel("partyrelationship.label.type"),null,"100px"));
+		relationships.getColumns().appendChild(new Column(Labels.getLabel("partyrelationship.label.status"),null,"100px"));
+		relationships.setSpan("3");
+
+		NRCToolbar nrc = new NRCToolbar(relationships);
+		nrc.getNewData().addEventListener(Events.ON_CLICK, e->{
+
+			set.add(new PartyRelationshipData());
+			relationships.setModel(PartyRelationshipModel.build(set));
+		});
+		nrc.getRemove().addEventListener(Events.ON_CLICK, e->
+		relationships.getRows().getChildren().removeIf(row->RowUtils.isChecked((Row)row) && 
+				set.removeIf(p->p.getDataID().equals(row.getAttribute("DATAID")))));
+
+		getTabpanels().getChildren().get(3).appendChild(nrc);
+		getTabpanels().getChildren().get(3).appendChild(relationships);
+	}
+
+	private void initClassification(@NonNull String partyCode, @NonNull Set<PartyClassificationData> set)
+	{
+		classifications.setWidth("100%");
+		classifications.setEmptyMessage(Labels.getLabel("message.grid.empty"));
+		classifications.appendChild(new Columns());
+		classifications.appendChild(new Rows());
+		classifications.setModel(PartyClassificationModel.build(set));
+		classifications.setRowRenderer(new PartyClassificationRowRenderer());
+		classifications.getColumns().appendChild(new Column(null,null,"25px"));
+		classifications.getColumns().appendChild(new Column(Labels.getLabel("partyclassification.label.start"),null,"125px"));
+		classifications.getColumns().appendChild(new Column(Labels.getLabel("partyclassification.label.end"),null,"125px"));
+		classifications.getColumns().appendChild(new Column(Labels.getLabel("partyclassification.label.value"),null,"150px"));
+		classifications.getColumns().appendChild(new Column(Labels.getLabel("partyclassification.label.type"),null,"150px"));
+		classifications.setSpan("3");
+
+		NRCToolbar nrc = new NRCToolbar(classifications);
+		nrc.getNewData().addEventListener(Events.ON_CLICK, e->{
+
+			set.add(new PartyClassificationData());
+			classifications.setModel(PartyClassificationModel.build(set));
+		});
+		nrc.getRemove().addEventListener(Events.ON_CLICK, e->
+		classifications.getRows().getChildren().removeIf(row->RowUtils.isChecked((Row)row) && 
+				set.removeIf(p->p.getDataID().equals(row.getAttribute("DATAID")))));
+
+		getTabpanels().getChildren().get(4).appendChild(nrc);
+		getTabpanels().getChildren().get(4).appendChild(classifications);
+	}
 }

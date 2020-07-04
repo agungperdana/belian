@@ -42,7 +42,7 @@ public class AddressRowRenderer implements RowRenderer<AddressData> {
 		
 		row.setAttribute("DATAID", data.getDataID());
 		row.appendChild(Components.checkbox(false));
-		row.appendChild(Components.textBox(data.getAddress()));
+		row.appendChild(Components.textBox(data.getDescription()));
 		row.appendChild(Components.textBox(data.getPostal()));
 		row.appendChild(type);
 		row.appendChild(Components.checkbox(data.isActive()));

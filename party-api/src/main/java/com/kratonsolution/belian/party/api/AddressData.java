@@ -21,7 +21,7 @@ public class AddressData implements Serializable
 	
 	private final String dataID = UUID.randomUUID().toString();
 	
-	private String address;
+	private String description;
 		
 	private String postal;
 	

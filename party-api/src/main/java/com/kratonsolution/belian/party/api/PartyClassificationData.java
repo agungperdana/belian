@@ -2,6 +2,7 @@ package com.kratonsolution.belian.party.api;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.UUID;
 
 import com.kratonsolution.belian.party.api.model.PartyClassificationType;
 
@@ -19,6 +20,8 @@ public class PartyClassificationData implements Serializable
 {
 	private static final long serialVersionUID = -3738615250193814386L;
 
+	private final String dataID = UUID.randomUUID().toString();
+	
 	private Instant start;
 	
 	private Instant end;
