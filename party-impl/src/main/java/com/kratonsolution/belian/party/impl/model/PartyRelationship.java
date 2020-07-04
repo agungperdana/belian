@@ -17,7 +17,7 @@ import javax.persistence.Version;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
-import com.kratonsolution.belian.party.api.model.PartyRelationshipStatusType;
+import com.kratonsolution.belian.party.api.model.PartyRelationshipStatus;
 import com.kratonsolution.belian.party.api.model.PartyRelationshipType;
 
 import lombok.Getter;
@@ -62,7 +62,7 @@ public class PartyRelationship implements Serializable
 	@Setter
 	@Enumerated(EnumType.STRING)
 	@Column(name="status")
-	private PartyRelationshipStatusType status = PartyRelationshipStatusType.ACTIVE;
+	private PartyRelationshipStatus status = PartyRelationshipStatus.ACTIVE;
 	
 	@Version
 	private Long version;

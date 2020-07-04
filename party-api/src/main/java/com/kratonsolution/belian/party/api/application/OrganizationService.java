@@ -14,9 +14,9 @@ import lombok.NonNull;
  */
 public interface OrganizationService {
 
-	public OrganizationData add(@NonNull OrganizationCreateCommand command);
+	public OrganizationData create(@NonNull OrganizationCreateCommand command);
 
-	public OrganizationData edit(@NonNull OrganizationUpdateCommand command);
+	public OrganizationData update(@NonNull OrganizationUpdateCommand command);
 
 	public OrganizationData delete(@NonNull OrganizationDeleteCommand command);
 	

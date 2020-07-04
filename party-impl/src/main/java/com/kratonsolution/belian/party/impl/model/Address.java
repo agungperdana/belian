@@ -39,84 +39,27 @@ public class Address implements Serializable
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@Column(name="address",nullable=false)
-	private String address;
+	@Column(name="address", nullable=false)
+	private String description;
 
 	@Setter
-	@Column(name="postal",nullable=false)
+	@Column(name="postal", nullable=false)
 	private String postal;
 	
 	@Setter
-	@Column(name="status",nullable=false)
+	@Column(name="status", nullable=false)
 	private boolean active;
 	
 	@Setter
-	@Column(name="type",nullable=false)
+	@Column(name="type", nullable=false)
 	@Enumerated(EnumType.STRING)
 	private AddressType type = AddressType.OFFICE;
 
-	/**
-	 * Negara
-	 */
 	@Setter
 	@AttributeOverrides({
-		@AttributeOverride(name = "code", column = @Column(name="country_code")),
-		@AttributeOverride(name = "name", column = @Column(name="country_name"))})
-	private PartyGeographicInfo country;
-	
-	/**
-	 * Provinsi
-	 */
-	@Setter
-	@AttributeOverrides({
-		@AttributeOverride(name = "code", column = @Column(name="province_code")),
-		@AttributeOverride(name = "name", column = @Column(name="province_name"))})
-	private PartyGeographicInfo province;
-	
-	/**
-	 * Kota/kabupaten
-	 */
-	@Setter
-	@AttributeOverrides({
-		@AttributeOverride(name = "code", column = @Column(name="city_code")),
-		@AttributeOverride(name = "name", column = @Column(name="city_name"))})
-	private PartyGeographicInfo city;
-	
-	/**
-	 * Kecamatan
-	 */
-	@Setter
-	@AttributeOverrides({
-		@AttributeOverride(name = "code", column = @Column(name="district_code")),
-		@AttributeOverride(name = "name", column = @Column(name="district_name"))})
-	private PartyGeographicInfo district;
-	
-	/**
-	 * Kelurahan
-	 */
-	@Setter
-	@AttributeOverrides({
-		@AttributeOverride(name = "code", column = @Column(name="sub_district_code")),
-		@AttributeOverride(name = "name", column = @Column(name="sub_district_name"))})
-	private PartyGeographicInfo subDistrict;
-	
-	/**
-	 * RW
-	 */
-	@Setter
-	@AttributeOverrides({
-		@AttributeOverride(name = "code", column = @Column(name="rw_code")),
-		@AttributeOverride(name = "name", column = @Column(name="rw_name"))})
-	private PartyGeographicInfo rw;
-	
-	/**
-	 * RT
-	 */
-	@Setter
-	@AttributeOverrides({
-		@AttributeOverride(name = "code", column = @Column(name="rt_code")),
-		@AttributeOverride(name = "name", column = @Column(name="rt_name"))})
-	private PartyGeographicInfo rt;
+		@AttributeOverride(name = "code", column = @Column(name="location_code")),
+		@AttributeOverride(name = "name", column = @Column(name="location_name"))})
+	private PartyGeographicInfo location;
 	
 	@ManyToOne
 	@JoinColumn(name="fk_party")
@@ -128,10 +71,11 @@ public class Address implements Serializable
 	
 	Address(){}
 	
-	public Address(@NonNull Party parent, @NonNull String address, @NonNull AddressType type) {
+	public Address(@NonNull Party parent, @NonNull String descriotion, @NonNull AddressType type, @NonNull PartyGeographicInfo location) {
 		
 		this.party = parent;
-		this.address = address;
+		this.description = descriotion;
 		this.type = type;
+		this.location = location;
 	}
 }

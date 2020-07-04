@@ -10,8 +10,8 @@ apply plugin: 'io.spring.dependency-management'
 dependencies {
 
 	compile project(':common-spring')
-	compile project(':party-api')
 	compile project(':geographic-api')
+	compile project(':party-api')
 	
 	implementation 'com.google.guava:guava:28.2-jre'
 	

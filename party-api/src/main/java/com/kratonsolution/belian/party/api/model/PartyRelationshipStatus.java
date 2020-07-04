@@ -5,7 +5,7 @@ package com.kratonsolution.belian.party.api.model;
  * @email agung.dodi.perdana@gmail.com
  * @since 1.0
  */
-public enum PartyRelationshipStatusType
+public enum PartyRelationshipStatus
 {
 	ACTIVE("Aktif","Active"),
 	INACTIVE("Tidak Aktif","Inactive"),
@@ -16,7 +16,7 @@ public enum PartyRelationshipStatusType
 
 	private String enUS;
 
-	private PartyRelationshipStatusType(String inID,String enUS)
+	private PartyRelationshipStatus(String inID,String enUS)
 	{
 		this.inID = inID;
 		this.enUS = enUS;

@@ -8,7 +8,6 @@ import org.zkoss.zk.ui.event.EventQueues;
 
 import com.kratonsolution.belian.common.ui.AbstractWindow;
 import com.kratonsolution.belian.common.ui.event.UIEvent;
-import com.kratonsolution.belian.common.ui.event.GeographicUIContentEvent;
 
 
 /**
@@ -28,9 +27,9 @@ public class GeographicWindow extends AbstractWindow
 		} catch (Exception e) {}
 
 		caption.setLabel(Labels.getLabel("geographic.label.caption"));
-		EventQueues.lookup(GeographicUIContentEvent.class.getSimpleName()).subscribe(e->{
+		EventQueues.lookup(GeographicUIEvent.class.getSimpleName()).subscribe(e->{
 			
-			GeographicUIContentEvent event = (GeographicUIContentEvent) e;
+			GeographicUIEvent event = (GeographicUIEvent) e;
 			
 			clearContent();
 

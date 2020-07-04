@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.kratonsolution.belian.geographic.api.GeographicData;
+import com.kratonsolution.belian.geographic.api.GeographicType;
 
 import lombok.NonNull;
 
@@ -33,4 +34,6 @@ public interface GeographicService {
     int count();
     
     int count(@NonNull GeographicFilter filter);
+    
+    List<GeographicData> getAllByType(@NonNull GeographicType type);
 }

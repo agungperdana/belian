@@ -9,7 +9,6 @@ import org.zkoss.zul.Treecol;
 import org.zkoss.zul.Treecols;
 
 import com.kratonsolution.belian.common.ui.TreeContent;
-import com.kratonsolution.belian.common.ui.event.GeographicUIContentEvent;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.Springs;
 import com.kratonsolution.belian.geographic.api.application.GeographicDeleteCommand;
@@ -42,7 +41,7 @@ public class GeographicContent extends TreeContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				FlowHelper.next(GeographicUIContentEvent.toGrid());
+				FlowHelper.next(GeographicUIEvent.toGrid());
 			}
 		});
 
@@ -50,7 +49,7 @@ public class GeographicContent extends TreeContent
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				FlowHelper.next(GeographicUIContentEvent.newForm());
+				FlowHelper.next(GeographicUIEvent.newForm());
 			}
 		});
 
@@ -89,7 +88,7 @@ public class GeographicContent extends TreeContent
 							command.setCode(node.getData().getCode());
 							
 							Springs.get(GeographicService.class).delete(command);
-							FlowHelper.next(GeographicUIContentEvent.toGrid());
+							FlowHelper.next(GeographicUIEvent.toGrid());
 						});
 					}
 				});

@@ -13,6 +13,8 @@ import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -24,11 +26,13 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
+import com.kratonsolution.belian.geographic.api.GeographicData;
 import com.kratonsolution.belian.party.api.model.AddressType;
 import com.kratonsolution.belian.party.api.model.ContactType;
 import com.kratonsolution.belian.party.api.model.PartyClassificationType;
 import com.kratonsolution.belian.party.api.model.PartyRelationshipType;
 import com.kratonsolution.belian.party.api.model.PartyRoleType;
+import com.kratonsolution.belian.party.api.model.PartyType;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -59,6 +63,11 @@ public class Party implements Serializable
 	@Setter
 	@Column(name="name")
 	private String name;
+	
+	@Getter
+	@Enumerated(EnumType.STRING)
+	@Column(name = "type")
+	private PartyType type;
 
 	@Getter
 	@Setter
@@ -90,39 +99,43 @@ public class Party implements Serializable
 	private Set<PartyRole> partyRoles = new HashSet<>();
 
 	@OneToMany(mappedBy="fromParty",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
-	private Set<PartyRelationship> relationships = new HashSet<>();
+	private Set<PartyRelationship> partyRelationships = new HashSet<>();
 
 	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
-	private Set<PartyClassification> classifications = new HashSet<>();
+	private Set<PartyClassification> partyClassifications = new HashSet<>();
 
 	Party(){}
 
-	public Party(@NonNull String code, @NonNull String name)
+	public Party(@NonNull String code, @NonNull String name, @NonNull PartyType type)
 	{
 		this.code = code;
 		this.name = name;
+		this.type = type;
 	}
 
-	public Address createAddress(@NonNull String address, @NonNull AddressType type) {
+	public Address createAddress(@NonNull String description, @NonNull AddressType type, GeographicData location) {
 
 		Optional<Address> opt = this.addresses.stream()
-				.filter(p->p.getAddress().equals(address)&&p.getType().equals(type)).findAny();
+				.filter(p->p.getDescription().equals(description)&&p.getType().equals(type)).findAny();
 
 		Preconditions.checkState(!opt.isPresent(), "Address already exist");
 
-		Address obj = new Address(this, address, type);
+		Address obj = new Address(this, description, type, new PartyGeographicInfo(location.getCode(), location.getName()));
 		this.addresses.add(obj);
 
 		return obj;
 	}
 
-	public Optional<Address> updateAddress(@NonNull String address, @NonNull AddressType type) {
+	public Address updateAddress(@NonNull String description, @NonNull AddressType type) {
 
-		return this.addresses.stream().filter(p->p.getAddress().equals(address)&&p.getType().equals(type)).findAny();
+		Optional<Address> opt = this.addresses.stream().filter(p->p.getDescription().equals(description)&&p.getType().equals(type)).findAny();
+		Preconditions.checkState(opt.isPresent(), "Address not found");
+
+		return opt.get();
 	}
 
-	public void removeAddress(@NonNull String address, @NonNull AddressType type) {
-		this.addresses.removeIf(p->p.getAddress().equals(address)&&p.getType().equals(type));
+	public void removeAddress(@NonNull String description, @NonNull AddressType type) {
+		this.addresses.removeIf(p->p.getDescription().equals(description)&&p.getType().equals(type));
 	}
 
 	/**
@@ -218,7 +231,7 @@ public class Party implements Serializable
 	
 	public PartyRelationship createPartyRelationship(@NonNull Party toParty, @NonNull Instant start, @NonNull PartyRelationshipType type) {
 
-		Optional<PartyRelationship> opt = this.relationships.stream()
+		Optional<PartyRelationship> opt = this.partyRelationships.stream()
 				.filter(p->p.getStart().equals(start) 
 						&& p.getType().equals(type)
 						&& p.getToParty().getId().equals(toParty.getId())).findAny();
@@ -226,14 +239,14 @@ public class Party implements Serializable
 		Preconditions.checkState(!opt.isPresent(), "Party Relationship already exist");
 
 		PartyRelationship obj = new PartyRelationship(this, toParty, start, type);
-		this.relationships.add(obj);
+		this.partyRelationships.add(obj);
 
 		return obj;
 	}
 
 	public void updatePartyRelationship(@NonNull Party toParty, @NonNull Instant start, @NonNull Instant end, @NonNull PartyRelationshipType type) {
 
-		Optional<PartyRelationship> opt = this.relationships.stream()
+		Optional<PartyRelationship> opt = this.partyRelationships.stream()
 									.filter(p->p.getStart().equals(start) 
 											&& p.getType().equals(type)
 											&& p.getToParty().getId().equals(toParty.getId()))
@@ -247,13 +260,13 @@ public class Party implements Serializable
 	public void removePartyRelationship(@NonNull Party toParty, @NonNull Instant start, @NonNull Optional<Instant> end, @NonNull PartyRelationshipType type) {
 		
 		if(end.isPresent()) {
-			this.relationships.removeIf(p-> p.getStart().equals(start) 
+			this.partyRelationships.removeIf(p-> p.getStart().equals(start) 
 					&& p.getEnd().equals(end.get()) 
 					&& p.getType().equals(type)
 					&& p.getToParty().getId().equals(toParty.getId()));
 		}
 		else {
-			this.relationships.removeIf(p-> p.getStart().equals(start) 
+			this.partyRelationships.removeIf(p-> p.getStart().equals(start) 
 												&& p.getType().equals(type)
 												&& p.getToParty().getId().equals(toParty.getId()));
 		}
@@ -265,12 +278,12 @@ public class Party implements Serializable
 	 * @return new Set containing PartyRelationship
 	 */
 	public Set<PartyRelationship> getPartyRelationships() {
-		return new HashSet<>(this.relationships);
+		return new HashSet<>(this.partyRelationships);
 	}
 	
 	public PartyClassification createPartyClassification(@NonNull Instant start, @NonNull String value, @NonNull PartyClassificationType type) {
 
-		Optional<PartyClassification> opt = this.classifications.stream()
+		Optional<PartyClassification> opt = this.partyClassifications.stream()
 				.filter(p->p.getStart().equals(start) 
 						&& p.getType().equals(type)
 						&& p.getValue().equals(value)).findAny();
@@ -278,14 +291,14 @@ public class Party implements Serializable
 		Preconditions.checkState(!opt.isPresent(), "Party Classification already exist");
 
 		PartyClassification obj = new PartyClassification(this, start, value, type);
-		this.classifications.add(obj);
+		this.partyClassifications.add(obj);
 
 		return obj;
 	}
 
 	public void updatePartyClassification(@NonNull Instant start, @NonNull Instant end, @NonNull String value, @NonNull PartyClassificationType type) {
 
-		Optional<PartyClassification> opt = this.classifications.stream()
+		Optional<PartyClassification> opt = this.partyClassifications.stream()
 									.filter(p->p.getStart().equals(start) 
 											&& p.getType().equals(type)
 											&& p.getValue().equals(value))
@@ -299,13 +312,13 @@ public class Party implements Serializable
 	public void removePartyClassification(@NonNull Instant start, @NonNull Optional<Instant> end, @NonNull String value, @NonNull PartyClassificationType type) {
 		
 		if(end.isPresent()) {
-			this.classifications.removeIf(p-> p.getStart().equals(start) 
+			this.partyClassifications.removeIf(p-> p.getStart().equals(start) 
 					&& p.getEnd().equals(end.get()) 
 					&& p.getType().equals(type)
 					&& p.getValue().equals(value));
 		}
 		else {
-			this.classifications.removeIf(p-> p.getStart().equals(start) 
+			this.partyClassifications.removeIf(p-> p.getStart().equals(start) 
 											&& p.getType().equals(type)
 											&& p.getValue().equals(value));
 		}
@@ -316,8 +329,8 @@ public class Party implements Serializable
 	 * calling getPartyClassification().add() will not add newly created PartyClassification
 	 * @return new Set containing PartyClassification
 	 */
-	public Set<PartyClassification> getPartyClassification() {
-		return new HashSet<>(this.classifications);
+	public Set<PartyClassification> getPartyClassifications() {
+		return new HashSet<>(this.partyClassifications);
 	}
 
 	@Override

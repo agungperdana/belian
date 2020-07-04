@@ -26,6 +26,7 @@ import com.google.common.base.Preconditions;
 import com.kratonsolution.belian.common.model.Auditable;
 import com.kratonsolution.belian.party.api.model.Gender;
 import com.kratonsolution.belian.party.api.model.MaritalStatusType;
+import com.kratonsolution.belian.party.api.model.PartyType;
 import com.kratonsolution.belian.party.api.model.PhysicalCharacteristicType;
 
 import lombok.Getter;
@@ -73,7 +74,7 @@ public class Person extends Auditable implements Serializable
 	
 	public Person(@NonNull String code, @NonNull String name){
 		
-		this.party = new Party(code, name);
+		this.party = new Party(code, name, PartyType.PERSON);
 	}
 	
 	public MaritalStatus createMaritalStatus(@NonNull Instant start, Instant end, @NonNull MaritalStatusType type) {
