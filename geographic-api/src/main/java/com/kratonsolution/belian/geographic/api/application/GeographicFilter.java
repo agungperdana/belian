@@ -1,5 +1,6 @@
 package com.kratonsolution.belian.geographic.api.application;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 import com.kratonsolution.belian.geographic.api.GeographicType;
@@ -14,8 +15,10 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class GeographicFilter {
+public class GeographicFilter implements Serializable {
     
+	private static final long serialVersionUID = -3420130689050937320L;
+
 	private Optional<String> code = Optional.empty();
 	
 	private Optional<String> name = Optional.empty();

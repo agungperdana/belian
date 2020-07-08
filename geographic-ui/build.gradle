@@ -14,12 +14,17 @@ repositories {
 dependencies {
 
 	compile project(':common-ui')
-	compile project(':geographic-impl')
+	compile project(':geographic-api')
+	compile project(':geographic-connector')
 	
 	implementation 'org.jasypt:jasypt:1.9.2'
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.projectlombok:lombok:1.18.10'
 	annotationProcessor 'org.projectlombok:lombok:1.18.10'
+	
+	implementation enforcedPlatform('org.apache.camel.springboot:camel-spring-boot-dependencies:3.4.0')
+	implementation 'org.apache.camel.springboot:camel-spring-boot-starter'
+	implementation 'org.apache.camel.springboot:camel-activemq-starter'
 		
 	def withoutSlf4J = { exclude group: "org.slf4j", module: "slf4j-jdk14" }
 	implementation 'org.zkoss.zk:zkplus:9.0.0', withoutSlf4J

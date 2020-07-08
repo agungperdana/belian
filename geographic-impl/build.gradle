@@ -23,6 +23,9 @@ dependencies {
 
 	implementation 'org.mapstruct:mapstruct:1.3.1.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.3.1.Final'
+	
+	implementation enforcedPlatform('org.apache.camel.springboot:camel-spring-boot-dependencies:3.4.0')
+	implementation 'org.apache.camel.springboot:camel-spring-boot-starter'
 }
 
 tasks.withType(JavaCompile) {

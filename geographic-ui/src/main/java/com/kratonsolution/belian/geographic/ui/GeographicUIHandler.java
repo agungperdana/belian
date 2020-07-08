@@ -20,7 +20,7 @@ public class GeographicUIHandler {
 	private GeographicWindow window = new GeographicWindow();
 	
 	public GeographicUIHandler() {
-		
+				
 		window.appendChild(new GeographicContent());
 		window.setPage(UIHelper.getPage());
 		window.doOverlapped();

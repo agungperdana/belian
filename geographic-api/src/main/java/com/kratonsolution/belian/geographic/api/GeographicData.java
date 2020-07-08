@@ -1,5 +1,6 @@
 package com.kratonsolution.belian.geographic.api;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +15,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class GeographicData {
+public class GeographicData implements Serializable {
+
+	private static final long serialVersionUID = 5386190837759790122L;
 
 	@NonNull
 	private String code;

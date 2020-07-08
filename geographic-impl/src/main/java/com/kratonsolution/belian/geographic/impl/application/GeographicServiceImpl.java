@@ -155,6 +155,7 @@ public class GeographicServiceImpl implements GeographicService {
 	@Secured("ROLE_GEOGRAPHIC_READ")
 	public int count() {
 
+		log.info("Count {}", repo.count());
 		return (int)repo.count();
 	}
 

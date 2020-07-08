@@ -1,5 +1,7 @@
 package com.kratonsolution.belian.geographic.api.application;
 
+import java.io.Serializable;
+
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -11,7 +13,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class GeographicDeleteCommand {
+public class GeographicDeleteCommand implements Serializable {
+
+	private static final long serialVersionUID = 972560748927960037L;
 
 	@NonNull
 	private String code;
