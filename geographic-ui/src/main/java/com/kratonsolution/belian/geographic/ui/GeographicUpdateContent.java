@@ -1,7 +1,5 @@
 package com.kratonsolution.belian.geographic.ui;
 
-import java.util.Optional;
-
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
@@ -84,9 +82,9 @@ public class GeographicUpdateContent extends AbstractForm
 			
 				GeographicUpdateCommand command = new GeographicUpdateCommand();
 				command.setCode(code.getText());
-				command.setName(Optional.ofNullable(name.getText()));
-				command.setNote(Optional.ofNullable(note.getText()));
-				command.setType(Optional.ofNullable(types.getSelectedItem().getValue()));
+				command.setName(name.getText());
+				command.setNote(note.getText());
+				command.setType(types.getSelectedItem()!=null?types.getSelectedItem().getValue():null);
 				
 				service.update(command);
 				
@@ -98,14 +96,14 @@ public class GeographicUpdateContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		Optional<GeographicData> opt = service.getByCode(this._code);
-		Preconditions.checkState(opt.isPresent(), "Geographic with code {} not exist", this._code);
+		GeographicData opt = service.getByCode(this._code);
+		Preconditions.checkState(opt != null, "Geographic does not exist");
 		
 		service.getAllGeographics().forEach(parent -> {
 			
 			Listitem item = new Listitem(parent.getName(), parent.getCode());
 			parents.appendChild(item);
-			if(!Strings.isNullOrEmpty(opt.get().getParent()) && opt.get().getParent().equals(parent.getParent())) {
+			if(!Strings.isNullOrEmpty(opt.getParent()) && opt.getParent().equals(parent.getParent())) {
 				parents.setSelectedItem(item);
 			}
 		});
@@ -114,14 +112,14 @@ public class GeographicUpdateContent extends AbstractForm
 			
 			Listitem item = new Listitem(type.name(), type);
 			types.appendChild(item);
-			if(opt.get().getType().equals(type)) {
+			if(opt.getType().equals(type)) {
 				types.setSelectedItem(item);
 			}
 		}
 			
-		code.setText(opt.get().getCode());
-		name.setText(opt.get().getName());
-		note.setText(opt.get().getNote());
+		code.setText(opt.getCode());
+		name.setText(opt.getName());
+		note.setText(opt.getNote());
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"100px"));

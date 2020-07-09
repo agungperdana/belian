@@ -1,7 +1,6 @@
 package com.kratonsolution.belian.geographic.api.application;
 
 import java.io.Serializable;
-import java.util.Optional;
 
 import com.kratonsolution.belian.geographic.api.GeographicType;
 
@@ -23,9 +22,9 @@ public class GeographicUpdateCommand implements Serializable {
 	@NonNull
 	private String code;
 
-	private Optional<String> name = Optional.empty();
+	private String name;
 
-	private Optional<String> note = Optional.empty();
+	private String note;
 
-	private Optional<GeographicType> type = Optional.empty();
+	private GeographicType type;
 }

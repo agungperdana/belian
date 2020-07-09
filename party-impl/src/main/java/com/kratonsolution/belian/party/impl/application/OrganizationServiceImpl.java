@@ -61,9 +61,9 @@ public class OrganizationServiceImpl implements OrganizationService
 			organization.getParty().setBirthDate(command.getBirthDate().get());
 		}
 
-		if(command.getBirthPlace().isPresent() && geoService.getByCode(command.getBirthPlace().get()).isPresent()) {
+		if(command.getBirthPlace().isPresent() && geoService.getByCode(command.getBirthPlace().get()) != null) {
 
-			GeographicData geo = geoService.getByCode(command.getBirthPlace().get()).get();
+			GeographicData geo = geoService.getByCode(command.getBirthPlace().get());
 			organization.getParty().setBirthPlace(new PartyGeographicInfo(geo.getCode(), geo.getName()));
 		}
 
@@ -83,9 +83,9 @@ public class OrganizationServiceImpl implements OrganizationService
 			opt.get().getParty().setBirthDate(command.getBirthDate().get());
 		}
 
-		if(command.getBirthPlace().isPresent() && geoService.getByCode(command.getBirthPlace().get()).isPresent()) {
+		if(command.getBirthPlace().isPresent() && geoService.getByCode(command.getBirthPlace().get()) != null) {
 			
-			GeographicData geo = geoService.getByCode(command.getBirthPlace().get()).get();
+			GeographicData geo = geoService.getByCode(command.getBirthPlace().get());
 			opt.get().getParty().setBirthPlace(new PartyGeographicInfo(geo.getCode(), geo.getName()));
 		}
 

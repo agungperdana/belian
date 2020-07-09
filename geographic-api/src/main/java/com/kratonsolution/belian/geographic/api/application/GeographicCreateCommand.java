@@ -1,7 +1,6 @@
 package com.kratonsolution.belian.geographic.api.application;
 
 import java.io.Serializable;
-import java.util.Optional;
 
 import com.kratonsolution.belian.geographic.api.GeographicType;
 
@@ -31,5 +30,5 @@ public class GeographicCreateCommand implements Serializable {
 	@NonNull
 	private GeographicType type;
 
-	private Optional<String> parent = Optional.ofNullable(null);
+	private String parent;
 }

@@ -1,7 +1,6 @@
 package com.kratonsolution.belian.geographic.api.application;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.kratonsolution.belian.geographic.api.GeographicData;
 import com.kratonsolution.belian.geographic.api.GeographicType;
@@ -21,7 +20,7 @@ public interface GeographicService {
     
     GeographicData delete(@NonNull GeographicDeleteCommand command);
 
-    Optional<GeographicData> getByCode(@NonNull String code);
+    GeographicData getByCode(@NonNull String code);
     
     List<GeographicData> getAllGeographics();
     
@@ -31,9 +30,9 @@ public interface GeographicService {
     
     List<GeographicData> getAllGeographics(@NonNull GeographicFilter filter, int page, int size);
     
+    List<GeographicData> getAllByType(@NonNull GeographicType type);
+    
     int count();
     
     int count(@NonNull GeographicFilter filter);
-    
-    List<GeographicData> getAllByType(@NonNull GeographicType type);
 }

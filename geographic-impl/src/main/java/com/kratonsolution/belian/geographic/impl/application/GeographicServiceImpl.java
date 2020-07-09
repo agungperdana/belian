@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.spring.SpecificationBuilder;
 import com.kratonsolution.belian.common.spring.SpecificationBuilder.Operator;
 import com.kratonsolution.belian.geographic.api.GeographicData;
@@ -44,10 +45,10 @@ public class GeographicServiceImpl implements GeographicService {
 
 		Geographic geographic = null;
 
-		if(command.getParent().isPresent()) {
+		if(!Strings.isNullOrEmpty(command.getParent())) {
 
-			Optional<Geographic> opt = repo.findOneByCode(command.getParent().get());
-			Preconditions.checkState(opt.isPresent(), "Parent with code {} not exist", command.getParent().get());
+			Optional<Geographic> opt = repo.findOneByCode(command.getParent());
+			Preconditions.checkState(opt.isPresent(), "Parent geographic does not exist");
 			geographic = new Geographic(opt.get(), command.getCode(), command.getName(), command.getType());
 		}
 		else {
@@ -68,23 +69,22 @@ public class GeographicServiceImpl implements GeographicService {
 	public GeographicData update(GeographicUpdateCommand command) {
 
 		Optional<Geographic> opt = repo.findOneByCode(command.getCode());
-		Preconditions.checkState(opt.isPresent(), "Geographic with code [%s] not exist", command.getCode());
+		Preconditions.checkState(opt.isPresent(), "Geographic does not exist");
 
-		if(command.getName().isPresent()) {
+		if(!Strings.isNullOrEmpty(command.getName())) {
 
-			opt.get().setName(command.getName().get());
+			opt.get().setName(command.getName());
 		}
 
-		if(command.getNote().isPresent()) {
-			opt.get().setNote(command.getNote().get());
+		if(!Strings.isNullOrEmpty(command.getNote())) {
+			opt.get().setNote(command.getNote());
 		}
 
-		if(command.getType().isPresent()) {
-			opt.get().setType(command.getType().get());
+		if(command.getType() != null) {
+			opt.get().setType(command.getType());
 		}
 
 		repo.save(opt.get());
-
 		log.info("Updating Geographic {}", opt.get());
 
 		return GeographicMapper.INSTANCE.toData(opt.get());
@@ -94,19 +94,19 @@ public class GeographicServiceImpl implements GeographicService {
 	public GeographicData delete(GeographicDeleteCommand command) {
 
 		Optional<Geographic> opt = repo.findOneByCode(command.getCode());
-		Preconditions.checkState(opt.isPresent(), "Geographic with code [%s] not exist", command.getCode());
+		if(opt.isPresent()) {
+			
+			repo.delete(opt.get());
+			log.info("Deleting Geographic {}", opt.get());
+		}
 
-		repo.delete(opt.get());
-
-		log.info("Deleting Geographic {}", opt.get());
-
-		return GeographicMapper.INSTANCE.toData(opt.get());
+		return GeographicMapper.INSTANCE.toData(opt.orElse(null));
 	}
 
 	@Secured("ROLE_GEOGRAPHIC_READ")
-	public Optional<GeographicData> getByCode(String code) {
+	public GeographicData getByCode(String code) {
 
-		return Optional.ofNullable(GeographicMapper.INSTANCE.toData(repo.findOneByCode(code).orElse(null)));
+		return GeographicMapper.INSTANCE.toData(repo.findOneByCode(code).orElse(null));
 	}
 
 	@Secured("ROLE_GEOGRAPHIC_READ")

@@ -1,7 +1,6 @@
 package com.kratonsolution.belian.geographic.connector;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.apache.camel.ProducerTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +45,8 @@ public class GeographicServiceProxy implements GeographicService {
 	}
 
 	@Override
-	public Optional<GeographicData> getByCode(String code) {
-		return producer.requestBody(GeographicRouteName.BY_CODE, code, Optional.class);
+	public GeographicData getByCode(String code) {
+		return producer.requestBody(GeographicRouteName.BY_CODE, code, GeographicData.class);
 	}
 
 	@Override

@@ -1,7 +1,5 @@
 package com.kratonsolution.belian.geographic.ui;
 
-import java.util.Optional;
-
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
@@ -80,7 +78,7 @@ public class GeographicFormContent extends AbstractForm
 				command.setName(name.getText());
 				command.setNote(note.getText());
 				command.setType(types.getSelectedItem().getValue());
-				command.setParent(Optional.ofNullable(parents.getSelectedItem()!=null?parents.getSelectedItem().getValue():null));
+				command.setParent(parents.getSelectedItem()!=null?parents.getSelectedItem().getValue():null);
 				
 				service.create(command);
 				
