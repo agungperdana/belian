@@ -138,9 +138,9 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
         return data;
     }
     
-    public Optional<RoleData> getByCode(String code) {
+    public RoleData getByCode(String code) {
         
-        return Optional.ofNullable(RoleMapper.INSTANCE.toData(roleRepo.findOneByCode(code).orElse(null)));
+        return RoleMapper.INSTANCE.toData(roleRepo.findOneByCode(code).orElse(null));
     }
     
     @Secured({"ROLE_SCR-ROLE_READ"})

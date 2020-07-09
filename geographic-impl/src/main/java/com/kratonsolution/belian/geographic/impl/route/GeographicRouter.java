@@ -6,7 +6,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kratonsolution.belian.common.spring.IntegrationRouter;
+import com.kratonsolution.belian.common.integration.IntegrationRouter;
 import com.kratonsolution.belian.geographic.api.GeographicRouteName;
 import com.kratonsolution.belian.geographic.api.GeographicType;
 import com.kratonsolution.belian.geographic.api.application.GeographicCreateCommand;

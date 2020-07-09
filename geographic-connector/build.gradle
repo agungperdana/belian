@@ -7,10 +7,6 @@ plugins {
 dependencies {
 
 	compile project(':geographic-api')
-		
-	implementation enforcedPlatform('org.apache.camel.springboot:camel-spring-boot-dependencies:3.4.0')
-	implementation 'org.apache.camel.springboot:camel-spring-boot-starter'
-	implementation 'org.apache.camel.springboot:camel-activemq-starter'
 }
 
 jar {

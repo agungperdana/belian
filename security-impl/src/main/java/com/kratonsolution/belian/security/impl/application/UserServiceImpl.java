@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService
     private StrongPasswordEncryptor enc = new StrongPasswordEncryptor();
     
     @Secured({"ROLE_SCR-USR_ADD"})
-    public Optional<UserData> create(@NonNull CreateUserCommand command) {
+    public UserData create(@NonNull CreateUserCommand command) {
         
         User user = new User(command.getName(), command.getEmail(),
         						enc.encryptPassword(command.getPassword()), 
@@ -55,11 +55,11 @@ public class UserServiceImpl implements UserService
         
         log.info("Saving new User {}", user);
         
-        return Optional.ofNullable(UserMapper.INSTANCE.toData(user));
+        return UserMapper.INSTANCE.toData(user);
     }
     
     @Secured({"ROLE_SCR-USR_UPDATE"})
-    public Optional<UserData> update(@NonNull UpdateUserCommand command) {
+    public UserData update(@NonNull UpdateUserCommand command) {
         
         Optional<User> userOpt = repo.findOneByName(command.getName());
         
@@ -73,11 +73,11 @@ public class UserServiceImpl implements UserService
         
         log.info("Updating user {}", userOpt.get());
         
-        return Optional.ofNullable(UserMapper.INSTANCE.toData(userOpt.get()));
+        return UserMapper.INSTANCE.toData(userOpt.get());
     }
     
     @Secured({"ROLE_SCR-USR_DELETE"})
-    public Optional<UserData> delete(@NonNull DeleteUserCommand command) {
+    public UserData delete(@NonNull DeleteUserCommand command) {
         
         Optional<User> userOpt = repo.findOneByName(command.getName());
         
@@ -87,11 +87,11 @@ public class UserServiceImpl implements UserService
         
         log.info("Deleting user {}", userOpt.get());
         
-        return Optional.ofNullable(UserMapper.INSTANCE.toData(userOpt.get()));
+        return UserMapper.INSTANCE.toData(userOpt.get());
     }
     
     @Secured({"ROLE_SCR-USR_UPDATE"})
-    public Optional<UserData> changePassword(@NonNull ChangePasswordCommand command) {
+    public UserData changePassword(@NonNull ChangePasswordCommand command) {
         
         Optional<User> userOpt = repo.findOneByName(command.getName());
         
@@ -102,12 +102,12 @@ public class UserServiceImpl implements UserService
         
         log.debug("User {} changed password", userOpt.get());
         
-        return Optional.ofNullable(UserMapper.INSTANCE.toData(userOpt.get()));
+        return UserMapper.INSTANCE.toData(userOpt.get());
     }
     
-    public Optional<UserData> getByName(@NonNull String name) {
+    public UserData getByName(@NonNull String name) {
         
-        return Optional.ofNullable(UserMapper.INSTANCE.toData(repo.findOneByName(name).orElse(null)));
+        return UserMapper.INSTANCE.toData(repo.findOneByName(name).orElse(null));
     }
     
     @Secured({"ROLE_SCR-USR_READ"})
@@ -144,13 +144,13 @@ public class UserServiceImpl implements UserService
         return repo.count("%"+filter.getKey()+"%").intValue();
     }
 
-    public Optional<UserData> getByEmail(@NonNull String email) {
+    public UserData getByEmail(@NonNull String email) {
 
-        return Optional.ofNullable(UserMapper.INSTANCE.toData(repo.findOneByEmail(email).orElse(null)));
+        return UserMapper.INSTANCE.toData(repo.findOneByEmail(email).orElse(null));
     }
 
     @Secured({"ROLE_SCR-USR_UPDATE"})
-	public Optional<UserData> addNewUserRole(@NonNull RegisterNewUserRoleCommand command) {
+	public UserData addNewUserRole(@NonNull RegisterNewUserRoleCommand command) {
 		
 		Optional<User> opt = repo.findOneByName(command.getUserName());
 		Preconditions.checkState(opt.isPresent(), "User with name/email {} does not exist", command.getUserName());
@@ -158,11 +158,11 @@ public class UserServiceImpl implements UserService
 
 		repo.save(opt.get());
 		
-		return Optional.ofNullable(UserMapper.INSTANCE.toData(opt.get()));
+		return UserMapper.INSTANCE.toData(opt.get());
 	}
 
     @Secured({"ROLE_SCR-USR_UPDATE"})
-	public Optional<UserData> updateUserRole(@NonNull UpdateUserRoleCommand command) {
+	public UserData updateUserRole(@NonNull UpdateUserRoleCommand command) {
 
 		Optional<User> opt = repo.findOneByName(command.getUserName());
 		Preconditions.checkState(opt.isPresent(), "User with name/email {} does not exist", command.getUserName());
@@ -170,11 +170,11 @@ public class UserServiceImpl implements UserService
 		opt.get().updateRole(command.getRoleCode(), command.getRoleName(), command.getEnabled());
 		repo.save(opt.get());
 		
-		return Optional.ofNullable(UserMapper.INSTANCE.toData(opt.get()));
+		return UserMapper.INSTANCE.toData(opt.get());
 	}
 
     @Secured({"ROLE_SCR-USR_UPDATE"})
-	public Optional<UserData> deleteUserRole(@NonNull DeleteUserRoleCommand command) {
+	public UserData deleteUserRole(@NonNull DeleteUserRoleCommand command) {
 
 		Optional<User> opt = repo.findOneByName(command.getUserName());
 		Preconditions.checkState(opt.isPresent(), "User with name/email {} does not exist", command.getUserName());
@@ -183,6 +183,6 @@ public class UserServiceImpl implements UserService
 		
 		repo.save(opt.get());
 		
-		return Optional.ofNullable(UserMapper.INSTANCE.toData(opt.get()));
+		return UserMapper.INSTANCE.toData(opt.get());
 	}
 }

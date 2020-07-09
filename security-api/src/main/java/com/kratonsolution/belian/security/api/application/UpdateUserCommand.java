@@ -1,5 +1,6 @@
 package com.kratonsolution.belian.security.api.application;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 import com.kratonsolution.belian.security.api.UserRoleData;
@@ -14,9 +15,11 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class UpdateUserCommand {
+public class UpdateUserCommand implements Serializable {
     
-    @NonNull
+    private static final long serialVersionUID = -2385236525510827913L;
+
+	@NonNull
     private String name;
         
     @NonNull

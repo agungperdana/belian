@@ -1,5 +1,7 @@
 package com.kratonsolution.belian.security.api.application;
 
+import java.io.Serializable;
+
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -10,8 +12,10 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class RoleDeleteCommand {
+public class RoleDeleteCommand implements Serializable {
     
-    @NonNull
+    private static final long serialVersionUID = 6498906019136983477L;
+    
+	@NonNull
     private String code;    
 }

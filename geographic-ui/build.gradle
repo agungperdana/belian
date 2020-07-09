@@ -14,7 +14,6 @@ repositories {
 dependencies {
 
 	compile project(':common-ui')
-	compile project(':geographic-api')
 	compile project(':geographic-connector')
 	
 	implementation 'org.jasypt:jasypt:1.9.2'

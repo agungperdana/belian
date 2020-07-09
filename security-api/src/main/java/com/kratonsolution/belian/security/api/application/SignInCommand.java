@@ -1,5 +1,7 @@
 package com.kratonsolution.belian.security.api.application;
 
+import java.io.Serializable;
+
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -10,9 +12,11 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class SignInCommand {
+public class SignInCommand implements Serializable {
     
-    @NonNull
+    private static final long serialVersionUID = 7494046782829828087L;
+
+	@NonNull
     private String name;
     
     @NonNull

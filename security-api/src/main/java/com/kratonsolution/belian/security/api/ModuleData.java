@@ -1,5 +1,7 @@
 package com.kratonsolution.belian.security.api;
 
+import java.io.Serializable;
+
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -11,8 +13,10 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class ModuleData {
+public class ModuleData implements Serializable {
     
+	private static final long serialVersionUID = -1510690541332344917L;
+
 	@NonNull
     private String code;
     

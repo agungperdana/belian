@@ -1,7 +1,6 @@
 package com.kratonsolution.belian.security.api.application;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.kratonsolution.belian.security.api.UserData;
 import com.kratonsolution.belian.security.api.UserFilter;
@@ -15,17 +14,17 @@ import lombok.NonNull;
  */
 public interface UserService {
     
-    public Optional<UserData> create(@NonNull CreateUserCommand command);
+    public UserData create(@NonNull CreateUserCommand command);
     
-    public Optional<UserData> update(@NonNull UpdateUserCommand command);
+    public UserData update(@NonNull UpdateUserCommand command);
     
-    public Optional<UserData> delete(@NonNull DeleteUserCommand command);
+    public UserData delete(@NonNull DeleteUserCommand command);
     
-    public Optional<UserData> changePassword(@NonNull ChangePasswordCommand command);
+    public UserData changePassword(@NonNull ChangePasswordCommand command);
     
-    public Optional<UserData> getByName(@NonNull String name);
+    public UserData getByName(@NonNull String name);
     
-    public Optional<UserData> getByEmail(@NonNull String email);
+    public UserData getByEmail(@NonNull String email);
     
     public List<UserData> getAllUsers();
     
@@ -37,9 +36,9 @@ public interface UserService {
     
     public int count(@NonNull UserFilter filter);
     
-    public Optional<UserData> addNewUserRole(@NonNull RegisterNewUserRoleCommand command);
+    public UserData addNewUserRole(@NonNull RegisterNewUserRoleCommand command);
     
-    public Optional<UserData> updateUserRole(@NonNull UpdateUserRoleCommand command);
+    public UserData updateUserRole(@NonNull UpdateUserRoleCommand command);
     
-    public Optional<UserData> deleteUserRole(@NonNull DeleteUserRoleCommand command);
+    public UserData deleteUserRole(@NonNull DeleteUserRoleCommand command);
 }

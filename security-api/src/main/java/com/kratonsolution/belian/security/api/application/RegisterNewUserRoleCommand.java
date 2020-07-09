@@ -1,5 +1,7 @@
 package com.kratonsolution.belian.security.api.application;
 
+import java.io.Serializable;
+
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -11,7 +13,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class RegisterNewUserRoleCommand {
+public class RegisterNewUserRoleCommand implements Serializable {
+
+	private static final long serialVersionUID = 9002305938231695375L;
 
 	@NonNull
 	private String userName;

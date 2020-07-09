@@ -9,7 +9,8 @@ apply plugin: 'io.spring.dependency-management'
 
 dependencies {
 
-	compile project(':security-api')
+	compile project(':common-integration')
+	compile project(':security-connector')
 	
 	implementation 'com.google.guava:guava:28.2-jre'
     

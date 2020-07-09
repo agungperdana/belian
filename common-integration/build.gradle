@@ -1,0 +1,18 @@
+plugins {
+	
+	id 'java'
+	id 'eclipse'
+}
+
+dependencies {
+
+	compile project(':common-spring')
+	compile project(':security-api')
+		
+	implementation enforcedPlatform('org.apache.camel.springboot:camel-spring-boot-dependencies:3.4.0')
+	implementation 'org.apache.camel.springboot:camel-spring-boot-starter'
+}
+
+jar {
+	enabled=true //needed
+}

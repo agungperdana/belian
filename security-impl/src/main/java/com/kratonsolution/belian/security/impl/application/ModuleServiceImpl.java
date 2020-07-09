@@ -101,9 +101,9 @@ public class ModuleServiceImpl implements ModuleService {
     }
     
     @Secured("ROLE_SCR-MDL_READ")
-    public Optional<ModuleData> getByCode(String code) {
+    public ModuleData getByCode(String code) {
 
-        return Optional.ofNullable(ModuleMapper.INSTANCE.toData(repo.findOneByCode(code).orElse(null)));
+        return ModuleMapper.INSTANCE.toData(repo.findOneByCode(code).orElse(null));
     }
     
     @Secured("ROLE_SCR-MDL_READ")

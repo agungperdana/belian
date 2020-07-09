@@ -1,7 +1,6 @@
 package com.kratonsolution.belian.security.api.application;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.kratonsolution.belian.security.api.ModuleData;
 
@@ -19,7 +18,7 @@ public interface ModuleService {
     
     ModuleData delete(@NonNull ModuleDeleteCommand command);
 
-    Optional<ModuleData> getByCode(@NonNull String code);
+    ModuleData getByCode(@NonNull String code);
     
     List<ModuleData> getAllModules();
     

@@ -1,7 +1,6 @@
 package com.kratonsolution.belian.security.api.application;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.kratonsolution.belian.security.api.RoleData;
 
@@ -19,7 +18,7 @@ public interface RoleService {
     
     RoleData delete(@NonNull RoleDeleteCommand command);
 
-    Optional<RoleData> getByCode(@NonNull String code);
+    RoleData getByCode(@NonNull String code);
     
     List<RoleData> getAllRoles();
     

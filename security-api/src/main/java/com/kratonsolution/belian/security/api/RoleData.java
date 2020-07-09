@@ -1,5 +1,6 @@
 package com.kratonsolution.belian.security.api;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,9 +14,11 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class RoleData {
+public class RoleData implements Serializable {
     
-    @NonNull
+    private static final long serialVersionUID = -4075374676161919723L;
+
+	@NonNull
     private String code;
     
     @NonNull
