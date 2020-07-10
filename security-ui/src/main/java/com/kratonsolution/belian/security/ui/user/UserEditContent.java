@@ -30,7 +30,7 @@ import com.kratonsolution.belian.common.ui.util.RowUtils;
 import com.kratonsolution.belian.common.ui.util.Springs;
 import com.kratonsolution.belian.security.api.UserData;
 import com.kratonsolution.belian.security.api.UserRoleData;
-import com.kratonsolution.belian.security.api.application.UpdateUserCommand;
+import com.kratonsolution.belian.security.api.application.UserUpdateCommand;
 import com.kratonsolution.belian.security.api.application.UserService;
 
 import lombok.NonNull;
@@ -87,10 +87,10 @@ public class UserEditContent extends AbstractForm
 				if(Strings.isNullOrEmpty(email.getText()))
 					throw new WrongValueException(email, Labels.getLabel("warning.empty"));
 
-				Optional<UserData> opt = service.getByName(userName);
-				if(opt.isPresent())
+				UserData opt = service.getByName(userName);
+				if(opt != null)
 				{
-					UpdateUserCommand command = new UpdateUserCommand();
+					UserUpdateCommand command = new UserUpdateCommand();
 					command.setName(userName);
 					command.setEmail(email.getText());
 					command.setEnabled(enabled.isChecked());
@@ -100,7 +100,7 @@ public class UserEditContent extends AbstractForm
 						String roleCode = RowUtils.string(((Row)rw), 0);
 						if(roleCode != null) {
 							
-							Optional<UserRoleData> urd = opt.get().getRoles()
+							Optional<UserRoleData> urd = opt.getRoles()
 													.stream()
 													.filter(p -> p.getRoleCode().equals(roleCode)).findFirst();
 							
@@ -110,7 +110,7 @@ public class UserEditContent extends AbstractForm
 						}
 					});
 					
-					command.getRoles().addAll(opt.get().getRoles());
+					command.getRoles().addAll(opt.getRoles());
 
 					service.update(command);
 				}
@@ -123,8 +123,8 @@ public class UserEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		Optional<UserData> opt = service.getByName(this.userName);
-		if(opt.isPresent())
+		UserData opt = service.getByName(this.userName);
+		if(opt != null)
 		{
 			link.addEventListener(Events.ON_CLICK,new EventListener<Event>()
 			{
@@ -139,14 +139,14 @@ public class UserEditContent extends AbstractForm
 			});
 
 			name.setConstraint("no empty");
-			name.setText(opt.get().getName());
+			name.setText(opt.getName());
 			name.setReadonly(true);
 
 			email.setConstraint("no empty");
-			email.setText(opt.get().getEmail());
+			email.setText(opt.getEmail());
 			email.setWidth("250px");
 
-			enabled.setChecked(opt.get().isEnabled());
+			enabled.setChecked(opt.isEnabled());
 
 			grid.appendChild(new Columns());
 			grid.getColumns().appendChild(new Column(null,null,"150px"));
@@ -213,11 +213,11 @@ public class UserEditContent extends AbstractForm
 		roles.appendChild(head);
 		roles.appendChild(columns);
 
-		Optional<UserData> opt = service.getByName(userName);
-		if(opt.isPresent())
+		UserData opt = service.getByName(userName);
+		if(opt != null)
 		{
 			final Rows rows = new Rows();
-			opt.get().getRoles().forEach(role -> {
+			opt.getRoles().forEach(role -> {
 
 				Checkbox checkbox = new Checkbox();
 				checkbox.setChecked(role.isEnabled());

@@ -1,21 +1,16 @@
 package com.kratonsolution.belian.security.ui.role;
 
 import org.zkoss.util.resource.Labels;
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
-import org.zkoss.zul.Grid;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
-import org.zkoss.zul.event.PagingEvent;
-import org.zkoss.zul.event.ZulEvents;
 
-import com.kratonsolution.belian.common.application.MapHelper;
 import com.kratonsolution.belian.common.ui.GridContent;
 import com.kratonsolution.belian.common.ui.event.UIEvent;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
@@ -176,35 +171,5 @@ public class RoleGridContent extends GridContent
 		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("3");
 		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
-		grid.addEventListener(ZulEvents.ON_AFTER_RENDER, new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				Grid target = (Grid)event.getTarget();
-				for(Component com:target.getRows().getChildren())
-				{
-					com.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-					{
-						@Override
-						public void onEvent(Event ev) throws Exception
-						{
-							Row row = (Row)ev.getTarget();
-							FlowHelper.next(getParent(), UIEvent.EDIT_FORM, MapHelper.build("code", RowUtils.string(row, 1)));
-						}
-					});
-				}
-			}
-		});
-		
-		grid.addEventListener(ZulEvents.ON_PAGING,new EventListener<PagingEvent>()
-		{
-			@Override
-			public void onEvent(PagingEvent event) throws Exception
-			{
-				model.next(event.getActivePage());
-				grid.setModel(model);
-			}
-		});
 	}
 }

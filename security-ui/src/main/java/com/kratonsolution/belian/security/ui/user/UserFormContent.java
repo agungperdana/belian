@@ -24,7 +24,7 @@ import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.RowUtils;
 import com.kratonsolution.belian.common.ui.util.Springs;
 import com.kratonsolution.belian.security.api.RoleData;
-import com.kratonsolution.belian.security.api.application.CreateUserCommand;
+import com.kratonsolution.belian.security.api.application.UserCreateCommand;
 import com.kratonsolution.belian.security.api.application.RoleService;
 import com.kratonsolution.belian.security.api.application.UserService;
 
@@ -93,7 +93,7 @@ public class UserFormContent extends AbstractForm
 				if(!password.getText().equals(repassword.getText()))
 					throw new WrongValueException(repassword, Labels.getLabel("form.password.notmatch"));
 				
-				CreateUserCommand command = new CreateUserCommand();
+				UserCreateCommand command = new UserCreateCommand();
 				command.setEmail(email.getText());
 				command.setName(name.getText());
 				command.setPassword(password.getText());

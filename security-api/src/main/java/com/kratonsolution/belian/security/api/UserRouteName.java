@@ -16,7 +16,7 @@ public interface UserRouteName {
 	String ALL_USERS_PAGING = "activemq:user-getallusers-paging?exchangePattern=InOut";
 	String ALL_USERS_FILTER = "activemq:user-getallusers-filter?exchangePattern=InOut";
 	String COUNT = "activemq:user-count?exchangePattern=InOut";
-	String COUNT_PAGING = "activemq:user-count-paging?exchangePattern=InOut";
+	String COUNT_FILTER = "activemq:user-count-paging?exchangePattern=InOut";
 	String ADD_ROLE = "activemq:user-add-new-user-role?exchangePattern=InOut";
 	String UPDATE_ROLE = "activemq:user-update-user-role?exchangePattern=InOut";
 	String DELETE_ROLE = "activemq:user-delete-user-role?exchangePattern=InOut";

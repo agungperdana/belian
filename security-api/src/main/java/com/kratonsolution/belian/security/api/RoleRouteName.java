@@ -15,5 +15,5 @@ public interface RoleRouteName {
 	String ALL_ROLES_PAGING = "activemq:role-getallroles-paging?exchangePattern=InOut";
 	String ALL_ROLES_FILTER = "activemq:role-getallroles-filter?exchangePattern=InOut";
 	String COUNT = "activemq:role-count?exchangePattern=InOut";
-	String COUNT_PAGING = "activemq:role-count-paging?exchangePattern=InOut";
+	String COUNT_FILTER = "activemq:role-count-paging?exchangePattern=InOut";
 }

@@ -12,10 +12,18 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class DeleteUserCommand implements Serializable {
+public class UserCreateCommand implements Serializable {
     
-    private static final long serialVersionUID = 8873326380098895541L;
-    
+    private static final long serialVersionUID = -9174276394230314838L;
+
 	@NonNull
     private String name;
+    
+    @NonNull
+    private String email;
+    
+    @NonNull
+    private String password;
+        
+    private boolean enabled;
 }

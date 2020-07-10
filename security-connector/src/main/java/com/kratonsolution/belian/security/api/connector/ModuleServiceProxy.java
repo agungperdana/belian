@@ -69,6 +69,6 @@ public class ModuleServiceProxy implements ModuleService {
 
 	@Override
 	public int count(@NonNull ModuleFilter filter) {
-		return producer.requestBody(ModuleRouteName.COUNT_PAGING, filter,Integer.class);
+		return producer.requestBody(ModuleRouteName.COUNT_FILTER, filter,Integer.class);
 	}
 }

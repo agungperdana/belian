@@ -83,7 +83,7 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
     public RoleData update(RoleUpdateCommand command) {
         
         Optional<Role> opt = roleRepo.findOneByCode(command.getCode());
-        Preconditions.checkState(opt.isPresent(), "Role with code [%s] not exist", command.getCode());
+        Preconditions.checkState(opt.isPresent(), "Role does not exist");
         
         opt.get().setEnabled(command.isEnabled());
         opt.get().setNote(command.getNote());
@@ -125,7 +125,7 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
     public RoleData delete(RoleDeleteCommand command) {
         
         Optional<Role> opt = roleRepo.findOneByCode(command.getCode());
-        Preconditions.checkState(opt.isPresent(), "Role with code [%s] not exist", command.getCode());
+        Preconditions.checkState(opt.isPresent(), "Role does not exist");
         
         roleRepo.delete(opt.get());
         

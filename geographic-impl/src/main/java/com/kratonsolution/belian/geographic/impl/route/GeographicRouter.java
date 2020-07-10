@@ -6,7 +6,6 @@ import org.apache.camel.builder.RouteBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kratonsolution.belian.common.integration.IntegrationRouter;
 import com.kratonsolution.belian.geographic.api.GeographicRouteName;
 import com.kratonsolution.belian.geographic.api.GeographicType;
 import com.kratonsolution.belian.geographic.api.application.GeographicCreateCommand;
@@ -21,7 +20,7 @@ import com.kratonsolution.belian.geographic.api.application.GeographicUpdateComm
  * @sinch 2.0
  */
 @Service
-public class GeographicRouter extends RouteBuilder implements IntegrationRouter {
+public class GeographicRouter extends RouteBuilder {
 
 	@Autowired
 	private GeographicService service;
@@ -85,7 +84,6 @@ public class GeographicRouter extends RouteBuilder implements IntegrationRouter 
 			.process(e->e.getMessage().setBody(service.count(e.getIn().getBody(GeographicFilter.class))));
 	}
 
-	@Override
 	public void initRESTReoute() {
 		// TODO Auto-generated method stub
 		

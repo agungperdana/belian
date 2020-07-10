@@ -11,11 +11,11 @@ import com.kratonsolution.belian.security.api.UserData;
 import com.kratonsolution.belian.security.api.UserFilter;
 import com.kratonsolution.belian.security.api.UserRouteName;
 import com.kratonsolution.belian.security.api.application.ChangePasswordCommand;
-import com.kratonsolution.belian.security.api.application.CreateUserCommand;
-import com.kratonsolution.belian.security.api.application.DeleteUserCommand;
+import com.kratonsolution.belian.security.api.application.UserCreateCommand;
+import com.kratonsolution.belian.security.api.application.UserDeleteCommand;
 import com.kratonsolution.belian.security.api.application.DeleteUserRoleCommand;
 import com.kratonsolution.belian.security.api.application.RegisterNewUserRoleCommand;
-import com.kratonsolution.belian.security.api.application.UpdateUserCommand;
+import com.kratonsolution.belian.security.api.application.UserUpdateCommand;
 import com.kratonsolution.belian.security.api.application.UpdateUserRoleCommand;
 import com.kratonsolution.belian.security.api.application.UserService;
 
@@ -32,17 +32,17 @@ public class UserServiceProxy implements UserService {
 	private ProducerTemplate producer;
 	
 	@Override
-	public UserData create(@NonNull CreateUserCommand command) {
+	public UserData create(@NonNull UserCreateCommand command) {
 		return producer.requestBody(UserRouteName.CREATE, command, UserData.class);
 	}
 
 	@Override
-	public UserData update(@NonNull UpdateUserCommand command) {
+	public UserData update(@NonNull UserUpdateCommand command) {
 		return producer.requestBody(UserRouteName.UPDATE, command, UserData.class);
 	}
 
 	@Override
-	public UserData delete(@NonNull DeleteUserCommand command) {
+	public UserData delete(@NonNull UserDeleteCommand command) {
 		return producer.requestBody(UserRouteName.DELETE, command, UserData.class);
 	}
 
@@ -83,7 +83,7 @@ public class UserServiceProxy implements UserService {
 
 	@Override
 	public int count(@NonNull UserFilter filter) {
-		return producer.requestBody(UserRouteName.COUNT_PAGING, filter, Integer.class);
+		return producer.requestBody(UserRouteName.COUNT_FILTER, filter, Integer.class);
 	}
 
 	@Override

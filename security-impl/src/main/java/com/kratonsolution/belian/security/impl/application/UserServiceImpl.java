@@ -17,11 +17,11 @@ import com.google.common.base.Preconditions;
 import com.kratonsolution.belian.security.api.UserData;
 import com.kratonsolution.belian.security.api.UserFilter;
 import com.kratonsolution.belian.security.api.application.ChangePasswordCommand;
-import com.kratonsolution.belian.security.api.application.CreateUserCommand;
-import com.kratonsolution.belian.security.api.application.DeleteUserCommand;
+import com.kratonsolution.belian.security.api.application.UserCreateCommand;
+import com.kratonsolution.belian.security.api.application.UserDeleteCommand;
 import com.kratonsolution.belian.security.api.application.DeleteUserRoleCommand;
 import com.kratonsolution.belian.security.api.application.RegisterNewUserRoleCommand;
-import com.kratonsolution.belian.security.api.application.UpdateUserCommand;
+import com.kratonsolution.belian.security.api.application.UserUpdateCommand;
 import com.kratonsolution.belian.security.api.application.UpdateUserRoleCommand;
 import com.kratonsolution.belian.security.api.application.UserService;
 import com.kratonsolution.belian.security.impl.model.User;
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService
     private StrongPasswordEncryptor enc = new StrongPasswordEncryptor();
     
     @Secured({"ROLE_SCR-USR_ADD"})
-    public UserData create(@NonNull CreateUserCommand command) {
+    public UserData create(@NonNull UserCreateCommand command) {
         
         User user = new User(command.getName(), command.getEmail(),
         						enc.encryptPassword(command.getPassword()), 
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService
     }
     
     @Secured({"ROLE_SCR-USR_UPDATE"})
-    public UserData update(@NonNull UpdateUserCommand command) {
+    public UserData update(@NonNull UserUpdateCommand command) {
         
         Optional<User> userOpt = repo.findOneByName(command.getName());
         
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService
     }
     
     @Secured({"ROLE_SCR-USR_DELETE"})
-    public UserData delete(@NonNull DeleteUserCommand command) {
+    public UserData delete(@NonNull UserDeleteCommand command) {
         
         Optional<User> userOpt = repo.findOneByName(command.getName());
         
@@ -153,7 +153,7 @@ public class UserServiceImpl implements UserService
 	public UserData addNewUserRole(@NonNull RegisterNewUserRoleCommand command) {
 		
 		Optional<User> opt = repo.findOneByName(command.getUserName());
-		Preconditions.checkState(opt.isPresent(), "User with name/email {} does not exist", command.getUserName());
+		Preconditions.checkState(opt.isPresent(), "User with name/email {} does not exist");
 		opt.get().addNewRole(command.getRoleCode(), command.getRoleName());
 
 		repo.save(opt.get());
@@ -165,7 +165,7 @@ public class UserServiceImpl implements UserService
 	public UserData updateUserRole(@NonNull UpdateUserRoleCommand command) {
 
 		Optional<User> opt = repo.findOneByName(command.getUserName());
-		Preconditions.checkState(opt.isPresent(), "User with name/email {} does not exist", command.getUserName());
+		Preconditions.checkState(opt.isPresent(), "User with name/email {} does not exist");
 		
 		opt.get().updateRole(command.getRoleCode(), command.getRoleName(), command.getEnabled());
 		repo.save(opt.get());
@@ -177,7 +177,7 @@ public class UserServiceImpl implements UserService
 	public UserData deleteUserRole(@NonNull DeleteUserRoleCommand command) {
 
 		Optional<User> opt = repo.findOneByName(command.getUserName());
-		Preconditions.checkState(opt.isPresent(), "User with name/email {} does not exist", command.getUserName());
+		Preconditions.checkState(opt.isPresent(), "User with name/email {} does not exist");
 		
 		opt.get().deleteRole(command.getRoleCode());
 		

@@ -2,7 +2,6 @@ package com.kratonsolution.belian.security.ui.role;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Optional;
 
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.event.CheckEvent;
@@ -134,21 +133,21 @@ public class RoleEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		Optional<RoleData> opt = service.getByCode(this.roleCode);
-		if(opt.isPresent()) {
+		RoleData opt = service.getByCode(this.roleCode);
+		if(opt != null) {
 			
 			code.setConstraint("no empty");
 			code.setWidth("250px");
-			code.setText(opt.get().getCode());
+			code.setText(opt.getCode());
 
 			name.setConstraint("no empty");
 			name.setWidth("250px");
-			name.setText(opt.get().getName());
+			name.setText(opt.getName());
 
-			note.setText(opt.get().getNote());
+			note.setText(opt.getNote());
 			note.setWidth("300px");
 			
-			status.setChecked(opt.get().isEnabled());
+			status.setChecked(opt.isEnabled());
 		}
 		
 		grid.appendChild(new Columns());
@@ -298,8 +297,8 @@ public class RoleEditContent extends AbstractForm
 			grid.getColumns().getChildren().get(5).appendChild(check4);
 			grid.getColumns().getChildren().get(6).appendChild(check5);
 
-			Optional<RoleData> role = service.getByCode(roleCode);
-			role.get().getModules().stream().forEach(mod -> {
+			RoleData role = service.getByCode(roleCode);
+			role.getModules().stream().forEach(mod -> {
 				
 				if(mod.getModuleGroup().equals(group))
 				{

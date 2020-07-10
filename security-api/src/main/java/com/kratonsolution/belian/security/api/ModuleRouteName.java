@@ -15,5 +15,5 @@ public interface ModuleRouteName {
 	String ALL_MODULES_PAGING = "activemq:module-getallmodules-paging?exchangePattern=InOut";
 	String ALL_MODULES_FILTER = "activemq:module-getallmodules-filter?exchangePattern=InOut";
 	String COUNT = "activemq:module-count?exchangePattern=InOut";
-	String COUNT_PAGING = "activemq:module-count-paging?exchangePattern=InOut";
+	String COUNT_FILTER = "activemq:module-count-paging?exchangePattern=InOut";
 }

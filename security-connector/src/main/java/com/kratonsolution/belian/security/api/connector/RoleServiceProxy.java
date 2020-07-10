@@ -69,7 +69,7 @@ public class RoleServiceProxy implements RoleService {
 
 	@Override
 	public int count(@NonNull RoleFilter filter) {
-		return producer.requestBody(RoleRouteName.COUNT_PAGING, filter, Integer.class);
+		return producer.requestBody(RoleRouteName.COUNT_FILTER, filter, Integer.class);
 	}
 
 }

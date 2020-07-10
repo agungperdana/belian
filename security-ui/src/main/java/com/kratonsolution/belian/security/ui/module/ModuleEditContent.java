@@ -1,7 +1,5 @@
 package com.kratonsolution.belian.security.ui.module;
 
-import java.util.Optional;
-
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
@@ -38,7 +36,7 @@ public class ModuleEditContent extends AbstractForm
 
 	private ModuleService service = Springs.get(ModuleService.class);
 
-	private Textbox code = Components.mandatoryTextBox(false);
+	private Textbox code = Components.readOnlyTextBox();
 
 	private Textbox name = Components.mandatoryTextBox(false);
 
@@ -83,7 +81,7 @@ public class ModuleEditContent extends AbstractForm
 
 
 				ModuleUpdateCommand command = new ModuleUpdateCommand();
-				command.setCode(code.getText());
+				command.setCode(moduleCode);
 				command.setName(name.getText());
 				command.setEnabled(enabled.isChecked());
 				command.setNote(note.getText());
@@ -99,15 +97,15 @@ public class ModuleEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		Optional<ModuleData> opt = service.getByCode(this.moduleCode);
-		if(opt.isPresent())
+		ModuleData opt = service.getByCode(this.moduleCode);
+		if(opt != null)
 		{
-			code.setText(opt.get().getCode());
-			name.setText(opt.get().getName());
-			note.setText(opt.get().getNote());
-			enabled.setChecked(opt.get().isEnabled());
+			code.setText(opt.getCode());
+			name.setText(opt.getName());
+			note.setText(opt.getNote());
+			enabled.setChecked(opt.isEnabled());
 			
-			ModuleGroupUIHelper.select(groups, opt.get().getGroup());
+			ModuleGroupUIHelper.select(groups, opt.getGroup());
 		}
 		
 		grid.appendChild(new Columns());

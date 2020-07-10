@@ -68,7 +68,7 @@ public class ModuleServiceImpl implements ModuleService {
     public ModuleData update(ModuleUpdateCommand command) {
 
         Optional<Module> opt = repo.findOneByCode(command.getCode());
-        Preconditions.checkState(opt.isPresent(), "Module with code [%s] not exist", command.getCode());
+        Preconditions.checkState(opt.isPresent(), "Module does not exist");
         
         opt.get().setName(command.getName());
         opt.get().setGroup(command.getGroup());
@@ -86,7 +86,7 @@ public class ModuleServiceImpl implements ModuleService {
     public ModuleData delete(ModuleDeleteCommand command) {
 
         Optional<Module> opt = repo.findOneByCode(command.getCode());
-        Preconditions.checkState(opt.isPresent(), "Module with code [%s] not exist", command.getCode());
+        Preconditions.checkState(opt.isPresent(), "Module does not exist");
         
         repo.delete(opt.get());
         

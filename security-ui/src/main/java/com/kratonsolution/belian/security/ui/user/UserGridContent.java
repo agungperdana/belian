@@ -24,7 +24,7 @@ import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.RowUtils;
 import com.kratonsolution.belian.common.ui.util.Springs;
 import com.kratonsolution.belian.common.ui.util.UIHelper;
-import com.kratonsolution.belian.security.api.application.DeleteUserCommand;
+import com.kratonsolution.belian.security.api.application.UserDeleteCommand;
 import com.kratonsolution.belian.security.api.application.UserService;
 
 /**
@@ -130,7 +130,7 @@ public class UserGridContent extends GridContent
 											Checkbox check = (Checkbox)row.getFirstChild();
 											if(check.isChecked())
 											{
-												DeleteUserCommand command = new DeleteUserCommand();
+												UserDeleteCommand command = new UserDeleteCommand();
 												command.setName(RowUtils.string(row, 1));
 												
 												service.delete(command);

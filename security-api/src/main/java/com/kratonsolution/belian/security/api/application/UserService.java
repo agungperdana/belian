@@ -14,11 +14,11 @@ import lombok.NonNull;
  */
 public interface UserService {
     
-    public UserData create(@NonNull CreateUserCommand command);
+    public UserData create(@NonNull UserCreateCommand command);
     
-    public UserData update(@NonNull UpdateUserCommand command);
+    public UserData update(@NonNull UserUpdateCommand command);
     
-    public UserData delete(@NonNull DeleteUserCommand command);
+    public UserData delete(@NonNull UserDeleteCommand command);
     
     public UserData changePassword(@NonNull ChangePasswordCommand command);
     
