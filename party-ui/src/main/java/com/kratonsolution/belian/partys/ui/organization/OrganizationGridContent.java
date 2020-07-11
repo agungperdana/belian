@@ -2,12 +2,10 @@ package com.kratonsolution.belian.partys.ui.organization;
 
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
-import org.zkoss.zul.Rows;
 
 import com.kratonsolution.belian.common.ui.GridContent;
 import com.kratonsolution.belian.common.ui.event.UIEvent;
@@ -42,42 +40,6 @@ public class OrganizationGridContent extends GridContent
 
 		toolbar.getRefresh().addEventListener(Events.ON_CLICK, e->FlowHelper.next(new OrganizationUIEvent(UIEvent.GRID)));
 		toolbar.getNewData().addEventListener(Events.ON_CLICK, e->FlowHelper.next(new OrganizationUIEvent(UIEvent.ADD_FORM)));
-
-		toolbar.getSelect().addEventListener(Events.ON_CLICK, e->{
-
-			Rows rows = grid.getRows();
-			for(Object object:rows.getChildren())
-			{
-				Row row = (Row)object;
-
-				if(row.getFirstChild() instanceof Checkbox)
-				{
-					Checkbox checkbox = (Checkbox)row.getFirstChild();
-					checkbox.setChecked(true);
-				}
-
-				toolbar.removeChild(toolbar.getSelect());
-				toolbar.insertBefore(toolbar.getDeselect(),toolbar.getDelete());
-			}
-		});
-
-		toolbar.getDeselect().addEventListener(Events.ON_CLICK, e->{
-
-			Rows rows = grid.getRows();
-			for(Object object:rows.getChildren())
-			{
-				Row row = (Row)object;
-				if(row.getFirstChild() instanceof Checkbox)
-				{
-					Checkbox checkbox = (Checkbox)row.getFirstChild();
-					checkbox.setChecked(false);						
-				}
-
-				toolbar.removeChild(toolbar.getDeselect());
-				toolbar.insertBefore(toolbar.getSelect(),toolbar.getDelete());
-			}
-		});
-
 		toolbar.getDelete().addEventListener(Events.ON_CLICK, ev->{
 			
 			Messagebox.show(Labels.getLabel("warning.remove"), "Warning",Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION, e-> {
@@ -96,7 +58,7 @@ public class OrganizationGridContent extends GridContent
 						}
 					}
 
-					FlowHelper.next(getParent(), UIEvent.GRID);
+					FlowHelper.next(new OrganizationUIEvent(UIEvent.GRID));
 				}
 			});
 		});

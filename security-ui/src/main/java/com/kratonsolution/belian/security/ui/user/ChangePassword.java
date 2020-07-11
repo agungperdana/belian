@@ -1,10 +1,5 @@
 package com.kratonsolution.belian.security.ui.user;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
@@ -14,7 +9,6 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.ui.AbstractForm;
-import com.kratonsolution.belian.common.ui.event.UIEvent;
 import com.kratonsolution.belian.common.ui.util.Components;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.Springs;
@@ -56,36 +50,21 @@ public class ChangePassword extends AbstractForm
 	@Override
 	public void initToolbar()
 	{
-		Map<String, String> param = new HashMap<>();
-		param.put("username", this.userName);
-		
-		toolbar.getCancel().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
+		toolbar.getCancel().addEventListener(Events.ON_CLICK, e->FlowHelper.next(UserUIEvent.editForm(this.userName)));
+		toolbar.getSave().addEventListener(Events.ON_CLICK, e->{
+			
+			if(!newPassword.getText().equals(renewPassword.getText()))
+				Messagebox.show("New Password not equal");
+			else
 			{
-				FlowHelper.next(getParent(), UIEvent.EDIT_FORM, param);
-			}
-		});
-		
-		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				if(!newPassword.getText().equals(renewPassword.getText()))
-					Messagebox.show("New Password not equal");
-				else
-				{
-					ChangePasswordCommand command = new ChangePasswordCommand();
-					command.setName(userName);
-					command.setOldPassword(oldPassword.getText());
-					command.setNewPassword(newPassword.getText());
-					
-					service.changePassword(command);
-					
-					FlowHelper.next(getParent(), UIEvent.EDIT_FORM, param);
-				}
+				ChangePasswordCommand command = new ChangePasswordCommand();
+				command.setName(userName);
+				command.setOldPassword(oldPassword.getText());
+				command.setNewPassword(newPassword.getText());
+				
+				service.changePassword(command);
+				
+				FlowHelper.next(UserUIEvent.editForm(this.userName));
 			}
 		});
 	}

@@ -1,7 +1,5 @@
 package com.kratonsolution.belian.security.ui.role;
 
-import java.util.Map;
-
 import org.zkoss.image.AImage;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.event.EventQueues;
@@ -43,21 +41,5 @@ public class RoleWindow extends AbstractWindow
 				appendChild(new RoleGridContent());
 			}
 		});
-	}
-
-	@Override
-	public void fireWindowContentChange(String event, Map<String, String> map) {
-		
-		clearContent();
-		
-		if(event.equals(UIEvent.GRID)) {
-			appendChild(RoleContentFactory.createGridContent());
-		}
-		else if(event.equals(UIEvent.ADD_FORM)) {
-			appendChild(RoleContentFactory.createAddFormContent());
-		}
-		else if(event.equals(UIEvent.EDIT_FORM)) {
-			appendChild(RoleContentFactory.createEditFormContent(map.get("code")));
-		}
 	}
 }

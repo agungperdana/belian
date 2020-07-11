@@ -12,7 +12,6 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 
 import com.kratonsolution.belian.common.ui.GridContent;
-import com.kratonsolution.belian.common.ui.event.UIEvent;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.RowUtils;
 import com.kratonsolution.belian.common.ui.util.Springs;
@@ -40,24 +39,9 @@ public class RoleGridContent extends GridContent
 	
 	protected void initToolbar()
 	{
-		toolbar.setParent(this);
-		toolbar.getRefresh().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				FlowHelper.next(getParent(), UIEvent.GRID);
-			}
-		});
-		
-		toolbar.getNewData().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				FlowHelper.next(getParent(), UIEvent.ADD_FORM);
-			}
-		});
+		appendChild(toolbar);
+		toolbar.getRefresh().addEventListener(Events.ON_CLICK, e->FlowHelper.next(RoleUIEvent.toGrid()));
+		toolbar.getNewData().addEventListener(Events.ON_CLICK,e->FlowHelper.next(RoleUIEvent.newForm()));
 		
 		toolbar.getSelect().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
@@ -132,7 +116,7 @@ public class RoleGridContent extends GridContent
 										}
 									}
 									
-									FlowHelper.next(getParent(), UIEvent.GRID);
+									FlowHelper.next(RoleUIEvent.toGrid());
 								}
 							}
 						});
@@ -151,12 +135,10 @@ public class RoleGridContent extends GridContent
 	
 	protected void initGrid()
 	{
-		final RoleModel model = new RoleModel();
-		
 		grid.setParent(this);
 		grid.setHeight("80%");
 		grid.setEmptyMessage(Labels.getLabel("warning.grid.empty"));
-		grid.setModel(model);
+		grid.setModel(new RoleModel());
 		grid.setRowRenderer(new RoleRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");

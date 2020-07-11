@@ -1,9 +1,8 @@
 package com.kratonsolution.belian.security.ui.user;
 
-import java.util.Map;
-
 import org.zkoss.image.AImage;
 import org.zkoss.util.resource.Labels;
+import org.zkoss.zk.ui.event.EventQueues;
 
 import com.kratonsolution.belian.common.ui.AbstractWindow;
 import com.kratonsolution.belian.common.ui.event.UIEvent;
@@ -16,34 +15,33 @@ import com.kratonsolution.belian.common.ui.event.UIEvent;
 public class UserWindow extends AbstractWindow
 {
 	private static final long serialVersionUID = 2532837188647395498L;
-	
+
 	public UserWindow() {
 
 		super();
 		try {
 			caption.setImageContent(new AImage(getClass().getResource("/images/fisheye/user.png")));
 		} catch (Exception e) {}
-		
-		caption.setLabel(Labels.getLabel("user.caption"));
-	}
 
-	@Override
-	public void fireWindowContentChange(String event, Map<String, String> map) {
-		
-		clearContent();
-		
-		if(event.equals(UIEvent.GRID)) {
-			appendChild(UserContentFactory.createGridContent());
-		}
-		else if(event.equals(UIEvent.ADD_FORM)) {
-			appendChild(UserContentFactory.createAddFormContent());
-		}
-		else if(event.equals(UIEvent.EDIT_FORM)) {
-			appendChild(UserContentFactory.createEditFormContent(map.get("username")));
-		}
-		else {
-			
-			appendChild(UserContentFactory.createChangePasswordFormContent(map.get("username")));
-		}
+		caption.setLabel(Labels.getLabel("user.caption"));
+		EventQueues.lookup(UserUIEvent.class.getSimpleName()).subscribe(e->{
+
+			UserUIEvent event = (UserUIEvent) e;
+
+			clearContent();
+
+			if(event.getType().equals(UIEvent.ADD_FORM)) {
+				appendChild(new UserFormContent());
+			}
+			else if(event.getType().equals(UIEvent.EDIT_FORM)) {
+				appendChild(new UserEditContent(event.getUsername()));
+			}
+			else if(event.getType().equals(UIEvent.GRID)) {
+				appendChild(new UserGridContent());
+			}
+			else {
+				appendChild(new ChangePassword(event.getUsername()));
+			}
+		});
 	}
 }

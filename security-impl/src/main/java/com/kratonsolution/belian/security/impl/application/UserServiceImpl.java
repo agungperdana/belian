@@ -135,7 +135,8 @@ public class UserServiceImpl implements UserService
     @Override
     public int count() {
         
-        return (int)repo.count();
+    	log.info("COUNT {}", Long.valueOf(repo.count()).intValue());
+        return Long.valueOf(repo.count()).intValue();
     }
     
     @Override

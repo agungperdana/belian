@@ -12,11 +12,14 @@ import com.kratonsolution.belian.common.ui.util.UIHelper;
 import com.kratonsolution.belian.security.api.UserData;
 import com.kratonsolution.belian.security.api.application.UserService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  * @since 1.0
  */
+@Slf4j
 public class UserModel implements ListModel<UserData>
 {
 	private final UserService service = Springs.get(UserService.class);
@@ -42,6 +45,7 @@ public class UserModel implements ListModel<UserData>
 	@Override
 	public int getSize()
 	{
+		log.info("User Count {}", service.count());
 		return service.count();
 	}
 
@@ -61,7 +65,11 @@ public class UserModel implements ListModel<UserData>
 
 	public void next(int pageIndex)
 	{
+		List<UserData> list = service.getAllUsers(pageIndex, (setting.getMaxRow()*pageIndex)+setting.getMaxRow());
+		
+		log.info("Users {}", list);
+		
 		data.clear();
-		data.addAll(service.getAllUsers(pageIndex, (setting.getMaxRow()*pageIndex)+setting.getMaxRow()));
+		data.addAll(list);
 	}
 }

@@ -1,7 +1,5 @@
 package com.kratonsolution.belian.partys.ui.organization;
 
-import java.util.Map;
-
 import org.zkoss.image.AImage;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.event.EventQueues;
@@ -43,11 +41,5 @@ public class OrganizationWindow extends AbstractWindow
 				appendChild(new OrganizationEditContent(event.getCode()));
 			}
 		});
-	}
-
-	@Override
-	public void fireWindowContentChange(String event, Map<String, String> parameter) {
-		// TODO Auto-generated method stub
-		
 	}
 }

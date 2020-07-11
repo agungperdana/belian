@@ -1,7 +1,5 @@
 package com.kratonsolution.belian.geographic.ui;
 
-import java.util.Map;
-
 import org.zkoss.image.AImage;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.event.EventQueues;
@@ -44,9 +42,4 @@ public class GeographicWindow extends AbstractWindow
 			}
 		});
 	}
-
-	@Override
-	public void fireWindowContentChange(String event, Map<String, String> parameter) {
-	}
-
 }

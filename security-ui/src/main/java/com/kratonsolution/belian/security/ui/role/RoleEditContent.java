@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.event.CheckEvent;
-import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Auxhead;
@@ -26,7 +25,6 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.ui.AbstractForm;
-import com.kratonsolution.belian.common.ui.event.UIEvent;
 import com.kratonsolution.belian.common.ui.util.Components;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.RowUtils;
@@ -82,51 +80,37 @@ public class RoleEditContent extends AbstractForm
 	@Override
 	public void initToolbar()
 	{
-		toolbar.getCancel().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				FlowHelper.next(getParent(), UIEvent.GRID);
+		toolbar.getCancel().addEventListener(Events.ON_CLICK, e->FlowHelper.next(RoleUIEvent.toGrid()));
+
+		toolbar.getSave().addEventListener(Events.ON_CLICK, e->{
+			RoleUpdateCommand command = new RoleUpdateCommand();
+			command.setCode(RoleEditContent.this.roleCode);
+			command.setEnabled(status.isChecked());
+			command.setNote(note.getText());
+			
+			if(!Strings.isNullOrEmpty(name.getText())) {
+				command.setName(name.getText());
 			}
-		});
 
-		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-
-				RoleUpdateCommand command = new RoleUpdateCommand();
-				command.setCode(RoleEditContent.this.roleCode);
-				command.setEnabled(status.isChecked());
-				command.setNote(note.getText());
+			modules.forEach(grd -> {
 				
-				if(!Strings.isNullOrEmpty(name.getText())) {
-					command.setName(name.getText());
-				}
-
-				modules.forEach(grd -> {
+				grd.getRows().getChildren().forEach(com -> {
 					
-					grd.getRows().getChildren().forEach(com -> {
-						
-						RoleModuleCommand cmd = new RoleModuleCommand();
-						cmd.setModuleCode(RowUtils.string((Row)com, 0));
-						cmd.setModuleName(RowUtils.string((Row)com, 1));
-						cmd.setAdd(RowUtils.isChecked((Row)com, 2));
-						cmd.setRead(RowUtils.isChecked((Row)com, 3));
-						cmd.setEdit(RowUtils.isChecked((Row)com, 4));
-						cmd.setDelete(RowUtils.isChecked((Row)com, 5));
-						cmd.setPrint(RowUtils.isChecked((Row)com, 6));
-						
-						command.getModules().add(cmd);
-					});
+					RoleModuleCommand cmd = new RoleModuleCommand();
+					cmd.setModuleCode(RowUtils.string((Row)com, 0));
+					cmd.setModuleName(RowUtils.string((Row)com, 1));
+					cmd.setAdd(RowUtils.isChecked((Row)com, 2));
+					cmd.setRead(RowUtils.isChecked((Row)com, 3));
+					cmd.setEdit(RowUtils.isChecked((Row)com, 4));
+					cmd.setDelete(RowUtils.isChecked((Row)com, 5));
+					cmd.setPrint(RowUtils.isChecked((Row)com, 6));
+					
+					command.getModules().add(cmd);
 				});
-				
-				service.update(command);
-				
-				FlowHelper.next(getParent(), UIEvent.GRID);
-			}
+			});
+			
+			service.update(command);
+			FlowHelper.next(RoleUIEvent.toGrid());
 		});
 	}
 

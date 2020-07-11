@@ -2,8 +2,6 @@ package com.kratonsolution.belian.security.ui.module;
 
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.WrongValueException;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
@@ -15,7 +13,6 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.ui.AbstractForm;
-import com.kratonsolution.belian.common.ui.event.UIEvent;
 import com.kratonsolution.belian.common.ui.util.Components;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.Springs;
@@ -59,38 +56,25 @@ public class ModuleEditContent extends AbstractForm
 	@Override
 	public void initToolbar()
 	{
-		toolbar.getCancel().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				FlowHelper.next(getParent(), UIEvent.GRID);
-			}
-		});
+		toolbar.getCancel().addEventListener(Events.ON_CLICK, e->FlowHelper.next(ModuleUIEvent.toGrid()));
+		toolbar.getSave().addEventListener(Events.ON_CLICK, e->{
+			
+			if(Strings.isNullOrEmpty(code.getText()))
+				throw new WrongValueException(code, Labels.getLabel("warning.empty"));
 
-		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				if(Strings.isNullOrEmpty(code.getText()))
-					throw new WrongValueException(code, Labels.getLabel("warning.empty"));
+			if(Strings.isNullOrEmpty(name.getText()))
+				throw new WrongValueException(name,Labels.getLabel("warning.empty"));
 
-				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,Labels.getLabel("warning.empty"));
-
-
-				ModuleUpdateCommand command = new ModuleUpdateCommand();
-				command.setCode(moduleCode);
-				command.setName(name.getText());
-				command.setEnabled(enabled.isChecked());
-				command.setNote(note.getText());
-				command.setGroup(ModuleGroupUIHelper.get(groups));
-				
-				service.update(command);
-				
-				FlowHelper.next(getParent(), UIEvent.GRID);
-			}
+			ModuleUpdateCommand command = new ModuleUpdateCommand();
+			command.setCode(moduleCode);
+			command.setName(name.getText());
+			command.setEnabled(enabled.isChecked());
+			command.setNote(note.getText());
+			command.setGroup(ModuleGroupUIHelper.get(groups));
+			
+			service.update(command);
+			
+			FlowHelper.next(ModuleUIEvent.toGrid());
 		});
 	}
 

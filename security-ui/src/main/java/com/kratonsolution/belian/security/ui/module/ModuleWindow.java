@@ -1,9 +1,8 @@
 package com.kratonsolution.belian.security.ui.module;
 
-import java.util.Map;
-
 import org.zkoss.image.AImage;
 import org.zkoss.util.resource.Labels;
+import org.zkoss.zk.ui.event.EventQueues;
 
 import com.kratonsolution.belian.common.ui.AbstractWindow;
 import com.kratonsolution.belian.common.ui.event.UIEvent;
@@ -26,21 +25,22 @@ public class ModuleWindow extends AbstractWindow
 		} catch (Exception e) {}
 
 		caption.setLabel(Labels.getLabel("module.caption"));
-	}
 
-	@Override
-	public void fireWindowContentChange(String event, Map<String, String> parameter) {
+		EventQueues.lookup(ModuleUIEvent.class.getSimpleName()).subscribe(e->{
 
-		clearContent();
+			ModuleUIEvent event = (ModuleUIEvent) e;
 
-		if(event.equals(UIEvent.GRID)) {
-			appendChild(ModuleContentFactory.createGridContent());
-		}
-		else if(event.equals(UIEvent.EDIT_FORM)) {
-			appendChild(ModuleContentFactory.createEditFormContent(parameter.get("code")));
-		}
-		else {
-			appendChild(ModuleContentFactory.createAddFormContent());
-		}
+			clearContent();
+
+			if(event.getType().equals(UIEvent.ADD_FORM)) {
+				appendChild(new ModuleFormContent());
+			}
+			else if(event.getType().equals(UIEvent.EDIT_FORM)) {
+				appendChild(new ModuleEditContent(event.getCode()));
+			}
+			else {
+				appendChild(new ModuleGridContent());
+			}
+		});
 	}
 }

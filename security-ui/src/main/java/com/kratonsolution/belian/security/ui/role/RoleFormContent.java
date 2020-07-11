@@ -7,7 +7,6 @@ import java.util.Vector;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.CheckEvent;
-import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Auxhead;
@@ -28,7 +27,6 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.ui.AbstractForm;
-import com.kratonsolution.belian.common.ui.event.UIEvent;
 import com.kratonsolution.belian.common.ui.util.Components;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.RowUtils;
@@ -81,56 +79,44 @@ public class RoleFormContent extends AbstractForm
 	@Override
 	public void initToolbar()
 	{
-		toolbar.getCancel().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				FlowHelper.next(getParent(), UIEvent.GRID);
-			}
-		});
+		toolbar.getCancel().addEventListener(Events.ON_CLICK, e->FlowHelper.next(RoleUIEvent.toGrid()));
 		
-		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				if(Strings.isNullOrEmpty(code.getText()))
-					throw new WrongValueException(code, Labels.getLabel("message.field.empty"));
+		toolbar.getSave().addEventListener(Events.ON_CLICK, e->{
 			
-				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(name,Labels.getLabel("message.field.empty"));
+			if(Strings.isNullOrEmpty(code.getText()))
+				throw new WrongValueException(code, Labels.getLabel("message.field.empty"));
+		
+			if(Strings.isNullOrEmpty(name.getText()))
+				throw new WrongValueException(name,Labels.getLabel("message.field.empty"));
+		
+			RoleCreateCommand command = new RoleCreateCommand();
+			command.setCode(code.getText());
+			command.setName(name.getText());
+			command.setNote(note.getText());
+			command.setEnabled(status.isChecked());
 			
-				RoleCreateCommand command = new RoleCreateCommand();
-				command.setCode(code.getText());
-				command.setName(name.getText());
-				command.setNote(note.getText());
-				command.setEnabled(status.isChecked());
+			modules.stream().forEach(grid -> {
 				
-				modules.stream().forEach(grid -> {
+				grid.getRows().getChildren().stream().forEach(obj ->{
 					
-					grid.getRows().getChildren().stream().forEach(obj ->{
-						
-						Row row = (Row)obj;
-						
-						RoleModuleCommand rmd = new RoleModuleCommand();
-						rmd.setModuleCode(RowUtils.string(row, 0));
-						rmd.setModuleName(RowUtils.string(row, 1));
-						rmd.setAdd(RowUtils.isChecked(row, 2));
-						rmd.setRead(RowUtils.isChecked(row, 3));
-						rmd.setEdit(RowUtils.isChecked(row, 4));
-						rmd.setDelete(RowUtils.isChecked(row, 5));
-						rmd.setPrint(RowUtils.isChecked(row, 6));
-						rmd.setModuleGroup(ModuleGroup.valueOf(RowUtils.string(row, 7)));
-						
-						command.getModules().add(rmd);
-					});
+					Row row = (Row)obj;
+					
+					RoleModuleCommand rmd = new RoleModuleCommand();
+					rmd.setModuleCode(RowUtils.string(row, 0));
+					rmd.setModuleName(RowUtils.string(row, 1));
+					rmd.setAdd(RowUtils.isChecked(row, 2));
+					rmd.setRead(RowUtils.isChecked(row, 3));
+					rmd.setEdit(RowUtils.isChecked(row, 4));
+					rmd.setDelete(RowUtils.isChecked(row, 5));
+					rmd.setPrint(RowUtils.isChecked(row, 6));
+					rmd.setModuleGroup(ModuleGroup.valueOf(RowUtils.string(row, 7)));
+					
+					command.getModules().add(rmd);
 				});
-				
-				service.create(command);
-				
-				FlowHelper.next(getParent(), UIEvent.GRID);
-			}
+			});
+			
+			service.create(command);
+			FlowHelper.next(RoleUIEvent.toGrid());
 		});
 	}
 

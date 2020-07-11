@@ -7,10 +7,13 @@ import org.zkoss.zul.Toolbarbutton;
 import com.kratonsolution.belian.common.ui.Fisheyes;
 import com.kratonsolution.belian.common.ui.util.UIHelper;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
+@Slf4j
 public class SecurityUserHandler {
 
 	private UserWindow window = new UserWindow();
@@ -51,7 +54,7 @@ public class SecurityUserHandler {
 				});
 				
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error(e.getMessage());
 			}
 		}
 	}

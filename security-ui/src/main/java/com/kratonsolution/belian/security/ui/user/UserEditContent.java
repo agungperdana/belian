@@ -1,13 +1,9 @@
 package com.kratonsolution.belian.security.ui.user;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.WrongValueException;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.A;
 import org.zkoss.zul.Auxhead;
@@ -30,8 +26,8 @@ import com.kratonsolution.belian.common.ui.util.RowUtils;
 import com.kratonsolution.belian.common.ui.util.Springs;
 import com.kratonsolution.belian.security.api.UserData;
 import com.kratonsolution.belian.security.api.UserRoleData;
-import com.kratonsolution.belian.security.api.application.UserUpdateCommand;
 import com.kratonsolution.belian.security.api.application.UserService;
+import com.kratonsolution.belian.security.api.application.UserUpdateCommand;
 
 import lombok.NonNull;
 
@@ -70,53 +66,41 @@ public class UserEditContent extends AbstractForm
 	@Override
 	public void initToolbar()
 	{
-		toolbar.getCancel().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
+		toolbar.getCancel().addEventListener(Events.ON_CLICK, e->FlowHelper.next(UserUIEvent.toGrid()));
+		toolbar.getSave().addEventListener(Events.ON_CLICK, e->{
+
+			if(Strings.isNullOrEmpty(email.getText()))
+				throw new WrongValueException(email, Labels.getLabel("warning.empty"));
+
+			UserData opt = service.getByName(userName);
+			if(opt != null)
 			{
-				FlowHelper.next(getParent(), UIEvent.GRID);
-			}
-		});
+				UserUpdateCommand command = new UserUpdateCommand();
+				command.setName(userName);
+				command.setEmail(email.getText());
+				command.setEnabled(enabled.isChecked());
 
-		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				if(Strings.isNullOrEmpty(email.getText()))
-					throw new WrongValueException(email, Labels.getLabel("warning.empty"));
+				roles.getRows().getChildren().forEach(rw -> {
 
-				UserData opt = service.getByName(userName);
-				if(opt != null)
-				{
-					UserUpdateCommand command = new UserUpdateCommand();
-					command.setName(userName);
-					command.setEmail(email.getText());
-					command.setEnabled(enabled.isChecked());
+					String roleCode = RowUtils.string(((Row)rw), 0);
+					if(roleCode != null) {
 
-					roles.getRows().getChildren().forEach(rw -> {
-						
-						String roleCode = RowUtils.string(((Row)rw), 0);
-						if(roleCode != null) {
-							
-							Optional<UserRoleData> urd = opt.getRoles()
-													.stream()
-													.filter(p -> p.getRoleCode().equals(roleCode)).findFirst();
-							
-							if(urd.isPresent()) {
-								urd.get().setEnabled(RowUtils.isChecked((Row)rw, 1));
-							}
+						Optional<UserRoleData> urd = opt.getRoles()
+								.stream()
+								.filter(p -> p.getRoleCode().equals(roleCode)).findFirst();
+
+						if(urd.isPresent()) {
+							urd.get().setEnabled(RowUtils.isChecked((Row)rw, 1));
 						}
-					});
-					
-					command.getRoles().addAll(opt.getRoles());
+					}
+				});
 
-					service.update(command);
-				}
+				command.getRoles().addAll(opt.getRoles());
 
-				FlowHelper.next(getParent(), UIEvent.GRID);
+				service.update(command);
 			}
+
+			FlowHelper.next(UserUIEvent.toGrid());
 		});
 	}
 
@@ -126,17 +110,7 @@ public class UserEditContent extends AbstractForm
 		UserData opt = service.getByName(this.userName);
 		if(opt != null)
 		{
-			link.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-			{
-				@Override
-				public void onEvent(Event event) throws Exception
-				{
-					Map<String, String> param = new HashMap<>();
-					param.put("username", userName);
-					
-					FlowHelper.next(getParent(), UIEvent.OTHER, param);
-				}
-			});
+			link.addEventListener(Events.ON_CLICK, e->FlowHelper.next(new UserUIEvent(this.userName, UIEvent.OTHER)));
 
 			name.setConstraint("no empty");
 			name.setText(opt.getName());
@@ -181,22 +155,18 @@ public class UserEditContent extends AbstractForm
 		Auxhead head = GridHelper.buildHead(Labels.getLabel("form.userrole"), 2);
 
 		Checkbox all = new Checkbox(Labels.getLabel("form.selectall"));
-		all.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				Checkbox source = (Checkbox)event.getTarget();
+		all.addEventListener(Events.ON_CLICK, e->{
+			
+			Checkbox source = (Checkbox)e.getTarget();
 
-				Rows rows = roles.getRows();
-				for(Object object:rows.getChildren())
-				{
-					Row row = (Row)object;
-					if(source.isChecked())
-						RowUtils.checked(row,1);
-					else
-						RowUtils.unchecked(row, 1);
-				}
+			Rows rows = roles.getRows();
+			for(Object object:rows.getChildren())
+			{
+				Row row = (Row)object;
+				if(source.isChecked())
+					RowUtils.checked(row,1);
+				else
+					RowUtils.unchecked(row, 1);
 			}
 		});
 

@@ -2,8 +2,6 @@ package com.kratonsolution.belian.security.ui.user;
 
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.WrongValueException;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Auxhead;
 import org.zkoss.zul.Auxheader;
@@ -18,14 +16,13 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.ui.AbstractForm;
-import com.kratonsolution.belian.common.ui.event.UIEvent;
 import com.kratonsolution.belian.common.ui.util.Components;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.RowUtils;
 import com.kratonsolution.belian.common.ui.util.Springs;
 import com.kratonsolution.belian.security.api.RoleData;
-import com.kratonsolution.belian.security.api.application.UserCreateCommand;
 import com.kratonsolution.belian.security.api.application.RoleService;
+import com.kratonsolution.belian.security.api.application.UserCreateCommand;
 import com.kratonsolution.belian.security.api.application.UserService;
 
 /**
@@ -64,44 +61,33 @@ public class UserFormContent extends AbstractForm
 	@Override
 	public void initToolbar()
 	{
-		toolbar.getCancel().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				FlowHelper.next(getParent(), UIEvent.GRID);
-			}
-		});
+		toolbar.getCancel().addEventListener(Events.ON_CLICK, e->FlowHelper.next(UserUIEvent.toGrid()));
 		
-		toolbar.getSave().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				if(Strings.isNullOrEmpty(name.getText()))
-					throw new WrongValueException(email, Labels.getLabel("form.name"));
-				
-				if(Strings.isNullOrEmpty(email.getText()))
-					throw new WrongValueException(email, Labels.getLabel("form.email"));
+		toolbar.getSave().addEventListener(Events.ON_CLICK, e->{
 			
-				if(Strings.isNullOrEmpty(password.getText()))
-					throw new WrongValueException(password, Labels.getLabel("form.password"));
-				
-				if(Strings.isNullOrEmpty(repassword.getText()))
-					throw new WrongValueException(repassword, Labels.getLabel("form.repassword"));
-				
-				if(!password.getText().equals(repassword.getText()))
-					throw new WrongValueException(repassword, Labels.getLabel("form.password.notmatch"));
-				
-				UserCreateCommand command = new UserCreateCommand();
-				command.setEmail(email.getText());
-				command.setName(name.getText());
-				command.setPassword(password.getText());
-				command.setEnabled(enabled.isChecked());
-				
-				service.create(command);
-				FlowHelper.next(getParent(), UIEvent.GRID);
-			}
+			if(Strings.isNullOrEmpty(name.getText()))
+				throw new WrongValueException(email, Labels.getLabel("form.name"));
+			
+			if(Strings.isNullOrEmpty(email.getText()))
+				throw new WrongValueException(email, Labels.getLabel("form.email"));
+		
+			if(Strings.isNullOrEmpty(password.getText()))
+				throw new WrongValueException(password, Labels.getLabel("form.password"));
+			
+			if(Strings.isNullOrEmpty(repassword.getText()))
+				throw new WrongValueException(repassword, Labels.getLabel("form.repassword"));
+			
+			if(!password.getText().equals(repassword.getText()))
+				throw new WrongValueException(repassword, Labels.getLabel("form.password.notmatch"));
+			
+			UserCreateCommand command = new UserCreateCommand();
+			command.setEmail(email.getText());
+			command.setName(name.getText());
+			command.setPassword(password.getText());
+			command.setEnabled(enabled.isChecked());
+			
+			service.create(command);
+			FlowHelper.next(UserUIEvent.toGrid());
 		});
 	}
 
@@ -158,22 +144,18 @@ public class UserFormContent extends AbstractForm
 		col1.setWidth("175px");
 		
 		Checkbox all = new Checkbox(Labels.getLabel("form.selectall"));
-		all.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
+		all.addEventListener(Events.ON_CLICK, e->{
+			
+			Checkbox source = (Checkbox)e.getTarget();
+			
+			Rows rows = grid.getRows();
+			for(Object object:rows.getChildren())
 			{
-				Checkbox source = (Checkbox)event.getTarget();
-				
-				Rows rows = grid.getRows();
-				for(Object object:rows.getChildren())
-				{
-					Row row = (Row)object;
-					if(source.isChecked())
-						RowUtils.checked(row,1);
-					else
-						RowUtils.unchecked(row, 1);
-				}
+				Row row = (Row)object;
+				if(source.isChecked())
+					RowUtils.checked(row,1);
+				else
+					RowUtils.unchecked(row, 1);
 			}
 		});
 		

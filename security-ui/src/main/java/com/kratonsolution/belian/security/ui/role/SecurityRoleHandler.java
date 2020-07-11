@@ -7,14 +7,19 @@ import org.zkoss.zul.Toolbarbutton;
 import com.kratonsolution.belian.common.ui.Fisheyes;
 import com.kratonsolution.belian.common.ui.util.UIHelper;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
+@Slf4j
 public class SecurityRoleHandler {
 
 	public SecurityRoleHandler() {
 
+		log.info("Creating & opening RoleWindow [Role Management]");
+		
 		RoleWindow window = new RoleWindow();
 		window.appendChild(new RoleGridContent());
 		window.setPage(UIHelper.getPage());
@@ -50,7 +55,7 @@ public class SecurityRoleHandler {
 				});
 				
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error(e.toString());
 			}
 		}
 	}

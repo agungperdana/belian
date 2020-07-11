@@ -1,25 +1,16 @@
 package com.kratonsolution.belian.security.ui.user;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.zkoss.util.resource.Labels;
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
-import org.zkoss.zul.Grid;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
-import org.zkoss.zul.Rows;
-import org.zkoss.zul.event.PagingEvent;
-import org.zkoss.zul.event.ZulEvents;
 
 import com.kratonsolution.belian.common.ui.GridContent;
-import com.kratonsolution.belian.common.ui.event.UIEvent;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.RowUtils;
 import com.kratonsolution.belian.common.ui.util.Springs;
@@ -35,133 +26,66 @@ import com.kratonsolution.belian.security.api.application.UserService;
 public class UserGridContent extends GridContent
 {
 	private static final long serialVersionUID = 6355501178171697053L;
-	
+
 	private UserService service = Springs.get(UserService.class);
-	
+
 	public UserGridContent()
 	{
 		super();
 		initToolbar();
 		initGrid();
 	}
-	
+
 	protected void initToolbar()
 	{
-		toolbar.setParent(this);
-		toolbar.getRefresh().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				FlowHelper.next(getParent(), UIEvent.GRID);
-			}
-		});
+		appendChild(toolbar);
 		
-		toolbar.getNewData().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
+		toolbar.getRefresh().addEventListener(Events.ON_CLICK, e->FlowHelper.next(UserUIEvent.toGrid()));
+		toolbar.getNewData().addEventListener(Events.ON_CLICK, e->FlowHelper.next(UserUIEvent.newForm()));
+		toolbar.getDelete().addEventListener(Events.ON_CLICK, e->{
+
+			Messagebox.show(Labels.getLabel("message.removedata"),"Warning",
+					Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
 			{
-				FlowHelper.next(getParent(), UIEvent.ADD_FORM);
-			}
-		});
-		
-		toolbar.getSelect().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				Rows rows = grid.getRows();
-				for(Object object:rows.getChildren())
+				@Override
+				public void onEvent(Event event) throws Exception
 				{
-					Row row = (Row)object;
-					
-					if(row.getFirstChild() instanceof Checkbox)
+					if(event.getName().equals("onOK"))
 					{
-						Checkbox checkbox = (Checkbox)row.getFirstChild();
-						checkbox.setChecked(true);
-					}
-					
-					toolbar.removeChild(toolbar.getSelect());
-					toolbar.insertBefore(toolbar.getDeselect(),toolbar.getDelete());
-				}
-			}
-		});
-		
-		toolbar.getDeselect().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				Rows rows = grid.getRows();
-				for(Object object:rows.getChildren())
-				{
-					Row row = (Row)object;
-					if(row.getFirstChild() instanceof Checkbox)
-					{
-						Checkbox checkbox = (Checkbox)row.getFirstChild();
-						checkbox.setChecked(false);						
-					}
-				
-					toolbar.removeChild(toolbar.getDeselect());
-					toolbar.insertBefore(toolbar.getSelect(),toolbar.getDelete());
-				}
-			}
-		});
-		
-		toolbar.getDelete().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				Messagebox.show(Labels.getLabel("message.removedata"),"Warning",
-						Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
-						{
-							@Override
-							public void onEvent(Event event) throws Exception
+						grid.getRows().getChildren().stream().forEach(object -> {
+
+							Row row = (Row)object;
+							if(row.getFirstChild() instanceof Checkbox)
 							{
-								if(event.getName().equals("onOK"))
+								Checkbox check = (Checkbox)row.getFirstChild();
+								if(check.isChecked())
 								{
-									grid.getRows().getChildren().stream().forEach(object -> {
-										
-										Row row = (Row)object;
-										if(row.getFirstChild() instanceof Checkbox)
-										{
-											Checkbox check = (Checkbox)row.getFirstChild();
-											if(check.isChecked())
-											{
-												UserDeleteCommand command = new UserDeleteCommand();
-												command.setName(RowUtils.string(row, 1));
-												
-												service.delete(command);
-												grid.setModel(new UserModel());
-											}
-										}
-									});
+									UserDeleteCommand command = new UserDeleteCommand();
+									command.setName(RowUtils.string(row, 1));
+
+									service.delete(command);
+									grid.setModel(new UserModel());
 								}
 							}
 						});
-			}
-		});
-		
-		toolbar.getSearch().addEventListener(Events.ON_CLICK,new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-			}
+					}
+				}
+			});
+
+			FlowHelper.next(UserUIEvent.toGrid());
 		});
 
+		toolbar.getSearch().addEventListener(Events.ON_CLICK,e->{});
+
 	}
-	
+
 	protected void initGrid()
 	{
-		final UserModel model = new UserModel();
+		appendChild(grid);
 		
-		grid.setParent(this);
 		grid.setHeight("80%");
 		grid.setEmptyMessage(Labels.getLabel("message.grid.empty"));
-		grid.setModel(model);
+		grid.setModel(new UserModel());
 		grid.setRowRenderer(new UserRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");
@@ -172,41 +96,5 @@ public class UserGridContent extends GridContent
 		grid.getColumns().appendChild(new Column(Labels.getLabel("user.grid.email")));
 		grid.getColumns().appendChild(new Column(Labels.getLabel("user.grid.status")));
 		grid.appendChild(getFoot(grid.getColumns().getChildren().size()));
-		grid.addEventListener(ZulEvents.ON_AFTER_RENDER, new EventListener<Event>()
-		{
-			@Override
-			public void onEvent(Event event) throws Exception
-			{
-				Grid target = (Grid)event.getTarget();
-				for(Component com:target.getRows().getChildren())
-				{
-					com.addEventListener(Events.ON_CLICK,new EventListener<Event>()
-					{
-						@Override
-						public void onEvent(Event ev) throws Exception
-						{
-							Row row = (Row)ev.getTarget();
-							
-							Map<String, String> param = new HashMap<>();
-							param.put("username", RowUtils.string(row, 1));
-							
-							FlowHelper.next(getParent(), UIEvent.EDIT_FORM, param);
-						}
-					});
-				}
-			}
-		});
-
-		grid.addEventListener(ZulEvents.ON_PAGING,new EventListener<PagingEvent>()
-		{
-			@Override
-			public void onEvent(PagingEvent event) throws Exception
-			{
-				model.next(event.getActivePage());
-				grid.setModel(model);
-			}
-		});
 	}
-	
-	
 }
