@@ -1,10 +1,7 @@
 package com.kratonsolution.belian.security.ui.user;
 
 import org.zkoss.util.resource.Labels;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 import org.zkoss.zul.Messagebox;
@@ -18,11 +15,14 @@ import com.kratonsolution.belian.common.ui.util.UIHelper;
 import com.kratonsolution.belian.security.api.application.UserDeleteCommand;
 import com.kratonsolution.belian.security.api.application.UserService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  * @since 1.0
  */
+@Slf4j
 public class UserGridContent extends GridContent
 {
 	private static final long serialVersionUID = 6355501178171697053L;
@@ -45,34 +45,25 @@ public class UserGridContent extends GridContent
 		toolbar.getDelete().addEventListener(Events.ON_CLICK, e->{
 
 			Messagebox.show(Labels.getLabel("message.removedata"),"Warning",
-					Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,new EventListener<Event>()
-			{
-				@Override
-				public void onEvent(Event event) throws Exception
-				{
-					if(event.getName().equals("onOK"))
-					{
-						grid.getRows().getChildren().stream().forEach(object -> {
+					Messagebox.CANCEL|Messagebox.OK, Messagebox.QUESTION,ev->{
+						
+						if(ev.getName().equals("onOK"))
+						{
+							grid.getRows().getChildren().forEach(rw -> {
 
-							Row row = (Row)object;
-							if(row.getFirstChild() instanceof Checkbox)
-							{
-								Checkbox check = (Checkbox)row.getFirstChild();
-								if(check.isChecked())
-								{
+								log.info("Selected row {}", RowUtils.isChecked((Row)rw));
+								
+								if(RowUtils.isChecked((Row)rw)) {
+									
 									UserDeleteCommand command = new UserDeleteCommand();
-									command.setName(RowUtils.string(row, 1));
+									command.setName(RowUtils.string((Row)rw, 1));
 
 									service.delete(command);
-									grid.setModel(new UserModel());
+									grid.setModel(UserModel.build());
 								}
-							}
-						});
-					}
-				}
-			});
-
-			FlowHelper.next(UserUIEvent.toGrid());
+							});
+						}
+					});
 		});
 
 		toolbar.getSearch().addEventListener(Events.ON_CLICK,e->{});
@@ -85,7 +76,7 @@ public class UserGridContent extends GridContent
 		
 		grid.setHeight("80%");
 		grid.setEmptyMessage(Labels.getLabel("message.grid.empty"));
-		grid.setModel(new UserModel());
+		grid.setModel(UserModel.build());
 		grid.setRowRenderer(new UserRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");

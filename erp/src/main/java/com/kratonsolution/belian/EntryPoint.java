@@ -2,6 +2,7 @@ package com.kratonsolution.belian;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * @author Agung Dodi Perdana
@@ -9,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @sinch 2.0
  */
 @SpringBootApplication
+@EnableTransactionManagement
 public class EntryPoint
 {
     public static void main( String[] args )

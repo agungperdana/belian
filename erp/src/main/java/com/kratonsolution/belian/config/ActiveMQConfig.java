@@ -19,7 +19,9 @@ public class ActiveMQConfig {
 		service.setPersistent(false);
 		service.setUseJmx(true);
 		service.addConnector("tcp://127.0.0.1:61616");
+		service.start(true);
 		
 		return service;
 	}
+	
 }
