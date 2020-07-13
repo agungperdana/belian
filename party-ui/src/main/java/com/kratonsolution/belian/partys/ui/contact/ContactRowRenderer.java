@@ -28,7 +28,7 @@ public class ContactRowRenderer implements RowRenderer<ContactData> {
 			}
 		}
 		
-		row.setAttribute("DATAID", data.getDataID());
+		row.setAttribute("DATAID", data.getId());
 		row.appendChild(Components.checkbox(false));
 		row.appendChild(Components.textBox(data.getContact()));
 		row.appendChild(type);

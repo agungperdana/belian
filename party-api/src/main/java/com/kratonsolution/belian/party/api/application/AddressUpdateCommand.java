@@ -1,7 +1,5 @@
 package com.kratonsolution.belian.party.api.application;
 
-import java.util.Optional;
-
 import com.kratonsolution.belian.party.api.model.AddressType;
 
 import lombok.Getter;
@@ -19,16 +17,17 @@ public class AddressUpdateCommand {
 
 	@NonNull
 	private String partyCode;
-	
+
 	@NonNull
+	private String addressId;
+	
 	private String address;
 	
 	private boolean active;
 	
-	@NonNull
 	private AddressType type;
 
-	private Optional<String> postal = Optional.empty();
+	private String postal;
 	
-	private Optional<String> location = Optional.empty();
+	private String location;
 }

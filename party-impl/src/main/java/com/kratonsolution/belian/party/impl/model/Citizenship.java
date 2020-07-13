@@ -56,14 +56,14 @@ public class Citizenship implements Serializable
 	
 	@ManyToOne
 	@JoinColumn(name="fk_person")
-	private Person person;
+	private PersonInformation person;
 	
 	@Version
 	private Long version;
 	
 	Citizenship(){}
 	
-	public Citizenship(@NonNull Person parent, @NonNull Instant start,
+	public Citizenship(@NonNull PersonInformation parent, @NonNull Instant start,
 			@NonNull String countryCode, @NonNull String countryName){
 		
 		this.person = parent;

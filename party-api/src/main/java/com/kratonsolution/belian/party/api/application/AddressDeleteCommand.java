@@ -1,7 +1,5 @@
 package com.kratonsolution.belian.party.api.application;
 
-import com.kratonsolution.belian.party.api.model.AddressType;
-
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -19,8 +17,5 @@ public class AddressDeleteCommand {
 	private String partyCode;
 	
 	@NonNull
-	private String address;
-	
-	@NonNull
-	private AddressType type;
+	private String addressId;
 }

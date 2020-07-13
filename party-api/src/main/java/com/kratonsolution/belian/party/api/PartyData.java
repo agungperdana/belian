@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.google.common.base.MoreObjects;
+import com.kratonsolution.belian.party.api.model.PartyType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,8 @@ public class PartyData implements Serializable
 {	
 	private static final long serialVersionUID = 1L;
 	
+	private String id;
+	
 	private String code;
 
 	private String name;
@@ -29,7 +32,11 @@ public class PartyData implements Serializable
 
 	private Instant birthDate;
 	
+	private PartyType type;
+	
 	private PartyGeographicInfoData birthPlace;
+	
+	private PersonInformationData personInformation;
 	
 	private Set<AddressData> addresses = new HashSet<AddressData>();
 	

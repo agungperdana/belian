@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.kratonsolution.belian.party.impl.model.Person;
+import com.kratonsolution.belian.party.impl.model.PersonInformation;
 
 import lombok.NonNull;
 
@@ -14,8 +14,8 @@ import lombok.NonNull;
  * @email agung.dodi.perdana@gmail.com
  * @since 1.0
  */
-public interface PersonRepository extends JpaRepository<Person, String>
+public interface PersonRepository extends JpaRepository<PersonInformation, String>
 {
 	@Query("FROM Person person WHERE person.party.code = ?1")
-	public Optional<Person> findByCode(@NonNull String partyCode);
+	public Optional<PersonInformation> findByCode(@NonNull String partyCode);
 }

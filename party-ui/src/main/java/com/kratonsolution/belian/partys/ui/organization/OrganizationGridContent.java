@@ -13,7 +13,7 @@ import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.RowUtils;
 import com.kratonsolution.belian.common.ui.util.Springs;
 import com.kratonsolution.belian.common.ui.util.UIHelper;
-import com.kratonsolution.belian.party.api.application.OrganizationDeleteCommand;
+import com.kratonsolution.belian.party.api.application.PartyDeleteCommand;
 import com.kratonsolution.belian.party.api.application.OrganizationService;
 
 /**
@@ -52,7 +52,7 @@ public class OrganizationGridContent extends GridContent
 
 						if(RowUtils.isChecked(row,0)) {
 
-							OrganizationDeleteCommand command = new OrganizationDeleteCommand();
+							PartyDeleteCommand command = new PartyDeleteCommand();
 							command.setCode(RowUtils.string(row, 1));
 							service.delete(command);
 						}

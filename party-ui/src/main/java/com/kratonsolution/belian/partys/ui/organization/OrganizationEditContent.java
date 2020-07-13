@@ -26,7 +26,7 @@ import com.kratonsolution.belian.geographic.api.GeographicType;
 import com.kratonsolution.belian.geographic.api.application.GeographicService;
 import com.kratonsolution.belian.party.api.OrganizationData;
 import com.kratonsolution.belian.party.api.application.OrganizationService;
-import com.kratonsolution.belian.party.api.application.OrganizationUpdateCommand;
+import com.kratonsolution.belian.party.api.application.PartyUpdateCommand;
 import com.kratonsolution.belian.partys.ui.PartyDetailTab;
 
 import lombok.NonNull;
@@ -76,7 +76,7 @@ public class OrganizationEditContent extends AbstractForm
 			if(Strings.isNullOrEmpty(name.getText()))
 				throw new WrongValueException(name,Labels.getLabel("warning.empty"));
 			
-			OrganizationUpdateCommand command = new OrganizationUpdateCommand();
+			PartyUpdateCommand command = new PartyUpdateCommand();
 			command.setCode(this.partyCode);
 			command.setName(Optional.ofNullable(name.getText()));
 			command.setTaxCode(Optional.ofNullable(tax.getText()));

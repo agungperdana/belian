@@ -19,7 +19,7 @@ public class AddressData implements Serializable
 {
 	private static final long serialVersionUID = 5974009777137751638L;
 	
-	private final String dataID = UUID.randomUUID().toString();
+	private String id = UUID.randomUUID().toString();
 	
 	private String description;
 		

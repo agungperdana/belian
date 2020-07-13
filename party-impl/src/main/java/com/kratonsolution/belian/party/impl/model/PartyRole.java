@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.google.common.base.MoreObjects;
 import com.kratonsolution.belian.party.api.model.PartyRoleType;
 
 import lombok.Getter;
@@ -34,31 +35,40 @@ public class PartyRole implements Serializable
 
 	@Id
 	private String id = UUID.randomUUID().toString();
-	
+
 	@Column(name="start")
 	private Instant start;
-	
+
 	@Setter
 	@Column(name="end")
 	private Instant end;
-	
+
 	@ManyToOne
 	@JoinColumn(name="fk_party")
 	private Party party;
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column(name="type")
 	private PartyRoleType type;
-	
+
 	@Version
 	private Long version;
-	
+
 	PartyRole(){}
-	
+
 	public PartyRole(@NonNull Party parent, @NonNull Instant start, @NonNull PartyRoleType type){
-		
+
 		this.party = parent;
 		this.start = start;
 		this.type = type;
+	}
+
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+				.add("start", start)
+				.add("end", end)
+				.add("type", type)
+				.toString();
 	}
 }

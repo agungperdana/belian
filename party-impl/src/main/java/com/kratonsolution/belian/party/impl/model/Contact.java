@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.google.common.base.MoreObjects;
 import com.kratonsolution.belian.party.api.model.ContactType;
 
 import lombok.Getter;
@@ -33,7 +34,7 @@ public class Contact implements Serializable
 
 	@Id
 	private String id = UUID.randomUUID().toString();
-	
+
 	@Column(name="contact",nullable=false)
 	private String contact;
 
@@ -41,7 +42,7 @@ public class Contact implements Serializable
 	@Column(name="type",nullable=false)
 	@Enumerated(EnumType.STRING)
 	private ContactType type = ContactType.OFFICE_PHONE;
-	
+
 	@Setter
 	@Column(name="is_active")
 	private boolean active;
@@ -49,16 +50,25 @@ public class Contact implements Serializable
 	@ManyToOne
 	@JoinColumn(name="fk_party")
 	private Party party;
-	
+
 	@Version
 	private Long version;
-	
+
 	Contact(){}
-	
+
 	public Contact(@NonNull Party parent, @NonNull String contact, @NonNull ContactType type) {
-		
+
 		this.party = parent;
 		this.contact = contact;
 		this.type = type;
+	}
+
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+					.add("contact", contact)
+					.add("type", type)
+					.add("active", active)
+					.toString();
 	}
 }

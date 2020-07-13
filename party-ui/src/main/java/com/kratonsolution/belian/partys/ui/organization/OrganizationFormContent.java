@@ -24,7 +24,7 @@ import com.kratonsolution.belian.common.ui.util.Springs;
 import com.kratonsolution.belian.geographic.api.GeographicData;
 import com.kratonsolution.belian.geographic.api.GeographicType;
 import com.kratonsolution.belian.geographic.api.application.GeographicService;
-import com.kratonsolution.belian.party.api.application.OrganizationCreateCommand;
+import com.kratonsolution.belian.party.api.application.PartyCreateCommand;
 import com.kratonsolution.belian.party.api.application.OrganizationService;
 
 /**
@@ -66,7 +66,7 @@ public class OrganizationFormContent extends AbstractForm
 			if(Strings.isNullOrEmpty(name.getText()))
 				throw new WrongValueException(name, Labels.getLabel("warning.empty"));
 		
-			OrganizationCreateCommand command = new OrganizationCreateCommand();
+			PartyCreateCommand command = new PartyCreateCommand();
 			command.setCode(code.getText());
 			command.setName(name.getText());
 			command.setTaxCode(Optional.ofNullable(tax.getText()));

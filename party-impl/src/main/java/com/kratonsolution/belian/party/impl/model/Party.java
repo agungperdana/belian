@@ -17,7 +17,9 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -26,7 +28,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
-import com.kratonsolution.belian.geographic.api.GeographicData;
 import com.kratonsolution.belian.party.api.model.AddressType;
 import com.kratonsolution.belian.party.api.model.ContactType;
 import com.kratonsolution.belian.party.api.model.PartyClassificationType;
@@ -71,6 +72,12 @@ public class Party implements Serializable
 
 	@Getter
 	@Setter
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "fk_person_information")
+	private PersonInformation personInformation;
+	
+	@Getter
+	@Setter
 	@AttributeOverrides({
 		@AttributeOverride(name = "code", column = @Column(name="birth_place_code")),
 		@AttributeOverride(name = "name", column = @Column(name="birth_place_name"))})
@@ -113,14 +120,15 @@ public class Party implements Serializable
 		this.type = type;
 	}
 
-	public Address createAddress(@NonNull String description, @NonNull AddressType type, GeographicData location) {
+	public Address createAddress(@NonNull String description, @NonNull AddressType type, @NonNull String locationCode, @NonNull String locationName) {
 
 		Optional<Address> opt = this.addresses.stream()
-				.filter(p->p.getDescription().equals(description)&&p.getType().equals(type)).findAny();
+				.filter(p->p.getDescription().equals(description) && 
+						p.getType().equals(type)).findAny();
 
 		Preconditions.checkState(!opt.isPresent(), "Address already exist");
 
-		Address obj = new Address(this, description, type, new PartyGeographicInfo(location.getCode(), location.getName()));
+		Address obj = new Address(this, description, type, new PartyGeographicInfo(locationCode, locationName));
 		this.addresses.add(obj);
 
 		return obj;
@@ -338,6 +346,8 @@ public class Party implements Serializable
 	{
 		return MoreObjects.toStringHelper(this)
 				.add("code", this.code)
-				.add("name", this.name).toString();
+				.add("name", this.name)
+				.add("type", this.type)
+				.toString();
 	}
 }

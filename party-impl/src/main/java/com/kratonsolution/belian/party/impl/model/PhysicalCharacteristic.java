@@ -52,14 +52,14 @@ public class PhysicalCharacteristic implements Serializable
 	
 	@ManyToOne
 	@JoinColumn(name="fk_person")
-	private Person person;
+	private PersonInformation person;
 	
 	@Version
 	private Long version;
 	
 	PhysicalCharacteristic(){}
 	
-	public PhysicalCharacteristic(@NonNull Person person, @NonNull Instant start, @NonNull String value, @NonNull PhysicalCharacteristicType type) {
+	public PhysicalCharacteristic(@NonNull PersonInformation person, @NonNull Instant start, @NonNull String value, @NonNull PhysicalCharacteristicType type) {
 		
 		this.person = person;
 		this.start = start;

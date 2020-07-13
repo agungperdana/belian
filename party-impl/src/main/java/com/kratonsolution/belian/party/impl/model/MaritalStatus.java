@@ -48,14 +48,14 @@ public class MaritalStatus implements Serializable
 	
 	@ManyToOne
 	@JoinColumn(name="fk_person")
-	private Person person;
+	private PersonInformation person;
 	
 	@Version
 	private Long version;
 	
 	MaritalStatus(){}
 	
-	public MaritalStatus(@NonNull Person parent, @NonNull Instant start, @NonNull MaritalStatusType type) {
+	public MaritalStatus(@NonNull PersonInformation parent, @NonNull Instant start, @NonNull MaritalStatusType type) {
 		
 		this.person = parent;
 		this.start = start;

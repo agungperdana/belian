@@ -18,6 +18,7 @@ import javax.persistence.Version;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
+import com.google.common.base.MoreObjects;
 import com.kratonsolution.belian.party.api.model.AddressType;
 
 import lombok.Getter;
@@ -38,18 +39,18 @@ public class Address implements Serializable
 
 	@Id
 	private String id = UUID.randomUUID().toString();
-	
+
 	@Column(name="address", nullable=false)
 	private String description;
 
 	@Setter
 	@Column(name="postal", nullable=false)
 	private String postal;
-	
+
 	@Setter
 	@Column(name="status", nullable=false)
 	private boolean active;
-	
+
 	@Setter
 	@Column(name="type", nullable=false)
 	@Enumerated(EnumType.STRING)
@@ -60,22 +61,31 @@ public class Address implements Serializable
 		@AttributeOverride(name = "code", column = @Column(name="location_code")),
 		@AttributeOverride(name = "name", column = @Column(name="location_name"))})
 	private PartyGeographicInfo location;
-	
+
 	@ManyToOne
 	@JoinColumn(name="fk_party")
 	@NotFound(action = NotFoundAction.IGNORE)
 	private Party party;
-	
+
 	@Version
 	private Long version;
-	
+
 	Address(){}
-	
+
 	public Address(@NonNull Party parent, @NonNull String descriotion, @NonNull AddressType type, @NonNull PartyGeographicInfo location) {
-		
+
 		this.party = parent;
 		this.description = descriotion;
 		this.type = type;
 		this.location = location;
+	}
+
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+				.add("address", description)
+				.add("type", type)
+				.add("location", location)
+				.toString();
 	}
 }

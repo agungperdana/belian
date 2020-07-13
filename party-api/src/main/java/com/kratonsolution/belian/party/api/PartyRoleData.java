@@ -20,7 +20,7 @@ public class PartyRoleData implements Serializable
 {
 	private static final long serialVersionUID = -2424004223402414808L;
 
-	private final String dataID = UUID.randomUUID().toString();
+	private String id = UUID.randomUUID().toString();
 	
 	private Instant start;
 	
