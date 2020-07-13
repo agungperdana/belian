@@ -20,7 +20,7 @@ public class PartyClassificationData implements Serializable
 {
 	private static final long serialVersionUID = -3738615250193814386L;
 
-	private final String dataID = UUID.randomUUID().toString();
+	private String id = UUID.randomUUID().toString();
 	
 	private Instant start;
 	

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.UUID;
 
-import com.kratonsolution.belian.party.api.model.PartyRelationshipStatus;
 import com.kratonsolution.belian.party.api.model.PartyRelationshipType;
 
 import lombok.Getter;
@@ -32,8 +31,6 @@ public class PartyRelationshipData implements Serializable
 	private String toPartyName;
 	
 	private PartyRelationshipType type;
-	
-	private PartyRelationshipStatus status;
 	
 	public PartyRelationshipData(){}
 }

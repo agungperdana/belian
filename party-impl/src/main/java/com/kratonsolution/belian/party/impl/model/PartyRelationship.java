@@ -14,10 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-
-import com.kratonsolution.belian.party.api.model.PartyRelationshipStatus;
+import com.google.common.base.MoreObjects;
 import com.kratonsolution.belian.party.api.model.PartyRelationshipType;
 
 import lombok.Getter;
@@ -52,17 +49,11 @@ public class PartyRelationship implements Serializable
 	
 	@ManyToOne
 	@JoinColumn(name="fk_to_party")
-	@NotFound(action = NotFoundAction.IGNORE)
 	private Party toParty;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="type")
 	private PartyRelationshipType type;
-	
-	@Setter
-	@Enumerated(EnumType.STRING)
-	@Column(name="status")
-	private PartyRelationshipStatus status = PartyRelationshipStatus.ACTIVE;
 	
 	@Version
 	private Long version;
@@ -75,5 +66,15 @@ public class PartyRelationship implements Serializable
 		this.toParty = toParty;
 		this.start = start;
 		this.type = type;
+	}
+	
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+				.add("To Party", toParty.getName())
+				.add("start", start)
+				.add("end", end)
+				.add("type", type)
+				.toString();
 	}
 }

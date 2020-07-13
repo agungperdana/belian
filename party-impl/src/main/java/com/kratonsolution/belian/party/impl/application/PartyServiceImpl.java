@@ -17,7 +17,9 @@ import com.kratonsolution.belian.geographic.api.GeographicData;
 import com.kratonsolution.belian.geographic.api.application.GeographicService;
 import com.kratonsolution.belian.party.api.AddressData;
 import com.kratonsolution.belian.party.api.ContactData;
+import com.kratonsolution.belian.party.api.PartyClassificationData;
 import com.kratonsolution.belian.party.api.PartyData;
+import com.kratonsolution.belian.party.api.PartyRelationshipData;
 import com.kratonsolution.belian.party.api.PartyRoleData;
 import com.kratonsolution.belian.party.api.application.AddressCreateCommand;
 import com.kratonsolution.belian.party.api.application.AddressDeleteCommand;
@@ -25,9 +27,15 @@ import com.kratonsolution.belian.party.api.application.AddressUpdateCommand;
 import com.kratonsolution.belian.party.api.application.ContactCreateCommand;
 import com.kratonsolution.belian.party.api.application.ContactDeleteCommand;
 import com.kratonsolution.belian.party.api.application.ContactUpdateCommand;
+import com.kratonsolution.belian.party.api.application.PartyClassificationCreateCommand;
+import com.kratonsolution.belian.party.api.application.PartyClassificationDeleteCommand;
+import com.kratonsolution.belian.party.api.application.PartyClassificationUpdateCommand;
 import com.kratonsolution.belian.party.api.application.PartyCreateCommand;
 import com.kratonsolution.belian.party.api.application.PartyDeleteCommand;
 import com.kratonsolution.belian.party.api.application.PartyFilter;
+import com.kratonsolution.belian.party.api.application.PartyRelationshipCreateCommand;
+import com.kratonsolution.belian.party.api.application.PartyRelationshipDeleteCommand;
+import com.kratonsolution.belian.party.api.application.PartyRelationshipUpdateCommand;
 import com.kratonsolution.belian.party.api.application.PartyRoleCreateCommand;
 import com.kratonsolution.belian.party.api.application.PartyRoleDeleteCommand;
 import com.kratonsolution.belian.party.api.application.PartyRoleUpdateCommand;
@@ -37,7 +45,9 @@ import com.kratonsolution.belian.party.api.model.PartyType;
 import com.kratonsolution.belian.party.impl.model.Address;
 import com.kratonsolution.belian.party.impl.model.Contact;
 import com.kratonsolution.belian.party.impl.model.Party;
+import com.kratonsolution.belian.party.impl.model.PartyClassification;
 import com.kratonsolution.belian.party.impl.model.PartyGeographicInfo;
+import com.kratonsolution.belian.party.impl.model.PartyRelationship;
 import com.kratonsolution.belian.party.impl.model.PartyRole;
 import com.kratonsolution.belian.party.impl.repository.PartyRepository;
 
@@ -218,6 +228,13 @@ public class PartyServiceImpl implements PartyService {
 		return repo.count(type).intValue();
 	}
 	
+	private Party getAndCheck(@NonNull String partyCode) {
+		
+		Party party = repo.findOneByCode(partyCode);
+		Preconditions.checkState(party != null, "Party does not exist");
+		return party;
+	}
+	
 	@Override
 	public AddressData createAddress(@NonNull AddressCreateCommand command) {
 		
@@ -240,33 +257,32 @@ public class PartyServiceImpl implements PartyService {
 	public AddressData updateAddress(@NonNull AddressUpdateCommand command) {
 
 		Party party = getAndCheck(command.getPartyCode());
+		Address address = party.updateAddress(command.getAddressId());
 		
-		Optional<Address> opt = party.getAddresses().stream().filter(p -> 
-									p.getId().equals(command.getAddressId())).findFirst();
-		
-		Preconditions.checkState(opt.isPresent(), "Address not exist");
+		Preconditions.checkState(address != null, "Address not exist");
 		
 		GeographicData location = geoService.getByCode(command.getLocation());
 		Preconditions.checkState(location != null, "Geographic location does not exist");
 		
-		opt.get().setActive(command.isActive());
-		opt.get().setPostal(command.getPostal());
-		opt.get().setType(command.getType());
-		opt.get().setLocation(new PartyGeographicInfo(location.getCode(), location.getName()));
+		address.setActive(command.isActive());
+		address.setPostal(command.getPostal());
+		address.setType(command.getType());
+		address.setLocation(new PartyGeographicInfo(location.getCode(), location.getName()));
 		
 		repo.save(party);
-		log.info("Update address", opt.get());
+		log.info("Update address", address);
 		
-		return AddressMapper.INSTANCE.toData(opt.get());
+		return AddressMapper.INSTANCE.toData(address);
 	}
 
 	@Override
 	public void deleteAddress(@NonNull AddressDeleteCommand command) {
 		
 		Party party = getAndCheck(command.getPartyCode());
-		party.getAddresses().removeIf(p -> p.getId().equals(command.getAddressId()));
+		party.removeAddress(command.getAddressId());
 		
 		repo.save(party);
+		log.info("Removing address ...");
 	}
 
 	@Override
@@ -339,30 +355,92 @@ public class PartyServiceImpl implements PartyService {
 		
 		Party party = getAndCheck(command.getPartyCode());
 		
-		Optional<PartyRole> opt = party.getPartyRoles().stream()
-									.filter(rol->rol.getId().equals(command.getPartyRoleId())).findFirst();
+		PartyRole opt = party.updatePartyRole(command.getPartyRoleId());
+		opt.setEnd(command.getEnd());
 		
-		Preconditions.checkState(opt.isPresent(), "Target party role does not exist");
-
-		opt.get().setEnd(command.getEnd());
 		repo.save(party);
-		log.info("Updating party role {}", opt.get());
+		log.info("Updating party role {}", opt);
 		
-		return PartyRoleMapper.INSTANCE.toData(opt.get());
+		return PartyRoleMapper.INSTANCE.toData(opt);
 	}
 
 	@Override
 	public void deletePartyRole(@NonNull PartyRoleDeleteCommand command) {
 		
 		Party party = getAndCheck(command.getPartyCode());
-		party.getPartyRoles().removeIf(p->p.getId().equals(command.getPartyRoleId()));
+		party.removePartyRole(command.getPartyRoleId());
 		log.info("Deleting partyRole ..");
 	}
-	
-	private Party getAndCheck(@NonNull String partyCode) {
+
+	@Override
+	public PartyRelationshipData createPartyRelationship(@NonNull PartyRelationshipCreateCommand command) {
 		
-		Party party = repo.findOneByCode(partyCode);
-		Preconditions.checkState(party != null, "Party does not exist");
-		return party;
+		Party party = getAndCheck(command.getPartyCode());
+		Party toParty = getAndCheck(command.getToPartyCode());
+		
+		PartyRelationship relationship = party.createPartyRelationship(toParty, command.getStart(), command.getType());
+		relationship.setEnd(command.getEnd());
+		
+		repo.save(party);
+		log.info("Creating new Party Relationship {}", relationship);
+		
+		return PartyRelationshipMapper.INSTANCE.toData(relationship);
+	}
+
+	@Override
+	public PartyRelationshipData updatePartyRelationship(@NonNull PartyRelationshipUpdateCommand command) {
+		
+		Party party = getAndCheck(command.getPartyCode());
+		PartyRelationship opt = party.updatePartyRelationship(command.getPartyRelationshipId());
+		opt.setEnd(command.getEnd());
+		
+		repo.save(party);
+		log.info("Updating party relationship", opt);
+		
+		return PartyRelationshipMapper.INSTANCE.toData(opt);
+	}
+
+	@Override
+	public void deletePartyRelationship(@NonNull PartyRelationshipDeleteCommand command) {
+
+		Party party = getAndCheck(command.getPartyCode());
+		party.removePartyRelationship(command.getPartyRelationshipId());
+		
+		repo.save(party);
+		log.info("Removinf party relationship ...");
+	}
+	
+	@Override
+	public PartyClassificationData createPartyClassification(@NonNull PartyClassificationCreateCommand command) {
+		
+		Party party = getAndCheck(command.getPartyCode());
+		PartyClassification opt = party.createPartyClassification(command.getStart(), 
+				command.getValue(), command.getType());
+		opt.setEnd(command.getEnd());
+		
+		repo.save(party);
+		log.info("Creating Party Classification {}", opt);
+		
+		return PartyClassificationMapper.INSTANCE.toData(opt);
+	}
+
+	@Override
+	public PartyClassificationData updatePartyRelationship(@NonNull PartyClassificationUpdateCommand command) {
+		
+		Party party = getAndCheck(command.getPartyCode());
+		PartyClassification opt = party.updatePartyClassification(command.getPartyClassificationId());
+		opt.setEnd(command.getEnd());
+		
+		repo.save(party);
+		log.info("Updating party classification {}", opt);
+		
+		return PartyClassificationMapper.INSTANCE.toData(opt);
+	}
+
+	@Override
+	public void deletePartyClassification(@NonNull PartyClassificationDeleteCommand command) {
+		Party party = getAndCheck(command.getPartyCode());
+		party.removePartyClassification(command.getPartyClassificationId());
+		log.info("Removing party classification ...");
 	}
 }

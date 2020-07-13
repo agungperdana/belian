@@ -232,7 +232,7 @@ public class PartyDetailTab extends Tabbox {
 		});
 		nrc.getRemove().addEventListener(Events.ON_CLICK, e->
 		classifications.getRows().getChildren().removeIf(row->RowUtils.isChecked((Row)row) && 
-				set.removeIf(p->p.getDataID().equals(row.getAttribute("DATAID")))));
+				set.removeIf(p->p.getId().equals(row.getAttribute("DATAID")))));
 
 		getTabpanels().getChildren().get(4).appendChild(nrc);
 		getTabpanels().getChildren().get(4).appendChild(classifications);

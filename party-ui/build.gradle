@@ -14,7 +14,7 @@ repositories {
 dependencies {
 
 	compile project(':common-ui')
-	compile project(':party-impl')
+	compile project(':party-connector')
 	
 	implementation 'org.jasypt:jasypt:1.9.2'
 	implementation 'org.springframework.boot:spring-boot-starter'

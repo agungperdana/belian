@@ -30,7 +30,7 @@ public class PartyClassificationRowRenderer implements RowRenderer<PartyClassifi
 			}
 		}
 		
-		row.setAttribute("DATAID", data.getDataID());
+		row.setAttribute("DATAID", data.getId());
 		row.appendChild(Components.checkbox(false));
 		row.appendChild(Components.fullSpanDatebox(data.getStart()!=null?Date.from(data.getStart()):new Date()));
 		row.appendChild(Components.fullSpanDatebox(data.getEnd()!=null?Date.from(data.getEnd()):null));

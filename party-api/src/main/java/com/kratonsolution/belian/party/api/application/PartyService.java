@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.kratonsolution.belian.party.api.AddressData;
 import com.kratonsolution.belian.party.api.ContactData;
+import com.kratonsolution.belian.party.api.PartyClassificationData;
 import com.kratonsolution.belian.party.api.PartyData;
+import com.kratonsolution.belian.party.api.PartyRelationshipData;
 import com.kratonsolution.belian.party.api.PartyRoleData;
 import com.kratonsolution.belian.party.api.model.PartyType;
 
@@ -60,4 +62,16 @@ public interface PartyService {
 	public PartyRoleData updatePartyRole(@NonNull PartyRoleUpdateCommand command);
 
 	public void deletePartyRole(@NonNull PartyRoleDeleteCommand command);
+	
+	public PartyRelationshipData createPartyRelationship(@NonNull PartyRelationshipCreateCommand command);
+
+	public PartyRelationshipData updatePartyRelationship(@NonNull PartyRelationshipUpdateCommand command);
+
+	public void deletePartyRelationship(@NonNull PartyRelationshipDeleteCommand command);
+	
+	public PartyClassificationData createPartyClassification(@NonNull PartyClassificationCreateCommand command);
+
+	public PartyClassificationData updatePartyRelationship(@NonNull PartyClassificationUpdateCommand command);
+
+	public void deletePartyClassification(@NonNull PartyClassificationDeleteCommand command);
 }

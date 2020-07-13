@@ -134,16 +134,16 @@ public class Party implements Serializable
 		return obj;
 	}
 
-	public Address updateAddress(@NonNull String description, @NonNull AddressType type) {
+	public Address updateAddress(@NonNull String id) {
 
-		Optional<Address> opt = this.addresses.stream().filter(p->p.getDescription().equals(description)&&p.getType().equals(type)).findAny();
+		Optional<Address> opt = this.addresses.stream().filter(p->p.getId().equals(id)).findAny();
 		Preconditions.checkState(opt.isPresent(), "Address not found");
 
 		return opt.get();
 	}
 
-	public void removeAddress(@NonNull String description, @NonNull AddressType type) {
-		this.addresses.removeIf(p->p.getDescription().equals(description)&&p.getType().equals(type));
+	public void removeAddress(@NonNull String id) {
+		this.addresses.removeIf(p->p.getId().equals(id));
 	}
 
 	/**
@@ -168,19 +168,18 @@ public class Party implements Serializable
 		return obj;
 	}
 
-	public void updateContact(@NonNull String contact, @NonNull ContactType type, boolean isActive) {
+	public Contact updateContact(@NonNull String id) {
 
 		Optional<Contact> opt = this.contacts.stream()
-									.filter(p->p.getContact().equals(contact) && p.getType().equals(type))
-									.findAny();
+									.filter(p->p.getId().equals(id))
+									.findFirst();
+		Preconditions.checkState(opt.isPresent(), "Contact does not exist");
 		
-		if(opt.isPresent()) {
-			opt.get().setActive(isActive);
-		}
+		return opt.get();
 	}
 
-	public void removeContact(@NonNull String contact, @NonNull ContactType type) {
-		this.contacts.removeIf(p->p.getContact().equals(contact) && p.getType().equals(type));
+	public void removeContact(@NonNull String id) {
+		this.contacts.removeIf(p->p.getId().equals(id));
 	}
 
 	/**
@@ -205,27 +204,19 @@ public class Party implements Serializable
 		return obj;
 	}
 
-	public void updatePartyRole(@NonNull Instant start, @NonNull PartyRoleType type, @NonNull Instant end) {
+	public PartyRole updatePartyRole(@NonNull String id) {
 
 		Optional<PartyRole> opt = this.partyRoles.stream()
-									.filter(p->p.getStart().equals(start) && p.getType().equals(type))
-									.findAny();
+									.filter(p->p.getId().equals(id))
+									.findFirst();
 		
-		if(opt.isPresent()) {
-			opt.get().setEnd(end);
-		}
+		Preconditions.checkState(opt.isPresent(), "Party Role does not exist");
+		return opt.get();
 	}
 
-	public void removePartyRole(@NonNull Instant start, @NonNull PartyRoleType type, Optional<Instant> end) {
+	public void removePartyRole(@NonNull String id) {
 		
-		if(end.isPresent()) {
-			this.partyRoles.removeIf(p->p.getStart().equals(start) 
-					&& p.getEnd().equals(end.get()) 
-					&& p.getType().equals(type));
-		}
-		else {
-			this.partyRoles.removeIf(p->p.getStart().equals(start) && p.getType().equals(type));
-		}
+		partyRoles.removeIf(p->p.getId().equals(id));
 	}
 
 	/**
@@ -252,32 +243,19 @@ public class Party implements Serializable
 		return obj;
 	}
 
-	public void updatePartyRelationship(@NonNull Party toParty, @NonNull Instant start, @NonNull Instant end, @NonNull PartyRelationshipType type) {
+	public PartyRelationship updatePartyRelationship(@NonNull String id) {
 
 		Optional<PartyRelationship> opt = this.partyRelationships.stream()
-									.filter(p->p.getStart().equals(start) 
-											&& p.getType().equals(type)
-											&& p.getToParty().getId().equals(toParty.getId()))
-									.findAny();
+									.filter(p->p.getId().equals(id))
+									.findFirst();
 		
-		if(opt.isPresent()) {
-			opt.get().setEnd(end);
-		}
+		Preconditions.checkState(opt.isPresent(), "Party Relationship does not exist");
+
+		return opt.get();
 	}
 
-	public void removePartyRelationship(@NonNull Party toParty, @NonNull Instant start, @NonNull Optional<Instant> end, @NonNull PartyRelationshipType type) {
-		
-		if(end.isPresent()) {
-			this.partyRelationships.removeIf(p-> p.getStart().equals(start) 
-					&& p.getEnd().equals(end.get()) 
-					&& p.getType().equals(type)
-					&& p.getToParty().getId().equals(toParty.getId()));
-		}
-		else {
-			this.partyRelationships.removeIf(p-> p.getStart().equals(start) 
-												&& p.getType().equals(type)
-												&& p.getToParty().getId().equals(toParty.getId()));
-		}
+	public void removePartyRelationship(@NonNull String id) {
+		partyRelationships.removeIf(p->p.getId().equals(id));
 	}
 
 	/**
@@ -304,32 +282,17 @@ public class Party implements Serializable
 		return obj;
 	}
 
-	public void updatePartyClassification(@NonNull Instant start, @NonNull Instant end, @NonNull String value, @NonNull PartyClassificationType type) {
+	public PartyClassification updatePartyClassification(@NonNull String id) {
 
 		Optional<PartyClassification> opt = this.partyClassifications.stream()
-									.filter(p->p.getStart().equals(start) 
-											&& p.getType().equals(type)
-											&& p.getValue().equals(value))
-									.findAny();
-		
-		if(opt.isPresent()) {
-			opt.get().setEnd(end);
-		}
+									.filter(p->p.getId().equals(id))
+									.findFirst();
+		Preconditions.checkState(opt.isPresent(), "Party Classification does not exist");
+		return opt.get();
 	}
 
-	public void removePartyClassification(@NonNull Instant start, @NonNull Optional<Instant> end, @NonNull String value, @NonNull PartyClassificationType type) {
-		
-		if(end.isPresent()) {
-			this.partyClassifications.removeIf(p-> p.getStart().equals(start) 
-					&& p.getEnd().equals(end.get()) 
-					&& p.getType().equals(type)
-					&& p.getValue().equals(value));
-		}
-		else {
-			this.partyClassifications.removeIf(p-> p.getStart().equals(start) 
-											&& p.getType().equals(type)
-											&& p.getValue().equals(value));
-		}
+	public void removePartyClassification(@NonNull String id) {
+		partyClassifications.removeIf(p->p.getId().equals(id));
 	}
 
 	/**
