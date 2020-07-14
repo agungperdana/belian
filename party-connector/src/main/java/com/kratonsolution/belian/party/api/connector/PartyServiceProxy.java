@@ -108,7 +108,7 @@ public class PartyServiceProxy implements PartyService {
 
 	@Override
 	public List<PartyData> getAllPartys(int page, int size) {
-		return producer.requestBody(PartyRouteName.ALL_PARTYS_PAGING, new Object[] {page, size}, List.class);
+		return producer.requestBody(PartyRouteName.ALL_PARTYS_PAGING, new Integer[] {page, size}, List.class);
 	}
 
 	@Override
@@ -184,7 +184,7 @@ public class PartyServiceProxy implements PartyService {
 	}
 
 	@Override
-	public PartyClassificationData updatePartyRelationship(@NonNull PartyClassificationUpdateCommand command) {
+	public PartyClassificationData updatePartyClassification(@NonNull PartyClassificationUpdateCommand command) {
 		return producer.requestBody(PartyRouteName.UPDATE_CLASSIFICATION, command, PartyClassificationData.class);	
 	}
 

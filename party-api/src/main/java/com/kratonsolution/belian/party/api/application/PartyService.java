@@ -71,7 +71,7 @@ public interface PartyService {
 	
 	public PartyClassificationData createPartyClassification(@NonNull PartyClassificationCreateCommand command);
 
-	public PartyClassificationData updatePartyRelationship(@NonNull PartyClassificationUpdateCommand command);
+	public PartyClassificationData updatePartyClassification(@NonNull PartyClassificationUpdateCommand command);
 
 	public void deletePartyClassification(@NonNull PartyClassificationDeleteCommand command);
 }

@@ -1,5 +1,7 @@
 package com.kratonsolution.belian.party.api.application;
 
+import java.io.Serializable;
+
 import com.kratonsolution.belian.party.api.model.ContactType;
 
 import lombok.Getter;
@@ -13,7 +15,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class ContactCreateCommand {
+public class ContactCreateCommand implements Serializable {
+
+	private static final long serialVersionUID = -2693016297671967959L;
 
 	@NonNull
 	private String partyCode;

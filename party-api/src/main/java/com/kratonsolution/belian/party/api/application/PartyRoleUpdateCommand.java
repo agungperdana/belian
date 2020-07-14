@@ -1,5 +1,6 @@
 package com.kratonsolution.belian.party.api.application;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 import lombok.Getter;
@@ -13,7 +14,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class PartyRoleUpdateCommand {
+public class PartyRoleUpdateCommand implements Serializable {
+
+	private static final long serialVersionUID = 1031918806338540345L;
 
 	@NonNull
 	private String partyCode;

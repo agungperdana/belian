@@ -1,4 +1,4 @@
-package com.kratonsolution.belian.partys.ui.organization;
+package com.kratonsolution.belian.partys.ui;
 
 import com.kratonsolution.belian.common.ui.event.UIEvent;
 
@@ -11,7 +11,7 @@ import lombok.Setter;
  * @email agung.dodi.perdana@gmail.com
  * @sinch 2.0
  */
-public class OrganizationUIEvent extends UIEvent {
+public class PartyUIEvent extends UIEvent {
 
 	private static final long serialVersionUID = 3276392804375094816L;
 	
@@ -19,12 +19,12 @@ public class OrganizationUIEvent extends UIEvent {
 	@Setter
 	private String code;
 	
-	public OrganizationUIEvent(@NonNull String type) {
+	public PartyUIEvent(@NonNull String type) {
 		
-		super(OrganizationUIEvent.class.getName(), type);
+		super(PartyUIEvent.class.getName(), type);
 	}
 	
-	public OrganizationUIEvent(@NonNull String type, @NonNull String code) {
+	public PartyUIEvent(@NonNull String type, @NonNull String code) {
 		
 		this(type);
 		setCode(code);

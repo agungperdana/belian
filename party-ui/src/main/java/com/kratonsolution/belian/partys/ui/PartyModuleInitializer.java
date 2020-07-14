@@ -9,13 +9,13 @@ import org.zkoss.util.resource.Labels;
 
 import com.kratonsolution.belian.common.ui.ModuleRegistryInformation;
 import com.kratonsolution.belian.common.ui.event.ModuleRegistrationEvent;
-import com.kratonsolution.belian.party.impl.model.Organization;
 
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @sinch 2.0
  */
 @Slf4j
 @Service
@@ -29,13 +29,13 @@ public class PartyModuleInitializer implements ApplicationListener<ContextRefres
 		
 		log.info("Publisher {}", publisher);
 		
-		ModuleRegistryInformation organizationInfo = new ModuleRegistryInformation();
-		organizationInfo.setPosition(5);
-		organizationInfo.setName(Organization.class.getName());
-		organizationInfo.setNickName(Labels.getLabel("label.caption.organization"));
-		organizationInfo.setFisheyeImage(getClass().getResource("/images/fisheye/organization.png"));
-		organizationInfo.setLauncherImage(getClass().getResource("/images/registry/organization.png"));
+		ModuleRegistryInformation info = new ModuleRegistryInformation();
+		info.setPosition(5);
+		info.setName(Labels.getLabel("label.caption.party"));
+		info.setNickName(Labels.getLabel("label.caption.party.nickname"));
+		info.setFisheyeImage(getClass().getResource("/images/fisheye/party.png"));
+		info.setLauncherImage(getClass().getResource("/images/registry/party.png"));
 		
-		publisher.publishEvent(new ModuleRegistrationEvent(this, organizationInfo));
+		publisher.publishEvent(new ModuleRegistrationEvent(this, info));
 	}
 }

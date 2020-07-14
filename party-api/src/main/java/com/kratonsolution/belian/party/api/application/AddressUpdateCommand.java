@@ -1,5 +1,7 @@
 package com.kratonsolution.belian.party.api.application;
 
+import java.io.Serializable;
+
 import com.kratonsolution.belian.party.api.model.AddressType;
 
 import lombok.Getter;
@@ -13,7 +15,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class AddressUpdateCommand {
+public class AddressUpdateCommand implements Serializable {
+
+	private static final long serialVersionUID = 5119765496138123379L;
 
 	@NonNull
 	private String partyCode;

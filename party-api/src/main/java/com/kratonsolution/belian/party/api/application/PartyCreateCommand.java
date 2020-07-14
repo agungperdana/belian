@@ -1,7 +1,9 @@
 package com.kratonsolution.belian.party.api.application;
 
+import java.io.Serializable;
 import java.time.Instant;
 
+import com.kratonsolution.belian.party.api.model.Gender;
 import com.kratonsolution.belian.party.api.model.PartyType;
 
 import lombok.Getter;
@@ -15,7 +17,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class PartyCreateCommand {
+public class PartyCreateCommand implements Serializable {
+
+	private static final long serialVersionUID = -8961482566968042225L;
 
 	@NonNull
 	private String code;
@@ -31,4 +35,6 @@ public class PartyCreateCommand {
 	private String birthPlace;
 	
 	private Instant birthDate;
+	
+	private Gender gender;
 }

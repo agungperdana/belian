@@ -425,7 +425,7 @@ public class PartyServiceImpl implements PartyService {
 	}
 
 	@Override
-	public PartyClassificationData updatePartyRelationship(@NonNull PartyClassificationUpdateCommand command) {
+	public PartyClassificationData updatePartyClassification(@NonNull PartyClassificationUpdateCommand command) {
 		
 		Party party = getAndCheck(command.getPartyCode());
 		PartyClassification opt = party.updatePartyClassification(command.getPartyClassificationId());

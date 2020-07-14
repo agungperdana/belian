@@ -1,4 +1,4 @@
-package com.kratonsolution.belian.partys.ui.organization;
+package com.kratonsolution.belian.partys.ui;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -13,8 +13,8 @@ import org.zkoss.zul.ext.Sortable;
 
 import com.kratonsolution.belian.common.ui.util.Springs;
 import com.kratonsolution.belian.common.ui.util.UIHelper;
-import com.kratonsolution.belian.party.api.OrganizationData;
-import com.kratonsolution.belian.party.api.application.OrganizationService;
+import com.kratonsolution.belian.party.api.PartyData;
+import com.kratonsolution.belian.party.api.application.PartyService;
 
 import lombok.NonNull;
 
@@ -23,38 +23,38 @@ import lombok.NonNull;
  * @email agung.dodi.perdana@gmail.com
  * @since 2.0
  */
-public class OrganizationModel implements ListModel<OrganizationData>, Sortable<OrganizationData>, Pageable
+public class PartyModel implements ListModel<PartyData>, Sortable<PartyData>, Pageable
 {
-	private List<OrganizationData> data;
+	private List<PartyData> data;
 	
 	private Vector<ListDataListener> listeners;
 	
 	private int page = 0;
 	
-	private OrganizationModel() {
+	private PartyModel() {
 		
-		this.data = new ArrayList<>(Springs.get(OrganizationService.class).getAllOrganizations(0, UIHelper.getSetting().getMaxRow()));
+		this.data = new ArrayList<>(Springs.get(PartyService.class).getAllPartys(0, UIHelper.getSetting().getMaxRow()));
 		this.listeners = new Vector<>();
 	}
 	
 	@Override
-	public void sort(Comparator<OrganizationData> cmpr, boolean ascending) {
+	public void sort(Comparator<PartyData> cmpr, boolean ascending) {
 	}
 
 	@Override
-	public String getSortDirection(Comparator<OrganizationData> cmpr) {
+	public String getSortDirection(Comparator<PartyData> cmpr) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public OrganizationData getElementAt(int index) {
+	public PartyData getElementAt(int index) {
 		return data.get(index);
 	}
 
 	@Override
 	public int getSize() {
-		return Springs.get(OrganizationService.class).count();
+		return Springs.get(PartyService.class).count();
 	}
 
 	@Override
@@ -68,9 +68,9 @@ public class OrganizationModel implements ListModel<OrganizationData>, Sortable<
 		this.listeners.remove(l);
 	}
 	
-	public static OrganizationModel build() {
+	public static PartyModel build() {
 		
-		return new OrganizationModel();
+		return new PartyModel();
 	}
 
 	@Override

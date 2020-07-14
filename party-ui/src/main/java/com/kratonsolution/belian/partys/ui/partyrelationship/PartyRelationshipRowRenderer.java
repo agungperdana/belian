@@ -12,7 +12,6 @@ import com.kratonsolution.belian.common.ui.util.Components;
 import com.kratonsolution.belian.common.ui.util.Springs;
 import com.kratonsolution.belian.party.api.PartyRelationshipData;
 import com.kratonsolution.belian.party.api.application.PartyService;
-import com.kratonsolution.belian.party.api.model.PartyRelationshipStatus;
 import com.kratonsolution.belian.party.api.model.PartyRelationshipType;
 
 /**
@@ -34,17 +33,8 @@ public class PartyRelationshipRowRenderer implements RowRenderer<PartyRelationsh
 			}
 		}
 		
-		Listbox status = Components.fullSpanSelect();
-		for(PartyRelationshipStatus _status:PartyRelationshipStatus.values()) {
-			
-			Listitem listitem = status.appendItem(_status.name(), _status.name());
-			if(data.getStatus()!=null && data.getStatus().equals(_status)) {
-				status.setSelectedItem(listitem);
-			}
-		}
-		
 		Listbox party = Components.fullSpanSelect();
-		Springs.get(PartyService.class).getAllParty().forEach(p->{
+		Springs.get(PartyService.class).getAllPartys().forEach(p->{
 			
 			Listitem itm = party.appendItem(p.getCode()+" "+p.getName(), p.getCode());
 			if(!Strings.isNullOrEmpty(data.getToPartyCode()) && data.getToPartyCode().equals(p.getCode())) {
@@ -58,6 +48,5 @@ public class PartyRelationshipRowRenderer implements RowRenderer<PartyRelationsh
 		row.appendChild(Components.fullSpanDatebox(data.getEnd()!=null?Date.from(data.getEnd()):null));
 		row.appendChild(party);
 		row.appendChild(type);
-		row.appendChild(status);
 	}
 }

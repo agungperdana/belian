@@ -1,4 +1,4 @@
-package com.kratonsolution.belian.partys.ui.organization;
+package com.kratonsolution.belian.partys.ui;
 
 import org.zkoss.image.AImage;
 import org.zkoss.zk.ui.event.Events;
@@ -15,14 +15,14 @@ import lombok.extern.slf4j.Slf4j;
  * @since 2.0
  */
 @Slf4j
-public class OrganizationHandler {
+public class PartyUIHandler {
 
-	private OrganizationHandler() {}
+	private PartyUIHandler() {}
 	
 	public static void build() {
 		
-		OrganizationWindow window = new OrganizationWindow();
-		window.appendChild(new OrganizationGridContent());
+		PartyWindow window = new PartyWindow();
+		window.appendChild(new PartyGridContent());
 		window.setPage(UIHelper.getPage());
 		window.doOverlapped();
 		
@@ -32,7 +32,7 @@ public class OrganizationHandler {
 			try {
 
 				Toolbarbutton button = new Toolbarbutton();
-				button.setImageContent(new AImage(OrganizationHandler.class.getResource("/images/fisheye/organization.png")));
+				button.setImageContent(new AImage(PartyUIHandler.class.getResource("/images/fisheye/organization.png")));
 				button.addEventListener(Events.ON_CLICK, e -> {
 					
 					if(window.isVisible()) {

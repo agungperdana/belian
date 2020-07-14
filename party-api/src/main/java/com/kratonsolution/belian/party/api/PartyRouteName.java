@@ -37,29 +37,29 @@ public interface PartyRouteName {
 
 	String UPDATE_ADDRESS = "activemq:party-update-address?exchangePattern=InOut";
 
-	String DELETE_ADDRESS = "activemq:party-delete-address?exchangePattern=InOut";
+	String DELETE_ADDRESS = "activemq:party-delete-address?exchangePattern=InOnly";
 
 	String CREATE_CONTACT = "activemq:party-create-contact?exchangePattern=InOut";
 
 	String UPDATE_CONTACT = "activemq:party-update-contact?exchangePattern=InOut";
 
-	String DELETE_CONTACT = "activemq:party-delete-contact?exchangePattern=InOut";
+	String DELETE_CONTACT = "activemq:party-delete-contact?exchangePattern=InOnly";
 
 	String CREATE_ROLE = "activemq:party-create-role?exchangePattern=InOut";
 
 	String UPDATE_ROLE = "activemq:party-update-role?exchangePattern=InOut";
 
-	String DELETE_ROLE = "activemq:party-delete-role?exchangePattern=InOut";
+	String DELETE_ROLE = "activemq:party-delete-role?exchangePattern=InOnly";
 
 	String CREATE_RELATIONSHIP = "activemq:party-create-relationship?exchangePattern=InOut";
 
 	String UPDATE_RELATIONSHIP = "activemq:party-update-relationship?exchangePattern=InOut";
 
-	String DELETE_RELATIONSHIP = "activemq:party-delete-relationship?exchangePattern=InOut";
+	String DELETE_RELATIONSHIP = "activemq:party-delete-relationship?exchangePattern=InOnly";
 
 	String CREATE_CLASSIFICATION = "activemq:party-create-classification?exchangePattern=InOut";
 
 	String UPDATE_CLASSIFICATION = "activemq:party-update-classification?exchangePattern=InOut";
 
-	String DELETE_CLASSIFICATION = "activemq:party-delete-classification?exchangePattern=InOut";
+	String DELETE_CLASSIFICATION = "activemq:party-delete-classification?exchangePattern=InOnly";
 }

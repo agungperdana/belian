@@ -1,4 +1,4 @@
-package com.kratonsolution.belian.partys.ui.organization;
+package com.kratonsolution.belian.partys.ui;
 
 import org.zkoss.image.AImage;
 import org.zkoss.util.resource.Labels;
@@ -13,32 +13,32 @@ import com.kratonsolution.belian.common.ui.event.UIEvent;
  * @email agung.dodi.perdana@gmail.com
  * @since 1.0
  */
-public class OrganizationWindow extends AbstractWindow
+public class PartyWindow extends AbstractWindow
 {	
 	private static final long serialVersionUID = -8958011451479566646L;
 
-	public OrganizationWindow() {
+	public PartyWindow() {
 
 		super();
 		try {
-			caption.setImageContent(new AImage(getClass().getResource("/images/fisheye/organization.png")));
+			caption.setImageContent(new AImage(getClass().getResource("/images/fisheye/party.png")));
 		} 
 		catch (Exception e) {}
 
-		caption.setLabel(Labels.getLabel("label.caption.organization"));
-		EventQueues.lookup(OrganizationUIEvent.class.getSimpleName()).subscribe(e->{
+		caption.setLabel(Labels.getLabel("label.caption.party.nickname"));
+		EventQueues.lookup(PartyUIEvent.class.getSimpleName()).subscribe(e->{
 
 			clearContent();
 			
-			OrganizationUIEvent event = (OrganizationUIEvent)e;
+			PartyUIEvent event = (PartyUIEvent)e;
 			if(event.getType().equals(UIEvent.GRID)) {
-				appendChild(new OrganizationGridContent());
+				appendChild(new PartyGridContent());
 			}
 			else if(event.getType().equals(UIEvent.ADD_FORM)) {
-				appendChild(new OrganizationFormContent());
+				appendChild(new PartyFormContent());
 			}
 			else if(event.getType().equals(UIEvent.EDIT_FORM)) {
-				appendChild(new OrganizationEditContent(event.getCode()));
+				appendChild(new PartyEditContent(event.getCode()));
 			}
 		});
 	}

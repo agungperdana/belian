@@ -1,5 +1,7 @@
 package com.kratonsolution.belian.party.api.application;
 
+import java.io.Serializable;
+
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -11,7 +13,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class PartyClassificationDeleteCommand {
+public class PartyClassificationDeleteCommand implements Serializable {
+
+	private static final long serialVersionUID = 6761069037799894595L;
 
 	@NonNull
 	private String partyCode;

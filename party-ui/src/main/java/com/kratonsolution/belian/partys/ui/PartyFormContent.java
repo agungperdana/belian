@@ -1,8 +1,8 @@
-package com.kratonsolution.belian.partys.ui.organization;
+package com.kratonsolution.belian.partys.ui;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Optional;
+import java.util.Arrays;
 
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.WrongValueException;
@@ -12,6 +12,7 @@ import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
@@ -21,18 +22,18 @@ import com.kratonsolution.belian.common.ui.event.UIEvent;
 import com.kratonsolution.belian.common.ui.util.Components;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.Springs;
-import com.kratonsolution.belian.geographic.api.GeographicData;
-import com.kratonsolution.belian.geographic.api.GeographicType;
 import com.kratonsolution.belian.geographic.api.application.GeographicService;
 import com.kratonsolution.belian.party.api.application.PartyCreateCommand;
-import com.kratonsolution.belian.party.api.application.OrganizationService;
+import com.kratonsolution.belian.party.api.application.PartyService;
+import com.kratonsolution.belian.party.api.model.Gender;
+import com.kratonsolution.belian.party.api.model.PartyType;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  * @since 1.0
  */
-public class OrganizationFormContent extends AbstractForm
+public class PartyFormContent extends AbstractForm
 {	
 	private static final long serialVersionUID = -7870478694132790931L;
 	
@@ -46,7 +47,11 @@ public class OrganizationFormContent extends AbstractForm
 	
 	private Listbox birthPlace = Components.newSelect();
 	
-	public OrganizationFormContent()
+	private Listbox types = Components.newSelect();
+	
+	private Listbox genders = Components.newSelect();
+	
+	public PartyFormContent()
 	{
 		super();
 		initToolbar();
@@ -56,7 +61,7 @@ public class OrganizationFormContent extends AbstractForm
 	@Override
 	public void initToolbar()
 	{
-		toolbar.getCancel().addEventListener(Events.ON_CLICK,e->FlowHelper.next(new OrganizationUIEvent(UIEvent.GRID)));
+		toolbar.getCancel().addEventListener(Events.ON_CLICK,e->FlowHelper.next(new PartyUIEvent(UIEvent.GRID)));
 		
 		toolbar.getSave().addEventListener(Events.ON_CLICK,e->{
 			
@@ -69,23 +74,42 @@ public class OrganizationFormContent extends AbstractForm
 			PartyCreateCommand command = new PartyCreateCommand();
 			command.setCode(code.getText());
 			command.setName(name.getText());
-			command.setTaxCode(Optional.ofNullable(tax.getText()));
-			command.setBirthDate(Optional.ofNullable(Instant.from(birthDate.getValueInZonedDateTime())));
-			command.setBirthPlace(Optional.ofNullable(birthPlace.getSelectedItem().getValue()));
+			command.setTaxCode(tax.getValue());
+			command.setType(PartyType.valueOf(types.getSelectedItem().getValue()));
+			command.setBirthDate(birthDate.getValue()!=null?Instant.from(birthDate.getValueInLocalDateTime()):null);
+			command.setBirthPlace(birthPlace.getSelectedItem()!=null?birthPlace.getSelectedItem().getValue():null);
+			command.setGender(genders.getSelectedItem()!=null?Gender.valueOf(genders.getSelectedItem().getValue()):null	);
 			
-			Springs.get(OrganizationService.class).create(command);
+			Springs.get(PartyService.class).create(command);
 			
-			FlowHelper.next(new OrganizationUIEvent(UIEvent.GRID));
+			FlowHelper.next(new PartyUIEvent(UIEvent.GRID));
 		});
 	}
 
 	@Override
 	public void initForm()
 	{
-		for(GeographicData data:Springs.get(GeographicService.class).getAllByType(GeographicType.CITY)) {
+		Springs.get(GeographicService.class)
+			.getAllGeographics()
+			.forEach(geo -> birthPlace.appendItem(geo.getCode()+" "+geo.getName(), geo.getCode()));
+		
+		Arrays.asList(PartyType.values()).forEach(opt->{
+			Listitem item = types.appendItem(opt.name(), opt.name());
+			if(opt.equals(PartyType.ORGANIZATION)) {
+				types.setSelectedItem(item);
+			}
+		});
+
+		types.setSelectedItem(null);
+		types.addEventListener(Events.ON_SELECT, e->{
 			
-			birthPlace.appendItem(data.getCode()+" - "+data.getName(), data.getCode());
-		}
+			if(types.getSelectedItem().getValue().equals(PartyType.ORGANIZATION)) {
+				grid.getRows().getChildren().get(6).setVisible(false);
+			}
+			else {
+				grid.getRows().getChildren().get(6).setVisible(true);
+			}
+		});
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"100px"));
@@ -98,10 +122,10 @@ public class OrganizationFormContent extends AbstractForm
 		Row row2 = new Row();
 		row2.appendChild(new Label(Labels.getLabel("party.label.name")));
 		row2.appendChild(name);
-		
+				
 		Row row3 = new Row();
-		row3.appendChild(new Label(Labels.getLabel("party.label.taxcode")));
-		row3.appendChild(tax);
+		row3.appendChild(new Label(Labels.getLabel("party.label.types")));
+		row3.appendChild(types);
 		
 		Row row4 = new Row();
 		row4.appendChild(new Label(Labels.getLabel("party.label.birthdate")));
@@ -110,11 +134,23 @@ public class OrganizationFormContent extends AbstractForm
 		Row row5 = new Row();
 		row5.appendChild(new Label(Labels.getLabel("party.label.birthplace")));
 		row5.appendChild(birthPlace);
+		
+		Row row6 = new Row();
+		row6.appendChild(new Label(Labels.getLabel("party.label.taxcode")));
+		row6.appendChild(tax);
+		
+		Row row7 = new Row();
+		row7.appendChild(new Label(Labels.getLabel("party.label.gender")));
+		row7.appendChild(genders);
 
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
 		rows.appendChild(row4);
 		rows.appendChild(row5);
+		rows.appendChild(row6);
+		rows.appendChild(row7);
+		
+		rows.getChildren().get(6).setVisible(false);
 	}
 }
