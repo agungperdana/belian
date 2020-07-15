@@ -19,13 +19,18 @@ import com.kratonsolution.belian.common.ui.toolbar.NRCToolbar;
 import com.kratonsolution.belian.common.ui.util.RowUtils;
 import com.kratonsolution.belian.party.api.AddressData;
 import com.kratonsolution.belian.party.api.ContactData;
+import com.kratonsolution.belian.party.api.MaritalStatusData;
 import com.kratonsolution.belian.party.api.PartyClassificationData;
+import com.kratonsolution.belian.party.api.PartyData;
 import com.kratonsolution.belian.party.api.PartyRelationshipData;
 import com.kratonsolution.belian.party.api.PartyRoleData;
+import com.kratonsolution.belian.party.api.model.PartyType;
 import com.kratonsolution.belian.partys.ui.address.AddressModel;
 import com.kratonsolution.belian.partys.ui.address.AddressRowRenderer;
 import com.kratonsolution.belian.partys.ui.contact.ContactModel;
 import com.kratonsolution.belian.partys.ui.contact.ContactRowRenderer;
+import com.kratonsolution.belian.partys.ui.maritalstatus.MaritalStatusModel;
+import com.kratonsolution.belian.partys.ui.maritalstatus.MaritalStatusRowRenderer;
 import com.kratonsolution.belian.partys.ui.partyclassification.PartyClassificationModel;
 import com.kratonsolution.belian.partys.ui.partyclassification.PartyClassificationRowRenderer;
 import com.kratonsolution.belian.partys.ui.partyrelationship.PartyRelationshipModel;
@@ -57,10 +62,10 @@ public class PartyDetailTab extends Tabbox {
 	protected Grid relationships = new Grid();
 
 	protected Grid classifications = new Grid();
+	
+	protected Grid maritalStatuses = new Grid();
 
-	public PartyDetailTab(@NonNull String partyCode, @NonNull Set<AddressData> addresses, @NonNull Set<ContactData> contacts, 
-			@NonNull Set<PartyRoleData> roles, @NonNull Set<PartyRelationshipData> relationships, 
-			@NonNull Set<PartyClassificationData> classifications)
+	public PartyDetailTab(@NonNull PartyData party)
 	{
 		setWidth("100%");
 		appendChild(new Tabs());
@@ -76,14 +81,18 @@ public class PartyDetailTab extends Tabbox {
 		getTabpanels().appendChild(new Tabpanel());
 		getTabpanels().appendChild(new Tabpanel());
 
-		initAddress(partyCode, addresses);
-		initContacts(partyCode, contacts);
-		initRoles(partyCode, roles);
-		initRelationships(partyCode, relationships);
-		initClassification(partyCode, classifications);
+		initAddress(party.getAddresses());
+		initContacts(party.getContacts());
+		initRoles(party.getPartyRoles());
+		initRelationships(party.getPartyRelationships());
+		initClassification(party.getPartyClassifications());
+		
+		if(party.getType().equals(PartyType.PERSON) && party.getPersonInformation() != null) {
+			initMaritalStatus(party.getPersonInformation().getMaritalStatuses());
+		}
 	}
 
-	private void initAddress(@NonNull String partyCode, @NonNull Set<AddressData> set)
+	private void initAddress(@NonNull Set<AddressData> set)
 	{
 		addresses.setWidth("100%");
 		addresses.setEmptyMessage(Labels.getLabel("message.grid.empty"));
@@ -123,7 +132,7 @@ public class PartyDetailTab extends Tabbox {
 		getTabpanels().getFirstChild().appendChild(addresses);
 	}
 
-	private void initContacts(@NonNull String partyCode, @NonNull Set<ContactData> set)
+	private void initContacts(@NonNull Set<ContactData> set)
 	{
 		contacts.setWidth("100%");
 		contacts.setEmptyMessage(Labels.getLabel("message.grid.empty"));
@@ -151,7 +160,7 @@ public class PartyDetailTab extends Tabbox {
 		getTabpanels().getChildren().get(1).appendChild(contacts);
 	}
 
-	private void initRoles(@NonNull String partyCode, @NonNull Set<PartyRoleData> set)
+	private void initRoles(@NonNull Set<PartyRoleData> set)
 	{
 		roles.setWidth("100%");
 		roles.setEmptyMessage(Labels.getLabel("message.grid.empty"));
@@ -179,7 +188,7 @@ public class PartyDetailTab extends Tabbox {
 		getTabpanels().getChildren().get(2).appendChild(roles);
 	}
 
-	private void initRelationships(@NonNull String partyCode, @NonNull Set<PartyRelationshipData> set)
+	private void initRelationships(@NonNull Set<PartyRelationshipData> set)
 	{
 		relationships.setWidth("100%");
 		relationships.setEmptyMessage(Labels.getLabel("message.grid.empty"));
@@ -209,7 +218,7 @@ public class PartyDetailTab extends Tabbox {
 		getTabpanels().getChildren().get(3).appendChild(relationships);
 	}
 
-	private void initClassification(@NonNull String partyCode, @NonNull Set<PartyClassificationData> set)
+	private void initClassification(@NonNull Set<PartyClassificationData> set)
 	{
 		classifications.setWidth("100%");
 		classifications.setEmptyMessage(Labels.getLabel("message.grid.empty"));
@@ -236,5 +245,40 @@ public class PartyDetailTab extends Tabbox {
 
 		getTabpanels().getChildren().get(4).appendChild(nrc);
 		getTabpanels().getChildren().get(4).appendChild(classifications);
+	}
+	
+	private void initMaritalStatus(@NonNull Set<MaritalStatusData> set)
+	{
+		maritalStatuses.setWidth("100%");
+		maritalStatuses.setEmptyMessage(Labels.getLabel("message.grid.empty"));
+		maritalStatuses.appendChild(new Columns());
+		maritalStatuses.appendChild(new Rows());
+		maritalStatuses.setModel(MaritalStatusModel.build(set));
+		maritalStatuses.setRowRenderer(new MaritalStatusRowRenderer());
+		maritalStatuses.getColumns().appendChild(new Column(null,null,"25px"));
+		maritalStatuses.getColumns().appendChild(new Column(Labels.getLabel("maritalstatus.label.start"),null,"125px"));
+		maritalStatuses.getColumns().appendChild(new Column(Labels.getLabel("maritalstatus.label.end"),null,"125px"));
+		maritalStatuses.getColumns().appendChild(new Column(Labels.getLabel("maritalstatus.label.type"),null,"150px"));
+		maritalStatuses.getColumns().appendChild(new Column());
+		maritalStatuses.getColumns().getLastChild().setVisible(false);
+		maritalStatuses.setSpan("3");
+
+		NRCToolbar nrc = new NRCToolbar(maritalStatuses);
+		nrc.getNewData().addEventListener(Events.ON_CLICK, e->{
+
+			set.add(new MaritalStatusData());
+			maritalStatuses.setModel(MaritalStatusModel.build(set));
+		});
+		
+		nrc.getRemove().addEventListener(Events.ON_CLICK, e->
+		maritalStatuses.getRows().getChildren().removeIf(row->RowUtils.isChecked((Row)row) && 
+				set.removeIf(p->p.getId().equals(RowUtils.id((Row)row)))));
+		
+		Tabpanel panel = new Tabpanel();
+		panel.appendChild(nrc);
+		panel.appendChild(maritalStatuses);
+		
+		getTabs().appendChild(new Tab(Labels.getLabel("label.caption.maritalstatus")));
+		getTabpanels().appendChild(panel);
 	}
 }

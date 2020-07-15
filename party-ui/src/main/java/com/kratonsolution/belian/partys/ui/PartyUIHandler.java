@@ -32,7 +32,7 @@ public class PartyUIHandler {
 			try {
 
 				Toolbarbutton button = new Toolbarbutton();
-				button.setImageContent(new AImage(PartyUIHandler.class.getResource("/images/fisheye/organization.png")));
+				button.setImageContent(new AImage(PartyUIHandler.class.getResource("/images/fisheye/party.png")));
 				button.addEventListener(Events.ON_CLICK, e -> {
 					
 					if(window.isVisible()) {

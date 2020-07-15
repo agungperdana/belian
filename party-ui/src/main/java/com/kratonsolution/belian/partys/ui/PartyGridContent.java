@@ -71,7 +71,7 @@ public class PartyGridContent extends GridContent
 	{
 		grid.setHeight("80%");
 		grid.setEmptyMessage(Labels.getLabel("warning.grid.empty"));
-		grid.setModel(PartyModel.build());
+		grid.setModel(PartyModel.build(1));
 		grid.setRowRenderer(new PartyRowRenderer());
 		grid.setPagingPosition("both");
 		grid.setMold("paging");

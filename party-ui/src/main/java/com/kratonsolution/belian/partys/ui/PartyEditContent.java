@@ -104,6 +104,14 @@ public class PartyEditContent extends AbstractForm
 			code.setText(opt.getCode());
 			name.setText(opt.getName());
 			tax.setText(opt.getTaxCode());
+			
+			Arrays.asList(PartyType.values()).forEach(type->{
+				
+				Listitem itm = types.appendItem(type.name(), type.name());
+				if(type.equals(opt.getType())) {
+					types.setSelectedItem(itm);
+				}
+			});
 
 			if(opt.getBirthDate() != null) {
 				birthDate.setValue(Date.from(opt.getBirthDate()));
@@ -128,6 +136,9 @@ public class PartyEditContent extends AbstractForm
 			}
 		});
 
+		types.setDisabled(true);
+		genders.setDisabled(true);
+		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"100px"));
 		grid.getColumns().appendChild(new Column());
@@ -141,7 +152,7 @@ public class PartyEditContent extends AbstractForm
 		row2.appendChild(name);
 				
 		Row row3 = new Row();
-		row3.appendChild(new Label(Labels.getLabel("party.label.types")));
+		row3.appendChild(new Label(Labels.getLabel("party.label.type")));
 		row3.appendChild(types);
 		
 		Row row4 = new Row();
@@ -159,7 +170,6 @@ public class PartyEditContent extends AbstractForm
 		Row row7 = new Row();
 		row7.appendChild(new Label(Labels.getLabel("party.label.gender")));
 		row7.appendChild(genders);
-		row7.setVisible(opt.getType().equals(PartyType.PERSON));
 
 		rows.appendChild(row1);
 		rows.appendChild(row2);
@@ -167,19 +177,17 @@ public class PartyEditContent extends AbstractForm
 		rows.appendChild(row4);
 		rows.appendChild(row5);
 		rows.appendChild(row6);
-		rows.appendChild(row7);
+		
+		if(opt.getType().equals(PartyType.PERSON)) {
+			rows.appendChild(row7);
+		}
 	}
 
 	private void initTab() {
 
 		PartyData opt = Springs.get(PartyService.class).getByCode(this.partyCode);
 		if(opt != null) {
-
-			tab = new PartyDetailTab(this.partyCode, opt.getAddresses(), 
-					opt.getContacts(), opt.getPartyRoles(), 
-					opt.getPartyRelationships(), opt.getPartyClassifications());
-
-			appendChild(tab);
+			appendChild(new PartyDetailTab(opt));
 		}
 	}
 }

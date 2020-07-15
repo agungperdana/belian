@@ -23,8 +23,8 @@ public interface PartyRelationshipMapper {
 	PartyRelationshipMapper INSTANCE = Mappers.getMapper(PartyRelationshipMapper.class);
 	
 	@Mappings({
-		@Mapping(source = "toParty.code", target = "toPartyCode"),
-		@Mapping(source = "toParty.name", target = "toPartyName")
+		@Mapping(source = "relationship.toParty.code", target = "toPartyCode"),
+		@Mapping(source = "relationship.toParty.name", target = "toPartyName")
 	})
 	PartyRelationshipData toData(@NonNull PartyRelationship relationship);
     

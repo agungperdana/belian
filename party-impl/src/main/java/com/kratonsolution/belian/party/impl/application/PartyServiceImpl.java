@@ -49,6 +49,7 @@ import com.kratonsolution.belian.party.impl.model.PartyClassification;
 import com.kratonsolution.belian.party.impl.model.PartyGeographicInfo;
 import com.kratonsolution.belian.party.impl.model.PartyRelationship;
 import com.kratonsolution.belian.party.impl.model.PartyRole;
+import com.kratonsolution.belian.party.impl.model.PersonInformation;
 import com.kratonsolution.belian.party.impl.repository.PartyRepository;
 
 import lombok.NonNull;
@@ -87,6 +88,12 @@ public class PartyServiceImpl implements PartyService {
 			party.setBirthPlace(new PartyGeographicInfo(geo.getCode(), geo.getName()));
 		}
 
+		if(command.getType().equals(PartyType.PERSON)) {
+			
+			party.setPersonInformation(new PersonInformation());
+			party.getPersonInformation().setGender(command.getGender());
+		}
+		
 		repo.save(party);
 		log.info("Create new party data {}", party);
 

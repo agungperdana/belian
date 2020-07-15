@@ -12,7 +12,6 @@ import org.zkoss.zul.Columns;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
@@ -76,7 +75,7 @@ public class PartyFormContent extends AbstractForm
 			command.setName(name.getText());
 			command.setTaxCode(tax.getValue());
 			command.setType(PartyType.valueOf(types.getSelectedItem().getValue()));
-			command.setBirthDate(birthDate.getValue()!=null?Instant.from(birthDate.getValueInLocalDateTime()):null);
+			command.setBirthDate(birthDate.getValue()!=null?Instant.from(birthDate.getValueInZonedDateTime()):null);
 			command.setBirthPlace(birthPlace.getSelectedItem()!=null?birthPlace.getSelectedItem().getValue():null);
 			command.setGender(genders.getSelectedItem()!=null?Gender.valueOf(genders.getSelectedItem().getValue()):null	);
 			
@@ -93,23 +92,10 @@ public class PartyFormContent extends AbstractForm
 			.getAllGeographics()
 			.forEach(geo -> birthPlace.appendItem(geo.getCode()+" "+geo.getName(), geo.getCode()));
 		
-		Arrays.asList(PartyType.values()).forEach(opt->{
-			Listitem item = types.appendItem(opt.name(), opt.name());
-			if(opt.equals(PartyType.ORGANIZATION)) {
-				types.setSelectedItem(item);
-			}
-		});
-
-		types.setSelectedItem(null);
-		types.addEventListener(Events.ON_SELECT, e->{
-			
-			if(types.getSelectedItem().getValue().equals(PartyType.ORGANIZATION)) {
-				grid.getRows().getChildren().get(6).setVisible(false);
-			}
-			else {
-				grid.getRows().getChildren().get(6).setVisible(true);
-			}
-		});
+		Arrays.asList(Gender.values()).forEach(gen->genders.appendItem(gen.name(), gen.name()));
+		
+		types.setSelectedItem(types.appendItem(PartyType.ORGANIZATION.name(), PartyType.ORGANIZATION.name()));
+		types.appendItem(PartyType.PERSON.name(), PartyType.PERSON.name());
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"100px"));
@@ -124,7 +110,7 @@ public class PartyFormContent extends AbstractForm
 		row2.appendChild(name);
 				
 		Row row3 = new Row();
-		row3.appendChild(new Label(Labels.getLabel("party.label.types")));
+		row3.appendChild(new Label(Labels.getLabel("party.label.type")));
 		row3.appendChild(types);
 		
 		Row row4 = new Row();
@@ -142,15 +128,23 @@ public class PartyFormContent extends AbstractForm
 		Row row7 = new Row();
 		row7.appendChild(new Label(Labels.getLabel("party.label.gender")));
 		row7.appendChild(genders);
-
+		
+		types.addEventListener(Events.ON_SELECT, e->{
+		
+			if(types.getSelectedItem().getValue().equals(PartyType.ORGANIZATION.name())) {
+				rows.removeChild(row7);
+			}
+			else {
+				rows.appendChild(row7);
+			}
+		
+		});
+		
 		rows.appendChild(row1);
 		rows.appendChild(row2);
 		rows.appendChild(row3);
 		rows.appendChild(row4);
 		rows.appendChild(row5);
 		rows.appendChild(row6);
-		rows.appendChild(row7);
-		
-		rows.getChildren().get(6).setVisible(false);
 	}
 }
