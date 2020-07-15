@@ -18,15 +18,19 @@ import org.zkoss.zul.Tabs;
 import com.kratonsolution.belian.common.ui.toolbar.NRCToolbar;
 import com.kratonsolution.belian.common.ui.util.RowUtils;
 import com.kratonsolution.belian.party.api.AddressData;
+import com.kratonsolution.belian.party.api.CitizenshipData;
 import com.kratonsolution.belian.party.api.ContactData;
 import com.kratonsolution.belian.party.api.MaritalStatusData;
 import com.kratonsolution.belian.party.api.PartyClassificationData;
 import com.kratonsolution.belian.party.api.PartyData;
 import com.kratonsolution.belian.party.api.PartyRelationshipData;
 import com.kratonsolution.belian.party.api.PartyRoleData;
+import com.kratonsolution.belian.party.api.PhysicalCharacteristicData;
 import com.kratonsolution.belian.party.api.model.PartyType;
 import com.kratonsolution.belian.partys.ui.address.AddressModel;
 import com.kratonsolution.belian.partys.ui.address.AddressRowRenderer;
+import com.kratonsolution.belian.partys.ui.citizenship.CitizenshipModel;
+import com.kratonsolution.belian.partys.ui.citizenship.CitizenshipRowRenderer;
 import com.kratonsolution.belian.partys.ui.contact.ContactModel;
 import com.kratonsolution.belian.partys.ui.contact.ContactRowRenderer;
 import com.kratonsolution.belian.partys.ui.maritalstatus.MaritalStatusModel;
@@ -37,6 +41,8 @@ import com.kratonsolution.belian.partys.ui.partyrelationship.PartyRelationshipMo
 import com.kratonsolution.belian.partys.ui.partyrelationship.PartyRelationshipRowRenderer;
 import com.kratonsolution.belian.partys.ui.partyrole.PartyRoleModel;
 import com.kratonsolution.belian.partys.ui.partyrole.PartyRoleRowRenderer;
+import com.kratonsolution.belian.partys.ui.physicalcharacteristic.PhysicalCharacteristicModel;
+import com.kratonsolution.belian.partys.ui.physicalcharacteristic.PhysicalCharacteristicRowRenderer;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -64,6 +70,10 @@ public class PartyDetailTab extends Tabbox {
 	protected Grid classifications = new Grid();
 	
 	protected Grid maritalStatuses = new Grid();
+	
+	protected Grid physicalCharacteristics = new Grid();
+	
+	protected Grid citizenships = new Grid();
 
 	public PartyDetailTab(@NonNull PartyData party)
 	{
@@ -88,7 +98,10 @@ public class PartyDetailTab extends Tabbox {
 		initClassification(party.getPartyClassifications());
 		
 		if(party.getType().equals(PartyType.PERSON) && party.getPersonInformation() != null) {
+			
 			initMaritalStatus(party.getPersonInformation().getMaritalStatuses());
+			initPhysicalCharacteristic(party.getPersonInformation().getPhysicalCharacteristics());
+			initCitizenships(party.getPersonInformation().getCitizenships());
 		}
 	}
 
@@ -279,6 +292,80 @@ public class PartyDetailTab extends Tabbox {
 		panel.appendChild(maritalStatuses);
 		
 		getTabs().appendChild(new Tab(Labels.getLabel("label.caption.maritalstatus")));
+		getTabpanels().appendChild(panel);
+	}
+	
+	private void initPhysicalCharacteristic(@NonNull Set<PhysicalCharacteristicData> set)
+	{
+		physicalCharacteristics.setWidth("100%");
+		physicalCharacteristics.setEmptyMessage(Labels.getLabel("message.grid.empty"));
+		physicalCharacteristics.appendChild(new Columns());
+		physicalCharacteristics.appendChild(new Rows());
+		physicalCharacteristics.setModel(PhysicalCharacteristicModel.build(set));
+		physicalCharacteristics.setRowRenderer(new PhysicalCharacteristicRowRenderer());
+		physicalCharacteristics.getColumns().appendChild(new Column(null,null,"25px"));
+		physicalCharacteristics.getColumns().appendChild(new Column(Labels.getLabel("physicalcharacteristic.label.start"),null,"125px"));
+		physicalCharacteristics.getColumns().appendChild(new Column(Labels.getLabel("physicalcharacteristic.label.end"),null,"125px"));
+		physicalCharacteristics.getColumns().appendChild(new Column(Labels.getLabel("physicalcharacteristic.label.value"),null,"125px"));
+		physicalCharacteristics.getColumns().appendChild(new Column(Labels.getLabel("physicalcharacteristic.label.type"),null,"150px"));
+		physicalCharacteristics.getColumns().appendChild(new Column());
+		physicalCharacteristics.getColumns().getLastChild().setVisible(false);
+		physicalCharacteristics.setSpan("3");
+
+		NRCToolbar nrc = new NRCToolbar(physicalCharacteristics);
+		nrc.getNewData().addEventListener(Events.ON_CLICK, e->{
+
+			set.add(new PhysicalCharacteristicData());
+			physicalCharacteristics.setModel(PhysicalCharacteristicModel.build(set));
+		});
+		
+		nrc.getRemove().addEventListener(Events.ON_CLICK, e->
+		physicalCharacteristics.getRows().getChildren().removeIf(row->RowUtils.isChecked((Row)row) && 
+				set.removeIf(p->p.getId().equals(RowUtils.id((Row)row)))));
+		
+		Tabpanel panel = new Tabpanel();
+		panel.appendChild(nrc);
+		panel.appendChild(physicalCharacteristics);
+		
+		getTabs().appendChild(new Tab(Labels.getLabel("label.caption.physicalcharacteristic")));
+		getTabpanels().appendChild(panel);
+	}
+	
+	private void initCitizenships(@NonNull Set<CitizenshipData> set)
+	{
+		citizenships.setWidth("100%");
+		citizenships.setEmptyMessage(Labels.getLabel("message.grid.empty"));
+		citizenships.appendChild(new Columns());
+		citizenships.appendChild(new Rows());
+		citizenships.setModel(CitizenshipModel.build(set));
+		citizenships.setRowRenderer(new CitizenshipRowRenderer());
+		citizenships.getColumns().appendChild(new Column(null,null,"25px"));
+		citizenships.getColumns().appendChild(new Column(Labels.getLabel("citizenship.label.start"),null,"125px"));
+		citizenships.getColumns().appendChild(new Column(Labels.getLabel("citizenship.label.end"),null,"125px"));
+		citizenships.getColumns().appendChild(new Column(Labels.getLabel("citizenship.label.passportnumber"),null,"125px"));
+		citizenships.getColumns().appendChild(new Column(Labels.getLabel("citizenship.label.passportissueddate"),null,"125px"));
+		citizenships.getColumns().appendChild(new Column(Labels.getLabel("citizenship.label.passportexpiredDate"),null,"125px"));
+		citizenships.getColumns().appendChild(new Column(Labels.getLabel("citizenship.label.passportcountry"),null,"150px"));
+		citizenships.getColumns().appendChild(new Column());
+		citizenships.getColumns().getLastChild().setVisible(false);
+		citizenships.setSpan("3");
+
+		NRCToolbar nrc = new NRCToolbar(citizenships);
+		nrc.getNewData().addEventListener(Events.ON_CLICK, e->{
+
+			set.add(new CitizenshipData());
+			citizenships.setModel(CitizenshipModel.build(set));
+		});
+		
+		nrc.getRemove().addEventListener(Events.ON_CLICK, e->
+		citizenships.getRows().getChildren().removeIf(row->RowUtils.isChecked((Row)row) && 
+				set.removeIf(p->p.getId().equals(RowUtils.id((Row)row)))));
+		
+		Tabpanel panel = new Tabpanel();
+		panel.appendChild(nrc);
+		panel.appendChild(citizenships);
+		
+		getTabs().appendChild(new Tab(Labels.getLabel("label.caption.citizenship")));
 		getTabpanels().appendChild(panel);
 	}
 }

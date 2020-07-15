@@ -18,36 +18,6 @@ USE `belian`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `Person`
---
-
-DROP TABLE IF EXISTS `Person`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Person` (
-  `id` char(50) NOT NULL,
-  `fk_party` char(50) DEFAULT NULL,
-  `gender` char(25) DEFAULT NULL,
-  `version` bigint(20) DEFAULT NULL,
-  `created_date` timestamp NULL DEFAULT NULL,
-  `created_by` varchar(200) DEFAULT NULL,
-  `last_updated_date` timestamp NULL DEFAULT NULL,
-  `last_updated_by` varchar(200) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Person`
---
-
-LOCK TABLES `Person` WRITE;
-/*!40000 ALTER TABLE `Person` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Person` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `citizenship`
 --
 
@@ -135,7 +105,7 @@ CREATE TABLE `geographic` (
 
 LOCK TABLES `geographic` WRITE;
 /*!40000 ALTER TABLE `geographic` DISABLE KEYS */;
-INSERT INTO `geographic` VALUES ('24b65ed5-911a-4e5e-bdf9-040a82d2a04c','KAL BAR','Kalimantan Barat','','ee07b82c-4b2e-4817-bc34-88e0577b8c8f',NULL,NULL,NULL,NULL,0,'PROVINSI'),('2a164893-a571-4b96-8f2e-a7410f6490db','RW05','RW 05','','c94836ae-bff5-474a-a333-f8ccc8737278',NULL,NULL,NULL,NULL,0,'RW'),('56135657-99cb-4549-b7d1-2bc535e629e4','PNK','Pontianak','','24b65ed5-911a-4e5e-bdf9-040a82d2a04c',NULL,NULL,NULL,NULL,0,'KOTA'),('69359a1e-3af7-4b1e-9fb5-7d2125a4f420','RT01','RT 01','','2a164893-a571-4b96-8f2e-a7410f6490db',NULL,NULL,NULL,NULL,0,'RT'),('bf2efe57-fbdc-4307-9733-b9d89203f2c5','PNK-KT','Pontianak Kota','','56135657-99cb-4549-b7d1-2bc535e629e4',NULL,NULL,NULL,NULL,0,'KECAMATAN'),('c94836ae-bff5-474a-a333-f8ccc8737278','DRT-SKIP','Darat Sekip','','bf2efe57-fbdc-4307-9733-b9d89203f2c5',NULL,NULL,NULL,NULL,0,'KELURAHAN'),('ee07b82c-4b2e-4817-bc34-88e0577b8c8f','INA','Indonesia','',NULL,NULL,NULL,NULL,NULL,0,'NEGARA');
+INSERT INTO `geographic` VALUES ('24b65ed5-911a-4e5e-bdf9-040a82d2a04c','KAL BAR','Kalimantan Barat','','ee07b82c-4b2e-4817-bc34-88e0577b8c8f',NULL,NULL,NULL,NULL,0,'PROVINCE'),('2a164893-a571-4b96-8f2e-a7410f6490db','RW05','RW 05','','c94836ae-bff5-474a-a333-f8ccc8737278',NULL,NULL,NULL,NULL,0,'HAMLET'),('56135657-99cb-4549-b7d1-2bc535e629e4','PNK','Pontianak','','24b65ed5-911a-4e5e-bdf9-040a82d2a04c',NULL,NULL,NULL,NULL,0,'CITY'),('69359a1e-3af7-4b1e-9fb5-7d2125a4f420','RT01','RT 01','','2a164893-a571-4b96-8f2e-a7410f6490db',NULL,NULL,NULL,NULL,0,'NEIGHBOURHOOD'),('bf2efe57-fbdc-4307-9733-b9d89203f2c5','PNK-KT','Pontianak Kota','','56135657-99cb-4549-b7d1-2bc535e629e4',NULL,NULL,NULL,NULL,0,'DISTRICT'),('c94836ae-bff5-474a-a333-f8ccc8737278','DRT-SKIP','Darat Sekip','','bf2efe57-fbdc-4307-9733-b9d89203f2c5',NULL,NULL,NULL,NULL,0,'SUBDISTRICT'),('ee07b82c-4b2e-4817-bc34-88e0577b8c8f','INA','Indonesia','',NULL,NULL,NULL,NULL,NULL,0,'COUNTRY');
 /*!40000 ALTER TABLE `geographic` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -198,38 +168,8 @@ CREATE TABLE `module` (
 
 LOCK TABLES `module` WRITE;
 /*!40000 ALTER TABLE `module` DISABLE KEYS */;
-INSERT INTO `module` VALUES ('13b174ef-fed6-4b16-98a1-d9bf3047988e','AUTHENTICATION','User Authentication','SYSTEM','','1',NULL,NULL,NULL,NULL,0),('8221d147-2540-4910-b05c-3ae1a7d76add','SCR-USR','Security User','SECURITY','','0',NULL,NULL,NULL,NULL,0),('a2151307-2c74-48ff-868d-24364126a14d','AUTHORIZATION','User Authorization','SYSTEM','','1',NULL,NULL,NULL,NULL,0),('aaf82d44-cce5-4c7a-9d3f-bbf328b01381','SCR-ROLE','Security Role','SECURITY','','0',NULL,NULL,NULL,NULL,0),('bbd4e3e4-ddb7-497e-862f-c5e3fdee44e7','GEOGRAPHIC','Geographic','SECURITY','','1',NULL,NULL,NULL,NULL,0),('fc283c30-3f7e-4bb3-ad37-7fb27640df69','SCR-MDL','Security Module','SECURITY','','0',NULL,NULL,NULL,NULL,0);
+INSERT INTO `module` VALUES ('13b174ef-fed6-4b16-98a1-d9bf3047988e','AUTHENTICATION','User Authentication','SYSTEM','Authentication service module','1',NULL,NULL,NULL,NULL,0),('8221d147-2540-4910-b05c-3ae1a7d76add','SCR-USR','Security User','SECURITY','','0',NULL,NULL,NULL,NULL,0),('a2151307-2c74-48ff-868d-24364126a14d','AUTHORIZATION','User Authorization','SYSTEM','','1',NULL,NULL,NULL,NULL,0),('aaf82d44-cce5-4c7a-9d3f-bbf328b01381','SCR-ROLE','Security Role','SECURITY','','0',NULL,NULL,NULL,NULL,0),('bbd4e3e4-ddb7-497e-862f-c5e3fdee44e7','GEOGRAPHIC','Geographic','SECURITY','','1',NULL,NULL,NULL,NULL,0),('fc283c30-3f7e-4bb3-ad37-7fb27640df69','SCR-MDL','Security Module','SECURITY','','0',NULL,NULL,NULL,NULL,0);
 /*!40000 ALTER TABLE `module` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `organization`
---
-
-DROP TABLE IF EXISTS `organization`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `organization` (
-  `id` char(50) NOT NULL,
-  `fk_party` char(50) DEFAULT NULL,
-  `version` bigint(20) DEFAULT NULL,
-  `created_by` varchar(200) DEFAULT NULL,
-  `created_date` timestamp NULL DEFAULT NULL,
-  `last_updated_by` varchar(200) DEFAULT NULL,
-  `last_updated_date` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `organization`
---
-
-LOCK TABLES `organization` WRITE;
-/*!40000 ALTER TABLE `organization` DISABLE KEYS */;
-INSERT INTO `organization` VALUES ('19c546c7-f0cb-4b74-bf8a-9562607ee0c5','7a7c06d8-d510-4437-9b0c-0e57fb3f977a',0,NULL,NULL,NULL,NULL);
-/*!40000 ALTER TABLE `organization` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -247,6 +187,8 @@ CREATE TABLE `party` (
   `birth_place_name` varchar(200) DEFAULT NULL,
   `birth_date` date DEFAULT NULL,
   `tax_code` char(50) DEFAULT NULL,
+  `type` char(15) DEFAULT NULL,
+  `fk_person_information` char(50) DEFAULT NULL,
   `version` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
@@ -259,7 +201,7 @@ CREATE TABLE `party` (
 
 LOCK TABLES `party` WRITE;
 /*!40000 ALTER TABLE `party` DISABLE KEYS */;
-INSERT INTO `party` VALUES ('7a7c06d8-d510-4437-9b0c-0e57fb3f977a','KS','Keraton Solution','PNK','Pontianak','2020-06-29','',1);
+INSERT INTO `party` VALUES ('7a7c06d8-d510-4437-9b0c-0e57fb3f977a','KS','Keraton Solution','PNK','Pontianak','2020-06-29','','ORGANIZATION',NULL,1),('7f4e4a0d-0d89-4658-805f-224fdbd24820','JMS','James Raja Guk ','PNK','Pontianak','2020-07-15','','PERSON','b7ccc4ab-e8cb-4d8f-a295-5ff7c0b8f521',0);
 /*!40000 ALTER TABLE `party` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -276,20 +218,8 @@ CREATE TABLE `party_address` (
   `postal` char(15) DEFAULT NULL,
   `status` char(1) DEFAULT '0',
   `type` char(35) DEFAULT NULL,
-  `country_code` varchar(100) DEFAULT NULL,
-  `country_name` varchar(200) DEFAULT NULL,
-  `province_code` varchar(100) DEFAULT NULL,
-  `province_name` varchar(200) DEFAULT NULL,
-  `city_code` varchar(100) DEFAULT NULL,
-  `city_name` varchar(200) DEFAULT NULL,
-  `district_code` varchar(100) DEFAULT NULL,
-  `district_name` varchar(200) DEFAULT NULL,
-  `sub_district_code` varchar(100) DEFAULT NULL,
-  `sub_district_name` varchar(200) DEFAULT NULL,
-  `rw_code` varchar(100) DEFAULT NULL,
-  `rw_name` varchar(200) DEFAULT NULL,
-  `rt_code` varchar(100) DEFAULT NULL,
-  `rt_name` varchar(200) DEFAULT NULL,
+  `location_code` varchar(100) DEFAULT NULL,
+  `location_name` varchar(200) DEFAULT NULL,
   `fk_party` char(50) DEFAULT NULL,
   `version` bigint(20) DEFAULT 0,
   PRIMARY KEY (`id`),
@@ -376,10 +306,8 @@ CREATE TABLE `party_relationship` (
   `end` timestamp NULL DEFAULT NULL,
   `fk_from_party` char(50) DEFAULT NULL,
   `fk_to_party` char(50) DEFAULT NULL,
-  `fk_from_role` char(50) DEFAULT NULL,
-  `fk_to_role` char(50) DEFAULT NULL,
   `type` char(50) DEFAULT NULL,
-  `status` char(25) DEFAULT NULL,
+  `is_active` char(1) DEFAULT '0',
   `version` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
@@ -506,6 +434,36 @@ LOCK TABLES `passport` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `person_information`
+--
+
+DROP TABLE IF EXISTS `person_information`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `person_information` (
+  `id` char(50) NOT NULL,
+  `gender` char(25) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  `created_date` timestamp NULL DEFAULT NULL,
+  `created_by` varchar(200) DEFAULT NULL,
+  `last_updated_date` timestamp NULL DEFAULT NULL,
+  `last_updated_by` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `person_information`
+--
+
+LOCK TABLES `person_information` WRITE;
+/*!40000 ALTER TABLE `person_information` DISABLE KEYS */;
+INSERT INTO `person_information` VALUES ('b7ccc4ab-e8cb-4d8f-a295-5ff7c0b8f521','MALE',0,NULL,NULL,NULL,NULL);
+/*!40000 ALTER TABLE `person_information` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `physical_characteristic`
 --
 
@@ -599,7 +557,7 @@ CREATE TABLE `role_module` (
 
 LOCK TABLES `role_module` WRITE;
 /*!40000 ALTER TABLE `role_module` DISABLE KEYS */;
-INSERT INTO `role_module` VALUES ('283eefd4-287e-4f1f-87b3-25a7ab7bcede','aaec1e72-07e7-4591-a0c2-04065f255f6c','SCR-ROLE','0','1','1','1','1','1',0,'Security Role','SECURITY'),('53d11ba0-edba-4cd4-8ce4-479afd495e31','aaec1e72-07e7-4591-a0c2-04065f255f6c','SCR-USR','0','1','1','1','1','1',0,'Security User','SECURITY'),('5c63ea4a-8259-4bf9-a09a-51b82f883583','aaec1e72-07e7-4591-a0c2-04065f255f6c','SCR-MDL','0','1','1','1','1','1',0,'Security Module','SECURITY'),('a6ee2c61-da8a-4fcf-9d41-a3291b721554','aaec1e72-07e7-4591-a0c2-04065f255f6c','AUTHENTICATION','0','1','1','1','1','1',1,'User Authentication','SYSTEM'),('dacc4b4b-21df-4d8e-b344-f3fb80257fc2','aaec1e72-07e7-4591-a0c2-04065f255f6c','AUTHORIZATION','0','1','1','1','1','1',1,'User Authorization','SYSTEM'),('fdae3a5a-1cf5-40a7-85ad-2d2fd023095e','aaec1e72-07e7-4591-a0c2-04065f255f6c','GEOGRAPHIC','0','1','1','1','1','1',1,'Geographic','SECURITY');
+INSERT INTO `role_module` VALUES ('283eefd4-287e-4f1f-87b3-25a7ab7bcede','aaec1e72-07e7-4591-a0c2-04065f255f6c','SCR-ROLE','0','1','1','1','1','1',0,'Security Role','SECURITY'),('53d11ba0-edba-4cd4-8ce4-479afd495e31','aaec1e72-07e7-4591-a0c2-04065f255f6c','SCR-USR','0','1','1','1','1','1',0,'Security User','SECURITY'),('5c63ea4a-8259-4bf9-a09a-51b82f883583','aaec1e72-07e7-4591-a0c2-04065f255f6c','SCR-MDL','0','1','1','1','1','1',0,'Security Module','SECURITY'),('7374f44c-aa08-4f88-8ff6-279eba8b7e6e','aaec1e72-07e7-4591-a0c2-04065f255f6c','OR','0','0','0','0','0','0',0,'Orai','SYSTEM'),('a6ee2c61-da8a-4fcf-9d41-a3291b721554','aaec1e72-07e7-4591-a0c2-04065f255f6c','AUTHENTICATION','0','1','1','1','1','1',1,'User Authentication','SYSTEM'),('dacc4b4b-21df-4d8e-b344-f3fb80257fc2','aaec1e72-07e7-4591-a0c2-04065f255f6c','AUTHORIZATION','0','1','1','1','1','1',1,'User Authorization','SYSTEM'),('fdae3a5a-1cf5-40a7-85ad-2d2fd023095e','aaec1e72-07e7-4591-a0c2-04065f255f6c','GEOGRAPHIC','0','1','1','1','1','1',1,'Geographic','SECURITY');
 /*!40000 ALTER TABLE `role_module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -675,4 +633,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-29 15:48:32
+-- Dump completed on 2020-07-15 15:30:50

@@ -2,6 +2,7 @@ package com.kratonsolution.belian.party.api;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.UUID;
 
 import com.kratonsolution.belian.party.api.model.PhysicalCharacteristicType;
 
@@ -19,13 +20,15 @@ public class PhysicalCharacteristicData implements Serializable
 {
 	private static final long serialVersionUID = -946015937785544608L;
 
+	private String id = UUID.randomUUID().toString();
+	
 	private Instant start;
 	
 	private Instant end;
 	
-	private PhysicalCharacteristicType type;
-	
 	private String value;
+	
+	private PhysicalCharacteristicType type;
 	
 	public PhysicalCharacteristicData(){}
 }

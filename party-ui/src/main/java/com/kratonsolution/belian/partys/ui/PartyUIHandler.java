@@ -22,9 +22,11 @@ public class PartyUIHandler {
 	public static void build() {
 		
 		PartyWindow window = new PartyWindow();
+		window.setHeight("85%");
 		window.appendChild(new PartyGridContent());
 		window.setPage(UIHelper.getPage());
 		window.doOverlapped();
+		
 		
 		Fisheyes fisheyes = UIHelper.getFisheye();
 		if(fisheyes != null) {
