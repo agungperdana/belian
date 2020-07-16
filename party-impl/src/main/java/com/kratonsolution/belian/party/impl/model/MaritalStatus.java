@@ -47,17 +47,17 @@ public class MaritalStatus implements Serializable
 	private MaritalStatusType type = MaritalStatusType.SINGLE;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_person")
-	private PersonInformation person;
+	@JoinColumn(name="fk_party")
+	private Party party;
 	
 	@Version
 	private Long version;
 	
 	MaritalStatus(){}
 	
-	public MaritalStatus(@NonNull PersonInformation parent, @NonNull Instant start, @NonNull MaritalStatusType type) {
+	public MaritalStatus(@NonNull Party parent, @NonNull Instant start, @NonNull MaritalStatusType type) {
 		
-		this.person = parent;
+		this.party = parent;
 		this.start = start;
 		this.type = type;
 	}

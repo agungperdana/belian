@@ -2,6 +2,7 @@ package com.kratonsolution.belian.party.impl.application;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -44,12 +45,12 @@ import com.kratonsolution.belian.party.api.application.PartyUpdateCommand;
 import com.kratonsolution.belian.party.api.model.PartyType;
 import com.kratonsolution.belian.party.impl.model.Address;
 import com.kratonsolution.belian.party.impl.model.Contact;
+import com.kratonsolution.belian.party.impl.model.MaritalStatus;
 import com.kratonsolution.belian.party.impl.model.Party;
 import com.kratonsolution.belian.party.impl.model.PartyClassification;
 import com.kratonsolution.belian.party.impl.model.PartyGeographicInfo;
 import com.kratonsolution.belian.party.impl.model.PartyRelationship;
 import com.kratonsolution.belian.party.impl.model.PartyRole;
-import com.kratonsolution.belian.party.impl.model.PersonInformation;
 import com.kratonsolution.belian.party.impl.repository.PartyRepository;
 
 import lombok.NonNull;
@@ -81,17 +82,12 @@ public class PartyServiceImpl implements PartyService {
 		Party party = new Party(command.getCode(), command.getName(), command.getType());
 		party.setTaxCode(command.getTaxCode());
 		party.setBirthDate(command.getBirthDate());
+		party.setGender(command.getGender());
 		
 		if(!Strings.isNullOrEmpty(command.getBirthPlace()) && geoService.getByCode(command.getBirthPlace()) != null) {
 
 			GeographicData geo = geoService.getByCode(command.getBirthPlace());
 			party.setBirthPlace(new PartyGeographicInfo(geo.getCode(), geo.getName()));
-		}
-
-		if(command.getType().equals(PartyType.PERSON)) {
-			
-			party.setPersonInformation(new PersonInformation());
-			party.getPersonInformation().setGender(command.getGender());
 		}
 		
 		repo.save(party);
@@ -104,25 +100,86 @@ public class PartyServiceImpl implements PartyService {
 	public PartyData update(@NonNull PartyUpdateCommand command) {
 
 		Party party = getAndCheck(command.getCode());
-
-		if(command.getBirthDate() != null) {
-			party.setBirthDate(command.getBirthDate());
-		}
-
+		party.setBirthDate(command.getBirthDate());
+		party.setName(command.getName());
+		party.setTaxCode(command.getTaxCode());
+		
 		if(!Strings.isNullOrEmpty(command.getBirthPlace()) && geoService.getByCode(command.getBirthPlace()) != null) {
 			
 			GeographicData geo = geoService.getByCode(command.getBirthPlace());
 			party.setBirthPlace(new PartyGeographicInfo(geo.getCode(), geo.getName()));
 		}
 
-		if(!Strings.isNullOrEmpty(command.getName())) {
-			party.setName(command.getName());
-		}
+		command.getAddresses().forEach(add -> {
+			
+			Address address = party.updateAddress(add.getId());
+			if(address == null) {
+				
+				address = party.createAddress(add.getDescription(),
+						add.getType(), add.getLocation().getCode(), add.getLocation().getName());
+			}
+			
+			address.setActive(add.isActive());
+			address.setPostal(add.getPostal());
+		});
+		
+		command.getContacts().forEach(con -> {
+			
+			Contact contact = party.updateContact(con.getId());
+			if(contact == null) {
+				contact = party.createContact(con.getContact(), con.getType());
+			}
+			
+			contact.setActive(con.isActive());
+		});
+		
+		command.getPartyRoles().forEach(rol -> {
+			
+			PartyRole role = party.updatePartyRole(rol.getId());
+			if(role == null) {
+				role = party.createPartyRole(rol.getStart(), rol.getType());
+			}
+			
+			role.setEnd(rol.getEnd());
+		});
+		
+		command.getPartyRelationships().forEach(rel -> {
+			
+			PartyRelationship relation = party.updatePartyRelationship(rel.getId());
+			if(relation == null) {
+				relation = party.createPartyRelationship(repo.findOneByCode(rel.getToPartyCode()),
+						rel.getStart(), rel.getType());
+			}
+			
+			relation.setEnd(rel.getEnd());
+		});
+		
+		command.getPartyClassifications().forEach(fica -> {
+			
+			PartyClassification classification = party.updatePartyClassification(fica.getId());
+			if(classification == null) {
+				classification = party.createPartyClassification(fica.getStart(), fica.getValue(), fica.getType());
+			}
+			
+			classification.setEnd(fica.getEnd());
+		});
 
-		if(!Strings.isNullOrEmpty(command.getTaxCode())) {
-			party.setTaxCode(command.getTaxCode());
-		}
+		//collect all MaritalStatus not present in command.getMaritalStatus(), its mean the object removed by user.
+		List<MaritalStatus> removed = party.getMaritalStatuses()
+									.stream()
+									.filter(ob->!command.getMaritalStatuses()
+														.stream()
+														.filter(m->m.getId().equals(ob.getId())).findAny().isPresent())
+									.collect(Collectors.toList());
 
+		//remove object from party
+		removed.forEach(rem -> party.removeMaritalStatus(rem.getId()));
+		
+		//update object or create new
+		command.getMaritalStatuses().forEach(mar -> {
+			
+		});
+		
 		repo.save(party);
 		
 		log.info("Updating Party data {}", party);

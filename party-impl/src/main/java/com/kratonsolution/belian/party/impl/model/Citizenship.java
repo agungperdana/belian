@@ -55,18 +55,18 @@ public class Citizenship implements Serializable
 	private PartyGeographicInfo country;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_person")
-	private PersonInformation person;
+	@JoinColumn(name="fk_party")
+	private Party party;
 	
 	@Version
 	private Long version;
 	
 	Citizenship(){}
 	
-	public Citizenship(@NonNull PersonInformation parent, @NonNull Instant start,
+	public Citizenship(@NonNull Party parent, @NonNull Instant start,
 			@NonNull String countryCode, @NonNull String countryName){
 		
-		this.person = parent;
+		this.party = parent;
 		this.start = start;
 		this.country = new PartyGeographicInfo(countryCode, countryName); 
 	}

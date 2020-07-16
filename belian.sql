@@ -29,7 +29,7 @@ CREATE TABLE `citizenship` (
   `start` date DEFAULT NULL,
   `end` date DEFAULT NULL,
   `fk_passport` char(50) DEFAULT NULL,
-  `fk_person` char(50) DEFAULT NULL,
+  `fk_party` char(50) DEFAULT NULL,
   `country_code` varchar(100) DEFAULT NULL,
   `country_name` varchar(200) DEFAULT NULL,
   `version` bigint(20) DEFAULT NULL,
@@ -121,7 +121,7 @@ CREATE TABLE `marital_status` (
   `start` date DEFAULT NULL,
   `end` date DEFAULT NULL,
   `type` char(35) DEFAULT NULL,
-  `fk_person` char(50) DEFAULT NULL,
+  `fk_party` char(50) DEFAULT NULL,
   `version` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
@@ -434,36 +434,6 @@ LOCK TABLES `passport` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `person_information`
---
-
-DROP TABLE IF EXISTS `person_information`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `person_information` (
-  `id` char(50) NOT NULL,
-  `gender` char(25) DEFAULT NULL,
-  `version` bigint(20) DEFAULT NULL,
-  `created_date` timestamp NULL DEFAULT NULL,
-  `created_by` varchar(200) DEFAULT NULL,
-  `last_updated_date` timestamp NULL DEFAULT NULL,
-  `last_updated_by` varchar(200) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `person_information`
---
-
-LOCK TABLES `person_information` WRITE;
-/*!40000 ALTER TABLE `person_information` DISABLE KEYS */;
-INSERT INTO `person_information` VALUES ('b7ccc4ab-e8cb-4d8f-a295-5ff7c0b8f521','MALE',0,NULL,NULL,NULL,NULL);
-/*!40000 ALTER TABLE `person_information` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `physical_characteristic`
 --
 
@@ -476,7 +446,7 @@ CREATE TABLE `physical_characteristic` (
   `end` date DEFAULT NULL,
   `type` char(35) DEFAULT NULL,
   `value` varchar(150) DEFAULT NULL,
-  `fk_person` char(50) DEFAULT NULL,
+  `fk_party` char(50) DEFAULT NULL,
   `version` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
@@ -633,4 +603,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-15 15:30:50
+-- Dump completed on 2020-07-16 16:08:49

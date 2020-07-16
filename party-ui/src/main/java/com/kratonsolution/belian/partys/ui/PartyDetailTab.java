@@ -59,24 +59,28 @@ public class PartyDetailTab extends Tabbox {
 
 	private static final long serialVersionUID = 6074616216180529972L;
 
-	protected Grid addresses = new Grid();
+	private Grid addresses = new Grid();
 
-	protected Grid contacts = new Grid();
+	private Grid contacts = new Grid();
 
-	protected Grid roles = new Grid();
+	private Grid roles = new Grid();
 
-	protected Grid relationships = new Grid();
+	private Grid relationships = new Grid();
 
-	protected Grid classifications = new Grid();
+	private Grid classifications = new Grid();
 	
-	protected Grid maritalStatuses = new Grid();
+	private Grid maritalStatuses = new Grid();
 	
-	protected Grid physicalCharacteristics = new Grid();
+	private Grid physicalCharacteristics = new Grid();
 	
-	protected Grid citizenships = new Grid();
+	private Grid citizenships = new Grid();
+	
+	private PartyData party;
 
 	public PartyDetailTab(@NonNull PartyData party)
 	{
+		this.party = party;
+		
 		setWidth("100%");
 		appendChild(new Tabs());
 		appendChild(new Tabpanels());
@@ -225,7 +229,7 @@ public class PartyDetailTab extends Tabbox {
 		});
 		nrc.getRemove().addEventListener(Events.ON_CLICK, e->
 		relationships.getRows().getChildren().removeIf(row->RowUtils.isChecked((Row)row) && 
-				set.removeIf(p->p.getDataID().equals(row.getAttribute("DATAID")))));
+				set.removeIf(p->p.getId().equals(row.getAttribute("DATAID")))));
 
 		getTabpanels().getChildren().get(3).appendChild(nrc);
 		getTabpanels().getChildren().get(3).appendChild(relationships);
@@ -367,5 +371,5 @@ public class PartyDetailTab extends Tabbox {
 		
 		getTabs().appendChild(new Tab(Labels.getLabel("label.caption.citizenship")));
 		getTabpanels().appendChild(panel);
-	}
+	}	
 }

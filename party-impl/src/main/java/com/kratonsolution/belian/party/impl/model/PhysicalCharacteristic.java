@@ -51,17 +51,17 @@ public class PhysicalCharacteristic implements Serializable
 	private String value;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_person")
-	private PersonInformation person;
+	@JoinColumn(name="fk_party")
+	private Party party;
 	
 	@Version
 	private Long version;
 	
 	PhysicalCharacteristic(){}
 	
-	public PhysicalCharacteristic(@NonNull PersonInformation person, @NonNull Instant start, @NonNull String value, @NonNull PhysicalCharacteristicType type) {
+	public PhysicalCharacteristic(@NonNull Party parent, @NonNull Instant start, @NonNull String value, @NonNull PhysicalCharacteristicType type) {
 		
-		this.person = person;
+		this.party = parent;
 		this.start = start;
 		this.value = value;
 		this.type = type;

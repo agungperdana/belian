@@ -89,6 +89,15 @@ public class PartyEditContent extends AbstractForm
 			command.setBirthDate(birthDate.getValue()!=null?Instant.from(birthDate.getValueInLocalDateTime()):null);
 			command.setBirthPlace(birthPlace.getSelectedItem()!=null?birthPlace.getSelectedItem().getValue():null);
 			command.setGender(genders.getSelectedItem()!=null?Gender.valueOf(genders.getSelectedItem().getValue()):null	);			
+			command.getAddresses().addAll(tab.getParty().getAddresses());
+			command.getContacts().addAll(tab.getParty().getContacts());
+			command.getPartyRoles().addAll(tab.getParty().getPartyRoles());
+			command.getPartyRelationships().addAll(tab.getParty().getPartyRelationships());
+			command.getPartyClassifications().addAll(tab.getParty().getPartyClassifications());
+			command.getMaritalStatuses().addAll(tab.getParty().getMaritalStatuses());
+			command.getCitizenships().addAll(tab.getParty().getCitizenships());
+			command.getPhysicalCharacteristics().addAll(tab.getParty().getPhysicalCharacteristics());
+			
 			Springs.get(PartyService.class).update(command);
 
 			FlowHelper.next(new PartyUIEvent(UIEvent.GRID));
@@ -129,9 +138,7 @@ public class PartyEditContent extends AbstractForm
 		Arrays.asList(Gender.values()).forEach(gen->{
 			
 			Listitem itm = genders.appendItem(gen.name(), gen.name());
-			if(opt.getPersonInformation()!=null && opt.getPersonInformation().getGender() != null 
-					&& opt.getPersonInformation().getGender().equals(gen)) {
-				
+			if(opt.getGender() != null && opt.getGender().equals(gen)) {
 				genders.setSelectedItem(itm);
 			}
 		});

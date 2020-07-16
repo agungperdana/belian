@@ -17,9 +17,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -30,10 +28,13 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.kratonsolution.belian.party.api.model.AddressType;
 import com.kratonsolution.belian.party.api.model.ContactType;
+import com.kratonsolution.belian.party.api.model.Gender;
+import com.kratonsolution.belian.party.api.model.MaritalStatusType;
 import com.kratonsolution.belian.party.api.model.PartyClassificationType;
 import com.kratonsolution.belian.party.api.model.PartyRelationshipType;
 import com.kratonsolution.belian.party.api.model.PartyRoleType;
 import com.kratonsolution.belian.party.api.model.PartyType;
+import com.kratonsolution.belian.party.api.model.PhysicalCharacteristicType;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -64,18 +65,12 @@ public class Party implements Serializable
 	@Setter
 	@Column(name="name")
 	private String name;
-	
+
 	@Getter
 	@Enumerated(EnumType.STRING)
 	@Column(name = "type")
 	private PartyType type;
 
-	@Getter
-	@Setter
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "fk_person_information")
-	private PersonInformation personInformation;
-	
 	@Getter
 	@Setter
 	@AttributeOverrides({
@@ -96,11 +91,25 @@ public class Party implements Serializable
 	@Version
 	private Long version;
 
+	@Setter
+	@Column(name="gender")
+	@Enumerated(EnumType.STRING)
+	private Gender gender = Gender.MALE;
+
+	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<MaritalStatus> maritalStatuses = new HashSet<>();
+
+	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<PhysicalCharacteristic> physicalCharacteristics = new HashSet<>();
+
+	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true)
+	private Set<Citizenship> citizenships = new HashSet<>();
+
 	@OneToMany(mappedBy="party", cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.LAZY)
-	private Set<Address> addresses = new HashSet<Address>();
+	private Set<Address> addresses = new HashSet<>();
 
 	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
-	private Set<Contact> contacts = new HashSet<Contact>();
+	private Set<Contact> contacts = new HashSet<>();
 
 	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.LAZY)
 	private Set<PartyRole> partyRoles = new HashSet<>();
@@ -137,9 +146,7 @@ public class Party implements Serializable
 	public Address updateAddress(@NonNull String id) {
 
 		Optional<Address> opt = this.addresses.stream().filter(p->p.getId().equals(id)).findAny();
-		Preconditions.checkState(opt.isPresent(), "Address not found");
-
-		return opt.get();
+		return opt.orElse(null);
 	}
 
 	public void removeAddress(@NonNull String id) {
@@ -171,11 +178,9 @@ public class Party implements Serializable
 	public Contact updateContact(@NonNull String id) {
 
 		Optional<Contact> opt = this.contacts.stream()
-									.filter(p->p.getId().equals(id))
-									.findFirst();
-		Preconditions.checkState(opt.isPresent(), "Contact does not exist");
-		
-		return opt.get();
+				.filter(p->p.getId().equals(id))
+				.findFirst();
+		return opt.orElse(null);
 	}
 
 	public void removeContact(@NonNull String id) {
@@ -190,7 +195,7 @@ public class Party implements Serializable
 	public Set<Contact> getContacts() {
 		return new HashSet<>(this.contacts);
 	}
-	
+
 	public PartyRole createPartyRole(@NonNull Instant start, @NonNull PartyRoleType type) {
 
 		Optional<PartyRole> opt = this.partyRoles.stream()
@@ -207,15 +212,14 @@ public class Party implements Serializable
 	public PartyRole updatePartyRole(@NonNull String id) {
 
 		Optional<PartyRole> opt = this.partyRoles.stream()
-									.filter(p->p.getId().equals(id))
-									.findFirst();
-		
-		Preconditions.checkState(opt.isPresent(), "Party Role does not exist");
-		return opt.get();
+				.filter(p->p.getId().equals(id))
+				.findFirst();
+
+		return opt.orElse(null);
 	}
 
 	public void removePartyRole(@NonNull String id) {
-		
+
 		partyRoles.removeIf(p->p.getId().equals(id));
 	}
 
@@ -227,7 +231,7 @@ public class Party implements Serializable
 	public Set<PartyRole> getPartyRoles() {
 		return new HashSet<>(this.partyRoles);
 	}
-	
+
 	public PartyRelationship createPartyRelationship(@NonNull Party toParty, @NonNull Instant start, @NonNull PartyRelationshipType type) {
 
 		Optional<PartyRelationship> opt = this.partyRelationships.stream()
@@ -246,12 +250,10 @@ public class Party implements Serializable
 	public PartyRelationship updatePartyRelationship(@NonNull String id) {
 
 		Optional<PartyRelationship> opt = this.partyRelationships.stream()
-									.filter(p->p.getId().equals(id))
-									.findFirst();
-		
-		Preconditions.checkState(opt.isPresent(), "Party Relationship does not exist");
+				.filter(p->p.getId().equals(id))
+				.findFirst();
 
-		return opt.get();
+		return opt.orElse(null);
 	}
 
 	public void removePartyRelationship(@NonNull String id) {
@@ -266,7 +268,7 @@ public class Party implements Serializable
 	public Set<PartyRelationship> getPartyRelationships() {
 		return new HashSet<>(this.partyRelationships);
 	}
-	
+
 	public PartyClassification createPartyClassification(@NonNull Instant start, @NonNull String value, @NonNull PartyClassificationType type) {
 
 		Optional<PartyClassification> opt = this.partyClassifications.stream()
@@ -285,10 +287,9 @@ public class Party implements Serializable
 	public PartyClassification updatePartyClassification(@NonNull String id) {
 
 		Optional<PartyClassification> opt = this.partyClassifications.stream()
-									.filter(p->p.getId().equals(id))
-									.findFirst();
-		Preconditions.checkState(opt.isPresent(), "Party Classification does not exist");
-		return opt.get();
+				.filter(p->p.getId().equals(id))
+				.findFirst();
+		return opt.orElse(null);
 	}
 
 	public void removePartyClassification(@NonNull String id) {
@@ -302,6 +303,115 @@ public class Party implements Serializable
 	 */
 	public Set<PartyClassification> getPartyClassifications() {
 		return new HashSet<>(this.partyClassifications);
+	}
+
+	public MaritalStatus createMaritalStatus(@NonNull Instant start, Instant end, @NonNull MaritalStatusType type) {
+
+		Optional<MaritalStatus> status = this.maritalStatuses
+				.stream()
+				.filter(p-> p.getStart().equals(start) 
+						&& p.getType().equals(type)).findAny();
+
+		Preconditions.checkState(!status.isPresent(), "MaritalStatus already exist");
+
+		MaritalStatus obj = new MaritalStatus(this, start, type);
+		this.maritalStatuses.add(obj);
+
+		return obj;
+	}
+
+	public MaritalStatus updateMaritalStatus(@NonNull String id) {
+
+		return this.maritalStatuses
+				.stream()
+				.filter(p-> p.getId().equals(id)).findAny().orElse(null);
+	}
+
+	public void removeMaritalStatus(@NonNull String id) {
+		maritalStatuses.removeIf(p -> p.getId().equals(id));
+	}
+
+	/**
+	 * for creating new MaritalStatus use createMaritalStatus() method\n
+	 * calling getMaritalStatuses().add() will not add newly created MaritalStatus\n
+	 * @return new Set containing MaritalStatus
+	 */
+	public Set<MaritalStatus> getMaritalStatuses() {
+		return new HashSet<>(this.maritalStatuses);
+	}
+
+	public PhysicalCharacteristic createPhysicalCharacteristic(@NonNull Instant start, Instant end, @NonNull String value, @NonNull PhysicalCharacteristicType type) {
+
+		Optional<PhysicalCharacteristic> status = this.physicalCharacteristics
+				.stream()
+				.filter(p-> p.getStart().equals(start) 
+						&& p.getValue().equals(value)
+						&& p.getType().equals(type)).findAny();
+
+		Preconditions.checkState(!status.isPresent(), "PhysicalCharacteristic already exist");
+
+		PhysicalCharacteristic obj = new PhysicalCharacteristic(this, start, value, type);
+		obj.setEnd(end);
+		this.physicalCharacteristics.add(obj);
+
+		return obj;
+	}
+
+	public PhysicalCharacteristic updatePhysicalCharacteristic(@NonNull String id) {
+
+		return this.physicalCharacteristics
+				.stream()
+				.filter(p-> p.getId().equals(id)).findAny().orElse(null);
+	}
+
+	public void removePhysicalCharacteristic(@NonNull String id) {
+		physicalCharacteristics.removeIf(p -> p.getId().equals(id));
+	}
+
+	/**
+	 * for creating new PhysicalCharacteristic use createPhysicalCharacteristic() method\n
+	 * calling getMPhysicalCharacteristics().add() will not add newly created PhysicalCharacteristic\n
+	 * @return new Set containing PhysicalCharacteristic
+	 */
+	public Set<PhysicalCharacteristic> getPhysicalCharacteristic() {
+		return new HashSet<>(this.physicalCharacteristics);
+	}
+
+	public Citizenship createCitizenship(@NonNull Instant start, Instant end, @NonNull String countryCode, @NonNull String countryName) {
+
+		Optional<Citizenship> status = this.citizenships
+				.stream()
+				.filter(p-> p.getStart().equals(start) 
+						&& p.getCountry().getCode().equals(countryCode)).findAny();
+
+		Preconditions.checkState(!status.isPresent(), "Citizenship already exist");
+
+		Citizenship obj = new Citizenship(this, start, countryCode, countryName);
+		obj.setEnd(end);
+		this.citizenships.add(obj);
+
+		return obj;
+	}
+
+	public Citizenship updateCitizenship(@NonNull String id) {
+
+		return this.citizenships
+				.stream()
+				.filter(p-> p.getId().equals(id))
+				.findAny().orElse(null);
+	}
+
+	public void removeCitizenship(@NonNull String id) {
+		citizenships.removeIf(p->p.getId().equals(id));
+	}
+
+	/**
+	 * for creating new Citizenship use createCitizenship() method\n
+	 * calling getCitizenships().add() will not add newly created Citizenship\n
+	 * @return new Set containing Citizenship
+	 */
+	public Set<Citizenship> getCitizenships() {
+		return new HashSet<>(this.citizenships);
 	}
 
 	@Override
