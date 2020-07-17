@@ -1,5 +1,6 @@
 package com.kratonsolution.belian.partys.ui.address;
 
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
@@ -40,12 +41,12 @@ public class AddressRowRenderer implements RowRenderer<AddressData> {
 			}
 		});
 		
-		row.setAttribute("DATAID", data.getId());
 		row.appendChild(Components.checkbox(false));
 		row.appendChild(Components.textBox(data.getDescription()));
 		row.appendChild(Components.textBox(data.getPostal()));
 		row.appendChild(type);
 		row.appendChild(Components.checkbox(data.isActive()));
 		row.appendChild(geos);
+		row.appendChild(new Label(data.getId()));
 	}
 }

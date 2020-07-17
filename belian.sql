@@ -28,10 +28,12 @@ CREATE TABLE `citizenship` (
   `id` char(50) NOT NULL,
   `start` date DEFAULT NULL,
   `end` date DEFAULT NULL,
-  `fk_passport` char(50) DEFAULT NULL,
   `fk_party` char(50) DEFAULT NULL,
   `country_code` varchar(100) DEFAULT NULL,
   `country_name` varchar(200) DEFAULT NULL,
+  `passport_number` varchar(100) DEFAULT NULL,
+  `passport_issued_date` timestamp NULL DEFAULT NULL,
+  `passport_expired_date` timestamp NULL DEFAULT NULL,
   `version` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
@@ -188,7 +190,7 @@ CREATE TABLE `party` (
   `birth_date` date DEFAULT NULL,
   `tax_code` char(50) DEFAULT NULL,
   `type` char(15) DEFAULT NULL,
-  `fk_person_information` char(50) DEFAULT NULL,
+  `gender` char(8) DEFAULT 'MALE',
   `version` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
@@ -201,7 +203,7 @@ CREATE TABLE `party` (
 
 LOCK TABLES `party` WRITE;
 /*!40000 ALTER TABLE `party` DISABLE KEYS */;
-INSERT INTO `party` VALUES ('7a7c06d8-d510-4437-9b0c-0e57fb3f977a','KS','Keraton Solution','PNK','Pontianak','2020-06-29','','ORGANIZATION',NULL,1),('7f4e4a0d-0d89-4658-805f-224fdbd24820','JMS','James Raja Guk ','PNK','Pontianak','2020-07-15','','PERSON','b7ccc4ab-e8cb-4d8f-a295-5ff7c0b8f521',0);
+INSERT INTO `party` VALUES ('7a7c06d8-d510-4437-9b0c-0e57fb3f977a','KS','Keraton Solution','PNK','Pontianak','2020-06-29','','ORGANIZATION','MALE',1),('7f4e4a0d-0d89-4658-805f-224fdbd24820','JMS','James Raja Guk ','PNK','Pontianak','2020-07-15','8765','PERSON','MALE',1);
 /*!40000 ALTER TABLE `party` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -405,35 +407,6 @@ LOCK TABLES `party_skill_type` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `passport`
---
-
-DROP TABLE IF EXISTS `passport`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `passport` (
-  `id` char(50) NOT NULL,
-  `number` varchar(150) DEFAULT NULL,
-  `issued_date` date DEFAULT NULL,
-  `expired_date` date DEFAULT NULL,
-  `country_code` char(25) DEFAULT NULL,
-  `country_name` varchar(200) DEFAULT NULL,
-  `version` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `passport`
---
-
-LOCK TABLES `passport` WRITE;
-/*!40000 ALTER TABLE `passport` DISABLE KEYS */;
-/*!40000 ALTER TABLE `passport` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `physical_characteristic`
 --
 
@@ -603,4 +576,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-16 16:08:49
+-- Dump completed on 2020-07-17 15:03:13

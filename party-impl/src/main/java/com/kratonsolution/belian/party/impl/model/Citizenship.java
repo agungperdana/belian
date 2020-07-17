@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -23,6 +22,7 @@ import lombok.Setter;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0
  */
 @Getter
 @Setter
@@ -41,12 +41,16 @@ public class Citizenship implements Serializable
 	@Setter
 	@Column(name="end")
 	private Instant end;
-	
-	@Setter
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "fk_passport")
-	private Passport passport;
 
+	@Column(name="passport_number")
+	private String passportNumber;
+	
+	@Column(name="passport_issued_date")
+	private Instant passportIssuedDate;
+	
+	@Column(name="passport_expired_date")
+	private Instant passportExpiredDate;
+	
 	@Embedded
 	@AttributeOverrides({
 		@AttributeOverride(name = "code", column = @Column(name="country_code")),

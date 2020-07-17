@@ -2,6 +2,7 @@ package com.kratonsolution.belian.partys.ui.partyrole;
 
 import java.util.Date;
 
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
@@ -30,10 +31,10 @@ public class PartyRoleRowRenderer implements RowRenderer<PartyRoleData> {
 			}
 		}
 		
-		row.setAttribute("DATAID", data.getId());
 		row.appendChild(Components.checkbox(false));
 		row.appendChild(Components.fullSpanDatebox(data.getStart()!=null?Date.from(data.getStart()):new Date()));
 		row.appendChild(Components.fullSpanDatebox(data.getEnd()!=null?Date.from(data.getEnd()):null));
 		row.appendChild(type);
+		row.appendChild(new Label(data.getId()));
 	}
 }

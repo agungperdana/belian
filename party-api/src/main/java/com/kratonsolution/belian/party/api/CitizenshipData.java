@@ -30,7 +30,7 @@ public class CitizenshipData implements Serializable
 	
 	private Instant passportExpiredDate;
 	
-	private PartyGeographicInfoData passportCountry;
+	private PartyGeographicInfoData country;
 	
 	public CitizenshipData(){}
 }

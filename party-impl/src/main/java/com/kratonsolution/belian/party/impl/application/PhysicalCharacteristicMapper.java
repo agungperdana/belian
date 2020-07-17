@@ -1,5 +1,6 @@
 package com.kratonsolution.belian.party.impl.application;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.mapstruct.Mapper;
@@ -22,5 +23,5 @@ public interface PhysicalCharacteristicMapper {
 	
     PhysicalCharacteristicData toData(@NonNull PhysicalCharacteristic physicalCharacteristic);
     
-    List<PhysicalCharacteristicData> toDatas(@NonNull List<PhysicalCharacteristic> physicalCharacteristics);
+    List<PhysicalCharacteristicData> toDatas(@NonNull Collection<PhysicalCharacteristic> physicalCharacteristics);
 }

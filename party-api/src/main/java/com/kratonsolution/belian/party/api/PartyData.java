@@ -45,9 +45,9 @@ public class PartyData implements Serializable
 
 	private Set<CitizenshipData> citizenships = new HashSet<>();
 
-	private Set<AddressData> addresses = new HashSet<AddressData>();
+	private Set<AddressData> addresses = new HashSet<>();
 
-	private Set<ContactData> contacts = new HashSet<ContactData>();
+	private Set<ContactData> contacts = new HashSet<>();
 
 	private Set<PartyRoleData> partyRoles = new HashSet<>();
 

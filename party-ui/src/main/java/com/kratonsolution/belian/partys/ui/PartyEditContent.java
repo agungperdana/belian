@@ -30,12 +30,14 @@ import com.kratonsolution.belian.party.api.model.Gender;
 import com.kratonsolution.belian.party.api.model.PartyType;
 
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  * @since 1.0
  */
+@Slf4j
 public class PartyEditContent extends AbstractForm
 {	
 	private static final long serialVersionUID = -4267104303139844670L;
@@ -80,13 +82,16 @@ public class PartyEditContent extends AbstractForm
 			if(Strings.isNullOrEmpty(name.getText()))
 				throw new WrongValueException(name,Labels.getLabel("warning.empty"));
 
+			log.info("Tab {}", tab.getParty());
+			log.info("tab.getAddress {}", tab.getParty().getAddresses());
+			
 			PartyUpdateCommand command = new PartyUpdateCommand();
 			command.setCode(this.partyCode);
 			command.setCode(code.getText());
 			command.setName(name.getText());
 			command.setTaxCode(tax.getValue());
 			command.setType(PartyType.valueOf(types.getSelectedItem().getValue()));
-			command.setBirthDate(birthDate.getValue()!=null?Instant.from(birthDate.getValueInLocalDateTime()):null);
+			command.setBirthDate(birthDate.getValue()!=null?Instant.from(birthDate.getValueInZonedDateTime()):null);
 			command.setBirthPlace(birthPlace.getSelectedItem()!=null?birthPlace.getSelectedItem().getValue():null);
 			command.setGender(genders.getSelectedItem()!=null?Gender.valueOf(genders.getSelectedItem().getValue()):null	);			
 			command.getAddresses().addAll(tab.getParty().getAddresses());
@@ -144,7 +149,6 @@ public class PartyEditContent extends AbstractForm
 		});
 
 		types.setDisabled(true);
-		genders.setDisabled(true);
 		
 		grid.appendChild(new Columns());
 		grid.getColumns().appendChild(new Column(null,null,"100px"));
@@ -194,7 +198,8 @@ public class PartyEditContent extends AbstractForm
 
 		PartyData opt = Springs.get(PartyService.class).getByCode(this.partyCode);
 		if(opt != null) {
-			appendChild(new PartyDetailTab(opt));
+			tab = new PartyDetailTab(opt);
+			appendChild(tab);
 		}
 	}
 }

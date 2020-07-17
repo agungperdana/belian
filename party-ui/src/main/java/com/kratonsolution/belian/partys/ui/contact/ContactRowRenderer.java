@@ -1,5 +1,6 @@
 package com.kratonsolution.belian.partys.ui.contact;
 
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
@@ -28,10 +29,10 @@ public class ContactRowRenderer implements RowRenderer<ContactData> {
 			}
 		}
 		
-		row.setAttribute("DATAID", data.getId());
 		row.appendChild(Components.checkbox(false));
 		row.appendChild(Components.textBox(data.getContact()));
 		row.appendChild(type);
 		row.appendChild(Components.checkbox(data.isActive()));
+		row.appendChild(new Label(data.getId()));
 	}
 }

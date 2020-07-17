@@ -101,11 +101,11 @@ public class PartyDetailTab extends Tabbox {
 		initRelationships(party.getPartyRelationships());
 		initClassification(party.getPartyClassifications());
 		
-		if(party.getType().equals(PartyType.PERSON) && party.getPersonInformation() != null) {
+		if(party.getType().equals(PartyType.PERSON)) {
 			
-			initMaritalStatus(party.getPersonInformation().getMaritalStatuses());
-			initPhysicalCharacteristic(party.getPersonInformation().getPhysicalCharacteristics());
-			initCitizenships(party.getPersonInformation().getCitizenships());
+			initMaritalStatus(party.getMaritalStatuses());
+			initPhysicalCharacteristic(party.getPhysicalCharacteristics());
+			initCitizenships(party.getCitizenships());
 		}
 	}
 
@@ -121,6 +121,8 @@ public class PartyDetailTab extends Tabbox {
 		addresses.getColumns().appendChild(new Column(Labels.getLabel("address.label.type"),null,"150px"));
 		addresses.getColumns().appendChild(new Column(Labels.getLabel("address.label.active"),null,"70px"));
 		addresses.getColumns().appendChild(new Column(Labels.getLabel("address.label.location"),null,"200px"));
+		addresses.getColumns().appendChild(new Column());
+		addresses.getColumns().getLastChild().setVisible(false);
 		addresses.setSpan("1");
 		addresses.setModel(AddressModel.build(set));
 		addresses.setRowRenderer(new AddressRowRenderer());
@@ -138,7 +140,7 @@ public class PartyDetailTab extends Tabbox {
 			addresses.getRows()
 			.getChildren()
 			.removeIf(ob->RowUtils.isChecked((Row)ob) 
-					&& set.removeIf(p->p.getId().equals(ob.getAttribute("DATAID"))));
+					&& set.removeIf(p->p.getId().equals(RowUtils.id((Row)ob))));
 
 			addresses.setModel(AddressModel.build(set));
 
@@ -161,6 +163,8 @@ public class PartyDetailTab extends Tabbox {
 		contacts.getColumns().appendChild(new Column(Labels.getLabel("contact.grid.column.contact")));
 		contacts.getColumns().appendChild(new Column(Labels.getLabel("contact.grid.column.type"),null,"125px"));
 		contacts.getColumns().appendChild(new Column(Labels.getLabel("contact.grid.column.status"),null,"70px"));
+		contacts.getColumns().appendChild(new Column());
+		contacts.getColumns().getLastChild().setVisible(false);
 		contacts.setSpan("1");
 
 		NRCToolbar nrc = new NRCToolbar(contacts);
@@ -171,7 +175,7 @@ public class PartyDetailTab extends Tabbox {
 		});
 		nrc.getRemove().addEventListener(Events.ON_CLICK, e->
 		contacts.getRows().getChildren().removeIf(row->RowUtils.isChecked((Row)row) && 
-				set.removeIf(p->p.getId().equals(row.getAttribute("DATAID")))));
+				set.removeIf(p->p.getId().equals(RowUtils.id((Row)row)))));
 
 		getTabpanels().getChildren().get(1).appendChild(nrc);
 		getTabpanels().getChildren().get(1).appendChild(contacts);
@@ -189,6 +193,8 @@ public class PartyDetailTab extends Tabbox {
 		roles.getColumns().appendChild(new Column(Labels.getLabel("partyrole.label.start"),null,"125px"));
 		roles.getColumns().appendChild(new Column(Labels.getLabel("partyrole.label.end"),null,"125px"));
 		roles.getColumns().appendChild(new Column(Labels.getLabel("partyrole.label.type"),null,"100px"));
+		roles.getColumns().appendChild(new Column());
+		roles.getColumns().getLastChild().setVisible(false);
 		roles.setSpan("3");
 
 		NRCToolbar nrc = new NRCToolbar(roles);
@@ -199,7 +205,7 @@ public class PartyDetailTab extends Tabbox {
 		});
 		nrc.getRemove().addEventListener(Events.ON_CLICK, e->
 		roles.getRows().getChildren().removeIf(row->RowUtils.isChecked((Row)row) && 
-				set.removeIf(p->p.getId().equals(row.getAttribute("DATAID")))));
+				set.removeIf(p->p.getId().equals(RowUtils.id((Row)row)))));
 
 		getTabpanels().getChildren().get(2).appendChild(nrc);
 		getTabpanels().getChildren().get(2).appendChild(roles);
@@ -219,6 +225,8 @@ public class PartyDetailTab extends Tabbox {
 		relationships.getColumns().appendChild(new Column(Labels.getLabel("partyrelationship.label.toparty"),null,"125px"));
 		relationships.getColumns().appendChild(new Column(Labels.getLabel("partyrelationship.label.type"),null,"100px"));
 		relationships.getColumns().appendChild(new Column(Labels.getLabel("partyrelationship.label.status"),null,"100px"));
+		relationships.getColumns().appendChild(new Column());
+		relationships.getColumns().getLastChild().setVisible(false);
 		relationships.setSpan("3");
 
 		NRCToolbar nrc = new NRCToolbar(relationships);
@@ -229,7 +237,7 @@ public class PartyDetailTab extends Tabbox {
 		});
 		nrc.getRemove().addEventListener(Events.ON_CLICK, e->
 		relationships.getRows().getChildren().removeIf(row->RowUtils.isChecked((Row)row) && 
-				set.removeIf(p->p.getId().equals(row.getAttribute("DATAID")))));
+				set.removeIf(p->p.getId().equals(RowUtils.id((Row)row)))));
 
 		getTabpanels().getChildren().get(3).appendChild(nrc);
 		getTabpanels().getChildren().get(3).appendChild(relationships);
@@ -248,6 +256,8 @@ public class PartyDetailTab extends Tabbox {
 		classifications.getColumns().appendChild(new Column(Labels.getLabel("partyclassification.label.end"),null,"125px"));
 		classifications.getColumns().appendChild(new Column(Labels.getLabel("partyclassification.label.value"),null,"150px"));
 		classifications.getColumns().appendChild(new Column(Labels.getLabel("partyclassification.label.type"),null,"150px"));
+		classifications.getColumns().appendChild(new Column());
+		classifications.getColumns().getLastChild().setVisible(false);
 		classifications.setSpan("3");
 
 		NRCToolbar nrc = new NRCToolbar(classifications);
@@ -258,7 +268,7 @@ public class PartyDetailTab extends Tabbox {
 		});
 		nrc.getRemove().addEventListener(Events.ON_CLICK, e->
 		classifications.getRows().getChildren().removeIf(row->RowUtils.isChecked((Row)row) && 
-				set.removeIf(p->p.getId().equals(row.getAttribute("DATAID")))));
+				set.removeIf(p->p.getId().equals(RowUtils.id((Row)row)))));
 
 		getTabpanels().getChildren().get(4).appendChild(nrc);
 		getTabpanels().getChildren().get(4).appendChild(classifications);

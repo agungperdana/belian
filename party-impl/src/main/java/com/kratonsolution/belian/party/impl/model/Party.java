@@ -87,14 +87,15 @@ public class Party implements Serializable
 	@Setter
 	@Column(name="tax_code")
 	private String taxCode;
+	
+	@Setter
+	@Getter
+	@Column(name="gender")
+	@Enumerated(EnumType.STRING)
+	private Gender gender;
 
 	@Version
 	private Long version;
-
-	@Setter
-	@Column(name="gender")
-	@Enumerated(EnumType.STRING)
-	private Gender gender = Gender.MALE;
 
 	@OneToMany(mappedBy="party",cascade=CascadeType.ALL,orphanRemoval=true)
 	private Set<MaritalStatus> maritalStatuses = new HashSet<>();
@@ -373,7 +374,7 @@ public class Party implements Serializable
 	 * calling getMPhysicalCharacteristics().add() will not add newly created PhysicalCharacteristic\n
 	 * @return new Set containing PhysicalCharacteristic
 	 */
-	public Set<PhysicalCharacteristic> getPhysicalCharacteristic() {
+	public Set<PhysicalCharacteristic> getPhysicalCharacteristics() {
 		return new HashSet<>(this.physicalCharacteristics);
 	}
 
