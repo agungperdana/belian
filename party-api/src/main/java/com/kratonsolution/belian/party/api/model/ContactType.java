@@ -12,5 +12,27 @@ public enum ContactType
 	OFFICE_PHONE,
 	PAGER,
 	EMAIL,
-	POSTBOX
+	POSTBOX;
+	
+	@Override
+	public String toString() {
+		
+		if(this.equals(CELL_PHONE)) {
+			return "Cell Phone";
+		}
+		else if(this.equals(HOME_PHONE)) {
+			return "Home Phone";
+		}
+		else if(this.equals(OFFICE_PHONE)) {
+			return "Office Phone";
+		}
+		else if(this.equals(PAGER)) {
+			return "Pager";
+		}
+		else if(this.equals(EMAIL)) {
+			return "Email";
+		}
+		
+		return "Post Box";
+	}
 }

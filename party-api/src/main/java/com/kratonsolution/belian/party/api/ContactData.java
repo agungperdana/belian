@@ -1,6 +1,7 @@
 package com.kratonsolution.belian.party.api;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import com.kratonsolution.belian.party.api.model.ContactType;
 
@@ -18,7 +19,7 @@ public class ContactData implements Serializable
 {
 	private static final long serialVersionUID = -3119257260126834977L;
 
-	private String id;
+	private String id = UUID.randomUUID().toString();
 	
 	private String contact;
 

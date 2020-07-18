@@ -22,4 +22,13 @@ public class PartyGeographicInfoData implements Serializable {
 	
 	@NonNull
 	private String name;
+
+	public PartyGeographicInfoData() {
+	}
+	
+	public PartyGeographicInfoData(@NonNull String code, @NonNull String name) {
+		
+		this.code = code;
+		this.name = name;
+	}
 }

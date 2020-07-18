@@ -1,5 +1,8 @@
 package com.kratonsolution.belian.partys.ui.contact;
 
+import org.zkoss.zk.ui.event.CheckEvent;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
@@ -20,19 +23,23 @@ public class ContactRowRenderer implements RowRenderer<ContactData> {
 	@Override
 	public void render(Row row, ContactData data, int index) throws Exception {
 		
-		Listbox type = Components.fullSpanSelect();
-		for(ContactType _type:ContactType.values()) {
+		Listbox types = Components.fullSpanSelect();
+		for(ContactType type:ContactType.values()) {
 			
-			Listitem listitem = type.appendItem(_type.name(), _type.name());
-			if(data.getType()!=null && data.getType().equals(_type)) {
-				type.setSelectedItem(listitem);
+			Listitem listitem = types.appendItem(type.toString(), type.name());
+			if(data.getType()!=null && data.getType().equals(type)) {
+				types.setSelectedItem(listitem);
 			}
 		}
 		
 		row.appendChild(Components.checkbox(false));
 		row.appendChild(Components.textBox(data.getContact()));
-		row.appendChild(type);
+		row.appendChild(types);
 		row.appendChild(Components.checkbox(data.isActive()));
 		row.appendChild(new Label(data.getId()));
+		
+		row.getChildren().get(1).addEventListener(Events.ON_CHANGING, e->data.setContact(((InputEvent)e).getValue()));
+		row.getChildren().get(2).addEventListener(Events.ON_SELECT, e->data.setType(ContactType.valueOf(types.getSelectedItem().getValue())));
+		row.getChildren().get(3).addEventListener(Events.ON_CHECK, e->data.setActive(((CheckEvent)e).isChecked()));
 	}
 }

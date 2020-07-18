@@ -1,7 +1,10 @@
 package com.kratonsolution.belian.partys.ui.partyrole;
 
+import java.time.Instant;
 import java.util.Date;
 
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
@@ -21,20 +24,32 @@ public class PartyRoleRowRenderer implements RowRenderer<PartyRoleData> {
 
 	@Override
 	public void render(Row row, PartyRoleData data, int index) throws Exception {
-		
-		Listbox type = Components.fullSpanSelect();
-		for(PartyRoleType _type:PartyRoleType.values()) {
-			
-			Listitem listitem = type.appendItem(_type.name(), _type.name());
-			if(data.getType()!=null && data.getType().equals(_type)) {
-				type.setSelectedItem(listitem);
+
+		Listbox types = Components.fullSpanSelect();
+		for(PartyRoleType type:PartyRoleType.values()) {
+
+			Listitem listitem = types.appendItem(type.name(), type.name());
+			if(data.getType()!=null && data.getType().equals(type)) {
+				types.setSelectedItem(listitem);
 			}
 		}
-		
+
 		row.appendChild(Components.checkbox(false));
 		row.appendChild(Components.fullSpanDatebox(data.getStart()!=null?Date.from(data.getStart()):new Date()));
 		row.appendChild(Components.fullSpanDatebox(data.getEnd()!=null?Date.from(data.getEnd()):null));
-		row.appendChild(type);
+		row.appendChild(types);
 		row.appendChild(new Label(data.getId()));
+
+		row.getChildren().get(1).addEventListener(Events.ON_CHANGE, e->{
+
+			Datebox box = (Datebox)e.getTarget();
+			data.setStart(Instant.from(box.getValueInZonedDateTime()));
+		});
+
+		row.getChildren().get(2).addEventListener(Events.ON_CHANGE, e->{
+
+			Datebox box = (Datebox)e.getTarget();
+			data.setEnd(Instant.from(box.getValueInZonedDateTime()));
+		});
 	}
 }

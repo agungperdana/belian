@@ -161,7 +161,7 @@ public class PartyDetailTab extends Tabbox {
 		contacts.setRowRenderer(new ContactRowRenderer());
 		contacts.getColumns().appendChild(new Column(null,null,"25px"));
 		contacts.getColumns().appendChild(new Column(Labels.getLabel("contact.grid.column.contact")));
-		contacts.getColumns().appendChild(new Column(Labels.getLabel("contact.grid.column.type"),null,"125px"));
+		contacts.getColumns().appendChild(new Column(Labels.getLabel("contact.grid.column.type"),null,"175px"));
 		contacts.getColumns().appendChild(new Column(Labels.getLabel("contact.grid.column.status"),null,"70px"));
 		contacts.getColumns().appendChild(new Column());
 		contacts.getColumns().getLastChild().setVisible(false);

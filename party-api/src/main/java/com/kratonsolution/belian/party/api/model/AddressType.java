@@ -7,5 +7,15 @@ package com.kratonsolution.belian.party.api.model;
  */
 public enum AddressType
 {
-	HOME, OFFICE, WAREHOUSE
+	HOME, OFFICE, WAREHOUSE;
+	
+	@Override
+	public String toString() {
+
+		switch (this) {
+			case HOME:return "Home";
+			case OFFICE:return "Office";
+			default:return "Warehouse";
+		}
+	}
 }
