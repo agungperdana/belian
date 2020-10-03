@@ -51,5 +51,7 @@ public class PartyRoleRowRenderer implements RowRenderer<PartyRoleData> {
 			Datebox box = (Datebox)e.getTarget();
 			data.setEnd(Instant.from(box.getValueInZonedDateTime()));
 		});
+		
+		types.addEventListener(Events.ON_SELECT, e->data.setType(PartyRoleType.valueOf(types.getSelectedItem().getValue())));
 	}
 }

@@ -22,7 +22,7 @@ public class PartyRoleData implements Serializable
 
 	private String id = UUID.randomUUID().toString();
 	
-	private Instant start;
+	private Instant start = Instant.now();
 	
 	private Instant end;
 	
