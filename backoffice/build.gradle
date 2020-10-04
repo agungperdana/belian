@@ -9,7 +9,6 @@ apply plugin: 'io.spring.dependency-management'
 
 repositories {
 	maven{url 'https://mavensync.zkoss.org/maven2'}
-	maven{url 'https://mavensync.zkoss.org/eval'}
 }
 
 dependencies {

@@ -7,6 +7,7 @@ plugins {
 dependencies {
     
     compileOnly 'javax.persistence:javax.persistence-api:2.2'
+    
     compileOnly 'org.projectlombok:lombok:1.18.10'
 	annotationProcessor 'org.projectlombok:lombok:1.18.10'
 }
