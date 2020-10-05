@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `belian` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `belian`;
--- MariaDB dump 10.17  Distrib 10.4.13-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.17  Distrib 10.4.14-MariaDB, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: belian
 -- ------------------------------------------------------
--- Server version	10.4.13-MariaDB
+-- Server version	10.4.14-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -74,6 +74,7 @@ CREATE TABLE `contact` (
 
 LOCK TABLES `contact` WRITE;
 /*!40000 ALTER TABLE `contact` DISABLE KEYS */;
+INSERT INTO `contact` VALUES ('3c4be52f-161d-49d0-aa26-534ad7ed823e','7881','CELL_PHONE','1','7f4e4a0d-0d89-4658-805f-224fdbd24820',1);
 /*!40000 ALTER TABLE `contact` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -235,6 +236,7 @@ CREATE TABLE `party_address` (
 
 LOCK TABLES `party_address` WRITE;
 /*!40000 ALTER TABLE `party_address` DISABLE KEYS */;
+INSERT INTO `party_address` VALUES ('5f5457cf-ddb6-4f8a-814e-8fcb426d2b7e','ding dung des','456','1','OFFICE','PNK-KT','Pontianak Kota','7f4e4a0d-0d89-4658-805f-224fdbd24820',1);
 /*!40000 ALTER TABLE `party_address` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -350,6 +352,7 @@ CREATE TABLE `party_role` (
 
 LOCK TABLES `party_role` WRITE;
 /*!40000 ALTER TABLE `party_role` DISABLE KEYS */;
+INSERT INTO `party_role` VALUES ('42cab48d-7a65-4e8c-8a30-2e0bb7f96024','2020-07-25 07:26:10',NULL,'HEALTCARE_PRACTITIONER','7f4e4a0d-0d89-4658-805f-224fdbd24820',0);
 /*!40000 ALTER TABLE `party_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -433,6 +436,118 @@ CREATE TABLE `physical_characteristic` (
 LOCK TABLES `physical_characteristic` WRITE;
 /*!40000 ALTER TABLE `physical_characteristic` DISABLE KEYS */;
 /*!40000 ALTER TABLE `physical_characteristic` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `product`
+--
+
+DROP TABLE IF EXISTS `product`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `product` (
+  `id` char(50) NOT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `type` char(15) DEFAULT NULL,
+  `comment` varchar(250) DEFAULT NULL,
+  `introducing_date` timestamp NULL DEFAULT NULL,
+  `sales_discontinuation_date` timestamp NULL DEFAULT NULL,
+  `support_discontinuation_date` timestamp NULL DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `product`
+--
+
+LOCK TABLES `product` WRITE;
+/*!40000 ALTER TABLE `product` DISABLE KEYS */;
+/*!40000 ALTER TABLE `product` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `product_category`
+--
+
+DROP TABLE IF EXISTS `product_category`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `product_category` (
+  `id` char(50) NOT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `comment` varchar(250) DEFAULT NULL,
+  `fk_parent` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `product_category`
+--
+
+LOCK TABLES `product_category` WRITE;
+/*!40000 ALTER TABLE `product_category` DISABLE KEYS */;
+/*!40000 ALTER TABLE `product_category` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `product_feature`
+--
+
+DROP TABLE IF EXISTS `product_feature`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `product_feature` (
+  `id` char(50) NOT NULL,
+  `start_date` date DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `feature` varchar(150) DEFAULT NULL,
+  `type` char(50) DEFAULT NULL,
+  `feature_applicability` char(50) DEFAULT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  `comment` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `product_feature`
+--
+
+LOCK TABLES `product_feature` WRITE;
+/*!40000 ALTER TABLE `product_feature` DISABLE KEYS */;
+/*!40000 ALTER TABLE `product_feature` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `product_identification`
+--
+
+DROP TABLE IF EXISTS `product_identification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `product_identification` (
+  `id` char(50) NOT NULL,
+  `code` varchar(150) DEFAULT NULL,
+  `type` varchar(150) DEFAULT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  `comment` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `product_identification`
+--
+
+LOCK TABLES `product_identification` WRITE;
+/*!40000 ALTER TABLE `product_identification` DISABLE KEYS */;
+/*!40000 ALTER TABLE `product_identification` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -576,4 +691,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-17 15:03:13
+-- Dump completed on 2020-10-05  8:58:19
