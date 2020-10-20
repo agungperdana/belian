@@ -1,6 +1,8 @@
 package com.kratonsolution.belian.product.api;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +22,5 @@ public class ProductCategoryData implements Serializable
 	
 	private String comment;
 	
-	private ProductCategoryData parent;
-	
+	private Set<ProductCategoryData> childs = new HashSet<>();
 }

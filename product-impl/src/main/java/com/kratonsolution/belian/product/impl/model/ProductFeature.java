@@ -14,8 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.product.api.ProductFeatureApplicability;
-import com.kratonsolution.belian.product.api.ProductFeatureType;
+import com.kratonsolution.belian.product.api.model.ProductFeatureApplicability;
+import com.kratonsolution.belian.product.api.model.ProductFeatureType;
 
 import lombok.Getter;
 import lombok.NonNull;

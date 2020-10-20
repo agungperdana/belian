@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.kratonsolution.belian.product.api.model.UOMType;
+
 import lombok.Getter;
 import lombok.Setter;
 

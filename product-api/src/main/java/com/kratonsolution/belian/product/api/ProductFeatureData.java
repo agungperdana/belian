@@ -3,13 +3,16 @@ package com.kratonsolution.belian.product.api;
 import java.io.Serializable;
 import java.time.Instant;
 
+import com.kratonsolution.belian.product.api.model.ProductFeatureApplicability;
+import com.kratonsolution.belian.product.api.model.ProductFeatureType;
+
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
- * @since 1.0
+ * @since 2.0
  */
 @Getter
 @Setter

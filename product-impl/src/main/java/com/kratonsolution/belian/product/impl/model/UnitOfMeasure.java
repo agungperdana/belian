@@ -15,7 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.kratonsolution.belian.product.api.UOMType;
+import com.kratonsolution.belian.product.api.model.UOMType;
 
 import lombok.Getter;
 import lombok.Setter;

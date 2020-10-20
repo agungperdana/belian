@@ -19,8 +19,6 @@ public class UOMFactorData implements Serializable
 	
 	private BigDecimal value = BigDecimal.ZERO;
 
-	private String from;
-	
 	private String to;
 
 	public UOMFactorData(){}

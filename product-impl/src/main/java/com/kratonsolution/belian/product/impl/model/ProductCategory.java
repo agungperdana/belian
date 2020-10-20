@@ -43,6 +43,7 @@ public class ProductCategory implements Serializable
 	@Column(name="comment")
 	private String comment;
 	
+	@Setter
 	@ManyToOne
 	@JoinColumn(name="fk_parent")
 	private ProductCategory parent;
@@ -55,11 +56,10 @@ public class ProductCategory implements Serializable
 	
 	ProductCategory(){}
 	
-	public ProductCategory(@NonNull String name, ProductCategory parent){
+	public ProductCategory(@NonNull String name, String comment){
 		
 		this.name = name;
-		this.parent = parent;
-				
+		this.comment = comment;				
 	}
 	
 	@Override

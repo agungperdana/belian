@@ -18,7 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.google.common.base.MoreObjects;
-import com.kratonsolution.belian.product.api.ProductType;
+import com.kratonsolution.belian.product.api.model.ProductType;
 
 import lombok.Getter;
 import lombok.NonNull;
