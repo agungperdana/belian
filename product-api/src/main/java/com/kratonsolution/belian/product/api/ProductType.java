@@ -1,4 +1,4 @@
-package com.kratonsolution.belian.product.impl.model;
+package com.kratonsolution.belian.product.api;
 
 /**
  * @author Agung Dodi Perdana
