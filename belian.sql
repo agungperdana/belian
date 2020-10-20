@@ -620,6 +620,60 @@ INSERT INTO `role_module` VALUES ('283eefd4-287e-4f1f-87b3-25a7ab7bcede','aaec1e
 UNLOCK TABLES;
 
 --
+-- Table structure for table `unit_of_measure`
+--
+
+DROP TABLE IF EXISTS `unit_of_measure`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `unit_of_measure` (
+  `id` char(50) NOT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `comment` varchar(250) DEFAULT NULL,
+  `type` char(20) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `unit_of_measure`
+--
+
+LOCK TABLES `unit_of_measure` WRITE;
+/*!40000 ALTER TABLE `unit_of_measure` DISABLE KEYS */;
+/*!40000 ALTER TABLE `unit_of_measure` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `uom_factor`
+--
+
+DROP TABLE IF EXISTS `uom_factor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `uom_factor` (
+  `id` char(50) NOT NULL,
+  `value` decimal(10,0) DEFAULT NULL,
+  `fk_uom_from` char(50) DEFAULT NULL,
+  `fk_uom_to` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `uom_factor`
+--
+
+LOCK TABLES `uom_factor` WRITE;
+/*!40000 ALTER TABLE `uom_factor` DISABLE KEYS */;
+/*!40000 ALTER TABLE `uom_factor` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user`
 --
 
@@ -691,4 +745,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-05  8:58:19
+-- Dump completed on 2020-10-20  7:48:45
