@@ -1,4 +1,4 @@
-package com.kratonsolution.belian.partys.ui;
+package com.kratonsolution.belian.products.ui;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -11,31 +11,26 @@ import com.kratonsolution.belian.common.ui.MenuPosition;
 import com.kratonsolution.belian.common.ui.ModuleRegistryInformation;
 import com.kratonsolution.belian.common.ui.event.ModuleRegistrationEvent;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  * @sinch 2.0
  */
-@Slf4j
 @Service
-public class PartyModuleInitializer implements ApplicationListener<ContextRefreshedEvent>{
+public class ProductsModuleInitializer implements ApplicationListener<ContextRefreshedEvent>{
 
 	@Autowired
 	private ApplicationEventPublisher publisher;
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
-		
-		log.info("Publisher {}", publisher);
-		
+
 		ModuleRegistryInformation info = new ModuleRegistryInformation();
-		info.setPosition(MenuPosition.PARTY);
-		info.setName(Labels.getLabel("label.caption.party"));
-		info.setNickName(Labels.getLabel("label.caption.party.nickname"));
-		info.setFisheyeImage(getClass().getResource("/images/fisheye/party.png"));
-		info.setLauncherImage(getClass().getResource("/images/registry/party.png"));
+		info.setPosition(MenuPosition.PRODUCT_CATEGORY);
+		info.setName(Labels.getLabel("label.caption.products.category"));
+		info.setNickName(Labels.getLabel("label.caption.products.category.nickname"));
+		info.setFisheyeImage(getClass().getResource("/images/fisheye/product-category.png"));
+		info.setLauncherImage(getClass().getResource("/images/registry/product-category.png"));
 		
 		publisher.publishEvent(new ModuleRegistrationEvent(this, info));
 	}
