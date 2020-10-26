@@ -6,10 +6,7 @@ plugins {
 
 dependencies {
 
-	compile project(':security-connector')
-	compile project(':geographic-connector')
-	compile project(':party-connector')
-	compile project(':product-connector')
+	compile project(':product-api')
 	
 	implementation enforcedPlatform('org.apache.camel.springboot:camel-spring-boot-dependencies:3.4.0')
 	implementation 'org.apache.camel.springboot:camel-spring-boot-starter'

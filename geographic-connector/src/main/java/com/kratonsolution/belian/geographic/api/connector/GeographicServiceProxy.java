@@ -45,7 +45,7 @@ public class GeographicServiceProxy implements GeographicService {
 	}
 
 	@Override
-	public GeographicData getByCode(String code) {
+	public GeographicData getByCode(@NonNull String code) {
 		return producer.requestBody(GeographicRouteName.BY_CODE, code, GeographicData.class);
 	}
 

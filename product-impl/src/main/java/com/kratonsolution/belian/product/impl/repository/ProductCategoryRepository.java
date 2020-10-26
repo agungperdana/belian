@@ -1,7 +1,11 @@
 package com.kratonsolution.belian.product.impl.repository;
 
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 
 import com.kratonsolution.belian.product.impl.model.ProductCategory;
 
@@ -15,4 +19,9 @@ import lombok.NonNull;
 public interface ProductCategoryRepository extends JpaRepository<ProductCategory, String>, JpaSpecificationExecutor<ProductCategory> {
 
 	public ProductCategory findOneByName(@NonNull String name);	
+	
+	public List<ProductCategory> findAllByNameLike(@NonNull String name, Pageable pageable);
+	
+	@Query("SELECT COUNT(prod) FROM ProductCategory prod WHERE prod.name LIKE :name")
+	public Long count(@NonNull String name);
 }

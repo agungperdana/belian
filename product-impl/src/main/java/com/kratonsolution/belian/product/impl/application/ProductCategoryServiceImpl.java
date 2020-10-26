@@ -92,7 +92,12 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 
 	@Override
 	public int count(@NonNull ProductCategoryFilter filter) {
-		return 0;
+		
+		if(!Strings.isNullOrEmpty(filter.getName())) {
+			return repo.count(filter.getName()).intValue();
+		}
+		
+		return count();
 	}
 
 	@Override
@@ -117,6 +122,12 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 
 	@Override
 	public List<ProductCategoryData> getAllProductCategorys(@NonNull ProductCategoryFilter filter, int page, int size) {
-		return null;
+		
+		if(!Strings.isNullOrEmpty(filter.getName())) {
+			
+			return ProductCategoryMapper.INSTANCE.toDatas(repo.findAllByNameLike(filter.getName(), PageRequest.of(page, size)));
+		}
+		
+		return getAllProductCategorys();
 	}
 }
