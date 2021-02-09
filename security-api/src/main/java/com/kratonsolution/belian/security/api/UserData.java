@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -25,6 +27,7 @@ public class UserData implements Serializable {
 	@NonNull
     private String email;
 	
+	@JsonIgnore
 	private String password;
     
     private boolean enabled;

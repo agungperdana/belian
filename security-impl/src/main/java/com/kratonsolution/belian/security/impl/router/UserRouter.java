@@ -1,9 +1,11 @@
 package com.kratonsolution.belian.security.impl.router;
 
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.model.rest.RestBindingMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kratonsolution.belian.common.router.BelianServiceRouter;
 import com.kratonsolution.belian.security.api.UserFilter;
 import com.kratonsolution.belian.security.api.UserRouteName;
 import com.kratonsolution.belian.security.api.application.ChangePasswordCommand;
@@ -21,17 +23,19 @@ import com.kratonsolution.belian.security.api.application.UserUpdateCommand;
  * @sinch 2.0
  */
 @Service
-public class UserRouter extends RouteBuilder {
+public class UserRouter extends RouteBuilder implements BelianServiceRouter {
 
 	@Autowired
 	private UserService service;
 	
 	@Override
 	public void configure() throws Exception {
+		
 		initJMSRoute();
+		initRESTRoute();
 	}
 
-	private void initJMSRoute() {
+	public void initJMSRoute() {
 
 		from(UserRouteName.CREATE).transacted().process(e->
 			e.getMessage().setBody(service.create(e.getIn().getBody(UserCreateCommand.class))));
@@ -80,5 +84,12 @@ public class UserRouter extends RouteBuilder {
 		
 		from(UserRouteName.CHANGE_PASSWORD).transacted().process(e->
 		e.getMessage().setBody(service.changePassword(e.getIn().getBody(ChangePasswordCommand.class))));
+	}
+
+	@Override
+	public void initRESTRoute() {
+		
+		rest().path("/users").bindingMode(RestBindingMode.json)
+			.get("/all-users").route().process(e->e.getMessage().setBody(service.getAllUsers()));
 	}
 }

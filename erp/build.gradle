@@ -14,13 +14,19 @@ dependencies {
 	compile project(':party-impl')
 	
 	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 	
 	implementation enforcedPlatform('org.apache.camel.springboot:camel-spring-boot-dependencies:3.4.0')
 	implementation 'org.apache.camel.springboot:camel-spring-boot-starter'
 	implementation 'org.apache.camel.springboot:camel-activemq-starter'
+	//implementation 'org.apache.camel.springboot:camel-rest-starter'
+	implementation 'org.apache.camel.springboot:camel-servlet-starter'
+	implementation 'org.apache.camel.springboot:camel-jackson-starter'
 	
 	implementation 'org.mariadb.jdbc:mariadb-java-client:2.5.4'
 	implementation 'org.springframework.boot:spring-boot-starter-jta-bitronix'
+	
+	//implementation 'javax.servlet:javax.servlet-api:4.0.0'
 }
 
 bootJar {

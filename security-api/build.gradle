@@ -9,7 +9,9 @@ dependencies {
 	compile project(':common')
 	
 	implementation 'com.google.guava:guava:28.2-jre'
-    
+
+	implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.1'
+	    
     compileOnly 'org.projectlombok:lombok:1.18.10'
 	annotationProcessor 'org.projectlombok:lombok:1.18.10'
 }
