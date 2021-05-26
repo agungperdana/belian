@@ -1,0 +1,33 @@
+package com.kratonsolution.belian.access.api.application;
+
+import java.util.List;
+
+import com.kratonsolution.belian.access.api.ModuleData;
+
+import lombok.NonNull;
+
+/**
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com 
+ * @since 2.0.0
+ */
+public interface ModuleService {
+   
+    ModuleData create(@NonNull ModuleCreateCommand command);
+    
+    ModuleData update(@NonNull ModuleUpdateCommand command);
+    
+    ModuleData delete(@NonNull ModuleDeleteCommand command);
+
+    ModuleData getByCode(@NonNull String code);
+    
+    List<ModuleData> getAllModules();
+    
+    List<ModuleData> getAllModules(int page, int size);
+    
+    List<ModuleData> getAllModules(@NonNull ModuleFilter filter, int page, int size);
+    
+    int count();
+    
+    int count(@NonNull ModuleFilter filter);
+}
