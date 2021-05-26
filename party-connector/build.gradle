@@ -1,15 +1,18 @@
 plugins {
 	
-	id 'java'
-	id 'eclipse'
+	id 'com.kratonsolution.belian.java-library-conventions'
+	id "io.freefair.lombok" version "6.0.0-m2"
+	id 'org.springframework.boot' version '2.4.5'
 }
+
+apply plugin: 'io.spring.dependency-management'
 
 dependencies {
 
-	compile project(':party-api')
+	implementation project(':party-api')
 	
-	implementation enforcedPlatform('org.apache.camel.springboot:camel-spring-boot-dependencies:3.4.0')
-	implementation 'org.apache.camel.springboot:camel-spring-boot-starter'
+	implementation 'com.google.guava:guava:30.1.1-jre'
+	implementation 'org.apache.camel.springboot:camel-spring-boot-starter:3.9.0'
 }
 
 jar {

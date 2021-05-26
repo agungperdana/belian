@@ -67,6 +67,7 @@ public class UserRouter extends RouteBuilder implements BelianServiceRouter {
 					service.getAllUsers((UserFilter)params[0], 
 							(Integer)params[1], (Integer)params[2]));
 		});
+		
 
 		from(UserRouteName.COUNT).process(e->e.getMessage().setBody(Integer.valueOf(service.count())));
 
@@ -89,7 +90,11 @@ public class UserRouter extends RouteBuilder implements BelianServiceRouter {
 	@Override
 	public void initRESTRoute() {
 		
-		rest().path("/users").bindingMode(RestBindingMode.json)
+		restConfiguration().component("jetty").host("127.0.0.1").port(8585);
+		
+		rest()
+			.path("/users")
+			.bindingMode(RestBindingMode.json)
 			.get("/all-users").route().process(e->e.getMessage().setBody(service.getAllUsers()));
 	}
 }

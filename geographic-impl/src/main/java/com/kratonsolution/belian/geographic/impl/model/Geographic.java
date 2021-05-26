@@ -22,7 +22,7 @@ import javax.persistence.Version;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.kratonsolution.belian.common.model.Auditable;
+import com.kratonsolution.belian.common.jpa.model.Auditable;
 import com.kratonsolution.belian.geographic.api.GeographicType;
 
 import lombok.Getter;

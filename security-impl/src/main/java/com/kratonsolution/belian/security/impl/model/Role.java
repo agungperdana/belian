@@ -19,7 +19,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.google.common.base.MoreObjects;
-import com.kratonsolution.belian.common.model.Auditable;
+import com.kratonsolution.belian.common.jpa.model.Auditable;
 
 import lombok.Getter;
 import lombok.NonNull;

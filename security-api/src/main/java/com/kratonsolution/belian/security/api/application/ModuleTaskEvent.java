@@ -1,7 +1,5 @@
 package com.kratonsolution.belian.security.api.application;
 
-import com.kratonsolution.belian.common.application.EventType;
-
 import lombok.Getter;
 import lombok.Setter;
 

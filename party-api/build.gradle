@@ -1,18 +1,12 @@
 plugins {
 	
-	id 'java'
-	id 'eclipse'
+	id 'com.kratonsolution.belian.java-common-conventions'
+	id "io.freefair.lombok" version "6.0.0-m2"
 }
 
 dependencies {
 
-	compile project(':common')
-	compile project(':geographic-api')
-	
-	implementation 'com.google.guava:guava:28.2-jre'
-	
-	compileOnly 'org.projectlombok:lombok:1.18.10'
-	annotationProcessor 'org.projectlombok:lombok:1.18.10'
+
 }
 
 jar {

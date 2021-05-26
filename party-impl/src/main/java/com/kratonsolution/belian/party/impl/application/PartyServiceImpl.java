@@ -11,10 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.common.spring.SpecificationBuilder;
-import com.kratonsolution.belian.common.spring.SpecificationBuilder.Operator;
-import com.kratonsolution.belian.geographic.api.GeographicData;
-import com.kratonsolution.belian.geographic.api.application.GeographicService;
+import com.kratonsolution.belian.common.jpa.SpecificationBuilder;
+import com.kratonsolution.belian.common.jpa.SpecificationBuilder.Operator;
 import com.kratonsolution.belian.party.api.AddressData;
 import com.kratonsolution.belian.party.api.ContactData;
 import com.kratonsolution.belian.party.api.PartyClassificationData;
@@ -46,7 +44,6 @@ import com.kratonsolution.belian.party.impl.model.Address;
 import com.kratonsolution.belian.party.impl.model.Contact;
 import com.kratonsolution.belian.party.impl.model.Party;
 import com.kratonsolution.belian.party.impl.model.PartyClassification;
-import com.kratonsolution.belian.party.impl.model.PartyGeographicInfo;
 import com.kratonsolution.belian.party.impl.model.PartyRelationship;
 import com.kratonsolution.belian.party.impl.model.PartyRole;
 import com.kratonsolution.belian.party.impl.repository.PartyRepository;
@@ -68,9 +65,6 @@ public class PartyServiceImpl implements PartyService {
 	@Autowired
 	private PartyRepository repo;
 
-	@Autowired
-	private GeographicService geoService;
-
 	@Override
 	public PartyData create(@NonNull PartyCreateCommand command) {
 
@@ -81,12 +75,12 @@ public class PartyServiceImpl implements PartyService {
 		party.setTaxCode(command.getTaxCode());
 		party.setBirthDate(command.getBirthDate());
 		party.setGender(command.getGender());
-		
-		if(!Strings.isNullOrEmpty(command.getBirthPlace()) && geoService.getByCode(command.getBirthPlace()) != null) {
-
-			GeographicData geo = geoService.getByCode(command.getBirthPlace());
-			party.setBirthPlace(new PartyGeographicInfo(geo.getCode(), geo.getName()));
-		}
+//		
+//		if(!Strings.isNullOrEmpty(command.getBirthPlace()) && geoService.getByCode(command.getBirthPlace()) != null) {
+//
+//			GeographicData geo = geoService.getByCode(command.getBirthPlace());
+//			party.setBirthPlace(new PartyGeographicInfo(geo.getCode(), geo.getName()));
+//		}
 		
 		repo.save(party);
 		log.info("Create new party data {}", party);
@@ -102,11 +96,11 @@ public class PartyServiceImpl implements PartyService {
 		party.setName(command.getName());
 		party.setTaxCode(command.getTaxCode());
 		
-		if(!Strings.isNullOrEmpty(command.getBirthPlace()) && geoService.getByCode(command.getBirthPlace()) != null) {
-			
-			GeographicData geo = geoService.getByCode(command.getBirthPlace());
-			party.setBirthPlace(new PartyGeographicInfo(geo.getCode(), geo.getName()));
-		}
+//		if(!Strings.isNullOrEmpty(command.getBirthPlace()) && geoService.getByCode(command.getBirthPlace()) != null) {
+//			
+//			GeographicData geo = geoService.getByCode(command.getBirthPlace());
+//			party.setBirthPlace(new PartyGeographicInfo(geo.getCode(), geo.getName()));
+//		}
 
 		AddressService.update(command, party);
 		ContactService.update(command, party);
@@ -239,17 +233,18 @@ public class PartyServiceImpl implements PartyService {
 		
 		Party party = getAndCheck(command.getPartyCode());
 		
-		GeographicData location = geoService.getByCode(command.getLocation());
-		Preconditions.checkState(location != null, "Geographic location does not exist");
+//		GeographicData location = geoService.getByCode(command.getLocation());
+//		Preconditions.checkState(location != null, "Geographic location does not exist");
 		
-		Address address = party.createAddress(command.getAddress(), command.getType(), location.getCode(), location.getName());
-		address.setActive(command.isActive());
-		address.setPostal(command.getPostal());
+//		Address address = party.createAddress(command.getAddress(), command.getType(), location.getCode(), location.getName());
+//		address.setActive(command.isActive());
+//		address.setPostal(command.getPostal());
 		
 		repo.save(party);
-		log.info("Adding new address {} for party {}", address, party);
+//		log.info("Adding new address {} for party {}", address, party);
 		
-		return AddressMapper.INSTANCE.toData(address);
+//		return AddressMapper.INSTANCE.toData(address);
+		return null;
 	}
 
 	@Override
@@ -260,13 +255,13 @@ public class PartyServiceImpl implements PartyService {
 		
 		Preconditions.checkState(address != null, "Address not exist");
 		
-		GeographicData location = geoService.getByCode(command.getLocation());
-		Preconditions.checkState(location != null, "Geographic location does not exist");
+//		GeographicData location = geoService.getByCode(command.getLocation());
+//		Preconditions.checkState(location != null, "Geographic location does not exist");
 		
 		address.setActive(command.isActive());
 		address.setPostal(command.getPostal());
 		address.setType(command.getType());
-		address.setLocation(new PartyGeographicInfo(location.getCode(), location.getName()));
+//		address.setLocation(new PartyGeographicInfo(location.getCode(), location.getName()));
 		
 		repo.save(party);
 		log.info("Update address", address);

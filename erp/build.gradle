@@ -1,32 +1,29 @@
 plugins {
 	
-	id 'java'
-	id 'eclipse'
-	id 'org.springframework.boot' version '2.2.4.RELEASE'
+	id 'com.kratonsolution.belian.java-library-conventions'
+	id "io.freefair.lombok" version "6.0.0-m2"
+	id 'org.springframework.boot' version '2.4.5'
 }
 
 apply plugin: 'io.spring.dependency-management'
 
 dependencies {
 
-	compile project(':security-impl')
-	compile project(':geographic-impl')
-	compile project(':party-impl')
+	implementation project(':security-impl')
+	implementation project(':geographic-impl')
+	implementation project(':party-impl')
 	
 	implementation 'org.springframework.boot:spring-boot-starter'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
 	
-	implementation enforcedPlatform('org.apache.camel.springboot:camel-spring-boot-dependencies:3.4.0')
-	implementation 'org.apache.camel.springboot:camel-spring-boot-starter'
-	implementation 'org.apache.camel.springboot:camel-activemq-starter'
-	//implementation 'org.apache.camel.springboot:camel-rest-starter'
-	implementation 'org.apache.camel.springboot:camel-servlet-starter'
-	implementation 'org.apache.camel.springboot:camel-jackson-starter'
+	implementation 'org.apache.camel.springboot:camel-spring-boot-starter:3.10.0'
+	implementation 'org.apache.camel.springboot:camel-activemq-starter:3.10.0'
+	implementation 'org.apache.camel.springboot:camel-jetty-starter:3.10.0'
+	implementation 'org.apache.camel.springboot:camel-jackson-starter:3.10.0'
+	
+	implementation 'javax.servlet:javax.servlet-api:4.0.1'
 	
 	implementation 'org.mariadb.jdbc:mariadb-java-client:2.5.4'
 	implementation 'org.springframework.boot:spring-boot-starter-jta-bitronix'
-	
-	//implementation 'javax.servlet:javax.servlet-api:4.0.0'
 }
 
 bootJar {

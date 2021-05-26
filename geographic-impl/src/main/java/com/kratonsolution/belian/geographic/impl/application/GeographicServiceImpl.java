@@ -6,14 +6,13 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.common.spring.SpecificationBuilder;
-import com.kratonsolution.belian.common.spring.SpecificationBuilder.Operator;
+import com.kratonsolution.belian.common.jpa.SpecificationBuilder;
+import com.kratonsolution.belian.common.jpa.SpecificationBuilder.Operator;
 import com.kratonsolution.belian.geographic.api.GeographicData;
 import com.kratonsolution.belian.geographic.api.GeographicType;
 import com.kratonsolution.belian.geographic.api.application.GeographicCreateCommand;
@@ -40,7 +39,6 @@ public class GeographicServiceImpl implements GeographicService {
 	@Autowired
 	private GeographicRepository repo;
 
-	@Secured("ROLE_GEOGRAPHIC_ADD")
 	public GeographicData create(GeographicCreateCommand command) {
 
 		Geographic geographic = null;
@@ -65,7 +63,6 @@ public class GeographicServiceImpl implements GeographicService {
 	}
 
 	@Override
-	@Secured("ROLE_GEOGRAPHIC_UPDATE")
 	public GeographicData update(GeographicUpdateCommand command) {
 
 		Optional<Geographic> opt = repo.findOneByCode(command.getCode());
@@ -90,7 +87,6 @@ public class GeographicServiceImpl implements GeographicService {
 		return GeographicMapper.INSTANCE.toData(opt.get());
 	}
 
-	@Secured("ROLE_GEOGRAPHIC_DELETE")
 	public GeographicData delete(GeographicDeleteCommand command) {
 
 		Optional<Geographic> opt = repo.findOneByCode(command.getCode());
@@ -103,25 +99,21 @@ public class GeographicServiceImpl implements GeographicService {
 		return GeographicMapper.INSTANCE.toData(opt.orElse(null));
 	}
 
-	@Secured("ROLE_GEOGRAPHIC_READ")
 	public GeographicData getByCode(String code) {
 
 		return GeographicMapper.INSTANCE.toData(repo.findOneByCode(code).orElse(null));
 	}
 
-	@Secured("ROLE_GEOGRAPHIC_READ")
 	public List<GeographicData> getAllGeographics() {
 
 		return GeographicMapper.INSTANCE.toDatas(repo.findAll());
 	}
 
-	@Secured("ROLE_GEOGRAPHIC_READ")
 	public List<GeographicData> getAllGeographics(int page, int size) {
 
 		return GeographicMapper.INSTANCE.toDatas(repo.findAll(PageRequest.of(page, size)).getContent());
 	}
 
-	@Secured("ROLE_GEOGRAPHIC_READ")
 	public List<GeographicData> getAllGeographics(@NonNull GeographicFilter filter, int page, int size) {
 
 		if(filter.isValid()) {
@@ -152,14 +144,13 @@ public class GeographicServiceImpl implements GeographicService {
 		return getAllGeographics(page, size);
 	}
 
-	@Secured("ROLE_GEOGRAPHIC_READ")
+
 	public int count() {
 
 		log.info("Count {}", repo.count());
 		return (int)repo.count();
 	}
 
-	@Secured("ROLE_GEOGRAPHIC_READ")
 	public int count(@NonNull GeographicFilter filter) {
 
 		SpecificationBuilder<Geographic> builder = new SpecificationBuilder<>();
@@ -182,7 +173,6 @@ public class GeographicServiceImpl implements GeographicService {
 		return Long.valueOf(repo.count(builder.getParent().get())).intValue();
 	}
 
-	@Secured("ROLE_GEOGRAPHIC_READ")
 	public List<GeographicData> getAllGeographicRoots() {
 		return GeographicMapper.INSTANCE.toDatas(repo.findAllRoots());
 	}

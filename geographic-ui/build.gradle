@@ -1,8 +1,8 @@
 plugins {
 	
-	id 'java'
-	id 'eclipse'
-	id 'org.springframework.boot' version '2.2.4.RELEASE'
+	id 'com.kratonsolution.belian.java-library-conventions'
+	id "io.freefair.lombok" version "6.0.0-m2"
+	id 'org.springframework.boot' version '2.4.5'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -13,23 +13,13 @@ repositories {
 
 dependencies {
 
-	compile project(':common-ui')
-	compile project(':geographic-connector')
+	implementation project(':common-ui')
+	implementation project(':geographic-connector')
 	
-	implementation 'org.jasypt:jasypt:1.9.2'
-	implementation 'org.springframework.boot:spring-boot-starter'
-	implementation 'org.projectlombok:lombok:1.18.10'
-	annotationProcessor 'org.projectlombok:lombok:1.18.10'
+	implementation 'com.google.guava:guava:30.1.1-jre'
 	
-	implementation enforcedPlatform('org.apache.camel.springboot:camel-spring-boot-dependencies:3.4.0')
-	implementation 'org.apache.camel.springboot:camel-spring-boot-starter'
-	implementation 'org.apache.camel.springboot:camel-activemq-starter'
-		
-	def withoutSlf4J = { exclude group: "org.slf4j", module: "slf4j-jdk14" }
-	implementation 'org.zkoss.zk:zkplus:9.0.0', withoutSlf4J
-	implementation 'org.zkoss.zk:zhtml:9.0.0', withoutSlf4J
-	implementation 'org.zkoss.zk:zkbind:9.0.0', withoutSlf4J
-	implementation 'org.zkoss.zk:zul:9.0.0', withoutSlf4J
+	implementation 'org.apache.camel.springboot:camel-spring-boot-starter:3.9.0'
+	implementation 'org.apache.camel.springboot:camel-activemq-starter:3.9.0'
 }
 
 bootJar {

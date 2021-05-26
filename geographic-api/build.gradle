@@ -1,20 +1,11 @@
 plugins {
 	
-	id 'java'
-	id 'eclipse'
+	id 'com.kratonsolution.belian.java-common-conventions'
+	id 'io.freefair.lombok' version '6.0.0-m2'
 }
 
 dependencies {
 
-	compile project(':common')
-	
-	implementation 'com.google.guava:guava:28.2-jre'
-	
-	compileOnly 'org.projectlombok:lombok:1.18.10'
-	annotationProcessor 'org.projectlombok:lombok:1.18.10'
-	
-	implementation enforcedPlatform('org.apache.camel.springboot:camel-spring-boot-dependencies:3.4.0')
-	implementation 'org.apache.camel.springboot:camel-spring-boot-starter'
 }
 
 jar {
