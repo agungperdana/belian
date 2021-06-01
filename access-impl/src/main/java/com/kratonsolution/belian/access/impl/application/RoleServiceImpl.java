@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Preconditions;
+import com.kratonsolution.belian.access.api.RoleData;
 import com.kratonsolution.belian.access.api.application.RoleCreateCommand;
 import com.kratonsolution.belian.access.api.application.RoleDeleteCommand;
 import com.kratonsolution.belian.access.api.application.RoleEvent;
@@ -31,7 +32,6 @@ import com.kratonsolution.belian.access.impl.repository.ModuleRepository;
 import com.kratonsolution.belian.access.impl.repository.RoleRepository;
 import com.kratonsolution.belian.common.application.EventType;
 import com.kratonsolution.belian.common.application.TaskEvent;
-import com.kratonsolution.belian.access.api.RoleData;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;

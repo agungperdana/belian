@@ -18,7 +18,7 @@ public class SignInCommand implements Serializable {
     private static final long serialVersionUID = 7494046782829828087L;
 
 	@NonNull
-    private String name;
+    private String username;
     
     @NonNull
     private String password;

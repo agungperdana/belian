@@ -5,10 +5,10 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-import com.kratonsolution.belian.access.impl.model.User;
-import com.kratonsolution.belian.access.impl.model.UserRole;
 import com.kratonsolution.belian.access.api.UserData;
 import com.kratonsolution.belian.access.api.UserRoleData;
+import com.kratonsolution.belian.access.impl.model.User;
+import com.kratonsolution.belian.access.impl.model.UserRole;
 
 import lombok.NonNull;
 

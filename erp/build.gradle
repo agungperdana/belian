@@ -9,7 +9,7 @@ apply plugin: 'io.spring.dependency-management'
 
 dependencies {
 
-	implementation project(':security-impl')
+	implementation project(':access-impl')
 	implementation project(':geographic-impl')
 	implementation project(':party-impl')
 	

@@ -14,6 +14,8 @@ import lombok.NonNull;
  */
 public interface UserService {
     
+	public UserData signIn(@NonNull SignInCommand command);
+	
     public UserData create(@NonNull UserCreateCommand command);
     
     public UserData update(@NonNull UserUpdateCommand command);

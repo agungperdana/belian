@@ -5,8 +5,8 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-import com.kratonsolution.belian.access.impl.model.Role;
 import com.kratonsolution.belian.access.api.RoleData;
+import com.kratonsolution.belian.access.impl.model.Role;
 
 import lombok.NonNull;
 

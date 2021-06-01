@@ -14,9 +14,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Preconditions;
+import com.kratonsolution.belian.access.api.UserData;
+import com.kratonsolution.belian.access.api.UserFilter;
 import com.kratonsolution.belian.access.api.application.ChangePasswordCommand;
 import com.kratonsolution.belian.access.api.application.DeleteUserRoleCommand;
 import com.kratonsolution.belian.access.api.application.RegisterNewUserRoleCommand;
+import com.kratonsolution.belian.access.api.application.SignInCommand;
 import com.kratonsolution.belian.access.api.application.UpdateUserRoleCommand;
 import com.kratonsolution.belian.access.api.application.UserCreateCommand;
 import com.kratonsolution.belian.access.api.application.UserDeleteCommand;
@@ -24,8 +27,6 @@ import com.kratonsolution.belian.access.api.application.UserService;
 import com.kratonsolution.belian.access.api.application.UserUpdateCommand;
 import com.kratonsolution.belian.access.impl.model.User;
 import com.kratonsolution.belian.access.impl.repository.UserRepository;
-import com.kratonsolution.belian.access.api.UserData;
-import com.kratonsolution.belian.access.api.UserFilter;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -185,5 +186,22 @@ public class UserServiceImpl implements UserService
 		repo.save(opt.get());
 		
 		return UserMapper.INSTANCE.toData(opt.get());
+	}
+
+	@Override
+	public UserData signIn(@NonNull SignInCommand command) {
+
+		Optional<User> opt = repo.findOneByName(command.getUsername());
+		if(opt.isEmpty()) {
+			opt = repo.findOneByEmail(command.getUsername());
+		}
+		
+		if(opt.isPresent() && enc.checkPassword(command.getPassword(), opt.get().getPassword())) {
+			
+			log.info("User {} granted access to entering the system ..... ", opt.get().getName());
+			return UserMapper.INSTANCE.toData(opt.get());
+		}
+		
+		return null;
 	}
 }

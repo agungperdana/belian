@@ -1,27 +1,35 @@
 package com.kratonsolution.belian.access.impl.router;
 
+import java.util.Map;
+
+import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kratonsolution.belian.access.api.UserFilter;
+import com.kratonsolution.belian.access.api.UserRouteName;
 import com.kratonsolution.belian.access.api.application.ChangePasswordCommand;
 import com.kratonsolution.belian.access.api.application.DeleteUserRoleCommand;
 import com.kratonsolution.belian.access.api.application.RegisterNewUserRoleCommand;
+import com.kratonsolution.belian.access.api.application.SignInCommand;
 import com.kratonsolution.belian.access.api.application.UpdateUserRoleCommand;
 import com.kratonsolution.belian.access.api.application.UserCreateCommand;
 import com.kratonsolution.belian.access.api.application.UserDeleteCommand;
 import com.kratonsolution.belian.access.api.application.UserService;
 import com.kratonsolution.belian.access.api.application.UserUpdateCommand;
 import com.kratonsolution.belian.common.router.BelianServiceRouter;
-import com.kratonsolution.belian.access.api.UserFilter;
-import com.kratonsolution.belian.access.api.UserRouteName;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  * @sinch 2.0
  */
+@Slf4j
 @Service
 public class UserRouter extends RouteBuilder implements BelianServiceRouter {
 
@@ -90,11 +98,29 @@ public class UserRouter extends RouteBuilder implements BelianServiceRouter {
 	@Override
 	public void initRESTRoute() {
 		
-		restConfiguration().component("jetty").host("127.0.0.1").port(8585);
+		restConfiguration().component("jetty").host("0.0.0.0").port(8585);
 		
 		rest()
 			.path("/users")
 			.bindingMode(RestBindingMode.json)
 			.get("/all-users").route().process(e->e.getMessage().setBody(service.getAllUsers()));
+		
+		rest()
+			.consumes("application/json")
+			.path("")
+			.bindingMode(RestBindingMode.json)
+			.post("/login").route().process(e->{
+				
+				Map<String, String> map = e.getIn().getBody(Map.class);
+				if(map != null) {
+					
+					SignInCommand command = new SignInCommand();
+					command.setUsername(map.get("username"));
+					command.setPassword(map.get("password"));
+					
+					e.getMessage().setBody(service.signIn(command));
+				}
+			})
+			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"));
 	}
 }

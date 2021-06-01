@@ -4,12 +4,12 @@ import org.apache.camel.builder.RouteBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kratonsolution.belian.access.api.RoleRouteName;
 import com.kratonsolution.belian.access.api.application.RoleCreateCommand;
 import com.kratonsolution.belian.access.api.application.RoleDeleteCommand;
 import com.kratonsolution.belian.access.api.application.RoleFilter;
 import com.kratonsolution.belian.access.api.application.RoleService;
 import com.kratonsolution.belian.access.api.application.RoleUpdateCommand;
-import com.kratonsolution.belian.access.api.RoleRouteName;
 
 /**
  * @author Agung Dodi Perdana
