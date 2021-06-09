@@ -12,7 +12,6 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,7 +54,6 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
     @Autowired
     private ApplicationEventPublisher publisher;
     
-    @Secured({"ROLE_SCR-ROLE_ADD"})
     public RoleData create(RoleCreateCommand command) {
         
         Role role = new Role(command.getCode(), command.getName(), command.getNote(), command.isEnabled());
@@ -79,7 +77,6 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
         return data;
     }
     
-    @Secured({"ROLE_SCR-ROLE_UPDATE"})
     public RoleData update(RoleUpdateCommand command) {
         
         Optional<Role> opt = roleRepo.findOneByCode(command.getCode());
@@ -121,7 +118,6 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
         return data;
     }
     
-    @Secured({"ROLE_SCR-ROLE_DELETE"})
     public RoleData delete(RoleDeleteCommand command) {
         
         Optional<Role> opt = roleRepo.findOneByCode(command.getCode());
@@ -143,19 +139,16 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
         return RoleMapper.INSTANCE.toData(roleRepo.findOneByCode(code).orElse(null));
     }
     
-    @Secured({"ROLE_SCR-ROLE_READ"})
     public List<RoleData> getAllRoles() {
         
         return RoleMapper.INSTANCE.toRoleDatas(roleRepo.findAll());
     }
     
-    @Secured({"ROLE_SCR-ROLE_READ"})
     public List<RoleData> getAllRoles(int page, int size) {
         
         return RoleMapper.INSTANCE.toRoleDatas(roleRepo.findAll(PageRequest.of(page, size)).getContent());
     }
     
-    @Secured({"ROLE_SCR-ROLE_READ"})
     public List<RoleData> getAllRoles(@NonNull RoleFilter filter, int page, int size) {
         
     	ExampleMatcher matcher = ExampleMatcher.matchingAny();
@@ -167,20 +160,17 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
         				PageRequest.of(page, size)).getContent());
     }
     
-    @Secured({"ROLE_SCR-ROLE_READ"})
     public int count() {
         
         return (int)roleRepo.count();
     }
     
-    @Secured({"ROLE_SCR-ROLE_READ"})
     public int count(@NonNull RoleFilter filter) {
     	
     	return roleRepo.count("%"+filter.getKey()+"%").intValue();
     }
 
 	@Transactional
-    @Secured({"ROLE_SCR-ROLE_READ"})
 	public void onApplicationEvent(PayloadApplicationEvent<TaskEvent> event) {
 
 		TaskEvent model = event.getPayload();

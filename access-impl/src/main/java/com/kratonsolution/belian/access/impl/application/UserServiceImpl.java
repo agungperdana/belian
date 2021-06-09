@@ -9,7 +9,6 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,7 +45,6 @@ public class UserServiceImpl implements UserService
     
     private StrongPasswordEncryptor enc = new StrongPasswordEncryptor();
     
-    @Secured({"ROLE_SCR-USR_ADD"})
     public UserData create(@NonNull UserCreateCommand command) {
         
         User user = new User(command.getName(), command.getEmail(),
@@ -59,7 +57,6 @@ public class UserServiceImpl implements UserService
         return UserMapper.INSTANCE.toData(user);
     }
     
-    @Secured({"ROLE_SCR-USR_UPDATE"})
     public UserData update(@NonNull UserUpdateCommand command) {
         
         Optional<User> userOpt = repo.findOneByName(command.getName());
@@ -77,7 +74,6 @@ public class UserServiceImpl implements UserService
         return UserMapper.INSTANCE.toData(userOpt.get());
     }
     
-    @Secured({"ROLE_SCR-USR_DELETE"})
     public UserData delete(@NonNull UserDeleteCommand command) {
         
         Optional<User> userOpt = repo.findOneByName(command.getName());
@@ -91,7 +87,6 @@ public class UserServiceImpl implements UserService
         return UserMapper.INSTANCE.toData(userOpt.get());
     }
     
-    @Secured({"ROLE_SCR-USR_UPDATE"})
     public UserData changePassword(@NonNull ChangePasswordCommand command) {
         
         Optional<User> userOpt = repo.findOneByName(command.getName());
@@ -111,19 +106,16 @@ public class UserServiceImpl implements UserService
         return UserMapper.INSTANCE.toData(repo.findOneByName(name).orElse(null));
     }
     
-    @Secured({"ROLE_SCR-USR_READ"})
     public List<UserData> getAllUsers() {
         
         return UserMapper.INSTANCE.toDatas(repo.findAll());
     }
     
-    @Secured({"ROLE_SCR-USR_READ"})
     public List<UserData> getAllUsers(int page, int size) {
         
         return UserMapper.INSTANCE.toDatas(repo.findAll(PageRequest.of(page, size)).getContent());
     }
     
-    @Secured({"ROLE_SCR-USR_READ"})
     public List<UserData> getAllUsers(@NonNull UserFilter filter, int page, int size) {
         
         ExampleMatcher matcher = ExampleMatcher.matchingAny();
@@ -151,7 +143,6 @@ public class UserServiceImpl implements UserService
         return UserMapper.INSTANCE.toData(repo.findOneByEmail(email).orElse(null));
     }
 
-    @Secured({"ROLE_SCR-USR_UPDATE"})
 	public UserData addNewUserRole(@NonNull RegisterNewUserRoleCommand command) {
 		
 		Optional<User> opt = repo.findOneByName(command.getUserName());
@@ -163,7 +154,6 @@ public class UserServiceImpl implements UserService
 		return UserMapper.INSTANCE.toData(opt.get());
 	}
 
-    @Secured({"ROLE_SCR-USR_UPDATE"})
 	public UserData updateUserRole(@NonNull UpdateUserRoleCommand command) {
 
 		Optional<User> opt = repo.findOneByName(command.getUserName());
@@ -175,7 +165,6 @@ public class UserServiceImpl implements UserService
 		return UserMapper.INSTANCE.toData(opt.get());
 	}
 
-    @Secured({"ROLE_SCR-USR_UPDATE"})
 	public UserData deleteUserRole(@NonNull DeleteUserRoleCommand command) {
 
 		Optional<User> opt = repo.findOneByName(command.getUserName());

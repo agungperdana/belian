@@ -1,0 +1,17 @@
+plugins {
+	id 'com.kratonsolution.belian.java-library-conventions'
+	id "io.freefair.lombok" version "6.0.0-m2"
+	id 'org.springframework.boot' version '2.4.5'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+dependencies {
+	
+	api project (":access-api")
+	
+	api 'org.springframework.boot:spring-boot-starter-security'	
+	api 'org.jasypt:jasypt:1.9.2'
+	api 'io.jsonwebtoken:jjwt-api:0.11.2'
+	api 'io.jsonwebtoken:jjwt-impl:0.11.2'
+}
