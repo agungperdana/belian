@@ -17,6 +17,10 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.access.api.UserData;
+import com.kratonsolution.belian.access.api.UserRoleData;
+import com.kratonsolution.belian.access.api.application.UserService;
+import com.kratonsolution.belian.access.api.application.UserUpdateCommand;
 import com.kratonsolution.belian.common.ui.AbstractForm;
 import com.kratonsolution.belian.common.ui.event.UIEvent;
 import com.kratonsolution.belian.common.ui.util.Components;
@@ -24,10 +28,6 @@ import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.GridHelper;
 import com.kratonsolution.belian.common.ui.util.RowUtils;
 import com.kratonsolution.belian.common.ui.util.Springs;
-import com.kratonsolution.belian.security.api.UserData;
-import com.kratonsolution.belian.security.api.UserRoleData;
-import com.kratonsolution.belian.security.api.application.UserService;
-import com.kratonsolution.belian.security.api.application.UserUpdateCommand;
 
 import lombok.NonNull;
 

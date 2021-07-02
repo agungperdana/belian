@@ -14,10 +14,19 @@ repositories {
 dependencies {
 
 	implementation project(':common-ui')
+	implementation project(':geographic-api')
+	implementation project(':party-api')
 	implementation project(':party-connector')
 	
-	implementation 'com.google.guava:guava:30.1.1-jre'
 	implementation 'org.jasypt:jasypt:1.9.2'
+	
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	
+	def withoutSlf4J = { exclude group: "org.slf4j", module: "slf4j-jdk14" }
+	implementation 'org.zkoss.zk:zkplus:9.5.0.3', withoutSlf4J
+	implementation 'org.zkoss.zk:zhtml:9.5.0.3', withoutSlf4J
+	implementation 'org.zkoss.zk:zkbind:9.5.0.3', withoutSlf4J
+	implementation 'org.zkoss.zk:zul:9.5.0.3', withoutSlf4J
 }
 
 bootJar {

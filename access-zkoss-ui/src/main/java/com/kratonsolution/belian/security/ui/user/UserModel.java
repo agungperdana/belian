@@ -2,10 +2,10 @@ package com.kratonsolution.belian.security.ui.user;
 
 import org.zkoss.zul.ListModelList;
 
+import com.kratonsolution.belian.access.api.UserData;
+import com.kratonsolution.belian.access.api.application.UserService;
 import com.kratonsolution.belian.common.ui.util.Springs;
 import com.kratonsolution.belian.common.ui.util.UIHelper;
-import com.kratonsolution.belian.security.api.UserData;
-import com.kratonsolution.belian.security.api.application.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 

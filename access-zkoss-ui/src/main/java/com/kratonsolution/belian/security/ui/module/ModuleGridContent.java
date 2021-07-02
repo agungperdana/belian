@@ -11,13 +11,13 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.event.PagingEvent;
 import org.zkoss.zul.event.ZulEvents;
 
+import com.kratonsolution.belian.access.api.application.ModuleDeleteCommand;
+import com.kratonsolution.belian.access.api.application.ModuleService;
 import com.kratonsolution.belian.common.ui.GridContent;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.RowUtils;
 import com.kratonsolution.belian.common.ui.util.Springs;
 import com.kratonsolution.belian.common.ui.util.UIHelper;
-import com.kratonsolution.belian.security.api.application.ModuleDeleteCommand;
-import com.kratonsolution.belian.security.api.application.ModuleService;
 
 /**
  * @author Agung Dodi Perdana

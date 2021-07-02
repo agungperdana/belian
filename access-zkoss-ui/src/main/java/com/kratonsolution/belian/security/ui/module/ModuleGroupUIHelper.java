@@ -2,13 +2,14 @@ package com.kratonsolution.belian.security.ui.module;
 
 import org.zkoss.zul.Listbox;
 
-import com.kratonsolution.belian.security.api.ModuleGroup;
+import com.kratonsolution.belian.access.api.ModuleGroup;
 
 import lombok.NonNull;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 2.0
  */
 public class ModuleGroupUIHelper {
 

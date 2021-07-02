@@ -5,9 +5,6 @@ import java.util.Optional;
 
 import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,6 +74,9 @@ public class UserServiceImpl implements UserService
     public UserData delete(@NonNull UserDeleteCommand command) {
         
         Optional<User> userOpt = repo.findOneByName(command.getName());
+        if(userOpt.isEmpty()) {
+        	userOpt = repo.findOneByEmail(command.getName());
+        }
         
         Preconditions.checkState(userOpt.isPresent(), "User does not exist.");
         
@@ -118,11 +118,9 @@ public class UserServiceImpl implements UserService
     
     public List<UserData> getAllUsers(@NonNull UserFilter filter, int page, int size) {
         
-        ExampleMatcher matcher = ExampleMatcher.matchingAny();
-        matcher.withMatcher("name", GenericPropertyMatchers.contains().ignoreCase());
-        matcher.withMatcher("email", GenericPropertyMatchers.contains().ignoreCase());
-        
-        return UserMapper.INSTANCE.toDatas(repo.findAll(Example.of(new User(filter.getKey(), filter.getKey(), "", false), matcher), PageRequest.of(page, size)).getContent());
+
+    	
+    	return UserMapper.INSTANCE.toDatas(repo.findAll(filter.getLikeKey(), PageRequest.of(page, size)));
     }
     
     @Override

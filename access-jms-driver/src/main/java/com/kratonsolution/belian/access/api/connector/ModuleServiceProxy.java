@@ -1,4 +1,4 @@
-package com.kratonsolution.belian.security.api.connector;
+package com.kratonsolution.belian.access.api.connector;
 
 import java.util.List;
 
@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import com.kratonsolution.belian.security.api.ModuleData;
-import com.kratonsolution.belian.security.api.ModuleRouteName;
-import com.kratonsolution.belian.security.api.application.ModuleCreateCommand;
-import com.kratonsolution.belian.security.api.application.ModuleDeleteCommand;
-import com.kratonsolution.belian.security.api.application.ModuleFilter;
-import com.kratonsolution.belian.security.api.application.ModuleService;
-import com.kratonsolution.belian.security.api.application.ModuleUpdateCommand;
+import com.kratonsolution.belian.access.api.ModuleData;
+import com.kratonsolution.belian.access.api.ModuleRouteName;
+import com.kratonsolution.belian.access.api.application.ModuleCreateCommand;
+import com.kratonsolution.belian.access.api.application.ModuleDeleteCommand;
+import com.kratonsolution.belian.access.api.application.ModuleFilter;
+import com.kratonsolution.belian.access.api.application.ModuleService;
+import com.kratonsolution.belian.access.api.application.ModuleUpdateCommand;
 
 /**
  * @author Agung Dodi Perdana

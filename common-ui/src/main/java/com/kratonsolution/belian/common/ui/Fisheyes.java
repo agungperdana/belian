@@ -14,8 +14,9 @@ public class Fisheyes extends Toolbar
 
 	public Fisheyes()
 	{
-		setWidth("50%");
-		setHeight("50px");
+		setHflex("1");
+		setHeight("60px");
+		setAlign("start");
 		setStyle("border:solid silver 1px;padding-left:2px;padding-right:2px;");
 	}
 	

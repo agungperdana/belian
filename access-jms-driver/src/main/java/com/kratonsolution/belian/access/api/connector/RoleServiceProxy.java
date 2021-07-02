@@ -1,4 +1,4 @@
-package com.kratonsolution.belian.security.api.connector;
+package com.kratonsolution.belian.access.api.connector;
 
 import java.util.List;
 
@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import com.kratonsolution.belian.security.api.RoleData;
-import com.kratonsolution.belian.security.api.RoleRouteName;
-import com.kratonsolution.belian.security.api.application.RoleCreateCommand;
-import com.kratonsolution.belian.security.api.application.RoleDeleteCommand;
-import com.kratonsolution.belian.security.api.application.RoleFilter;
-import com.kratonsolution.belian.security.api.application.RoleService;
-import com.kratonsolution.belian.security.api.application.RoleUpdateCommand;
+import com.kratonsolution.belian.access.api.RoleData;
+import com.kratonsolution.belian.access.api.RoleRouteName;
+import com.kratonsolution.belian.access.api.application.RoleCreateCommand;
+import com.kratonsolution.belian.access.api.application.RoleDeleteCommand;
+import com.kratonsolution.belian.access.api.application.RoleFilter;
+import com.kratonsolution.belian.access.api.application.RoleService;
+import com.kratonsolution.belian.access.api.application.RoleUpdateCommand;
 
 /**
  * @author Agung Dodi Perdana

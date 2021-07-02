@@ -9,11 +9,24 @@ apply plugin: 'io.spring.dependency-management'
 
 dependencies {
 
-	api project(':common-ui')
-	api project(':security-connector')
+	implementation project(':common-ui')
+	implementation project(':access-api')
+	implementation project(':access-jms-driver')
+	
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	
+	def withoutSlf4J = { exclude group: "org.slf4j", module: "slf4j-jdk14" }
+	implementation 'org.zkoss.zk:zkplus:9.5.0.3', withoutSlf4J
+	implementation 'org.zkoss.zk:zhtml:9.5.0.3', withoutSlf4J
+	implementation 'org.zkoss.zk:zkbind:9.5.0.3', withoutSlf4J
+	implementation 'org.zkoss.zk:zul:9.5.0.3', withoutSlf4J
 }
 
 
 jar {
 	enabled = true
+}
+
+bootJar {
+	enabled=false
 }

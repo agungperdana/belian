@@ -7,7 +7,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
-import com.kratonsolution.belian.security.api.RoleData;
+import com.kratonsolution.belian.access.api.RoleData;
 
 /**
  * @author Agung Dodi Perdana

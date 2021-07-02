@@ -20,6 +20,12 @@ dependencies {
 	
 	implementation 'org.apache.camel.springboot:camel-spring-boot-starter:3.9.0'
 	implementation 'org.apache.camel.springboot:camel-activemq-starter:3.9.0'
+	
+	def withoutSlf4J = { exclude group: "org.slf4j", module: "slf4j-jdk14" }
+	implementation 'org.zkoss.zk:zkplus:9.5.0.3', withoutSlf4J
+	implementation 'org.zkoss.zk:zhtml:9.5.0.3', withoutSlf4J
+	implementation 'org.zkoss.zk:zkbind:9.5.0.3', withoutSlf4J
+	implementation 'org.zkoss.zk:zul:9.5.0.3', withoutSlf4J
 }
 
 bootJar {

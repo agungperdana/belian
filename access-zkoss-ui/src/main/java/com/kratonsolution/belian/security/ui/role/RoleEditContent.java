@@ -24,16 +24,16 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.access.api.ModuleGroup;
+import com.kratonsolution.belian.access.api.RoleData;
+import com.kratonsolution.belian.access.api.application.RoleModuleCommand;
+import com.kratonsolution.belian.access.api.application.RoleService;
+import com.kratonsolution.belian.access.api.application.RoleUpdateCommand;
 import com.kratonsolution.belian.common.ui.AbstractForm;
 import com.kratonsolution.belian.common.ui.util.Components;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.RowUtils;
 import com.kratonsolution.belian.common.ui.util.Springs;
-import com.kratonsolution.belian.security.api.ModuleGroup;
-import com.kratonsolution.belian.security.api.RoleData;
-import com.kratonsolution.belian.security.api.application.RoleModuleCommand;
-import com.kratonsolution.belian.security.api.application.RoleService;
-import com.kratonsolution.belian.security.api.application.RoleUpdateCommand;
 
 import lombok.NonNull;
 

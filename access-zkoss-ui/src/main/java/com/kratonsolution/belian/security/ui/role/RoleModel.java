@@ -2,10 +2,10 @@ package com.kratonsolution.belian.security.ui.role;
 
 import org.zkoss.zul.ListModelList;
 
+import com.kratonsolution.belian.access.api.RoleData;
+import com.kratonsolution.belian.access.api.application.RoleService;
 import com.kratonsolution.belian.common.ui.util.Springs;
 import com.kratonsolution.belian.common.ui.util.UIHelper;
-import com.kratonsolution.belian.security.api.RoleData;
-import com.kratonsolution.belian.security.api.application.RoleService;
 
 /**
  * @author Agung Dodi Perdana

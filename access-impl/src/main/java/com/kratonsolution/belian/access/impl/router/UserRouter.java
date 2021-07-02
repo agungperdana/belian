@@ -27,14 +27,19 @@ import com.kratonsolution.belian.access.api.application.UserDeleteCommand;
 import com.kratonsolution.belian.access.api.application.UserService;
 import com.kratonsolution.belian.access.api.application.UserUpdateCommand;
 import com.kratonsolution.belian.camel.AuthProcess;
+import com.kratonsolution.belian.camel.ErrorHandler;
+import com.kratonsolution.belian.camel.ResponseBuilder;
 import com.kratonsolution.belian.common.router.BelianServiceRouter;
 import com.kratonsolution.belian.security.jwt.JWTTokenGenerator;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  * @sinch 2.0
  */
+@Slf4j
 @Service
 public class UserRouter extends RouteBuilder implements BelianServiceRouter {
 
@@ -46,6 +51,8 @@ public class UserRouter extends RouteBuilder implements BelianServiceRouter {
 	
 	@Override
 	public void configure() throws Exception {
+		
+		from("direct:errorHandler").bean(new ErrorHandler()).end();
 		
 		initJMSRoute();
 		initRESTRoute();
@@ -94,13 +101,13 @@ public class UserRouter extends RouteBuilder implements BelianServiceRouter {
 			e.getMessage().setBody(service.addNewUserRole(e.getIn().getBody(RegisterNewUserRoleCommand.class))));
 		
 		from(UserRouteName.UPDATE_ROLE).transacted().process(e->
-		e.getMessage().setBody(service.updateUserRole(e.getIn().getBody(UpdateUserRoleCommand.class))));
+			e.getMessage().setBody(service.updateUserRole(e.getIn().getBody(UpdateUserRoleCommand.class))));
 		
 		from(UserRouteName.DELETE_ROLE).transacted().process(e->
-		e.getMessage().setBody(service.deleteUserRole(e.getIn().getBody(DeleteUserRoleCommand.class))));
+			e.getMessage().setBody(service.deleteUserRole(e.getIn().getBody(DeleteUserRoleCommand.class))));
 		
 		from(UserRouteName.CHANGE_PASSWORD).transacted().process(e->
-		e.getMessage().setBody(service.changePassword(e.getIn().getBody(ChangePasswordCommand.class))));
+			e.getMessage().setBody(service.changePassword(e.getIn().getBody(ChangePasswordCommand.class))));
 	}
 
 	@Override
@@ -108,20 +115,126 @@ public class UserRouter extends RouteBuilder implements BelianServiceRouter {
 		
 		rest()
 			.path("/users")
+			.consumes("application/json")
 			.bindingMode(RestBindingMode.json)
-			.get("/all-users").route()
-			.process(new AuthProcess("SCR-USR_READ"))
-			.process(e->e.getMessage().setBody(service.getAllUsers()))
+			.post("/create").route()
+			.process(new AuthProcess("SCR-USR_ADD"))
+			.process(e->{
+				
+				@SuppressWarnings("unchecked")
+				Map<String, String> body = e.getIn().getBody(Map.class);
+				
+				UserCreateCommand command = new UserCreateCommand();
+				command.setEmail(body.get("email"));
+				command.setName(body.get("name"));
+				command.setPassword(body.get("password"));
+				command.setEnabled(Boolean.valueOf(body.get("enabled")));
+				
+				e.getMessage().setBody(ResponseBuilder.success(service.create(command)));
+			})
+			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
 			.endRest();
 		
 		rest()
 			.path("/users")
+			.consumes("application/json")
+			.bindingMode(RestBindingMode.json)
+			.post("/update").route()
+			.process(new AuthProcess("SCR-USR_EDIT"))
+			.process(e->{
+			
+				@SuppressWarnings("unchecked")
+				Map<String, String> body = e.getIn().getBody(Map.class);
+				
+				UserUpdateCommand command = new UserUpdateCommand();
+				command.setEmail(body.get("email"));
+				command.setName(body.get("name"));
+				command.setEnabled(Boolean.valueOf(body.get("enabled")));
+				
+				e.getMessage().setBody(ResponseBuilder.success(service.update(command)));
+			})
+			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
+			.endRest();
+		
+		rest()
+			.path("/users")
+			.consumes("application/json")
+			.bindingMode(RestBindingMode.json)
+			.post("/delete/{name}").route()
+			.process(new AuthProcess("SCR-USR_DELETE"))
+			.process(e->{
+				
+				UserDeleteCommand command = new UserDeleteCommand();
+				command.setName(e.getIn().getHeader("name", String.class));
+			
+				e.getMessage().setBody(ResponseBuilder.success(service.delete(command)));
+		})
+		.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
+		.endRest();
+		
+		rest()
+			.path("/users")
+			.consumes("application/json")
+			.bindingMode(RestBindingMode.json)
+			.get("/all-users").route()
+			.process(new AuthProcess("SCR-USR_READ"))
+			.process(e->e.getMessage().setBody(ResponseBuilder.success(service.getAllUsers())))
+			.endRest();
+		
+		rest()
+			.path("/users")
+			.consumes("application/json")
 			.bindingMode(RestBindingMode.json)
 			.get("/all-users/{start}/{end}").route()
+			.onException(Exception.class).handled(true).to("direct:errorHandler").end()
 			.process(new AuthProcess("SCR-USR_READ"))
-			.process(e->e.getMessage().setBody(service.getAllUsers(
+			.process(e-> {
+				
+				log.debug("users/all-users/start/end");
+				e.getMessage().setBody(ResponseBuilder.success(service.getAllUsers(
 								e.getIn().getHeader("start", Integer.class), 
-								e.getIn().getHeader("end", Integer.class))))
+								e.getIn().getHeader("end", Integer.class))));
+			})
+			.setHeader("Access-Control-Allow-Credentials", constant("true"))
+			.endRest();
+		
+		rest()
+			.path("/users")
+			.consumes("application/json")
+			.bindingMode(RestBindingMode.json)
+			.get("/all-users/{key}/{start}/{end}").route()
+			.onException(Exception.class).handled(true).to("direct:errorHandler").end()
+			.process(new AuthProcess("SCR-USR_READ"))
+			.process(e->e.getMessage().setBody(
+				ResponseBuilder.success(service.getAllUsers(
+							UserFilter.forKey(e.getIn().getHeader("key", String.class)),
+							e.getIn().getHeader("start", Integer.class), 
+							e.getIn().getHeader("end", Integer.class)))))
+		.endRest();
+		
+		rest()
+			.path("/users")
+			.consumes("application/json")
+			.bindingMode(RestBindingMode.json)
+			.get("/count").route()
+			.onException(Exception.class).handled(true).to("direct:errorHandler").end()
+			.process(new AuthProcess("SCR-USR_READ"))
+			.process(e->e.getMessage().setBody(ResponseBuilder.success(service.count())))
+			.endRest();
+		
+		rest()
+			.path("/users")
+			.consumes("application/json")
+			.bindingMode(RestBindingMode.json)
+			.get("/count/{key}").route()
+			.onException(Exception.class).handled(true).to("direct:errorHandler").end()
+			.process(new AuthProcess("SCR-USR_READ"))
+			.process(e->{
+				e.getMessage()
+				 .setBody(
+						 ResponseBuilder.success(
+								 service.count(UserFilter.forKey(e.getIn().getHeader("key", String.class)))));
+			})
 			.endRest();
 		
 		rest()
@@ -145,6 +258,7 @@ public class UserRouter extends RouteBuilder implements BelianServiceRouter {
 					
 					if(data != null) {						
 						response.put("token", JWTTokenGenerator.encode(new Gson().toJson(buildUserMap(data))));
+						response.put("user", data);
 					}
 					
 					e.getMessage().setBody(response);

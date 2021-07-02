@@ -8,12 +8,12 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
+import com.kratonsolution.belian.access.api.application.ChangePasswordCommand;
+import com.kratonsolution.belian.access.api.application.UserService;
 import com.kratonsolution.belian.common.ui.AbstractForm;
 import com.kratonsolution.belian.common.ui.util.Components;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.Springs;
-import com.kratonsolution.belian.security.api.application.ChangePasswordCommand;
-import com.kratonsolution.belian.security.api.application.UserService;
 
 import lombok.NonNull;
 

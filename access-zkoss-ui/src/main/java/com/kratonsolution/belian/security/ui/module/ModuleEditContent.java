@@ -12,13 +12,13 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
+import com.kratonsolution.belian.access.api.ModuleData;
+import com.kratonsolution.belian.access.api.application.ModuleService;
+import com.kratonsolution.belian.access.api.application.ModuleUpdateCommand;
 import com.kratonsolution.belian.common.ui.AbstractForm;
 import com.kratonsolution.belian.common.ui.util.Components;
 import com.kratonsolution.belian.common.ui.util.FlowHelper;
 import com.kratonsolution.belian.common.ui.util.Springs;
-import com.kratonsolution.belian.security.api.ModuleData;
-import com.kratonsolution.belian.security.api.application.ModuleService;
-import com.kratonsolution.belian.security.api.application.ModuleUpdateCommand;
 
 import lombok.NonNull;
 

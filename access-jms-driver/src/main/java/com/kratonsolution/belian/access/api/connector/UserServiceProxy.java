@@ -1,4 +1,4 @@
-package com.kratonsolution.belian.security.api.connector;
+package com.kratonsolution.belian.access.api.connector;
 
 import java.util.List;
 
@@ -7,17 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import com.kratonsolution.belian.security.api.UserData;
-import com.kratonsolution.belian.security.api.UserFilter;
-import com.kratonsolution.belian.security.api.UserRouteName;
-import com.kratonsolution.belian.security.api.application.ChangePasswordCommand;
-import com.kratonsolution.belian.security.api.application.UserCreateCommand;
-import com.kratonsolution.belian.security.api.application.UserDeleteCommand;
-import com.kratonsolution.belian.security.api.application.DeleteUserRoleCommand;
-import com.kratonsolution.belian.security.api.application.RegisterNewUserRoleCommand;
-import com.kratonsolution.belian.security.api.application.UserUpdateCommand;
-import com.kratonsolution.belian.security.api.application.UpdateUserRoleCommand;
-import com.kratonsolution.belian.security.api.application.UserService;
+import com.kratonsolution.belian.access.api.UserData;
+import com.kratonsolution.belian.access.api.UserFilter;
+import com.kratonsolution.belian.access.api.UserRouteName;
+import com.kratonsolution.belian.access.api.application.ChangePasswordCommand;
+import com.kratonsolution.belian.access.api.application.DeleteUserRoleCommand;
+import com.kratonsolution.belian.access.api.application.RegisterNewUserRoleCommand;
+import com.kratonsolution.belian.access.api.application.SignInCommand;
+import com.kratonsolution.belian.access.api.application.UpdateUserRoleCommand;
+import com.kratonsolution.belian.access.api.application.UserCreateCommand;
+import com.kratonsolution.belian.access.api.application.UserDeleteCommand;
+import com.kratonsolution.belian.access.api.application.UserService;
+import com.kratonsolution.belian.access.api.application.UserUpdateCommand;
 
 /**
  * @author Agung Dodi Perdana
@@ -99,6 +100,12 @@ public class UserServiceProxy implements UserService {
 	@Override
 	public UserData deleteUserRole(@NonNull DeleteUserRoleCommand command) {
 		return producer.requestBody(UserRouteName.DELETE_ROLE, command, UserData.class);
+	}
+
+	@Override
+	public UserData signIn(@lombok.NonNull SignInCommand command) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

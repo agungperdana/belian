@@ -9,9 +9,8 @@ apply plugin: 'io.spring.dependency-management'
 
 dependencies {
 
-	api project(':security-api')
-	
-	api 'org.apache.camel.springboot:camel-spring-boot-starter:3.9.0'
+	implementation project(':access-api')	
+	implementation 'org.apache.camel.springboot:camel-spring-boot-starter:3.9.0'
 }
 
 bootJar{

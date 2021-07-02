@@ -1,5 +1,8 @@
 package com.kratonsolution.belian.config;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.camel.CamelContext;
 import org.apache.camel.component.jetty.JettyHttpComponent;
 import org.apache.camel.spi.RestConfiguration;
@@ -42,10 +45,18 @@ public class RestServerConfig {
 		JettyHttpComponent jetty = camel.getComponent("jetty", JettyHttpComponent.class);
 		jetty.setSslContextParameters(scp);
 		
+		Map<String, String> cors = new HashMap<>();
+		cors.put("Access-Control-Allow-Origin", "*");       
+		cors.put("Access-Control-Allow-Headers", "access-control-allow-methods,access-control-allow-origin,authorization,content-type");        
+		cors.put("Access-Control-Allow-Methods", "GET, DELETE, POST, OPTIONS, PUT");
+
+		
+		
 		RestConfiguration restConfig = new RestConfiguration();
 		restConfig.setComponent("jetty");
 		restConfig.setHost("0.0.0.0");
 		restConfig.setPort(8585);
+		restConfig.setEnableCORS(true);
 		
 		log.info("Server {}", camel);
 		log.info("Component {}", jetty);

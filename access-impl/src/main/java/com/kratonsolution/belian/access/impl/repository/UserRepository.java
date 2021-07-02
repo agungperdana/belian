@@ -1,7 +1,9 @@
 package com.kratonsolution.belian.access.impl.repository;
 
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -22,4 +24,7 @@ public interface UserRepository extends JpaRepository<User, String>
     
     @Query("SELECT COUNT(usr) FROM User usr WHERE usr.name LIKE ?1 OR usr.email LIKE ?1")
     public Long count(@NonNull String key);
+    
+    @Query("FROM User usr WHERE usr.name LIKE ?1 OR usr.email LIKE ?1")
+    public List<User> findAll(@NonNull String key, Pageable pageable);
 }

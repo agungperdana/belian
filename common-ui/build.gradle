@@ -12,13 +12,13 @@ repositories {
 
 dependencies {
 	
-	api 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 	
 	def withoutSlf4J = { exclude group: "org.slf4j", module: "slf4j-jdk14" }
-	api 'org.zkoss.zk:zkplus:9.0.0', withoutSlf4J
-	api 'org.zkoss.zk:zhtml:9.0.0', withoutSlf4J
-	api 'org.zkoss.zk:zkbind:9.0.0', withoutSlf4J
-	api 'org.zkoss.zk:zul:9.0.0', withoutSlf4J
+	implementation 'org.zkoss.zk:zkplus:9.5.0.3', withoutSlf4J
+	implementation 'org.zkoss.zk:zhtml:9.5.0.3', withoutSlf4J
+	implementation 'org.zkoss.zk:zkbind:9.5.0.3', withoutSlf4J
+	implementation 'org.zkoss.zk:zul:9.5.0.3', withoutSlf4J
 }
 
 bootJar {

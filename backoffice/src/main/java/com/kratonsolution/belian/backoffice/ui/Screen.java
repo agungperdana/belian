@@ -9,6 +9,7 @@ import com.kratonsolution.belian.common.ui.Fisheyes;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0
  */
 public class Screen extends AbstractScreen {
 
@@ -23,10 +24,9 @@ public class Screen extends AbstractScreen {
 	public Screen() {
 
 		setSclass("frmaedisplay");
-		setWidth("99%");
-		setHeight("99%");
+		setVflex("1");
+		setHflex("1");
 		setAlign("center");
-		setPack("center");
 	}
 	
 	public void init() {

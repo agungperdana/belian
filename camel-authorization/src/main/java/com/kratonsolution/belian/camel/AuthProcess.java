@@ -39,8 +39,6 @@ public class AuthProcess implements Processor {
 			throw new AccessDeniedException();
 		}
 		
-		log.info("User {}", claims.getSubject());
-		
 		User user = new Gson().fromJson(claims.getSubject(), User.class);
 		if(user != null) {
 			boolean hasRole = user.getRoles().stream().anyMatch(role->role.getName().equalsIgnoreCase(this.role));
@@ -48,5 +46,7 @@ public class AuthProcess implements Processor {
 				throw new AccessDeniedException();
 			}				
 		}
+		
+		log.info("User access granted ...");
 	}
 }
