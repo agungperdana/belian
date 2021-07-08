@@ -5,7 +5,7 @@ import org.apache.camel.Processor;
 
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
-import com.kratonsolution.belian.security.jwt.JWTTokenGenerator;
+import com.kratonsolution.belian.security.jwt.JWTTokenUtil;
 
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
@@ -30,11 +30,16 @@ public class AuthProcess implements Processor {
 	public void process(Exchange exchange) throws Exception {
 		
 		String token = exchange.getIn().getHeader("Authorization", String.class);
+		
+		log.info("Auth {}", token);
+		
 		if(Strings.isNullOrEmpty(token)) {
 			throw new AccessDeniedException();
 		}
+		
+		log.info("token {}", token.split(" ")[1]);
 	
-		Claims claims = JWTTokenGenerator.decode(token.replaceFirst("Bearer ", ""));
+		Claims claims = JWTTokenUtil.decode(token.split(" ")[1]);
 		if(claims == null || Strings.isNullOrEmpty(claims.getSubject())) {
 			throw new AccessDeniedException();
 		}

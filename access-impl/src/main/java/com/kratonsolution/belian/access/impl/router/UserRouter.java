@@ -27,10 +27,9 @@ import com.kratonsolution.belian.access.api.application.UserDeleteCommand;
 import com.kratonsolution.belian.access.api.application.UserService;
 import com.kratonsolution.belian.access.api.application.UserUpdateCommand;
 import com.kratonsolution.belian.camel.AuthProcess;
-import com.kratonsolution.belian.camel.ErrorHandler;
 import com.kratonsolution.belian.camel.ResponseBuilder;
 import com.kratonsolution.belian.common.router.BelianServiceRouter;
-import com.kratonsolution.belian.security.jwt.JWTTokenGenerator;
+import com.kratonsolution.belian.security.jwt.JWTTokenUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -51,8 +50,6 @@ public class UserRouter extends RouteBuilder implements BelianServiceRouter {
 	
 	@Override
 	public void configure() throws Exception {
-		
-		from("direct:errorHandler").bean(new ErrorHandler()).end();
 		
 		initJMSRoute();
 		initRESTRoute();
@@ -112,7 +109,7 @@ public class UserRouter extends RouteBuilder implements BelianServiceRouter {
 
 	@Override
 	public void initRESTRoute() {
-		
+				
 		rest()
 			.path("/users")
 			.consumes("application/json")
@@ -178,12 +175,14 @@ public class UserRouter extends RouteBuilder implements BelianServiceRouter {
 			.bindingMode(RestBindingMode.json)
 			.get("/all-users").route()
 			.process(new AuthProcess("SCR-USR_READ"))
-			.process(e->e.getMessage().setBody(ResponseBuilder.success(service.getAllUsers())))
+			.process(e->{
+				e.getMessage().setBody(ResponseBuilder.success(service.getAllUsers()));
+			})
 			.endRest();
 		
 		rest()
-			.path("/users")
 			.consumes("application/json")
+			.path("/users")
 			.bindingMode(RestBindingMode.json)
 			.get("/all-users/{start}/{end}").route()
 			.onException(Exception.class).handled(true).to("direct:errorHandler").end()
@@ -195,7 +194,7 @@ public class UserRouter extends RouteBuilder implements BelianServiceRouter {
 								e.getIn().getHeader("start", Integer.class), 
 								e.getIn().getHeader("end", Integer.class))));
 			})
-			.setHeader("Access-Control-Allow-Credentials", constant("true"))
+			.setHeader("Access-Control-Allow-Origin", constant("*"))
 			.endRest();
 		
 		rest()
@@ -257,7 +256,7 @@ public class UserRouter extends RouteBuilder implements BelianServiceRouter {
 					response.put("status", data != null);
 					
 					if(data != null) {						
-						response.put("token", JWTTokenGenerator.encode(new Gson().toJson(buildUserMap(data))));
+						response.put("token", JWTTokenUtil.encode(new Gson().toJson(buildUserMap(data))));
 						response.put("user", data);
 					}
 					

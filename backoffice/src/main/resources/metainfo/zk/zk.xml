@@ -10,9 +10,10 @@
     	<url-pattern>/home</url-pattern>
 	</richlet-mapping>
 	
+	<!-- 
 	<library-property>
     	<name>org.zkoss.theme.preferred</name>
-    	<value>breeze</value> <!-- or silvertail, atlantic, deepsea, gardensalad etc. -->
+    	<value>atlantic</value> 
 	</library-property>
-	
+	 -->
 </zk>

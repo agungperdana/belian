@@ -14,20 +14,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ResourceUtils;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  * @since 2.0.0
  */
-@Slf4j
 @Configuration
 public class RestServerConfig {
 
 	@Autowired
 	private CamelContext camel;
-
+	
 	@Bean
 	public RestConfiguration initJettyComponent() throws Exception {
 
@@ -44,23 +41,20 @@ public class RestServerConfig {
 
 		JettyHttpComponent jetty = camel.getComponent("jetty", JettyHttpComponent.class);
 		jetty.setSslContextParameters(scp);
-		
-		Map<String, String> cors = new HashMap<>();
-		cors.put("Access-Control-Allow-Origin", "*");       
-		cors.put("Access-Control-Allow-Headers", "access-control-allow-methods,access-control-allow-origin,authorization,content-type");        
-		cors.put("Access-Control-Allow-Methods", "GET, DELETE, POST, OPTIONS, PUT");
+				
+		RestConfiguration con = new RestConfiguration();
+		con.setHost("0.0.0.0");
+		con.setPort(8585);
+		con.setEnableCORS(true);
 
+		Map<String, String> cors = new HashMap<>();
+		cors.put("Access-Control-Allow-Origin", RestConfiguration.CORS_ACCESS_CONTROL_ALLOW_ORIGIN);
+		cors.put("Access-Control-Allow-Method", RestConfiguration.CORS_ACCESS_CONTROL_ALLOW_METHODS);
+		cors.put("Access-Control-Allow-Headers", RestConfiguration.CORS_ACCESS_CONTROL_ALLOW_HEADERS+", Authorization");
+		cors.put("Access-Control-Max-Age", RestConfiguration.CORS_ACCESS_CONTROL_MAX_AGE);
 		
+		con.setCorsHeaders(cors);
 		
-		RestConfiguration restConfig = new RestConfiguration();
-		restConfig.setComponent("jetty");
-		restConfig.setHost("0.0.0.0");
-		restConfig.setPort(8585);
-		restConfig.setEnableCORS(true);
-		
-		log.info("Server {}", camel);
-		log.info("Component {}", jetty);
-		
-		return restConfig;
+		return con;
 	}
 }
