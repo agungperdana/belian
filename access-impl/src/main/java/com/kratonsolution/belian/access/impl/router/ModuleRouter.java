@@ -10,6 +10,8 @@ import com.kratonsolution.belian.access.api.application.ModuleDeleteCommand;
 import com.kratonsolution.belian.access.api.application.ModuleFilter;
 import com.kratonsolution.belian.access.api.application.ModuleService;
 import com.kratonsolution.belian.access.api.application.ModuleUpdateCommand;
+import com.kratonsolution.belian.camel.AuthProcess;
+import com.kratonsolution.belian.camel.ResponseBuilder;
 
 /**
  * @author Agung Dodi Perdana
@@ -60,6 +62,15 @@ public class ModuleRouter extends RouteBuilder {
 	}
 
 	private void initRESTReoute() {
+		
+		rest()
+			.path("/modules")
+			.get("/all-modules")
+			.route()
+			.process(AuthProcess.forRole("SCR-MDL_ADD"))
+			.process((ex)->{
+				ex.getMessage().setBody(ResponseBuilder.success(service.getAllModules()));
+			});
 	}
 
 	@Override

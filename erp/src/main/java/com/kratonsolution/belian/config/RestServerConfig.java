@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.camel.CamelContext;
 import org.apache.camel.component.jetty.JettyHttpComponent;
 import org.apache.camel.spi.RestConfiguration;
+import org.apache.camel.spi.RestConfiguration.RestBindingMode;
 import org.apache.camel.support.jsse.KeyManagersParameters;
 import org.apache.camel.support.jsse.KeyStoreParameters;
 import org.apache.camel.support.jsse.SSLContextParameters;
@@ -46,6 +47,7 @@ public class RestServerConfig {
 		con.setHost("0.0.0.0");
 		con.setPort(8585);
 		con.setEnableCORS(true);
+		con.setBindingMode(RestBindingMode.json);
 
 		Map<String, String> cors = new HashMap<>();
 		cors.put("Access-Control-Allow-Origin", RestConfiguration.CORS_ACCESS_CONTROL_ALLOW_ORIGIN);

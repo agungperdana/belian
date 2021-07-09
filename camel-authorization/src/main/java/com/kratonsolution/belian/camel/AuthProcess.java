@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.kratonsolution.belian.security.jwt.JWTTokenUtil;
 
 import io.jsonwebtoken.Claims;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -24,6 +25,10 @@ public class AuthProcess implements Processor {
 	
 	public AuthProcess(String role) {
 		this.role = role;
+	}
+	
+	public static AuthProcess forRole(@NonNull String role) {
+		return new AuthProcess(role);
 	}
 	
 	@Override
