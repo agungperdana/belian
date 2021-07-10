@@ -35,15 +35,11 @@ public class AuthProcess implements Processor {
 	public void process(Exchange exchange) throws Exception {
 		
 		String token = exchange.getIn().getHeader("Authorization", String.class);
-		
-		log.info("Auth {}", token);
-		
+				
 		if(Strings.isNullOrEmpty(token)) {
 			throw new AccessDeniedException();
 		}
 		
-		log.info("token {}", token.split(" ")[1]);
-	
 		Claims claims = JWTTokenUtil.decode(token.split(" ")[1]);
 		if(claims == null || Strings.isNullOrEmpty(claims.getSubject())) {
 			throw new AccessDeniedException();
