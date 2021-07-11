@@ -27,6 +27,8 @@ public interface ModuleService {
     
     List<ModuleData> getAllModules(@NonNull ModuleFilter filter, int page, int size);
     
+    List<ModuleData> getAllModules(@NonNull ModuleFilter filter);
+    
     int count();
     
     int count(@NonNull ModuleFilter filter);

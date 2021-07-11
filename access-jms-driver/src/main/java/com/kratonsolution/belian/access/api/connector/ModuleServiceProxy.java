@@ -71,4 +71,10 @@ public class ModuleServiceProxy implements ModuleService {
 	public int count(@NonNull ModuleFilter filter) {
 		return producer.requestBody(ModuleRouteName.COUNT_FILTER, filter,Integer.class);
 	}
+
+	@Override
+	public List<ModuleData> getAllModules(@lombok.NonNull ModuleFilter filter) {
+		// TODO Auto-generated method stub
+		return getAllModules(filter, filter.getPage(), filter.getSize());
+	}
 }

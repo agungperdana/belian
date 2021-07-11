@@ -27,6 +27,8 @@ public interface RoleService {
     
     List<RoleData> getAllRoles(@NonNull RoleFilter filter, int page, int size);
     
+    List<RoleData> getAllRoles(@NonNull RoleFilter filter);
+    
     int count();
     
     int count(@NonNull RoleFilter filter);

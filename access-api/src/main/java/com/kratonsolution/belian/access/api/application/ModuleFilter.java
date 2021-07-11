@@ -18,10 +18,11 @@ public class ModuleFilter implements Serializable {
     private static final long serialVersionUID = 7878294784897732945L;
 
     private String key;
+    
+    @NonNull
+    private Integer page = 0;
+    
+    @NonNull
+    private Integer size = 50;
 	
-	ModuleFilter() {}
-	
-	public ModuleFilter(@NonNull String key) {
-		this.key = key;
-	}
 }

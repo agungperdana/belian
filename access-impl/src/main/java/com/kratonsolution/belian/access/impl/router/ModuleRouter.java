@@ -83,6 +83,38 @@ public class ModuleRouter extends RouteBuilder {
 			});
 		
 		rest()
+			.path("/modules/all-modules")
+			.get("/{page}/{size}")
+			.route()
+			.process(AuthProcess.forRole("SCR-MDL_READ"))
+			.process((ex)->{
+				
+				ModuleFilter filter = new ModuleFilter();
+				filter.setPage(ex.getIn().getHeader("page", Integer.class));
+				filter.setSize(ex.getIn().getHeader("size", Integer.class));
+				
+				ex.getMessage().setBody(ResponseBuilder.success(service.getAllModules(filter)));
+			});
+		
+		rest()
+			.path("/modules/filter")
+			.get("/{page}/{size}/{key}")
+			.bindingMode(RestBindingMode.json)
+			.route()
+			.process(AuthProcess.forRole("SCR-MDL_READ"))
+			.process((ex)->{
+				
+				ModuleFilter filter = new ModuleFilter();
+				filter.setKey(ex.getIn().getHeader("key", String.class));
+				filter.setPage(ex.getIn().getHeader("page", Integer.class));
+				filter.setSize(ex.getIn().getHeader("size", Integer.class));
+				
+				ex.getMessage().setBody(
+						ResponseBuilder.success(
+								service.getAllModules(filter)));
+			});
+		
+		rest()
 			.path("/modules")
 			.post("/create")
 			.bindingMode(RestBindingMode.json)

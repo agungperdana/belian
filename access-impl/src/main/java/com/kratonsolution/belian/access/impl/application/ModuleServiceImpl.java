@@ -5,16 +5,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.access.api.ModuleData;
-import com.kratonsolution.belian.access.api.ModuleGroup;
 import com.kratonsolution.belian.access.api.application.ModuleCreateCommand;
 import com.kratonsolution.belian.access.api.application.ModuleDeleteCommand;
 import com.kratonsolution.belian.access.api.application.ModuleFilter;
@@ -113,14 +110,13 @@ public class ModuleServiceImpl implements ModuleService {
     
     public List<ModuleData> getAllModules(@NonNull ModuleFilter filter, int page, int size) {
 
-    	ExampleMatcher matcher = ExampleMatcher.matchingAny();
-    	matcher.withMatcher("code", GenericPropertyMatchers.contains().ignoreCase());
-    	matcher.withMatcher("name", GenericPropertyMatchers.contains().ignoreCase());
-
-    	return ModuleMapper.INSTANCE.toDatas(
-    			repo.findAll(
-    					Example.of(new Module(filter.getKey(), filter.getKey(), ModuleGroup.SECURITY), matcher), 
-    					PageRequest.of(page, size)).getContent());
+    	log.info("Searching module data with key %{}", filter.getKey());
+    	
+    	if(Strings.isNullOrEmpty(filter.getKey())) {
+    		return getAllModules(filter.getPage(), filter.getSize());
+    	}
+    	
+    	return ModuleMapper.INSTANCE.toDatas(repo.getAll("%"+filter.getKey(), PageRequest.of(page, size)));
     }
     
     public int count() {
@@ -132,4 +128,10 @@ public class ModuleServiceImpl implements ModuleService {
     	
     	return repo.count(filter.getKey()).intValue();
     }
+
+	@Override
+	public List<ModuleData> getAllModules(@NonNull ModuleFilter filter) {
+
+		return getAllModules(filter, filter.getPage(), filter.getSize());
+	}
 }
