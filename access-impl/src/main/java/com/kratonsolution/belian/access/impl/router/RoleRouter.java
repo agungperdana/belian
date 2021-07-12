@@ -107,7 +107,7 @@ public class RoleRouter extends RouteBuilder {
 		rest()
 			.consumes("application/json")
 			.path("/roles/filter")
-			.get("/{page}/{size}")
+			.get("/{page}/{size}/{key}")
 			.route()
 			.process(new AuthProcess("SCR-ROLE_READ"))
 			.process((ex)->{

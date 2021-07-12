@@ -72,4 +72,10 @@ public class RoleServiceProxy implements RoleService {
 		return producer.requestBody(RoleRouteName.COUNT_FILTER, filter, Integer.class);
 	}
 
+	@Override
+	public List<RoleData> getAllRoles(@lombok.NonNull RoleFilter filter) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

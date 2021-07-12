@@ -25,6 +25,6 @@ public interface UserRepository extends JpaRepository<User, String>
     @Query("SELECT COUNT(usr) FROM User usr WHERE usr.name LIKE ?1 OR usr.email LIKE ?1")
     public Long count(@NonNull String key);
     
-    @Query("FROM User usr WHERE usr.name LIKE ?1 OR usr.email LIKE ?1")
+    @Query("FROM User usr WHERE usr.name LIKE ?1 OR usr.email LIKE ?1 ORDER BY usr.name, usr.email ASC")
     public List<User> findAll(@NonNull String key, Pageable pageable);
 }

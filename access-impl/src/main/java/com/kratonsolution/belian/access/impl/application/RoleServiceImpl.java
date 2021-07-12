@@ -66,6 +66,7 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
 			role.addRoleModule(module);
 		});
 
+		
 		roleRepo.save(role);
 
 		RoleData data = RoleMapper.INSTANCE.toData(role);
@@ -168,7 +169,7 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
 		}
 		
 		return RoleMapper.INSTANCE.toRoleDatas(
-				roleRepo.getAll(filter.getKey(), PageRequest.of(filter.getPage(), filter.getSize())));
+				roleRepo.getAll("%"+filter.getKey()+"%", PageRequest.of(filter.getPage(), filter.getSize())));
 	}
 
 	public int count() {

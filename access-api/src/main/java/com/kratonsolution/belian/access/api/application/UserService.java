@@ -34,6 +34,8 @@ public interface UserService {
     
     public List<UserData> getAllUsers(@NonNull UserFilter filter, int page, int size);
     
+    public List<UserData> getAllUsers(@NonNull UserFilter filter);
+    
     public int count();
     
     public int count(@NonNull UserFilter filter);

@@ -3,7 +3,6 @@ package com.kratonsolution.belian.access.api;
 import java.io.Serializable;
 
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
 /**
@@ -17,19 +16,11 @@ public class UserFilter implements Serializable {
     
     private static final long serialVersionUID = -3290749183343753209L;
     
-	@NonNull
     private String key;
 	
-	UserFilter() {
-	}
+	private Integer page = 0;
 	
-	public UserFilter(@NonNull String key) {
-		this.key = key;
-	}
-	
-	public static UserFilter forKey(@NonNull String key) {
-		return new UserFilter(key);
-	}
+	private Integer size = 50;
 	
 	public String getLikeKey() {
 		return "%"+key+"%";

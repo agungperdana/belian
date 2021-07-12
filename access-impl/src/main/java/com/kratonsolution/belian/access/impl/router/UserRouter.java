@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.model.rest.RestBindingMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,14 +30,11 @@ import com.kratonsolution.belian.camel.ResponseBuilder;
 import com.kratonsolution.belian.common.router.BelianServiceRouter;
 import com.kratonsolution.belian.security.jwt.JWTTokenUtil;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  * @sinch 2.0
  */
-@Slf4j
 @Service
 public class UserRouter extends RouteBuilder implements BelianServiceRouter {
 
@@ -111,158 +107,106 @@ public class UserRouter extends RouteBuilder implements BelianServiceRouter {
 	public void initRESTRoute() {
 				
 		rest()
-			.path("/users")
-			.consumes("application/json")
-			.bindingMode(RestBindingMode.json)
-			.post("/create").route()
-			.process(new AuthProcess("SCR-USR_ADD"))
-			.process(e->{
-				
-				@SuppressWarnings("unchecked")
-				Map<String, String> body = e.getIn().getBody(Map.class);
-				
-				UserCreateCommand command = new UserCreateCommand();
-				command.setEmail(body.get("email"));
-				command.setName(body.get("name"));
-				command.setPassword(body.get("password"));
-				command.setEnabled(Boolean.valueOf(body.get("enabled")));
-				
-				e.getMessage().setBody(ResponseBuilder.success(service.create(command)));
-			})
-			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
-			.endRest();
-		
-		rest()
-			.path("/users")
-			.consumes("application/json")
-			.bindingMode(RestBindingMode.json)
-			.post("/update").route()
-			.process(new AuthProcess("SCR-USR_EDIT"))
-			.process(e->{
-			
-				@SuppressWarnings("unchecked")
-				Map<String, String> body = e.getIn().getBody(Map.class);
-				
-				UserUpdateCommand command = new UserUpdateCommand();
-				command.setEmail(body.get("email"));
-				command.setName(body.get("name"));
-				command.setEnabled(Boolean.valueOf(body.get("enabled")));
-				
-				e.getMessage().setBody(ResponseBuilder.success(service.update(command)));
-			})
-			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
-			.endRest();
-		
-		rest()
-			.path("/users")
-			.consumes("application/json")
-			.bindingMode(RestBindingMode.json)
-			.post("/delete/{name}").route()
-			.process(new AuthProcess("SCR-USR_DELETE"))
-			.process(e->{
-				
-				UserDeleteCommand command = new UserDeleteCommand();
-				command.setName(e.getIn().getHeader("name", String.class));
-			
-				e.getMessage().setBody(ResponseBuilder.success(service.delete(command)));
-		})
-		.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
-		.endRest();
-		
-		rest()
-			.path("/users")
-			.consumes("application/json")
-			.bindingMode(RestBindingMode.json)
-			.get("/all-users").route()
+			.path("/users/get")
+			.get("/{email}")
+			.route()
 			.process(new AuthProcess("SCR-USR_READ"))
-			.process(e->{
-				e.getMessage().setBody(ResponseBuilder.success(service.getAllUsers()));
-			})
+			.process(e -> e.getMessage().setBody(
+					ResponseBuilder.success(
+							service.getByEmail(e.getIn().getHeader("email", String.class)))))
+			.setHeader("Access-Control-Allow-Origin", constant("*"))
 			.endRest();
-		
+			
 		rest()
-			.consumes("application/json")
-			.path("/users")
-			.bindingMode(RestBindingMode.json)
-			.get("/all-users/{start}/{end}").route()
-			.onException(Exception.class).handled(true).to("direct:errorHandler").end()
+			.path("/users/filter")
+			.get("/{start}/{end}/{key}").route()
 			.process(new AuthProcess("SCR-USR_READ"))
-			.process(e-> {
+			.process(ex -> {
 				
-				log.debug("users/all-users/start/end");
-				e.getMessage().setBody(ResponseBuilder.success(service.getAllUsers(
-								e.getIn().getHeader("start", Integer.class), 
-								e.getIn().getHeader("end", Integer.class))));
+				UserFilter filter = new UserFilter();
+				filter.setKey(ex.getIn().getHeader("key", String.class));
+				filter.setPage(ex.getIn().getHeader("page", Integer.class));
+				filter.setSize(ex.getIn().getHeader("size", Integer.class));
+				
+				ex.getMessage().setBody(ResponseBuilder.success(service.getAllUsers(filter)));
 			})
 			.setHeader("Access-Control-Allow-Origin", constant("*"))
 			.endRest();
 		
 		rest()
-			.path("/users")
-			.consumes("application/json")
-			.bindingMode(RestBindingMode.json)
-			.get("/all-users/{key}/{start}/{end}").route()
-			.onException(Exception.class).handled(true).to("direct:errorHandler").end()
+			.path("/users/all-users")
+			.get("/{page}/{size}")
+			.route()
 			.process(new AuthProcess("SCR-USR_READ"))
-			.process(e->e.getMessage().setBody(
-				ResponseBuilder.success(service.getAllUsers(
-							UserFilter.forKey(e.getIn().getHeader("key", String.class)),
-							e.getIn().getHeader("start", Integer.class), 
-							e.getIn().getHeader("end", Integer.class)))))
-		.endRest();
-		
-		rest()
-			.path("/users")
-			.consumes("application/json")
-			.bindingMode(RestBindingMode.json)
-			.get("/count").route()
-			.onException(Exception.class).handled(true).to("direct:errorHandler").end()
-			.process(new AuthProcess("SCR-USR_READ"))
-			.process(e->e.getMessage().setBody(ResponseBuilder.success(service.count())))
+			.process(ex->{
+				
+				UserFilter filter = new UserFilter();
+				filter.setPage(ex.getIn().getHeader("page", Integer.class));
+				filter.setSize(ex.getIn().getHeader("size", Integer.class));
+				
+				ex.getMessage().setBody(ResponseBuilder.success(service.getAllUsers(filter)));
+			})
+			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
 			.endRest();
 		
 		rest()
 			.path("/users")
-			.consumes("application/json")
-			.bindingMode(RestBindingMode.json)
-			.get("/count/{key}").route()
-			.onException(Exception.class).handled(true).to("direct:errorHandler").end()
-			.process(new AuthProcess("SCR-USR_READ"))
-			.process(e->{
-				e.getMessage()
-				 .setBody(
-						 ResponseBuilder.success(
-								 service.count(UserFilter.forKey(e.getIn().getHeader("key", String.class)))));
+			.post("/create")
+			.type(UserCreateCommand.class)
+			.route()
+			.process(new AuthProcess("SCR-USR_ADD"))
+			.process(e -> {
+				e.getMessage().setBody(service.create(e.getIn().getBody(UserCreateCommand.class)));
 			})
+			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
+			.endRest();
+		
+		rest()
+			.path("/users")
+			.put("/update")
+			.type(UserUpdateCommand.class)
+			.route()
+			.process(new AuthProcess("SCR-USR_EDIT"))
+			.process(e -> {
+				e.getMessage().setBody(
+						ResponseBuilder.success(
+								service.update(e.getIn().getBody(UserUpdateCommand.class))));
+			})
+			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
+			.endRest();
+		
+		rest()
+			.path("/users")
+			.delete("/delete")
+			.type(UserDeleteCommand.class)
+			.route()
+			.process(new AuthProcess("SCR-USR_DELETE"))
+			.process(e -> {
+				e.getMessage().setBody(
+						ResponseBuilder.success(
+								service.delete(e.getIn().getBody(UserDeleteCommand.class))));
+			})
+			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
 			.endRest();
 		
 		rest()
 			.consumes("application/json")
 			.path("")
-			.bindingMode(RestBindingMode.json)
-			.post("/login").route().process(e->{
+			.post("/login")
+			.type(SignInCommand.class)
+			.route().process(e->{
+				
+				UserData data = service.signIn(e.getIn().getBody(SignInCommand.class));
 
-				@SuppressWarnings("unchecked")
-				Map<String, String> map = e.getIn().getBody(Map.class);
-				if(map != null) {
-										
-					SignInCommand command = new SignInCommand();
-					command.setUsername(map.get("username"));
-					command.setPassword(map.get("password"));
-					
-					UserData data = service.signIn(command);
-
-					Map<String, Object> response = new HashMap<>();
-					response.put("status", data != null);
-					
-					if(data != null) {						
-						response.put("token", JWTTokenUtil.encode(new Gson().toJson(buildUserMap(data))));
-						response.put("user", data);
-					}
-					
-					e.getMessage().setBody(response);
-					
+				Map<String, Object> response = new HashMap<>();
+				response.put("status", data != null);
+				
+				if(data != null) {						
+					response.put("token", JWTTokenUtil.encode(new Gson().toJson(buildUserMap(data))));
+					response.put("user", data);
 				}
+				
+				e.getMessage().setBody(response);
 			})
 			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
 			.endRest();

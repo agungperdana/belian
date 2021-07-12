@@ -108,4 +108,10 @@ public class UserServiceProxy implements UserService {
 		return null;
 	}
 
+	@Override
+	public List<UserData> getAllUsers(@lombok.NonNull UserFilter filter) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

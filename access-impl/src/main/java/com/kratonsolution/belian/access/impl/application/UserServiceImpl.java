@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.kratonsolution.belian.access.api.UserData;
 import com.kratonsolution.belian.access.api.UserFilter;
 import com.kratonsolution.belian.access.api.application.ChangePasswordCommand;
@@ -118,8 +119,6 @@ public class UserServiceImpl implements UserService
     
     public List<UserData> getAllUsers(@NonNull UserFilter filter, int page, int size) {
         
-
-    	
     	return UserMapper.INSTANCE.toDatas(repo.findAll(filter.getLikeKey(), PageRequest.of(page, size)));
     }
     
@@ -190,5 +189,15 @@ public class UserServiceImpl implements UserService
 		}
 		
 		return null;
+	}
+
+	@Override
+	public List<UserData> getAllUsers(@NonNull UserFilter filter) {
+		
+		if(Strings.isNullOrEmpty(filter.getKey())) {
+			return getAllUsers(filter.getPage(), filter.getSize());
+		}
+		
+		return UserMapper.INSTANCE.toDatas(repo.findAll(filter.getLikeKey(), PageRequest.of(filter.getPage(), filter.getSize())));
 	}
 }
