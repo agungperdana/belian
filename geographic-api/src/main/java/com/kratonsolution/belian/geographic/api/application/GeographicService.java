@@ -25,6 +25,8 @@ public interface GeographicService {
     List<GeographicData> getAllGeographics();
     
     List<GeographicData> getAllGeographicRoots();
+
+    List<GeographicData> getAllGeographics(@NonNull GeographicFilter filter);
     
     List<GeographicData> getAllGeographics(int page, int size);
     

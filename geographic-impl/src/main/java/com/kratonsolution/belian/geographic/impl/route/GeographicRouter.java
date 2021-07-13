@@ -6,6 +6,8 @@ import org.apache.camel.builder.RouteBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kratonsolution.belian.camel.AuthProcess;
+import com.kratonsolution.belian.camel.ResponseBuilder;
 import com.kratonsolution.belian.geographic.api.GeographicRouteName;
 import com.kratonsolution.belian.geographic.api.GeographicType;
 import com.kratonsolution.belian.geographic.api.application.GeographicCreateCommand;
@@ -85,7 +87,129 @@ public class GeographicRouter extends RouteBuilder {
 	}
 
 	public void initRESTReoute() {
-		// TODO Auto-generated method stub
 		
+		rest()
+			.path("/geographics/get")
+			.get("/{code}")
+			.route()
+			.process(new AuthProcess("GEOGRAPHIC_READ"))
+			.process(e->{
+				
+				e.getMessage().setBody(
+						ResponseBuilder.success(
+								service.getByCode(e.getIn().getHeader("code", String.class))));
+			})
+			.endRest();
+		
+		rest()
+			.path("/geographics/all-geographics-roots")
+			.get("/{page}/{size}")
+			.route()
+			.process(new AuthProcess("GEOGRAPHIC_READ"))
+			.process(e->{
+				
+				GeographicFilter filter = new GeographicFilter();
+				filter.setPage(e.getIn().getHeader("page", Integer.class));
+				filter.setSize(e.getIn().getHeader("size", Integer.class));
+				filter.setRoot(true);
+				
+				e.getMessage().setBody(
+						ResponseBuilder.success(
+								service.getAllGeographics(filter)));
+			})
+			.endRest();
+		
+		rest()
+			.path("/geographics/filter-roots")
+			.get("/{page}/{size}/{key}")
+			.route()
+			.process(new AuthProcess("GEOGRAPHIC_READ"))
+			.process(e->{
+				
+				GeographicFilter filter = new GeographicFilter();
+				filter.setKey(e.getIn().getHeader("key", String.class));
+				filter.setPage(e.getIn().getHeader("page", Integer.class));
+				filter.setSize(e.getIn().getHeader("size", Integer.class));
+				filter.setRoot(true);
+				
+				e.getMessage().setBody(
+						ResponseBuilder.success(
+								service.getAllGeographics(filter)));
+			})
+			.endRest();
+		
+		rest()
+			.path("/geographics/all-geographics")
+			.get("/{page}/{size}")
+			.route()
+			.process(new AuthProcess("GEOGRAPHIC_READ"))
+			.process(e->{
+				
+				GeographicFilter filter = new GeographicFilter();
+				filter.setPage(e.getIn().getHeader("page", Integer.class));
+				filter.setSize(e.getIn().getHeader("size", Integer.class));
+				
+				e.getMessage().setBody(
+						ResponseBuilder.success(
+								service.getAllGeographics(filter)));
+			})
+			.endRest();
+		
+		rest()
+			.path("/geographics/filter")
+			.get("/{page}/{size}/{key}")
+			.route()
+			.process(new AuthProcess("GEOGRAPHIC_READ"))
+			.process(e->{
+				
+				GeographicFilter filter = new GeographicFilter();
+				filter.setKey(e.getIn().getHeader("key", String.class));
+				filter.setPage(e.getIn().getHeader("page", Integer.class));
+				filter.setSize(e.getIn().getHeader("size", Integer.class));
+				
+				e.getMessage().setBody(
+						ResponseBuilder.success(
+								service.getAllGeographics(filter)));
+			})
+			.endRest();
+		
+		rest()
+			.path("/geographics")
+			.post("/create")
+			.type(GeographicCreateCommand.class)
+			.route()
+			.process(new AuthProcess("GEOGRAPHIC_ADD"))
+			.process(e->{
+				e.getMessage().setBody(
+						ResponseBuilder.success(
+								service.create(e.getIn().getBody(GeographicCreateCommand.class))));
+			})
+			.endRest();
+		
+		rest()
+			.path("/geographics")
+			.put("/update")
+			.type(GeographicUpdateCommand.class)
+			.route()
+			.process(new AuthProcess("GEOGRAPHIC_EDIT"))
+			.process(e->{
+				e.getMessage().setBody(
+						ResponseBuilder.success(
+								service.update(e.getIn().getBody(GeographicUpdateCommand.class))));
+			})
+			.endRest();
+		
+		rest()
+			.path("/geographics")
+			.delete("/delete")
+			.type(GeographicDeleteCommand.class)
+			.route()
+			.process(new AuthProcess("GEOGRAPHIC_DELETE"))
+			.process(e->{
+				e.getMessage().setBody(
+						ResponseBuilder.success(
+								service.delete(e.getIn().getBody(GeographicDeleteCommand.class))));
+			})
+			.endRest();
 	}
 }

@@ -84,4 +84,10 @@ public class GeographicServiceProxy implements GeographicService {
 	public List<GeographicData> getAllByType(GeographicType type) {
 		return this.producer.requestBody(GeographicRouteName.ALL_BY_TYPE, type, List.class);
 	}
+
+	@Override
+	public List<GeographicData> getAllGeographics(@lombok.NonNull GeographicFilter filter) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -5,14 +5,11 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.common.jpa.SpecificationBuilder;
-import com.kratonsolution.belian.common.jpa.SpecificationBuilder.Operator;
 import com.kratonsolution.belian.geographic.api.GeographicData;
 import com.kratonsolution.belian.geographic.api.GeographicType;
 import com.kratonsolution.belian.geographic.api.application.GeographicCreateCommand;
@@ -115,33 +112,25 @@ public class GeographicServiceImpl implements GeographicService {
 	}
 
 	public List<GeographicData> getAllGeographics(@NonNull GeographicFilter filter, int page, int size) {
-
-		if(filter.isValid()) {
+		
+		if(Strings.isNullOrEmpty(filter.getKey())) {
 			
-			SpecificationBuilder<Geographic> builder = new SpecificationBuilder<>();
-
-			if(filter.getCode().isPresent()) {
-
-				builder.combine((root, query, cb) -> {return cb.like(root.get("code"), filter.getCode().get());}, Operator.OR);
+			if(filter.isRoot()) {
+				return GeographicMapper.INSTANCE.toDatas(repo.findAllRoots(PageRequest.of(page, size)));
 			}
-
-			if(filter.getName().isPresent()) {
-
-				builder.combine((root, query, cb) -> {return cb.like(root.get("name"), filter.getName().get());}, Operator.OR);
-			}
-
-			if(filter.getType().isPresent()) {
-
-				builder.combine((root, query, cb) -> {return cb.equal(root.get("type"), filter.getType().get());}, Operator.OR);
-			}
-			
-			if(builder.getParent().isPresent()) {
-				
-				repo.findAll(Specification.where(builder.getParent().get()), PageRequest.of(page, size));
+			else {
+				return getAllGeographics(page, size);
 			}
 		}
-
-		return getAllGeographics(page, size);
+		else {
+			
+			if(filter.isRoot()) {
+				return GeographicMapper.INSTANCE.toDatas(repo.findAllRoots(filter.getKey(), PageRequest.of(page, size)));
+			}
+			else {
+				return GeographicMapper.INSTANCE.toDatas(repo.findAll(filter.getKey(), PageRequest.of(page, size)));
+			}
+		}
 	}
 
 
@@ -152,25 +141,7 @@ public class GeographicServiceImpl implements GeographicService {
 	}
 
 	public int count(@NonNull GeographicFilter filter) {
-
-		SpecificationBuilder<Geographic> builder = new SpecificationBuilder<>();
-
-		if(filter.getCode().isPresent()) {
-
-			builder.combine((root, query, cb) -> {return cb.like(root.get("code"), filter.getCode().get());}, Operator.OR);
-		}
-
-		if(filter.getName().isPresent()) {
-
-			builder.combine((root, query, cb) -> {return cb.like(root.get("name"), filter.getName().get());}, Operator.OR);
-		}
-
-		if(filter.getType().isPresent()) {
-
-			builder.combine((root, query, cb) -> {return cb.equal(root.get("type"), filter.getType().get());}, Operator.OR);
-		}
-		
-		return Long.valueOf(repo.count(builder.getParent().get())).intValue();
+		return 0;
 	}
 
 	public List<GeographicData> getAllGeographicRoots() {
@@ -180,5 +151,10 @@ public class GeographicServiceImpl implements GeographicService {
 	@Override
 	public List<GeographicData> getAllByType(@NonNull GeographicType type) {
 		return GeographicMapper.INSTANCE.toDatas(repo.findAllByType(type));
+	}
+
+	@Override
+	public List<GeographicData> getAllGeographics(@NonNull GeographicFilter filter) {
+		return getAllGeographics(filter, filter.getPage(), filter.getSize());
 	}
 }

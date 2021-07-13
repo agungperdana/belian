@@ -1,9 +1,6 @@
 package com.kratonsolution.belian.geographic.api.application;
 
 import java.io.Serializable;
-import java.util.Optional;
-
-import com.kratonsolution.belian.geographic.api.GeographicType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,13 +16,12 @@ public class GeographicFilter implements Serializable {
     
 	private static final long serialVersionUID = -3420130689050937320L;
 
-	private Optional<String> code = Optional.empty();
+	private String key;
 	
-	private Optional<String> name = Optional.empty();
+	private Integer page = 0;
 	
-	private Optional<GeographicType> type = Optional.empty();
+	private Integer size = 1000;
 	
-	public boolean isValid() {
-		return code.isPresent() || name.isPresent() || type.isPresent();
-	}
+	private boolean root = false;
+	
 }

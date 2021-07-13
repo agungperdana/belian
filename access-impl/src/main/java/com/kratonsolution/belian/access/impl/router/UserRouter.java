@@ -114,7 +114,6 @@ public class UserRouter extends RouteBuilder implements BelianServiceRouter {
 			.process(e -> e.getMessage().setBody(
 					ResponseBuilder.success(
 							service.getByEmail(e.getIn().getHeader("email", String.class)))))
-			.setHeader("Access-Control-Allow-Origin", constant("*"))
 			.endRest();
 			
 		rest()

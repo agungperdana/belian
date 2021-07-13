@@ -95,7 +95,7 @@ public class UserEditContent extends AbstractForm
 					}
 				});
 
-				command.getRoles().addAll(opt.getRoles());
+//				command.getRoles().addAll(opt.getRoles());
 
 				service.update(command);
 			}
