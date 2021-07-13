@@ -119,7 +119,7 @@ public class UserRouter extends RouteBuilder implements BelianServiceRouter {
 			
 		rest()
 			.path("/users/filter")
-			.get("/{start}/{end}/{key}").route()
+			.get("/{page}/{size}/{key}").route()
 			.process(new AuthProcess("SCR-USR_READ"))
 			.process(ex -> {
 				
@@ -156,7 +156,9 @@ public class UserRouter extends RouteBuilder implements BelianServiceRouter {
 			.route()
 			.process(new AuthProcess("SCR-USR_ADD"))
 			.process(e -> {
-				e.getMessage().setBody(service.create(e.getIn().getBody(UserCreateCommand.class)));
+				e.getMessage().setBody(
+						ResponseBuilder.success(
+								service.create(e.getIn().getBody(UserCreateCommand.class))));
 			})
 			.setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
 			.endRest();

@@ -56,7 +56,7 @@ public class UserGridContent extends GridContent
 								if(RowUtils.isChecked((Row)rw)) {
 									
 									UserDeleteCommand command = new UserDeleteCommand();
-									command.setName(RowUtils.string((Row)rw, 1));
+									command.setEmail(RowUtils.string((Row)rw, 2));
 
 									service.delete(command);
 									grid.setModel(UserModel.build());

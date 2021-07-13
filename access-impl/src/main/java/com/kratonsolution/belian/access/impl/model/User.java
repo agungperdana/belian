@@ -37,10 +37,10 @@ public class User extends Auditable
 	@Id
 	private String id = UUID.randomUUID().toString();
 
+	@Setter
 	@Column(name = "name")
 	private String name;
 
-	@Setter
 	@Column(name = "email")
 	private String email;
 
@@ -93,6 +93,13 @@ public class User extends Auditable
 
 		if(!this.roles.stream().anyMatch(p->p.getRoleCode().equals(roleCode))) {
 			this.roles.add(new UserRole(this, roleCode, roleName));
+		}
+	}
+	
+	public void addNewRole( @NonNull String roleCode, @NonNull String roleName, boolean enabled) {
+
+		if(!this.roles.stream().anyMatch(p->p.getRoleCode().equals(roleCode))) {
+			this.roles.add(new UserRole(this, roleCode, roleName, enabled));
 		}
 	}
 

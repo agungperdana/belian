@@ -45,9 +45,18 @@ public class UserServiceImpl implements UserService
     
     public UserData create(@NonNull UserCreateCommand command) {
         
+    	if(!command.getPassword().equals(command.getRePassword())) {
+    		throw new RuntimeException("Password and Re-Password not equals");
+    	}
+    	
         User user = new User(command.getName(), command.getEmail(),
         						enc.encryptPassword(command.getPassword()), 
         						command.isEnabled());
+        
+        command.getRoles().forEach(role->{
+        	user.addNewRole(role.getRoleCode(), role.getRoleName(), role.isEnabled());
+        });
+        
         repo.save(user);
         
         log.info("Saving new User {}", user);
@@ -57,13 +66,16 @@ public class UserServiceImpl implements UserService
     
     public UserData update(@NonNull UserUpdateCommand command) {
         
-        Optional<User> userOpt = repo.findOneByName(command.getName());
-        
+        Optional<User> userOpt = repo.findOneByEmail(command.getEmail());
         Preconditions.checkState(userOpt.isPresent(), "User does not exist.");
         
+        userOpt.get().setName(command.getName());
         userOpt.get().setEnabled(command.isEnabled());
-        userOpt.get().setEmail(command.getEmail());
+        userOpt.get().setLocked(command.isLocked());
         
+        command.getRoles().forEach(role -> {
+        	userOpt.get().updateRole(role.getRoleCode(), role.getRoleName(), role.isEnabled());
+        });
         
         repo.save(userOpt.get());
         
@@ -74,9 +86,9 @@ public class UserServiceImpl implements UserService
     
     public UserData delete(@NonNull UserDeleteCommand command) {
         
-        Optional<User> userOpt = repo.findOneByName(command.getName());
+        Optional<User> userOpt = repo.findOneByEmail(command.getEmail());
         if(userOpt.isEmpty()) {
-        	userOpt = repo.findOneByEmail(command.getName());
+        	userOpt = repo.findOneByName(command.getEmail());
         }
         
         Preconditions.checkState(userOpt.isPresent(), "User does not exist.");
@@ -184,7 +196,6 @@ public class UserServiceImpl implements UserService
 		
 		if(opt.isPresent() && enc.checkPassword(command.getPassword(), opt.get().getPassword())) {
 			
-			log.info("User {} granted access to entering the system ..... ", opt.get().getName());
 			return UserMapper.INSTANCE.toData(opt.get());
 		}
 		

@@ -18,5 +18,5 @@ public class UserDeleteCommand implements Serializable {
     private static final long serialVersionUID = 8873326380098895541L;
     
 	@NonNull
-    private String name;
+    private String email;
 }

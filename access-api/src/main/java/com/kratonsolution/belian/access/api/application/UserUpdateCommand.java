@@ -1,9 +1,10 @@
 package com.kratonsolution.belian.access.api.application;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Vector;
 
-import com.kratonsolution.belian.access.api.UserRoleData;
+import com.kratonsolution.belian.access.api.UserRoleCommand;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -28,5 +29,7 @@ public class UserUpdateCommand implements Serializable {
     
     private boolean enabled;
     
-    private Vector<UserRoleData> roles = new Vector<>();
+    private boolean locked;
+    
+    private List<UserRoleCommand> roles = new Vector<>();
 }

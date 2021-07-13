@@ -1,6 +1,10 @@
 package com.kratonsolution.belian.access.api.application;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.kratonsolution.belian.access.api.UserRoleCommand;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -25,6 +29,13 @@ public class UserCreateCommand implements Serializable {
     
     @NonNull
     private String password;
+    
+    @NonNull
+    private String rePassword;
         
     private boolean enabled;
+    
+    private boolean locked;
+    
+    private List<UserRoleCommand> roles = new ArrayList<>();
 }
