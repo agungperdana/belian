@@ -10,5 +10,6 @@ package com.kratonsolution.belian.access.api;
 public enum ModuleGroup
 {
 	SYSTEM,
-	SECURITY
+	SECURITY,
+	GLOBAL
 }

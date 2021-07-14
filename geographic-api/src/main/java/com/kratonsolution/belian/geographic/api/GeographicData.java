@@ -30,5 +30,5 @@ public class GeographicData implements Serializable {
 
 	private GeographicType type;
 	
-	private Set<GeographicData> childs = new HashSet<>();
+	private Set<GeographicData> children = new HashSet<>();
 }

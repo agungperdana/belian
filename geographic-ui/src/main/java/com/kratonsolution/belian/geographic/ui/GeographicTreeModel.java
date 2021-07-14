@@ -100,7 +100,7 @@ public class GeographicTreeModel extends DefaultTreeModel<GeographicData>
     	for(int idx=0;idx<_roots.size();idx++) {
     		
     		GeographicData data = _roots.get(idx);
-    		nodes[idx] = new GeographicTreeNode(data, toNode(new ArrayList<>(data.getChilds())));
+    		nodes[idx] = new GeographicTreeNode(data, toNode(new ArrayList<>(data.getChildren())));
     	}
     	
     	return new GeographicTreeModel(new GeographicTreeNode(null, nodes));
@@ -114,7 +114,7 @@ public class GeographicTreeModel extends DefaultTreeModel<GeographicData>
     		for(int idx=0;idx<childs.size();idx++) {
     			
     			GeographicData data = childs.get(idx);
-    			nodes[idx] = new GeographicTreeNode(data, toNode(new ArrayList<>(data.getChilds())));
+    			nodes[idx] = new GeographicTreeNode(data, toNode(new ArrayList<>(data.getChildren())));
     		}
     		
     		return nodes;
