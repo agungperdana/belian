@@ -5,9 +5,9 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.zkoss.zk.ui.WebApps;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0
  */
 public class Springs
 {

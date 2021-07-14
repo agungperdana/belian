@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "camel.component.servlet.mapping.context-path",
+  "type": "java.lang.String",
+  "description": "A description for 'camel.component.servlet.mapping.context-path'"
+}]}

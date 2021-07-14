@@ -24,6 +24,6 @@ public class ModuleRegistrationListener implements ApplicationListener<ModuleReg
 	public void onApplicationEvent(@NonNull ModuleRegistrationEvent event) {
 		
 		manager.registerModule(event.getModuleInformation());
-		log.info("Module named {} activated", event.getModuleInformation());
+		log.info("Module {} activated", event.getModuleInformation());
 	}
 }

@@ -5,15 +5,15 @@ import java.util.Collection;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.google.common.base.Preconditions;
-import com.kratonsolution.belian.security.api.UserData;
+import com.kratonsolution.belian.access.api.UserData;
 
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0
  */
 @Getter
 @Setter

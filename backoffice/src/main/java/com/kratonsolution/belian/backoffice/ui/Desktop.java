@@ -8,6 +8,7 @@ import org.zkoss.zul.Style;
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0
  */
 public class Desktop extends GenericRichlet
 {

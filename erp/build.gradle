@@ -1,0 +1,38 @@
+plugins {
+	
+	id 'com.kratonsolution.belian.java-library-conventions'
+	id "io.freefair.lombok" version "6.0.0-m2"
+	id 'org.springframework.boot' version '2.4.5'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+dependencies {
+
+	implementation project(':access-impl')
+	implementation project(':geographic-impl')
+	implementation project(':party-impl')
+	
+	implementation 'org.springframework.boot:spring-boot-starter'
+	
+	implementation 'org.apache.camel.springboot:camel-spring-boot-starter:3.10.0'
+	implementation 'org.apache.camel.springboot:camel-activemq-starter:3.10.0'
+	implementation 'org.apache.camel.springboot:camel-jetty-starter:3.10.0'
+	implementation 'org.apache.camel.springboot:camel-jackson-starter:3.10.0'
+	implementation 'org.apache.camel.springboot:camel-spring-security-starter:3.10.0'
+	
+	implementation 'javax.servlet:javax.servlet-api:4.0.1'
+	implementation 'com.google.code.gson:gson:2.8.7'
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
+	implementation 'io.jsonwebtoken:jjwt-gson:0.11.2'
+	
+	implementation 'org.mariadb.jdbc:mariadb-java-client:2.5.4'
+	implementation 'org.springframework.boot:spring-boot-starter-jta-bitronix'
+}
+
+bootJar {
+	manifest {
+		attributes 'Start-Class': 'com.kratonsolution.belian.EntryPoint'
+	}
+}

@@ -2,7 +2,6 @@ package com.kratonsolution.belian.backoffice.auth;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,10 +10,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Preconditions;
-import com.kratonsolution.belian.security.api.RoleData;
-import com.kratonsolution.belian.security.api.UserData;
-import com.kratonsolution.belian.security.api.application.RoleService;
-import com.kratonsolution.belian.security.api.application.UserService;
+import com.kratonsolution.belian.access.api.RoleData;
+import com.kratonsolution.belian.access.api.UserData;
+import com.kratonsolution.belian.access.api.application.RoleService;
+import com.kratonsolution.belian.access.api.application.UserService;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0
  */
 @Slf4j
 @Service
@@ -37,29 +37,29 @@ public class AuthenticationService implements UserDetailsService
     @Override
     public UserDetails loadUserByUsername(@NonNull String name) throws UsernameNotFoundException
     {
-        Optional<UserData> userOpt = service.getByName(name);
+    	UserData userOpt = service.getByName(name);
         
-        if(!userOpt.isPresent()) {
+        if(userOpt == null) {
             userOpt = service.getByEmail(name);
         }
         
-        Preconditions.checkState(userOpt.isPresent(), "User does not exist");
+        Preconditions.checkState(userOpt != null, "User does not exist");
         
         List<Authority> list = new ArrayList<>();
-        userOpt.get().getRoles().forEach(role -> {
+        userOpt.getRoles().forEach(role -> {
             
             if(role.isEnabled()) {
                 
-                Optional<RoleData> rd = roleService.getByCode(role.getRoleCode());
-                if(rd.isPresent()) {
+            	RoleData rd = roleService.getByCode(role.getRoleCode());
+                if(rd != null) {
                     
-                    log.info("role {}", rd.get());
-                    log.info("role module {}", rd.get().getModules());
+                    log.info("role {}", rd);
+                    log.info("role module {}", rd.getModules());
                     
-                    rd.get().getModules().forEach(m -> {
+                    rd.getModules().forEach(m -> {
                         
                         if(m.isRead()) {
-                            list.add(new Authority("ROLE_"+m.getModuleCode().toUpperCase()));
+                            list.add(new Authority("ROLE_"+m.getModuleCode().toUpperCase()+"_READ"));
                         }
                         
                         if(m.isAdd()) {
@@ -67,7 +67,7 @@ public class AuthenticationService implements UserDetailsService
                         }
                         
                         if(m.isEdit()) {
-                            list.add(new Authority("ROLE_"+m.getModuleCode().toUpperCase()+"_EDIT"));
+                            list.add(new Authority("ROLE_"+m.getModuleCode().toUpperCase()+"_UPDATE"));
                         }
                         
                         if(m.isDelete()) {
@@ -82,6 +82,8 @@ public class AuthenticationService implements UserDetailsService
             }
         });
         
-        return new SecurityInformation(userOpt.get(), list);
+        log.info("Authorized for {}", list);
+        
+        return new SecurityInformation(userOpt, list);
     }
 }

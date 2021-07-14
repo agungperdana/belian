@@ -1,7 +1,5 @@
 package com.kratonsolution.belian.common.ui;
 
-import java.util.Map;
-
 import org.zkoss.zul.Caption;
 import org.zkoss.zul.Window;
 
@@ -45,6 +43,4 @@ public abstract class AbstractWindow extends Window
 			}
 		});
 	}
-	
-	public abstract void fireWindowContentChange(String event, Map<String, String> parameter);
 }

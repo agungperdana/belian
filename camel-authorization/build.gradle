@@ -1,0 +1,16 @@
+plugins {
+	
+	id 'com.kratonsolution.belian.java-library-conventions'
+	id 'io.freefair.lombok' version '6.0.0-m2'
+}
+
+dependencies {
+
+	implementation project(':jwt-authorization')
+	implementation 'com.google.code.gson:gson:2.8.7'
+	implementation 'org.apache.camel.springboot:camel-spring-boot-starter:3.10.0'
+}
+
+jar {
+	enabled=true
+}
