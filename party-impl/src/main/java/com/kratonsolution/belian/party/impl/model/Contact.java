@@ -35,6 +35,7 @@ public class Contact implements Serializable
 	@Id
 	private String id = UUID.randomUUID().toString();
 
+	@Setter
 	@Column(name="contact",nullable=false)
 	private String contact;
 

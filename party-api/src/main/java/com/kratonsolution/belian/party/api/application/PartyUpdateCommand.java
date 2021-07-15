@@ -2,17 +2,7 @@ package com.kratonsolution.belian.party.api.application;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 
-import com.kratonsolution.belian.party.api.AddressData;
-import com.kratonsolution.belian.party.api.CitizenshipData;
-import com.kratonsolution.belian.party.api.ContactData;
-import com.kratonsolution.belian.party.api.MaritalStatusData;
-import com.kratonsolution.belian.party.api.PartyClassificationData;
-import com.kratonsolution.belian.party.api.PartyRelationshipData;
-import com.kratonsolution.belian.party.api.PartyRoleData;
-import com.kratonsolution.belian.party.api.PhysicalCharacteristicData;
 import com.kratonsolution.belian.party.api.model.Gender;
 import com.kratonsolution.belian.party.api.model.PartyType;
 
@@ -44,21 +34,5 @@ public class PartyUpdateCommand implements Serializable {
 
 	private PartyType type;
 	
-	private Gender gender;
-	
-	private List<AddressData> addresses = new ArrayList<>();
-
-	private List<ContactData> contacts = new ArrayList<>();
-
-	private List<PartyRoleData> partyRoles = new ArrayList<>();
-
-	private List<PartyRelationshipData> partyRelationships = new ArrayList<>();
-
-	private List<PartyClassificationData> partyClassifications = new ArrayList<>();
-	
-	private List<MaritalStatusData> maritalStatuses = new ArrayList<>();
-	
-	private List<PhysicalCharacteristicData> physicalCharacteristics = new ArrayList<>();
-	
-	private List<CitizenshipData> citizenships = new ArrayList<>();
+	private Gender gender;	
 }

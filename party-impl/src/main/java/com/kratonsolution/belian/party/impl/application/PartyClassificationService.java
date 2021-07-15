@@ -17,24 +17,24 @@ public class PartyClassificationService {
 
 	public static void update(@NonNull PartyUpdateCommand command, @NonNull Party party) {
 
-		party.getPartyClassifications()
-			.stream()
-			.filter(p->!command.getPartyClassifications()
-							.stream()
-							.filter(com->com.getId().equals(p.getId()))
-							.findFirst()
-							.isPresent())
-			.collect(Collectors.toList())
-			.forEach(ob->party.removePartyClassification(ob.getId()));
-		
-		command.getPartyClassifications().forEach(fica -> {
-
-			PartyClassification classification = party.updatePartyClassification(fica.getId());
-			if(classification == null) {
-				classification = party.createPartyClassification(fica.getStart(), fica.getValue(), fica.getType());
-			}
-
-			classification.setEnd(fica.getEnd());
-		});
+//		party.getPartyClassifications()
+//			.stream()
+//			.filter(p->!command.getPartyClassifications()
+//							.stream()
+//							.filter(com->com.getId().equals(p.getId()))
+//							.findFirst()
+//							.isPresent())
+//			.collect(Collectors.toList())
+//			.forEach(ob->party.removePartyClassification(ob.getId()));
+//		
+//		command.getPartyClassifications().forEach(fica -> {
+//
+//			PartyClassification classification = party.updatePartyClassification(fica.getId());
+//			if(classification == null) {
+//				classification = party.createPartyClassification(fica.getStart(), fica.getValue(), fica.getType());
+//			}
+//
+//			classification.setEnd(fica.getEnd());
+//		});
 	}
 }

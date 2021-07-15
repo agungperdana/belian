@@ -35,7 +35,7 @@ public class PartyData implements Serializable
 
 	private PartyType type;
 
-	private PartyGeographicInfoData birthPlace;
+	private String birthPlace;
 
 	private Gender gender;
 

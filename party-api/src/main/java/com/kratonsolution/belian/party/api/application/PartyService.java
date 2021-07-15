@@ -44,6 +44,8 @@ public interface PartyService {
 	public List<PartyData> getAllPartys(int page, int size);
 
 	public List<PartyData> getAllPartys(@NonNull PartyFilter filter, int page, int size);
+	
+	public List<PartyData> getAllPartys(@NonNull PartyFilter filter);
 
 	public AddressData createAddress(@NonNull AddressCreateCommand command);
 

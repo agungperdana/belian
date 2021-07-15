@@ -13,6 +13,7 @@ dependencies {
 	implementation project(':common-jpa')
 	implementation project(':jwt-authorization')
 	implementation project(':camel-authorization')
+	implementation project(':geographic-api')
 	implementation project(':party-api')
 	
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'

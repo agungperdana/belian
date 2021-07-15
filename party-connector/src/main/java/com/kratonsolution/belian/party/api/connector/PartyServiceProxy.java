@@ -192,4 +192,10 @@ public class PartyServiceProxy implements PartyService {
 	public void deletePartyClassification(@NonNull PartyClassificationDeleteCommand command) {
 		producer.sendBody(PartyRouteName.DELETE_CLASSIFICATION, ExchangePattern.InOnly, command);
 	}
+
+	@Override
+	public List<PartyData> getAllPartys(@lombok.NonNull PartyFilter filter) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -4,6 +4,8 @@ import org.apache.camel.builder.RouteBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.kratonsolution.belian.camel.AuthProcess;
+import com.kratonsolution.belian.camel.ResponseBuilder;
 import com.kratonsolution.belian.party.api.PartyRouteName;
 import com.kratonsolution.belian.party.api.application.AddressCreateCommand;
 import com.kratonsolution.belian.party.api.application.AddressDeleteCommand;
@@ -42,6 +44,7 @@ public class PartyReouter extends RouteBuilder {
 	public void configure() throws Exception {
 
 		initJMS();
+		initRest();
 	}
 
 	private void initJMS() {
@@ -142,5 +145,93 @@ public class PartyReouter extends RouteBuilder {
 
 		from(PartyRouteName.DELETE_CLASSIFICATION).transacted().process(e->
 		service.deletePartyClassification(e.getIn().getBody(PartyClassificationDeleteCommand.class)));
+	}
+	
+	private void initRest() {
+		
+		rest()
+			.path("/partys/get")
+			.get("/{code}")
+			.route()
+			.process(new AuthProcess("PARTY_READ"))
+			.process(e->{
+				e.getMessage().setBody(
+						ResponseBuilder.success(
+								service.getByCode(e.getIn().getHeader("code", String.class))));
+			})
+			.endRest();
+		
+		rest()
+			.path("/partys/all-partys")
+			.get("/{page}/{size}")
+			.route()
+			.process(new AuthProcess("PARTY_READ"))
+			.process(e->{
+				
+				PartyFilter filter = new PartyFilter();
+				filter.setPage(e.getIn().getHeader("page", Integer.class));
+				filter.setSize(e.getIn().getHeader("size", Integer.class));
+				
+				e.getMessage().setBody(ResponseBuilder.success(service.getAllPartys(filter)));
+			})
+			.endRest();
+		
+		rest()
+			.path("/partys/all-partys")
+			.get("/{page}/{size}/{key}")
+			.route()
+			.process(new AuthProcess("PARTY_READ"))
+			.process(e->{
+				
+				PartyFilter filter = new PartyFilter();
+				filter.setKey(e.getIn().getHeader("key", String.class));
+				filter.setPage(e.getIn().getHeader("page", Integer.class));
+				filter.setSize(e.getIn().getHeader("size", Integer.class));
+				
+				e.getMessage().setBody(ResponseBuilder.success(service.getAllPartys(filter)));
+			})
+			.endRest();
+		
+		rest()
+			.path("/partys")
+			.post("/create")
+			.type(PartyCreateCommand.class)
+			.route()
+			.process(new AuthProcess("PARTY_ADD"))
+			.process(e->{
+				
+				e.getMessage().setBody(
+						ResponseBuilder.success(
+								service.create(e.getIn().getBody(PartyCreateCommand.class))));
+			})
+			.endRest();
+		
+		rest()
+			.path("/partys")
+			.put("/update")
+			.type(PartyUpdateCommand.class)
+			.route()
+			.process(new AuthProcess("PARTY_EDIT"))
+			.process(e->{
+				
+				e.getMessage().setBody(
+						ResponseBuilder.success(
+								service.update(e.getIn().getBody(PartyUpdateCommand.class))));
+			})
+			.endRest();
+		
+		rest()
+			.path("/partys")
+			.delete("/delete")
+			.type(PartyDeleteCommand.class)
+			.route()
+			.process(new AuthProcess("PARTY_DELETE"))
+			.process(e->{
+				
+				e.getMessage().setBody(
+						ResponseBuilder.success(
+								service.delete(e.getIn().getBody(PartyDeleteCommand.class))));
+			})
+			.endRest();
 	}
 }
