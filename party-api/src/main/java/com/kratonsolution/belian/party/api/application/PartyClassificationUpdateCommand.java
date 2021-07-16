@@ -1,7 +1,7 @@
 package com.kratonsolution.belian.party.api.application;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.util.Date;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -24,5 +24,5 @@ public class PartyClassificationUpdateCommand implements Serializable {
 	@NonNull
 	private String partyClassificationId;
 	
-	private Instant end;
+	private Date end;
 }

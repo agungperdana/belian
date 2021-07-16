@@ -1,7 +1,7 @@
 package com.kratonsolution.belian.party.impl.model;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -36,11 +36,11 @@ public class PartyClassification implements Serializable
 	private String id = UUID.randomUUID().toString();
 
 	@Column(name="start")
-	private Instant start;
+	private Date start;
 
 	@Setter
 	@Column(name="end")
-	private Instant end;
+	private Date end;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name="type")
@@ -59,7 +59,7 @@ public class PartyClassification implements Serializable
 	
 	PartyClassification() {}
 	
-	public PartyClassification(@NonNull Party party, @NonNull Instant start, @NonNull String value, @NonNull PartyClassificationType type) {
+	public PartyClassification(@NonNull Party party, @NonNull Date start, @NonNull String value, @NonNull PartyClassificationType type) {
 		
 		this.party = party;
 		this.start = start;

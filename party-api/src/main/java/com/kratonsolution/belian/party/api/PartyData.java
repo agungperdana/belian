@@ -1,7 +1,7 @@
 package com.kratonsolution.belian.party.api;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,11 +31,11 @@ public class PartyData implements Serializable
 
 	private String taxCode;
 
-	private Instant birthDate;
+	private Date birthDate;
 
 	private PartyType type;
 
-	private String birthPlace;
+	private PartyGeographicInfoData birthPlace;
 
 	private Gender gender;
 

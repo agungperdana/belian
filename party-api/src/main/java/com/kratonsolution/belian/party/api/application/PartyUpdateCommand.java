@@ -1,7 +1,7 @@
 package com.kratonsolution.belian.party.api.application;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.util.Date;
 
 import com.kratonsolution.belian.party.api.model.Gender;
 import com.kratonsolution.belian.party.api.model.PartyType;
@@ -30,7 +30,7 @@ public class PartyUpdateCommand implements Serializable {
 	
 	private String birthPlace;
 	
-	private Instant birthDate;
+	private Date birthDate;
 
 	private PartyType type;
 	

@@ -233,5 +233,47 @@ public class PartyReouter extends RouteBuilder {
 								service.delete(e.getIn().getBody(PartyDeleteCommand.class))));
 			})
 			.endRest();
+		
+		rest()
+			.path("/partys/classifications")
+			.post("/create")
+			.type(PartyClassificationCreateCommand.class)
+			.route()
+			.process(new AuthProcess("PARTY_EDIT"))
+			.process(e->{
+				e.getMessage().setBody(
+						ResponseBuilder.success(
+								service.createPartyClassification(
+										e.getIn().getBody(PartyClassificationCreateCommand.class))));
+			})
+			.endRest();
+		
+		rest()
+			.path("/partys/classifications")
+			.put("/update")
+			.type(PartyClassificationUpdateCommand.class)
+			.route()
+			.process(new AuthProcess("PARTY_EDIT"))
+			.process(e->{
+				e.getMessage().setBody(
+						ResponseBuilder.success(
+								service.updatePartyClassification(
+										e.getIn().getBody(PartyClassificationUpdateCommand.class))));
+			})
+			.endRest();
+		
+		rest()
+			.path("/partys/classifications")
+			.delete("/delete")
+			.type(PartyClassificationDeleteCommand.class)
+			.route()
+			.process(new AuthProcess("PARTY_EDIT"))
+			.process(e->{
+				e.getMessage().setBody(
+						ResponseBuilder.success(
+								service.deletePartyClassification(
+										e.getIn().getBody(PartyClassificationDeleteCommand.class))));
+			})
+			.endRest();
 	}
 }

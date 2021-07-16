@@ -26,7 +26,6 @@ public interface PartyMapper {
 	
 	@Mappings({
 		@Mapping(target = "partyRelationships", ignore = true),
-		@Mapping(target = "birthPlace", ignore = true)
 	})
     PartyData toData(@NonNull Party party);
     
@@ -37,7 +36,6 @@ public interface PartyMapper {
     	
     	party.getPartyRelationships().forEach(ob->{
     		
-    		data.setBirthPlace(party.getName());
     		data.getPartyRelationships().add(PartyRelationshipMapper.INSTANCE.toData(ob));
     	});
     }

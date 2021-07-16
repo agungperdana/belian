@@ -1,7 +1,7 @@
 package com.kratonsolution.belian.party.api.application;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.util.Date;
 
 import com.kratonsolution.belian.party.api.model.PartyClassificationType;
 
@@ -23,9 +23,9 @@ public class PartyClassificationCreateCommand implements Serializable {
 	@NonNull
 	private String partyCode;
 
-	private Instant start;
+	private Date start;
 
-	private Instant end;
+	private Date end;
 
 	private PartyClassificationType type;
 

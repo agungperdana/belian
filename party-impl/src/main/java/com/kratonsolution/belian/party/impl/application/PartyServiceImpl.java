@@ -389,10 +389,12 @@ public class PartyServiceImpl implements PartyService {
 	}
 
 	@Override
-	public void deletePartyClassification(@NonNull PartyClassificationDeleteCommand command) {
+	public PartyClassificationData deletePartyClassification(@NonNull PartyClassificationDeleteCommand command) {
+		
 		Party party = check(command.getPartyCode());
-		party.removePartyClassification(command.getPartyClassificationId());
-		log.info("Removing party classification ...");
+		return PartyClassificationMapper.INSTANCE.toData(
+				party.removePartyClassification(
+						command.getPartyClassificationId()));
 	}
 
 	@Override
@@ -403,7 +405,7 @@ public class PartyServiceImpl implements PartyService {
 		}
 		else {
 			return PartyMapper.INSTANCE.toDatas(
-					repo.getAll(filter.getKey(), 
+					repo.getAll("%"+filter.getKey()+"%", 
 							PageRequest.of(filter.getPage(), filter.getSize())));
 		}
 

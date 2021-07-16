@@ -2,6 +2,7 @@ package com.kratonsolution.belian.party.impl.model;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -81,7 +82,7 @@ public class Party implements Serializable
 	@Getter
 	@Setter
 	@Column(name="birth_date")
-	private Instant birthDate;
+	private Date birthDate;
 
 	@Getter
 	@Setter
@@ -270,7 +271,7 @@ public class Party implements Serializable
 		return new HashSet<>(this.partyRelationships);
 	}
 
-	public PartyClassification createPartyClassification(@NonNull Instant start, @NonNull String value, @NonNull PartyClassificationType type) {
+	public PartyClassification createPartyClassification(@NonNull Date start, @NonNull String value, @NonNull PartyClassificationType type) {
 
 		Optional<PartyClassification> opt = this.partyClassifications.stream()
 				.filter(p->p.getStart().equals(start) 
@@ -293,8 +294,12 @@ public class Party implements Serializable
 		return opt.orElse(null);
 	}
 
-	public void removePartyClassification(@NonNull String id) {
+	public PartyClassification removePartyClassification(@NonNull String id) {
+		
+		Optional<PartyClassification> obj = partyClassifications.stream().filter(p->p.getId().equals(id)).findFirst();
 		partyClassifications.removeIf(p->p.getId().equals(id));
+		
+		return obj.orElse(new PartyClassification());
 	}
 
 	/**
