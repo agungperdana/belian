@@ -56,7 +56,7 @@ public class RestServerConfig {
 		cors.put("Access-Control-Max-Age", RestConfiguration.CORS_ACCESS_CONTROL_MAX_AGE);
 		
 		con.setCorsHeaders(cors);
-		
+				
 		return con;
 	}
 }

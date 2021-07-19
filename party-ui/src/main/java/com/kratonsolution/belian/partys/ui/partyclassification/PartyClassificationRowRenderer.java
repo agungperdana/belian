@@ -32,8 +32,8 @@ public class PartyClassificationRowRenderer implements RowRenderer<PartyClassifi
 		}
 		
 		row.appendChild(Components.checkbox(false));
-		row.appendChild(Components.fullSpanDatebox(data.getStart()!=null?Date.from(data.getStart()):new Date()));
-		row.appendChild(Components.fullSpanDatebox(data.getEnd()!=null?Date.from(data.getEnd()):null));
+//		row.appendChild(Components.fullSpanDatebox(data.getStart()!=null?Date.from(data.getStart()):new Date()));
+//		row.appendChild(Components.fullSpanDatebox(data.getEnd()!=null?Date.from(data.getEnd()):null));
 		row.appendChild(Components.mandatoryTextBox(data.getValue()));
 		row.appendChild(type);
 		row.appendChild(new Label(data.getId()));

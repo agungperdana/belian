@@ -128,7 +128,7 @@ public class PartyEditContent extends AbstractForm
 			});
 
 			if(opt.getBirthDate() != null) {
-				birthDate.setValue(Date.from(opt.getBirthDate()));
+//				birthDate.setValue(Date.from(opt.getBirthDate()));
 			}
 
 			Springs.get(GeographicService.class).getAllGeographics().forEach(geo->{
