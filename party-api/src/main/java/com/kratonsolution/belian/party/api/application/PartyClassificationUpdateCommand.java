@@ -24,5 +24,6 @@ public class PartyClassificationUpdateCommand implements Serializable {
 	@NonNull
 	private String partyClassificationId;
 	
+	@NonNull
 	private Date end;
 }

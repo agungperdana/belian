@@ -59,7 +59,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class PartyServiceImpl implements PartyService {
 
 	@Autowired
@@ -246,8 +246,7 @@ public class PartyServiceImpl implements PartyService {
 		
 		Preconditions.checkState(!exist, "Contact already exist");
 		
-		Contact contact = party.createContact(command.getContact(), command.getType());
-		contact.setActive(command.isActive());
+		Contact contact = party.createContact(command.getContact(), command.getType(), command.isActive());
 		
 		repo.save(party);
 		log.info("Creating new Contact {}", contact);
@@ -277,8 +276,10 @@ public class PartyServiceImpl implements PartyService {
 	public void deleteContact(@NonNull ContactDeleteCommand command) {
 		
 		Party party = check(command.getPartyCode());	
-		party.getContacts().removeIf(p->p.getId().equals(command.getContactId()));
-		log.info("Deleteing contact..");
+		party.removeContact(command.getContactId());
+
+		repo.save(party);
+		log.info("deleting contact with id {}", command.getContactId());
 	}
 
 	@Override

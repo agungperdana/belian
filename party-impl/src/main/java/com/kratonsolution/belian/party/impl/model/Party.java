@@ -164,14 +164,9 @@ public class Party implements Serializable
 		return new HashSet<>(this.addresses);
 	}
 
-	public Contact createContact(@NonNull String contact, @NonNull ContactType type) {
+	public Contact createContact(@NonNull String contact, @NonNull ContactType type, boolean isActive) {
 
-		Optional<Contact> opt = this.contacts.stream()
-				.filter(p->p.getContact().equals(contact) && p.getType().equals(type)).findAny();
-
-		Preconditions.checkState(!opt.isPresent(), "Contact already exist");
-
-		Contact obj = new Contact(this, contact, type);
+		Contact obj = new Contact(this, contact, type, isActive);
 		this.contacts.add(obj);
 
 		return obj;
