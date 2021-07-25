@@ -18,23 +18,23 @@ public class PhysicalCharacteristicService {
 	public static void update(@NonNull PartyUpdateCommand command, @NonNull Party party) {
 		
 		//Physical Characteristic
-				party.getPhysicalCharacteristics()
-					.stream()
-					.filter(p->!command.getPhysicalCharacteristics()
-									.stream()
-									.filter(cat->cat.getId().equals(p.getId())).findFirst().isPresent())
-					.collect(Collectors.toList())
-					.forEach(rem->party.removePhysicalCharacteristic(rem.getId()));
-				
-				command.getPhysicalCharacteristics().forEach(car -> {
-					
-					PhysicalCharacteristic cat = party.updatePhysicalCharacteristic(car.getId());
-					if(cat == null) {
-						cat = party.createPhysicalCharacteristic(car.getStart(), car.getEnd(), car.getValue(), car.getType());
-					}
-					
-					cat.setEnd(car.getEnd());
-					cat.setValue(car.getValue());
-				});
+//				party.getPhysicalCharacteristics()
+//					.stream()
+//					.filter(p->!command.getPhysicalCharacteristics()
+//									.stream()
+//									.filter(cat->cat.getId().equals(p.getId())).findFirst().isPresent())
+//					.collect(Collectors.toList())
+//					.forEach(rem->party.removePhysicalCharacteristic(rem.getId()));
+//				
+//				command.getPhysicalCharacteristics().forEach(car -> {
+//					
+//					PhysicalCharacteristic cat = party.updatePhysicalCharacteristic(car.getId());
+//					if(cat == null) {
+//						cat = party.createPhysicalCharacteristic(car.getStart(), car.getEnd(), car.getValue(), car.getType());
+//					}
+//					
+//					cat.setEnd(car.getEnd());
+//					cat.setValue(car.getValue());
+//				});
 	}
 }

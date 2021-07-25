@@ -29,4 +29,13 @@ public interface PartyRepository extends JpaRepository<Party,String>, JpaSpecifi
 	
 	public List<Party> findAllByType(@NonNull PartyType type, Pageable pageable);
 	
+	@Query("FROM Party party WHERE party.code LIKE ?1 OR "
+			+ "party.name LIKE ?1 OR "
+			+ "party.type LIKE ?1 "
+			+ "ORDER BY party.code, party.name ASC ")
+	public List<Party> getAll(@NonNull String key, Pageable pageable);
+	
+	@Query("FROM Party party ORDER BY party.code, party.name ASC ")
+	public List<Party> getAll(Pageable pageable);
+	
 }

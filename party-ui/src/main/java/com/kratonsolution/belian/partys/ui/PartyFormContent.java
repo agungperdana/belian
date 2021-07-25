@@ -75,7 +75,7 @@ public class PartyFormContent extends AbstractForm
 			command.setName(name.getText());
 			command.setTaxCode(tax.getValue());
 			command.setType(PartyType.valueOf(types.getSelectedItem().getValue()));
-			command.setBirthDate(birthDate.getValue()!=null?Instant.from(birthDate.getValueInZonedDateTime()):null);
+//			command.setBirthDate(birthDate.getValue()!=null?Instant.from(birthDate.getValueInZonedDateTime()):null);
 			command.setBirthPlace(birthPlace.getSelectedItem()!=null?birthPlace.getSelectedItem().getValue():null);
 			command.setGender(genders.getSelectedItem()!=null?Gender.valueOf(genders.getSelectedItem().getValue()):null	);
 			

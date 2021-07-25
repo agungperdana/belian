@@ -19,23 +19,23 @@ public class MaritalStatusService {
 		
 		//Marital Status
 		//collect all MaritalStatus not present in command.getMaritalStatus(), its mean the object removed by user.
-		party.getMaritalStatuses()
-			.stream()
-			.filter(ob->!command.getMaritalStatuses()
-								.stream()
-								.filter(m->m.getId().equals(ob.getId())).findAny().isPresent())
-			.collect(Collectors.toList())
-			.forEach(rem -> party.removeMaritalStatus(rem.getId()));
-		
-		//update object or create new
-		command.getMaritalStatuses().forEach(mar -> {
-			
-			MaritalStatus status = party.updateMaritalStatus(mar.getId());
-			if(status == null) {
-				status = party.createMaritalStatus(mar.getStart(), mar.getEnd(), mar.getType());
-			}
-			
-			status.setEnd(mar.getEnd());
-		});
+//		party.getMaritalStatuses()
+//			.stream()
+//			.filter(ob->!command.getMaritalStatuses()
+//								.stream()
+//								.filter(m->m.getId().equals(ob.getId())).findAny().isPresent())
+//			.collect(Collectors.toList())
+//			.forEach(rem -> party.removeMaritalStatus(rem.getId()));
+//		
+//		//update object or create new
+//		command.getMaritalStatuses().forEach(mar -> {
+//			
+//			MaritalStatus status = party.updateMaritalStatus(mar.getId());
+//			if(status == null) {
+//				status = party.createMaritalStatus(mar.getStart(), mar.getEnd(), mar.getType());
+//			}
+//			
+//			status.setEnd(mar.getEnd());
+//		});
 	}
 }

@@ -5,14 +5,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.common.jpa.SpecificationBuilder;
-import com.kratonsolution.belian.common.jpa.SpecificationBuilder.Operator;
+import com.kratonsolution.belian.geographic.api.GeographicData;
+import com.kratonsolution.belian.geographic.api.application.GeographicService;
 import com.kratonsolution.belian.party.api.AddressData;
 import com.kratonsolution.belian.party.api.ContactData;
 import com.kratonsolution.belian.party.api.PartyClassificationData;
@@ -44,6 +43,7 @@ import com.kratonsolution.belian.party.impl.model.Address;
 import com.kratonsolution.belian.party.impl.model.Contact;
 import com.kratonsolution.belian.party.impl.model.Party;
 import com.kratonsolution.belian.party.impl.model.PartyClassification;
+import com.kratonsolution.belian.party.impl.model.PartyGeographicInfo;
 import com.kratonsolution.belian.party.impl.model.PartyRelationship;
 import com.kratonsolution.belian.party.impl.model.PartyRole;
 import com.kratonsolution.belian.party.impl.repository.PartyRepository;
@@ -59,12 +59,15 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Service
-@Transactional(readOnly = true)
+@Transactional(rollbackFor = Exception.class)
 public class PartyServiceImpl implements PartyService {
 
 	@Autowired
 	private PartyRepository repo;
 
+	@Autowired
+	private GeographicService geo;
+	
 	@Override
 	public PartyData create(@NonNull PartyCreateCommand command) {
 
@@ -75,14 +78,17 @@ public class PartyServiceImpl implements PartyService {
 		party.setTaxCode(command.getTaxCode());
 		party.setBirthDate(command.getBirthDate());
 		party.setGender(command.getGender());
-//		
-//		if(!Strings.isNullOrEmpty(command.getBirthPlace()) && geoService.getByCode(command.getBirthPlace()) != null) {
-//
-//			GeographicData geo = geoService.getByCode(command.getBirthPlace());
-//			party.setBirthPlace(new PartyGeographicInfo(geo.getCode(), geo.getName()));
-//		}
+		
+		if(!Strings.isNullOrEmpty(command.getBirthPlace())) {
+
+			GeographicData data = geo.getByCode(command.getBirthPlace());
+			if(data != null) {
+				party.setBirthPlace(new PartyGeographicInfo(data.getCode(), data.getName()));
+			}
+		}
 		
 		repo.save(party);
+		
 		log.info("Create new party data {}", party);
 
 		return PartyMapper.INSTANCE.toData(party);
@@ -91,27 +97,20 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public PartyData update(@NonNull PartyUpdateCommand command) {
 
-		Party party = getAndCheck(command.getCode());
-		party.setBirthDate(command.getBirthDate());
+		Party party = check(command.getCode());
 		party.setName(command.getName());
 		party.setTaxCode(command.getTaxCode());
+		party.setBirthDate(command.getBirthDate());
+		party.setGender(command.getGender());
 		
-//		if(!Strings.isNullOrEmpty(command.getBirthPlace()) && geoService.getByCode(command.getBirthPlace()) != null) {
-//			
-//			GeographicData geo = geoService.getByCode(command.getBirthPlace());
-//			party.setBirthPlace(new PartyGeographicInfo(geo.getCode(), geo.getName()));
-//		}
-
-		AddressService.update(command, party);
-		ContactService.update(command, party);
-		PartyRoleService.update(command, party);
-		PartyRelationshipService.update(repo, command, party);
-		PartyClassificationService.update(command, party);
-		MaritalStatusService.update(command, party);
-		PhysicalCharacteristicService.update(command, party);
-		CitizenshipService.update(command, party);
+		if(!Strings.isNullOrEmpty(command.getBirthPlace())) {
+			
+			GeographicData data = geo.getByCode(command.getBirthPlace());
+			party.setBirthPlace(new PartyGeographicInfo(data.getCode(), data.getName()));
+		}
 		
 		repo.save(party);
+		
 		log.info("Updating Party data {}", party);
 
 		return PartyMapper.INSTANCE.toData(party);
@@ -120,7 +119,7 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public PartyData delete(@NonNull PartyDeleteCommand command) {
 
-		Party party = getAndCheck(command.getCode());
+		Party party = check(command.getCode());
 		repo.delete(party);
 		log.info("Removing organization data {}", party);
 
@@ -134,28 +133,7 @@ public class PartyServiceImpl implements PartyService {
 
 	@Override
 	public int count(@NonNull PartyFilter filter) {
-		
-		if(filter.isValid()) {
-
-			SpecificationBuilder<Party> builder = new SpecificationBuilder<>();
-
-			if(!Strings.isNullOrEmpty(filter.getCode())) {
-				builder.combine((root, query, cb) -> {return cb.like(root.get("code"), filter.getCode());}, Operator.OR);
-			}
-
-			if(!Strings.isNullOrEmpty(filter.getName())) {
-				builder.combine((root, query, cb) -> {return cb.like(root.get("name"), filter.getName());}, Operator.OR);
-			}
-
-			if(filter.getType() != null) {
-				builder.combine((root, query, cb) -> {return cb.equal(root.get("type"), filter.getType());}, Operator.OR);
-			}
-			
-			if(builder.getParent().isPresent()) {
-				return Long.valueOf(repo.count(Specification.where(builder.getParent().get()))).intValue();
-			}
-		}
-		
+				
 		return 0;
 	}
 
@@ -176,27 +154,6 @@ public class PartyServiceImpl implements PartyService {
 
 	@Override
 	public List<PartyData> getAllPartys(@NonNull PartyFilter filter, int page, int size) {
-
-		if(filter.isValid()) {
-
-			SpecificationBuilder<Party> builder = new SpecificationBuilder<>();
-
-			if(!Strings.isNullOrEmpty(filter.getCode())) {
-				builder.combine((root, query, cb) -> {return cb.like(root.get("code"), filter.getCode());}, Operator.OR);
-			}
-
-			if(!Strings.isNullOrEmpty(filter.getName())) {
-				builder.combine((root, query, cb) -> {return cb.like(root.get("name"), filter.getName());}, Operator.OR);
-			}
-
-			if(filter.getType() != null) {
-				builder.combine((root, query, cb) -> {return cb.equal(root.get("type"), filter.getType());}, Operator.OR);
-			}
-			
-			if(builder.getParent().isPresent()) {
-				return PartyMapper.INSTANCE.toDatas(repo.findAll(Specification.where(builder.getParent().get()), PageRequest.of(page, size)).getContent());
-			}
-		}
 
 		return getAllPartys(page, size);
 	}
@@ -221,9 +178,9 @@ public class PartyServiceImpl implements PartyService {
 		return repo.count(type).intValue();
 	}
 	
-	private Party getAndCheck(@NonNull String partyCode) {
+	private Party check(@NonNull String code) {
 		
-		Party party = repo.findOneByCode(partyCode);
+		Party party = repo.findOneByCode(code);
 		Preconditions.checkState(party != null, "Party does not exist");
 		return party;
 	}
@@ -231,7 +188,7 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public AddressData createAddress(@NonNull AddressCreateCommand command) {
 		
-		Party party = getAndCheck(command.getPartyCode());
+		Party party = check(command.getPartyCode());
 		
 //		GeographicData location = geoService.getByCode(command.getLocation());
 //		Preconditions.checkState(location != null, "Geographic location does not exist");
@@ -250,7 +207,7 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public AddressData updateAddress(@NonNull AddressUpdateCommand command) {
 
-		Party party = getAndCheck(command.getPartyCode());
+		Party party = check(command.getPartyCode());
 		Address address = party.updateAddress(command.getAddressId());
 		
 		Preconditions.checkState(address != null, "Address not exist");
@@ -272,7 +229,7 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public void deleteAddress(@NonNull AddressDeleteCommand command) {
 		
-		Party party = getAndCheck(command.getPartyCode());
+		Party party = check(command.getPartyCode());
 		party.removeAddress(command.getAddressId());
 		
 		repo.save(party);
@@ -282,15 +239,14 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public ContactData createContact(@NonNull ContactCreateCommand command) {
 		
-		Party party = getAndCheck(command.getPartyCode());
+		Party party = check(command.getPartyCode());
 		
 		boolean exist = party.getContacts().stream().anyMatch(con -> 
 				con.getContact().equals(command.getContact()) && con.getType().equals(command.getType()));
 		
 		Preconditions.checkState(!exist, "Contact already exist");
 		
-		Contact contact = party.createContact(command.getContact(), command.getType());
-		contact.setActive(command.isActive());
+		Contact contact = party.createContact(command.getContact(), command.getType(), command.isActive());
 		
 		repo.save(party);
 		log.info("Creating new Contact {}", contact);
@@ -301,7 +257,7 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public ContactData updateContact(@NonNull ContactUpdateCommand command) {
 		
-		Party party = getAndCheck(command.getPartyCode());
+		Party party = check(command.getPartyCode());
 		
 		Optional<Contact> opt = party.getContacts().stream().filter(p->
 									p.getId().equals(command.getContactId()))
@@ -319,15 +275,17 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public void deleteContact(@NonNull ContactDeleteCommand command) {
 		
-		Party party = getAndCheck(command.getPartyCode());	
-		party.getContacts().removeIf(p->p.getId().equals(command.getContactId()));
-		log.info("Deleteing contact..");
+		Party party = check(command.getPartyCode());	
+		party.removeContact(command.getContactId());
+
+		repo.save(party);
+		log.info("deleting contact with id {}", command.getContactId());
 	}
 
 	@Override
 	public PartyRoleData createPartyRole(@NonNull PartyRoleCreateCommand command) {
 
-		Party party = getAndCheck(command.getPartyCode());
+		Party party = check(command.getPartyCode());
 		
 		Optional<PartyRole> on = party.getPartyRoles().stream()
 				.filter(rol->rol.getStart().equals(command.getStart()) && 
@@ -347,7 +305,7 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public PartyRoleData updatePartyRole(@NonNull PartyRoleUpdateCommand command) {
 		
-		Party party = getAndCheck(command.getPartyCode());
+		Party party = check(command.getPartyCode());
 		
 		PartyRole opt = party.updatePartyRole(command.getPartyRoleId());
 		opt.setEnd(command.getEnd());
@@ -361,7 +319,7 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public void deletePartyRole(@NonNull PartyRoleDeleteCommand command) {
 		
-		Party party = getAndCheck(command.getPartyCode());
+		Party party = check(command.getPartyCode());
 		party.removePartyRole(command.getPartyRoleId());
 		log.info("Deleting partyRole ..");
 	}
@@ -369,8 +327,8 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public PartyRelationshipData createPartyRelationship(@NonNull PartyRelationshipCreateCommand command) {
 		
-		Party party = getAndCheck(command.getPartyCode());
-		Party toParty = getAndCheck(command.getToPartyCode());
+		Party party = check(command.getPartyCode());
+		Party toParty = check(command.getToPartyCode());
 		
 		PartyRelationship relationship = party.createPartyRelationship(toParty, command.getStart(), command.getType());
 		relationship.setEnd(command.getEnd());
@@ -384,7 +342,7 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public PartyRelationshipData updatePartyRelationship(@NonNull PartyRelationshipUpdateCommand command) {
 		
-		Party party = getAndCheck(command.getPartyCode());
+		Party party = check(command.getPartyCode());
 		PartyRelationship opt = party.updatePartyRelationship(command.getPartyRelationshipId());
 		opt.setEnd(command.getEnd());
 		
@@ -397,7 +355,7 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public void deletePartyRelationship(@NonNull PartyRelationshipDeleteCommand command) {
 
-		Party party = getAndCheck(command.getPartyCode());
+		Party party = check(command.getPartyCode());
 		party.removePartyRelationship(command.getPartyRelationshipId());
 		
 		repo.save(party);
@@ -407,7 +365,7 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public PartyClassificationData createPartyClassification(@NonNull PartyClassificationCreateCommand command) {
 		
-		Party party = getAndCheck(command.getPartyCode());
+		Party party = check(command.getPartyCode());
 		PartyClassification opt = party.createPartyClassification(command.getStart(), 
 				command.getValue(), command.getType());
 		opt.setEnd(command.getEnd());
@@ -421,7 +379,7 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public PartyClassificationData updatePartyClassification(@NonNull PartyClassificationUpdateCommand command) {
 		
-		Party party = getAndCheck(command.getPartyCode());
+		Party party = check(command.getPartyCode());
 		PartyClassification opt = party.updatePartyClassification(command.getPartyClassificationId());
 		opt.setEnd(command.getEnd());
 		
@@ -432,9 +390,25 @@ public class PartyServiceImpl implements PartyService {
 	}
 
 	@Override
-	public void deletePartyClassification(@NonNull PartyClassificationDeleteCommand command) {
-		Party party = getAndCheck(command.getPartyCode());
-		party.removePartyClassification(command.getPartyClassificationId());
-		log.info("Removing party classification ...");
+	public PartyClassificationData deletePartyClassification(@NonNull PartyClassificationDeleteCommand command) {
+		
+		Party party = check(command.getPartyCode());
+		return PartyClassificationMapper.INSTANCE.toData(
+				party.removePartyClassification(
+						command.getPartyClassificationId()));
+	}
+
+	@Override
+	public List<PartyData> getAllPartys(@NonNull PartyFilter filter) {
+		
+		if(Strings.isNullOrEmpty(filter.getKey())) {
+			return PartyMapper.INSTANCE.toDatas(repo.getAll(PageRequest.of(filter.getPage(), filter.getSize())));
+		}
+		else {
+			return PartyMapper.INSTANCE.toDatas(
+					repo.getAll("%"+filter.getKey()+"%", 
+							PageRequest.of(filter.getPage(), filter.getSize())));
+		}
+
 	}
 }

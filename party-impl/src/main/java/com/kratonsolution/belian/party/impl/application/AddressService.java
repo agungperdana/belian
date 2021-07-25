@@ -17,25 +17,25 @@ public class AddressService {
 
 	public static void update(@NonNull PartyUpdateCommand command, @NonNull Party party) {
 
-		party.getAddresses()
-			.stream()
-			.filter(p->!command.getAddresses()
-							.stream()
-							.filter(com->com.getId().equals(p.getId())).findFirst().isPresent())
-			.collect(Collectors.toList())
-			.forEach(del->party.removeAddress(del.getId()));
-		
-		command.getAddresses().forEach(add -> {
-
-			Address address = party.updateAddress(add.getId());
-			if(address == null) {
-
-				address = party.createAddress(add.getDescription(),
-						add.getType(), add.getLocation().getCode(), add.getLocation().getName());
-			}
-
-			address.setActive(add.isActive());
-			address.setPostal(add.getPostal());
-		});
+//		party.getAddresses()
+//			.stream()
+//			.filter(p->!command.getAddresses()
+//							.stream()
+//							.filter(com->com.getId().equals(p.getId())).findFirst().isPresent())
+//			.collect(Collectors.toList())
+//			.forEach(del->party.removeAddress(del.getId()));
+//		
+//		command.getAddresses().forEach(add -> {
+//
+//			Address address = party.updateAddress(add.getId());
+//			if(address == null) {
+//
+//				address = party.createAddress(add.getDescription(),
+//						add.getType(), add.getLocation().getCode(), add.getLocation().getName());
+//			}
+//
+//			address.setActive(add.isActive());
+//			address.setPostal(add.getPostal());
+//		});
 	}
 }

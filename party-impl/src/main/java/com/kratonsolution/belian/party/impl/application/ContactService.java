@@ -17,21 +17,21 @@ public class ContactService {
 
 	public static void update(@NonNull PartyUpdateCommand command, @NonNull Party party) {
 
-		party.getContacts()
-			.stream()
-			.filter(p->!command.getContacts().
-					stream().filter(com->com.getId().equals(p.getId())).findFirst().isPresent())
-			.collect(Collectors.toList())
-			.forEach(ob->party.removeContact(ob.getId()));
-		
-		command.getContacts().forEach(con -> {
-
-			Contact contact = party.updateContact(con.getId());
-			if(contact == null) {
-				contact = party.createContact(con.getContact(), con.getType());
-			}
-
-			contact.setActive(con.isActive());
-		});
+//		party.getContacts()
+//			.stream()
+//			.filter(p->!command.getContacts().
+//					stream().filter(com->com.getId().equals(p.getId())).findFirst().isPresent())
+//			.collect(Collectors.toList())
+//			.forEach(ob->party.removeContact(ob.getId()));
+//		
+//		command.getContacts().forEach(con -> {
+//
+//			Contact contact = party.updateContact(con.getId());
+//			if(contact == null) {
+//				contact = party.createContact(con.getContact(), con.getType());
+//			}
+//
+//			contact.setActive(con.isActive());
+//		});
 	}
 }

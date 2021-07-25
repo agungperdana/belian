@@ -2,9 +2,6 @@ package com.kratonsolution.belian.party.api.application;
 
 import java.io.Serializable;
 
-import com.google.common.base.Strings;
-import com.kratonsolution.belian.party.api.model.PartyType;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,15 +16,9 @@ public class PartyFilter implements Serializable {
 
 	private static final long serialVersionUID = -4668723464787436775L;
 
-	private String code;
+	private String key;
 	
-	private String name;
+	private Integer page = 0;
 	
-	private PartyType type;
-	
-	public boolean isValid() {
-		return !Strings.isNullOrEmpty(code) || 
-				!Strings.isNullOrEmpty(name) ||
-				type != null;
-	}
+	private Integer size = 1000;
 }

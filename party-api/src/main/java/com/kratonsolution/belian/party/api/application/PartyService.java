@@ -44,6 +44,8 @@ public interface PartyService {
 	public List<PartyData> getAllPartys(int page, int size);
 
 	public List<PartyData> getAllPartys(@NonNull PartyFilter filter, int page, int size);
+	
+	public List<PartyData> getAllPartys(@NonNull PartyFilter filter);
 
 	public AddressData createAddress(@NonNull AddressCreateCommand command);
 
@@ -73,5 +75,5 @@ public interface PartyService {
 
 	public PartyClassificationData updatePartyClassification(@NonNull PartyClassificationUpdateCommand command);
 
-	public void deletePartyClassification(@NonNull PartyClassificationDeleteCommand command);
+	public PartyClassificationData deletePartyClassification(@NonNull PartyClassificationDeleteCommand command);
 }

@@ -25,7 +25,7 @@ public interface PartyMapper {
 	PartyMapper INSTANCE = Mappers.getMapper(PartyMapper.class);
 	
 	@Mappings({
-		@Mapping(target = "partyRelationships", ignore = true)
+		@Mapping(target = "partyRelationships", ignore = true),
 	})
     PartyData toData(@NonNull Party party);
     
@@ -35,6 +35,7 @@ public interface PartyMapper {
     default void mapRelationship(@MappingTarget PartyData data, Party party) {
     	
     	party.getPartyRelationships().forEach(ob->{
+    		
     		data.getPartyRelationships().add(PartyRelationshipMapper.INSTANCE.toData(ob));
     	});
     }

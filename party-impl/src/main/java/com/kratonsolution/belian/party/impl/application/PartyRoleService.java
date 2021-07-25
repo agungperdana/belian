@@ -17,23 +17,23 @@ public class PartyRoleService {
 
 	public static void update(@NonNull PartyUpdateCommand command, @NonNull Party party) {
 
-		party.getPartyRoles()
-			.stream()
-			.filter(p->!command.getPartyRoles()
-								.stream()
-								.filter(com->com.getId().equals(p.getId()))
-								.findFirst().isPresent())
-			.collect(Collectors.toList())
-			.forEach(ob->party.removePartyRole(ob.getId()));
-		
-		command.getPartyRoles().forEach(rol -> {
-
-			PartyRole role = party.updatePartyRole(rol.getId());
-			if(role == null) {
-				role = party.createPartyRole(rol.getStart(), rol.getType());
-			}
-
-			role.setEnd(rol.getEnd());
-		});
+//		party.getPartyRoles()
+//			.stream()
+//			.filter(p->!command.getPartyRoles()
+//								.stream()
+//								.filter(com->com.getId().equals(p.getId()))
+//								.findFirst().isPresent())
+//			.collect(Collectors.toList())
+//			.forEach(ob->party.removePartyRole(ob.getId()));
+//		
+//		command.getPartyRoles().forEach(rol -> {
+//
+//			PartyRole role = party.updatePartyRole(rol.getId());
+//			if(role == null) {
+//				role = party.createPartyRole(rol.getStart(), rol.getType());
+//			}
+//
+//			role.setEnd(rol.getEnd());
+//		});
 	}
 }

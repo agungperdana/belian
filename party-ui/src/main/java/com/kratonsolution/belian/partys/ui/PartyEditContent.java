@@ -91,17 +91,17 @@ public class PartyEditContent extends AbstractForm
 			command.setName(name.getText());
 			command.setTaxCode(tax.getValue());
 			command.setType(PartyType.valueOf(types.getSelectedItem().getValue()));
-			command.setBirthDate(birthDate.getValue()!=null?Instant.from(birthDate.getValueInZonedDateTime()):null);
+//			command.setBirthDate(birthDate.getValue()!=null?Instant.from(birthDate.getValueInZonedDateTime()):null);
 			command.setBirthPlace(birthPlace.getSelectedItem()!=null?birthPlace.getSelectedItem().getValue():null);
 			command.setGender(genders.getSelectedItem()!=null?Gender.valueOf(genders.getSelectedItem().getValue()):null	);			
-			command.getAddresses().addAll(tab.getParty().getAddresses());
-			command.getContacts().addAll(tab.getParty().getContacts());
-			command.getPartyRoles().addAll(tab.getParty().getPartyRoles());
-			command.getPartyRelationships().addAll(tab.getParty().getPartyRelationships());
-			command.getPartyClassifications().addAll(tab.getParty().getPartyClassifications());
-			command.getMaritalStatuses().addAll(tab.getParty().getMaritalStatuses());
-			command.getCitizenships().addAll(tab.getParty().getCitizenships());
-			command.getPhysicalCharacteristics().addAll(tab.getParty().getPhysicalCharacteristics());
+//			command.getAddresses().addAll(tab.getParty().getAddresses());
+//			command.getContacts().addAll(tab.getParty().getContacts());
+//			command.getPartyRoles().addAll(tab.getParty().getPartyRoles());
+//			command.getPartyRelationships().addAll(tab.getParty().getPartyRelationships());
+//			command.getPartyClassifications().addAll(tab.getParty().getPartyClassifications());
+//			command.getMaritalStatuses().addAll(tab.getParty().getMaritalStatuses());
+//			command.getCitizenships().addAll(tab.getParty().getCitizenships());
+//			command.getPhysicalCharacteristics().addAll(tab.getParty().getPhysicalCharacteristics());
 			
 			Springs.get(PartyService.class).update(command);
 
@@ -128,15 +128,15 @@ public class PartyEditContent extends AbstractForm
 			});
 
 			if(opt.getBirthDate() != null) {
-				birthDate.setValue(Date.from(opt.getBirthDate()));
+//				birthDate.setValue(Date.from(opt.getBirthDate()));
 			}
 
 			Springs.get(GeographicService.class).getAllGeographics().forEach(geo->{
 				
 				Listitem itm = birthPlace.appendItem(geo.getCode()+" "+geo.getName(), geo.getCode());
-				if(opt.getBirthPlace() != null && opt.getBirthPlace().getCode().equals(geo.getCode())) {
-					birthPlace.setSelectedItem(itm);
-				}
+//				if(opt.getBirthPlace() != null && opt.getBirthPlace().getCode().equals(geo.getCode())) {
+//					birthPlace.setSelectedItem(itm);
+//				}
 			});
 		}
 		

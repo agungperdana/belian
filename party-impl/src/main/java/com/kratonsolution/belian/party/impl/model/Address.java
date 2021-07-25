@@ -40,6 +40,7 @@ public class Address implements Serializable
 	@Id
 	private String id = UUID.randomUUID().toString();
 
+	@Setter
 	@Column(name="address", nullable=false)
 	private String description;
 
@@ -72,7 +73,10 @@ public class Address implements Serializable
 
 	Address(){}
 
-	public Address(@NonNull Party parent, @NonNull String descriotion, @NonNull AddressType type, @NonNull PartyGeographicInfo location) {
+	public Address(@NonNull Party parent, 
+					@NonNull String descriotion, 
+					@NonNull AddressType type, 
+					@NonNull PartyGeographicInfo location) {
 
 		this.party = parent;
 		this.description = descriotion;
