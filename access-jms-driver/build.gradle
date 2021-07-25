@@ -1,0 +1,22 @@
+plugins {
+	
+	id 'com.kratonsolution.belian.java-library-conventions'
+	id 'io.freefair.lombok' version '6.0.0-m2'
+	id 'org.springframework.boot' version '2.4.5'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+dependencies {
+
+	implementation project(':access-api')	
+	implementation 'org.apache.camel.springboot:camel-spring-boot-starter:3.9.0'
+}
+
+bootJar{
+	enabled=false
+}
+
+jar {
+	enabled=true //needed
+}
