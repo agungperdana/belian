@@ -13,4 +13,12 @@ Security (role based security)
 - Role
 - User
 Geographic
-Party (Organization, Person, Address, Contact, Roles, Relationship)
+Party Management
+- Party Data (Organization or Person)
+- Address
+- Contact
+- Classification
+- Role (as customer, supplier, employee, employer, etc)
+- Relationship
+- Physical characteristic (person)
+- Marital history (person)
