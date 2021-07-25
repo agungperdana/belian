@@ -13,6 +13,7 @@ Security (role based security)
 - Role
 - User
 Geographic
+- geographic data
 Party Management
 - Party Data (Organization or Person)
 - Address
