@@ -12,8 +12,7 @@ Security (role based security)
 - Module
 - Role
 - User
-Geographic
-- geographic data
+Geographic management (Country, city, province, dll) 
 Party Management
 - Party Data (Organization or Person)
 - Address
