@@ -13,9 +13,9 @@ public enum AddressType
 	public String toString() {
 
 		switch (this) {
-			case HOME:return "Home";
+			case WAREHOUSE:return "Warehouse";
 			case OFFICE:return "Office";
-			default:return "Warehouse";
+			default:return "Home";
 		}
 	}
 }

@@ -190,18 +190,18 @@ public class PartyServiceImpl implements PartyService {
 		
 		Party party = check(command.getPartyCode());
 		
-//		GeographicData location = geoService.getByCode(command.getLocation());
-//		Preconditions.checkState(location != null, "Geographic location does not exist");
+		GeographicData location = geo.getByCode(command.getLocation());
+		Preconditions.checkState(location != null, "Geographic location does not exist");
 		
-//		Address address = party.createAddress(command.getAddress(), command.getType(), location.getCode(), location.getName());
-//		address.setActive(command.isActive());
-//		address.setPostal(command.getPostal());
+		Address address = party.createAddress(command.getAddress(), command.getType(), location.getCode(), location.getName());
+		address.setActive(command.isActive());
+		address.setPostal(command.getPostal());
 		
 		repo.save(party);
-//		log.info("Adding new address {} for party {}", address, party);
 		
-//		return AddressMapper.INSTANCE.toData(address);
-		return null;
+		log.info("Adding new address {} for party {}", address, party);
+		
+		return AddressMapper.INSTANCE.toData(address);
 	}
 
 	@Override
@@ -212,13 +212,8 @@ public class PartyServiceImpl implements PartyService {
 		
 		Preconditions.checkState(address != null, "Address not exist");
 		
-//		GeographicData location = geoService.getByCode(command.getLocation());
-//		Preconditions.checkState(location != null, "Geographic location does not exist");
-		
 		address.setActive(command.isActive());
 		address.setPostal(command.getPostal());
-		address.setType(command.getType());
-//		address.setLocation(new PartyGeographicInfo(location.getCode(), location.getName()));
 		
 		repo.save(party);
 		log.info("Update address", address);
