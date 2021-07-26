@@ -193,7 +193,7 @@ public class Party implements Serializable
 		return new HashSet<>(this.contacts);
 	}
 
-	public PartyRole createPartyRole(@NonNull Instant start, @NonNull PartyRoleType type) {
+	public PartyRole createPartyRole(@NonNull Date start, @NonNull PartyRoleType type) {
 
 		Optional<PartyRole> opt = this.partyRoles.stream()
 				.filter(p->p.getStart().equals(start) && p.getType().equals(type)).findAny();

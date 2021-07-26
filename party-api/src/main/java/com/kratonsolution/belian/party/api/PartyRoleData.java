@@ -1,7 +1,7 @@
 package com.kratonsolution.belian.party.api;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.util.Date;
 import java.util.UUID;
 
 import com.kratonsolution.belian.party.api.model.PartyRoleType;
@@ -22,9 +22,9 @@ public class PartyRoleData implements Serializable
 
 	private String id = UUID.randomUUID().toString();
 	
-	private Instant start = Instant.now();
+	private Date start;
 	
-	private Instant end;
+	private Date end;
 	
 	private PartyRoleType type;
 	

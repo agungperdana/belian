@@ -1,10 +1,8 @@
-package com.kratonsolution.belian.party.impl.application;
 
-import java.util.stream.Collectors;
+package com.kratonsolution.belian.party.impl.application;
 
 import com.kratonsolution.belian.party.api.application.PartyUpdateCommand;
 import com.kratonsolution.belian.party.impl.model.Party;
-import com.kratonsolution.belian.party.impl.model.PartyRole;
 
 import lombok.NonNull;
 

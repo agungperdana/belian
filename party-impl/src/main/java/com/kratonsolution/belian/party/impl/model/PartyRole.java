@@ -1,7 +1,7 @@
 package com.kratonsolution.belian.party.impl.model;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -37,11 +37,11 @@ public class PartyRole implements Serializable
 	private String id = UUID.randomUUID().toString();
 
 	@Column(name="start")
-	private Instant start;
+	private Date start;
 
 	@Setter
 	@Column(name="end")
-	private Instant end;
+	private Date end;
 
 	@ManyToOne
 	@JoinColumn(name="fk_party")
@@ -56,7 +56,7 @@ public class PartyRole implements Serializable
 
 	PartyRole(){}
 
-	public PartyRole(@NonNull Party parent, @NonNull Instant start, @NonNull PartyRoleType type){
+	public PartyRole(@NonNull Party parent, @NonNull Date start, @NonNull PartyRoleType type){
 
 		this.party = parent;
 		this.start = start;
