@@ -44,8 +44,8 @@ public class PartyRelationshipRowRenderer implements RowRenderer<PartyRelationsh
 		});
 		
 		row.appendChild(Components.checkbox(false));
-		row.appendChild(Components.fullSpanDatebox(data.getStart()!=null?Date.from(data.getStart()):new Date()));
-		row.appendChild(Components.fullSpanDatebox(data.getEnd()!=null?Date.from(data.getEnd()):null));
+		row.appendChild(Components.fullSpanDatebox(data.getStart()!=null?data.getStart():new Date()));
+		row.appendChild(Components.fullSpanDatebox(data.getEnd()!=null?data.getEnd():null));
 		row.appendChild(party);
 		row.appendChild(type);
 		row.appendChild(new Label(data.getId()));

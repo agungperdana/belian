@@ -14,6 +14,7 @@ import com.kratonsolution.belian.geographic.api.GeographicData;
 import com.kratonsolution.belian.geographic.api.application.GeographicService;
 import com.kratonsolution.belian.party.api.AddressData;
 import com.kratonsolution.belian.party.api.ContactData;
+import com.kratonsolution.belian.party.api.MaritalStatusData;
 import com.kratonsolution.belian.party.api.PartyClassificationData;
 import com.kratonsolution.belian.party.api.PartyData;
 import com.kratonsolution.belian.party.api.PartyRelationshipData;
@@ -24,6 +25,9 @@ import com.kratonsolution.belian.party.api.application.AddressUpdateCommand;
 import com.kratonsolution.belian.party.api.application.ContactCreateCommand;
 import com.kratonsolution.belian.party.api.application.ContactDeleteCommand;
 import com.kratonsolution.belian.party.api.application.ContactUpdateCommand;
+import com.kratonsolution.belian.party.api.application.MaritalStatusCreateCommand;
+import com.kratonsolution.belian.party.api.application.MaritalStatusDeleteCommand;
+import com.kratonsolution.belian.party.api.application.MaritalStatusUpdateCommand;
 import com.kratonsolution.belian.party.api.application.PartyClassificationCreateCommand;
 import com.kratonsolution.belian.party.api.application.PartyClassificationDeleteCommand;
 import com.kratonsolution.belian.party.api.application.PartyClassificationUpdateCommand;
@@ -41,6 +45,7 @@ import com.kratonsolution.belian.party.api.application.PartyUpdateCommand;
 import com.kratonsolution.belian.party.api.model.PartyType;
 import com.kratonsolution.belian.party.impl.model.Address;
 import com.kratonsolution.belian.party.impl.model.Contact;
+import com.kratonsolution.belian.party.impl.model.MaritalStatus;
 import com.kratonsolution.belian.party.impl.model.Party;
 import com.kratonsolution.belian.party.impl.model.PartyClassification;
 import com.kratonsolution.belian.party.impl.model.PartyGeographicInfo;
@@ -338,10 +343,9 @@ public class PartyServiceImpl implements PartyService {
 	public PartyRelationshipData updatePartyRelationship(@NonNull PartyRelationshipUpdateCommand command) {
 		
 		Party party = check(command.getPartyCode());
-		PartyRelationship opt = party.updatePartyRelationship(command.getPartyRelationshipId());
-		opt.setEnd(command.getEnd());
-		
+		PartyRelationship opt = party.updatePartyRelationship(command.getRelationshipId(), command.getEnd());
 		repo.save(party);
+
 		log.info("Updating party relationship", opt);
 		
 		return PartyRelationshipMapper.INSTANCE.toData(opt);
@@ -351,7 +355,7 @@ public class PartyServiceImpl implements PartyService {
 	public void deletePartyRelationship(@NonNull PartyRelationshipDeleteCommand command) {
 
 		Party party = check(command.getPartyCode());
-		party.removePartyRelationship(command.getPartyRelationshipId());
+		party.removePartyRelationship(command.getRelationshipId());
 		
 		repo.save(party);
 		log.info("Removinf party relationship ...");
@@ -405,5 +409,30 @@ public class PartyServiceImpl implements PartyService {
 							PageRequest.of(filter.getPage(), filter.getSize())));
 		}
 
+	}
+
+	@Override
+	public MaritalStatusData createMaritalStatus(@NonNull MaritalStatusCreateCommand command) {
+
+		Party party = check(command.getPartyCode());
+		MaritalStatus data = party.createMaritalStatus(command.getStart(), command.getEnd(), command.getType());
+		
+		return MaritalStatusMapper.INSTANCE.toData(data);
+	}
+
+	@Override
+	public MaritalStatusData updateMaritalStatus(@NonNull MaritalStatusUpdateCommand command) {
+
+		Party party = check(command.getPartyCode());
+		MaritalStatus data = party.updateMaritalStatus(command.getStatusId(), command.getEnd());
+		
+		return MaritalStatusMapper.INSTANCE.toData(data);
+	}
+
+	@Override
+	public void deleteMaritalStatus(@NonNull MaritalStatusDeleteCommand command) {
+		
+		Party party = check(command.getPartyCode());
+		party.removeMaritalStatus(command.getStatusId());
 	}
 }

@@ -11,11 +11,11 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class PartyRelationshipDeleteCommand {
+public class MaritalStatusDeleteCommand {
 
 	@NonNull
 	private String partyCode;
 	
 	@NonNull
-	private String relationshipId;
+	private String statusId;
 }

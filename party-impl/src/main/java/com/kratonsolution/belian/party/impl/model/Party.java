@@ -229,7 +229,9 @@ public class Party implements Serializable
 		return new HashSet<>(this.partyRoles);
 	}
 
-	public PartyRelationship createPartyRelationship(@NonNull Party toParty, @NonNull Instant start, @NonNull PartyRelationshipType type) {
+	public PartyRelationship createPartyRelationship(@NonNull Party toParty, 
+													 @NonNull Date start, 
+													 @NonNull PartyRelationshipType type) {
 
 		Optional<PartyRelationship> opt = this.partyRelationships.stream()
 				.filter(p->p.getStart().equals(start) 
@@ -244,12 +246,16 @@ public class Party implements Serializable
 		return obj;
 	}
 
-	public PartyRelationship updatePartyRelationship(@NonNull String id) {
+	public PartyRelationship updatePartyRelationship(@NonNull String id, @NonNull Date end) {
 
 		Optional<PartyRelationship> opt = this.partyRelationships.stream()
 				.filter(p->p.getId().equals(id))
-				.findFirst();
+				.findAny();
 
+		Preconditions.checkState(opt.isPresent(), "Relationship object not found");
+		
+		opt.get().setEnd(end);
+		
 		return opt.orElse(null);
 	}
 
@@ -306,14 +312,14 @@ public class Party implements Serializable
 		return new HashSet<>(this.partyClassifications);
 	}
 
-	public MaritalStatus createMaritalStatus(@NonNull Instant start, Instant end, @NonNull MaritalStatusType type) {
+	public MaritalStatus createMaritalStatus(@NonNull Date start, Date end, @NonNull MaritalStatusType type) {
 
 		Optional<MaritalStatus> status = this.maritalStatuses
 				.stream()
 				.filter(p-> p.getStart().equals(start) 
 						&& p.getType().equals(type)).findAny();
 
-		Preconditions.checkState(!status.isPresent(), "MaritalStatus already exist");
+		Preconditions.checkState(!status.isPresent(), "Marital Status already exist");
 
 		MaritalStatus obj = new MaritalStatus(this, start, type);
 		this.maritalStatuses.add(obj);
@@ -321,15 +327,21 @@ public class Party implements Serializable
 		return obj;
 	}
 
-	public MaritalStatus updateMaritalStatus(@NonNull String id) {
+	public MaritalStatus updateMaritalStatus(@NonNull String id, @NonNull Date end) {
 
-		return this.maritalStatuses
+		MaritalStatus status = this.maritalStatuses
 				.stream()
 				.filter(p-> p.getId().equals(id)).findAny().orElse(null);
+		
+		if(status != null) {
+			status.setEnd(end);
+		}
+		
+		return status;
 	}
 
 	public void removeMaritalStatus(@NonNull String id) {
-		maritalStatuses.removeIf(p -> p.getId().equals(id));
+		this.maritalStatuses.removeIf(p -> p.getId().equals(id));
 	}
 
 	/**

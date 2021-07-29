@@ -3,8 +3,6 @@ package com.kratonsolution.belian.party.api.application;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.kratonsolution.belian.party.api.model.PartyRelationshipType;
-
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -16,21 +14,16 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class PartyRelationshipCreateCommand implements Serializable {
+public class MaritalStatusUpdateCommand implements Serializable {
 
-	private static final long serialVersionUID = -2267618775074275933L;
+	private static final long serialVersionUID = -571578029275784667L;
 
 	@NonNull
 	private String partyCode;
 
 	@NonNull
-	private Date start;
-
-	private Date end;
+	private String statusId;
 	
 	@NonNull
-	private String toPartyCode;
-
-	@NonNull
-	private PartyRelationshipType type;
+	private Date end;
 }

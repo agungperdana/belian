@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.kratonsolution.belian.party.api.AddressData;
 import com.kratonsolution.belian.party.api.ContactData;
+import com.kratonsolution.belian.party.api.MaritalStatusData;
 import com.kratonsolution.belian.party.api.PartyClassificationData;
 import com.kratonsolution.belian.party.api.PartyData;
 import com.kratonsolution.belian.party.api.PartyRelationshipData;
@@ -76,4 +77,10 @@ public interface PartyService {
 	public PartyClassificationData updatePartyClassification(@NonNull PartyClassificationUpdateCommand command);
 
 	public PartyClassificationData deletePartyClassification(@NonNull PartyClassificationDeleteCommand command);
+	
+	public MaritalStatusData createMaritalStatus(@NonNull MaritalStatusCreateCommand command);
+	
+	public MaritalStatusData updateMaritalStatus(@NonNull MaritalStatusUpdateCommand command);
+	
+	public void deleteMaritalStatus(@NonNull MaritalStatusDeleteCommand command);
 }
