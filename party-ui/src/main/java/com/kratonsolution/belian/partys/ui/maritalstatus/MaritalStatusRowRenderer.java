@@ -1,7 +1,6 @@
 package com.kratonsolution.belian.partys.ui.maritalstatus;
 
 import java.util.Arrays;
-import java.util.Date;
 
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
@@ -33,8 +32,8 @@ public class MaritalStatusRowRenderer implements RowRenderer<MaritalStatusData> 
 		});
 		
 		row.appendChild(Components.checkbox(false));
-		row.appendChild(Components.fullSpanDatebox(data.getStart()!=null?Date.from(data.getStart()):new Date()));
-		row.appendChild(Components.fullSpanDatebox(data.getEnd()!=null?Date.from(data.getEnd()):null));
+		row.appendChild(Components.fullSpanDatebox(data.getStart()));
+		row.appendChild(Components.fullSpanDatebox(data.getEnd()));
 		row.appendChild(types);
 		row.appendChild(new Label(data.getId()));
 	}

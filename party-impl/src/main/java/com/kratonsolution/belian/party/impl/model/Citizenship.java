@@ -1,7 +1,7 @@
 package com.kratonsolution.belian.party.impl.model;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.AttributeOverride;
@@ -36,20 +36,20 @@ public class Citizenship implements Serializable
 	private String id = UUID.randomUUID().toString();
 
 	@Column(name="start")
-	private Instant start;
+	private Date start;
 	
 	@Setter
 	@Column(name="end")
-	private Instant end;
+	private Date end;
 
 	@Column(name="passport_number")
 	private String passportNumber;
 	
 	@Column(name="passport_issued_date")
-	private Instant passportIssuedDate;
+	private Date passportIssuedDate;
 	
 	@Column(name="passport_expired_date")
-	private Instant passportExpiredDate;
+	private Date passportExpiredDate;
 	
 	@Embedded
 	@AttributeOverrides({
@@ -67,7 +67,7 @@ public class Citizenship implements Serializable
 	
 	Citizenship(){}
 	
-	public Citizenship(@NonNull Party parent, @NonNull Instant start,
+	public Citizenship(@NonNull Party parent, @NonNull Date start,
 			@NonNull String countryCode, @NonNull String countryName){
 		
 		this.party = parent;

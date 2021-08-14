@@ -13,6 +13,7 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.geographic.api.GeographicData;
 import com.kratonsolution.belian.geographic.api.application.GeographicService;
 import com.kratonsolution.belian.party.api.AddressData;
+import com.kratonsolution.belian.party.api.CitizenshipData;
 import com.kratonsolution.belian.party.api.ContactData;
 import com.kratonsolution.belian.party.api.MaritalStatusData;
 import com.kratonsolution.belian.party.api.PartyClassificationData;
@@ -22,6 +23,9 @@ import com.kratonsolution.belian.party.api.PartyRoleData;
 import com.kratonsolution.belian.party.api.application.AddressCreateCommand;
 import com.kratonsolution.belian.party.api.application.AddressDeleteCommand;
 import com.kratonsolution.belian.party.api.application.AddressUpdateCommand;
+import com.kratonsolution.belian.party.api.application.CitizenshipCreateCommand;
+import com.kratonsolution.belian.party.api.application.CitizenshipDeleteCommand;
+import com.kratonsolution.belian.party.api.application.CitizenshipUpdateCommand;
 import com.kratonsolution.belian.party.api.application.ContactCreateCommand;
 import com.kratonsolution.belian.party.api.application.ContactDeleteCommand;
 import com.kratonsolution.belian.party.api.application.ContactUpdateCommand;
@@ -44,6 +48,7 @@ import com.kratonsolution.belian.party.api.application.PartyService;
 import com.kratonsolution.belian.party.api.application.PartyUpdateCommand;
 import com.kratonsolution.belian.party.api.model.PartyType;
 import com.kratonsolution.belian.party.impl.model.Address;
+import com.kratonsolution.belian.party.impl.model.Citizenship;
 import com.kratonsolution.belian.party.impl.model.Contact;
 import com.kratonsolution.belian.party.impl.model.MaritalStatus;
 import com.kratonsolution.belian.party.impl.model.Party;
@@ -417,6 +422,8 @@ public class PartyServiceImpl implements PartyService {
 		Party party = check(command.getPartyCode());
 		MaritalStatus data = party.createMaritalStatus(command.getStart(), command.getEnd(), command.getType());
 		
+		repo.save(party);
+		
 		return MaritalStatusMapper.INSTANCE.toData(data);
 	}
 
@@ -426,6 +433,8 @@ public class PartyServiceImpl implements PartyService {
 		Party party = check(command.getPartyCode());
 		MaritalStatus data = party.updateMaritalStatus(command.getStatusId(), command.getEnd());
 		
+		repo.save(party);
+		
 		return MaritalStatusMapper.INSTANCE.toData(data);
 	}
 
@@ -434,5 +443,43 @@ public class PartyServiceImpl implements PartyService {
 		
 		Party party = check(command.getPartyCode());
 		party.removeMaritalStatus(command.getStatusId());
+		repo.save(party);
+	}
+
+	@Override
+	public CitizenshipData createCitizenship(@NonNull CitizenshipCreateCommand command) {
+
+		Party party = check(command.getPartyCode());
+		
+		GeographicData country = geo.getByCode(command.getCountryCode());
+		Preconditions.checkState(country != null, "Country does not exist!");
+		
+		Citizenship data = party.createCitizenship(command.getStart(), command.getEnd(), country.getCode(), country.getName());
+		data.setPassportExpiredDate(command.getPassportExpiredDate());
+		data.setPassportIssuedDate(command.getPassportIssuedDate());
+		data.setPassportNumber(command.getPassportNumber());
+		
+		repo.save(party);
+		
+		return CitizenshipMapper.INSTANCE.toData(data);
+	}
+
+	@Override
+	public CitizenshipData updateCitizenship(@NonNull CitizenshipUpdateCommand command) {
+
+		Party party = check(command.getPartyCode());
+		Citizenship data = party.updateCitizenship(command.getCitizenshipId(), command.getEnd(), 
+												   command.getPassportExpiredDate(), 
+												   command.getPassportIssuedDate(), 
+												   command.getPassportNumber());
+		repo.save(party);
+		
+		return CitizenshipMapper.INSTANCE.toData(data);
+	}
+
+	@Override
+	public void deleteCitizenship(@NonNull CitizenshipDeleteCommand command) {
+		Party party = check(command.getPartyCode());
+		
 	}
 }

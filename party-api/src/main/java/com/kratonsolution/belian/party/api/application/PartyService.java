@@ -3,6 +3,7 @@ package com.kratonsolution.belian.party.api.application;
 import java.util.List;
 
 import com.kratonsolution.belian.party.api.AddressData;
+import com.kratonsolution.belian.party.api.CitizenshipData;
 import com.kratonsolution.belian.party.api.ContactData;
 import com.kratonsolution.belian.party.api.MaritalStatusData;
 import com.kratonsolution.belian.party.api.PartyClassificationData;
@@ -45,7 +46,7 @@ public interface PartyService {
 	public List<PartyData> getAllPartys(int page, int size);
 
 	public List<PartyData> getAllPartys(@NonNull PartyFilter filter, int page, int size);
-	
+
 	public List<PartyData> getAllPartys(@NonNull PartyFilter filter);
 
 	public AddressData createAddress(@NonNull AddressCreateCommand command);
@@ -59,28 +60,34 @@ public interface PartyService {
 	public ContactData updateContact(@NonNull ContactUpdateCommand command);
 
 	public void deleteContact(@NonNull ContactDeleteCommand command);
-	
+
 	public PartyRoleData createPartyRole(@NonNull PartyRoleCreateCommand command);
 
 	public PartyRoleData updatePartyRole(@NonNull PartyRoleUpdateCommand command);
 
 	public void deletePartyRole(@NonNull PartyRoleDeleteCommand command);
-	
+
 	public PartyRelationshipData createPartyRelationship(@NonNull PartyRelationshipCreateCommand command);
 
 	public PartyRelationshipData updatePartyRelationship(@NonNull PartyRelationshipUpdateCommand command);
 
 	public void deletePartyRelationship(@NonNull PartyRelationshipDeleteCommand command);
-	
+
 	public PartyClassificationData createPartyClassification(@NonNull PartyClassificationCreateCommand command);
 
 	public PartyClassificationData updatePartyClassification(@NonNull PartyClassificationUpdateCommand command);
 
 	public PartyClassificationData deletePartyClassification(@NonNull PartyClassificationDeleteCommand command);
-	
+
 	public MaritalStatusData createMaritalStatus(@NonNull MaritalStatusCreateCommand command);
-	
+
 	public MaritalStatusData updateMaritalStatus(@NonNull MaritalStatusUpdateCommand command);
-	
+
 	public void deleteMaritalStatus(@NonNull MaritalStatusDeleteCommand command);
+
+	public CitizenshipData createCitizenship(@NonNull CitizenshipCreateCommand command);
+
+	public CitizenshipData updateCitizenship(@NonNull CitizenshipUpdateCommand command);
+
+	public void deleteCitizenship(@NonNull CitizenshipDeleteCommand command);
 }

@@ -390,7 +390,7 @@ public class Party implements Serializable
 		return new HashSet<>(this.physicalCharacteristics);
 	}
 
-	public Citizenship createCitizenship(@NonNull Instant start, Instant end, @NonNull String countryCode, @NonNull String countryName) {
+	public Citizenship createCitizenship(@NonNull Date start, Date end, @NonNull String countryCode, @NonNull String countryName) {
 
 		Optional<Citizenship> status = this.citizenships
 				.stream()
@@ -406,12 +406,23 @@ public class Party implements Serializable
 		return obj;
 	}
 
-	public Citizenship updateCitizenship(@NonNull String id) {
+	public Citizenship updateCitizenship(@NonNull String id, Date end, 
+										 Date passportIssuedDate, Date passportExpiredDate,
+										 String passportNumber) {
 
-		return this.citizenships
-				.stream()
-				.filter(p-> p.getId().equals(id))
-				.findAny().orElse(null);
+		Citizenship data = this.citizenships
+								.stream()
+								.filter(p-> p.getId().equals(id))
+								.findAny().orElse(null);
+		if(data != null) {
+			
+			data.setEnd(end);
+			data.setPassportExpiredDate(passportExpiredDate);
+			data.setPassportIssuedDate(passportIssuedDate);
+			data.setPassportNumber(passportNumber);
+		}
+		
+		return data;
 	}
 
 	public void removeCitizenship(@NonNull String id) {
