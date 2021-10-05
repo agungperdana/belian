@@ -18,6 +18,7 @@
 --
 -- Table structure for table `citizenship`
 --
+USE belian;
 
 DROP TABLE IF EXISTS `citizenship`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

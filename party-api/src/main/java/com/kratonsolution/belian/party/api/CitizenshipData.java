@@ -1,7 +1,6 @@
 package com.kratonsolution.belian.party.api;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.Date;
 
 import lombok.Getter;
@@ -26,9 +25,9 @@ public class CitizenshipData implements Serializable
 	
 	private String passportNumber;
 	
-	private Instant passportIssuedDate;
+	private Date passportIssuedDate;
 	
-	private Instant passportExpiredDate;
+	private Date passportExpiredDate;
 	
 	private PartyGeographicInfoData country;
 	

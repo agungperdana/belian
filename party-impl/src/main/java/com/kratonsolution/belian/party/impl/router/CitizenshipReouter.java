@@ -7,9 +7,8 @@ import org.springframework.stereotype.Component;
 import com.kratonsolution.belian.camel.AuthProcess;
 import com.kratonsolution.belian.camel.ResponseBuilder;
 import com.kratonsolution.belian.party.api.application.CitizenshipCreateCommand;
-import com.kratonsolution.belian.party.api.application.PartyRoleCreateCommand;
-import com.kratonsolution.belian.party.api.application.PartyRoleDeleteCommand;
-import com.kratonsolution.belian.party.api.application.PartyRoleUpdateCommand;
+import com.kratonsolution.belian.party.api.application.CitizenshipDeleteCommand;
+import com.kratonsolution.belian.party.api.application.CitizenshipUpdateCommand;
 import com.kratonsolution.belian.party.api.application.PartyService;
 
 /**
@@ -35,17 +34,17 @@ public class CitizenshipReouter extends RouteBuilder {
 	}
 	
 	private void initRest() {
-				
+		
 		rest()
 			.path("/partys/citizenships")
 			.post("/create")
 			.type(CitizenshipCreateCommand.class)
 			.route()
-			.process(new AuthProcess("PARTY_EDIT"))
+			.process(new AuthProcess("PARTY_ADD"))
 			.process(e->{
 				e.getMessage().setBody(
 						ResponseBuilder.success(
-								service.createPartyRole(
+								service.createCitizenship(
 										e.getIn().getBody(CitizenshipCreateCommand.class))));
 			})
 			.endRest();
@@ -53,27 +52,27 @@ public class CitizenshipReouter extends RouteBuilder {
 		rest()
 			.path("/partys/citizenships")
 			.put("/update")
-			.type(PartyRoleUpdateCommand.class)
+			.type(CitizenshipUpdateCommand.class)
 			.route()
 			.process(new AuthProcess("PARTY_EDIT"))
 			.process(e->{
 				e.getMessage().setBody(
 						ResponseBuilder.success(
-								service.updatePartyRole(
-										e.getIn().getBody(PartyRoleUpdateCommand.class))));
+								service.updateCitizenship(
+										e.getIn().getBody(CitizenshipUpdateCommand.class))));
 			})
 			.endRest();
 		
 		rest()
 			.path("/partys/citizenships")
 			.delete("/delete")
-			.type(PartyRoleDeleteCommand.class)
+			.type(CitizenshipDeleteCommand.class)
 			.route()
-			.process(new AuthProcess("PARTY_EDIT"))
+			.process(new AuthProcess("PARTY_DELETE"))
 			.process(e->{
 				
-				PartyRoleDeleteCommand command = e.getIn().getBody(PartyRoleDeleteCommand.class);
-				service.deletePartyRole(command);
+				CitizenshipDeleteCommand command = e.getIn().getBody(CitizenshipDeleteCommand.class);
+				service.deleteCitizenship(command);
 				e.getMessage().setBody(ResponseBuilder.success(command));
 			})
 			.endRest();

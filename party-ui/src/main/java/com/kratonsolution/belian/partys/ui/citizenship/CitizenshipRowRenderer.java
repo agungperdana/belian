@@ -1,7 +1,5 @@
 package com.kratonsolution.belian.partys.ui.citizenship;
 
-import java.util.Date;
-
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Row;
@@ -29,11 +27,11 @@ public class CitizenshipRowRenderer implements RowRenderer<CitizenshipData> {
 		});
 		
 		row.appendChild(Components.checkbox(false));
-		row.appendChild(Components.fullSpanDatebox(data.getStart()!=null?Date.from(data.getStart()):null));
-		row.appendChild(Components.fullSpanDatebox(data.getEnd()!=null?Date.from(data.getEnd()):null));
+		row.appendChild(Components.fullSpanDatebox(data.getStart()));
+		row.appendChild(Components.fullSpanDatebox(data.getEnd()));
 		row.appendChild(Components.mandatoryTextBox(data.getPassportNumber()));
-		row.appendChild(Components.fullSpanDatebox(data.getPassportIssuedDate()!=null?Date.from(data.getPassportIssuedDate()):null));
-		row.appendChild(Components.fullSpanDatebox(data.getPassportExpiredDate()!=null?Date.from(data.getPassportExpiredDate()):null));
+		row.appendChild(Components.fullSpanDatebox(data.getPassportIssuedDate()));
+		row.appendChild(Components.fullSpanDatebox(data.getPassportExpiredDate()));
 		row.appendChild(geos);
 		row.appendChild(new Label(data.getId()));
 	}

@@ -1,7 +1,6 @@
 package com.kratonsolution.belian.party.impl.model;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
@@ -353,7 +352,7 @@ public class Party implements Serializable
 		return new HashSet<>(this.maritalStatuses);
 	}
 
-	public PhysicalCharacteristic createPhysicalCharacteristic(@NonNull Instant start, Instant end, @NonNull String value, @NonNull PhysicalCharacteristicType type) {
+	public PhysicalCharacteristic createPhysicalCharacteristic(@NonNull Date start, Date end, @NonNull String value, @NonNull PhysicalCharacteristicType type) {
 
 		Optional<PhysicalCharacteristic> status = this.physicalCharacteristics
 				.stream()

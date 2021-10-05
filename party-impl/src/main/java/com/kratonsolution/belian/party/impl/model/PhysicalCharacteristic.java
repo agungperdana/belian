@@ -1,7 +1,7 @@
 package com.kratonsolution.belian.party.impl.model;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -36,11 +36,11 @@ public class PhysicalCharacteristic implements Serializable
 	private String id = UUID.randomUUID().toString();
 
 	@Column(name="start")
-	private Instant start;
+	private Date start;
 
 	@Setter
 	@Column(name="end")
-	private Instant end;
+	private Date end;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="type")
@@ -59,7 +59,7 @@ public class PhysicalCharacteristic implements Serializable
 	
 	PhysicalCharacteristic(){}
 	
-	public PhysicalCharacteristic(@NonNull Party parent, @NonNull Instant start, @NonNull String value, @NonNull PhysicalCharacteristicType type) {
+	public PhysicalCharacteristic(@NonNull Party parent, @NonNull Date start, @NonNull String value, @NonNull PhysicalCharacteristicType type) {
 		
 		this.party = parent;
 		this.start = start;

@@ -9,6 +9,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import com.kratonsolution.belian.party.api.AddressData;
+import com.kratonsolution.belian.party.api.CitizenshipData;
 import com.kratonsolution.belian.party.api.ContactData;
 import com.kratonsolution.belian.party.api.MaritalStatusData;
 import com.kratonsolution.belian.party.api.PartyClassificationData;
@@ -19,6 +20,9 @@ import com.kratonsolution.belian.party.api.PartyRouteName;
 import com.kratonsolution.belian.party.api.application.AddressCreateCommand;
 import com.kratonsolution.belian.party.api.application.AddressDeleteCommand;
 import com.kratonsolution.belian.party.api.application.AddressUpdateCommand;
+import com.kratonsolution.belian.party.api.application.CitizenshipCreateCommand;
+import com.kratonsolution.belian.party.api.application.CitizenshipDeleteCommand;
+import com.kratonsolution.belian.party.api.application.CitizenshipUpdateCommand;
 import com.kratonsolution.belian.party.api.application.ContactCreateCommand;
 import com.kratonsolution.belian.party.api.application.ContactDeleteCommand;
 import com.kratonsolution.belian.party.api.application.ContactUpdateCommand;
@@ -217,6 +221,24 @@ public class PartyServiceProxy implements PartyService {
 
 	@Override
 	public void deleteMaritalStatus(@lombok.NonNull MaritalStatusDeleteCommand command) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public CitizenshipData createCitizenship(@lombok.NonNull CitizenshipCreateCommand command) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CitizenshipData updateCitizenship(@lombok.NonNull CitizenshipUpdateCommand command) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteCitizenship(@lombok.NonNull CitizenshipDeleteCommand command) {
 		// TODO Auto-generated method stub
 		
 	}

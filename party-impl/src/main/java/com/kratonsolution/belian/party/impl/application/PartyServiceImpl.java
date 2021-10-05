@@ -451,6 +451,8 @@ public class PartyServiceImpl implements PartyService {
 
 		Party party = check(command.getPartyCode());
 		
+		Preconditions.checkState(party.getType().equals(PartyType.PERSON), "Target party is not person");
+		
 		GeographicData country = geo.getByCode(command.getCountryCode());
 		Preconditions.checkState(country != null, "Country does not exist!");
 		
@@ -468,9 +470,12 @@ public class PartyServiceImpl implements PartyService {
 	public CitizenshipData updateCitizenship(@NonNull CitizenshipUpdateCommand command) {
 
 		Party party = check(command.getPartyCode());
+		
+		Preconditions.checkState(party.getType().equals(PartyType.PERSON), "Target party is not person");
+		
 		Citizenship data = party.updateCitizenship(command.getCitizenshipId(), command.getEnd(), 
+												   command.getPassportIssuedDate(),
 												   command.getPassportExpiredDate(), 
-												   command.getPassportIssuedDate(), 
 												   command.getPassportNumber());
 		repo.save(party);
 		
@@ -479,7 +484,14 @@ public class PartyServiceImpl implements PartyService {
 
 	@Override
 	public void deleteCitizenship(@NonNull CitizenshipDeleteCommand command) {
-		Party party = check(command.getPartyCode());
 		
+		Party party = check(command.getPartyCode());
+
+		Preconditions.checkState(party.getType().equals(PartyType.PERSON), "Target party is not person");
+		
+		party.removeCitizenship(command.getCitizenshipId());
+		
+		repo.save(party);
+		log.info("Removing Pary {} citizenship data", command.getPartyCode());
 	}
 }
