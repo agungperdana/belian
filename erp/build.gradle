@@ -12,6 +12,7 @@ dependencies {
 	implementation project(':access-impl')
 	implementation project(':geographic-impl')
 	implementation project(':party-impl')
+	implementation project(':company-structure-impl')
 	
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.apache.camel.springboot:camel-spring-boot-starter:3.10.0'
