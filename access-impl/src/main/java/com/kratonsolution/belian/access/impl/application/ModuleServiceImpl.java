@@ -19,8 +19,8 @@ import com.kratonsolution.belian.access.api.application.ModuleService;
 import com.kratonsolution.belian.access.api.application.ModuleUpdateCommand;
 import com.kratonsolution.belian.access.impl.model.Module;
 import com.kratonsolution.belian.access.impl.repository.ModuleRepository;
-import com.kratonsolution.belian.common.application.EventType;
-import com.kratonsolution.belian.common.application.TaskEvent;
+import com.kratonsolution.belian.common.application.EventSourceName;
+import com.kratonsolution.belian.common.application.SystemEvent;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -50,8 +50,8 @@ public class ModuleServiceImpl implements ModuleService {
         repo.save(module);
         log.info("Creating new Module {}", module);
         
-        TaskEvent event = new TaskEvent("MODULE", EventType.ADD);
-        event.getPayload().put("id", module.getId());
+        SystemEvent event = new SystemEvent(EventSourceName.ACCESS_MODULE, SystemEvent.ADD);
+        event.add("id", module.getId());
         
         publisher.publishEvent(event);
         
@@ -85,8 +85,8 @@ public class ModuleServiceImpl implements ModuleService {
         
         log.info("Deleting module {}", opt.get());
         
-        TaskEvent event = new TaskEvent("MODULE", EventType.DELETE);
-        event.getPayload().put("code", command.getCode());
+        SystemEvent event = new SystemEvent("MODULE", SystemEvent.DELETE);
+        event.add("code", command.getCode());
         
         publisher.publishEvent(event);
         

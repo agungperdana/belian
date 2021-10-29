@@ -30,7 +30,7 @@ import com.kratonsolution.belian.access.impl.model.RoleModule;
 import com.kratonsolution.belian.access.impl.repository.ModuleRepository;
 import com.kratonsolution.belian.access.impl.repository.RoleRepository;
 import com.kratonsolution.belian.common.application.EventType;
-import com.kratonsolution.belian.common.application.TaskEvent;
+import com.kratonsolution.belian.common.application.SystemEvent;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class RoleServiceImpl implements RoleService, ApplicationListener<PayloadApplicationEvent<TaskEvent>> {
+public class RoleServiceImpl implements RoleService, ApplicationListener<PayloadApplicationEvent<SystemEvent>> {
 
 	@Autowired
 	private RoleRepository roleRepo;
@@ -183,16 +183,16 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
 	}
 
 	@Transactional
-	public void onApplicationEvent(PayloadApplicationEvent<TaskEvent> event) {
+	public void onApplicationEvent(PayloadApplicationEvent<SystemEvent> event) {
 
-		TaskEvent model = event.getPayload();
-		if(model.getPayload().containsKey("id")) {
+		SystemEvent model = event.getPayload();
+		if(model.getAsString("id").isPresent()) {
 
 			if(model.getType().equals(EventType.ADD)) {
 
 				roleRepo.findAll().forEach(role -> {
 
-					Module mod = moduleRepo.getOne(model.getPayload().get("id").toString());
+					Module mod = moduleRepo.getOne(model.getAsString("id").get());
 					role.getModules().add(new RoleModule(role, mod.getCode(), mod.getName(), mod.getGroup(), 
 							false, false, false, false, false)); 
 
@@ -203,7 +203,7 @@ public class RoleServiceImpl implements RoleService, ApplicationListener<Payload
 
 				roleRepo.findAll().forEach(role -> {
 
-					role.getModules().removeIf(mod -> mod.getModuleCode().equals(model.getPayload().get("id")));
+					role.getModules().removeIf(mod -> mod.getModuleCode().equals(model.getAsString("id").get()));
 					roleRepo.save(role);
 				});
 			}

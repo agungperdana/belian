@@ -1,5 +1,7 @@
 package com.kratonsolution.belian.access.impl.application;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.PayloadApplicationEvent;
@@ -7,10 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.kratonsolution.belian.access.api.application.DeleteUserRoleCommand;
 import com.kratonsolution.belian.access.api.application.RegisterNewUserRoleCommand;
-import com.kratonsolution.belian.access.api.application.RoleEvent;
 import com.kratonsolution.belian.access.api.application.UpdateUserRoleCommand;
 import com.kratonsolution.belian.access.api.application.UserService;
-import com.kratonsolution.belian.common.application.EventType;
+import com.kratonsolution.belian.common.application.EventSourceName;
+import com.kratonsolution.belian.common.application.SystemEvent;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,54 +23,59 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Service
-public class RoleEventListener implements ApplicationListener<PayloadApplicationEvent<RoleEvent>>{
+@Transactional
+public class RoleEventListener implements ApplicationListener<PayloadApplicationEvent<SystemEvent>>{
 
 	@Autowired
 	private UserService userService;
 
 	@Override
-	public void onApplicationEvent(PayloadApplicationEvent<RoleEvent> event) {
+	public void onApplicationEvent(PayloadApplicationEvent<SystemEvent> payload) {
 
-		if(event.getPayload().getType().equals(EventType.ADD)) {
+		SystemEvent event = payload.getPayload();
+		if(event != null && event.getSource().equals(EventSourceName.ACCESS_ROLE)) {
 
-			userService.getAllUsers().forEach(user -> {
+			if(event.getType().equals(SystemEvent.ADD)) {
 
-				RegisterNewUserRoleCommand command = new RegisterNewUserRoleCommand();
-				command.setUserName(user.getName());
-				command.setRoleCode(event.getPayload().getData().getCode());
-				command.setRoleName(event.getPayload().getData().getName());
+				userService.getAllUsers().forEach(user -> {
 
-				userService.addNewUserRole(command);
+					RegisterNewUserRoleCommand command = new RegisterNewUserRoleCommand();
+					command.setUserName(user.getName());
+					command.setRoleCode(event.getAsString(SystemEvent.PAYLOAD_CODE).get());
+					command.setRoleName(event.getAsString(SystemEvent.PAYLOAD_NAME).get());
 
-				log.info("Update user, registering new role {}", command.getRoleName());
-			});
-		}
-		else if(event.getPayload().getType().equals(EventType.UPDATE)) {
+					userService.addNewUserRole(command);
 
-			userService.getAllUsers().forEach(user -> {
+					log.info("Update user, registering new role {}", command.getRoleName());
+				});
+			}
+			else if(event.getType().equals(SystemEvent.UPDATE)) {
 
-				UpdateUserRoleCommand command = new UpdateUserRoleCommand();
-				command.setUserName(user.getName());
-				command.setRoleCode(event.getPayload().getData().getCode());
-				command.setRoleName(event.getPayload().getData().getName());
+				userService.getAllUsers().forEach(user -> {
 
-				userService.updateUserRole(command);
+					UpdateUserRoleCommand command = new UpdateUserRoleCommand();
+					command.setUserName(user.getName());
+					command.setRoleCode(event.getAsString(SystemEvent.PAYLOAD_CODE).get());
+					command.setRoleName(event.getAsString(SystemEvent.PAYLOAD_NAME).get());
 
-				log.info("Update user, updating user_role {}", command.getRoleName());
-			});
-		}
-		else if(event.getPayload().getType().equals(EventType.DELETE)) {
+					userService.updateUserRole(command);
 
-			userService.getAllUsers().forEach(user -> {
+					log.info("Update user, updating user_role {}", command.getRoleName());
+				});
+			}
+			else if(event.getType().equals(SystemEvent.DELETE)) {
 
-				DeleteUserRoleCommand command = new DeleteUserRoleCommand();
-				command.setUserName(user.getName());
-				command.setRoleCode(event.getPayload().getData().getCode());
+				userService.getAllUsers().forEach(user -> {
 
-				userService.deleteUserRole(command);
+					DeleteUserRoleCommand command = new DeleteUserRoleCommand();
+					command.setUserName(user.getName());
+					command.setRoleCode(event.getAsString(SystemEvent.PAYLOAD_CODE).get());
 
-				log.info("Update user, deleting user_role {}", command.getRoleCode());
-			});
+					userService.deleteUserRole(command);
+
+					log.info("Update user, deleting user_role {}", command.getRoleCode());
+				});
+			}
 		}
 	}
 }
