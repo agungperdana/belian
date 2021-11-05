@@ -11,8 +11,8 @@ dependencies {
 
 	implementation project(':jwt-authorization')
 	implementation project(':camel-authorization')
-	implementation project(':access-api')
-	implementation project(':access-impl')
+	implementation project(':access-module-api')
+	implementation project(':access-module-impl')
 	
 	implementation 'org.jasypt:jasypt:1.9.2'
 

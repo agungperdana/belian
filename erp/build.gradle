@@ -9,10 +9,21 @@ apply plugin: 'io.spring.dependency-management'
 
 dependencies {
 
-	implementation project(':access-impl')
+	implementation project(':access-module-impl')
+	implementation project(':access-module-adapter-rest')
+	implementation project(':access-module-adapter-jms')
+	implementation project(':access-role-impl')
+	implementation project(':access-role-adapter-rest')
+	implementation project(':access-role-adapter-jms')
+	implementation project(':access-role-driver-jms')
+	implementation project(':access-user-impl')
+	implementation project(':access-user-adapter-rest')
+	implementation project(':access-user-adapter-jms')
 	implementation project(':geographic-impl')
 	implementation project(':party-impl')
 	implementation project(':company-structure-impl')
+	implementation project(':company-structure-adapter-rest')
+	implementation project(':company-structure-adapter-jms')
 	
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.apache.camel.springboot:camel-spring-boot-starter:3.10.0'
@@ -21,7 +32,6 @@ dependencies {
 	implementation 'org.apache.camel.springboot:camel-jackson-starter:3.10.0'
 	implementation 'org.apache.camel.springboot:camel-jetty-starter:3.10.0'
 
-	
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
 	implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
 	implementation 'io.jsonwebtoken:jjwt-gson:0.11.2'

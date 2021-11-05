@@ -20,6 +20,8 @@ public interface CompanyStructureService {
 	CompanyStructureData delete(@NonNull CompanyStructureDeleteCommand command);
 
 	CompanyStructureData getByCode(@NonNull String code);
+	
+	List<CompanyStructureData> getAllStructure(@NonNull String topLevelCode);
 
 	List<CompanyStructureData> getAllCompanyStructures();
 

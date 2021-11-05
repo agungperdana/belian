@@ -261,7 +261,7 @@ public class UserServiceImpl implements UserService
 	        
 	        publisher.publishEvent(event);
 	        
-	        log.info("user sign in {}", opt.get().getEmail());
+	        log.info("Access granted for user {}", opt.get().getEmail());
 			
 			return UserMapper.INSTANCE.toData(opt.get());
 		}

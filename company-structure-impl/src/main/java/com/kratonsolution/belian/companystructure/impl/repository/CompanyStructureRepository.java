@@ -24,6 +24,9 @@ public interface CompanyStructureRepository extends JpaRepository<CompanyStructu
 	@Query("FROM CompanyStructure cm WHERE cm.parentPartyCode IS NULL ORDER BY cm.partyName ASC")
 	public List<CompanyStructure> findAllRoots();
 	
+	@Query("FROM CompanyStructure cm WHERE cm.parentPartyCode = ?1 ORDER BY cm.partyName ASC")
+	public List<CompanyStructure> findAllChild(@NonNull String parent);
+	
 	@Query("FROM CompanyStructure cm WHERE cm.partyCode LIKE ?1 OR "
 			+ "cm.partyName LIKE ?1 OR "
 			+ "cm.parentPartyCode LIKE ?1 OR "

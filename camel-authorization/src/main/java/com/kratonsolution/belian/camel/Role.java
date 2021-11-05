@@ -13,8 +13,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Role implements Serializable {
-    
-    private static final long serialVersionUID = 1015440221886265079L;
 
-    private String name;
+	private static final long serialVersionUID = 1015440221886265079L;
+
+	private String name;
+
+	@Override
+	public String toString() {
+		return this.name;
+	}
 }

@@ -1,5 +1,6 @@
 package com.kratonsolution.belian.companystructure.impl.application;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -119,4 +120,29 @@ public class CompanyStructureServiceImpl implements CompanyStructureService {
 		return repo.count(filter.getKey()).intValue();
 	}
 
+	@Override
+	public List<CompanyStructureData> getAllStructure(@NonNull String topLevelCode) {
+		
+		List<CompanyStructureData> list = new ArrayList<>();
+		
+		Optional<CompanyStructure> cs = repo.findOneByPartyCode(topLevelCode);
+		if(cs.isPresent()) {
+			list.add(CompanyStructureMapper.INSTANCE.toData(cs.get()));
+			populate(list, cs);
+		}
+		
+		return null;
+	}
+	
+	private void populate(List<CompanyStructureData> list, Optional<CompanyStructure> parent) {
+		
+		if(parent.isEmpty()) {
+			
+			repo.findAllChild(parent.get().getPartyCode()).stream().forEach(kid -> {
+				
+				list.add(CompanyStructureMapper.INSTANCE.toData(kid));
+				populate(list, Optional.ofNullable(kid));
+			});
+		}
+	}
 }
