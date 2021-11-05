@@ -1,7 +1,6 @@
 package com.kratonsolution.belian.party.impl.model;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
@@ -193,7 +192,7 @@ public class Party implements Serializable
 		return new HashSet<>(this.contacts);
 	}
 
-	public PartyRole createPartyRole(@NonNull Instant start, @NonNull PartyRoleType type) {
+	public PartyRole createPartyRole(@NonNull Date start, @NonNull PartyRoleType type) {
 
 		Optional<PartyRole> opt = this.partyRoles.stream()
 				.filter(p->p.getStart().equals(start) && p.getType().equals(type)).findAny();
@@ -229,7 +228,9 @@ public class Party implements Serializable
 		return new HashSet<>(this.partyRoles);
 	}
 
-	public PartyRelationship createPartyRelationship(@NonNull Party toParty, @NonNull Instant start, @NonNull PartyRelationshipType type) {
+	public PartyRelationship createPartyRelationship(@NonNull Party toParty, 
+													 @NonNull Date start, 
+													 @NonNull PartyRelationshipType type) {
 
 		Optional<PartyRelationship> opt = this.partyRelationships.stream()
 				.filter(p->p.getStart().equals(start) 
@@ -244,12 +245,16 @@ public class Party implements Serializable
 		return obj;
 	}
 
-	public PartyRelationship updatePartyRelationship(@NonNull String id) {
+	public PartyRelationship updatePartyRelationship(@NonNull String id, @NonNull Date end) {
 
 		Optional<PartyRelationship> opt = this.partyRelationships.stream()
 				.filter(p->p.getId().equals(id))
-				.findFirst();
+				.findAny();
 
+		Preconditions.checkState(opt.isPresent(), "Relationship object not found");
+		
+		opt.get().setEnd(end);
+		
 		return opt.orElse(null);
 	}
 
@@ -306,14 +311,14 @@ public class Party implements Serializable
 		return new HashSet<>(this.partyClassifications);
 	}
 
-	public MaritalStatus createMaritalStatus(@NonNull Instant start, Instant end, @NonNull MaritalStatusType type) {
+	public MaritalStatus createMaritalStatus(@NonNull Date start, Date end, @NonNull MaritalStatusType type) {
 
 		Optional<MaritalStatus> status = this.maritalStatuses
 				.stream()
 				.filter(p-> p.getStart().equals(start) 
 						&& p.getType().equals(type)).findAny();
 
-		Preconditions.checkState(!status.isPresent(), "MaritalStatus already exist");
+		Preconditions.checkState(!status.isPresent(), "Marital Status already exist");
 
 		MaritalStatus obj = new MaritalStatus(this, start, type);
 		this.maritalStatuses.add(obj);
@@ -321,15 +326,21 @@ public class Party implements Serializable
 		return obj;
 	}
 
-	public MaritalStatus updateMaritalStatus(@NonNull String id) {
+	public MaritalStatus updateMaritalStatus(@NonNull String id, @NonNull Date end) {
 
-		return this.maritalStatuses
+		MaritalStatus status = this.maritalStatuses
 				.stream()
 				.filter(p-> p.getId().equals(id)).findAny().orElse(null);
+		
+		if(status != null) {
+			status.setEnd(end);
+		}
+		
+		return status;
 	}
 
 	public void removeMaritalStatus(@NonNull String id) {
-		maritalStatuses.removeIf(p -> p.getId().equals(id));
+		this.maritalStatuses.removeIf(p -> p.getId().equals(id));
 	}
 
 	/**
@@ -341,7 +352,7 @@ public class Party implements Serializable
 		return new HashSet<>(this.maritalStatuses);
 	}
 
-	public PhysicalCharacteristic createPhysicalCharacteristic(@NonNull Instant start, Instant end, @NonNull String value, @NonNull PhysicalCharacteristicType type) {
+	public PhysicalCharacteristic createPhysicalCharacteristic(@NonNull Date start, Date end, @NonNull String value, @NonNull PhysicalCharacteristicType type) {
 
 		Optional<PhysicalCharacteristic> status = this.physicalCharacteristics
 				.stream()
@@ -378,7 +389,7 @@ public class Party implements Serializable
 		return new HashSet<>(this.physicalCharacteristics);
 	}
 
-	public Citizenship createCitizenship(@NonNull Instant start, Instant end, @NonNull String countryCode, @NonNull String countryName) {
+	public Citizenship createCitizenship(@NonNull Date start, Date end, @NonNull String countryCode, @NonNull String countryName) {
 
 		Optional<Citizenship> status = this.citizenships
 				.stream()
@@ -394,12 +405,23 @@ public class Party implements Serializable
 		return obj;
 	}
 
-	public Citizenship updateCitizenship(@NonNull String id) {
+	public Citizenship updateCitizenship(@NonNull String id, Date end, 
+										 Date passportIssuedDate, Date passportExpiredDate,
+										 String passportNumber) {
 
-		return this.citizenships
-				.stream()
-				.filter(p-> p.getId().equals(id))
-				.findAny().orElse(null);
+		Citizenship data = this.citizenships
+								.stream()
+								.filter(p-> p.getId().equals(id))
+								.findAny().orElse(null);
+		if(data != null) {
+			
+			data.setEnd(end);
+			data.setPassportExpiredDate(passportExpiredDate);
+			data.setPassportIssuedDate(passportIssuedDate);
+			data.setPassportNumber(passportNumber);
+		}
+		
+		return data;
 	}
 
 	public void removeCitizenship(@NonNull String id) {

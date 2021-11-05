@@ -1,8 +1,7 @@
 package com.kratonsolution.belian.party.api;
 
 import java.io.Serializable;
-import java.time.Instant;
-import java.util.UUID;
+import java.util.Date;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,17 +17,17 @@ public class CitizenshipData implements Serializable
 {
 	private static final long serialVersionUID = 5343761111880173663L;
 
-	private String id = UUID.randomUUID().toString();
+	private String id;
 	
-	private Instant start;
+	private Date start;
 	
-	private Instant end;
+	private Date end;
 	
 	private String passportNumber;
 	
-	private Instant passportIssuedDate;
+	private Date passportIssuedDate;
 	
-	private Instant passportExpiredDate;
+	private Date passportExpiredDate;
 	
 	private PartyGeographicInfoData country;
 	

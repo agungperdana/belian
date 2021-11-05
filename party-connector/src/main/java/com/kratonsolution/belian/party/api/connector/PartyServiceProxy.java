@@ -9,7 +9,9 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import com.kratonsolution.belian.party.api.AddressData;
+import com.kratonsolution.belian.party.api.CitizenshipData;
 import com.kratonsolution.belian.party.api.ContactData;
+import com.kratonsolution.belian.party.api.MaritalStatusData;
 import com.kratonsolution.belian.party.api.PartyClassificationData;
 import com.kratonsolution.belian.party.api.PartyData;
 import com.kratonsolution.belian.party.api.PartyRelationshipData;
@@ -18,9 +20,15 @@ import com.kratonsolution.belian.party.api.PartyRouteName;
 import com.kratonsolution.belian.party.api.application.AddressCreateCommand;
 import com.kratonsolution.belian.party.api.application.AddressDeleteCommand;
 import com.kratonsolution.belian.party.api.application.AddressUpdateCommand;
+import com.kratonsolution.belian.party.api.application.CitizenshipCreateCommand;
+import com.kratonsolution.belian.party.api.application.CitizenshipDeleteCommand;
+import com.kratonsolution.belian.party.api.application.CitizenshipUpdateCommand;
 import com.kratonsolution.belian.party.api.application.ContactCreateCommand;
 import com.kratonsolution.belian.party.api.application.ContactDeleteCommand;
 import com.kratonsolution.belian.party.api.application.ContactUpdateCommand;
+import com.kratonsolution.belian.party.api.application.MaritalStatusCreateCommand;
+import com.kratonsolution.belian.party.api.application.MaritalStatusDeleteCommand;
+import com.kratonsolution.belian.party.api.application.MaritalStatusUpdateCommand;
 import com.kratonsolution.belian.party.api.application.PartyClassificationCreateCommand;
 import com.kratonsolution.belian.party.api.application.PartyClassificationDeleteCommand;
 import com.kratonsolution.belian.party.api.application.PartyClassificationUpdateCommand;
@@ -197,5 +205,41 @@ public class PartyServiceProxy implements PartyService {
 	public List<PartyData> getAllPartys(@lombok.NonNull PartyFilter filter) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public MaritalStatusData createMaritalStatus(@lombok.NonNull MaritalStatusCreateCommand command) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MaritalStatusData updateMaritalStatus(@lombok.NonNull MaritalStatusUpdateCommand command) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteMaritalStatus(@lombok.NonNull MaritalStatusDeleteCommand command) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public CitizenshipData createCitizenship(@lombok.NonNull CitizenshipCreateCommand command) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CitizenshipData updateCitizenship(@lombok.NonNull CitizenshipUpdateCommand command) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteCitizenship(@lombok.NonNull CitizenshipDeleteCommand command) {
+		// TODO Auto-generated method stub
+		
 	}
 }
