@@ -2,8 +2,6 @@ package com.kratonsolution.belian.party.api.application;
 
 import java.io.Serializable;
 
-import com.kratonsolution.belian.party.api.model.AddressType;
-
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -24,14 +22,8 @@ public class AddressUpdateCommand implements Serializable {
 
 	@NonNull
 	private String addressId;
-	
-	private String address;
-	
+		
 	private boolean active;
 	
-	private AddressType type;
-
 	private String postal;
-	
-	private String location;
 }

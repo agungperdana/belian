@@ -17,5 +17,5 @@ public class PartyRelationshipDeleteCommand {
 	private String partyCode;
 	
 	@NonNull
-	private String partyRelationshipId;
+	private String relationshipId;
 }

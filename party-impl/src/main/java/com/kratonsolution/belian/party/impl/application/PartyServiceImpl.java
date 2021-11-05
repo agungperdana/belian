@@ -13,7 +13,9 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.geographic.api.GeographicData;
 import com.kratonsolution.belian.geographic.api.application.GeographicService;
 import com.kratonsolution.belian.party.api.AddressData;
+import com.kratonsolution.belian.party.api.CitizenshipData;
 import com.kratonsolution.belian.party.api.ContactData;
+import com.kratonsolution.belian.party.api.MaritalStatusData;
 import com.kratonsolution.belian.party.api.PartyClassificationData;
 import com.kratonsolution.belian.party.api.PartyData;
 import com.kratonsolution.belian.party.api.PartyRelationshipData;
@@ -21,9 +23,15 @@ import com.kratonsolution.belian.party.api.PartyRoleData;
 import com.kratonsolution.belian.party.api.application.AddressCreateCommand;
 import com.kratonsolution.belian.party.api.application.AddressDeleteCommand;
 import com.kratonsolution.belian.party.api.application.AddressUpdateCommand;
+import com.kratonsolution.belian.party.api.application.CitizenshipCreateCommand;
+import com.kratonsolution.belian.party.api.application.CitizenshipDeleteCommand;
+import com.kratonsolution.belian.party.api.application.CitizenshipUpdateCommand;
 import com.kratonsolution.belian.party.api.application.ContactCreateCommand;
 import com.kratonsolution.belian.party.api.application.ContactDeleteCommand;
 import com.kratonsolution.belian.party.api.application.ContactUpdateCommand;
+import com.kratonsolution.belian.party.api.application.MaritalStatusCreateCommand;
+import com.kratonsolution.belian.party.api.application.MaritalStatusDeleteCommand;
+import com.kratonsolution.belian.party.api.application.MaritalStatusUpdateCommand;
 import com.kratonsolution.belian.party.api.application.PartyClassificationCreateCommand;
 import com.kratonsolution.belian.party.api.application.PartyClassificationDeleteCommand;
 import com.kratonsolution.belian.party.api.application.PartyClassificationUpdateCommand;
@@ -40,7 +48,9 @@ import com.kratonsolution.belian.party.api.application.PartyService;
 import com.kratonsolution.belian.party.api.application.PartyUpdateCommand;
 import com.kratonsolution.belian.party.api.model.PartyType;
 import com.kratonsolution.belian.party.impl.model.Address;
+import com.kratonsolution.belian.party.impl.model.Citizenship;
 import com.kratonsolution.belian.party.impl.model.Contact;
+import com.kratonsolution.belian.party.impl.model.MaritalStatus;
 import com.kratonsolution.belian.party.impl.model.Party;
 import com.kratonsolution.belian.party.impl.model.PartyClassification;
 import com.kratonsolution.belian.party.impl.model.PartyGeographicInfo;
@@ -190,18 +200,18 @@ public class PartyServiceImpl implements PartyService {
 		
 		Party party = check(command.getPartyCode());
 		
-//		GeographicData location = geoService.getByCode(command.getLocation());
-//		Preconditions.checkState(location != null, "Geographic location does not exist");
+		GeographicData location = geo.getByCode(command.getLocation());
+		Preconditions.checkState(location != null, "Geographic location does not exist");
 		
-//		Address address = party.createAddress(command.getAddress(), command.getType(), location.getCode(), location.getName());
-//		address.setActive(command.isActive());
-//		address.setPostal(command.getPostal());
+		Address address = party.createAddress(command.getAddress(), command.getType(), location.getCode(), location.getName());
+		address.setActive(command.isActive());
+		address.setPostal(command.getPostal());
 		
 		repo.save(party);
-//		log.info("Adding new address {} for party {}", address, party);
 		
-//		return AddressMapper.INSTANCE.toData(address);
-		return null;
+		log.info("Adding new address {} for party {}", address, party);
+		
+		return AddressMapper.INSTANCE.toData(address);
 	}
 
 	@Override
@@ -212,13 +222,8 @@ public class PartyServiceImpl implements PartyService {
 		
 		Preconditions.checkState(address != null, "Address not exist");
 		
-//		GeographicData location = geoService.getByCode(command.getLocation());
-//		Preconditions.checkState(location != null, "Geographic location does not exist");
-		
 		address.setActive(command.isActive());
 		address.setPostal(command.getPostal());
-		address.setType(command.getType());
-//		address.setLocation(new PartyGeographicInfo(location.getCode(), location.getName()));
 		
 		repo.save(party);
 		log.info("Update address", address);
@@ -343,10 +348,9 @@ public class PartyServiceImpl implements PartyService {
 	public PartyRelationshipData updatePartyRelationship(@NonNull PartyRelationshipUpdateCommand command) {
 		
 		Party party = check(command.getPartyCode());
-		PartyRelationship opt = party.updatePartyRelationship(command.getPartyRelationshipId());
-		opt.setEnd(command.getEnd());
-		
+		PartyRelationship opt = party.updatePartyRelationship(command.getRelationshipId(), command.getEnd());
 		repo.save(party);
+
 		log.info("Updating party relationship", opt);
 		
 		return PartyRelationshipMapper.INSTANCE.toData(opt);
@@ -356,7 +360,7 @@ public class PartyServiceImpl implements PartyService {
 	public void deletePartyRelationship(@NonNull PartyRelationshipDeleteCommand command) {
 
 		Party party = check(command.getPartyCode());
-		party.removePartyRelationship(command.getPartyRelationshipId());
+		party.removePartyRelationship(command.getRelationshipId());
 		
 		repo.save(party);
 		log.info("Removinf party relationship ...");
@@ -410,5 +414,84 @@ public class PartyServiceImpl implements PartyService {
 							PageRequest.of(filter.getPage(), filter.getSize())));
 		}
 
+	}
+
+	@Override
+	public MaritalStatusData createMaritalStatus(@NonNull MaritalStatusCreateCommand command) {
+
+		Party party = check(command.getPartyCode());
+		MaritalStatus data = party.createMaritalStatus(command.getStart(), command.getEnd(), command.getType());
+		
+		repo.save(party);
+		
+		return MaritalStatusMapper.INSTANCE.toData(data);
+	}
+
+	@Override
+	public MaritalStatusData updateMaritalStatus(@NonNull MaritalStatusUpdateCommand command) {
+
+		Party party = check(command.getPartyCode());
+		MaritalStatus data = party.updateMaritalStatus(command.getStatusId(), command.getEnd());
+		
+		repo.save(party);
+		
+		return MaritalStatusMapper.INSTANCE.toData(data);
+	}
+
+	@Override
+	public void deleteMaritalStatus(@NonNull MaritalStatusDeleteCommand command) {
+		
+		Party party = check(command.getPartyCode());
+		party.removeMaritalStatus(command.getStatusId());
+		repo.save(party);
+	}
+
+	@Override
+	public CitizenshipData createCitizenship(@NonNull CitizenshipCreateCommand command) {
+
+		Party party = check(command.getPartyCode());
+		
+		Preconditions.checkState(party.getType().equals(PartyType.PERSON), "Target party is not person");
+		
+		GeographicData country = geo.getByCode(command.getCountryCode());
+		Preconditions.checkState(country != null, "Country does not exist!");
+		
+		Citizenship data = party.createCitizenship(command.getStart(), command.getEnd(), country.getCode(), country.getName());
+		data.setPassportExpiredDate(command.getPassportExpiredDate());
+		data.setPassportIssuedDate(command.getPassportIssuedDate());
+		data.setPassportNumber(command.getPassportNumber());
+		
+		repo.save(party);
+		
+		return CitizenshipMapper.INSTANCE.toData(data);
+	}
+
+	@Override
+	public CitizenshipData updateCitizenship(@NonNull CitizenshipUpdateCommand command) {
+
+		Party party = check(command.getPartyCode());
+		
+		Preconditions.checkState(party.getType().equals(PartyType.PERSON), "Target party is not person");
+		
+		Citizenship data = party.updateCitizenship(command.getCitizenshipId(), command.getEnd(), 
+												   command.getPassportIssuedDate(),
+												   command.getPassportExpiredDate(), 
+												   command.getPassportNumber());
+		repo.save(party);
+		
+		return CitizenshipMapper.INSTANCE.toData(data);
+	}
+
+	@Override
+	public void deleteCitizenship(@NonNull CitizenshipDeleteCommand command) {
+		
+		Party party = check(command.getPartyCode());
+
+		Preconditions.checkState(party.getType().equals(PartyType.PERSON), "Target party is not person");
+		
+		party.removeCitizenship(command.getCitizenshipId());
+		
+		repo.save(party);
+		log.info("Removing Pary {} citizenship data", command.getPartyCode());
 	}
 }

@@ -1,0 +1,14 @@
+plugins {
+	
+	id 'com.kratonsolution.belian.java-common-conventions'
+	id "io.freefair.lombok" version "6.0.0-m2"
+}
+
+dependencies {
+
+	implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.1'
+}
+
+jar {
+	enabled=true //needed
+}

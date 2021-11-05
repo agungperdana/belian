@@ -1,8 +1,7 @@
 package com.kratonsolution.belian.party.api;
 
 import java.io.Serializable;
-import java.time.Instant;
-import java.util.UUID;
+import java.util.Date;
 
 import com.kratonsolution.belian.party.api.model.PartyRelationshipType;
 
@@ -20,11 +19,11 @@ public class PartyRelationshipData implements Serializable
 {
 	private static final long serialVersionUID = -3810420990043934420L;
 
-	private final String id = UUID.randomUUID().toString();
+	private String id;
 	
-	private Instant start;
+	private Date start;
 	
-	private Instant end;
+	private Date end;
 	
 	private String toPartyCode;
 	

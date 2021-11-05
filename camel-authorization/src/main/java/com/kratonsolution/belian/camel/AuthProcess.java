@@ -9,14 +9,12 @@ import com.kratonsolution.belian.security.jwt.JWTTokenUtil;
 
 import io.jsonwebtoken.Claims;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  * @since 2.0.0
  */
-@Slf4j
 public class AuthProcess implements Processor {
 
 	private String role;
@@ -53,6 +51,6 @@ public class AuthProcess implements Processor {
 			}				
 		}
 		
-		log.info("User access granted ...");
+		exchange.getIn().setHeader("user", user);
 	}
 }

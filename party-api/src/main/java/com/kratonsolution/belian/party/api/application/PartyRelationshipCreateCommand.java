@@ -1,7 +1,7 @@
 package com.kratonsolution.belian.party.api.application;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.util.Date;
 
 import com.kratonsolution.belian.party.api.model.PartyRelationshipType;
 
@@ -24,17 +24,13 @@ public class PartyRelationshipCreateCommand implements Serializable {
 	private String partyCode;
 
 	@NonNull
-	private Instant start;
+	private Date start;
 
+	private Date end;
+	
 	@NonNull
 	private String toPartyCode;
 
 	@NonNull
 	private PartyRelationshipType type;
-	
-	private Instant end;
-
-	private boolean active;
-	
-
 }
