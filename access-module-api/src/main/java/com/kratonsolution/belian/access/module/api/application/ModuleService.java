@@ -23,11 +23,11 @@ public interface ModuleService {
     
     List<ModuleData> getAllModules();
     
+    List<ModuleData> getAllModules(@NonNull ModuleFilter filter);
+    
     List<ModuleData> getAllModules(int page, int size);
     
     List<ModuleData> getAllModules(@NonNull ModuleFilter filter, int page, int size);
-    
-    List<ModuleData> getAllModules(@NonNull ModuleFilter filter);
     
     int count();
     

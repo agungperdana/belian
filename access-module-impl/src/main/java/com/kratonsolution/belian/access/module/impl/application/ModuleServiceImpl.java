@@ -124,13 +124,13 @@ public class ModuleServiceImpl implements ModuleService {
     
     public List<ModuleData> getAllModules(@NonNull ModuleFilter filter, int page, int size) {
 
-    	log.info("Searching module data with key %{}", filter.getKey());
-    	
     	if(Strings.isNullOrEmpty(filter.getKey())) {
     		return getAllModules(filter.getPage(), filter.getSize());
     	}
     	
-    	return ModuleMapper.INSTANCE.toDatas(repo.getAll("%"+filter.getKey(), PageRequest.of(page, size)));
+    	log.info("Searching module data with key {}", filter.toLikeQuery());
+    	
+    	return ModuleMapper.INSTANCE.toDatas(repo.getAll(filter.toLikeQuery(), PageRequest.of(page, size)));
     }
     
     public int count() {

@@ -24,5 +24,9 @@ public class ModuleFilter implements Serializable {
     
     @NonNull
     private Integer size = 50;
-	
+    
+    public String toLikeQuery() {
+    	
+    	return "%"+getKey()+"%";
+    }
 }
