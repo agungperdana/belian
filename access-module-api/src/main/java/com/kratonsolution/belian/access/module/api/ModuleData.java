@@ -1,11 +1,10 @@
 package com.kratonsolution.belian.access.module.api;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * @author Agung Dodi Perdana
@@ -14,6 +13,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class ModuleData implements Serializable {
 
 	private static final long serialVersionUID = -1510690541332344917L;
@@ -33,11 +35,9 @@ public class ModuleData implements Serializable {
 
 	private String createdBy;
 
-	private LocalDateTime createdDate;
+	private Instant createdDate;
 
 	private String lastUpdatedBy;
 
-	private LocalDateTime lastUpdatedDate;
-
-	private String organization;
+	private Instant lastUpdatedDate;
 }

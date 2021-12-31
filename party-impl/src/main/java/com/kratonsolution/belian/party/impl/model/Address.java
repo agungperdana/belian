@@ -18,7 +18,6 @@ import javax.persistence.Version;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
-import com.google.common.base.MoreObjects;
 import com.kratonsolution.belian.party.api.model.AddressType;
 
 import lombok.Getter;
@@ -82,14 +81,5 @@ public class Address implements Serializable
 		this.description = descriotion;
 		this.type = type;
 		this.location = location;
-	}
-
-	@Override
-	public String toString() {
-		return MoreObjects.toStringHelper(this)
-				.add("address", description)
-				.add("type", type)
-				.add("location", location)
-				.toString();
 	}
 }

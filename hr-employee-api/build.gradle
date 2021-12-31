@@ -1,9 +1,3 @@
-plugins {
-	
-	id 'com.kratonsolution.belian.java-common-conventions'
-	id 'io.freefair.lombok' version '6.0.0-m2'
-}
-
 dependencies {
 
 }

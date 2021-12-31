@@ -1,11 +1,10 @@
-plugins {
-	
-	id 'com.kratonsolution.belian.java-common-conventions'
-	id 'io.freefair.lombok' version '6.0.0-m2'
-}
+group = 'com.kratonsolution.belian.access.module.api'
+version = '2.0.0'
+
+apply from: "$rootDir/gradle/lombok.gradle"
 
 dependencies {
-
+	implementation 'io.projectreactor:reactor-core:3.4.13'
 }
 
 jar {

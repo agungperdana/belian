@@ -1,16 +1,7 @@
-plugins {
-	
-	id 'com.kratonsolution.belian.java-library-conventions'
-	id 'io.freefair.lombok' version '6.0.0-m2'
-	id 'org.springframework.boot' version '2.4.5'
-}
-
-apply plugin: 'io.spring.dependency-management'
+apply from: "$rootDir/gradle/lombok.gradle"
+apply from: "$rootDir/gradle/spring-boot.gradle"
 
 dependencies {
-
-	api 'org.springframework.boot:spring-boot-starter'
-	api 'org.springframework.boot:spring-boot-starter-data-jpa'
 }
 
 bootJar {

@@ -1,7 +1,5 @@
 package com.kratonsolution.belian.access.module.impl.application;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +23,13 @@ import com.kratonsolution.belian.common.application.SystemEvent;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com 
- * @since 1.0
+ * @since 2.0
  */
 @Slf4j
 @Service
@@ -42,15 +42,11 @@ public class ModuleServiceImpl implements ModuleService {
     @Autowired
     private ApplicationEventPublisher publisher;
         
-    public ModuleData create(ModuleCreateCommand command) {
+    public Mono<ModuleData> create(ModuleCreateCommand command) {
 
         Module module = new Module(command.getCode(), command.getName(), command.getGroup(), 
                 command.getNote(), command.isEnabled());
-        
-        module.setCreatedBy(command.getCreatedBy());
-        module.setCreatedDate(LocalDateTime.now());
-        module.setOrganization(command.getOrganization());
-        
+
         repo.save(module);
         
         SystemEvent event = new SystemEvent(EventSourceName.ACCESS_MODULE, SystemEvent.ADD);
@@ -62,22 +58,20 @@ public class ModuleServiceImpl implements ModuleService {
 
         log.info("Creating new Module {}", module);
         
-        return ModuleMapper.INSTANCE.toData(module);
+        return Mono.just(ModuleMapper.INSTANCE.toData(module));
     }
     
     @Override
-    public ModuleData update(ModuleUpdateCommand command) {
+    public Mono<ModuleData> update(ModuleUpdateCommand command) {
 
-        Optional<Module> opt = repo.findOneByCode(command.getCode());
+        Optional<Module> opt = repo.findOneByCode(command.getCode()).blockOptional();
         Preconditions.checkState(opt.isPresent(), "Module does not exist");
         
         opt.get().setName(command.getName());
         opt.get().setGroup(command.getGroup());
         opt.get().setEnabled(command.isEnabled());
         opt.get().setNote(command.getNote());
-        opt.get().setLastUpdatedBy(command.getLastUpdatedBy());
-        opt.get().setLastUpdatedDate(LocalDateTime.now());
-        
+
         repo.save(opt.get());
         
         SystemEvent event = new SystemEvent(EventSourceName.ACCESS_MODULE, SystemEvent.UPDATE);
@@ -87,12 +81,12 @@ public class ModuleServiceImpl implements ModuleService {
         
         log.info("Updating module {}", opt.get());
         
-        return ModuleMapper.INSTANCE.toData(opt.get());
+        return Mono.just(ModuleMapper.INSTANCE.toData(opt.get()));
     }
     
-    public ModuleData delete(ModuleDeleteCommand command) {
+    public Mono<ModuleData> delete(ModuleDeleteCommand command) {
 
-        Optional<Module> opt = repo.findOneByCode(command.getCode());
+        Optional<Module> opt = repo.findOneByCode(command.getCode()).blockOptional();
         Preconditions.checkState(opt.isPresent(), "Module does not exist");
         
         repo.delete(opt.get());
@@ -104,48 +98,50 @@ public class ModuleServiceImpl implements ModuleService {
         
         publisher.publishEvent(event);
         
-        return ModuleMapper.INSTANCE.toData(opt.get());
+        return Mono.just(ModuleMapper.INSTANCE.toData(opt.get()));
     }
     
-    public ModuleData getByCode(String code) {
+    public Mono<ModuleData> getByCode(String code) {
 
-        return ModuleMapper.INSTANCE.toData(repo.findOneByCode(code).orElse(null));
+        return Mono.just(ModuleMapper.INSTANCE.toData(repo.findOneByCode(code).block()));
     }
     
-    public List<ModuleData> getAllModules() {
+    public Flux<ModuleData> allModules() {
 
-        return ModuleMapper.INSTANCE.toDatas(repo.findAll());
+        return repo.loadAllModule();
     }
     
-    public List<ModuleData> getAllModules(int page, int size) {
+    public Flux<ModuleData> allWithPaging(int page, int size) {
 
-        return ModuleMapper.INSTANCE.toDatas(repo.findAll(PageRequest.of(page, size)).getContent());
+        return repo.loadAllModule(PageRequest.of(page, size));
     }
     
-    public List<ModuleData> getAllModules(@NonNull ModuleFilter filter, int page, int size) {
+    public Flux<ModuleData> allWithFilterAndPaging(@NonNull ModuleFilter filter, int page, int size) {
 
     	if(Strings.isNullOrEmpty(filter.getKey())) {
-    		return getAllModules(filter.getPage(), filter.getSize());
+    		return allWithPaging(filter.getPage(), filter.getSize());
     	}
     	
     	log.info("Searching module data with key {}", filter.toLikeQuery());
     	
-    	return ModuleMapper.INSTANCE.toDatas(repo.getAll(filter.toLikeQuery(), PageRequest.of(page, size)));
+    	return Flux.fromIterable(
+                ModuleMapper.INSTANCE.toDatas(
+                        repo.findAll().collectList().block()));
     }
-    
-    public int count() {
 
-        return (int)repo.count();
+    public Mono<Long> count() {
+
+        return repo.count();
     }
-    
-    public int count(@NonNull ModuleFilter filter) {
-    	
-    	return repo.count(filter.getKey()).intValue();
+
+    public Mono<Long> count(@NonNull ModuleFilter filter) {
+
+    	return repo.count(null);
     }
 
 	@Override
-	public List<ModuleData> getAllModules(@NonNull ModuleFilter filter) {
+	public Flux<ModuleData> allWithFilter(@NonNull ModuleFilter filter) {
 
-		return getAllModules(filter, filter.getPage(), filter.getSize());
+		return allWithFilterAndPaging(filter, filter.getPage(), filter.getSize());
 	}
 }

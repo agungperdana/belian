@@ -1,10 +1,11 @@
 package com.kratonsolution.belian.access.module.api.application;
 
-import java.util.List;
-
 import com.kratonsolution.belian.access.module.api.ModuleData;
 
 import lombok.NonNull;
+import org.reactivestreams.Subscriber;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * @author Agung Dodi Perdana
@@ -13,23 +14,23 @@ import lombok.NonNull;
  */
 public interface ModuleService {
    
-    ModuleData create(@NonNull ModuleCreateCommand command);
-    
-    ModuleData update(@NonNull ModuleUpdateCommand command);
-    
-    ModuleData delete(@NonNull ModuleDeleteCommand command);
+    Mono<ModuleData> create(@NonNull ModuleCreateCommand command);
 
-    ModuleData getByCode(@NonNull String code);
+    Mono<ModuleData> update(@NonNull ModuleUpdateCommand command);
+
+    Mono<ModuleData> delete(@NonNull ModuleDeleteCommand command);
+
+    Mono<ModuleData> getByCode(@NonNull String code);
     
-    List<ModuleData> getAllModules();
+    Flux<ModuleData> allModules();
     
-    List<ModuleData> getAllModules(@NonNull ModuleFilter filter);
+    Flux<ModuleData> allWithFilter(@NonNull ModuleFilter filter);
     
-    List<ModuleData> getAllModules(int page, int size);
+    Flux<ModuleData> allWithPaging(int page, int size);
     
-    List<ModuleData> getAllModules(@NonNull ModuleFilter filter, int page, int size);
-    
-    int count();
-    
-    int count(@NonNull ModuleFilter filter);
+    Flux<ModuleData> allWithFilterAndPaging(@NonNull ModuleFilter filter, int page, int size);
+
+    Mono<Long> count();
+
+    Mono<Long> count(@NonNull ModuleFilter filter);
 }

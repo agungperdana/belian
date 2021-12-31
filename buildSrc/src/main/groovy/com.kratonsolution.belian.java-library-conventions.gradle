@@ -1,9 +1,0 @@
-plugins {
-    id 'com.kratonsolution.belian.java-common-conventions'
-    id 'java-library'
-}
-
-dependencies {
-	
-	api 'com.google.guava:guava:30.1.1-jre'
-}
