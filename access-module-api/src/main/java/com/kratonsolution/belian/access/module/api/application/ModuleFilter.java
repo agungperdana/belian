@@ -19,10 +19,12 @@ public class ModuleFilter implements Serializable {
 
     private String key;
     
-    @NonNull
-    private Integer page = 0;
+    private Integer page;
     
-    @NonNull
-    private Integer size = 50;
-	
+    private Integer size;
+    
+    public String toLikeQuery() {
+    	
+    	return "%"+getKey()+"%";
+    }
 }

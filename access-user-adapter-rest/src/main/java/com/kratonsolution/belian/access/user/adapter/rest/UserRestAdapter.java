@@ -1,5 +1,6 @@
 package com.kratonsolution.belian.access.user.adapter.rest;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +26,7 @@ import com.kratonsolution.belian.camel.AuthProcess;
 import com.kratonsolution.belian.camel.ResponseBuilder;
 import com.kratonsolution.belian.companystructure.driver.jms.CompanyStructureData;
 import com.kratonsolution.belian.companystructure.driver.jms.CompanyStructureJmsDriver;
+import com.kratonsolution.belian.security.jwt.JWTConstant;
 import com.kratonsolution.belian.security.jwt.JWTTokenUtil;
 
 /**
@@ -146,8 +148,12 @@ public class UserRestAdapter extends RouteBuilder {
 			response.put("status", data != null);
 
 			if(data != null) {						
-				response.put("token", JWTTokenUtil.encode(new Gson().toJson(buildUserMap(data))));
+				
+				long expiredTime = System.currentTimeMillis() + JWTConstant.EXPIRED;
+				
+				response.put("token", JWTTokenUtil.encode(new Gson().toJson(buildUserMap(data)), expiredTime));
 				response.put("user", data);
+				response.put("expiredTime", expiredTime);
 			}
 
 			e.getMessage().setBody(response);
