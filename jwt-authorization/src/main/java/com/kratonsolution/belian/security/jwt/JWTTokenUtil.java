@@ -19,9 +19,9 @@ public class JWTTokenUtil {
 
 	private static final Key KEY = Keys.hmacShaKeyFor(JWTConstant.KEY.getBytes());
 
-	public static String encode(String jsonUser) {
+	public static String encode(String jsonUser, long expiredTime) {
 
-		Date exp = new Date(System.currentTimeMillis() + JWTConstant.EXPIRED);
+		Date exp = new Date(expiredTime);
 
 		Claims claims = Jwts.claims()
 				.setSubject(jsonUser)

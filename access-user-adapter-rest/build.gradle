@@ -1,11 +1,5 @@
-plugins {
-	
-	id 'com.kratonsolution.belian.java-library-conventions'
-	id 'io.freefair.lombok' version '6.0.0-m2'
-	id 'org.springframework.boot' version '2.4.5'
-}
-
-apply plugin: 'io.spring.dependency-management'
+apply from: "$rootDir/gradle/camel.gradle"
+apply from: "$rootDir/gradle/spring-boot.gradle"
 
 dependencies {
 
@@ -16,24 +10,8 @@ dependencies {
 	implementation project(':access-user-api')
 	implementation project(':access-user-impl')
 	
-	implementation 'org.jasypt:jasypt:1.9.2'
-
-	implementation 'org.mapstruct:mapstruct:1.3.1.Final'
-	annotationProcessor 'org.mapstruct:mapstruct-processor:1.3.1.Final'
-	
-	implementation 'org.apache.camel.springboot:camel-spring-boot-starter:3.10.0'
-	implementation 'org.apache.camel.springboot:camel-spring-boot-starter:3.10.0'
+	implementation 'org.jasypt:jasypt:1.9.2'	
 	implementation 'com.google.code.gson:gson:2.8.7'
-}
-
-tasks.withType(JavaCompile) {
-	options.compilerArgs = [
-			'-Amapstruct.suppressGeneratorTimestamp=true'
-	]
-}
-
-bootJar {
-	enabled = false
 }
 
 jar {

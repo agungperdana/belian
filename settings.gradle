@@ -7,8 +7,7 @@ include 'camel-authorization'
 
 include 'access-module-api'
 include 'access-module-impl'
-include 'access-module-adapter-rest'
-include 'access-module-adapter-jms'
+include 'access-module-reactive-api-service'
 
 include 'access-role-api'
 include 'access-role-impl'
@@ -37,4 +36,6 @@ include 'hr-employee-api'
 include 'hr-employee-impl'
 include 'hr-attendance-api'
 include 'hr-attendance-impl'
-include 'erp'
+
+include 'access-module-reactive-api-service'
+

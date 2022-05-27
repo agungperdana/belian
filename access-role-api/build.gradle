@@ -1,8 +1,4 @@
-plugins {
-	
-	id 'com.kratonsolution.belian.java-common-conventions'
-	id "io.freefair.lombok" version "6.0.0-m2"
-}
+apply from: "$rootDir/gradle/lombok.gradle"
 
 dependencies {
 

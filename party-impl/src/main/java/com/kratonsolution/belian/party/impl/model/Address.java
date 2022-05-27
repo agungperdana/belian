@@ -15,15 +15,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import lombok.*;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
-import com.google.common.base.MoreObjects;
 import com.kratonsolution.belian.party.api.model.AddressType;
-
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
 
 /**
  * @author Agung Dodi Perdana
@@ -82,14 +78,5 @@ public class Address implements Serializable
 		this.description = descriotion;
 		this.type = type;
 		this.location = location;
-	}
-
-	@Override
-	public String toString() {
-		return MoreObjects.toStringHelper(this)
-				.add("address", description)
-				.add("type", type)
-				.add("location", location)
-				.toString();
 	}
 }
