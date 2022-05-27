@@ -3,7 +3,6 @@ package com.kratonsolution.belian.access.module.api.application;
 import com.kratonsolution.belian.access.module.api.ModuleData;
 
 import lombok.NonNull;
-import org.reactivestreams.Subscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -13,24 +12,20 @@ import reactor.core.publisher.Mono;
  * @since 2.0.0
  */
 public interface ModuleService {
-   
-    Mono<ModuleData> create(@NonNull ModuleCreateCommand command);
 
-    Mono<ModuleData> update(@NonNull ModuleUpdateCommand command);
+    Mono<ModuleData> create(@NonNull Mono<ModuleCreateCommand> command);
 
-    Mono<ModuleData> delete(@NonNull ModuleDeleteCommand command);
+    Mono<ModuleData> update(@NonNull Mono<ModuleUpdateCommand> command);
 
-    Mono<ModuleData> getByCode(@NonNull String code);
+    Mono<ModuleData> delete(@NonNull Mono<ModuleDeleteCommand> command);
+
+    Mono<ModuleData> getByCode(@NonNull Mono<String> code);
     
-    Flux<ModuleData> allModules();
+    Flux<ModuleData> getAll();
     
-    Flux<ModuleData> allWithFilter(@NonNull ModuleFilter filter);
-    
-    Flux<ModuleData> allWithPaging(int page, int size);
-    
-    Flux<ModuleData> allWithFilterAndPaging(@NonNull ModuleFilter filter, int page, int size);
+    Flux<ModuleData> filter(@NonNull Mono<ModuleFilter> filter);
 
     Mono<Long> count();
 
-    Mono<Long> count(@NonNull ModuleFilter filter);
+    Mono<Long> count(@NonNull Mono<ModuleFilter> filter);
 }

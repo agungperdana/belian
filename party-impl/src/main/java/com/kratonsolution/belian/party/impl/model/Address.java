@@ -15,14 +15,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import lombok.*;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import com.kratonsolution.belian.party.api.model.AddressType;
-
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
 
 /**
  * @author Agung Dodi Perdana
