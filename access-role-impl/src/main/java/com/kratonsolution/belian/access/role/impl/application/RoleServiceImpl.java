@@ -1,39 +1,30 @@
 package com.kratonsolution.belian.access.role.impl.application;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
 import com.kratonsolution.belian.access.role.api.RoleData;
+import com.kratonsolution.belian.access.role.api.RoleEntity;
 import com.kratonsolution.belian.access.role.api.application.RoleCreateCommand;
 import com.kratonsolution.belian.access.role.api.application.RoleDeleteCommand;
-import com.kratonsolution.belian.access.role.api.application.RoleFilter;
-import com.kratonsolution.belian.access.role.api.application.RoleModuleCommand;
 import com.kratonsolution.belian.access.role.api.application.RoleService;
 import com.kratonsolution.belian.access.role.api.application.RoleUpdateCommand;
-import com.kratonsolution.belian.access.role.impl.model.Role;
-import com.kratonsolution.belian.access.role.impl.model.RoleModule;
+import com.kratonsolution.belian.access.role.impl.domain.AccessRole;
+import com.kratonsolution.belian.access.role.impl.entity.R2DBCRoleEntity;
 import com.kratonsolution.belian.access.role.impl.repository.RoleRepository;
-import com.kratonsolution.belian.common.application.EventSourceName;
-import com.kratonsolution.belian.common.application.SystemEvent;
-
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.r2dbc.core.DatabaseClient;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 /**
  * @author Agung Dodi Perdana
- * @email agung.dodi.perdana@gmail.com 
+ * @email agung.dodi.perdana@gmail.com
  * @since 1.0
+ * @version 2.0
  */
 @Slf4j
 @Service
@@ -41,134 +32,85 @@ import lombok.extern.slf4j.Slf4j;
 public class RoleServiceImpl implements RoleService {
 
 	@Autowired
-	private RoleRepository roleRepo;
+	private RoleRepository repo;
 
 	@Autowired
-	private ApplicationEventPublisher publisher;
+	private DatabaseClient db;
 
-	public RoleData create(RoleCreateCommand command) {
+	public Mono<RoleData> create(RoleCreateCommand command) {
 
-		Role role = new Role(command.getCode(), command.getName(), command.getNote(), command.isEnabled());
+		R2DBCRoleEntity role = R2DBCRoleEntity.builder()
+				.id(UUID.randomUUID().toString())
+				.code(command.getCode())
+				.name(command.getName())
+				.note(command.getNote())
+				.enabled(command.isEnabled())
+				.build();
 
-		command.getModules().forEach(m -> {
-
-			RoleModule module = new RoleModule(role, m.getModuleCode(), m.getModuleName(), m.getModuleGroup(),
-					m.isRead(), m.isAdd(), m.isEdit(), m.isDelete(), m.isPrint());
-
-			role.addRoleModule(module);
-		});
-
-		
-		roleRepo.save(role);
-
-		SystemEvent event = new SystemEvent(EventSourceName.ACCESS_ROLE, SystemEvent.ADD);
-		event.add("code", role.getCode());
-
-		publisher.publishEvent(event);
-		
-		log.info("Creating & publishing new Role data {}", role);
-
-		return RoleMapper.INSTANCE.toData(role);
+		repo.save(role).subscribe();
+		return Mono.just(RoleMapper.INSTANCE.toData(role));
 	}
 
-	public RoleData update(RoleUpdateCommand command) {
+	@Override
+	public Mono<RoleData> update(RoleUpdateCommand command) {
 
-		Optional<Role> opt = roleRepo.findOneByCode(command.getCode());
-		Preconditions.checkState(opt.isPresent(), "Role does not exist");
-
-		opt.get().setEnabled(command.isEnabled());
-		opt.get().setNote(command.getNote());
-
-		if(!Strings.isNullOrEmpty(command.getName())) {
-			opt.get().setName(command.getName());
-		}
-
-		opt.get().getModules().forEach(mod -> {
-
-			Optional<RoleModuleCommand> cmd = command.getModules().stream()
-					.filter(p->p.getModuleCode().equals(mod.getModuleCode()))
-					.findFirst();
-
-			if(cmd.isPresent()) {
-
-				mod.setAdd(cmd.get().isAdd());
-				mod.setDelete(cmd.get().isDelete());
-				mod.setEdit(cmd.get().isEdit());
-				mod.setPrint(cmd.get().isPrint());
-				mod.setRead(cmd.get().isRead());
-			}
-		});
-
-		roleRepo.save(opt.get());
-
-		SystemEvent event = new SystemEvent(EventSourceName.ACCESS_ROLE, SystemEvent.UPDATE);
-		event.add("code", opt.get().getCode());
-		
-		log.info("Updating role {}", opt.get());
-
-		return RoleMapper.INSTANCE.toData(opt.get());
+		return repo.findOneByCode(command.getCode())
+				.map(entity -> {
+					AccessRole.withEntity(entity)
+							.changeNote(command.getNote())
+							.changeActiveStatus(command.isEnabled());
+					repo.save(entity).subscribe();
+					return RoleMapper.INSTANCE.toData(entity);
+				});
 	}
 
-	public RoleData delete(RoleDeleteCommand command) {
+	public Mono<RoleData> delete(RoleDeleteCommand command) {
 
-		Optional<Role> opt = roleRepo.findOneByCode(command.getCode());
-		
-		Preconditions.checkState(opt.isPresent(), "Role does not exist");
-
-		roleRepo.delete(opt.get());
-
-		SystemEvent event = new SystemEvent(EventSourceName.ACCESS_ROLE, SystemEvent.DELETE);
-		event.add("code", opt.get().getCode());
-		
-		log.info("Deleting role {}", opt.get());
-
-		return RoleMapper.INSTANCE.toData(opt.get());
+		return repo.findOneByCode(command.getCode())
+				.map(role -> {
+					repo.deleteById(role.getId()).subscribe();
+					return RoleMapper.INSTANCE.toData(role);
+				});
 	}
 
-	public RoleData getByCode(String code) {
+	public Mono<RoleData> getById(@NonNull String id) {
 
-		return RoleMapper.INSTANCE.toData(roleRepo.findOneByCode(code).orElse(null));
+		return repo.findById(id).map(mod -> RoleMapper.INSTANCE.toData(mod));
 	}
 
-	public List<RoleData> getAllRoles() {
+	public Mono<RoleData> getByCode(@NonNull String code) {
 
-		return RoleMapper.INSTANCE.toRoleDatas(roleRepo.findAll());
+		return repo.findOneByCode(code).map(Role -> RoleMapper.INSTANCE.toData(Role));
 	}
 
-	public List<RoleData> getAllRoles(int page, int size) {
+	public Flux<RoleData> getAll() {
 
-		return RoleMapper.INSTANCE.toRoleDatas(roleRepo.findAll(PageRequest.of(page, size)).getContent());
+		return repo.getAll();
 	}
 
-	public List<RoleData> getAllRoles(@NonNull RoleFilter filter, int page, int size) {
+	public Flux<RoleData> getAll(int offset, int limit) {
 
-		ExampleMatcher matcher = ExampleMatcher.matchingAny();
-		matcher.withMatcher("code", GenericPropertyMatchers.contains().ignoreCase());
-		matcher.withMatcher("name", GenericPropertyMatchers.contains().ignoreCase());
-
-		return RoleMapper.INSTANCE.toRoleDatas(
-				roleRepo.findAll(Example.of(new Role(filter.getKey(), filter.getKey()), matcher), 
-						PageRequest.of(page, size)).getContent());
+		return repo.getAll(offset, limit);
 	}
 
+	public Mono<Long> count() {
 
-	public List<RoleData> getAllRoles(@NonNull RoleFilter filter) {
-
-		if(Strings.isNullOrEmpty(filter.getKey())) {
-			return getAllRoles(filter.getPage(), filter.getSize());
-		}
-		
-		return RoleMapper.INSTANCE.toRoleDatas(
-				roleRepo.getAll("%"+filter.getKey()+"%", PageRequest.of(filter.getPage(), filter.getSize())));
+		return repo.count();
 	}
 
-	public int count() {
+	public Mono<Long> count(@NonNull String key) {
 
-		return (int)roleRepo.count();
+		return repo.count(key+"%");
 	}
 
-	public int count(@NonNull RoleFilter filter) {
-
-		return roleRepo.count("%"+filter.getKey()+"%").intValue();
+	@Override
+	public Flux<RoleData> filter(@NonNull String key) {
+		return repo.filter(key+"%");
 	}
+
+	public Flux<RoleData> filter(@NonNull String key, int offset, int limit) {
+
+		return repo.filter(key+"%", offset, limit);
+	}
+
 }

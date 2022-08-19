@@ -1,8 +1,7 @@
 package com.kratonsolution.belian.access.module.impl.repository;
 
 import com.kratonsolution.belian.access.module.api.ModuleData;
-import com.kratonsolution.belian.access.module.impl.model.Module;
-import org.springframework.data.domain.Pageable;
+import com.kratonsolution.belian.access.module.impl.entity.R2DBCModuleEntity;
 
 import lombok.NonNull;
 import org.springframework.data.r2dbc.repository.Query;
@@ -12,24 +11,30 @@ import reactor.core.publisher.Mono;
 
 /**
  * @author Agung Dodi Perdana
- * @email agung.dodi.perdana@gmail.com 
+ * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
+ * @version 2.0.1
  */
-public interface ModuleRepository extends R2dbcRepository<Module, String> {
+public interface ModuleRepository extends R2dbcRepository<R2DBCModuleEntity, String> {
 
-    public Mono<Module> findOneByCode(@NonNull String code);
+    public Mono<R2DBCModuleEntity> findOneByCode(@NonNull String code);
 
-    @Query("SELECT module FROM access_module module WHERE module.code = ?1 ")
-    public Mono<ModuleData> getOne(String code);
+    @Query("SELECT am.id, am.code, am.name, am.module_group as group, am.note, am.enabled FROM access_module am")
+    public Flux<ModuleData> getAll();
 
-    @Query("SELECT * FROM access_module")
-    public Flux<ModuleData> loadAllModule();
+    @Query("SELECT mdl.id, mdl.code, mdl.name, mdl.module_group as group, mdl.note, mdl.enabled FROM access_module mdl " +
+            "ORDER BY mdl.code ASC LIMIT :limit OFFSET :offset")
+    public Flux<ModuleData> getAll(int offset, int limit);
 
-    @Query("SELECT * FROM access_module")
-    public Flux<ModuleData> loadAllModule(Pageable pageable);
+    @Query("SELECT mdl.id, mdl.code, mdl.name, mdl.module_group as group, mdl.note, mdl.enabled FROM access_module mdl " +
+            "WHERE mdl.code LIKE :key OR mdl.name LIKE :key ORDER BY mdl.code, mdl.name ASC")
+    public Flux<ModuleData> filter(@NonNull String key);
 
-    @Query("SELECT * FROM access_module module WHERE module.code LIKE ?1 OR module.name LIKE ?1 ORDER BY module.code, module.name ASC")
-    public Flux<ModuleData> loadAllModule(@NonNull String key, Pageable pageable);
+    @Query("SELECT mdl.id, mdl.code, mdl.name, mdl.module_group as group, mdl.note, mdl.enabled FROM access_module mdl " +
+            "WHERE mdl.code LIKE :key OR mdl.name LIKE :key " +
+            "ORDER BY mdl.code ASC LIMIT :limit OFFSET :offset")
+    public Flux<ModuleData> filter(@NonNull String key, int offset, int limit);
 
-    @Query("SELECT COUNT(*) FROM access_module module WHERE module.code LIKE ?1 OR module.name LIKE ?1")
+    @Query("SELECT COUNT(mdl) FROM access_module mdl WHERE mdl.code LIKE :key OR mdl.name LIKE :key")
     public Mono<Long> count(@NonNull String key);
 }

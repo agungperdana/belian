@@ -1,8 +1,10 @@
+group = 'com.kratonsolution.belian.access.module.api'
+version = '2.0.0'
+
 apply from: "$rootDir/gradle/lombok.gradle"
 
 dependencies {
-
-	implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.1'
+	implementation 'io.projectreactor:reactor-core:3.4.21'
 }
 
 jar {

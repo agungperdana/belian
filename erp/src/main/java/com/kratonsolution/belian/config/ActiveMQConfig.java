@@ -1,7 +1,7 @@
 package com.kratonsolution.belian.config;
 
-import org.apache.activemq.broker.BrokerService;
-import org.springframework.context.annotation.Bean;
+//import org.apache.activemq.broker.BrokerService;
+//import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -12,16 +12,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ActiveMQConfig {
 
-	@Bean
-	public BrokerService broker() throws Exception{
-		
-		BrokerService service = new BrokerService();
-		service.setPersistent(false);
-		service.setUseJmx(true);
-		service.addConnector("tcp://127.0.0.1:61616");
-		service.start(true);
-		
-		return service;
-	}
+//	@Bean
+//	public BrokerService broker() throws Exception{
+//
+//		BrokerService service = new BrokerService();
+//		service.setPersistent(false);
+//		service.setUseJmx(true);
+//		service.addConnector("tcp://127.0.0.1:61616");
+//		service.start(true);
+//
+//		return service;
+//	}
 	
 }

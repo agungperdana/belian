@@ -15,18 +15,14 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class RoleUpdateCommand implements Serializable {
+public class RoleUpdateCommand {
  
     private static final long serialVersionUID = 4915477311846745294L;
 
 	@NonNull
     private String code;
-    
-    private String name;
-    
+
     private String note;
     
     private boolean enabled;
-    
-    private Set<RoleModuleCommand> modules = new HashSet<RoleModuleCommand>();
 }

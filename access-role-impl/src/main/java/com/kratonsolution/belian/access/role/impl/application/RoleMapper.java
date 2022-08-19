@@ -2,11 +2,12 @@ package com.kratonsolution.belian.access.role.impl.application;
 
 import java.util.List;
 
+import com.kratonsolution.belian.access.role.api.RoleEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 import com.kratonsolution.belian.access.role.api.RoleData;
-import com.kratonsolution.belian.access.role.impl.model.Role;
+import com.kratonsolution.belian.access.role.impl.domain.AccessRole;
 
 import lombok.NonNull;
 
@@ -20,7 +21,7 @@ public interface RoleMapper {
     
 	RoleMapper INSTANCE = Mappers.getMapper(RoleMapper.class);
 	
-    RoleData toData(@NonNull Role role);
+    RoleData toData(@NonNull RoleEntity accessRole);
     
-    List<RoleData> toRoleDatas(@NonNull List<Role> roles);
+    List<RoleData> toDataList(@NonNull List<RoleEntity> accessRoles);
 }

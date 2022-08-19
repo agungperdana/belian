@@ -1,10 +1,9 @@
 package com.kratonsolution.belian.access.role.api.application;
 
-import java.util.List;
-
 import com.kratonsolution.belian.access.role.api.RoleData;
-
 import lombok.NonNull;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * @author Agung Dodi Perdana
@@ -12,24 +11,26 @@ import lombok.NonNull;
  * @since 2.0.0
  */
 public interface RoleService {
-   
-    RoleData create(@NonNull RoleCreateCommand command);
-    
-    RoleData update(@NonNull RoleUpdateCommand command);
-    
-    RoleData delete(@NonNull RoleDeleteCommand command);
 
-    RoleData getByCode(@NonNull String code);
-    
-    List<RoleData> getAllRoles();
-    
-    List<RoleData> getAllRoles(int page, int size);
-    
-    List<RoleData> getAllRoles(@NonNull RoleFilter filter, int page, int size);
-    
-    List<RoleData> getAllRoles(@NonNull RoleFilter filter);
-    
-    int count();
-    
-    int count(@NonNull RoleFilter filter);
+    Mono<RoleData> create(@NonNull RoleCreateCommand command);
+
+    Mono<RoleData> update(@NonNull RoleUpdateCommand command);
+
+    Mono<RoleData> delete(@NonNull RoleDeleteCommand command);
+
+    Mono<RoleData> getByCode(@NonNull String code);
+
+    Mono<RoleData> getById(@NonNull String id);
+
+    Flux<RoleData> getAll();
+
+    Flux<RoleData> filter(@NonNull String key);
+
+    Flux<RoleData> getAll(int offset, int limit);
+
+    Flux<RoleData> filter(@NonNull String key, int offset, int limit);
+
+    Mono<Long> count();
+
+    Mono<Long> count(@NonNull String key);
 }

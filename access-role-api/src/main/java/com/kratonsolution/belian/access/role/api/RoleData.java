@@ -14,9 +14,11 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class RoleData implements Serializable {
+public class RoleData implements RoleEntity {
     
     private static final long serialVersionUID = -4075374676161919723L;
+
+    private String id;
 
 	@NonNull
     private String code;
@@ -27,6 +29,4 @@ public class RoleData implements Serializable {
     private String note;
     
     private boolean enabled;
-    
-    private Set<RoleModuleData> modules = new HashSet<RoleModuleData>();
 }

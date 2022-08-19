@@ -1,9 +1,5 @@
 package com.kratonsolution.belian.access.module.api;
 
-import java.io.Serializable;
-import java.time.Instant;
-import java.time.LocalDateTime;
-
 import lombok.*;
 
 /**
@@ -11,14 +7,13 @@ import lombok.*;
  * @email agung.dodi.perdana@gmail.com 
  * @since 2.0
  */
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 @ToString
-public class ModuleData implements Serializable {
+@NoArgsConstructor
+public class ModuleData implements ModuleEntity {
 
-	private static final long serialVersionUID = -1510690541332344917L;
+	@NonNull
+	private String id;
 
 	@NonNull
 	private String code;
@@ -26,18 +21,10 @@ public class ModuleData implements Serializable {
 	@NonNull
 	private String name;
 
+	@NonNull
+	private String group;
+
 	private String note;
 
-	@NonNull
-	private ModuleGroup group;
-
-	private boolean enabled;
-
-	private String createdBy;
-
-	private Instant createdDate;
-
-	private String lastUpdatedBy;
-
-	private Instant lastUpdatedDate;
+	private boolean enabled = true;
 }

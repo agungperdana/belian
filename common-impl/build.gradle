@@ -1,5 +1,0 @@
-apply from: "$rootDir/gradle/lombok.gradle"
-
-jar {
-	enabled=true
-}

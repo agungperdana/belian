@@ -27,7 +27,5 @@ public class RoleCreateCommand implements Serializable {
     
     private String note;
     
-    private boolean enabled;    
-    
-    private Set<RoleModuleCommand> modules = new HashSet<RoleModuleCommand>();
+    private boolean enabled;
 }
