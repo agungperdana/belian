@@ -1,11 +1,10 @@
 rootProject.name = 'belian'
 
+include 'shared-kernel'
+include 'integration-api'
+include 'integration-api-impl'
 include 'common-api-service'
-include 'access-module-api'
-include 'access-module-impl'
-include 'access-module-api-service'
-include 'access-role-api'
-include 'access-role-impl'
-include 'access-role-api-service'
-include 'erp'
+include 'security-access-module-api'
+include 'security-access-module-impl'
+include 'security-access-module-api-service'
 

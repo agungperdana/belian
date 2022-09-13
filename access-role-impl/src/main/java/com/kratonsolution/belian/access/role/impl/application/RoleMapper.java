@@ -7,7 +7,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 import com.kratonsolution.belian.access.role.api.RoleData;
-import com.kratonsolution.belian.access.role.impl.domain.AccessRole;
 
 import lombok.NonNull;
 

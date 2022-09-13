@@ -12,11 +12,11 @@ import reactor.core.publisher.Mono;
  */
 public interface RoleService {
 
-    Mono<RoleData> create(@NonNull RoleCreateCommand command);
+    Mono<RoleData> create(@NonNull Mono<RoleCreateCommand> command);
 
-    Mono<RoleData> update(@NonNull RoleUpdateCommand command);
+    Mono<RoleData> update(@NonNull Mono<RoleUpdateCommand> command);
 
-    Mono<RoleData> delete(@NonNull RoleDeleteCommand command);
+    Mono<RoleData> delete(@NonNull Mono<RoleDeleteCommand> command);
 
     Mono<RoleData> getByCode(@NonNull String code);
 

@@ -1,17 +1,20 @@
 package com.kratonsolution.belian.access.role.api;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * @author Agung Dodi Perdana
- * @email agung.dodi.perdana@gmail.com 
+ * @email agung.dodi.perdana@gmail.com
+ * @since 2.0.0
+ * @version 2.0.1
  */
+@ToString
 @Getter
 @Setter
 public class RoleData implements RoleEntity {

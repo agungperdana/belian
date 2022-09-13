@@ -39,4 +39,7 @@ public interface RoleRepository extends R2dbcRepository<R2DBCRoleEntity, String>
 
     @Query("SELECT COUNT(role) FROM access_role role WHERE role.code LIKE :key OR role.name LIKE :key")
     public Mono<Long> count(@NonNull String key);
+
+    @Query("DELETE FROM access_role WHERE code =:code")
+    public Mono<Void> deleteByCode(@NonNull String code);
 }

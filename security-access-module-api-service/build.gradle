@@ -3,12 +3,13 @@ apply from: "$rootDir/gradle/lombok.gradle"
 apply from: "$rootDir/gradle/junit-jupiter.gradle"
 apply from: "$rootDir/gradle/r2dbc-postgres.gradle"
 apply from: "$rootDir/gradle/swager.gradle"
+apply from: "$rootDir/gradle/integration.gradle"
 
 dependencies {
 
     implementation project (':common-api-service')
-    implementation project (':access-module-api')
-    implementation project (':access-module-impl')
+    implementation project (':security-access-module-api')
+    implementation project (':security-access-module-impl')
 
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 }
@@ -17,10 +18,8 @@ test {
     useJUnitPlatform()
 }
 
-jar {
-    enabled=true
-}
-
 bootJar {
-    enabled=false
+    manifest {
+        attributes 'Start-Class': 'com.kratonsolution.belian.security.access.module.AccessModuleEntryPoint'
+    }
 }

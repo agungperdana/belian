@@ -3,9 +3,11 @@ apply from: "$rootDir/gradle/lombok.gradle"
 apply from: "$rootDir/gradle/mapstruct.gradle"
 apply from: "$rootDir/gradle/junit-jupiter.gradle"
 apply from: "$rootDir/gradle/r2dbc-postgres.gradle"
+apply from: "$rootDir/gradle/integration.gradle"
 
 dependencies {
 
+	implementation project(':integration-api')
 	implementation project(':access-role-api')
 }
 
