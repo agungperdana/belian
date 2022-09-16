@@ -1,0 +1,11 @@
+version: '2'
+services:
+  security-access-module-api-service:
+    container_name: security-access-module-api-service
+    build:
+      context: ./security-access-module-api-service
+      dockerfile: Dockerfile
+    image: security-access-module-api-service:2.0.0
+    ports:
+      - 8581:8581
+    network_mode: host
