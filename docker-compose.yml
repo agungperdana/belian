@@ -1,11 +1,21 @@
 version: '2'
 services:
+  gateway-service:
+    container_name: gateway-service
+    build:
+      context: ./gateway-service
+      dockerfile: Dockerfile
+    image: gateway-service:2.0.1
+    ports:
+      - 9000:9000
+    network_mode: host
+
   security-access-module-api-service:
     container_name: security-access-module-api-service
     build:
       context: ./security-access-module-api-service
       dockerfile: Dockerfile
-    image: security-access-module-api-service:2.0.0
+    image: security-access-module-api-service:2.0.1
     ports:
-      - 8581:8581
+      - 9001:9001
     network_mode: host

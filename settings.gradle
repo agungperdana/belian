@@ -7,4 +7,4 @@ include 'common-api-service'
 include 'security-access-module-api'
 include 'security-access-module-impl'
 include 'security-access-module-api-service'
-
+include 'gateway-service'

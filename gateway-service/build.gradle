@@ -1,0 +1,17 @@
+apply from: "$rootDir/gradle/spring-boot.gradle"
+apply from: "$rootDir/gradle/spring-cloud.gradle"
+apply from: "$rootDir/gradle/junit-jupiter.gradle"
+
+dependencies {
+	implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+}
+
+test {
+	useJUnitPlatform()
+}
+
+bootJar {
+	manifest {
+		attributes 'Start-Class': 'com.kratonsolution.belian.gateway.GatewayService'
+	}
+}
