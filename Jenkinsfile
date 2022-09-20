@@ -15,7 +15,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
-                docker info
+                docker version
+                '''
             }
         }
     }
