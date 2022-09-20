@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+
+        }
+    }
 
     stages {
         stage('Clean & Build') {
