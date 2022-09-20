@@ -16,7 +16,7 @@ pipeline {
         }
         stage('Deploy') {
             agen docker {
-                image adoptopenjdk/openjdk11:alpine-jre
+                image adoptopenjdk:openjdk11:alpine-jre
             }
             steps {
                 sh '''
