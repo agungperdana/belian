@@ -3,19 +3,21 @@ pipeline {
 
     stages {
         stage('Clean & Build') {
-            agen any
+            agent any
             steps {
                 sh './gradlew clean build'
             }
         }
         stage('Test') {
-            agen any
+            agent any
             steps {
                 sh './gradlew test'
             }
         }
         stage('Deploy') {
-            agen docker { image 'node:16.13.1-alpine' }
+            agent{
+                docker { image 'node:16.13.1-alpine' }
+            }
             steps {
                 sh 'node --version'
             }
