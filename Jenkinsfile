@@ -15,7 +15,7 @@ pipeline {
             }
         }
         stage('Deploy') {
-            docker { image 'node:16.13.1-alpine' }
+            agen docker { image 'node:16.13.1-alpine' }
             steps {
                 sh 'node --version'
             }
