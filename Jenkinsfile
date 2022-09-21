@@ -15,13 +15,9 @@ pipeline {
             }
         }
         stage('Deploy') {
-            agen docker {
-                image adoptopenjdk:openjdk11:alpine-jre
-            }
+            docker { image 'node:16.13.1-alpine' }
             steps {
-                sh '''
-                docker version
-                '''
+                sh 'node --version'
             }
         }
     }
