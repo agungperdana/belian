@@ -7,8 +7,8 @@ apply from: "$rootDir/gradle/swager.gradle"
 dependencies {
 
     implementation project (':common-api-service')
-    implementation project (':security-access-module-api')
-    implementation project (':security-access-module-impl')
+    implementation project (':security-access-user-api')
+    implementation project (':security-access-user-impl')
 
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 }
@@ -19,6 +19,6 @@ test {
 
 bootJar {
     manifest {
-        attributes 'Start-Class': 'com.kratonsolution.belian.security.access.module.AccessModuleEntryPoint'
+        attributes 'Start-Class': 'com.kratonsolution.belian.security.access.user.AccessUserEntryPoint'
     }
 }

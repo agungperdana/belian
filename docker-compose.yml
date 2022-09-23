@@ -19,3 +19,13 @@ services:
     ports:
       - 9001:9001
     network_mode: host
+
+  security-access-user-api-service:
+    container_name: security-access-user-api-service
+    build:
+      context: ./security-access-user-api-service
+      dockerfile: Dockerfile
+    image: security-access-user-api-service:2.0.1
+    ports:
+      - 9002:9002
+    network_mode: host
