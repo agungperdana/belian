@@ -7,8 +7,8 @@ apply from: "$rootDir/gradle/swager.gradle"
 dependencies {
 
     implementation project (':common-api-service')
-    implementation project (':access-role-api')
-    implementation project (':access-role-impl')
+    implementation project (':security-access-role-api')
+    implementation project (':security-access-role-impl')
 
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 }

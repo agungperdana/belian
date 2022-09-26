@@ -7,8 +7,9 @@ apply from: "$rootDir/gradle/integration.gradle"
 
 dependencies {
 
+	implementation project(':shared-kernel')
 	implementation project(':integration-api')
-	implementation project(':access-role-api')
+	implementation project(':security-access-role-api')
 }
 
 test {
