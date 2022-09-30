@@ -17,10 +17,8 @@ test {
     useJUnitPlatform()
 }
 
-jar {
-    enabled=true
-}
-
 bootJar {
-    enabled=false
+    manifest {
+        attributes 'Start-Class': 'com.kratonsolution.belian.security.access.role.AccessRoleEntryPoint'
+    }
 }

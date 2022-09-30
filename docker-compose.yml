@@ -29,3 +29,13 @@ services:
     ports:
       - 9002:9002
     network_mode: host
+
+  security-access-role-api-service:
+    container_name: security-access-role-api-service
+    build:
+      context: ./security-access-role-api-service
+      dockerfile: Dockerfile
+    image: security-access-role-api-service:2.0.1
+    ports:
+      - 9003:9003
+    network_mode: host
