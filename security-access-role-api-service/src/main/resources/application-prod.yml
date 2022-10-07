@@ -1,0 +1,23 @@
+server:
+  port: 8581
+
+spring:
+  application:
+    name: Belian Access Module
+    version: v-2.0.1
+  r2dbc:
+    url: r2dbc:postgresql://127.0.0.1:5432/belian_security?currentSchema=belian_security
+    username: belian
+    password: belian
+    pool:
+      initial-size: 1
+      max-size: 50
+      max-idle-time: 30m
+      validation-query: SELECT
+
+logging:
+  level:
+    root: INFO
+    org.springframework: OFF
+    io.springfox: INFO
+    com.kratonsolution.belian.security.access.role: DEBUG

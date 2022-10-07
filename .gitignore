@@ -5,5 +5,4 @@
 
 # Ignore Gradle build output directory
 build
-src
 /.gradle/

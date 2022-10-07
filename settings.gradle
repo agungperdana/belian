@@ -1,5 +1,6 @@
 rootProject.name = 'belian'
 
+include 'jwt-authorization'
 include 'shared-kernel'
 include 'integration-api'
 include 'integration-api-impl'
