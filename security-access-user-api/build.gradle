@@ -1,0 +1,13 @@
+group = 'com.kratonsolution.belian.security.access.user.api'
+version = '2.0.1'
+
+apply from: "$rootDir/gradle/lombok.gradle"
+
+dependencies {
+
+	implementation 'io.projectreactor:reactor-core:3.4.22'
+}
+
+jar {
+	enabled=true //needed
+}

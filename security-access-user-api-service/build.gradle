@@ -1,0 +1,26 @@
+apply from: "$rootDir/gradle/spring-boot.gradle"
+apply from: "$rootDir/gradle/lombok.gradle"
+apply from: "$rootDir/gradle/junit-jupiter.gradle"
+apply from: "$rootDir/gradle/r2dbc-postgres.gradle"
+apply from: "$rootDir/gradle/swager.gradle"
+apply from: "$rootDir/gradle/jwt.gradle"
+
+dependencies {
+
+    implementation project (':jwt-authorization')
+    implementation project (':common-api-service')
+    implementation project (':security-access-user-api')
+    implementation project (':security-access-user-impl')
+
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+bootJar {
+    manifest {
+        attributes 'Start-Class': 'com.kratonsolution.belian.security.access.user.AccessUserEntryPoint'
+    }
+}

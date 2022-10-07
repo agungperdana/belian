@@ -1,0 +1,44 @@
+server:
+  port: 8580
+  servlet:
+    context-path:
+
+spring:
+  application:
+    name: Belian Service Gateway
+    version: 2.0.1
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 331606990980-ljrg271fvkngj3n8ln80nsu42nj9n3cp.apps.googleusercontent.com
+            client-secret: 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
+
+  cloud:
+    gateway:
+      routes:
+        - id: AccessModuleID
+          uri: http://127.0.0.1:8581
+          predicates:
+            - Path=/api/v2/access-module,/api/v2/access-module/**
+          filters:
+            - TokenRelay=
+        - id: Access-User
+          uri: http://127.0.0.1:8582
+          predicates:
+            - Path=/api/v2/users,/api/v2/users/**,/api/v2/user/detail/{email}
+          filters:
+            - TokenRelay=
+        - id: Access-Role
+          uri: http://127.0.0.1:8583
+          predicates:
+            - Path=/api/v2/access-role,/api/v2/access-role/**,/api/v2/access-role/detail/{name}
+          filters:
+            - TokenRelay=
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    com.kratonsolution.belian.gateway: INFO

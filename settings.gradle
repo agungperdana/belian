@@ -1,41 +1,17 @@
 rootProject.name = 'belian'
 
-include 'common-impl'
-include 'common-jpa'
 include 'jwt-authorization'
-include 'camel-authorization'
-
-include 'access-module-api'
-include 'access-module-impl'
-include 'access-module-reactive-api-service'
-
-include 'access-role-api'
-include 'access-role-impl'
-include 'access-role-adapter-rest'
-include 'access-role-adapter-jms'
-include 'access-role-driver-jms'
-
-include 'access-user-api'
-include 'access-user-impl'
-include 'access-user-adapter-rest'
-include 'access-user-adapter-jms'
-
-include 'geographic-api'
-include 'geographic-impl'
-
-include 'party-api'
-include 'party-impl'
-
-include 'company-structure-api'
-include 'company-structure-impl'
-include 'company-structure-adapter-rest'
-include 'company-structure-adapter-jms'
-include 'company-structure-driver-jms'
-
-include 'hr-employee-api'
-include 'hr-employee-impl'
-include 'hr-attendance-api'
-include 'hr-attendance-impl'
-
-include 'access-module-reactive-api-service'
-
+include 'shared-kernel'
+include 'integration-api'
+include 'integration-api-impl'
+include 'common-api-service'
+include 'security-access-module-api'
+include 'security-access-module-impl'
+include 'security-access-module-api-service'
+include 'security-access-role-api'
+include 'security-access-role-impl'
+include 'security-access-role-api-service'
+include 'security-access-user-api'
+include 'security-access-user-impl'
+include 'security-access-user-api-service'
+include 'gateway-service'

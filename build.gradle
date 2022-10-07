@@ -1,6 +1,6 @@
 plugins {
-	id "org.springframework.boot" version "2.4.5" apply false
-	id "io.spring.dependency-management" version "1.0.11.RELEASE" apply false
+	id "org.springframework.boot" version "2.7.3" apply false
+	id "io.spring.dependency-management" version "1.0.13.RELEASE" apply false
 }
 
 allprojects {
@@ -10,7 +10,7 @@ allprojects {
 
 subprojects {
 	
-	version = '2.0.0'
+	version = '2.0.1'
 	
 	repositories {
 		
@@ -24,7 +24,8 @@ subprojects {
 	dependencies {
 		
 		implementation 'com.google.guava:guava:31.0.1-jre'
-		
-		
+		implementation 'com.google.code.gson:gson:2.9.1'
+		implementation 'jakarta.validation:jakarta.validation-api:2.0.2'
+
 	}
 }

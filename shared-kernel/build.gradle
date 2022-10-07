@@ -1,0 +1,14 @@
+apply from: "$rootDir/gradle/lombok.gradle"
+apply from: "$rootDir/gradle/junit-jupiter.gradle"
+
+dependencies {
+
+}
+
+test {
+	useJUnitPlatform()
+}
+
+jar {
+	enabled=true
+}
