@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: Belian Access Role
+    name: Belian Access Role Management Backend
     version: v-2.0.1
   r2dbc:
     url: r2dbc:postgresql://belian:belian@127.0.0.1:5432/belian_security?currentSchema=belian_security

@@ -1,0 +1,23 @@
+apply from: "$rootDir/gradle/spring-boot.gradle"
+apply from: "$rootDir/gradle/spring-cloud.gradle"
+apply from: "$rootDir/gradle/junit-jupiter.gradle"
+apply from: "$rootDir/gradle/lombok.gradle"
+
+dependencies {
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-gson:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.security:spring-security-oauth2-authorization-server:0.3.1'
+}
+
+test {
+	useJUnitPlatform()
+}
+
+bootJar {
+	manifest {
+		attributes 'Start-Class': 'com.kratonsolution.belian.auth.AuthService'
+	}
+}

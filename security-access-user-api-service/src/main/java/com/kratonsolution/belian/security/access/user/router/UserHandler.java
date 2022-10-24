@@ -1,6 +1,5 @@
 package com.kratonsolution.belian.security.access.user.router;
 
-import com.google.gson.Gson;
 import com.kratonsolution.belian.common.PagedResponse;
 import com.kratonsolution.belian.common.util.PagingHelper;
 import com.kratonsolution.belian.common.util.ResultHelper;
@@ -9,11 +8,9 @@ import com.kratonsolution.belian.security.access.user.api.application.UserCreate
 import com.kratonsolution.belian.security.access.user.api.application.UserDeleteCommand;
 import com.kratonsolution.belian.security.access.user.api.application.UserService;
 import com.kratonsolution.belian.security.access.user.api.application.UserUpdateCommand;
-import com.kratonsolution.belian.security.jwt.JWTTokenUtil;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -71,9 +68,8 @@ public class UserHandler {
                 UserData.class);
     }
 
+//    @PreAuthorize("hasRole('USER_READ')")
     Mono<ServerResponse> getAll(ServerRequest request) {
-
-        log.info("BEARER INFO {}", JWTTokenUtil.decode(request.headers().firstHeader(HttpHeaders.AUTHORIZATION)));
 
         return ServerResponse.ok().body(userService.getAll(), UserData.class);
     }

@@ -11,9 +11,20 @@ spring:
     oauth2:
       client:
         registration:
-          google:
-            client-id: *****
-            client-secret: *****
+          gateway:
+            provider: belian
+            client-id: gateway
+            client-secret: gateway
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: openid, read
+            client-name: gateway
+        provider:
+          belian:
+            issuer-uri: http://127.0.0.1:7000
+#          google:
+#            client-id: *****
+#            client-secret: *****
 
   cloud:
     gateway:
@@ -39,6 +50,4 @@ spring:
 
 logging:
   level:
-    root: INFO
-    org.springframework.web: INFO
-    com.kratonsolution.belian.gateway: INFO
+    root: DEBUG

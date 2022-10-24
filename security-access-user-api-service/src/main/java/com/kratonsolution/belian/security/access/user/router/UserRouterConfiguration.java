@@ -1,6 +1,5 @@
 package com.kratonsolution.belian.security.access.user.router;
 
-import com.kratonsolution.belian.common.filters.SecurityFilter;
 import com.kratonsolution.belian.security.access.user.api.UserData;
 import com.kratonsolution.belian.security.access.user.api.application.UserCreateCommand;
 import com.kratonsolution.belian.security.access.user.api.application.UserDeleteCommand;
@@ -22,10 +21,7 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
-import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
-import static org.springframework.web.reactive.function.server.RequestPredicates.PUT;
-import static org.springframework.web.reactive.function.server.RequestPredicates.DELETE;
+import static org.springframework.web.reactive.function.server.RequestPredicates.*;
 
 /**
  * @author Agung Dodi Perdana
@@ -216,10 +212,5 @@ public class UserRouterConfiguration {
                 .andRoute(GET("/api/v2/users/{key}"), handler::filter)
                 .andRoute(GET("/api/v2/users/{key}/{page}/{limit}"), handler::filterPaged)
                 .andRoute(GET("/api/v2/user/detail/{email}"), handler::getByEmail);
-    }
-
-    @Bean
-    public SecurityFilter securityFilter() {
-        return new SecurityFilter();
     }
 }
