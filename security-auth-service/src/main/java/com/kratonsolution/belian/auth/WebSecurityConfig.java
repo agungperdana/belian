@@ -26,7 +26,11 @@ public class WebSecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
 
-        var user = User.withDefaultPasswordEncoder().username("udin").password("udin").roles("USER").build();
+        var user = User.withDefaultPasswordEncoder()
+                        .username("udin")
+                        .password("udin")
+                        .roles("USER_READ", "USER_ADD", "USER_EDIT", "USER_DELETE", "USER_PRINT")
+                        .build();
 
         var manager = new InMemoryUserDetailsManager();
         manager.createUser(user);

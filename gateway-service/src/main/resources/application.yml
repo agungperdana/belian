@@ -1,11 +1,11 @@
 server:
-  port: 8580
+  port: 8002
   servlet:
     context-path:
 
 spring:
   application:
-    name: Belian Service Gateway
+    name: belian-gateway-service
     version: 2.0.1
   security:
     oauth2:
@@ -16,12 +16,12 @@ spring:
             client-id: gateway
             client-secret: gateway
             authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            redirect-uri: "http://127.0.0.1:8002/login/oauth2/code/{registrationId}"
             scope: openid, read
             client-name: gateway
         provider:
           belian:
-            issuer-uri: http://127.0.0.1:7000
+            issuer-uri: http://127.0.0.1:8001
 #          google:
 #            client-id: *****
 #            client-secret: *****
@@ -30,24 +30,29 @@ spring:
     gateway:
       routes:
         - id: AccessModuleID
-          uri: http://127.0.0.1:8581
+          uri: http://127.0.0.1:8010
           predicates:
             - Path=/api/v2/access-module,/api/v2/access-module/**
           filters:
             - TokenRelay=
-        - id: Access-User
-          uri: http://127.0.0.1:8582
-          predicates:
-            - Path=/api/v2/users,/api/v2/users/**,/api/v2/user/detail/{email}
-          filters:
-            - TokenRelay=
         - id: Access-Role
-          uri: http://127.0.0.1:8583
+          uri: http://127.0.0.1:8020
           predicates:
             - Path=/api/v2/access-role,/api/v2/access-role/**,/api/v2/access-role/detail/{name}
+          filters:
+            - TokenRelay=
+        - id: Access-User
+          uri: http://127.0.0.1:8030
+          predicates:
+            - Path=/api/v2/users,/api/v2/users/**,/api/v2/user/detail/{email}
           filters:
             - TokenRelay=
 
 logging:
   level:
     root: DEBUG
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8000/eureka

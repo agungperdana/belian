@@ -1,5 +1,11 @@
 server:
-  port: 7000
+  port: 8001
+
+spring:
+  application:
+    name: belian-authorization-server
+    title: Authorization Server for Belian ERP
+    version: v-2.0.1
 
 logging:
   level:
@@ -7,3 +13,7 @@ logging:
     org.springframework.web: OFF
     org.springframework.security: DEBUG
     org.springframework.security.oauth2: DEBUG
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8000/eureka

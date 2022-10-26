@@ -1,0 +1,13 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: eureka-server
+    title: Eureka server for Belian ERP
+    version: 2.0.1
+
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false

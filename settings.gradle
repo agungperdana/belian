@@ -1,5 +1,6 @@
 rootProject.name = 'belian'
 
+include 'eureka-server'
 include 'jwt-authorization'
 include 'shared-kernel'
 include 'integration-api'
