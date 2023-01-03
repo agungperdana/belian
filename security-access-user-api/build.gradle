@@ -5,7 +5,7 @@ apply from: "$rootDir/gradle/lombok.gradle"
 
 dependencies {
 
-	implementation 'io.projectreactor:reactor-core:3.4.22'
+	implementation 'io.projectreactor:reactor-core:3.4.24'
 }
 
 jar {

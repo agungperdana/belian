@@ -1,10 +1,15 @@
 package com.kratonsolution.belian.security.access.user.impl.domain;
 
-import com.kratonsolution.belian.security.access.user.impl.entity.R2DBCUserEntity;
+import com.google.gson.Gson;
 import com.kratonsolution.belian.shared.kernel.valueobject.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Builder
@@ -23,6 +28,9 @@ public class User implements Validateable<User> {
     @Builder.Default
     private Enabled enabled = Enabled.YES;
 
+    @Builder.Default
+    private List<UserRole> roles = new ArrayList<>();
+
     @Override
     public User validate() {
 
@@ -30,6 +38,9 @@ public class User implements Validateable<User> {
         email.validate();
         enabled.validate();
         source.validate();
+
+        roles.forEach(UserRole::validate);
+
         return this;
     }
 }

@@ -18,6 +18,7 @@ public class SecurityConfig {
         converter.setJwtGrantedAuthoritiesConverter(new BelianReactiveGrantedAuthoritiesConverter());
 
         http.authorizeExchange()
+                .pathMatchers("/auth/**").permitAll()
                 .pathMatchers("/**").authenticated()
                 .pathMatchers("/**").hasAnyRole("USER_READ", "USER_ADD", "USER_EDIT", "USER_DELETE", "USER_PRINT")
                 .and()

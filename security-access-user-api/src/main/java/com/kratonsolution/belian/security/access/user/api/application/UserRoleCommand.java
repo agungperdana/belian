@@ -4,8 +4,6 @@ import lombok.Data;
 import lombok.NonNull;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Agung Dodi Perdana
@@ -13,24 +11,14 @@ import java.util.List;
  * @since 2.0.0
  */
 @Data
-public class UserCreateCommand implements Serializable {
+public class UserRoleCommand implements Serializable {
     
 	private static final long serialVersionUID = 6526962330287609499L;
 
 	@NonNull
-    private String name;
-
-    @NonNull
-    private String email;
-
-    @NonNull
-    private String password;
-    
-    @NonNull
-    private String source;
+    private String roleName;
 
     @NonNull
     private Boolean enabled = Boolean.FALSE;
 
-    private List<UserRoleCommand> roles = new ArrayList<>();
 }

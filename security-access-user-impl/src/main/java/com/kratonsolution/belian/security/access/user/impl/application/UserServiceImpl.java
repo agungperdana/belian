@@ -6,6 +6,8 @@ import com.kratonsolution.belian.security.access.user.api.application.UserDelete
 import com.kratonsolution.belian.security.access.user.api.application.UserService;
 import com.kratonsolution.belian.security.access.user.api.application.UserUpdateCommand;
 import com.kratonsolution.belian.security.access.user.impl.domain.User;
+import com.kratonsolution.belian.security.access.user.impl.domain.UserRole;
+import com.kratonsolution.belian.security.access.user.impl.entity.R2DBCUserEntity;
 import com.kratonsolution.belian.security.access.user.impl.repository.UserRepository;
 import com.kratonsolution.belian.shared.kernel.valueobject.Email;
 import com.kratonsolution.belian.shared.kernel.valueobject.Enabled;
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 /**
  * @author Agung Dodi Perdana
@@ -34,16 +38,31 @@ public class UserServiceImpl implements UserService {
 
     public Mono<UserData> create(@NonNull Mono<UserCreateCommand> command) {
 
-        return command.map(com -> User
-                        .builder()
-                        .name(new Name(com.getName()))
-                        .email(new Email(com.getEmail()))
-                        .enabled(new Enabled(com.getEnabled()))
-                        .source(new Source(com.getSource()))
-                        .build()
-                        .validate()
-                )
-                .map(UserMapper.INSTANCE::toEntity)
+        return command.map(com -> {
+
+                    User user = User.builder()
+                            .name(Name.is(com.getName()))
+                            .email(Email.is(com.getEmail()))
+                            .enabled(Enabled.is(com.getEnabled()))
+                            .source(Source.is(com.getSource()))
+                            .build();
+
+                    com.getRoles().forEach(role -> {
+
+                        user.getRoles().add(
+                                UserRole.builder()
+                                        .roleName(Name.is(role.getRoleName()))
+                                        .enabled(Enabled.is(role.getEnabled()))
+                                        .build()
+                        );
+                    });
+
+                    user.validate();
+
+                    R2DBCUserEntity entity = UserMapper.INSTANCE.toEntity(user);
+                    entity.setId(UUID.randomUUID().toString());
+                    return entity;
+                })
                 .flatMap(repo::save)
                 .map(UserMapper.INSTANCE::entityToData);
     }
@@ -51,27 +70,32 @@ public class UserServiceImpl implements UserService {
     @Override
     public Mono<UserData> update(@NonNull Mono<UserUpdateCommand> command) {
 
-        return command.map(com -> User.builder()
-                        .name(Name.is(com.getName()))
-                        .enabled(Enabled.is(com.getEnabled()))
-                        .email(new Email(com.getEmail()))
-                        .build()
-                        .validate()
-                )
-                .flatMap(domain -> {
+        return command.flatMap(com -> {
 
-                    return repo.getByEmail(domain.getEmail().getValue())
-                            .switchIfEmpty(Mono.just(UserMapper.INSTANCE.toEntity(domain)))
-                            .map(entity -> {
+            User user = User.builder()
+                    .name(Name.is(com.getName()))
+                    .enabled(Enabled.is(com.getEnabled()))
+                    .email(new Email(com.getEmail()))
+                    .build();
 
-                                entity.setName(domain.getName().getValue());
-                                entity.setEnabled(domain.getEnabled().getValue());
-                                return entity;
-                            })
-                            .flatMap(repo::save)
-                            .map(UserMapper.INSTANCE::entityToData);
+            com.getRoles().forEach(role -> {
+                user.getRoles().add(
+                        UserRole.builder()
+                                .roleName(Name.is(role.getRoleName()))
+                                .enabled(Enabled.is(role.getEnabled()))
+                                .build()
+                );
+            });
 
-                });
+            user.validate();
+
+            return repo.getByEmail(com.getEmail()).zipWith(Mono.just(UserMapper.INSTANCE.toEntity(user)))
+                    .flatMap(zip->{
+                        zip.getT2().setId(zip.getT1().getId());
+                        zip.getT2().setVersion(zip.getT1().getVersion());
+                        return repo.save(zip.getT2());
+                    }).map(UserMapper.INSTANCE::entityToData);
+        });
     }
 
     public Mono<UserData> delete(@NonNull Mono<UserDeleteCommand> command) {

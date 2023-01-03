@@ -1,4 +1,4 @@
-package com.kratonsolution.belian.auth;
+package com.kratonsolution.belian.auth.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -17,6 +17,10 @@ public class Email extends ValueObject<String> implements Validateable<Email> {
     @Getter
     private String value;
 
+    public static Email is(@NonNull String email) {
+        return new Email(email);
+    }
+
     @Override
     public Email validate() {
         if(!pattern.matcher(this.value).matches())

@@ -1,8 +1,10 @@
 package com.kratonsolution.belian.security.access.user.api;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -14,15 +16,9 @@ import java.util.Set;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserData {
+public class UserRoleData {
 
-	private String name;
-
-	private String email;
-
-	private String source;
+	private String roleName;
 
 	private Boolean enabled;
-
-	private List<UserRoleData> roles;
 }

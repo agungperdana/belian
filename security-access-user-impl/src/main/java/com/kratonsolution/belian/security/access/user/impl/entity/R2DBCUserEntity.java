@@ -1,16 +1,14 @@
 package com.kratonsolution.belian.security.access.user.impl.entity;
 
-import com.kratonsolution.belian.security.access.user.api.entity.UserEntity;
-import lombok.*;
-import org.reactivestreams.Publisher;
-import org.springframework.data.annotation.*;
-import org.springframework.data.mapping.callback.EntityCallback;
-import org.springframework.data.r2dbc.mapping.OutboundRow;
-import org.springframework.data.r2dbc.mapping.event.BeforeSaveCallback;
+import com.kratonsolution.belian.shared.kernel.Entity;
+import io.r2dbc.postgresql.codec.Json;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NonNull;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.relational.core.mapping.Table;
-import org.springframework.data.relational.core.sql.SqlIdentifier;
-
-import java.util.UUID;
 
 /**
  * @author Agung Dodi Perdana
@@ -21,7 +19,8 @@ import java.util.UUID;
 @Data
 @Builder
 @Table("access_user")
-public class R2DBCUserEntity implements UserEntity
+@AllArgsConstructor
+public class R2DBCUserEntity implements Entity
 {
     @Id
     private String id;
@@ -38,16 +37,8 @@ public class R2DBCUserEntity implements UserEntity
     @Builder.Default()
     private Boolean enabled = Boolean.FALSE;
 
+    private Json roles;
+
     @Version
     private Long version;
-
-    public R2DBCUserEntity(String id, @NonNull  String name, @NonNull  String email, @NonNull String source, Boolean enabled, Long version) {
-
-        this.id = id != null && !id.equals("")?id:UUID.randomUUID().toString();
-        this.name = name;
-        this.email = email;
-        this.source = source;
-        this.enabled = enabled;
-        this.version = version;
-    }
 }

@@ -211,6 +211,7 @@ public class UserRouterConfiguration {
                 .andRoute(GET("/api/v2/users/{page}/{limit}"), handler::getAllPaged)
                 .andRoute(GET("/api/v2/users/{key}"), handler::filter)
                 .andRoute(GET("/api/v2/users/{key}/{page}/{limit}"), handler::filterPaged)
-                .andRoute(GET("/api/v2/user/detail/{email}"), handler::getByEmail);
+                .andRoute(GET("/api/v2/user/detail/{email}"), handler::getByEmail)
+                .andRoute(GET("/api/v2/auth/find/{email}"), handler::getByEmail);
     }
 }

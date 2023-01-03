@@ -1,7 +1,6 @@
 package com.kratonsolution.belian.security.access.role.impl.domain;
 
 import com.kratonsolution.belian.shared.kernel.valueobject.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -11,7 +10,7 @@ import java.util.List;
 @Getter
 public class Modules extends ValueObject<List<RoleModule>> implements Validateable<Modules> {
 
-    private List<RoleModule> values = new ArrayList<>();
+    private final List<RoleModule> values = new ArrayList<>();
 
     public RoleModule add(@NonNull Name name,
                           @NonNull Group group,
