@@ -1,0 +1,10 @@
+apply from: "$rootDir/gradle/lombok.gradle"
+
+dependencies {
+
+	implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.1'
+}
+
+jar {
+	enabled=true //needed
+}

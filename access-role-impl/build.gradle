@@ -1,0 +1,26 @@
+apply from: "$rootDir/gradle/lombok.gradle"
+apply from: "$rootDir/gradle/mapstruct.gradle"
+apply from: "$rootDir/gradle/spring-boot.gradle"
+
+dependencies {
+	
+		implementation project(':common-impl')
+		implementation project(':common-jpa')
+		implementation project(':access-role-api')
+			
+		testRuntimeOnly 'com.h2database:h2'
+		testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
+		testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+	}
+
+test {
+	useJUnitPlatform()
+}
+
+bootJar {
+	enabled = false
+}
+
+jar {
+	enabled=true
+}
