@@ -8,7 +8,6 @@ apply from: "$rootDir/gradle/integration.gradle"
 dependencies {
 
 	implementation project(':shared-kernel')
-	implementation project(':integration-api')
 	implementation project(':security-access-user-api')
 }
 

@@ -1,0 +1,19 @@
+server:
+  port: 8761
+
+spring:
+  application:
+    name: Belian Eureka Server
+    version: 2.0.1
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    com.kratonsolution.belian.gateway: INFO
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+  datacenter: localhost

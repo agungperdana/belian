@@ -4,6 +4,7 @@ apply from: "$rootDir/gradle/junit-jupiter.gradle"
 apply from: "$rootDir/gradle/r2dbc-postgres.gradle"
 apply from: "$rootDir/gradle/swager.gradle"
 apply from: "$rootDir/gradle/jwt.gradle"
+apply from: "$rootDir/gradle/spring-cloud.gradle"
 
 dependencies {
 
@@ -13,6 +14,7 @@ dependencies {
     implementation project (':security-access-user-impl')
 
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 }
 
 test {
