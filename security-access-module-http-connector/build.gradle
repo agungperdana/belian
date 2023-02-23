@@ -1,0 +1,22 @@
+apply from: "$rootDir/gradle/spring-boot.gradle"
+apply from: "$rootDir/gradle/junit-jupiter.gradle"
+apply from: "$rootDir/gradle/spring-cloud.gradle"
+
+dependencies {
+
+    implementation project (':security-access-module-api')
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+bootJar {
+    enabled=false
+}
+
+jar{
+    enabled=true
+}
