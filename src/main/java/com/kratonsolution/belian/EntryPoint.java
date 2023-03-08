@@ -23,7 +23,5 @@ public class EntryPoint
     public static void main( String[] args )
     {
     	new SpringApplicationBuilder(EntryPoint.class).bannerMode(Banner.Mode.OFF).run(args);
-    	
-//    	SpringApplication.run(EntryPoint.class, args);
     }
 }
