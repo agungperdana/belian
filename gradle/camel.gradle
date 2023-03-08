@@ -1,7 +1,0 @@
-dependencies {
-	implementation 'org.apache.camel.springboot:camel-spring-boot-starter:3.10.0'
-	implementation 'org.apache.camel.springboot:camel-spring-security-starter:3.10.0'
-	implementation 'org.apache.camel.springboot:camel-activemq-starter:3.10.0'
-	implementation 'org.apache.camel.springboot:camel-jackson-starter:3.10.0'
-	implementation 'org.apache.camel.springboot:camel-jetty-starter:3.10.0'
-}

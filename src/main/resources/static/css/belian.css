@@ -1,0 +1,9 @@
+body {
+	background: url("lighgreenbg.jpg");
+}
+
+@media print {
+	.frmaedisplay {
+		display: none;
+	}
+}
