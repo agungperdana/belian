@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/invoice.css}"/>
+</head>
+<body>
+	<table>
+	<thead>
+	<tr style="border-bottom: solid silver 1px;">
+		<th class="doc-head" th:text="${title}"/>
+		<th align="right" width="30%">
+			<table style="width: 100%" border="1">
+				<tr><td>Organisasi</td><td th:text="${company?.name}"/></tr>
+				<tr><td>Pelanggan </td><td th:text="${customer?.name}"/></tr>
+				<tr><td>Dari Tanggal </td><td th:text="${from}"/></tr>
+				<tr><td>Sampai Tanggal </td><td th:text="${to}"/></tr>
+			</table>
+		</th>
+	</tr>
+	<tr><th colspan="2">&nbsp;</th></tr>
+	</thead>
+	<tbody>
+	<tr>
+		<td colspan="2">
+			<table style="width: 100%" th:each="data:${datas}">
+			<thead style="border-bottom: solid silver 1px;">
+				<tr>
+					<th align="center" colspan="4" th:text="${data.company?.name}"/>
+				</tr>
+				<tr>
+					<th align="left">Tanggal</th>
+					<th align="left">Nomor</th>
+					<th align="right">Status</th>
+					<th align="right">Total</th>
+				</tr>
+			</thead>
+			<tbody style="border-bottom: solid silver 1px;">
+			<tr th:each="invoice:${data.invoices}">
+				<td align="left" width="10%" th:text="${#dates.format(invoice.date,'dd-MM-yyyy')}"/>
+				<td align="left" width="15%" th:text="${invoice.number}"/>
+				<td align="right" width="65%" th:text="${invoice.getPaidStatus()}"/>
+				<td align="right" width="10%" th:text="${#numbers.formatDecimal(invoice.getSubtotal(),1,'POINT',0,'COMMA')}"/>
+			</tr>
+			</tbody>
+			<tfoot>
+			<tr>
+				<td align="right" style="font-weight: bolder;" colspan="2">&nbsp;</td>
+				<td align="right" style="font-weight: bolder;color:blue;">TOTAL</td>
+				<td align="right" style="font-weight: bolder;color:blue;text-decoration: underline;" th:text="${#numbers.formatDecimal(data.total,1,'POINT',0,'COMMA')}"/>
+			</tr>
+			</tfoot>
+			</table>
+		</td>
+	</tr>
+	</tbody>
+	</table>
+</body>
+</html>

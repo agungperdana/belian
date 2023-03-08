@@ -1,5 +1,0 @@
-dependencies {
-
-	implementation 'org.springdoc:springdoc-openapi-webflux-core:1.4.3'
-	implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.4.3'
-}

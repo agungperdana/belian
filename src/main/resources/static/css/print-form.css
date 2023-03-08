@@ -1,0 +1,77 @@
+@charset "UTF-8";
+@media screen,print{
+	#outer{
+		border:solid #D3D3D3 1px;
+		width: 100%;
+		border-collapse: collapse; 
+		border-spacing: 0;
+	}
+	
+	#toolbar{
+		width: 100%;
+	}
+	
+	#top-content{
+		border-top:solid #D3D3D3 1px;
+		width: 100%;
+	}
+	
+	#comp-title{
+		width: 65%;
+		text-align: left;
+		font-size: 20px;
+		font-weight: bold;
+	}
+	
+	#doc-title{
+		width: 35%;
+		text-align: right;
+		font-size: 20px;
+		font-weight: bold;
+	}
+	
+	#ext1{
+		width: 50%;
+		font-size: 14px;
+		text-align: left;
+	}
+	
+	#ext2{
+		width: 50%;
+		font-size: 14px;
+		text-align: right;
+	}
+	
+	#mid-content{
+		width: 100%;
+	}
+	
+	#bot-content{
+		width: 100%;
+	}
+	
+	#content{
+		width:100%;
+		border-collapse: collapse; 
+		border-spacing: 0;
+		font-size: 13px;
+	}
+	
+	#content td,th{
+		border: 1px solid #CCC;
+	}
+	
+	#money{
+		text-align: right;
+	}
+	
+	#bot-line{
+		border-bottom:solid #D3D3D3 1px;
+	}
+}
+
+@media print{
+	#toolbar{
+		display: none;
+	}
+}
