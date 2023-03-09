@@ -1,6 +1,7 @@
 package com.kratonsolution.belian;
 
 import org.springframework.boot.Banner;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cache.annotation.EnableCaching;
@@ -22,6 +23,6 @@ public class EntryPoint
 {
     public static void main( String[] args )
     {
-    	new SpringApplicationBuilder(EntryPoint.class).bannerMode(Banner.Mode.OFF).run(args);
+    	SpringApplication.run(EntryPoint.class);
     }
 }
