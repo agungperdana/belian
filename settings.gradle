@@ -1,1 +1,4 @@
 rootProject.name = 'belian-parent'
+
+include 'common-core'
+include "erp"

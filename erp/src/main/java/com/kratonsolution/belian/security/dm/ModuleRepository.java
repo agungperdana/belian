@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.security.dm;
 
 import java.util.List;
@@ -24,7 +23,7 @@ public interface ModuleRepository extends JpaRepository<Module, String>
 			+ "OR mod.name LIKE %:key% "
 			+ "OR mod.group LIKE %:key% "
 			+ "ORDER BY mod.code ASC,mod.name ASC,mod.group ASC")
-	public List<Module> findAll(Pageable pageable,@Param("key")String key);
+	public List<Module> findAll(Pageable pageable, @Param("key")String key);
 	
 	@Query("SELECT COUNT(mod) FROM Module mod WHERE "
 			+ "mod.code LIKE %:key% "
