@@ -31,7 +31,7 @@ import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.Models;
-import com.kratonsolution.belian.common.dm.Referenceable;
+import com.kratonsolution.belian.common.persistence.Referenceable;
 import com.kratonsolution.belian.orders.dm.OrderAdjustment;
 import com.kratonsolution.belian.orders.dm.OrderItem;
 import com.kratonsolution.belian.orders.dm.OrderRole;

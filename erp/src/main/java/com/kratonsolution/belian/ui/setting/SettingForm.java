@@ -17,10 +17,10 @@ import org.zkoss.zul.Vlayout;
 
 import com.kratonsolution.belian.general.dm.GeographicType;
 import com.kratonsolution.belian.general.svc.GeographicService;
-import com.kratonsolution.belian.global.dm.PrinterType;
-import com.kratonsolution.belian.global.dm.UserSetting;
+import com.kratonsolution.belian.security.impl.dm.PrinterType;
+import com.kratonsolution.belian.security.impl.dm.UserSetting;
 import com.kratonsolution.belian.global.svc.UserSettingService;
-import com.kratonsolution.belian.security.dm.User;
+import com.kratonsolution.belian.security.impl.dm.User;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.accounting.currency.CurrencyList;
 import com.kratonsolution.belian.ui.accounting.tax.TaxList;

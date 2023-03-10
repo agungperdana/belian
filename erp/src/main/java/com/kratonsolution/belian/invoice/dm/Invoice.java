@@ -22,9 +22,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
-import com.kratonsolution.belian.api.dm.IDValueRef;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
 import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.common.dm.Referenceable;
+import com.kratonsolution.belian.common.persistence.Referenceable;
 import com.kratonsolution.belian.orders.dm.RoleType;
 import com.kratonsolution.belian.payments.dm.InvoiceRef;
 

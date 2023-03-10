@@ -12,7 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-import com.kratonsolution.belian.api.dm.IDValueRef;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
 
 import lombok.Getter;
 import lombok.Setter;

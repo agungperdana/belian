@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.kratonsolution.belian.common.dm.Referenceable;
+import com.kratonsolution.belian.common.persistence.Referenceable;
 
 /**
  * @author Agung Dodi Perdana

@@ -9,8 +9,8 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Comboitem;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.api.dm.IDValueRef;
-import com.kratonsolution.belian.api.dm.Observer;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
+import com.kratonsolution.belian.common.persistence.Observer;
 import com.kratonsolution.belian.invoice.dm.Invoice;
 import com.kratonsolution.belian.invoice.svc.SalesInvoiceService;
 import com.kratonsolution.belian.payments.dm.InvoiceRef;

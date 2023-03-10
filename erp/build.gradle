@@ -25,6 +25,10 @@ repositories {
 
 dependencies {
 
+	implementation project(':common-core')
+	implementation project(':common-persistence')
+	implementation project(':security-impl')
+
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-cache'
@@ -51,10 +55,10 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-hibernate {
-	enhancement {
-		lazyInitialization true
-		dirtyTracking true
-		associationManagement true
-	}
-}
+//hibernate {
+//	enhancement {
+//		lazyInitialization true
+//		dirtyTracking true
+//		associationManagement true
+//	}
+//}

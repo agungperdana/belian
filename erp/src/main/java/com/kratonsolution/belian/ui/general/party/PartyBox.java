@@ -7,8 +7,8 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zul.Comboitem;
 
-import com.kratonsolution.belian.api.dm.IDValueRef;
-import com.kratonsolution.belian.api.dm.Observer;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
+import com.kratonsolution.belian.common.persistence.Observer;
 import com.kratonsolution.belian.partys.dm.Party;
 import com.kratonsolution.belian.partys.dm.PartyRepository;
 import com.kratonsolution.belian.ui.component.AbstractCombobox;

@@ -4,7 +4,7 @@ package com.kratonsolution.belian.ui.orders.requirements.work;
 import com.google.common.base.Strings;
 import org.zkoss.zul.Listitem;
 
-import com.kratonsolution.belian.api.dm.IDValueRef;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
 import com.kratonsolution.belian.requirement.dm.WorkRequirement;
 import com.kratonsolution.belian.requirement.svc.WorkRequirementService;
 import com.kratonsolution.belian.ui.component.AbstractList;

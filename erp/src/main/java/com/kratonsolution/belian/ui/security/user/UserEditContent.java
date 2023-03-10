@@ -23,11 +23,11 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.partys.svc.PersonService;
-import com.kratonsolution.belian.security.dm.Role;
-import com.kratonsolution.belian.security.dm.User;
-import com.kratonsolution.belian.security.dm.UserRole;
-import com.kratonsolution.belian.security.svc.RoleService;
-import com.kratonsolution.belian.security.svc.UserService;
+import com.kratonsolution.belian.security.impl.dm.Role;
+import com.kratonsolution.belian.security.impl.dm.User;
+import com.kratonsolution.belian.security.impl.dm.UserRole;
+import com.kratonsolution.belian.security.impl.svc.RoleService;
+import com.kratonsolution.belian.security.impl.svc.UserService;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;

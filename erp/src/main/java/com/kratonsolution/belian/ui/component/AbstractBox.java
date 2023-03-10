@@ -5,7 +5,7 @@ import java.util.Vector;
 
 import org.zkoss.zul.Hbox;
 
-import com.kratonsolution.belian.api.dm.Observer;
+import com.kratonsolution.belian.common.persistence.Observer;
 import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.ui.util.Springs;

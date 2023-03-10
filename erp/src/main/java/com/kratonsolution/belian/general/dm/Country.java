@@ -9,7 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
-import com.kratonsolution.belian.common.dm.Referenceable;
+import com.kratonsolution.belian.common.persistence.Referenceable;
 
 import lombok.Getter;
 import lombok.Setter;

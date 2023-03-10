@@ -9,10 +9,10 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kratonsolution.belian.global.dm.UserSetting;
-import com.kratonsolution.belian.global.dm.UserSettingRepository;
-import com.kratonsolution.belian.security.dm.User;
-import com.kratonsolution.belian.security.dm.UserRepository;
+import com.kratonsolution.belian.security.impl.dm.UserSetting;
+import com.kratonsolution.belian.security.impl.dm.UserSettingRepository;
+import com.kratonsolution.belian.security.impl.dm.User;
+import com.kratonsolution.belian.security.impl.dm.UserRepository;
 
 /**
  * 

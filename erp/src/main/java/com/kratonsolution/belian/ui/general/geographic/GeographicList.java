@@ -4,7 +4,7 @@ package com.kratonsolution.belian.ui.general.geographic;
 import org.zkoss.zul.Listitem;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.api.dm.IDValueRef;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.dm.GeographicType;
 import com.kratonsolution.belian.general.svc.GeographicService;

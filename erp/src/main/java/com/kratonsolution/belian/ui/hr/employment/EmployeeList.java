@@ -3,7 +3,7 @@ package com.kratonsolution.belian.ui.hr.employment;
 
 import org.zkoss.zul.Listitem;
 
-import com.kratonsolution.belian.api.dm.IDValueRef;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
 import com.kratonsolution.belian.hr.dm.Employee;
 import com.kratonsolution.belian.hr.svc.EmployeeService;
 import com.kratonsolution.belian.ui.component.AbstractList;

@@ -18,11 +18,11 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.partys.svc.PersonService;
-import com.kratonsolution.belian.security.dm.Role;
-import com.kratonsolution.belian.security.dm.User;
-import com.kratonsolution.belian.security.dm.UserRole;
-import com.kratonsolution.belian.security.svc.RoleService;
-import com.kratonsolution.belian.security.svc.UserService;
+import com.kratonsolution.belian.security.impl.dm.Role;
+import com.kratonsolution.belian.security.impl.dm.User;
+import com.kratonsolution.belian.security.impl.dm.UserRole;
+import com.kratonsolution.belian.security.impl.svc.RoleService;
+import com.kratonsolution.belian.security.impl.svc.UserService;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.hr.employment.EmployeeList;
 import com.kratonsolution.belian.ui.util.Components;
@@ -33,7 +33,7 @@ import com.kratonsolution.belian.ui.util.Springs;
 /**
  * 
  * @author Agung Dodi Perdana
- * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class UserFormContent extends AbstractForm
 {	
@@ -99,7 +99,7 @@ public class UserFormContent extends AbstractForm
 				user.setUserName(email.getText());
 				user.setPassword(password.getText());
 				user.setEnabled(enabled.isChecked());
-				user.setEmployee(employees.getDomain());
+//				user.setEmployee(employees.getDomain());
 				
 				service.add(user);
 				

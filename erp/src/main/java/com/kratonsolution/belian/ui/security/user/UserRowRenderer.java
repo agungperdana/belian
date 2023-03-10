@@ -6,7 +6,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
-import com.kratonsolution.belian.security.dm.User;
+import com.kratonsolution.belian.security.impl.dm.User;
 import com.kratonsolution.belian.ui.util.Components;
 
 /**

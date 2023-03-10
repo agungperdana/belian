@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Vector;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -20,12 +19,11 @@ import com.kratonsolution.belian.accounting.dm.Currency;
 import com.kratonsolution.belian.accounting.dm.Tax;
 import com.kratonsolution.belian.accounting.svc.CurrencyService;
 import com.kratonsolution.belian.accounting.svc.TaxService;
-import com.kratonsolution.belian.api.dm.IDValueRef;
-import com.kratonsolution.belian.general.dm.CompanyStructureRepository;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
-import com.kratonsolution.belian.global.dm.PrinterType;
-import com.kratonsolution.belian.global.dm.UserSettingRepository;
+import com.kratonsolution.belian.security.impl.dm.PrinterType;
+import com.kratonsolution.belian.security.impl.dm.UserSettingRepository;
 import com.kratonsolution.belian.hr.dm.Employee;
 import com.kratonsolution.belian.hr.dm.EmployeeRepository;
 import com.kratonsolution.belian.hr.dm.Employment;
@@ -36,11 +34,9 @@ import com.kratonsolution.belian.partys.dm.Party;
 import com.kratonsolution.belian.partys.dm.Person;
 import com.kratonsolution.belian.partys.svc.OrganizationService;
 import com.kratonsolution.belian.partys.svc.PartyService;
-import com.kratonsolution.belian.partys.svc.PersonService;
-import com.kratonsolution.belian.security.app.Authority;
-import com.kratonsolution.belian.security.app.SecurityInformation;
-import com.kratonsolution.belian.security.dm.User;
-import com.kratonsolution.belian.security.svc.UserService;
+import com.kratonsolution.belian.security.impl.app.Authority;
+import com.kratonsolution.belian.security.impl.app.SecurityInformation;
+import com.kratonsolution.belian.security.impl.dm.User;
 
 
 /**

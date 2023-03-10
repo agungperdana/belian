@@ -18,9 +18,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Window;
 
-import com.kratonsolution.belian.api.dm.IDValueRef;
-import com.kratonsolution.belian.api.dm.Observable;
-import com.kratonsolution.belian.api.dm.Observer;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
+import com.kratonsolution.belian.common.persistence.Observable;
+import com.kratonsolution.belian.common.persistence.Observer;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;

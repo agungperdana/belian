@@ -3,7 +3,7 @@ package com.kratonsolution.belian.ui.orders;
 
 import org.zkoss.zul.Listitem;
 
-import com.kratonsolution.belian.api.dm.IDValueRef;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
 import com.kratonsolution.belian.orders.dm.RoleType;
 import com.kratonsolution.belian.ui.component.AbstractList;
 

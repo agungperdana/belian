@@ -5,18 +5,35 @@ plugins {
 }
 
 group = 'com.kratonsolution.belian'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.1'
 sourceCompatibility = '17'
 
 repositories {
     mavenCentral()
 }
 
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+jar {
+    enabled=true
+}
+
+bootJar {
+    enabled=false
 }

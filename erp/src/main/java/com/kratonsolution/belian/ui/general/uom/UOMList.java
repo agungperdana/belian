@@ -4,8 +4,8 @@ package com.kratonsolution.belian.ui.general.uom;
 import org.zkoss.zul.Listitem;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.api.dm.IDValueRef;
-import com.kratonsolution.belian.api.dm.Observer;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
+import com.kratonsolution.belian.common.persistence.Observer;
 import com.kratonsolution.belian.products.dm.Product;
 import com.kratonsolution.belian.products.dm.UnitOfMeasure;
 import com.kratonsolution.belian.products.svc.ProductService;

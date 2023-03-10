@@ -26,8 +26,8 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vlayout;
 
-import com.kratonsolution.belian.api.dm.IDValueRef;
-import com.kratonsolution.belian.api.dm.Observer;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
+import com.kratonsolution.belian.common.persistence.Observer;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.invoice.dm.InvoiceItem;
 import com.kratonsolution.belian.invoice.dm.InvoiceItemType;

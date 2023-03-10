@@ -4,8 +4,8 @@ package com.kratonsolution.belian.ui.inventory.facility;
 import org.zkoss.zul.Borderlayout;
 import org.zkoss.zul.West;
 
-import com.kratonsolution.belian.api.dm.IDValueRef;
-import com.kratonsolution.belian.api.dm.Observer;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
+import com.kratonsolution.belian.common.persistence.Observer;
 import com.kratonsolution.belian.inventory.dm.Facility;
 import com.kratonsolution.belian.ui.CenterContent;
 import com.kratonsolution.belian.ui.Removeable;

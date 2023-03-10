@@ -14,8 +14,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
-import com.kratonsolution.belian.common.dm.AuditLog;
-import com.kratonsolution.belian.common.dm.Logable;
+import com.kratonsolution.belian.common.persistence.AuditLog;
+import com.kratonsolution.belian.common.persistence.Logable;
 
 import lombok.Getter;
 import lombok.Setter;

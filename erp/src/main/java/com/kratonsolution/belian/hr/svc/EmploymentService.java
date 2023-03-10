@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.api.dm.IDValueRef;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
 import com.kratonsolution.belian.global.dm.AbstractService;
 import com.kratonsolution.belian.hr.dm.Employee;
 import com.kratonsolution.belian.hr.dm.EmployeeRepository;

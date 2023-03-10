@@ -25,8 +25,8 @@ import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
-import com.kratonsolution.belian.api.dm.IDValueRef;
-import com.kratonsolution.belian.common.dm.Referenceable;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
+import com.kratonsolution.belian.common.persistence.Referenceable;
 import com.kratonsolution.belian.requirement.dm.RequirementOrderCommitment;
 
 import lombok.Getter;
