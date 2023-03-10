@@ -28,8 +28,8 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.api.dm.IDValueRef;
-import com.kratonsolution.belian.api.dm.Observer;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
+import com.kratonsolution.belian.common.persistence.Observer;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.requirement.dm.ProductionInfo;
 import com.kratonsolution.belian.requirement.dm.RequirementRole;

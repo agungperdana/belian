@@ -33,7 +33,7 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Vbox;
 import org.zkoss.zul.West;
 
-import com.kratonsolution.belian.api.dm.IDValueRef;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.healtcares.dm.HealthcareDelivery;
 import com.kratonsolution.belian.healtcares.dm.Visit;

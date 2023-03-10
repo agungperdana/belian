@@ -7,8 +7,8 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
-import com.kratonsolution.belian.security.dm.Module;
-import com.kratonsolution.belian.security.svc.ModuleService;
+import com.kratonsolution.belian.security.impl.dm.Module;
+import com.kratonsolution.belian.security.impl.svc.ModuleService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**

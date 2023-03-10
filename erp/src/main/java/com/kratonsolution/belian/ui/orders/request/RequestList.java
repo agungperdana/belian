@@ -4,7 +4,7 @@ package com.kratonsolution.belian.ui.orders.request;
 import org.zkoss.zul.Listitem;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.api.dm.IDValueRef;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
 import com.kratonsolution.belian.orders.dm.Request;
 import com.kratonsolution.belian.orders.svc.RequestService;
 import com.kratonsolution.belian.ui.component.AbstractList;

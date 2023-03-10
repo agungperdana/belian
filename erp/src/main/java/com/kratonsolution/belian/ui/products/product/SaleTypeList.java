@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.zkoss.zul.Listitem;
 
-import com.kratonsolution.belian.api.dm.IDValueRef;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.products.dm.SaleType;
 import com.kratonsolution.belian.ui.component.AbstractList;

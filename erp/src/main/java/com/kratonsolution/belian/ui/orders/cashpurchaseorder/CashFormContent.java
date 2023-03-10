@@ -25,8 +25,8 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
-import com.kratonsolution.belian.api.dm.IDValueRef;
-import com.kratonsolution.belian.api.dm.Observer;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
+import com.kratonsolution.belian.common.persistence.Observer;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.orders.dm.OrderAdjustment;
 import com.kratonsolution.belian.orders.dm.PurchaseOrder;

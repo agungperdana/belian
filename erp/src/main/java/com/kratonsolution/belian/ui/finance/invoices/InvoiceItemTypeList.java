@@ -3,7 +3,7 @@ package com.kratonsolution.belian.ui.finance.invoices;
 
 import org.zkoss.zul.Listitem;
 
-import com.kratonsolution.belian.api.dm.IDValueRef;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
 import com.kratonsolution.belian.invoice.dm.InvoiceItemType;
 import com.kratonsolution.belian.ui.component.AbstractList;
 

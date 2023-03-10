@@ -14,9 +14,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.security.dm.Module;
-import com.kratonsolution.belian.security.dm.ModuleGroup;
-import com.kratonsolution.belian.security.svc.ModuleService;
+import com.kratonsolution.belian.security.impl.dm.Module;
+import com.kratonsolution.belian.security.impl.dm.ModuleGroup;
+import com.kratonsolution.belian.security.impl.svc.ModuleService;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;

@@ -4,8 +4,8 @@ package com.kratonsolution.belian.ui.inventorys.shipment;
 import org.zkoss.zul.Listitem;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.api.dm.IDValueRef;
-import com.kratonsolution.belian.api.dm.Observer;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
+import com.kratonsolution.belian.common.persistence.Observer;
 import com.kratonsolution.belian.common.DateTimes;
 import com.kratonsolution.belian.shipment.dm.Shipment;
 import com.kratonsolution.belian.shipment.svc.ShipmentService;

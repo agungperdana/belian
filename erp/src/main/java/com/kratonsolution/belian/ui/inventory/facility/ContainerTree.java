@@ -16,7 +16,7 @@ import org.zkoss.zul.Treecols;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
 
-import com.kratonsolution.belian.api.dm.Observer;
+import com.kratonsolution.belian.common.persistence.Observer;
 import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.inventory.dm.Container;
 import com.kratonsolution.belian.inventory.dm.Facility;

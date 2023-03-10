@@ -25,7 +25,7 @@ import org.zkoss.zul.Timebox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.common.dm.Referenceable;
+import com.kratonsolution.belian.common.persistence.Referenceable;
 import com.kratonsolution.belian.partys.dm.Organization;
 
 /**

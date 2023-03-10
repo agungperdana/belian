@@ -18,8 +18,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
-import com.kratonsolution.belian.api.dm.IDValueRef;
-import com.kratonsolution.belian.common.dm.Referenceable;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
+import com.kratonsolution.belian.common.persistence.Referenceable;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -84,7 +84,7 @@ public class HealthcareDelivery implements Referenceable
 	
 	
 	/* (non-Javadoc)
-	 * @see com.kratonsolution.belian.common.dm.Referenceable#getLabel()
+	 * @see com.kratonsolution.belian.common.persistence.Referenceable#getLabel()
 	 */
 	@Override
 	public String getLabel()
@@ -93,7 +93,7 @@ public class HealthcareDelivery implements Referenceable
 	}
 
 	/* (non-Javadoc)
-	 * @see com.kratonsolution.belian.common.dm.Referenceable#getValue()
+	 * @see com.kratonsolution.belian.common.persistence.Referenceable#getValue()
 	 */
 	@Override
 	public String getValue()

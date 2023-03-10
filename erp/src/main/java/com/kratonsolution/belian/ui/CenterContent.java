@@ -5,8 +5,8 @@ import java.util.Vector;
 
 import org.zkoss.zul.Center;
 
-import com.kratonsolution.belian.api.dm.Observable;
-import com.kratonsolution.belian.api.dm.Observer;
+import com.kratonsolution.belian.common.persistence.Observable;
+import com.kratonsolution.belian.common.persistence.Observer;
 
 import lombok.Getter;
 

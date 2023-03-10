@@ -23,8 +23,8 @@ import jakarta.persistence.Version;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
-import com.kratonsolution.belian.api.dm.IDValueRef;
-import com.kratonsolution.belian.common.dm.Referenceable;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
+import com.kratonsolution.belian.common.persistence.Referenceable;
 import com.kratonsolution.belian.general.dm.Geographic;
 
 import lombok.Getter;

@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.api.dm.IDValueRef;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
 
 /**
  * @author Agung Dodi Perdana

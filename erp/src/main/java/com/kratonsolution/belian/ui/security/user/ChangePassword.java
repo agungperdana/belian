@@ -12,7 +12,7 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
-import com.kratonsolution.belian.security.svc.UserService;
+import com.kratonsolution.belian.security.impl.svc.UserService;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.setting.SettingForm;
 import com.kratonsolution.belian.ui.util.Components;

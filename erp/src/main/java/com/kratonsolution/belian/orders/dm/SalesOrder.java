@@ -4,7 +4,7 @@ package com.kratonsolution.belian.orders.dm;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
-import com.kratonsolution.belian.api.dm.IDValueRef;
+import com.kratonsolution.belian.common.persistence.IDValueRef;
 
 import lombok.Getter;
 import lombok.Setter;

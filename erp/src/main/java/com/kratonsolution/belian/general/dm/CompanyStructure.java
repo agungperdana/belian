@@ -21,7 +21,7 @@ import jakarta.persistence.Version;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
-import com.kratonsolution.belian.common.dm.Referenceable;
+import com.kratonsolution.belian.common.persistence.Referenceable;
 import com.kratonsolution.belian.partys.dm.Organization;
 
 import lombok.Getter;
