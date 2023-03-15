@@ -2,5 +2,7 @@ rootProject.name = 'belian-parent'
 
 include 'common-core'
 include 'common-persistence'
+include 'module-api'
+include 'module-impl'
 include 'security-impl'
 include "erp"
