@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.security.impl.app;
 
 import lombok.AllArgsConstructor;
@@ -11,9 +10,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 @AllArgsConstructor
 @Configuration

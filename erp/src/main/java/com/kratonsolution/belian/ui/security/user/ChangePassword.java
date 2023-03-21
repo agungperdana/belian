@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.ui.security.user;
 
 import org.zkoss.zk.ui.Component;
@@ -12,7 +11,7 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
-import com.kratonsolution.belian.security.impl.svc.UserService;
+import com.kratonsolution.belian.user.impl.application.UserServiceImpl;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.setting.SettingForm;
 import com.kratonsolution.belian.ui.util.Components;
@@ -21,13 +20,13 @@ import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class ChangePassword extends AbstractForm
 {
-	private UserService service = Springs.get(UserService.class);
+	private UserServiceImpl service = Springs.get(UserServiceImpl.class);
 	
 	private Row row;
 	

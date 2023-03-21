@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.ui.security.user;
 
 import java.util.HashMap;
@@ -23,11 +22,11 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.partys.svc.PersonService;
-import com.kratonsolution.belian.security.impl.dm.Role;
-import com.kratonsolution.belian.security.impl.dm.User;
-import com.kratonsolution.belian.security.impl.dm.UserRole;
-import com.kratonsolution.belian.security.impl.svc.RoleService;
-import com.kratonsolution.belian.security.impl.svc.UserService;
+import com.kratonsolution.belian.role.impl.orm.Role;
+import com.kratonsolution.belian.user.impl.orm.User;
+import com.kratonsolution.belian.user.impl.orm.UserRole;
+import com.kratonsolution.belian.role.impl.application.RoleService;
+import com.kratonsolution.belian.user.impl.application.UserServiceImpl;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
@@ -35,13 +34,13 @@ import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @s
  */
 public class UserEditContent extends AbstractForm
 {	
-	private UserService service = Springs.get(UserService.class);
+	private UserServiceImpl service = Springs.get(UserServiceImpl.class);
 
 	private PersonService personService = Springs.get(PersonService.class);
 	
@@ -210,8 +209,10 @@ public class UserEditContent extends AbstractForm
 			Rows _rows = new Rows();
 			for(UserRole role:user.getRoles())
 			{
+				Role rl = roleService.getOne(role.getRole());
+
 				Row row = new Row();
-				row.appendChild(new Label(role.getRole().getName()));
+				row.appendChild(new Label(rl!=null?rl.getName():""));
 
 				Checkbox checkbox = new Checkbox();
 				checkbox.setChecked(role.isEnabled());
@@ -221,7 +222,7 @@ public class UserEditContent extends AbstractForm
 
 				_rows.appendChild(row);
 				
-				already.put(role.getRole().getId(), true);
+				already.put(role.getRole(), true);
 			}
 
 			for(Role role:roleService.findAll())

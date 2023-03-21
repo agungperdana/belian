@@ -11,8 +11,20 @@ package com.kratonsolution.belian.module.api;
 public enum ModuleGroup
 {
 	SYSTEM,
+	GENERAL,
 	SECURITY,
-	GLOBAL,
-	CRM,
-	HR
+	ACCOUNTING,
+	FINANCIAL,
+	INVENTORY,
+	SALES,
+	PROCUREMENT,
+	HR,
+	ASSET,
+	PAYMENT,
+	EDUCATION,
+	PRODUCTION,
+	HEALTHCARE,
+	CLINIC,
+	MEDICALLAB,
+	PHARMACY
 }

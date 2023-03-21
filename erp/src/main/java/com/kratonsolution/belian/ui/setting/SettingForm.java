@@ -1,6 +1,8 @@
-
 package com.kratonsolution.belian.ui.setting;
 
+import com.kratonsolution.belian.user.impl.orm.PrinterType;
+import com.kratonsolution.belian.user.impl.orm.User;
+import com.kratonsolution.belian.user.impl.orm.UserSetting;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -17,10 +19,7 @@ import org.zkoss.zul.Vlayout;
 
 import com.kratonsolution.belian.general.dm.GeographicType;
 import com.kratonsolution.belian.general.svc.GeographicService;
-import com.kratonsolution.belian.security.impl.dm.PrinterType;
-import com.kratonsolution.belian.security.impl.dm.UserSetting;
 import com.kratonsolution.belian.global.svc.UserSettingService;
-import com.kratonsolution.belian.security.impl.dm.User;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.accounting.currency.CurrencyList;
 import com.kratonsolution.belian.ui.accounting.tax.TaxList;
@@ -33,6 +32,7 @@ import com.kratonsolution.belian.ui.util.Springs;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class SettingForm extends AbstractForm
 {

@@ -1,5 +1,7 @@
 package com.kratonsolution.belian.common.core;
 
+import lombok.NonNull;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -9,13 +11,13 @@ import java.util.Optional;
  */
 public interface DataService<C extends CreateCommand, U extends UpdateCommand, D extends DeleteCommand, Q extends Query, T extends Data> {
 
-    void create(C c);
+    void create(@NonNull C c);
 
-    void update(U u);
+    void update(@NonNull U u);
 
-    void delete(D d);
+    void delete(@NonNull D d);
 
-    Optional<D> getOne(Q q);
+    Optional<D> getOne(@NonNull Q q);
 
     List<QueryResult<T>> getAll(Optional<Q> query);
 }

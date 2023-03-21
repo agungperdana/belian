@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.ui.security.user;
 
 import org.zkoss.zk.ui.WrongValueException;
@@ -18,11 +17,11 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.partys.svc.PersonService;
-import com.kratonsolution.belian.security.impl.dm.Role;
-import com.kratonsolution.belian.security.impl.dm.User;
-import com.kratonsolution.belian.security.impl.dm.UserRole;
-import com.kratonsolution.belian.security.impl.svc.RoleService;
-import com.kratonsolution.belian.security.impl.svc.UserService;
+import com.kratonsolution.belian.role.impl.orm.Role;
+import com.kratonsolution.belian.user.impl.orm.User;
+import com.kratonsolution.belian.user.impl.orm.UserRole;
+import com.kratonsolution.belian.role.impl.application.RoleService;
+import com.kratonsolution.belian.user.impl.application.UserServiceImpl;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.hr.employment.EmployeeList;
 import com.kratonsolution.belian.ui.util.Components;
@@ -31,13 +30,13 @@ import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * 
  * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
  * @since 1.0.0
  */
 public class UserFormContent extends AbstractForm
 {	
-	private UserService service = Springs.get(UserService.class);
+	private UserServiceImpl service = Springs.get(UserServiceImpl.class);
 	
 	private RoleService roleService = Springs.get(RoleService.class);
 	
@@ -112,7 +111,7 @@ public class UserFormContent extends AbstractForm
 					if(role != null)
 					{
 						UserRole userRole = new UserRole();
-						userRole.setRole(role);
+						userRole.setRole(role.getId());
 						userRole.setUser(user);
 						userRole.setEnabled(RowUtils.isChecked(row, 1));
 						

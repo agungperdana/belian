@@ -29,12 +29,12 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
-import com.kratonsolution.belian.security.impl.dm.AccessRole;
-import com.kratonsolution.belian.security.impl.dm.Module;
-import com.kratonsolution.belian.security.impl.dm.ModuleGroup;
-import com.kratonsolution.belian.security.impl.dm.Role;
-import com.kratonsolution.belian.security.impl.svc.ModuleService;
-import com.kratonsolution.belian.security.impl.svc.RoleService;
+import com.kratonsolution.belian.role.impl.orm.AccessRole;
+import com.kratonsolution.belian.module.impl.orm.Module;
+import com.kratonsolution.belian.module.impl.orm.ModuleGroup;
+import com.kratonsolution.belian.role.impl.orm.Role;
+import com.kratonsolution.belian.module.impl.application.ModuleServiceImpl;
+import com.kratonsolution.belian.role.impl.application.RoleService;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
@@ -50,7 +50,7 @@ public class RoleEditContent extends AbstractForm
 {	
 	private RoleService service = Springs.get(RoleService.class);
 
-	private ModuleService moduleService = Springs.get(ModuleService.class);
+	private ModuleServiceImpl moduleServiceImpl = Springs.get(ModuleServiceImpl.class);
 	
 	private CompanyStructureService structureService = Springs.get(CompanyStructureService.class);
 
@@ -309,7 +309,7 @@ public class RoleEditContent extends AbstractForm
 			{
 				if(accessRole.getModule() != null)
 				{
-					Module module = moduleService.getOne(accessRole.getModule().getId());
+					Module module = moduleServiceImpl.getOne(accessRole.getModule());
 					if(module != null && module.getGroup().equals(group))
 					{
 						Checkbox create = new Checkbox();
@@ -342,12 +342,12 @@ public class RoleEditContent extends AbstractForm
 				}
 			}
 
-			for(Module module:moduleService.findAll())
+			for(Module module: moduleServiceImpl.findAll())
 			{
 				boolean exist = false;
 				for(AccessRole accessRole:role.getAccesses())
 				{
-					if(accessRole.getModule() != null && accessRole.getModule().getId().equals(module.getId()))
+					if(accessRole.getModule() != null && accessRole.getModule().equals(module.getId()))
 						exist = true;
 				}
 

@@ -14,9 +14,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.security.impl.dm.Module;
-import com.kratonsolution.belian.security.impl.dm.ModuleGroup;
-import com.kratonsolution.belian.security.impl.svc.ModuleService;
+import com.kratonsolution.belian.module.impl.orm.Module;
+import com.kratonsolution.belian.module.impl.orm.ModuleGroup;
+import com.kratonsolution.belian.module.impl.application.ModuleServiceImpl;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
@@ -30,7 +30,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class ModuleEditContent extends AbstractForm
 {	
-	private ModuleService service = Springs.get(ModuleService.class);
+	private ModuleServiceImpl service = Springs.get(ModuleServiceImpl.class);
 	
 private Textbox code = Components.mandatoryTextBox(false);
 	

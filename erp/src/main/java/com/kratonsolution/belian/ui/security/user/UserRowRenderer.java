@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.ui.security.user;
 
 import org.zkoss.zul.Checkbox;
@@ -6,13 +5,13 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
-import com.kratonsolution.belian.security.impl.dm.User;
+import com.kratonsolution.belian.user.impl.orm.User;
 import com.kratonsolution.belian.ui.util.Components;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class UserRowRenderer implements RowRenderer<User>
 {
