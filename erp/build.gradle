@@ -27,6 +27,9 @@ dependencies {
 
 	implementation project(':common-core')
 	implementation project(':common-persistence')
+	implementation project(':module-impl')
+	implementation project(':role-impl')
+	implementation project(':user-impl')
 	implementation project(':security-impl')
 
 	implementation 'org.springframework.boot:spring-boot-starter'

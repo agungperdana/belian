@@ -1,6 +1,9 @@
-
 package com.kratonsolution.belian.global.svc;
 
+import com.kratonsolution.belian.user.impl.orm.User;
+import com.kratonsolution.belian.user.impl.repository.UserRepository;
+import com.kratonsolution.belian.user.impl.orm.UserSetting;
+import com.kratonsolution.belian.user.impl.orm.UserSettingRepository;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,15 +12,10 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kratonsolution.belian.security.impl.dm.UserSetting;
-import com.kratonsolution.belian.security.impl.dm.UserSettingRepository;
-import com.kratonsolution.belian.security.impl.dm.User;
-import com.kratonsolution.belian.security.impl.dm.UserRepository;
-
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 @Service
 @Transactional(rollbackFor=Exception.class)

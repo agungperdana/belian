@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.ui.security.user;
 
 import org.zkoss.zk.ui.Component;
@@ -16,7 +15,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 import org.zkoss.zul.event.ZulEvents;
 
-import com.kratonsolution.belian.security.impl.svc.UserService;
+import com.kratonsolution.belian.user.impl.application.UserServiceImpl;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -25,10 +24,11 @@ import com.kratonsolution.belian.ui.util.Springs;
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class UserGridContent extends GridContent
 {
-	private UserService controller = Springs.get(UserService.class);
+	private UserServiceImpl controller = Springs.get(UserServiceImpl.class);
 	
 	public UserGridContent()
 	{

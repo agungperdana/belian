@@ -29,12 +29,12 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.CompanyStructure;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.partys.svc.OrganizationService;
-import com.kratonsolution.belian.security.impl.dm.AccessRole;
-import com.kratonsolution.belian.security.impl.dm.Module;
-import com.kratonsolution.belian.security.impl.dm.ModuleGroup;
-import com.kratonsolution.belian.security.impl.dm.Role;
-import com.kratonsolution.belian.security.impl.svc.ModuleService;
-import com.kratonsolution.belian.security.impl.svc.RoleService;
+import com.kratonsolution.belian.role.impl.orm.AccessRole;
+import com.kratonsolution.belian.module.impl.orm.Module;
+import com.kratonsolution.belian.module.impl.orm.ModuleGroup;
+import com.kratonsolution.belian.role.impl.orm.Role;
+import com.kratonsolution.belian.module.impl.application.ModuleServiceImpl;
+import com.kratonsolution.belian.role.impl.application.RoleService;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
@@ -50,7 +50,7 @@ public class RoleFormContent extends AbstractForm
 {	
 	private RoleService service = Springs.get(RoleService.class);
 	
-	private ModuleService moduleService = Springs.get(ModuleService.class);
+	private ModuleServiceImpl moduleServiceImpl = Springs.get(ModuleServiceImpl.class);
 	
 	private OrganizationService organizationService = Springs.get(OrganizationService.class);
 	
@@ -116,11 +116,11 @@ public class RoleFormContent extends AbstractForm
 					{
 						Row _row = (Row)object;
 						
-						Module module = moduleService.getOne(RowUtils.string(_row, 6));
+						Module module = moduleServiceImpl.getOne(RowUtils.string(_row, 6));
 						if(module != null)
 						{
 							AccessRole accessRole = new AccessRole();
-							accessRole.setModule(module);
+							accessRole.setModule(module.getId());
 							accessRole.setRole(role);
 							accessRole.setCanCreate(RowUtils.isChecked(_row, 1));
 							accessRole.setCanRead(RowUtils.isChecked(_row, 2));
@@ -293,7 +293,7 @@ public class RoleFormContent extends AbstractForm
 			grid.getColumns().appendChild(canPrint);
 			grid.getColumns().appendChild(moduleId);
 			
-			for(Module module:moduleService.findAll())
+			for(Module module: moduleServiceImpl.findAll())
 			{
 				if(module.getGroup().equals(group))
 				{

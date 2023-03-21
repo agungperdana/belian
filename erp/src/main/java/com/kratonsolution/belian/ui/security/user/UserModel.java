@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.ui.security.user;
 
 import java.util.ArrayList;
@@ -7,18 +6,18 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
-import com.kratonsolution.belian.security.impl.dm.User;
-import com.kratonsolution.belian.security.impl.svc.UserService;
+import com.kratonsolution.belian.user.impl.orm.User;
+import com.kratonsolution.belian.user.impl.application.UserServiceImpl;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class UserModel implements ListModel<User>
 {
-	private final UserService controller = Springs.get(UserService.class);
+	private final UserServiceImpl controller = Springs.get(UserServiceImpl.class);
 	
 	private List<User> data = new ArrayList<User>();
 	

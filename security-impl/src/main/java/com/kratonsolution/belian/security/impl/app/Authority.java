@@ -1,12 +1,11 @@
-
 package com.kratonsolution.belian.security.impl.app;
 
 import org.springframework.security.core.GrantedAuthority;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.1
  */
 public class Authority implements GrantedAuthority
 {

@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.common;
 
 import java.util.ArrayList;
@@ -8,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import com.kratonsolution.belian.user.impl.orm.PrinterType;
+import com.kratonsolution.belian.user.impl.orm.UserSettingRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,6 @@ import com.kratonsolution.belian.accounting.svc.TaxService;
 import com.kratonsolution.belian.common.persistence.IDValueRef;
 import com.kratonsolution.belian.general.dm.Geographic;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
-import com.kratonsolution.belian.security.impl.dm.PrinterType;
-import com.kratonsolution.belian.security.impl.dm.UserSettingRepository;
 import com.kratonsolution.belian.hr.dm.Employee;
 import com.kratonsolution.belian.hr.dm.EmployeeRepository;
 import com.kratonsolution.belian.hr.dm.Employment;
@@ -36,13 +35,13 @@ import com.kratonsolution.belian.partys.svc.OrganizationService;
 import com.kratonsolution.belian.partys.svc.PartyService;
 import com.kratonsolution.belian.security.impl.app.Authority;
 import com.kratonsolution.belian.security.impl.app.SecurityInformation;
-import com.kratonsolution.belian.security.impl.dm.User;
+import com.kratonsolution.belian.user.impl.orm.User;
 
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 @AllArgsConstructor
 @Service

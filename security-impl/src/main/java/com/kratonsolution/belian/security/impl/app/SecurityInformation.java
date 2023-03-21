@@ -1,33 +1,28 @@
-
 package com.kratonsolution.belian.security.impl.app;
 
 import java.util.Collection;
 
-import com.kratonsolution.belian.security.impl.dm.User;
+import com.kratonsolution.belian.user.impl.orm.User;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
 public class SecurityInformation implements UserDetails
 {
 	private User user;
 	
 	private Collection<Authority> authoritys;
-	
-	public SecurityInformation(User user,Collection<Authority> authoritys)
-	{
-		this.user = user;
-		this.authoritys = authoritys;
-	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.springframework.security.core.userdetails.UserDetails#getAuthorities()
 	 */

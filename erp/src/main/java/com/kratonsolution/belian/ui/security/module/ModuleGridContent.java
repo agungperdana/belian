@@ -16,7 +16,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 import org.zkoss.zul.event.ZulEvents;
 
-import com.kratonsolution.belian.security.impl.svc.ModuleService;
+import com.kratonsolution.belian.module.impl.application.ModuleServiceImpl;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;
@@ -29,7 +29,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class ModuleGridContent extends GridContent
 {
-	private ModuleService service = Springs.get(ModuleService.class);
+	private ModuleServiceImpl service = Springs.get(ModuleServiceImpl.class);
 	
 	public ModuleGridContent()
 	{

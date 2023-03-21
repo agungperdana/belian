@@ -1,13 +1,12 @@
-
 package com.kratonsolution.belian.security.impl.app;
 
 import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class PasswordEncoderImpl implements PasswordEncoder
 {

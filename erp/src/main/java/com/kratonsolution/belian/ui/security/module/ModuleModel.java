@@ -7,8 +7,8 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
-import com.kratonsolution.belian.security.impl.dm.Module;
-import com.kratonsolution.belian.security.impl.svc.ModuleService;
+import com.kratonsolution.belian.module.impl.orm.Module;
+import com.kratonsolution.belian.module.impl.application.ModuleServiceImpl;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
@@ -18,7 +18,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class ModuleModel implements ListModel<Module>
 {
-	private final ModuleService controller = Springs.get(ModuleService.class);
+	private final ModuleServiceImpl controller = Springs.get(ModuleServiceImpl.class);
 	
 	private List<Module> data = new ArrayList<Module>();
 	
