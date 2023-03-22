@@ -8,5 +8,11 @@ import lombok.Data;
  * @since 1.0.1
  */
 @Data
-public class User {
+public class UserRoleData {
+
+    private String role;
+
+    private String roleName;
+
+    private boolean enabled;
 }

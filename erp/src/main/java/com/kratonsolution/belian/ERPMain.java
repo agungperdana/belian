@@ -1,22 +1,14 @@
 package com.kratonsolution.belian;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
-@Configuration
-@EnableAutoConfiguration
-@EnableTransactionManagement
-@EnableCaching
-@ComponentScan
+@SpringBootApplication
 public class ERPMain
 {
     public static void main( String[] args )

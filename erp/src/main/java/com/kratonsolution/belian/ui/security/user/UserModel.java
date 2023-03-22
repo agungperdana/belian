@@ -58,6 +58,6 @@ public class UserModel implements ListModel<User>
 	public void next(int pageIndex,int itemSize)
 	{
 		data.clear();
-		data.addAll(controller.findAll(0, (itemSize*pageIndex)+itemSize));
+//		data.addAll(controller.findAll(0, (itemSize*pageIndex)+itemSize));
 	}
 }

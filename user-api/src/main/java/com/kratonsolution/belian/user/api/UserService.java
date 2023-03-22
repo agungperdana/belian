@@ -1,22 +1,24 @@
 package com.kratonsolution.belian.user.api;
 
+import lombok.NonNull;
+
 import java.util.List;
 
 public interface UserService {
 
-    public User getOne(String id);
+    public UserData getOne(String id);
 
-    public List<User> findAll();
+    public List<UserData> findAll();
 
     public int size();
 
-    public List<User> findAll(int pageIndex,int pageSize);
+    public List<UserData> findAll(int offset,int limit);
 
-    public void add(User user);
+    public void add(UserCreateCommand command);
 
-    public void edit(User user);
+    public void edit(UserUpdateCommand command);
 
-    public void delete(String id);
+    public void delete(UserDeleteCommand command);
 
-    public void changePassword(String id, String newPassword, String renewPassword);
+    public void changePassword(@NonNull ChangePasswordCommand command);
 }

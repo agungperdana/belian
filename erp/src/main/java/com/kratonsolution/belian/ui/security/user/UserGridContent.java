@@ -124,7 +124,7 @@ public class UserGridContent extends GridContent
 											if(check.isChecked())
 											{
 												Label label = (Label)row.getLastChild();
-												controller.delete(label.getValue());
+//												controller.delete(label.getValue());
 											}
 										}
 									}

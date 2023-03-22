@@ -85,7 +85,8 @@ public class UserEditContent extends AbstractForm
 				if(Strings.isNullOrEmpty(email.getText()))
 					throw new WrongValueException(email,lang.get("message.field.empty"));
 
-				User user = service.getOne(RowUtils.id(row));
+//				User user = service.getOne(RowUtils.id(row));
+				User user = null;
 				if(user != null)
 				{
 					user.setUserName(email.getText());
@@ -104,7 +105,7 @@ public class UserEditContent extends AbstractForm
 						}
 					}
 
-					service.edit(user);
+//					service.edit(user);
 				}
 
 				Flow.next(getParent(), new UserGridContent());
@@ -115,7 +116,8 @@ public class UserEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		User user = service.getOne(RowUtils.id(row));
+//		User user = service.getOne(RowUtils.id(row));
+		User user = null;
 		if(user != null)
 		{
 			link.addEventListener(Events.ON_CLICK,new EventListener<Event>()
@@ -201,7 +203,8 @@ public class UserEditContent extends AbstractForm
 		roles.appendChild(head);
 		roles.appendChild(columns);
 
-		User user = service.getOne(RowUtils.id(row));
+//		User user = service.getOne(RowUtils.id(row));
+		User user = null;
 		if(user != null)
 		{
 			Map<String,Boolean> already = new HashMap<>();

@@ -23,21 +23,20 @@ dependencies {
 
     implementation project(':common-core')
     implementation project(':common-persistence')
-    implementation project(':module-impl')
-    implementation project(':role-impl')
+    implementation project(':user-api')
 
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-cache'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.apache.poi:poi-ooxml:5.2.3'
     implementation 'com.google.guava:guava:31.1-jre'
     implementation 'org.jasypt:jasypt:1.9.3'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
 }
 
 tasks.named('test') {

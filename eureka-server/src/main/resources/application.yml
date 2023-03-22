@@ -1,0 +1,13 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: eureka-server
+    title: Eureka server
+    version: 1.0.1
+
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false
