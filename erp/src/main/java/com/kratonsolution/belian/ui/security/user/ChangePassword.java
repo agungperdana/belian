@@ -1,5 +1,6 @@
 package com.kratonsolution.belian.ui.security.user;
 
+import com.kratonsolution.belian.user.api.UserService;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -26,7 +27,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  */
 public class ChangePassword extends AbstractForm
 {
-	private UserServiceImpl service = Springs.get(UserServiceImpl.class);
+	private UserService service = Springs.get(UserServiceImpl.class);
 	
 	private Row row;
 	
@@ -74,7 +75,7 @@ public class ChangePassword extends AbstractForm
 					Messagebox.show("New Password not equal");
 				else
 				{
-					service.changePassword(RowUtils.id(row), newPassword.getText(), renewPassword.getText());
+//					service.changePassword(RowUtils.id(row), newPassword.getText(), renewPassword.getText());
 					
 					if(!setting)
 						Flow.next(getParent(), new UserEditContent(row));

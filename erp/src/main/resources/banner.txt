@@ -3,6 +3,5 @@
 |  .-.  \ .-. :|  |,--.' ,-.  ||      \|  `--, |  '--'.'|  '--' |
 |  '--' |   --.|  ||  |\ '-'  ||  ||  ||  `---.|  |\  \ |  | --'
 `------' `----'`--'`--' `--`--'`--''--'`------'`--' '--'`--'
-
-${application.title} ${application.version}
+${spring.application.description}
 Powered by Spring Boot ${spring-boot.version}

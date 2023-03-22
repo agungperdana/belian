@@ -1,16 +1,14 @@
 package com.kratonsolution.belian.user.impl.application;
 
+import com.kratonsolution.belian.user.api.*;
 import com.kratonsolution.belian.user.impl.orm.User;
 import com.kratonsolution.belian.user.impl.repository.UserRepository;
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.jasypt.util.password.StrongPasswordEncryptor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import com.google.common.base.Strings;
 
 import java.util.List;
 
@@ -21,82 +19,119 @@ import java.util.List;
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
-public class UserServiceImpl
+@AllArgsConstructor
+public class UserServiceImpl implements UserService
 {
-	@Autowired
-	private UserRepository repository;
+	private UserMapper userMapper;
 
-	private StrongPasswordEncryptor encryptor = new StrongPasswordEncryptor();
+	private UserRepository repository;
 		
-	@Secured({"ROLE_USER_READ","ROLE_SYSTEM_READ"})
-	public User getOne(String id)
+	public UserData getOne(String id)
 	{
-		return repository.getOne(id);
+		return userMapper.toUserData(repository.findByEmail(id));
 	}
 	
-	@Secured("ROLE_USER_READ")
-	public List<User> findAll()
+	public List<UserData> findAll()
 	{
-		return repository.findAll();
+		return userMapper.toUserDataList(repository.findAll());
 	}
 	
-	@Secured("ROLE_USER_READ")
 	public int size()
 	{
 		return Long.valueOf(repository.count()).intValue();
 	}
 	
-	@Secured("ROLE_USER_READ")
-	public List<User> findAll(int pageIndex,int pageSize)
+	public List<UserData> findAll(int offset,int limit)
 	{
-		return repository.findAll(PageRequest.of(pageIndex,pageSize)).getContent();
+		return userMapper.toUserDataList(repository.findAll(PageRequest.of(offset, limit)).getContent());
 	}
 	
-	@Secured("ROLE_USER_CREATE")
-	public void add(User user)
+	public void add(@NonNull UserCreateCommand command)
 	{
-		user.setPassword(encryptor.encryptPassword(user.getPassword()));
-		repository.save(user);
-	}
-	
-	@Secured("ROLE_USER_UPDATE")
-	public void edit(User user)
-	{
-		repository.saveAndFlush(user);
-	}
-	
-	@Secured("ROLE_USER_DELETE")
-	public void delete(@PathVariable String id)
-	{
-		User user = repository.getOne(id);
-		if(user != null)
-		{
-			repository.delete(user);
+		User user = null;
+		StrongPasswordEncryptor encryptor = null;
+
+		try {
+
+			encryptor = new StrongPasswordEncryptor();
+
+			user = userMapper.fromCreate(command);
+			user.setPassword(encryptor.encryptPassword(user.getPassword()));
+
+			repository.save(user);
+		}
+		finally {
+
+			// lets explisitly dereference unused object
+			encryptor = null;
+			user = null;
 		}
 	}
 	
-	@Secured("ROLE_USER_UPDATE")
-	public void changePassword(String id,String newPassword,String renewPassword)
+	public void edit(UserUpdateCommand command)
 	{
-		if(Strings.isNullOrEmpty(id))
-			throw new RuntimeException("User cannot be empty");
-		
-		if(Strings.isNullOrEmpty(newPassword))
-			throw new RuntimeException("New Password cannot be empty");
-		
-		if(Strings.isNullOrEmpty(renewPassword))
-			throw new RuntimeException("Re - type New Password cannot be empty");
-		
-		if(!newPassword.equals(renewPassword))
-			throw new RuntimeException("Password not equals");
-			
-		StrongPasswordEncryptor encryptor = new StrongPasswordEncryptor();
-		
-		User user = repository.getOne(id);
-		if(user != null)
-		{
-			user.setPassword(encryptor.encryptPassword(newPassword));
-			repository.save(user);
+		User user = null;
+
+		try {
+			user = repository.findByEmail(command.getEmail());
+			if(user != null) {
+
+				user.setUserName(command.getUserName());
+				user.setEnabled(command.isEnabled());
+				user.setDeleteable(command.isDeletable());
+
+				repository.save(user);
+			}
+		}
+		finally {
+			user = null;
+		}
+	}
+	
+	public void delete(@NonNull UserDeleteCommand command)
+	{
+		User user = null;
+		try {
+
+			user = repository.findByEmail(command.getEmail());
+			if(user != null) {
+				repository.delete(user);
+			}
+		}
+		finally {
+			user = null;
+		}
+	}
+	
+	public void changePassword(@NonNull ChangePasswordCommand command)
+	{
+		User user = null;
+		StrongPasswordEncryptor encryptor = null;
+
+		try {
+
+			user = repository.findByEmail(command.getEmail());
+			if(user != null)
+			{
+				encryptor = new StrongPasswordEncryptor();
+
+				if(!encryptor.checkPassword(command.getOldPassword(), user.getPassword()))
+					throw new RuntimeException("Wrong password");
+
+				if(encryptor.checkPassword(command.getNewPassword(), user.getPassword()))
+					throw new RuntimeException("New password cannot be same as old password");
+
+				if(!command.getNewPassword().equals(command.getReNewPassword()))
+					throw new RuntimeException("New Password not equals");
+
+				user.setPassword(encryptor.encryptPassword(command.getNewPassword()));
+
+				repository.save(user);
+			}
+		}
+		finally {
+			encryptor = null;
+			user = null;
 		}
 	}
 }

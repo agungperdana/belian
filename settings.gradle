@@ -1,5 +1,6 @@
 rootProject.name = 'belian-parent'
 
+include 'eureka-server'
 include 'common-core'
 include 'common-persistence'
 include 'module-impl'
@@ -8,3 +9,4 @@ include 'security-impl'
 include 'user-api'
 include 'user-impl'
 include "erp"
+include 'user-data-service'

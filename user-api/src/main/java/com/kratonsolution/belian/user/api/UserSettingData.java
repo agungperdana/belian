@@ -8,5 +8,7 @@ import lombok.Data;
  * @since 1.0.0
  */
 @Data
-public class UserSetting {
+public class UserSettingData {
+
+    private String company;
 }

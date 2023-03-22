@@ -1,6 +1,10 @@
 package com.kratonsolution.belian.user.api;
 
 import lombok.Data;
+import lombok.NonNull;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Agung Dodi Perdana
@@ -8,5 +12,8 @@ import lombok.Data;
  * @since 1.0.1
  */
 @Data
-public class UserRole {
+public class UserDeleteCommand {
+
+    @NonNull
+    private String email;
 }

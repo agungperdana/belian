@@ -100,7 +100,7 @@ public class UserFormContent extends AbstractForm
 				user.setEnabled(enabled.isChecked());
 //				user.setEmployee(employees.getDomain());
 				
-				service.add(user);
+//				service.add(user);
 				
 				Rows _rows = roles.getRows();
 				for(Object object:_rows.getChildren())
@@ -119,7 +119,7 @@ public class UserFormContent extends AbstractForm
 					}
 				}
 				
-				service.edit(user);
+//				service.edit(user);
 				
 				Flow.next(getParent(), new UserGridContent());
 			}
