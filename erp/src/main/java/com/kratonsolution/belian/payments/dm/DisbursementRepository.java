@@ -23,13 +23,13 @@ public interface DisbursementRepository extends JpaRepository<Disbursement, Stri
 	
 	@Query("FROM Disbursement disburs WHERE "
 			+ "disburs.payer.id =:company "
-			+ "AND disburs.number LIKE %:key% "
+			+ "AND disburs.number LIKE :key "
 			+ "ORDER BY disburs.number DESC")
 	public List<Disbursement> findAll(Pageable pageable,@Param("company")String company,@Param("key")String key);
 	
 	@Query("SELECT COUNT(disburs) FROM Disbursement disburs WHERE "
 			+ "disburs.payer.id =:company "
-			+ "AND disburs.number LIKE %:key% "
+			+ "AND disburs.number LIKE :key "
 			+ "ORDER BY disburs.number DESC")
 	public Long count(@Param("company")String company,@Param("key")String key);
 

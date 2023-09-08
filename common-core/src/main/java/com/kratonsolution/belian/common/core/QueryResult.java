@@ -2,7 +2,12 @@ package com.kratonsolution.belian.common.core;
 
 import java.util.List;
 
-public interface QueryResult<D extends Data> {
+/**
+ * @author Agung Dodi Perdana
+ * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.1
+ */
+public interface QueryResult<D> {
 
     List<D> getDataList();
 

@@ -1,18 +1,25 @@
 package com.kratonsolution.belian.common.core;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.1
  */
-@Data
+@AllArgsConstructor
 public class ThirdPartyClient implements ClientInfo {
 
     private String name;
 
+    public String getName() {
+        return this.name;
+    }
+
     @Override
-    public String getType() {
-        return THRID_PARTY;
+    public Type getType() {
+        return Type.THRID_PARTY;
     }
 }

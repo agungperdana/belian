@@ -22,10 +22,10 @@ public interface PersonRepository extends JpaRepository<Person, String>
 	
 	public List<Person> findAllByNameNot(String name);
 	
-	@Query("FROM Person person WHERE person.name LIKE %:name%")
+	@Query("FROM Person person WHERE person.name LIKE :name")
 	public List<Person> findAllByName(@Param("name")String name);
 	
-	@Query("FROM Person person WHERE person.code LIKE %:code%")
+	@Query("FROM Person person WHERE person.code LIKE :code")
 	public List<Person> findAllByCode(@Param("code")String code);
 	
 	@Query("FROM Person person WHERE "
@@ -45,13 +45,13 @@ public interface PersonRepository extends JpaRepository<Person, String>
 								@Param("gender")Gender gender);
 	
 	@Query("FROM Person person WHERE "
-			+ "person.code LIKE %:key% "
-			+ "OR person.name LIKE %:key% "
+			+ "person.code LIKE :key "
+			+ "OR person.name LIKE :key "
 			+ "ORDER BY person.code ASC,person.name ASC")
 	public List<Person> findAll(Pageable pageable,@Param("key")String key);
 	
 	@Query("SELECT COUNT(person) FROM Person person WHERE "
-			+ "person.code LIKE %:key% "
-			+ "OR person.name LIKE %:key% ")
+			+ "person.code LIKE :key "
+			+ "OR person.name LIKE :key ")
 	public Long count(@Param("key")String key);
 }

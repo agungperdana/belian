@@ -37,7 +37,6 @@ import com.kratonsolution.belian.security.impl.app.Authority;
 import com.kratonsolution.belian.security.impl.app.SecurityInformation;
 import com.kratonsolution.belian.user.impl.orm.User;
 
-
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com

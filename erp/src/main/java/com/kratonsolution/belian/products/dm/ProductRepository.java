@@ -12,17 +12,18 @@ import org.springframework.data.repository.query.Param;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public interface ProductRepository extends JpaRepository<Product, String>
 {
 	public Product getOneByName(String name);
 	
 	@Query("FROM Product prd WHERE "
-			+ "prd.name LIKE %:key% "
+			+ "prd.name LIKE :key "
 			+ "ORDER BY prd.name ASC")
 	public List<Product> findAll(Pageable pageable,@Param("key")String key);
 
-	@Query("SELECT COUNT(prd) FROM Product prd WHERE prd.name LIKE %:key%")
+	@Query("SELECT COUNT(prd) FROM Product prd WHERE prd.name LIKE :key")
 	public Long count(@Param("key")String key);
 	
 	@Query("SELECT DISTINCT prd FROM Product prd INNER JOIN prd.classifications cat WHERE "
@@ -30,7 +31,7 @@ public interface ProductRepository extends JpaRepository<Product, String>
 			+ "ORDER BY prd.name ASC")
 	public List<Product> byCategorys(@Param("categorys")Collection<String> categorys);
 	
-	@Query("FROM Product prd WHERE prd.name LIKE %:key% ORDER BY prd.name ASC")
+	@Query("FROM Product prd WHERE prd.name LIKE :key ORDER BY prd.name ASC")
 	public List<Product> findAll(@Param("key")String key);
 	
 

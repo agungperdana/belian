@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public interface EmployeeRepository extends JpaRepository<Employee,String>
 {
@@ -20,6 +21,7 @@ public interface EmployeeRepository extends JpaRepository<Employee,String>
 	
 	public Employee getOneByUsername(String username);
 	
-	@Query("FROM Employee emp WHERE emp.party.name LIKE %:name% ORDER BY emp.party.name ASC")
+//	@Query("FROM Employee emp WHERE emp.party.name LIKE %:name% ORDER BY emp.party.name ASC")
+	@Query("FROM Employee emp")
 	public List<Employee> findAll(@Param("name")String name);
 }

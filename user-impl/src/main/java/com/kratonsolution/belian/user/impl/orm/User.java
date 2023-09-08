@@ -4,21 +4,14 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import jakarta.persistence.Version;
 
 import com.kratonsolution.belian.common.persistence.Referenceable;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  * @author Agung Dodi Perdana
@@ -34,10 +27,10 @@ public class User implements Referenceable
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@Column(name="email",nullable=false,unique=true)
+	@Column(name="email")
 	private String userName;
 	
-	@Column(name="password",nullable=false)
+	@Column(name="password")
 	private String password;
 	
 	@Column(name="is_enabled")
@@ -45,6 +38,7 @@ public class User implements Referenceable
 	
 	@ManyToOne()
 	@JoinColumn(name="fk_user_setting")
+	@NotFound(action = NotFoundAction.IGNORE)
 	private UserSetting setting;
 	
 	@Column(name="is_deleteable")
@@ -52,8 +46,8 @@ public class User implements Referenceable
 
 	@Version
 	private Long version;
-	
-	@OneToMany(mappedBy="user",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
+
+	@OneToMany(mappedBy="user", cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.LAZY)
 	private Set<UserRole> roles = new HashSet<>();
 
 	public User(){}

@@ -32,24 +32,24 @@ public interface PractitionerProviderRelationshipRepository extends JpaRepositor
 	
 	@Query("FROM PractitionerProviderRelationship prov WHERE "
 			+ "prov.toParty.id =:company "
-			+ "AND prov.fromParty.name LIKE %:key% "
+			+ "AND prov.fromParty.name LIKE :key "
 			+ "ORDER BY prov.fromParty.name ASC ")
 	public List<PractitionerProviderRelationship> findAll(@Param("company")String company,@Param("key")String key);
 	
 	@Query("FROM PractitionerProviderRelationship prov WHERE "
 			+ "prov.toParty.id =:company "
-			+ "AND prov.fromParty.name LIKE %:key% "
+			+ "AND prov.fromParty.name LIKE :key "
 			+ "ORDER BY prov.fromParty.name ASC ")
 	public List<PractitionerProviderRelationship> findAll(Pageable pageable,@Param("company")String company,@Param("key")String key);
 	
 	@Query("SELECT COUNT(prov) FROM PractitionerProviderRelationship prov WHERE "
 			+ "prov.toParty.id =:company "
-			+ "AND prov.fromParty.name LIKE %:key% ")
+			+ "AND prov.fromParty.name LIKE :key ")
 	public Long count(@Param("company")String company,@Param("key")String key);
 	
 	@Query("FROM PractitionerProviderRelationship prov WHERE "
 			+ "prov.toParty.id =:company "
-			+ "AND (prov.fromParty.code LIKE %:code% OR prov.fromParty.name LIKE %:name%) "
+			+ "AND (prov.fromParty.code LIKE :code OR prov.fromParty.name LIKE :name) "
 			+ "ORDER BY prov.fromParty.name ASC ")
 	public List<PractitionerProviderRelationship> findAll(@Param("company")String company,@Param("code")String code,@Param("name")String name);
 

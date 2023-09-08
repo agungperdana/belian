@@ -44,7 +44,7 @@ public class Party implements Serializable, Referenceable
 	@Id
 	protected String id = UUID.randomUUID().toString();
 	
-	@Column(name="code",unique=true,nullable=false)
+	@Column(name="code")
 	protected String code;
 	
 	@Column(name="name")

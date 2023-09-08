@@ -1,8 +1,8 @@
-
 package com.kratonsolution.belian.partys.svc;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
@@ -21,9 +21,9 @@ import com.kratonsolution.belian.partys.dm.PartyRole;
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
+@AllArgsConstructor
 public class PartyService
 {
-	@Autowired
 	private PartyRepository repository;
 	
 	@Secured({"ROLE_PARTY_READ","ROLE_ORGANIZATION_READ","ROLE_PERSON_READ"})

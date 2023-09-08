@@ -9,26 +9,25 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 /**
+ *
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
- * @since 1.0.1
+ * @since 1.0.0
  */
 public interface ModuleRepository extends JpaRepository<Module, String>
 {
-	public Module getOneByCode(String code);
-	
-	public Module getOneByName(String name);
-	
-	@Query("FROM Module mod WHERE "
-			+ "mod.code LIKE %:key% "
-			+ "OR mod.name LIKE %:key% "
-			+ "OR mod.group LIKE %:key% "
-			+ "ORDER BY mod.code ASC,mod.name ASC,mod.group ASC")
-	public List<Module> findAll(Pageable pageable, @Param("key")String key);
-	
-	@Query("SELECT COUNT(mod) FROM Module mod WHERE "
-			+ "mod.code LIKE %:key% "
-			+ "OR mod.name LIKE %:key% "
-			+ "OR mod.group LIKE %:key% ")
-	public Long count(@Param("key")String key);
+    public Module findOneByCode(String code);
+
+    public Module findOneByName(String name);
+
+    @Query("FROM Module mdl WHERE "
+            + "mdl.code LIKE :key "
+            + "OR mdl.name LIKE :key "
+            + "ORDER BY mdl.code ASC, mdl.name ASC, mdl.group ASC")
+    public List<Module> findAll(Pageable pageable, @Param("key")String key);
+
+    @Query("SELECT COUNT(mdl) FROM Module mdl WHERE "
+            + "mdl.code LIKE :key "
+            + "OR mdl.name LIKE :key ")
+    public Long count(@Param("key")String key);
 }

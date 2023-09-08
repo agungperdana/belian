@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public interface VisitRepository extends JpaRepository<Visit, String>
 {
@@ -22,12 +23,12 @@ public interface VisitRepository extends JpaRepository<Visit, String>
 	public Long count(@Param("company")String company);
 	
 	@Query("FROM Visit visit WHERE visit.organization.id =:company "
-			+ "AND (visit.doctor.value LIKE %:key% OR visit.patient.value LIKE %:key%) "
+			+ "AND (visit.doctor.value LIKE :key OR visit.patient.value LIKE :key) "
 			+ "ORDER BY visit.date DESC  ")
 	public List<Visit> findAll(Pageable pageable,@Param("company")String company,@Param("key")String key);
 	
 	@Query("SELECT COUNT(visit) FROM Visit visit WHERE visit.organization.id =:company "
-			+ "AND (visit.doctor.value LIKE %:key% OR visit.patient.value LIKE %:key%) ")
+			+ "AND (visit.doctor.value LIKE :key OR visit.patient.value LIKE :key) ")
 	public Long count(@Param("company")String company,@Param("key")String key);
 	
 	@Query("FROM Visit visit WHERE visit.organization.id =:company AND visit.doctor.id =:doctor ORDER BY visit.date DESC ")

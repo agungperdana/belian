@@ -22,25 +22,25 @@ public interface SalesOrderRepository extends JpaRepository<SalesOrder, String>
 	
 	@Query("FROM SalesOrder so WHERE "
 			+ "so.partyTakingOrder.id IN(:companys) "
-			+ "AND (so.number LIKE %:key% "
-			+ "OR so.partyPlacingOrder.value LIKE %:key% "
-			+ "OR so.billToAddress.value LIKE %:key% "
-			+ "OR so.billToContact.value LIKE %:key% "
-			+ "OR so.shipToParty.value LIKE %:key% "
-			+ "OR so.shipToAddress.value LIKE %:key% "
-			+ "OR so.shipToContact.value LIKE %:key%) "
+			+ "AND (so.number LIKE :key "
+			+ "OR so.partyPlacingOrder.value LIKE :key "
+			+ "OR so.billToAddress.value LIKE :key "
+			+ "OR so.billToContact.value LIKE :key "
+			+ "OR so.shipToParty.value LIKE :key "
+			+ "OR so.shipToAddress.value LIKE :key "
+			+ "OR so.shipToContact.value LIKE :key) "
 			+ "ORDER BY so.number ASC")
 	public List<SalesOrder> findAll(Pageable pageable,@Param("companys")List<String> companys,@Param("key")String key);
 	
 	@Query("SELECT COUNT(so) FROM SalesOrder so WHERE "
 			+ "so.partyTakingOrder.id IN(:companys) "
-			+ "AND (so.number LIKE %:key% "
-			+ "OR so.partyPlacingOrder.value LIKE %:key% "
-			+ "OR so.billToAddress.value LIKE %:key% "
-			+ "OR so.billToContact.value LIKE %:key% "
-			+ "OR so.shipToParty.value LIKE %:key% "
-			+ "OR so.shipToAddress.value LIKE %:key% "
-			+ "OR so.shipToContact.value LIKE %:key%) ")
+			+ "AND (so.number LIKE :key "
+			+ "OR so.partyPlacingOrder.value LIKE :key "
+			+ "OR so.billToAddress.value LIKE :key "
+			+ "OR so.billToContact.value LIKE :key "
+			+ "OR so.shipToParty.value LIKE :key "
+			+ "OR so.shipToAddress.value LIKE :key "
+			+ "OR so.shipToContact.value LIKE :key) ")
 	public Long count(@Param("companys")List<String> companys,@Param("key")String key);
 	
 	@Query("FROM SalesOrder sales WHERE "

@@ -1,10 +1,7 @@
 package com.kratonsolution.belian.user.impl.orm;
 
-import java.io.Serializable;
 import java.util.UUID;
 
-import com.kratonsolution.belian.role.impl.orm.Role;
-import jakarta.persistence.Cacheable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

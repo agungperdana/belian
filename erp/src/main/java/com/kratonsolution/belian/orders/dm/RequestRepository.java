@@ -22,15 +22,15 @@ public interface RequestRepository extends JpaRepository<Request, String>
 	
 	@Query("FROM Request req WHERE "
 			+ "req.originator.id IN(:companys) "
-			+ "AND (req.originator.value LIKE %:key% "
-			+ "OR req.responding.value LIKE %:key%) "
+			+ "AND (req.originator.value LIKE :key "
+			+ "OR req.responding.value LIKE :key) "
 			+ "ORDER BY req.entryDate DESC ")
 	public List<Request> findAll(Pageable pageable,@Param("companys")List<String> companys,@Param("key")String key);
 	
 	@Query("SELECT COUNT(req) FROM Request req WHERE "
 			+ "req.originator.id IN(:companys) "
-			+ "AND (req.originator.value LIKE %:key% "
-			+ "OR req.responding.value LIKE %:key%) ")
+			+ "AND (req.originator.value LIKE :key "
+			+ "OR req.responding.value LIKE :key) ")
 	public Long count(@Param("companys")List<String> companys,@Param("key")String key);
 	
 	@Query("SELECT DISTINCT(role.request) FROM RequestRole role WHERE "

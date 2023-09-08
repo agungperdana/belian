@@ -9,14 +9,13 @@ spring:
     version: 1.0.1
     description: Belian ERP v-1.0.1
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/belian?useSSL=false
+    url: jdbc:mariadb://127.0.0.1:3306/belian
     username: belian
     password: belian
   jpa:
-    database: MYSQL
     show-sql: true
     hibernate:
-      dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+      dialect: org.hibernate.dialect.MariaDB103Dialect
       current_session_context_class: thread
       cache:
         use_second_level_cache: true
@@ -32,9 +31,10 @@ logging:
   level:
     root: ERROR
     org:
-      zkoss: DEBUG
-      springframework: ERROR
-      springframework.web: DEBUG
+      zkoss: OFF
+      hibernate: DEBUG
+      springframework: OFF
+      springframework.web: OFF
       com:
         kratonsolution:
           belian: DEBUG
