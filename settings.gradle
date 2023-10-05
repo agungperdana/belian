@@ -7,5 +7,19 @@ include 'role-impl'
 include 'user-api'
 include 'user-impl'
 include 'belian-form-security'
+include 'common-util'
+
+include 'company-structure-impl'
+include 'geographic-impl'
+include 'country-impl'
+
+include 'payroll-api'
+include 'payroll-impl'
+include 'payroll-ui'
+
+include 'party-api'
+include 'party-impl'
+include 'party-ui'
+
 include 'erp'
 

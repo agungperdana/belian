@@ -13,7 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
-import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.util.DateTimes;
 
 import lombok.Getter;
 import lombok.Setter;

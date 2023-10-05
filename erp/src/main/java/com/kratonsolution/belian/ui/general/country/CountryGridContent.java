@@ -25,6 +25,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class CountryGridContent extends GridContent
 {
@@ -119,7 +120,7 @@ public class CountryGridContent extends GridContent
 								Row row = (Row)object;
 
 								if(RowUtils.isChecked(row,0))
-									service.delete(RowUtils.string(row, 4));
+									service.delete(RowUtils.string(row, 3));
 							}
 							
 							Flow.next(getParent(), new CountryGridContent());

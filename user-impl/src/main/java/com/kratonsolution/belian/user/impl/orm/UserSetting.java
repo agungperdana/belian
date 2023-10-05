@@ -87,7 +87,7 @@ public class UserSetting implements Serializable
 		setLocation(IDValueRef.empty());
 		setCurrency(IDValueRef.empty());
 		setTax(IDValueRef.empty());
-		setLanguage("in_ID");
+		setLanguage("en_US");
 	}
 
 	public void setPrinter(PrinterType valueOf) {

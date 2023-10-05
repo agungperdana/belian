@@ -124,7 +124,7 @@ public class Components implements Serializable
 		return listbox;
 	}
 	
-	public static final Listbox newSelect(Collection<? extends Referenceable> collections,boolean setDefault)
+	public static final Listbox newSelect(Collection<? extends Referenceable> collections, boolean setDefault)
 	{
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");
@@ -160,7 +160,7 @@ public class Components implements Serializable
 		return listbox;
 	}
 	
-	public static final Listbox fullSpanSelect(Collection<? extends Referenceable> collections,Referenceable setDefault)
+	public static final Listbox fullSpanSelect(Collection<? extends Referenceable> collections, Referenceable setDefault)
 	{
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");
@@ -177,7 +177,7 @@ public class Components implements Serializable
 		return listbox;
 	}
 	
-	public static final Listbox fullSpanSelect(Collection<? extends Referenceable> collections,boolean setDefault)
+	public static final Listbox fullSpanSelect(Collection<? extends Referenceable> collections, boolean setDefault)
 	{
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");

@@ -21,7 +21,7 @@ import org.zkoss.zul.Window;
 import com.kratonsolution.belian.common.persistence.IDValueRef;
 import com.kratonsolution.belian.common.persistence.Observable;
 import com.kratonsolution.belian.common.persistence.Observer;
-import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.util.DateTimes;
 import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.products.dm.Product;

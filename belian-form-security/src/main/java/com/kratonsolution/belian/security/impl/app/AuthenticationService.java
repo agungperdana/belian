@@ -20,9 +20,9 @@ import org.springframework.stereotype.Service;
  * @email agung.dodi.perdana@gmail.com
  * @since 1.0.0
  */
-@AllArgsConstructor
 @Service
 @Transactional
+@AllArgsConstructor
 public class AuthenticationService implements UserDetailsService
 {
 	private UserRepository repository;

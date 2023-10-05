@@ -3,16 +3,16 @@ package com.kratonsolution.belian.healtcares.dm;
 
 import java.util.List;
 
+import com.kratonsolution.belian.party.impl.orm.Person;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.kratonsolution.belian.partys.dm.Person;
-
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public interface PatientProviderRelationshipRepository extends JpaRepository<PatientProviderRelationship, String>
 {

@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.kratonsolution.belian.party.impl.orm.Gender;
+import com.kratonsolution.belian.party.impl.orm.Person;
+import com.kratonsolution.belian.party.impl.orm.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -16,9 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.global.dm.AbstractService;
-import com.kratonsolution.belian.partys.dm.Gender;
-import com.kratonsolution.belian.partys.dm.Person;
-import com.kratonsolution.belian.partys.dm.PersonRepository;
 
 /**
  * 
@@ -187,7 +187,7 @@ public class PersonService extends AbstractService
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PERSON_READ")
-	public Person getOne(String code,String name,Date birthdate,Gender gender)
+	public Person getOne(String code, String name, Date birthdate, Gender gender)
 	{
 		return repository.getOne(code, name, birthdate, gender);
 	}

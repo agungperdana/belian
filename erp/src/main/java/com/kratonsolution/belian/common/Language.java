@@ -26,7 +26,7 @@ public class Language
 
 	public String get(String name)
 	{
-		String lang = "in_id";
+		String lang = "en_us";
 //		if(!Strings.isNullOrEmpty(utils.getLanguage()))
 //			lang = utils.getLanguage();
 		

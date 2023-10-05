@@ -9,8 +9,8 @@ import org.zkoss.zul.Comboitem;
 
 import com.kratonsolution.belian.common.persistence.IDValueRef;
 import com.kratonsolution.belian.common.persistence.Observer;
-import com.kratonsolution.belian.partys.dm.Party;
-import com.kratonsolution.belian.partys.dm.PartyRepository;
+import com.kratonsolution.belian.party.impl.orm.Party;
+import com.kratonsolution.belian.party.impl.orm.PartyRepository;
 import com.kratonsolution.belian.ui.component.AbstractCombobox;
 import com.kratonsolution.belian.ui.util.Springs;
 

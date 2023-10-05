@@ -14,7 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
-import com.kratonsolution.belian.partys.dm.Person;
+import com.kratonsolution.belian.party.impl.orm.Person;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +22,7 @@ import lombok.Setter;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 @Getter
 @Setter

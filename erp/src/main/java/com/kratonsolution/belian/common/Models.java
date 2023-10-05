@@ -13,9 +13,9 @@ import com.kratonsolution.belian.common.persistence.Referenceable;
  */
 public class Models
 {
-	public static final Map<String,Referenceable> toRefMap(Collection<? extends Referenceable> col)
+	public static final Map<String, Referenceable> toRefMap(Collection<? extends Referenceable> col)
 	{
-		Map<String,Referenceable> maps = new HashMap<>();
+		Map<String, Referenceable> maps = new HashMap<>();
 		
 		if(col != null)
 		{

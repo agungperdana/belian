@@ -1,18 +1,17 @@
 
 package com.kratonsolution.belian.hr.dm;
 
+import com.kratonsolution.belian.party.impl.orm.PartyRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-
-import com.kratonsolution.belian.partys.dm.PartyRole;
-
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 @Getter
 @Setter

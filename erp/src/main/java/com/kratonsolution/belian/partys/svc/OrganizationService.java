@@ -1,18 +1,16 @@
 
 package com.kratonsolution.belian.partys.svc;
 
-import java.util.List;
-
+import com.google.common.base.Strings;
+import com.kratonsolution.belian.party.impl.orm.Organization;
+import com.kratonsolution.belian.party.impl.orm.OrganizationRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.base.Strings;
-import com.kratonsolution.belian.partys.dm.Organization;
-import com.kratonsolution.belian.partys.dm.OrganizationRepository;
+import java.util.List;
 
 /**
  * @author Agung Dodi Perdana

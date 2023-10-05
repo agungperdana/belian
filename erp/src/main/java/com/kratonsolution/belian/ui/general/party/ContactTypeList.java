@@ -8,13 +8,14 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.partys.dm.ContactType;
+import com.kratonsolution.belian.party.impl.orm.ContactType;
 import com.kratonsolution.belian.ui.util.Springs;
 
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 0.0.1
  */
 public class ContactTypeList extends Listbox
 {

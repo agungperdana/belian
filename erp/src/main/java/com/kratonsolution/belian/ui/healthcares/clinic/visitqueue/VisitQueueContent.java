@@ -19,7 +19,7 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Vlayout;
 
-import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.util.DateTimes;
 import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.healtcares.dm.PractitionerProviderRelationship;

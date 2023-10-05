@@ -18,7 +18,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Timebox;
 
-import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.util.DateTimes;
 import com.kratonsolution.belian.inventory.dm.StockAdjustment;
 import com.kratonsolution.belian.inventory.dm.StockAdjustmentItem;
 import com.kratonsolution.belian.inventory.svc.StockAdjustmentService;

@@ -7,7 +7,7 @@ import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Label;
 
-import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.util.DateTimes;
 import com.kratonsolution.belian.common.Language;
 import com.kratonsolution.belian.ui.util.Springs;
 

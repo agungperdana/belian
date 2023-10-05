@@ -1,11 +1,10 @@
 
 package com.kratonsolution.belian.healtcares.dm;
 
+import com.kratonsolution.belian.party.impl.orm.PartyRole;
+import com.kratonsolution.belian.party.impl.orm.PartyRoleType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-
-import com.kratonsolution.belian.partys.dm.PartyRole;
-import com.kratonsolution.belian.partys.dm.PartyRoleType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +12,7 @@ import lombok.Setter;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 @Getter
 @Setter

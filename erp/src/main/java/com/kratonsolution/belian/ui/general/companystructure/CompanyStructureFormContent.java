@@ -12,7 +12,7 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 
-import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.util.DateTimes;
 import com.kratonsolution.belian.general.dm.CompanyStructure;
 import com.kratonsolution.belian.general.dm.CompanyStructureType;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;

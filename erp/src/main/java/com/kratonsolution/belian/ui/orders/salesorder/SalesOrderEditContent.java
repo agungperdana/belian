@@ -30,7 +30,7 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
-import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.util.DateTimes;
 import com.kratonsolution.belian.common.Models;
 import com.kratonsolution.belian.common.persistence.Referenceable;
 import com.kratonsolution.belian.orders.dm.OrderAdjustment;
@@ -168,10 +168,10 @@ public class SalesOrderEditContent extends AbstractForm
 				SalesOrder order = service.getOne(RowUtils.id(row));
 				if(order != null)
 				{
-					Map<String,Referenceable> vRoles = Models.toRefMap(order.getPartyOrderRoles());
-					Map<String,Referenceable> vStatuses = Models.toRefMap(order.getStatuses());
-					Map<String,Referenceable> vTerms = Models.toRefMap(order.getTerms());
-					Map<String,Referenceable> vAdjustments = Models.toRefMap(order.getAdjustments());
+					Map<String, Referenceable> vRoles = Models.toRefMap(order.getPartyOrderRoles());
+					Map<String, Referenceable> vStatuses = Models.toRefMap(order.getStatuses());
+					Map<String, Referenceable> vTerms = Models.toRefMap(order.getTerms());
+					Map<String, Referenceable> vAdjustments = Models.toRefMap(order.getAdjustments());
 					
 					order.getPartyOrderRoles().clear();
 					order.getStatuses().clear();

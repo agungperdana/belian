@@ -24,7 +24,7 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
-import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.util.DateTimes;
 import com.kratonsolution.belian.shipment.dm.Shipment;
 import com.kratonsolution.belian.shipment.dm.ShipmentStatus;
 import com.kratonsolution.belian.shipment.dm.ShipmentStatusType;

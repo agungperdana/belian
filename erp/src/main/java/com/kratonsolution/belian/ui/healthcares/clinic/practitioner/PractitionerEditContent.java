@@ -10,10 +10,10 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
-import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.util.DateTimes;
 import com.kratonsolution.belian.healtcares.dm.PractitionerProviderRelationship;
 import com.kratonsolution.belian.healtcares.svc.PractitionerProviderRelationshipService;
-import com.kratonsolution.belian.partys.dm.Person;
+import com.kratonsolution.belian.party.impl.orm.Person;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.general.party.GenderList;
 import com.kratonsolution.belian.ui.util.Components;

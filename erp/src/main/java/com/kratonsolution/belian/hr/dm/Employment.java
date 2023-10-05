@@ -1,10 +1,9 @@
 
 package com.kratonsolution.belian.hr.dm;
 
+import com.kratonsolution.belian.party.impl.orm.PartyRelationship;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-
-import com.kratonsolution.belian.partys.dm.PartyRelationship;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -15,5 +15,8 @@ public enum ModuleGroup {
     PAYMENT,
     EDUCATION,
     PRODUCTION,
-    HEALTHCARE
+    HEALTHCARE,
+    CLINIC,
+    MEDICALLAB,
+    PHARMACY
 }

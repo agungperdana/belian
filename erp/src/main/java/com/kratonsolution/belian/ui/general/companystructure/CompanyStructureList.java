@@ -5,12 +5,13 @@ import org.zkoss.zul.Listitem;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.persistence.IDValueRef;
-import com.kratonsolution.belian.partys.dm.Organization;
+import com.kratonsolution.belian.party.impl.orm.Organization;
 import com.kratonsolution.belian.ui.component.AbstractList;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 0.0.1
  */
 public class CompanyStructureList extends AbstractList<Organization>
 {		

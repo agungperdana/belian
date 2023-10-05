@@ -1,5 +1,6 @@
 package com.kratonsolution.belian.ui.security.user;
 
+import com.kratonsolution.belian.user.api.UserData;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
@@ -13,11 +14,11 @@ import com.kratonsolution.belian.ui.util.Components;
  * @email agung.dodi.perdana@gmail.com
  * @since 1.0.0
  */
-public class UserRowRenderer implements RowRenderer<User>
+public class UserRowRenderer implements RowRenderer<UserData>
 {
 
 	@Override
-	public void render(Row row, User data, int index) throws Exception
+	public void render(Row row, UserData data, int index) throws Exception
 	{
 		if(data != null)
 		{
@@ -34,7 +35,7 @@ public class UserRowRenderer implements RowRenderer<User>
 			else
 				row.appendChild(new Label("Inactive"));
 			
-			row.appendChild(new Label(data.getId()));
+			row.appendChild(new Label(data.getUserName()));
 		}
 	}
 }

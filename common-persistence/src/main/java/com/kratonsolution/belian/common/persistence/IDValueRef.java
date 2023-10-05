@@ -27,13 +27,13 @@ public class IDValueRef implements Serializable
 	@Transient
 	private String type;
 	
-	public static final IDValueRef toRef(Referenceable listable)
+	public static final IDValueRef toRef(Referenceable referenceable)
 	{
-		if(listable != null)
+		if(referenceable != null)
 		{
 			IDValueRef ref = new IDValueRef();
-			ref.setId(listable.getValue());
-			ref.setValue(listable.getLabel());
+			ref.setId(referenceable.getValue());
+			ref.setValue(referenceable.getLabel());
 			
 			return ref;
 		}

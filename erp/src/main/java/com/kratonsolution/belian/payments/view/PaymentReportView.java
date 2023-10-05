@@ -14,10 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.general.svc.CompanyStructureService;
+import com.kratonsolution.belian.common.util.DateTimes;
+import com.kratonsolution.belian.company.structure.impl.application.CompanyStructureService;
 import com.kratonsolution.belian.global.view.AbstractView;
-import com.kratonsolution.belian.partys.dm.PartyRepository;
+import com.kratonsolution.belian.party.impl.orm.PartyRepository;
 import com.kratonsolution.belian.payments.dm.Disbursement;
 import com.kratonsolution.belian.payments.dm.DisbursementRepository;
 import com.kratonsolution.belian.payments.dm.Payment;

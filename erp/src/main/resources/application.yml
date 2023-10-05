@@ -12,6 +12,7 @@ spring:
     url: jdbc:mariadb://127.0.0.1:3306/belian
     username: belian
     password: belian
+    driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     show-sql: true
     hibernate:
@@ -32,9 +33,8 @@ logging:
     root: ERROR
     org:
       zkoss: OFF
-      hibernate: DEBUG
-      springframework: OFF
-      springframework.web: OFF
+      hibernate: ERROR
+      springframework: INFO
       com:
         kratonsolution:
           belian: DEBUG

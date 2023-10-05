@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.util.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.global.dm.SequenceNumber;
 import com.kratonsolution.belian.global.dm.SequenceNumber.Code;

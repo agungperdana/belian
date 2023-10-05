@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.UUID;
 
+import com.kratonsolution.belian.party.impl.orm.Party;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -17,14 +18,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
-import com.kratonsolution.belian.partys.dm.Party;
-
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 @Getter
 @Setter

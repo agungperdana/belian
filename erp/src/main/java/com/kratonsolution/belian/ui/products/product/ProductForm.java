@@ -15,7 +15,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.util.DateTimes;
 import com.kratonsolution.belian.products.dm.Product;
 import com.kratonsolution.belian.products.svc.ProductService;
 import com.kratonsolution.belian.ui.BForm;
