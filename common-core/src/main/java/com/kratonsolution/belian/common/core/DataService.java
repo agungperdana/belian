@@ -1,23 +1,33 @@
 package com.kratonsolution.belian.common.core;
 
+import com.kratonsolution.belian.common.core.command.CreateCommand;
+import com.kratonsolution.belian.common.core.command.DeleteCommand;
+import com.kratonsolution.belian.common.core.command.QueryCommand;
+import com.kratonsolution.belian.common.core.command.UpdateCommand;
 import lombok.NonNull;
-
-import java.util.List;
-import java.util.Optional;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.1
  */
-public interface DataService<C extends CreateCommand, U extends UpdateCommand, D extends DeleteCommand, Q extends Query, T extends Data> {
+public interface DataService<C extends CreateCommand, U extends UpdateCommand, D extends DeleteCommand, Q extends QueryCommand, T> {
 
-    void create(@NonNull C c);
+    Mono<T> create(@NonNull Mono<C> command);
 
-    void update(@NonNull U u);
+    Mono<T> update(@NonNull Mono<U> command);
 
-    void delete(@NonNull D d);
+    Mono<T> delete(@NonNull Mono<D> command);
 
-    Optional<D> getOne(@NonNull Q q);
+    Mono<T> getOne(@NonNull Mono<Q> command);
 
-    List<QueryResult<T>> getAll(Optional<Q> query);
+    Flux<T> getAll(Mono<Q> query);
+
+    Flux<T> getAll();
+
+    Mono<Long> count();
+
+    Mono<Long> count(Mono<Q> command);
 }

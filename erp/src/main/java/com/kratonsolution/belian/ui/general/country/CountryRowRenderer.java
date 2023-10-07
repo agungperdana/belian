@@ -5,12 +5,13 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
-import com.kratonsolution.belian.general.dm.Country;
+import com.kratonsolution.belian.country.impl.orm.Country;
 
 /**
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class CountryRowRenderer implements RowRenderer<Country>
 {	

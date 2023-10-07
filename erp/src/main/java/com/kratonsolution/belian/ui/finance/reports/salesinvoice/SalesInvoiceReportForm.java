@@ -12,7 +12,7 @@ import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 
-import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.util.DateTimes;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.PrintWindow;
 import com.kratonsolution.belian.ui.general.party.PartyBox;

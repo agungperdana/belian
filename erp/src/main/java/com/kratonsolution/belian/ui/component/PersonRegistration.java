@@ -20,9 +20,9 @@ import org.zkoss.zul.Vlayout;
 import org.zkoss.zul.Window;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.partys.dm.Gender;
-import com.kratonsolution.belian.partys.dm.Person;
+import com.kratonsolution.belian.common.util.DateTimes;
+import com.kratonsolution.belian.party.impl.orm.Gender;
+import com.kratonsolution.belian.party.impl.orm.Person;
 import com.kratonsolution.belian.partys.svc.PersonService;
 import com.kratonsolution.belian.ui.FormToolbar;
 import com.kratonsolution.belian.ui.util.Components;

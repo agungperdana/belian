@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import com.kratonsolution.belian.party.impl.orm.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
@@ -18,17 +19,13 @@ import com.kratonsolution.belian.global.dm.AbstractService;
 import com.kratonsolution.belian.healtcares.dm.Patient;
 import com.kratonsolution.belian.healtcares.dm.PatientProviderRelationship;
 import com.kratonsolution.belian.healtcares.dm.PatientProviderRelationshipRepository;
-import com.kratonsolution.belian.partys.dm.Gender;
-import com.kratonsolution.belian.partys.dm.PartyRelationship;
-import com.kratonsolution.belian.partys.dm.PartyRole;
-import com.kratonsolution.belian.partys.dm.PartyRoleRepository;
-import com.kratonsolution.belian.partys.dm.Person;
 import com.kratonsolution.belian.partys.svc.PersonService;
 
 /**
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -121,7 +118,7 @@ public class PatientProviderRelationshipService extends AbstractService
 	}
 	
 	@Secured("ROLE_PATIENT_CREATE")
-	public void add(Date start,String code,String name,Date birthDate,Gender gender)
+	public void add(Date start, String code, String name, Date birthDate, Gender gender)
 	{
 		/**
 		 * Check if person with code & name exist,if not crate one

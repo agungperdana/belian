@@ -3,7 +3,7 @@ package com.kratonsolution.belian.ui.component;
 
 import org.zkoss.zul.Comboitem;
 
-import com.kratonsolution.belian.partys.dm.Person;
+import com.kratonsolution.belian.party.impl.orm.Person;
 
 import lombok.Getter;
 

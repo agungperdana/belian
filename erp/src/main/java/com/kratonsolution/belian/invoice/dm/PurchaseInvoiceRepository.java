@@ -18,15 +18,15 @@ public interface PurchaseInvoiceRepository extends JpaRepository<PurchaseInvoice
 	@Query("SELECT DISTINCT inv FROM PurchaseInvoice inv INNER JOIN inv.statuses stat WHERE "
 			+ "inv.billedFromParty.id =:supplier "
 			+ "AND inv.billedToParty.id =:company "
-			+ "AND stat.type NOT IN('PAID','VOID') "
+//			+ "AND stat.type NOT IN('PAID','VOID') "
 			+ "ORDER BY inv.date DESC ")
 	public List<PurchaseInvoice> findAllUnpaid(@Param("company")String company,@Param("supplier")String supplier);
 	
 	@Query("SELECT DISTINCT inv FROM PurchaseInvoice inv INNER JOIN inv.statuses stat WHERE "
 			+ "inv.billedFromParty.id =:supplier "
 			+ "AND inv.billedToParty.id =:company "
-			+ "AND stat.type NOT IN('PAID','VOID') "
-			+ "AND inv.number LIKE %:key% "
+//			+ "AND stat.type NOT IN('PAID','VOID') "
+			+ "AND inv.number LIKE :key "
 			+ "ORDER BY inv.date DESC ")
 	public List<PurchaseInvoice> findAllUnpaid(@Param("company")String company,@Param("supplier")String supplier,@Param("key")String key);
 	
@@ -41,13 +41,13 @@ public interface PurchaseInvoiceRepository extends JpaRepository<PurchaseInvoice
 	
 	@Query("FROM PurchaseInvoice inv WHERE "
 			+ "inv.billedToParty.id =:company "
-			+ "AND inv.number LIKE %:key% "
+			+ "AND inv.number LIKE :key "
 			+ "ORDER BY inv.date DESC ")
 	public List<PurchaseInvoice> findAll(Pageable pageable,@Param("company")String company,@Param("key")String key);
 	
 	@Query("SELECT COUNT(inv) FROM PurchaseInvoice inv WHERE "
 			+ "inv.billedToParty.id =:company "
-			+ "AND inv.number LIKE %:key% ")
+			+ "AND inv.number LIKE :key ")
 	public Long count(@Param("company")String company,@Param("key")String key);
 
 	@Query("SELECT DISTINCT item.invoice FROM InvoiceItem item WHERE item.id IN(:ids) ")

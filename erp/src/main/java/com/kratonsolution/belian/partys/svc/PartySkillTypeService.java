@@ -9,8 +9,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kratonsolution.belian.partys.dm.PartySkillType;
-import com.kratonsolution.belian.partys.dm.PartySkillTypeRepository;
+import com.kratonsolution.belian.party.impl.orm.PartySkillType;
+import com.kratonsolution.belian.party.impl.orm.PartySkillTypeRepository;
 
 /**
  * 

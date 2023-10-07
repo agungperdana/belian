@@ -6,9 +6,9 @@ import org.zkoss.zul.Listitem;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.persistence.IDValueRef;
 import com.kratonsolution.belian.common.persistence.Observer;
-import com.kratonsolution.belian.general.dm.Geographic;
-import com.kratonsolution.belian.partys.dm.Address;
-import com.kratonsolution.belian.partys.dm.Party;
+import com.kratonsolution.belian.geographic.impl.orm.Geographic;
+import com.kratonsolution.belian.party.impl.orm.Address;
+import com.kratonsolution.belian.party.impl.orm.Party;
 import com.kratonsolution.belian.partys.svc.PartyService;
 import com.kratonsolution.belian.ui.component.AbstractList;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -16,6 +16,7 @@ import com.kratonsolution.belian.ui.util.Springs;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class PartyAddressList extends AbstractList<Address> implements Observer
 {

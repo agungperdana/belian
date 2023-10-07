@@ -14,7 +14,7 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 
-import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.util.DateTimes;
 import com.kratonsolution.belian.products.dm.Product;
 import com.kratonsolution.belian.products.dm.ProductFeatureApplicability;
 import com.kratonsolution.belian.products.svc.ProductService;

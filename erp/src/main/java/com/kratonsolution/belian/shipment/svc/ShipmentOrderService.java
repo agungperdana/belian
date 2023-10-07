@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kratonsolution.belian.global.dm.AbstractService;
 import com.kratonsolution.belian.orders.dm.OrderItemRepository;
-import com.kratonsolution.belian.partys.dm.PartyRepository;
+import com.kratonsolution.belian.party.impl.orm.PartyRepository;
 import com.kratonsolution.belian.shipment.dm.ShipmentOrder;
 import com.kratonsolution.belian.shipment.dm.ShipmentOrderRepository;
 

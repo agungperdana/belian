@@ -25,7 +25,7 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Toolbarbutton;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.util.DateTimes;
 import com.kratonsolution.belian.healtcares.dm.HealthcareDelivery;
 import com.kratonsolution.belian.healtcares.dm.Visit;
 import com.kratonsolution.belian.healtcares.dm.VisitRole;

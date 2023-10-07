@@ -22,15 +22,15 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.general.dm.GeographicType;
-import com.kratonsolution.belian.partys.dm.Address;
-import com.kratonsolution.belian.partys.dm.Contact;
-import com.kratonsolution.belian.partys.dm.Organization;
-import com.kratonsolution.belian.partys.dm.Party;
-import com.kratonsolution.belian.partys.dm.PartyClassification;
-import com.kratonsolution.belian.partys.dm.PartyRole;
-import com.kratonsolution.belian.partys.dm.PartySkill;
+import com.kratonsolution.belian.common.util.DateTimes;
+import com.kratonsolution.belian.geographic.impl.orm.GeographicType;
+import com.kratonsolution.belian.party.impl.orm.Address;
+import com.kratonsolution.belian.party.impl.orm.Contact;
+import com.kratonsolution.belian.party.impl.orm.Organization;
+import com.kratonsolution.belian.party.impl.orm.Party;
+import com.kratonsolution.belian.party.impl.orm.PartyClassification;
+import com.kratonsolution.belian.party.impl.orm.PartyRole;
+import com.kratonsolution.belian.party.impl.orm.PartySkill;
 import com.kratonsolution.belian.partys.svc.OrganizationService;
 import com.kratonsolution.belian.partys.svc.PartyService;
 import com.kratonsolution.belian.ui.AbstractForm;
@@ -51,6 +51,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class OrganizationFormContent extends AbstractForm
 {	

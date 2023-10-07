@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kratonsolution.belian.accounting.dm.CurrencyRepository;
-import com.kratonsolution.belian.common.DateTimes;
+import com.kratonsolution.belian.common.util.DateTimes;
 import com.kratonsolution.belian.inventory.dm.FacilityRepository;
 import com.kratonsolution.belian.inventory.dm.InventoryItemRepository;
 import com.kratonsolution.belian.products.dm.Product;

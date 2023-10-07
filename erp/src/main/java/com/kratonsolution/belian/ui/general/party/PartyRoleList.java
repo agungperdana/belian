@@ -4,8 +4,8 @@ package com.kratonsolution.belian.ui.general.party;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.persistence.IDValueRef;
-import com.kratonsolution.belian.partys.dm.Party;
-import com.kratonsolution.belian.partys.dm.PartyRole;
+import com.kratonsolution.belian.party.impl.orm.Party;
+import com.kratonsolution.belian.party.impl.orm.PartyRole;
 import com.kratonsolution.belian.ui.component.AbstractList;
 import com.kratonsolution.belian.ui.component.ListSelectionListener;
 

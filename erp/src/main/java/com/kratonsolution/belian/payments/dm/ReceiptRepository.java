@@ -23,13 +23,13 @@ public interface ReceiptRepository extends JpaRepository<Receipt, String>
 	
 	@Query("FROM Receipt ceipt WHERE "
 			+ "ceipt.receiver.id =:company "
-			+ "AND ceipt.number LIKE %:key% "
+			+ "AND ceipt.number LIKE :key "
 			+ "ORDER BY ceipt.number DESC")
 	public List<Receipt> findAll(Pageable pageable,@Param("company")String company,@Param("key")String key);
 	
 	@Query("SELECT COUNT(ceipt) FROM Receipt ceipt WHERE "
 			+ "ceipt.receiver.id =:company "
-			+ "AND ceipt.number LIKE %:key% "
+			+ "AND ceipt.number LIKE :key "
 			+ "ORDER BY ceipt.number DESC")
 	public Long count(@Param("company")String company,@Param("key")String key);
 	

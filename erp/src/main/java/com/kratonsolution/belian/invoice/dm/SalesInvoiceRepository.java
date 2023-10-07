@@ -13,21 +13,22 @@ import org.springframework.data.repository.query.Param;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public interface SalesInvoiceRepository extends JpaRepository<SalesInvoice, String>
 {
 	@Query("SELECT DISTINCT inv FROM SalesInvoice inv INNER JOIN inv.statuses stat WHERE "
 			+ "inv.billedFromParty.id =:company "
 			+ "AND inv.billedToParty.id =:customer "
-			+ "AND stat.type NOT IN('PAID','VOID') "
+//			+ "AND stat.type NOT IN('PAID','VOID') "
 			+ "ORDER BY inv.date DESC ")
 	public List<SalesInvoice> findAllUnpaid(@Param("company")String company,@Param("customer")String customer);
 	
 	@Query("SELECT DISTINCT inv FROM SalesInvoice inv INNER JOIN inv.statuses stat WHERE "
 			+ "inv.billedFromParty.id =:company "
 			+ "AND inv.billedToParty.id =:customer "
-			+ "AND stat.type NOT IN('PAID','VOID') "
-			+ "AND inv.number LIKE %:key% "
+//			+ "AND stat.type NOT IN('PAID','VOID') "
+			+ "AND inv.number LIKE :key "
 			+ "ORDER BY inv.date DESC ")
 	public List<SalesInvoice> findAllUnpaid(@Param("company")String company,@Param("customer")String customer,@Param("key")String key);
 	
@@ -49,13 +50,13 @@ public interface SalesInvoiceRepository extends JpaRepository<SalesInvoice, Stri
 	
 	@Query("FROM SalesInvoice inv WHERE "
 			+ "inv.billedFromParty.id =:company "
-			+ "AND inv.number LIKE %:key% "
+			+ "AND inv.number LIKE :key "
 			+ "ORDER BY inv.date DESC ")
 	public List<SalesInvoice> findAll(Pageable pageable,@Param("company")String company,@Param("key")String key);
 	
 	@Query("SELECT COUNT(inv) FROM SalesInvoice inv WHERE "
 			+ "inv.billedFromParty.id =:company "
-			+ "AND inv.number LIKE %:key% ")
+			+ "AND inv.number LIKE :key ")
 	public Long count(@Param("company")String company,@Param("key")String key);
 
 	@Query("SELECT DISTINCT item.invoice FROM InvoiceItem item WHERE item.id IN(:ids) ")

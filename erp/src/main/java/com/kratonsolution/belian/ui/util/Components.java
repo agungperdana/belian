@@ -26,12 +26,13 @@ import org.zkoss.zul.Timebox;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.common.persistence.Referenceable;
-import com.kratonsolution.belian.partys.dm.Organization;
+import com.kratonsolution.belian.party.impl.orm.Organization;
 
 /**
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class Components implements Serializable
 {	
@@ -124,7 +125,7 @@ public class Components implements Serializable
 		return listbox;
 	}
 	
-	public static final Listbox newSelect(Collection<? extends Referenceable> collections,boolean setDefault)
+	public static final Listbox newSelect(Collection<? extends Referenceable> collections, boolean setDefault)
 	{
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");
@@ -160,7 +161,7 @@ public class Components implements Serializable
 		return listbox;
 	}
 	
-	public static final Listbox fullSpanSelect(Collection<? extends Referenceable> collections,Referenceable setDefault)
+	public static final Listbox fullSpanSelect(Collection<? extends Referenceable> collections, Referenceable setDefault)
 	{
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");
@@ -177,7 +178,7 @@ public class Components implements Serializable
 		return listbox;
 	}
 	
-	public static final Listbox fullSpanSelect(Collection<? extends Referenceable> collections,boolean setDefault)
+	public static final Listbox fullSpanSelect(Collection<? extends Referenceable> collections, boolean setDefault)
 	{
 		Listbox listbox = new Listbox();
 		listbox.setMold("select");

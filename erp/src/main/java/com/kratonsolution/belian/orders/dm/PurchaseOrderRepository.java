@@ -22,31 +22,31 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, St
 	
 	@Query("FROM PurchaseOrder po WHERE "
 			+ "po.partyPlacingOrder.id IN(:companys) "
-			+ "AND (po.number LIKE %:key% "
-			+ "OR po.partyPlacingOrder.value LIKE %:key% "
-			+ "OR po.billToAddress.value LIKE %:key% "
-			+ "OR po.billToContact.value LIKE %:key% "
-			+ "OR po.shipToParty.value LIKE %:key% "
-			+ "OR po.shipToAddress.value LIKE %:key% "
-			+ "OR po.shipToContact.value LIKE %:key%) "
+			+ "AND (po.number LIKE :key "
+			+ "OR po.partyPlacingOrder.value LIKE :key "
+			+ "OR po.billToAddress.value LIKE :key "
+			+ "OR po.billToContact.value LIKE :key "
+			+ "OR po.shipToParty.value LIKE :key "
+			+ "OR po.shipToAddress.value LIKE :key "
+			+ "OR po.shipToContact.value LIKE :key) "
 			+ "ORDER BY po.number ASC")
 	public List<PurchaseOrder> findAll(Pageable pageable,@Param("companys")List<String> companys,@Param("key")String key);
 	
 	@Query("SELECT COUNT(po) FROM PurchaseOrder po WHERE "
 			+ "po.partyPlacingOrder.id IN(:companys) "
-			+ "AND (po.number LIKE %:key% "
-			+ "OR po.partyPlacingOrder.value LIKE %:key% "
-			+ "OR po.billToAddress.value LIKE %:key% "
-			+ "OR po.billToContact.value LIKE %:key% "
-			+ "OR po.shipToParty.value LIKE %:key% "
-			+ "OR po.shipToAddress.value LIKE %:key% "
-			+ "OR po.shipToContact.value LIKE %:key%) ")
+			+ "AND (po.number LIKE :key "
+			+ "OR po.partyPlacingOrder.value LIKE :key "
+			+ "OR po.billToAddress.value LIKE :key "
+			+ "OR po.billToContact.value LIKE :key "
+			+ "OR po.shipToParty.value LIKE :key "
+			+ "OR po.shipToAddress.value LIKE :key "
+			+ "OR po.shipToContact.value LIKE :key) ")
 	public Long count(@Param("companys")List<String> companys,@Param("key")String key);
 	
 	@Query("SELECT DISTINCT po FROM PurchaseOrder po INNER JOIN po.statuses status WHERE "
 			+ "po.partyPlacingOrder.id =:company "
 			+ "AND po.partyTakingOrder.id =:supplier "
-			+ "AND status.type NOT IN('CANCELED','ONHOLD','DONE','FULFILLED') "
+//			+ "AND status.type NOT IN('CANCELED','ONHOLD','DONE','FULFILLED') "
 			+ "ORDER BY po.orderDate ASC ")
 	public List<PurchaseOrder> findAllInvoiceable(@Param("company")String company,@Param("supplier")String supplier);
 }

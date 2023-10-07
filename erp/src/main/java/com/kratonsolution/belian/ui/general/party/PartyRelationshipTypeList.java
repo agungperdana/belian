@@ -8,7 +8,7 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.partys.dm.PartyRelationshipType;
+import com.kratonsolution.belian.party.impl.orm.PartyRelationshipType;
 import com.kratonsolution.belian.ui.util.Springs;
 
 

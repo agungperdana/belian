@@ -11,9 +11,9 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kratonsolution.belian.partys.dm.PartyRole;
-import com.kratonsolution.belian.partys.dm.PartyRoleRepository;
-import com.kratonsolution.belian.partys.dm.PartyRoleType;
+import com.kratonsolution.belian.party.impl.orm.PartyRole;
+import com.kratonsolution.belian.party.impl.orm.PartyRoleRepository;
+import com.kratonsolution.belian.party.impl.orm.PartyRoleType;
 
 /**
  * @author Agung Dodi Perdana

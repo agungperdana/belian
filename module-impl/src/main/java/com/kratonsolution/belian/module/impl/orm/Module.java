@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,15 +25,16 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="module")
+@EqualsAndHashCode
 public class Module implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 
-	@Column(name="code",unique=true,nullable=false)
+	@Column(name="code")
 	private String code;
 	
-	@Column(name="name",unique=true,nullable=false)
+	@Column(name="name")
 	private String name;
 	
 	@Column(name="note")

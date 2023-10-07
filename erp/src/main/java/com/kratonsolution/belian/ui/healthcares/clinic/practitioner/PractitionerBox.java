@@ -11,7 +11,7 @@ import com.kratonsolution.belian.common.persistence.IDValueRef;
 import com.kratonsolution.belian.common.persistence.Observer;
 import com.kratonsolution.belian.healtcares.dm.PractitionerProviderRelationship;
 import com.kratonsolution.belian.healtcares.dm.PractitionerProviderRelationshipRepository;
-import com.kratonsolution.belian.partys.dm.Person;
+import com.kratonsolution.belian.party.impl.orm.Person;
 import com.kratonsolution.belian.ui.component.AbstractCombobox;
 import com.kratonsolution.belian.ui.util.Springs;
 

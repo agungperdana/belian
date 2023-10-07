@@ -1,6 +1,7 @@
 
 package com.kratonsolution.belian.ui.nav;
 
+import com.kratonsolution.belian.Version;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -36,7 +37,7 @@ public class Belian extends AbstractMenu
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Messagebox.show("BelianERP 1.0", "Information",Messagebox.OK,Messagebox.INFORMATION);
+				Messagebox.show(String.format("%s %s", "BelianERP", Version.CURRENT), "Information",Messagebox.OK,Messagebox.INFORMATION);
 			}
 		});
 

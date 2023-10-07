@@ -1,30 +1,31 @@
 
 package com.kratonsolution.belian.ui.general.geographic;
 
+import com.kratonsolution.belian.geographic.impl.application.GeographicService;
+import com.kratonsolution.belian.geographic.impl.orm.Geographic;
+import com.kratonsolution.belian.geographic.impl.orm.GeographicType;
 import org.zkoss.zul.Listitem;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.persistence.IDValueRef;
-import com.kratonsolution.belian.general.dm.Geographic;
-import com.kratonsolution.belian.general.dm.GeographicType;
-import com.kratonsolution.belian.general.svc.GeographicService;
 import com.kratonsolution.belian.ui.component.AbstractList;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class GeographicList extends AbstractList<Geographic>
 {
 	private GeographicService service = Springs.get(GeographicService.class);
 
-	public GeographicList(boolean fullspan,GeographicType type)
+	public GeographicList(boolean fullspan, GeographicType type)
 	{
 		this(fullspan,type,null);
 	}
 
-	public GeographicList(boolean fullspan,GeographicType type,Geographic geographic)
+	public GeographicList(boolean fullspan, GeographicType type,Geographic geographic)
 	{
 		if(fullspan)
 			setWidth("100%");

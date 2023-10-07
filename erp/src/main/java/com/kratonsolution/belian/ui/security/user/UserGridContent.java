@@ -1,5 +1,6 @@
 package com.kratonsolution.belian.ui.security.user;
 
+import com.kratonsolution.belian.user.api.UserDeleteCommand;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -124,7 +125,7 @@ public class UserGridContent extends GridContent
 											if(check.isChecked())
 											{
 												Label label = (Label)row.getLastChild();
-//												controller.delete(label.getValue());
+												controller.delete(new UserDeleteCommand(label.getValue()));
 											}
 										}
 									}

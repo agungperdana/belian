@@ -7,13 +7,14 @@ import java.util.Map;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 
-import com.kratonsolution.belian.general.dm.Country;
-import com.kratonsolution.belian.general.svc.CountryService;
+import com.kratonsolution.belian.country.impl.orm.Country;
+import com.kratonsolution.belian.country.impl.application.CountryService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 0.0.1
  */
 public class CountryList extends Listbox
 {

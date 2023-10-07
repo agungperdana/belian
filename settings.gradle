@@ -1,12 +1,25 @@
-rootProject.name = 'belian-parent'
+rootProject.name = 'belian'
 
-include 'eureka-server'
 include 'common-core'
 include 'common-persistence'
 include 'module-impl'
 include 'role-impl'
-include 'security-impl'
 include 'user-api'
 include 'user-impl'
-include "erp"
-include 'user-data-service'
+include 'belian-form-security'
+include 'common-util'
+
+include 'company-structure-impl'
+include 'geographic-impl'
+include 'country-impl'
+
+include 'payroll-api'
+include 'payroll-impl'
+include 'payroll-ui'
+
+include 'party-api'
+include 'party-impl'
+include 'party-ui'
+
+include 'erp'
+

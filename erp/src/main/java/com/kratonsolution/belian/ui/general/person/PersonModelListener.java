@@ -1,7 +1,7 @@
 
 package com.kratonsolution.belian.ui.general.person;
 
-import com.kratonsolution.belian.partys.dm.Person;
+import com.kratonsolution.belian.party.impl.orm.Person;
 import com.kratonsolution.belian.ui.component.ModelListener;
 
 /**

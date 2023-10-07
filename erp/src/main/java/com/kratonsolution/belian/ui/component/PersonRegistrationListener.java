@@ -1,7 +1,7 @@
 
 package com.kratonsolution.belian.ui.component;
 
-import com.kratonsolution.belian.partys.dm.Person;
+import com.kratonsolution.belian.party.impl.orm.Person;
 
 /**
  * @author Agung Dodi Perdana

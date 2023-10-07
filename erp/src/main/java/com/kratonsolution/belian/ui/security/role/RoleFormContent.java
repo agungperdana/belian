@@ -4,6 +4,7 @@ package com.kratonsolution.belian.ui.security.role;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.kratonsolution.belian.module.impl.orm.ModuleGroup;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.CheckEvent;
 import org.zkoss.zk.ui.event.Event;
@@ -26,12 +27,11 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.general.dm.CompanyStructure;
-import com.kratonsolution.belian.general.svc.CompanyStructureService;
+import com.kratonsolution.belian.company.structure.impl.orm.CompanyStructure;
+import com.kratonsolution.belian.company.structure.impl.application.CompanyStructureService;
 import com.kratonsolution.belian.partys.svc.OrganizationService;
 import com.kratonsolution.belian.role.impl.orm.AccessRole;
 import com.kratonsolution.belian.module.impl.orm.Module;
-import com.kratonsolution.belian.module.impl.orm.ModuleGroup;
 import com.kratonsolution.belian.role.impl.orm.Role;
 import com.kratonsolution.belian.module.impl.application.ModuleServiceImpl;
 import com.kratonsolution.belian.role.impl.application.RoleService;
@@ -45,6 +45,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class RoleFormContent extends AbstractForm
 {	
@@ -116,7 +117,7 @@ public class RoleFormContent extends AbstractForm
 					{
 						Row _row = (Row)object;
 						
-						Module module = moduleServiceImpl.getOne(RowUtils.string(_row, 6));
+						Module module = moduleServiceImpl.findOne(RowUtils.string(_row, 6));
 						if(module != null)
 						{
 							AccessRole accessRole = new AccessRole();
@@ -166,7 +167,7 @@ public class RoleFormContent extends AbstractForm
 	
 	protected void initModules()
 	{
-		for(ModuleGroup group:ModuleGroup.values())
+		for(ModuleGroup group: ModuleGroup.values())
 		{
 			Grid grid = new Grid();
 			grid.appendChild(new Rows());

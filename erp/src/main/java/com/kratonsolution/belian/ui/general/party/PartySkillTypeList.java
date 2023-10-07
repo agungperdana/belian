@@ -7,7 +7,7 @@ import java.util.Map;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 
-import com.kratonsolution.belian.partys.dm.PartySkillType;
+import com.kratonsolution.belian.party.impl.orm.PartySkillType;
 import com.kratonsolution.belian.partys.svc.PartySkillTypeService;
 import com.kratonsolution.belian.ui.util.Springs;
 

@@ -6,13 +6,14 @@ import com.google.common.base.Strings;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public enum IndustrySegmentation
 {
 	FOOD,
 	TRAVEL,
 	HOTEL,
-	GOVERMENT,
+	GOVERNMENT,
 	BANKING,
 	FINANCIAL,
 	CHEMICAL,
@@ -31,7 +32,7 @@ public enum IndustrySegmentation
 				case FOOD:return "Kuliner";
 				case TRAVEL:return "Perjalanan";
 				case HOTEL:return "Penginapan";
-				case GOVERMENT:return "Badan Pemerintah";
+				case GOVERNMENT:return "Badan Pemerintah";
 				case BANKING:return "Bank";
 				case FINANCIAL:return "Keuangan";
 				case CHEMICAL:return "Kimia";

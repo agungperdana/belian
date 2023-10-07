@@ -6,13 +6,14 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
-import com.kratonsolution.belian.common.DateTimes;
-import com.kratonsolution.belian.partys.dm.Organization;
+import com.kratonsolution.belian.common.util.DateTimes;
+import com.kratonsolution.belian.party.impl.orm.Organization;
 
 /**
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class OrganizationRowRenderer implements RowRenderer<Organization>
 {

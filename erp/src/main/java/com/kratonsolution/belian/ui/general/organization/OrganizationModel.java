@@ -7,7 +7,7 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
-import com.kratonsolution.belian.partys.dm.Organization;
+import com.kratonsolution.belian.party.impl.orm.Organization;
 import com.kratonsolution.belian.partys.svc.OrganizationService;
 import com.kratonsolution.belian.ui.util.Springs;
 

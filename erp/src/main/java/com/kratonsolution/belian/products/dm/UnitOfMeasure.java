@@ -31,7 +31,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="unit_of_measure")
-public class UnitOfMeasure implements Serializable,Referenceable
+public class UnitOfMeasure implements Serializable, Referenceable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();

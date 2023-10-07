@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserService {
 
-    public UserData getOne(String id);
+    public UserData getOne(String email);
 
     public List<UserData> findAll();
 

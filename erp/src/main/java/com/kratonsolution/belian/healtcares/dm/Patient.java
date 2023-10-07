@@ -1,10 +1,9 @@
 
 package com.kratonsolution.belian.healtcares.dm;
 
+import com.kratonsolution.belian.party.impl.orm.PartyRole;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-
-import com.kratonsolution.belian.partys.dm.PartyRole;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -31,7 +31,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="product_category")
-public class ProductCategory implements Serializable,Referenceable
+public class ProductCategory implements Serializable, Referenceable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();

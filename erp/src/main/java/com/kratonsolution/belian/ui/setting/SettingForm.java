@@ -17,8 +17,8 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Tabbox;
 import org.zkoss.zul.Vlayout;
 
-import com.kratonsolution.belian.general.dm.GeographicType;
-import com.kratonsolution.belian.general.svc.GeographicService;
+import com.kratonsolution.belian.geographic.impl.orm.GeographicType;
+import com.kratonsolution.belian.geographic.impl.application.GeographicService;
 import com.kratonsolution.belian.global.svc.UserSettingService;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.accounting.currency.CurrencyList;

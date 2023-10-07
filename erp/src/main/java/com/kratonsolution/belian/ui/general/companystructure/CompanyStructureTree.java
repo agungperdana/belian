@@ -17,8 +17,8 @@ import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
 
 import com.kratonsolution.belian.common.Language;
-import com.kratonsolution.belian.general.dm.CompanyStructure;
-import com.kratonsolution.belian.general.svc.CompanyStructureService;
+import com.kratonsolution.belian.company.structure.impl.orm.CompanyStructure;
+import com.kratonsolution.belian.company.structure.impl.application.CompanyStructureService;
 import com.kratonsolution.belian.ui.Removeable;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -27,6 +27,7 @@ import com.kratonsolution.belian.ui.util.Springs;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class CompanyStructureTree extends Tree implements Removeable
 {

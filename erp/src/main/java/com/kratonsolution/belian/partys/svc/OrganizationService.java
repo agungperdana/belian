@@ -1,32 +1,28 @@
 
 package com.kratonsolution.belian.partys.svc;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.google.common.base.Strings;
+import com.kratonsolution.belian.party.impl.orm.Organization;
+import com.kratonsolution.belian.party.impl.orm.OrganizationRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.base.Strings;
-import com.kratonsolution.belian.partys.dm.Organization;
-import com.kratonsolution.belian.partys.dm.OrganizationRepository;
+import java.util.List;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
+@AllArgsConstructor
 public class OrganizationService
 {	
-	@Autowired
 	private OrganizationRepository repository;
-	
-	@Autowired
-	private PartyService service;
 
 	@Secured({"ROLE_ORGANIZATION_READ","ROLE_SYSTEM_READ"})
 	public Organization getOne(String id)

@@ -4,7 +4,7 @@ package com.kratonsolution.belian.shipment.dm;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
-import com.kratonsolution.belian.partys.dm.PartyRole;
+import com.kratonsolution.belian.party.impl.orm.PartyRole;
 
 import lombok.Getter;
 import lombok.Setter;

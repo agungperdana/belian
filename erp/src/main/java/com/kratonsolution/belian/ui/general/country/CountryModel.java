@@ -7,14 +7,15 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
-import com.kratonsolution.belian.general.dm.Country;
-import com.kratonsolution.belian.general.svc.CountryService;
+import com.kratonsolution.belian.country.impl.orm.Country;
+import com.kratonsolution.belian.country.impl.application.CountryService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class CountryModel implements ListModel<Country>
 {

@@ -18,16 +18,16 @@ import org.springframework.data.repository.query.Param;
 public interface InventoryItemRepository extends JpaRepository<InventoryItem, String>
 {
 	@Query("FROM InventoryItem item WHERE "
-			+ "item.product.value LIKE %:key% "
-			+ "OR item.facility.value LIKE %:key% "
-			+ "OR item.container.value LIKE %:key% "
+			+ "item.product.value LIKE :key "
+			+ "OR item.facility.value LIKE :key "
+			+ "OR item.container.value LIKE :key "
 			+ "ORDER BY item.product ASC ")
 	public List<InventoryItem> findAll(Pageable pageable,@Param("key")String key);
 	
 	@Query("SELECT COUNT(item) FROM InventoryItem item WHERE "
-			+ "item.product.value LIKE %:key% "
-			+ "OR item.facility.value LIKE %:key% "
-			+ "OR item.container.value LIKE %:key% ")
+			+ "item.product.value LIKE :key "
+			+ "OR item.facility.value LIKE :key "
+			+ "OR item.container.value LIKE :key ")
 	public Long count(@Param("key")String key);
 	
 	@Query("FROM InventoryItem item WHERE "

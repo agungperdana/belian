@@ -48,9 +48,9 @@ public interface ShipmentRepository extends JpaRepository<Shipment, String>
 			+ "AND (shipment.type = 'CUSTOMER_SHIPMENT' OR shipment.type = 'PURCHASE_RETUR_SHIPMENT')) "
 			+ "OR (shipment.shipToParty.id =:companys "
 			+ "AND (shipment.type = 'PURCHASE_SHIPMENT' OR shipment.type = 'CUSTOMER_RETUR')) "
-			+ "AND shipment.number like %:key% "
-			+ "AND shipment.shipToParty.value like %:key% "
-			+ "AND shipment.shipFromParty.value like %:key% "
+			+ "AND shipment.number like :key "
+			+ "AND shipment.shipToParty.value like :key "
+			+ "AND shipment.shipFromParty.value like :key "
 			+ "ORDER BY shipment.number ASC")
 	public List<Shipment> findAll(Pageable pageable,@Param("companys")String companys,@Param("key")String key);
 	
@@ -59,9 +59,9 @@ public interface ShipmentRepository extends JpaRepository<Shipment, String>
 			+ "AND (shipment.type = 'CUSTOMER_SHIPMENT' OR shipment.type = 'PURCHASE_RETUR_SHIPMENT')) "
 			+ "OR (shipment.shipToParty.id =:companys "
 			+ "AND (shipment.type = 'PURCHASE_SHIPMENT' OR shipment.type = 'CUSTOMER_RETUR')) "
-			+ "AND shipment.number like %:key% "
-			+ "AND shipment.shipToParty.value like %:key% "
-			+ "AND shipment.shipFromParty.value like %:key% ")
+			+ "AND shipment.number like :key "
+			+ "AND shipment.shipToParty.value like :key "
+			+ "AND shipment.shipFromParty.value like :key ")
 	public List<Shipment> findAll(@Param("companys")String companys,@Param("key")String key);
 	
 	@Query("FROM Shipment ship WHERE "
