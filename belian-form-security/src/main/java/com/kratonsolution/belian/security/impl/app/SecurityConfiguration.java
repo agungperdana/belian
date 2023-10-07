@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * @author Agung Dodi Perdana
@@ -17,7 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @AllArgsConstructor
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled=true,proxyTargetClass=true)
+@EnableGlobalMethodSecurity(securedEnabled=true, proxyTargetClass=true)
 public class SecurityConfiguration
 {
 	private AuthenticationService userService;
@@ -28,18 +29,15 @@ public class SecurityConfiguration
 	protected SecurityFilterChain configure(HttpSecurity http) throws Exception
 	{
 
-
-		http.csrf().disable().authorizeRequests()
-				.requestMatchers("/resources/**","/fonts/**","/css/**","/js/**").permitAll()
-				.anyRequest().authenticated();
-
-		http.formLogin().failureUrl("/login").loginPage("/login").permitAll()
-			.successHandler(successHandler)
-			.and()
-        	.logout().logoutUrl("/logout").permitAll();
-		
-		http.csrf().disable();
-		http.headers().frameOptions().sameOrigin();
+		http.authorizeHttpRequests(req -> req.requestMatchers(AntPathRequestMatcher.antMatcher("/resources/**")).permitAll()
+						.requestMatchers(AntPathRequestMatcher.antMatcher("/fonts/**")).permitAll()
+						.requestMatchers(AntPathRequestMatcher.antMatcher("/css/**")).permitAll()
+						.requestMatchers(AntPathRequestMatcher.antMatcher("/js/**")).permitAll()
+						.anyRequest().authenticated())
+			.formLogin(form -> form.loginPage("/login").permitAll().successHandler(successHandler))
+			.logout(log->log.logoutUrl("/logout").permitAll())
+			.csrf(csrf->csrf.disable())
+			.headers(headers->headers.frameOptions(frame->frame.sameOrigin()));
 
 		return http.build();
 	}

@@ -22,30 +22,23 @@ public class ZKossConfiguration
 	@Bean
 	public ServletRegistrationBean<DHtmlLayoutServlet> dHtmlLayoutServlet()
 	{
-		List<String> urls = new ArrayList<String>();
-		urls.add("/svc/*");
-		
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("update-uri", "/zkau");
 
-		ServletRegistrationBean<DHtmlLayoutServlet> servlets = new ServletRegistrationBean<DHtmlLayoutServlet>();
+		ServletRegistrationBean<DHtmlLayoutServlet> servlets = new ServletRegistrationBean<DHtmlLayoutServlet>(new DHtmlLayoutServlet(), "/svc/*");
 		servlets.setServlet(new DHtmlLayoutServlet());
 		servlets.setLoadOnStartup(1);
 		servlets.setInitParameters(params);
-		servlets.setName("ZKoss");
-		servlets.setUrlMappings(urls);
-		
+		servlets.setName("zkLoader");
+
 		return servlets;
 	}
 
 	@Bean
 	public ServletRegistrationBean<DHtmlUpdateServlet> dHtmlUpdateServlet()
 	{
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("update-uri", "/zkau/*");
 		ServletRegistrationBean<DHtmlUpdateServlet> reg = new ServletRegistrationBean<DHtmlUpdateServlet>(new DHtmlUpdateServlet(), "/zkau/*");
-		reg.setLoadOnStartup(2);
-		reg.setInitParameters(params);
+		reg.setName("auEngine");
 		return reg;
 	}
 }

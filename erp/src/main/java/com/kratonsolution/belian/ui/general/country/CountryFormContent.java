@@ -12,8 +12,8 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.general.dm.Country;
-import com.kratonsolution.belian.general.svc.CountryService;
+import com.kratonsolution.belian.country.impl.orm.Country;
+import com.kratonsolution.belian.country.impl.application.CountryService;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
@@ -23,6 +23,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class CountryFormContent extends AbstractForm
 {	

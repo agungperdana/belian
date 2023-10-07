@@ -16,7 +16,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 import org.zkoss.zul.event.ZulEvents;
 
-import com.kratonsolution.belian.general.svc.GeographicService;
+import com.kratonsolution.belian.geographic.impl.application.GeographicService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -25,6 +25,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class GeographicGridContent extends GridContent
 {

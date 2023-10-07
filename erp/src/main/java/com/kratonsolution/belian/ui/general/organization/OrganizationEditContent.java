@@ -24,10 +24,10 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.util.DateTimes;
-import com.kratonsolution.belian.general.dm.GeographicType;
-import com.kratonsolution.belian.partys.dm.Address;
-import com.kratonsolution.belian.partys.dm.Contact;
-import com.kratonsolution.belian.partys.dm.Organization;
+import com.kratonsolution.belian.geographic.impl.orm.GeographicType;
+import com.kratonsolution.belian.party.impl.orm.Address;
+import com.kratonsolution.belian.party.impl.orm.Contact;
+import com.kratonsolution.belian.party.impl.orm.Organization;
 import com.kratonsolution.belian.party.impl.orm.PartyClassification;
 import com.kratonsolution.belian.party.impl.orm.PartyRelationship;
 import com.kratonsolution.belian.party.impl.orm.PartyRole;

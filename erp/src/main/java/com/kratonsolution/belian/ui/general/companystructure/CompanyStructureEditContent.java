@@ -16,9 +16,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Toolbarbutton;
 
 import com.kratonsolution.belian.common.util.DateTimes;
-import com.kratonsolution.belian.general.dm.CompanyStructure;
-import com.kratonsolution.belian.general.dm.CompanyStructureType;
-import com.kratonsolution.belian.general.svc.CompanyStructureService;
+import com.kratonsolution.belian.company.structure.impl.orm.CompanyStructure;
+import com.kratonsolution.belian.company.structure.impl.orm.CompanyStructureType;
+import com.kratonsolution.belian.company.structure.impl.application.CompanyStructureService;
 import com.kratonsolution.belian.partys.svc.OrganizationService;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.util.Components;
@@ -28,6 +28,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class CompanyStructureEditContent extends AbstractForm
 {	

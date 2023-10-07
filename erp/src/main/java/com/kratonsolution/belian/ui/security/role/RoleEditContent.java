@@ -29,7 +29,7 @@ import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.general.svc.CompanyStructureService;
+import com.kratonsolution.belian.company.structure.impl.application.CompanyStructureService;
 import com.kratonsolution.belian.role.impl.orm.AccessRole;
 import com.kratonsolution.belian.module.impl.orm.Module;
 import com.kratonsolution.belian.role.impl.orm.Role;
@@ -45,6 +45,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class RoleEditContent extends AbstractForm
 {	

@@ -22,7 +22,7 @@ import org.zkoss.zul.Tabs;
 import com.kratonsolution.belian.common.util.DateTimes;
 import com.kratonsolution.belian.hr.dm.Employment;
 import com.kratonsolution.belian.hr.svc.EmploymentService;
-import com.kratonsolution.belian.partys.dm.Organization;
+import com.kratonsolution.belian.party.impl.orm.Organization;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.general.companystructure.CompanyStructureList;
@@ -36,6 +36,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class EmploymentEditContent extends AbstractForm
 {	

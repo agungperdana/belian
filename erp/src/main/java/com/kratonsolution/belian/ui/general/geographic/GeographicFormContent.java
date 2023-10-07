@@ -13,9 +13,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.general.dm.Geographic;
-import com.kratonsolution.belian.general.dm.GeographicType;
-import com.kratonsolution.belian.general.svc.GeographicService;
+import com.kratonsolution.belian.geographic.impl.orm.Geographic;
+import com.kratonsolution.belian.geographic.impl.orm.GeographicType;
+import com.kratonsolution.belian.geographic.impl.application.GeographicService;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
@@ -25,6 +25,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class GeographicFormContent extends AbstractForm
 {	

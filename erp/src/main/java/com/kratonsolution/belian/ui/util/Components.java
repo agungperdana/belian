@@ -26,12 +26,13 @@ import org.zkoss.zul.Timebox;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.SessionUtils;
 import com.kratonsolution.belian.common.persistence.Referenceable;
-import com.kratonsolution.belian.partys.dm.Organization;
+import com.kratonsolution.belian.party.impl.orm.Organization;
 
 /**
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class Components implements Serializable
 {	

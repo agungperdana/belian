@@ -15,8 +15,8 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.persistence.IDValueRef;
-import com.kratonsolution.belian.general.dm.CompanyStructure;
-import com.kratonsolution.belian.general.svc.CompanyStructureService;
+import com.kratonsolution.belian.company.structure.impl.orm.CompanyStructure;
+import com.kratonsolution.belian.company.structure.impl.application.CompanyStructureService;
 import com.kratonsolution.belian.inventory.dm.Facility;
 import com.kratonsolution.belian.inventory.dm.FacilityOrganization;
 import com.kratonsolution.belian.inventory.svc.FacilityService;
@@ -30,6 +30,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class FacilityOrganizationForm extends BForm
 {	
