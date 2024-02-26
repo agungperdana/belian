@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/invoice.css}"/>
+</head>
+<body>
+	<table>
+	<thead>
+	<tr style="border-bottom: solid silver 1px;">
+		<th class="doc-head" th:text="${title}"/>
+		<th align="right" width="30%">
+			<table style="width: 100%" border="1">
+				<tr><td>Nomor </td><td th:text="${inv.number}"/></tr>
+				<tr><td>Tanggal </td><td th:text="${#dates.format(inv.efectiveDate,'dd-MM-yyyy')}"/></tr>
+				<tr><td>Metode </td><td th:text="${method}"/></tr>
+				<tr><td>No Ref </td><td th:text="${inv.reference}"/></tr>
+			</table>
+		</th>
+	</tr>
+	<tr>
+		<th style="text-align: left;">
+				<table style="width: 100%">
+					<tr><td style="text-decoration: underline;">Dikeluarkan Oleh :</td></tr>
+					<tr><td th:text="${receiver.name}"/></tr>
+					<tr><td th:text="${receiver.getFirstAddress()?.value}"/></tr>
+					<tr><td th:text="${receiver.getFirstContact()?.value}"/></tr>
+				</table>
+		</th>
+		<th style="text-align: right;">
+				<table style="width: 100%">
+					<tr><td align="right" style="text-decoration: underline;">Dibayar Oleh :</td></tr>
+					<tr><td th:text="${payer.name}"/></tr>
+					<tr><td th:text="${payer.getFirstAddress()?.value}"/></tr>
+					<tr><td th:text="${payer.getFirstContact()?.value}"/></tr>
+				</table>
+		</th>
+	</tr>
+	<tr><th colspan="2">&nbsp;</th></tr>
+	</thead>
+	<tbody>
+	<tr>
+		<td colspan="2">
+			<table style="width: 100%">
+			<thead style="border-bottom: solid silver 1px;">
+				<tr>
+					<th align="left">Barang/Jasa</th>
+					<th align="right">Banyak</th>
+					<th align="right">Harga/Satuan</th>
+					<th align="right">Jumlah</th>
+				</tr>
+			</thead>
+			<tbody style="border-bottom: solid silver 1px;">
+			<tr th:each="item:${applications}">
+				<td th:text="${item.product}"/>
+				<td width="10%" align="right" th:text="${item.quantity}"/>
+				<td width="10%" align="right" th:text="${item.price}"/>
+				<td width="10%" align="right" th:text="${item.amount}"/>
+			</tr>
+			</tbody>
+			<tfoot>
+			<tr>
+				<td colspan="2">&nbsp;</td>
+				<td align="right" style="font-weight: bolder;">Subtotal</td>
+				<td align="right" style="font-weight: bolder;" th:text="${total}"/>
+			</tr>
+			</tfoot>
+			</table>
+		</td>
+	</tr>
+	</tbody>
+	</table>
+</body>
+</html>
