@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteRepositoriesConfiguration">
+    <remote-repository>
+      <option name="id" value="zk repository" />
+      <option name="name" value="zk repository" />
+      <option name="url" value="http://mavensync.zkoss.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven-snapshots" />
+      <option name="name" value="maven-snapshots" />
+      <option name="url" value="http://maven.u4agr.com/repository/maven-snapshots/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Central Repository" />
+      <option name="url" value="https://repo.maven.apache.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven-releases" />
+      <option name="name" value="maven-releases" />
+      <option name="url" value="http://maven.u4agr.com/repository/maven-releases/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Maven Central repository" />
+      <option name="url" value="https://repo1.maven.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jboss.community" />
+      <option name="name" value="JBoss Community repository" />
+      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="u4pp-maven-releases" />
+      <option name="name" value="u4pp-maven-releases" />
+      <option name="url" value="https://maven.u4pp.com/repository/maven-u4pp/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven-3rdparty" />
+      <option name="name" value="maven-3rdparty" />
+      <option name="url" value="http://maven.u4agr.com/repository/maven-3rdparty/" />
+    </remote-repository>
+  </component>
+</project>
