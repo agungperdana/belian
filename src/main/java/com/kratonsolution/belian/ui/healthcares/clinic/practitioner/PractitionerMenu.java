@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.healthcares.clinic.practitioner;
 
 import org.zkoss.zk.ui.event.Event;

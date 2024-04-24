@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.security.app;
 
 import java.util.Collection;

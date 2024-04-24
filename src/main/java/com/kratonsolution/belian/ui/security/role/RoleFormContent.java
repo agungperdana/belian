@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.security.role;
 
 import java.util.ArrayList;
@@ -118,7 +116,7 @@ public class RoleFormContent extends AbstractForm
 					{
 						Row _row = (Row)object;
 						
-						Module module = moduleService.findOne(RowUtils.string(_row, 6));
+						Module module = moduleService.findById(RowUtils.string(_row, 6));
 						if(module != null)
 						{
 							AccessRole accessRole = new AccessRole();

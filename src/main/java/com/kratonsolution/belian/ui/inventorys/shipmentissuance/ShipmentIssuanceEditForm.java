@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.inventorys.shipmentissuance;
 
 import org.zkoss.zk.ui.event.Event;
@@ -103,7 +101,7 @@ public class ShipmentIssuanceEditForm extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		ShipmentIssuance issuance = service.findOne(on);
+		ShipmentIssuance issuance = service.findById(on);
 		if(issuance != null)
 		{
 			number.setText(issuance.getNumber());
@@ -187,7 +185,7 @@ public class ShipmentIssuanceEditForm extends AbstractForm
 
 		tabbox.getTabpanels().getFirstChild().appendChild(items);
 
-		ShipmentIssuance out = service.findOne(on);
+		ShipmentIssuance out = service.findById(on);
 		if(out != null)
 		{
 			for(ShipmentIssuanceItem item:out.getItems())
@@ -219,7 +217,7 @@ public class ShipmentIssuanceEditForm extends AbstractForm
 		roles.getColumns().appendChild(new Column(lang.get("shipment.grid.column.type"),null,"150px"));
 		roles.setSpan("1");
 		
-		ShipmentIssuance out = service.findOne(on);
+		ShipmentIssuance out = service.findById(on);
 		if(out != null)
 		{
 			for(ShipmentIssuanceRole role:out.getRoles())

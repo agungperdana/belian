@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.partys.svc;
 
 import java.util.List;
@@ -31,10 +29,10 @@ public class OrganizationService
 	private PartyService service;
 
 	@Secured({"ROLE_ORGANIZATION_READ","ROLE_SYSTEM_READ"})
-	public Organization findOne(String id)
+	public Organization findById(String id)
 	{
 		if(!Strings.isNullOrEmpty(id))
-			return repository.findOne(id);
+			return repository.findById(id).orElse(null);
 	
 		return null;
 	}
@@ -57,7 +55,7 @@ public class OrganizationService
 	@Secured({"ROLE_ORGANIZATION_READ","ROLE_SYSTEM_READ"})
 	public List<Organization> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		return repository.findAll(PageRequest.of(pageIndex, pageSize)).getContent();
 	}
 
 	@Secured("ROLE_ORGANIZATION_READ")
@@ -93,6 +91,6 @@ public class OrganizationService
 	@Secured("ROLE_ORGANIZATION_DELETE")
 	public void delete(String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 }

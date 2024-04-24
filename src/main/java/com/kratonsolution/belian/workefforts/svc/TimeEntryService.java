@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.workefforts.svc;
 
 import java.util.List;
@@ -27,9 +25,9 @@ public class TimeEntryService extends AbstractService
 	private TimeEntryRepository repository;
 	
 	@Secured("ROLE_WORK_EFFORT_READ")
-	public TimeEntry findOne(String id)
+	public TimeEntry findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 	
 	@Secured("ROLE_WORK_EFFORT_READ")
@@ -59,6 +57,6 @@ public class TimeEntryService extends AbstractService
 	@Secured("ROLE_WORK_EFFORT_DELETE")
 	public void delete(String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 }

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.orders.salesorder;
 
 import java.math.BigDecimal;
@@ -171,7 +169,7 @@ public class SalesOrderItemViewForm extends BForm
 		
 		if(item != null)
 		{
-			OrderItem out = service.findOne(item.getId());
+			OrderItem out = service.findById(item.getId());
 			if(out != null)
 			{
 				for(RequirementOrderCommitment com:out.getOrderCommitments())

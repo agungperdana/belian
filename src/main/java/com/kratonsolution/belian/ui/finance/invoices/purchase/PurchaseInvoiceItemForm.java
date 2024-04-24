@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.finance.invoices.purchase;
 
 import java.math.BigDecimal;
@@ -146,7 +144,7 @@ public class PurchaseInvoiceItemForm extends AbstractForm
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PurchaseInvoice out = service.findOne(invoice.getId());
+				PurchaseInvoice out = service.findById(invoice.getId());
 				if(out != null)
 				{
 					InvoiceItem invoiceItem = new InvoiceItem();
@@ -165,7 +163,7 @@ public class PurchaseInvoiceItemForm extends AbstractForm
 							Row row = (Row)com;
 							if(RowUtils.isChecked(row))
 							{
-								OrderItem orderItem = orderItemService.findOne(RowUtils.id(row));
+								OrderItem orderItem = orderItemService.findById(RowUtils.id(row));
 								if(orderItem != null)
 								{
 									OrderItemBilling billing = new OrderItemBilling();
@@ -185,7 +183,7 @@ public class PurchaseInvoiceItemForm extends AbstractForm
 							Row row = (Row)com;
 							if(RowUtils.isChecked(row))
 							{
-								ShipmentOrder order = shipmentOrderService.findOne(RowUtils.id(row));
+								ShipmentOrder order = shipmentOrderService.findById(RowUtils.id(row));
 								if(order != null)
 								{
 									ShipmentItemBilling billing = new ShipmentItemBilling();
@@ -211,7 +209,7 @@ public class PurchaseInvoiceItemForm extends AbstractForm
 							Row rw = (Row)com;
 							if(RowUtils.isChecked(rw))
 							{
-								WorkEffort effort = workEffortService.findOne(RowUtils.id(rw));
+								WorkEffort effort = workEffortService.findById(RowUtils.id(rw));
 								if(effort != null)
 								{
 									WorkEffortBilling billing = new WorkEffortBilling();
@@ -410,7 +408,7 @@ public class PurchaseInvoiceItemForm extends AbstractForm
 			
 			for(WorkOrderItemFulfillment fulfillment:effort.getItemFulfillments())
 			{
-				OrderItem orderItem = orderItemService.findOne(fulfillment.getOrderItem().getId());
+				OrderItem orderItem = orderItemService.findById(fulfillment.getOrderItem().getId());
 				if(orderItem != null && orderItem.getOrder().getBillToParty().getId().equals(invoice.getBilledToParty().getId()))
 				{
 					Row row = new Row();
@@ -494,7 +492,7 @@ public class PurchaseInvoiceItemForm extends AbstractForm
 						{
 							if(!order.isInvoiced())
 							{
-								OrderItem orderItem = orderItemService.findOne(order.getOrderItem().getId());
+								OrderItem orderItem = orderItemService.findById(order.getOrderItem().getId());
 								if(orderItem != null && product.getDomain().getId().equals(item.getProduct().getId()))
 								{
 									Checkbox check = Components.checkbox(false);

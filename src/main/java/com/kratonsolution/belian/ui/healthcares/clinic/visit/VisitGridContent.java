@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.healthcares.clinic.visit;
 
 import java.util.Vector;

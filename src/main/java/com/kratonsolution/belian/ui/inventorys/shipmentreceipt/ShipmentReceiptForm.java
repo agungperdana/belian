@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.inventorys.shipmentreceipt;
 
 import java.math.BigDecimal;
@@ -133,7 +131,7 @@ public class ShipmentReceiptForm extends AbstractForm
 						if(containerList.getDomain() == null)
 							throw new WrongValueException(containerList,lang.get("message.field.empty"));
 
-						ShipmentItem shipmentItem = shipmentItemService.findOne(RowUtils.id(row));
+						ShipmentItem shipmentItem = shipmentItemService.findById(RowUtils.id(row));
 						if(shipmentItem != null)
 						{
 							ShipmentReceiptItem item = new ShipmentReceiptItem();
@@ -193,7 +191,7 @@ public class ShipmentReceiptForm extends AbstractForm
 				if(shipments.getDomain() == null)
 					throw new WrongValueException(shipments,lang.get("message.field.empty"));
 			
-				Shipment shipment = shipmentService.findOne(shipments.getDomainAsRef().getId());
+				Shipment shipment = shipmentService.findById(shipments.getDomainAsRef().getId());
 				if(shipment != null && !shipment.isDelivered())
 				{
 					for(ShipmentItem item :shipment.getItems())

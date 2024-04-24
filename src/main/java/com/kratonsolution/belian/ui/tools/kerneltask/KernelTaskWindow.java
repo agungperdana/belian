@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.tools.kerneltask;
 
 import org.zkoss.zk.ui.Component;

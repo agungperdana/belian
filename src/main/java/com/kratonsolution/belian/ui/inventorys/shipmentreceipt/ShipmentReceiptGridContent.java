@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.inventorys.shipmentreceipt;
 
 import java.util.Vector;

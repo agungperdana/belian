@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.finance.payments.receipt;
 
 import java.util.ArrayList;

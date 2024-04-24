@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.accounting.svc;
 
 import java.util.List;
@@ -36,10 +34,10 @@ public class TaxService
 	}
 	
 	@Secured({"ROLE_TAX_READ","ROLE_SYSTEM_READ"})
-	public Tax findOne(String id)
+	public Tax findById(String id)
 	{
 		if(!Strings.isNullOrEmpty(id))
-			return repository.findOne(id);
+			return repository.findById(id).orElse(null);
 		
 		return null;
 	}
@@ -53,7 +51,7 @@ public class TaxService
 	@Secured("ROLE_TAX_READ")
 	public List<Tax> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		return repository.findAll(PageRequest.of(pageIndex, pageSize)).getContent();
 	}
 	
 	@Secured("ROLE_TAX_CREATE")
@@ -72,6 +70,6 @@ public class TaxService
 	@Secured("ROLE_TAX_DELETE")
 	public void delete(@PathVariable String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 }

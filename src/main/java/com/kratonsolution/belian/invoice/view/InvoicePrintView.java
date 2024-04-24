@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.invoice.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +23,7 @@ public class InvoicePrintView extends AbstractView
 	@RequestMapping("/salesinvoiceprint")
 	public String soprint(Model model,@RequestParam("id")String id)
 	{
-		model.addAttribute("inv", service.findOne(id));
+		model.addAttribute("inv", service.findById(id));
 		model.addAttribute("util", utils);
 		model.addAttribute("title",lang.get("invoices.grid.column.print.title.sales"));
 		
@@ -36,7 +33,7 @@ public class InvoicePrintView extends AbstractView
 	@RequestMapping("/purchaseinvoiceprint")
 	public String poprint(Model model,@RequestParam("id")String id)
 	{
-		Invoice invoice = service.findOne(id);
+		Invoice invoice = service.findById(id).orElse(null);
 		
 		model.addAttribute("inv",invoice);
 		model.addAttribute("util", utils);

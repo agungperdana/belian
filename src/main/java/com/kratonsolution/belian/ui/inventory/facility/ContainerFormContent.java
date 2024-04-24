@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.inventory.facility;
 
 import org.zkoss.zk.ui.WrongValueException;
@@ -108,7 +106,7 @@ public class ContainerFormContent extends AbstractForm
 	public void initForm()
 	{
 		if(!Strings.isNullOrEmpty(container))
-			containers.setDomain(containerService.findOne(container));
+			containers.setDomain(containerService.findById(container));
 		
 		if(facility != null && Strings.isNullOrEmpty(container))
 			facilitys.setDomain(facility);

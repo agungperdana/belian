@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.security.svc;
 
 import java.util.Iterator;
@@ -26,9 +23,6 @@ public class ModuleEventListenerImpl implements ModuleEventListener
 {
 	@Autowired
 	private RoleService roleService;
-
-	@Autowired
-	private ModuleService moduleService;
 
 	@Override
 	public void fireModuleAdded(Module module)

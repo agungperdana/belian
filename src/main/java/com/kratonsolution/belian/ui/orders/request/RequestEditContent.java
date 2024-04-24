@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.orders.request;
 
 import java.math.BigDecimal;
@@ -87,7 +85,7 @@ public class RequestEditContent extends AbstractForm
 	@Override
 	public void initToolbar()
 	{
-		Request request = service.findOne(RowUtils.id(row));
+		Request request = service.findById(RowUtils.id(row));
 		
 		toolbar.getCancel().addEventListener(Events.ON_CLICK,new EventListener<Event>()
 		{
@@ -177,7 +175,7 @@ public class RequestEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		Request request = service.findOne(RowUtils.id(row));
+		Request request = service.findById(RowUtils.id(row));
 		if(request != null)
 		{
 			entryDate.setValue(request.getEntryDate());
@@ -259,7 +257,7 @@ public class RequestEditContent extends AbstractForm
 		items.getColumns().getLastChild().setVisible(false);
 		items.setSpan("1");
 
-		Request request = service.findOne(RowUtils.id(row));
+		Request request = service.findById(RowUtils.id(row));
 		if(request != null)
 		{
 			for(RequestItem item:request.getItems())
@@ -326,7 +324,7 @@ public class RequestEditContent extends AbstractForm
 		roles.getColumns().getLastChild().setVisible(false);
 		roles.setSpan("1");
 
-		Request request = service.findOne(RowUtils.id(row));
+		Request request = service.findById(RowUtils.id(row));
 		if(request != null)
 		{
 			for(RequestRole role:request.getRoles())

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.payments.svc;
 
 import java.util.ArrayList;
@@ -64,9 +61,9 @@ public class ReceiptService extends AbstractService
 	
 	@Secured("ROLE_RECEIPT_READ")
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	public Receipt findOne(String id)
+	public Receipt findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -83,7 +80,7 @@ public class ReceiptService extends AbstractService
 		if(utils.getOrganization() == null)
 			return new ArrayList<>();
 		
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId());
+		return repository.findAll(PageRequest.of(pageIndex, pageSize),utils.getOrganization().getId());
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -96,7 +93,7 @@ public class ReceiptService extends AbstractService
 		if(Strings.isNullOrEmpty(key))
 			return findAll(pageIndex, pageSize);
 		
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId(),key);
+		return repository.findAll(PageRequest.of(pageIndex, pageSize),utils.getOrganization().getId(),key);
 	}
 	
 	@Secured("ROLE_RECEIPT_CREATE")
@@ -118,7 +115,7 @@ public class ReceiptService extends AbstractService
 	@Secured("ROLE_RECEIPT_DELETE")
 	public void delete(String id)
 	{
-		Receipt receipt = repository.findOne(id);
+		Receipt receipt = repository.findById(id).orElse(null);
 		if(receipt != null)
 		{
 			for(PaymentApplication application:receipt.getApplications())

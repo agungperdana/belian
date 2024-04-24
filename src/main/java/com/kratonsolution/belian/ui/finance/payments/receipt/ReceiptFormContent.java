@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.finance.payments.receipt;
 
 import java.math.BigDecimal;
@@ -229,7 +227,7 @@ public class ReceiptFormContent extends AbstractForm
 					{
 						if(value != null && !Strings.isNullOrEmpty(value.getId()))
 						{
-							Invoice invoice = invoiceService.findOne(value.getId());
+							Invoice invoice = invoiceService.findById(value.getId());
 							if(invoice != null)
 							{
 								decimalbox.setValue(invoice.getSubtotal());

@@ -1,15 +1,13 @@
-CREATE DATABASE  IF NOT EXISTS `belian` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `belian`;
--- MySQL dump 10.13  Distrib 5.7.12, for osx10.9 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
 --
 -- Host: localhost    Database: belian
 -- ------------------------------------------------------
--- Server version	5.7.13
+-- Server version	5.5.5-10.11.2-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -18,14 +16,59 @@ USE `belian`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `access_role`
+--
+
+DROP TABLE IF EXISTS `access_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `access_role` (
+  `id` char(50) NOT NULL,
+  `fk_role` char(50) DEFAULT NULL,
+  `fk_module` char(50) DEFAULT NULL,
+  `module_code` varchar(100) DEFAULT NULL,
+  `module_name` varchar(200) DEFAULT NULL,
+  `is_can_read` char(1) DEFAULT '0',
+  `is_can_update` char(1) DEFAULT '0',
+  `is_can_delete` char(1) DEFAULT '0',
+  `is_can_create` char(1) DEFAULT '0',
+  `is_can_print` char(1) DEFAULT '0',
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `access_role`
 --
 
 LOCK TABLES `access_role` WRITE;
 /*!40000 ALTER TABLE `access_role` DISABLE KEYS */;
-INSERT INTO `access_role` VALUES ('01f41120-c1d9-4372-8b7e-16e7acb817a3','56f26094-5f17-4985-bc55-6ce8f66dbc96','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('01f5388b-c63e-4d09-b3b5-dd6456dd0815','c79e78d0-3427-440c-b8fe-df126e667a8b','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('0442dff1-c1dd-45e7-8634-2b9d90904469','7bef1d92-0f15-43ef-b59b-5bc3e769d896','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('060d3480-7c9a-44c7-b572-d7b2c4067359','916b22eb-48fa-4000-b7a2-7fc1d47ced4e','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('0a1a6c1d-e681-48c4-b400-be611a9f70b7','8a05b279-2f80-47b8-a2a7-63fbe96d327e','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('0e9073d1-2be3-4a8a-9a82-5bd1166757e2','847a8df6-bc04-4de6-8d7d-28e41c00f422','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('195dd074-a5e5-4abe-bc9f-5e913229bbb6','2d7e5641-511d-43fd-a6d6-a482120f8aa5','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('1aa3a48c-ab0c-4949-945e-e9852a9b9a93','95dd39dd-512e-414e-b95c-0fc251887f98','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('22fbdfec-6afe-4f2f-bd69-ac6a9974ae82','5c37296e-ab30-4d07-bba3-342d4c403f48','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('2c661c0d-53b6-44c7-85bd-ba04da473be3','c0f3237c-23c2-49ab-bc9c-e00aa706d7e2','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('2d52482a-0a7a-4e49-83c6-9db73e4e051b','80aebe74-399c-4273-9145-956a077d3f5d','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('3202f4e4-fd87-41a8-ae71-fbefce6a2ef4','b54c8e49-c820-4292-9f74-9e47bd55711f','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('32915e9c-96bf-44b3-881a-2f7c917a4c92','d33784ca-abd5-422b-b45a-8c8ee13ddc0a','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('32cc538f-0445-4ec4-9d2e-3084e89062d1','7f17176c-f27a-432c-a106-0d7d87b0afb7','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('331300a2-cc8e-4417-abb3-45dadf814422','fca1cfcf-d199-4729-a321-e1ed01deb0f1','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('37484efd-9cb6-4f79-903f-e7d6687658cc','6861d3b3-8110-46ed-8a3a-830963597fa7','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('3a225b38-8dbd-482a-9c14-2f7f1c535068','88bf4008-c84a-4089-88c6-e9d8f077a196','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('4106810f-37bd-48a1-9bf4-6eedcef7af49','c8b588b7-d205-4f55-a2ca-e7c759d68efc','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('48c06de3-442f-4125-a438-e370fabade36','f50dd16d-0e25-44b6-bd69-c28dfcc55300','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('48c4056e-33f6-4082-af20-0139f3e66371','8217c196-16b9-44fb-9662-8323220ee705','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('490e4434-7ea2-475e-a66c-ea7296b82c54','29ec80f0-0d4c-451c-ae5e-f195c4be1a27','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('4b15a790-2920-47f2-b805-33ecd48b9bac','2c0d9a06-cebd-4da2-b520-2e948aae3e53','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('4fffeab2-b09c-47fb-92b4-3981da252637','9e644628-121d-4954-8a66-8002cc866bda','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('541dd297-fd64-44ae-bcf4-fed612227962','4b3bb551-173e-46f5-b1e9-bdd719e3045e','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('59896828-7d8e-43a9-b8f8-c315fa774a15','0cd0b486-647b-49b9-85a9-7d2eb44c7a42','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('59d88282-5a3f-481b-9bb8-91679fbf4d91','f53b80db-1b89-4779-86e7-b065b5287bbb','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('5a2ce59a-60c2-4203-9d3b-7c5d038fe635','e916392a-0b3c-4543-ada7-93054383bb3b','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('5c2ddb84-b28c-40f6-81d5-351e0ea1037d','627fb961-6cf0-4148-9451-0d1422095eb7','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('5c9ab463-dc50-47a5-a601-f074734adf3c','abfd9a02-3b4b-47a0-9048-a65b6be0b3aa','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('6179118a-ff80-452a-a89d-8e0154725095','b662de02-f4a3-4f1a-819b-5d2aaf6a342b','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('6416ea67-8c7b-477e-811f-c5e4e45ca9c0','99623cbd-066f-4cc2-b9b3-1961bed131cc','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('64a1ea08-9b16-4ad7-8597-1132af964f3c','0918f728-35b9-4028-940b-a343b16fd464','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('6655f91e-4928-4c6f-b83a-f43b28f04454','770c420c-f809-43f7-969c-b493f0b4ef48','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('6adcd07b-62da-4e75-a076-80520a58eb32','5cdd1545-8fdb-4a79-b2a3-0662ed6fec30','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('6ed261e4-7608-49cd-9953-a04e3ff8dfed','affcf2e7-fd2c-4b39-beee-97b5dc5a1405','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('711417b0-a5ea-4c2e-8ab3-e5a96576b45b','8f6ec9c8-e9ed-49e1-ab7a-c4a868b8391e','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('71479847-69f5-43fa-b7ce-00af42c28d4a','339d7200-9aa1-43d5-8683-e7118cb52839','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('724b174d-96ec-4152-a42c-2d03097b9aa9','342b0b64-291f-4d12-bdb8-77186895d21d','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('79450f94-0cbf-4c0d-ad76-3362a4abe180','4eca5501-a650-41d5-87c1-c091391d3608','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('89c3b455-3c46-4bc4-9a13-77c171e129b6','a4c43802-436f-407c-8793-323600c181d7','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('8c6f9ab1-f804-45c2-8504-9d9cc9d3199c','532efe0a-05ff-4f94-877d-a7f3f7509569','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('923b7b67-a1e4-478a-9769-e2ee32b685b1','ee3c3540-9c62-46df-a79e-f7b636a9ba1d','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('94863d4d-7d07-41d2-bc78-4f65260776d6','13989b38-ac2c-47b8-8708-5e27477af18d','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('96318b3e-baf7-479b-ab07-d0798114d3bd','e54e6ba5-7ffd-457b-a23e-8b6285867ba4','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('9659ee34-7845-4078-89bd-9ee9b9e37b78','855aab16-cb45-41c3-b62c-55185ff77dfc','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('9728b76b-eac0-44c4-9ba9-afca669e0a76','e8f89299-2138-4167-b5b7-52f6ae1667ca','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('9f52d7a0-217e-4084-9bb3-78c5c81dd536','07452775-a048-4071-8798-21dc943fe926','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('9fa511a1-e704-4018-a90a-57acea0ac5da','1adc4b8b-ad93-4658-8476-6bb13e2e810d','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('a055f787-df6a-4c93-af22-12797bf5ec39','69443009-4a15-4061-b9f0-08c08c8f50aa','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('a3e8ba06-d955-4929-bd36-f658f3796b6c','a4aa9ae0-5166-4d06-afd1-d2eea6f2417c','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('a3ef8fbd-46f9-43db-ab47-31d062c3fb20','74ad4867-9495-472f-97fc-36bf87895585','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('a7951344-6b9e-438f-af5c-7b94dee26b2d','83b19678-9f2f-49f4-ba25-0f31a8dee078','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('a8a90cc0-470f-456c-879b-77c0ed469dd7','9df71b1a-0e52-4445-98ea-b9a59ad81ac9','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('a91848d3-83d1-485a-9846-c83ff3699ac2','322d37f6-a667-481e-bc22-db212d0154ea','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('abecab92-51cb-4ca9-88a0-9446c1bc5ae3','4eb93eb7-2100-49ae-bd96-a39995ed5670','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('ac144c04-22c4-47fb-8fd4-3783a4f29a90','1cf392fc-4f93-4e38-9709-2beb84434951','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('ad389302-f250-4270-a937-75cf984c2f80','2bdc3f95-c5bd-47d9-adce-9e9df1042e2f','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('b31dbbf6-6b74-4aa9-9db4-6ebd3888ef91','355ca995-6bae-4638-bfd4-a9bfeff5eefb','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('b4f04a2c-d9a4-4b30-b75b-4572685e35a8','9178e8cd-4063-4fe9-a060-d2e3ac818ed1','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('b9cf782f-29cf-491f-8956-b066dd4f1a40','1213903a-126f-4a60-8c7e-35c6dbe67927','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('bf839209-25d9-4ea7-8e4a-d771f7599e2e','6cbaf072-6925-46e9-b417-17326f3d8584','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('c0ea0111-01b2-49d4-9cf0-f047e0051860','faeb1349-b68e-4695-9086-aaca794597f6','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('c2d02e3b-7b8a-47b4-bb08-30f37f9505fc','9b9deb26-0960-478c-8cac-4ac475c3ffc3','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('c655e02a-f2a3-4132-8bd7-9428cc1ce3af','0b503053-31eb-410d-90a6-ec6a9977bc1e','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('c836928e-da88-414e-b572-db436cc948a4','4939e42f-06b5-4e44-b3ba-4106964f1f68','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('c9681985-0b2a-4537-822b-8f477bc15104','65414caf-3a73-4e3f-9a58-2d70c723b5bc','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('ce77f072-7ad1-4cb5-9e9e-0d9b89a853bd','314a3f13-a982-4915-a5cb-455eacbc27ae','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('cf2437ad-5e59-4f7a-8190-f537beabc623','58621810-2c8f-44ae-b9aa-b1e05ad32743','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('cff3c8ef-bd79-4d32-be37-b4a2e7dab027','90195ecb-4674-4614-a429-eebc24ffe773','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('d11fbe57-0eac-4f6f-bc22-14a0ed221733','fab64cd8-7762-412b-90fb-3d31d5576b45','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('d8a71d8e-344a-4c18-88ff-9ca2cffed715','b9935030-f5c1-479e-9ec1-795afc1c1e7e','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('de2ab421-31cd-45b7-b6d7-5baf50797f2c','6e299ade-e10e-4940-ae83-bdf61505ed63','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('e1ae7cc5-aab3-4271-a744-9d17fca44e9c','9b9e014c-7a23-40c1-8841-30044564bf7f','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('e1ae7cc5-aab3-4271-a744-9d17fca44e9x','9b9e014c-7a23-40c1-8841-30044564bf7x','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('e51c5ad1-38c7-4699-9c92-50f070f7a7f3','4bf39427-b32a-434c-bd71-4d9493ea6eef','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('e6f44dd7-9616-4c85-aaa9-e5322ea39319','b44420c6-261b-44c5-a23a-7802a0506dab','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('e75602fb-2d83-462c-8692-bb8ec206c395','8a8db7c0-a8f6-4314-b45c-c40161275c20','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('e9b3d5e4-1259-48bc-b521-7abb7d72bc30','e4307d82-f3fa-4916-9e6b-7a4f894d847e','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('ed0df929-8852-42ca-9006-e0ad6fd37a90','55b7e0fb-a178-478b-a09e-4b753f161aeb','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('ee5e29eb-cf8a-4c54-a709-da55952b8f80','5eda5016-f448-42dd-926b-52b10870e29c','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('f0c0441f-80df-4405-8927-c114d9c61edb','e4d249e1-4bd5-4291-9050-62a99f70f64c','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('f0f949d7-f756-4fdc-bacd-b6e145b9829d','5e8c4a66-e46a-4000-ae1c-bf536686b30f','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('f21a4567-0723-4569-abd7-8e59e3645767','0c586cf4-9bd2-4b93-b24b-d41ceca2aef4','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('f4b12ef0-6f04-4e2c-ac0c-bbb5ba7c8aee','5844dc9e-2db6-4074-8103-3861566b042e','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('f6e69991-8825-41e8-a6e7-24a4c6257c4d','dbc9175e-eb27-45e9-9e43-a1c12d6354e4','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',0),('f7284b39-b584-4334-94f0-0631d3a9b429','4500a912-bbad-4590-9abb-d9ec92a311a5','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1),('fe2ef334-8861-41af-887a-a95992d46b74','8c7e1020-0824-4239-9a4e-46301c80b9cd','096b0105-de76-492c-9bb0-5e518b46d69c','1','1','1','1','1',1);
+INSERT INTO `access_role` VALUES ('01f41120-c1d9-4372-8b7e-16e7acb817a3','096b0105-de76-492c-9bb0-5e518b46d69c','56f26094-5f17-4985-bc55-6ce8f66dbc96','WORK_EFFORT','Work Effort','1','1','1','1','1',1),('01f5388b-c63e-4d09-b3b5-dd6456dd0815','096b0105-de76-492c-9bb0-5e518b46d69c','c79e78d0-3427-440c-b8fe-df126e667a8b','INVOICE_DUEDATE_REPORT','Invoice Due Date Report','1','1','1','1','1',1),('0442dff1-c1dd-45e7-8634-2b9d90904469','096b0105-de76-492c-9bb0-5e518b46d69c','7bef1d92-0f15-43ef-b59b-5bc3e769d896','UOM','Unit of Measure','1','1','1','1','1',0),('060d3480-7c9a-44c7-b572-d7b2c4067359','096b0105-de76-492c-9bb0-5e518b46d69c','916b22eb-48fa-4000-b7a2-7fc1d47ced4e','STOCK_ADJUSTMENT','Stock Adjustment','1','1','1','1','1',0),('0a1a6c1d-e681-48c4-b400-be611a9f70b7','096b0105-de76-492c-9bb0-5e518b46d69c','8a05b279-2f80-47b8-a2a7-63fbe96d327e','AUDIT_TRAIL','Audit Trail','1','1','1','1','1',1),('0e9073d1-2be3-4a8a-9a82-5bd1166757e2','096b0105-de76-492c-9bb0-5e518b46d69c','847a8df6-bc04-4de6-8d7d-28e41c00f422','DOCTOR_APPOINTMENT','Doctor Appointment','1','1','1','1','1',0),('195dd074-a5e5-4abe-bc9f-5e913229bbb6','096b0105-de76-492c-9bb0-5e518b46d69c','2d7e5641-511d-43fd-a6d6-a482120f8aa5','BUDGET','Budget','1','1','1','1','1',0),('1aa3a48c-ab0c-4949-945e-e9852a9b9a93','096b0105-de76-492c-9bb0-5e518b46d69c','95dd39dd-512e-414e-b95c-0fc251887f98','PRODUCT_CATEGORY','Product Category','1','1','1','1','1',0),('22fbdfec-6afe-4f2f-bd69-ac6a9974ae82','096b0105-de76-492c-9bb0-5e518b46d69c','5c37296e-ab30-4d07-bba3-342d4c403f48','INVITEM','Inventory Item','1','1','1','1','1',0),('2c661c0d-53b6-44c7-85bd-ba04da473be3','096b0105-de76-492c-9bb0-5e518b46d69c','c0f3237c-23c2-49ab-bc9c-e00aa706d7e2','PROFIT_LOSS','Profit Loss Report','1','1','1','1','1',1),('2d52482a-0a7a-4e49-83c6-9db73e4e051b','096b0105-de76-492c-9bb0-5e518b46d69c','80aebe74-399c-4273-9145-956a077d3f5d','ACCESS_ROLE','Role','1','1','1','1','1',0),('3202f4e4-fd87-41a8-ae71-fbefce6a2ef4','096b0105-de76-492c-9bb0-5e518b46d69c','b54c8e49-c820-4292-9f74-9e47bd55711f','PURCHASE_ORDER','Purchase Order','1','1','1','1','1',0),('32915e9c-96bf-44b3-881a-2f7c917a4c92','096b0105-de76-492c-9bb0-5e518b46d69c','d33784ca-abd5-422b-b45a-8c8ee13ddc0a','DEDUCTION_TYPE','Deduction Type','1','1','1','1','1',0),('32cc538f-0445-4ec4-9d2e-3084e89062d1','096b0105-de76-492c-9bb0-5e518b46d69c','7f17176c-f27a-432c-a106-0d7d87b0afb7','RECEIPT','Receipt','1','1','1','1','1',1),('331300a2-cc8e-4417-abb3-45dadf814422','096b0105-de76-492c-9bb0-5e518b46d69c','fca1cfcf-d199-4729-a321-e1ed01deb0f1','LABS_REGISTRATION','Laboratory Registration','1','1','1','1','1',0),('37484efd-9cb6-4f79-903f-e7d6687658cc','096b0105-de76-492c-9bb0-5e518b46d69c','6861d3b3-8110-46ed-8a3a-830963597fa7','TAX','Tax','1','1','1','1','1',0),('3a225b38-8dbd-482a-9c14-2f7f1c535068','096b0105-de76-492c-9bb0-5e518b46d69c','88bf4008-c84a-4089-88c6-e9d8f077a196','JOURNALSETTING','Journal Setting','1','1','1','1','1',0),('4106810f-37bd-48a1-9bf4-6eedcef7af49','096b0105-de76-492c-9bb0-5e518b46d69c','c8b588b7-d205-4f55-a2ca-e7c759d68efc','SHIPMENT','Shipment','1','1','1','1','1',1),('48c06de3-442f-4125-a438-e370fabade36','096b0105-de76-492c-9bb0-5e518b46d69c','f50dd16d-0e25-44b6-bd69-c28dfcc55300','GEOGRAPHIC','Geographic','1','1','1','1','1',0),('48c4056e-33f6-4082-af20-0139f3e66371','096b0105-de76-492c-9bb0-5e518b46d69c','8217c196-16b9-44fb-9662-8323220ee705','ASSET','Asset Management','1','1','1','1','1',0),('490e4434-7ea2-475e-a66c-ea7296b82c54','096b0105-de76-492c-9bb0-5e518b46d69c','29ec80f0-0d4c-451c-ae5e-f195c4be1a27','COMPANY_STRUCTURE','Company Structure','1','1','1','1','1',0),('4b15a790-2920-47f2-b805-33ecd48b9bac','096b0105-de76-492c-9bb0-5e518b46d69c','2c0d9a06-cebd-4da2-b520-2e948aae3e53','INVOICE_REPORT','Invoice Report','1','1','1','1','1',1),('4fffeab2-b09c-47fb-92b4-3981da252637','096b0105-de76-492c-9bb0-5e518b46d69c','9e644628-121d-4954-8a66-8002cc866bda','STOCK_ADMIN','Stock Admin','1','1','1','1','1',1),('541dd297-fd64-44ae-bcf4-fed612227962','096b0105-de76-492c-9bb0-5e518b46d69c','4b3bb551-173e-46f5-b1e9-bdd719e3045e','COA','General Chart of Account','1','1','1','1','1',0),('59896828-7d8e-43a9-b8f8-c315fa774a15','096b0105-de76-492c-9bb0-5e518b46d69c','0cd0b486-647b-49b9-85a9-7d2eb44c7a42','TERM_TYPE','Order Term','1','1','1','1','1',1),('59d88282-5a3f-481b-9bb8-91679fbf4d91','096b0105-de76-492c-9bb0-5e518b46d69c','f53b80db-1b89-4779-86e7-b065b5287bbb','ASSET_TYPE','Asset Type','1','1','1','1','1',0),('5a2ce59a-60c2-4203-9d3b-7c5d038fe635','096b0105-de76-492c-9bb0-5e518b46d69c','e916392a-0b3c-4543-ada7-93054383bb3b','MESSAGE','Message','1','1','1','1','1',1),('5c2ddb84-b28c-40f6-81d5-351e0ea1037d','096b0105-de76-492c-9bb0-5e518b46d69c','627fb961-6cf0-4148-9451-0d1422095eb7','ACKNOWLEDGEMENT','Acknowledgement','1','1','1','1','1',1),('5c9ab463-dc50-47a5-a601-f074734adf3c','096b0105-de76-492c-9bb0-5e518b46d69c','abfd9a02-3b4b-47a0-9048-a65b6be0b3aa','PRODUCT_RETUR','Product Retur','1','1','1','1','1',1),('6179118a-ff80-452a-a89d-8e0154725095','096b0105-de76-492c-9bb0-5e518b46d69c','b662de02-f4a3-4f1a-819b-5d2aaf6a342b','SHIPMENT_ISSUANCE','Shipment Issuance','1','1','1','1','1',0),('6416ea67-8c7b-477e-811f-c5e4e45ca9c0','096b0105-de76-492c-9bb0-5e518b46d69c','99623cbd-066f-4cc2-b9b3-1961bed131cc','GOODS_TRANSFER','Goods Transfer','1','1','1','1','1',0),('64a1ea08-9b16-4ad7-8597-1132af964f3c','096b0105-de76-492c-9bb0-5e518b46d69c','0918f728-35b9-4028-940b-a343b16fd464','SALES_INVOICE','Sales Invoice','1','1','1','1','1',1),('6655f91e-4928-4c6f-b83a-f43b28f04454','096b0105-de76-492c-9bb0-5e518b46d69c','770c420c-f809-43f7-969c-b493f0b4ef48','CASHIER','Cashier','1','1','1','1','1',0),('6adcd07b-62da-4e75-a076-80520a58eb32','096b0105-de76-492c-9bb0-5e518b46d69c','5cdd1545-8fdb-4a79-b2a3-0662ed6fec30','POSITIONTYPERATE','Position Type Rate','1','1','1','1','1',0),('6ed261e4-7608-49cd-9953-a04e3ff8dfed','096b0105-de76-492c-9bb0-5e518b46d69c','affcf2e7-fd2c-4b39-beee-97b5dc5a1405','STUDY_PERIOD','Study Period','1','1','1','1','1',1),('711417b0-a5ea-4c2e-8ab3-e5a96576b45b','096b0105-de76-492c-9bb0-5e518b46d69c','8f6ec9c8-e9ed-49e1-ab7a-c4a868b8391e','ORGANIZATIONACCOUNT','Organization Account','1','1','1','1','1',0),('71479847-69f5-43fa-b7ce-00af42c28d4a','096b0105-de76-492c-9bb0-5e518b46d69c','339d7200-9aa1-43d5-8683-e7118cb52839','STUDENT','Student','1','1','1','1','1',1),('724b174d-96ec-4152-a42c-2d03097b9aa9','096b0105-de76-492c-9bb0-5e518b46d69c','342b0b64-291f-4d12-bdb8-77186895d21d','SALES_REPORT','Sales Report','1','1','1','1','1',0),('79450f94-0cbf-4c0d-ad76-3362a4abe180','096b0105-de76-492c-9bb0-5e518b46d69c','4eca5501-a650-41d5-87c1-c091391d3608','SALES_ORDER','SALES_ORDER','1','1','1','1','1',0),('89c3b455-3c46-4bc4-9a13-77c171e129b6','096b0105-de76-492c-9bb0-5e518b46d69c','a4c43802-436f-407c-8793-323600c181d7','SHIPMENT_RECEIPT','Shipment Receipt','1','1','1','1','1',0),('8c6f9ab1-f804-45c2-8504-9d9cc9d3199c','096b0105-de76-492c-9bb0-5e518b46d69c','532efe0a-05ff-4f94-877d-a7f3f7509569','WORKING_TIMESHEET','Working Timesheet','1','1','1','1','1',1),('923b7b67-a1e4-478a-9769-e2ee32b685b1','096b0105-de76-492c-9bb0-5e518b46d69c','ee3c3540-9c62-46df-a79e-f7b636a9ba1d','STUDY_DAY','Study Day','1','1','1','1','1',1),('94863d4d-7d07-41d2-bc78-4f65260776d6','096b0105-de76-492c-9bb0-5e518b46d69c','13989b38-ac2c-47b8-8708-5e27477af18d','BENEFIT_TYPE','Benefit Type','1','1','1','1','1',0),('96318b3e-baf7-479b-ab07-d0798114d3bd','096b0105-de76-492c-9bb0-5e518b46d69c','e54e6ba5-7ffd-457b-a23e-8b6285867ba4','STUDY_ROOM','Study Room','1','1','1','1','1',1),('9659ee34-7845-4078-89bd-9ee9b9e37b78','096b0105-de76-492c-9bb0-5e518b46d69c','855aab16-cb45-41c3-b62c-55185ff77dfc','PHARMACY_SALES','Pharmacy Sales','1','1','1','1','1',1),('9728b76b-eac0-44c4-9ba9-afca669e0a76','096b0105-de76-492c-9bb0-5e518b46d69c','e8f89299-2138-4167-b5b7-52f6ae1667ca','POSITION','Position','1','1','1','1','1',0),('9f52d7a0-217e-4084-9bb3-78c5c81dd536','096b0105-de76-492c-9bb0-5e518b46d69c','07452775-a048-4071-8798-21dc943fe926','PRODUCT','Product','1','1','1','1','1',0),('9fa511a1-e704-4018-a90a-57acea0ac5da','096b0105-de76-492c-9bb0-5e518b46d69c','1adc4b8b-ad93-4658-8476-6bb13e2e810d','ORDERS_REQUEST','Purchase Order Request','1','1','1','1','1',0),('a055f787-df6a-4c93-af22-12797bf5ec39','096b0105-de76-492c-9bb0-5e518b46d69c','69443009-4a15-4061-b9f0-08c08c8f50aa','JOURNALENTRY','Journal Entry','1','1','1','1','1',0),('a3e8ba06-d955-4929-bd36-f658f3796b6c','096b0105-de76-492c-9bb0-5e518b46d69c','a4aa9ae0-5166-4d06-afd1-d2eea6f2417c','PERSON','Person Management','1','1','1','1','1',0),('a3ef8fbd-46f9-43db-ab47-31d062c3fb20','096b0105-de76-492c-9bb0-5e518b46d69c','74ad4867-9495-472f-97fc-36bf87895585','COURSE_ATTENDANCE','Course Attendance','1','1','1','1','1',1),('a7951344-6b9e-438f-af5c-7b94dee26b2d','096b0105-de76-492c-9bb0-5e518b46d69c','83b19678-9f2f-49f4-ba25-0f31a8dee078','PHARMACY_ORDER','Pharmacy Order','1','1','1','1','1',1),('a8a90cc0-470f-456c-879b-77c0ed469dd7','096b0105-de76-492c-9bb0-5e518b46d69c','9df71b1a-0e52-4445-98ea-b9a59ad81ac9','PATIENT','Patient','1','1','1','1','1',0),('a91848d3-83d1-485a-9846-c83ff3699ac2','096b0105-de76-492c-9bb0-5e518b46d69c','322d37f6-a667-481e-bc22-db212d0154ea','EMPYAPP','Employment Application','1','1','1','1','1',0),('abecab92-51cb-4ca9-88a0-9446c1bc5ae3','096b0105-de76-492c-9bb0-5e518b46d69c','4eb93eb7-2100-49ae-bd96-a39995ed5670','USER','User','1','1','1','1','1',0),('ac144c04-22c4-47fb-8fd4-3783a4f29a90','096b0105-de76-492c-9bb0-5e518b46d69c','1cf392fc-4f93-4e38-9709-2beb84434951','DOCTORTYPE','Doctor Type','1','1','1','1','1',0),('ad389302-f250-4270-a937-75cf984c2f80','096b0105-de76-492c-9bb0-5e518b46d69c','2bdc3f95-c5bd-47d9-adce-9e9df1042e2f','BUDGET_APPROVER','Budget Approver','1','1','1','1','1',1),('b31dbbf6-6b74-4aa9-9db4-6ebd3888ef91','096b0105-de76-492c-9bb0-5e518b46d69c','355ca995-6bae-4638-bfd4-a9bfeff5eefb','INVOICE_OVERDUE_REPORT','Invoice Over Due Report','1','1','1','1','1',1),('b4f04a2c-d9a4-4b30-b75b-4572685e35a8','096b0105-de76-492c-9bb0-5e518b46d69c','9178e8cd-4063-4fe9-a060-d2e3ac818ed1','PAYCHECK','Paycheck','1','1','1','1','1',0),('b9cf782f-29cf-491f-8956-b066dd4f1a40','096b0105-de76-492c-9bb0-5e518b46d69c','1213903a-126f-4a60-8c7e-35c6dbe67927','PRODUCT_REQUIREMENT','Product Requirement','1','1','1','1','1',1),('bf839209-25d9-4ea7-8e4a-d771f7599e2e','096b0105-de76-492c-9bb0-5e518b46d69c','6cbaf072-6925-46e9-b417-17326f3d8584','EMPLOYMENT','Employment','1','1','1','1','1',0),('c0ea0111-01b2-49d4-9cf0-f047e0051860','096b0105-de76-492c-9bb0-5e518b46d69c','faeb1349-b68e-4695-9086-aaca794597f6','COUNTRY','Country','1','1','1','1','1',1),('c2d02e3b-7b8a-47b4-bb08-30f37f9505fc','096b0105-de76-492c-9bb0-5e518b46d69c','9b9deb26-0960-478c-8cac-4ac475c3ffc3','COURSE_REGISTRATION','Course Registration','1','1','1','1','1',1),('c655e02a-f2a3-4132-8bd7-9428cc1ce3af','096b0105-de76-492c-9bb0-5e518b46d69c','0b503053-31eb-410d-90a6-ec6a9977bc1e','FAMILY_FOLDER','Family Folder','1','1','1','1','1',0),('c836928e-da88-414e-b572-db436cc948a4','096b0105-de76-492c-9bb0-5e518b46d69c','4939e42f-06b5-4e44-b3ba-4106964f1f68','ACCOUNTINGPERIOD','Accounting Period','1','1','1','1','1',0),('c9681985-0b2a-4537-822b-8f477bc15104','096b0105-de76-492c-9bb0-5e518b46d69c','65414caf-3a73-4e3f-9a58-2d70c723b5bc','CURRENCY','Currency','1','1','1','1','1',0),('ce77f072-7ad1-4cb5-9e9e-0d9b89a853bd','096b0105-de76-492c-9bb0-5e518b46d69c','314a3f13-a982-4915-a5cb-455eacbc27ae','INBOX','Inbox Message','1','1','1','1','1',1),('cf2437ad-5e59-4f7a-8190-f537beabc623','096b0105-de76-492c-9bb0-5e518b46d69c','58621810-2c8f-44ae-b9aa-b1e05ad32743','SUPPLIER','Supplier','1','1','1','1','1',1),('cff3c8ef-bd79-4d32-be37-b4a2e7dab027','096b0105-de76-492c-9bb0-5e518b46d69c','90195ecb-4674-4614-a429-eebc24ffe773','POSITIONTYPE','Position Type','1','1','1','1','1',0),('d11fbe57-0eac-4f6f-bc22-14a0ed221733','096b0105-de76-492c-9bb0-5e518b46d69c','fab64cd8-7762-412b-90fb-3d31d5576b45','COURSE_SCHEDULE','Course Schedule','1','1','1','1','1',1),('d8a71d8e-344a-4c18-88ff-9ca2cffed715','096b0105-de76-492c-9bb0-5e518b46d69c','b9935030-f5c1-479e-9ec1-795afc1c1e7e','FACILITY','Facility','1','1','1','1','1',0),('de2ab421-31cd-45b7-b6d7-5baf50797f2c','096b0105-de76-492c-9bb0-5e518b46d69c','6e299ade-e10e-4940-ae83-bdf61505ed63','STUDENT_REGISTRATION','Student Registration','1','1','1','1','1',1),('e1ae7cc5-aab3-4271-a744-9d17fca44e9c','096b0105-de76-492c-9bb0-5e518b46d69c','9b9e014c-7a23-40c1-8841-30044564bf7f','MODULE','Module','1','1','1','1','1',0),('e1ae7cc5-aab3-4271-a744-9d17fca44e9x','096b0105-de76-492c-9bb0-5e518b46d69c','9b9e014c-7a23-40c1-8841-30044564bf7x','SYSTEM','System Access','1','1','1','1','1',0),('e51c5ad1-38c7-4699-9c92-50f070f7a7f3','096b0105-de76-492c-9bb0-5e518b46d69c','4bf39427-b32a-434c-bd71-4d9493ea6eef','STOCK_OPNAME','Stock Opname','1','1','1','1','1',0),('e6f44dd7-9616-4c85-aaa9-e5322ea39319','096b0105-de76-492c-9bb0-5e518b46d69c','b44420c6-261b-44c5-a23a-7802a0506dab','RECURRING_PAYMENT','Recurring Payment','1','1','1','1','1',1),('e75602fb-2d83-462c-8692-bb8ec206c395','096b0105-de76-492c-9bb0-5e518b46d69c','8a8db7c0-a8f6-4314-b45c-c40161275c20','WORK_REQUIREMENT','Work Requirement','1','1','1','1','1',1),('e9b3d5e4-1259-48bc-b521-7abb7d72bc30','096b0105-de76-492c-9bb0-5e518b46d69c','e4307d82-f3fa-4916-9e6b-7a4f894d847e','ORGANIZATION','Organization','1','1','1','1','1',0),('ed0df929-8852-42ca-9006-e0ad6fd37a90','096b0105-de76-492c-9bb0-5e518b46d69c','55b7e0fb-a178-478b-a09e-4b753f161aeb','MEDICATION','Medication','1','1','1','1','1',0),('ee5e29eb-cf8a-4c54-a709-da55952b8f80','096b0105-de76-492c-9bb0-5e518b46d69c','5eda5016-f448-42dd-926b-52b10870e29c','STUDY_TIME','Study Time','1','1','1','1','1',1),('f0c0441f-80df-4405-8927-c114d9c61edb','096b0105-de76-492c-9bb0-5e518b46d69c','e4d249e1-4bd5-4291-9050-62a99f70f64c','CLINIC_REPORT','Clinic Reports','1','1','1','1','1',1),('f0f949d7-f756-4fdc-bacd-b6e145b9829d','096b0105-de76-492c-9bb0-5e518b46d69c','5e8c4a66-e46a-4000-ae1c-bf536686b30f','TRN_ORDER_REQ','Transfer Order Request','1','1','1','1','1',0),('f21a4567-0723-4569-abd7-8e59e3645767','096b0105-de76-492c-9bb0-5e518b46d69c','0c586cf4-9bd2-4b93-b24b-d41ceca2aef4','CLINIC_SALES','Clinic Sales','1','1','1','1','1',1),('f4b12ef0-6f04-4e2c-ac0c-bbb5ba7c8aee','096b0105-de76-492c-9bb0-5e518b46d69c','5844dc9e-2db6-4074-8103-3861566b042e','PRODUCT_FEATURE','Product Feature','1','1','1','1','1',1),('f6e69991-8825-41e8-a6e7-24a4c6257c4d','096b0105-de76-492c-9bb0-5e518b46d69c','dbc9175e-eb27-45e9-9e43-a1c12d6354e4','DOCTOR','Doctor','1','1','1','1','1',0),('f7284b39-b584-4334-94f0-0631d3a9b429','096b0105-de76-492c-9bb0-5e518b46d69c','4500a912-bbad-4590-9abb-d9ec92a311a5','DISCOUNT','Discount Programm','1','1','1','1','1',1),('fe2ef334-8861-41af-887a-a95992d46b74','096b0105-de76-492c-9bb0-5e518b46d69c','8c7e1020-0824-4239-9a4e-46301c80b9cd','PAYMENT_METHOD_TYPE','Payment Method Type','1','1','1','1','1',1);
 /*!40000 ALTER TABLE `access_role` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `accounting_period`
+--
+
+DROP TABLE IF EXISTS `accounting_period`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `accounting_period` (
+  `id` char(50) NOT NULL,
+  `number` char(50) DEFAULT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `date_from` date DEFAULT NULL,
+  `date_to` date DEFAULT NULL,
+  `month` char(10) DEFAULT 'January',
+  `fk_accounting_period_parent` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `accounting_period`
@@ -35,6 +78,26 @@ LOCK TABLES `accounting_period` WRITE;
 /*!40000 ALTER TABLE `accounting_period` DISABLE KEYS */;
 /*!40000 ALTER TABLE `accounting_period` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `acknowledgement`
+--
+
+DROP TABLE IF EXISTS `acknowledgement`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `acknowledgement` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `approver_status` char(10) DEFAULT NULL,
+  `person_id` char(50) DEFAULT NULL,
+  `person_value` varchar(250) DEFAULT '0',
+  `type` char(30) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `acknowledgement`
@@ -47,6 +110,29 @@ INSERT INTO `acknowledgement` VALUES ('09fa18d2-929a-48ac-bbe3-b060606fc030',NUL
 UNLOCK TABLES;
 
 --
+-- Table structure for table `address`
+--
+
+DROP TABLE IF EXISTS `address`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `address` (
+  `id` char(50) NOT NULL,
+  `address` varchar(500) DEFAULT NULL,
+  `postal` char(25) DEFAULT NULL,
+  `status` char(1) DEFAULT '1',
+  `type` char(10) DEFAULT 'HOME',
+  `fk_city` char(50) DEFAULT NULL,
+  `fk_province` char(50) DEFAULT NULL,
+  `fk_country` char(50) DEFAULT NULL,
+  `fk_party` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `address`
 --
 
@@ -57,6 +143,25 @@ INSERT INTO `address` VALUES ('010d2467-3a43-4a99-a33b-76ce10b2fd88','Jl. Apel G
 UNLOCK TABLES;
 
 --
+-- Table structure for table `approve_and_reviewable`
+--
+
+DROP TABLE IF EXISTS `approve_and_reviewable`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `approve_and_reviewable` (
+  `id` char(50) NOT NULL,
+  `number` varchar(100) DEFAULT NULL,
+  `fk_organization_requested` char(50) DEFAULT NULL,
+  `fk_last_status` char(50) DEFAULT NULL,
+  `comment` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `approve_and_reviewable`
 --
 
@@ -64,6 +169,33 @@ LOCK TABLES `approve_and_reviewable` WRITE;
 /*!40000 ALTER TABLE `approve_and_reviewable` DISABLE KEYS */;
 /*!40000 ALTER TABLE `approve_and_reviewable` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `asset`
+--
+
+DROP TABLE IF EXISTS `asset`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `asset` (
+  `id` char(50) NOT NULL,
+  `code` varchar(100) DEFAULT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `acquired_date` date DEFAULT NULL,
+  `last_serviced_date` date DEFAULT NULL,
+  `next_serviced_date` date DEFAULT NULL,
+  `buying_price` decimal(10,0) DEFAULT NULL,
+  `is_active` char(1) DEFAULT '1',
+  `is_disposed` char(1) DEFAULT '0',
+  `fk_asset_type` char(50) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  `fk_cashier_shift` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `asset`
@@ -76,6 +208,24 @@ INSERT INTO `asset` VALUES ('cd0c3f10-40b0-4c47-b2f7-a2043e5311b6','ADMIN 1','AD
 UNLOCK TABLES;
 
 --
+-- Table structure for table `asset_type`
+--
+
+DROP TABLE IF EXISTS `asset_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `asset_type` (
+  `id` char(50) NOT NULL,
+  `code` varchar(100) DEFAULT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `parent` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `asset_type`
 --
 
@@ -84,6 +234,27 @@ LOCK TABLES `asset_type` WRITE;
 INSERT INTO `asset_type` VALUES ('ca1d20d1-5a09-4a2a-ba28-f3f0b79a0099','KOMPUTER','KOMPUTER',NULL,0);
 /*!40000 ALTER TABLE `asset_type` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `audit_trail`
+--
+
+DROP TABLE IF EXISTS `audit_trail`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `audit_trail` (
+  `id` char(50) NOT NULL,
+  `date` varchar(45) DEFAULT NULL,
+  `type` char(6) DEFAULT NULL,
+  `user` varchar(150) DEFAULT NULL,
+  `company` varchar(150) DEFAULT NULL,
+  `service` varchar(150) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `audit_trail`
@@ -96,6 +267,28 @@ INSERT INTO `audit_trail` VALUES ('08fe61d0-ea27-40fe-980d-de636002ca56','2016-0
 UNLOCK TABLES;
 
 --
+-- Table structure for table `auto_journal_sales`
+--
+
+DROP TABLE IF EXISTS `auto_journal_sales`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `auto_journal_sales` (
+  `id` char(50) NOT NULL,
+  `fk_cash_account` char(50) DEFAULT NULL,
+  `fk_service_sales_account` char(50) DEFAULT NULL,
+  `fk_goods_sales_account` char(50) DEFAULT NULL,
+  `fk_tax_sales_account` char(50) DEFAULT NULL,
+  `fk_receivable_account` char(50) DEFAULT NULL,
+  `fk_tuslah_payable_account` char(50) DEFAULT NULL,
+  `fk_branch_cash_account` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `auto_journal_sales`
 --
 
@@ -104,6 +297,29 @@ LOCK TABLES `auto_journal_sales` WRITE;
 INSERT INTO `auto_journal_sales` VALUES ('d2a96e2b-ae8b-4613-b1f4-c8c09dde9d75','3fe8dcfd-cc53-45ad-8eb1-5a25d571d442','a22b754e-720e-4788-9d30-f50bbf6b58a5','633de64e-12eb-4e4b-be74-135a4d088b9b','a361d66b-dc41-4b49-901f-bb9f33402e6b','9be13c2c-348c-4c2d-a37d-65e56b29cf05','f9efeedb-f677-4980-8bdf-b5dfa662d37d','2979a595-03eb-4156-b317-a9ea5fe5f57e',0);
 /*!40000 ALTER TABLE `auto_journal_sales` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `benefit`
+--
+
+DROP TABLE IF EXISTS `benefit`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `benefit` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `cost` decimal(10,0) DEFAULT NULL,
+  `percent_employer_paid` decimal(10,0) DEFAULT NULL,
+  `available_time` bigint(20) DEFAULT NULL,
+  `fk_benefit_type` char(50) DEFAULT NULL,
+  `period_type` char(15) DEFAULT NULL,
+  `fk_employment` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `benefit`
@@ -115,6 +331,24 @@ LOCK TABLES `benefit` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `benefit_type`
+--
+
+DROP TABLE IF EXISTS `benefit_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `benefit_type` (
+  `id` char(50) NOT NULL,
+  `code` char(50) DEFAULT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `benefit_type`
 --
 
@@ -122,6 +356,30 @@ LOCK TABLES `benefit_type` WRITE;
 /*!40000 ALTER TABLE `benefit_type` DISABLE KEYS */;
 /*!40000 ALTER TABLE `benefit_type` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `billable`
+--
+
+DROP TABLE IF EXISTS `billable`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `billable` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `number` char(50) DEFAULT NULL,
+  `is_paid` char(1) DEFAULT '0',
+  `fk_currency` char(50) DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  `fk_person_sales` char(50) DEFAULT NULL,
+  `fk_person_customer` char(50) DEFAULT NULL,
+  `fk_tax` char(50) DEFAULT NULL,
+  `fk_cashier_shift` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `billable`
@@ -134,6 +392,23 @@ INSERT INTO `billable` VALUES ('07973aa7-c4aa-4913-8d67-f656f2408cc5','2016-08-1
 UNLOCK TABLES;
 
 --
+-- Table structure for table `bpjs`
+--
+
+DROP TABLE IF EXISTS `bpjs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `bpjs` (
+  `id` char(50) NOT NULL,
+  `card_number` char(50) DEFAULT NULL,
+  `is_active` char(1) DEFAULT '0',
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `bpjs`
 --
 
@@ -141,6 +416,23 @@ LOCK TABLES `bpjs` WRITE;
 /*!40000 ALTER TABLE `bpjs` DISABLE KEYS */;
 /*!40000 ALTER TABLE `bpjs` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `budget`
+--
+
+DROP TABLE IF EXISTS `budget`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `budget` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `type` char(10) DEFAULT 'Operating',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `budget`
@@ -152,6 +444,26 @@ LOCK TABLES `budget` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `budget_item`
+--
+
+DROP TABLE IF EXISTS `budget_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `budget_item` (
+  `id` char(50) NOT NULL,
+  `sequence` int(11) DEFAULT NULL,
+  `purpose` varchar(250) DEFAULT NULL,
+  `justification` varchar(250) DEFAULT NULL,
+  `amount` decimal(10,0) DEFAULT NULL,
+  `fk_budget` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `budget_item`
 --
 
@@ -159,6 +471,21 @@ LOCK TABLES `budget_item` WRITE;
 /*!40000 ALTER TABLE `budget_item` DISABLE KEYS */;
 /*!40000 ALTER TABLE `budget_item` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `budget_review`
+--
+
+DROP TABLE IF EXISTS `budget_review`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `budget_review` (
+  `id` char(50) NOT NULL,
+  `fk_budget` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `budget_review`
@@ -170,6 +497,25 @@ LOCK TABLES `budget_review` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `budget_revision`
+--
+
+DROP TABLE IF EXISTS `budget_revision`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `budget_revision` (
+  `id` char(50) NOT NULL,
+  `sequence` int(11) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `fk_budget` char(50) DEFAULT NULL,
+  `comment` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `budget_revision`
 --
 
@@ -177,6 +523,25 @@ LOCK TABLES `budget_revision` WRITE;
 /*!40000 ALTER TABLE `budget_revision` DISABLE KEYS */;
 /*!40000 ALTER TABLE `budget_revision` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `budget_revision_item`
+--
+
+DROP TABLE IF EXISTS `budget_revision_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `budget_revision_item` (
+  `id` char(50) NOT NULL,
+  `type` char(12) DEFAULT NULL,
+  `fk_budget_item` char(50) DEFAULT NULL,
+  `fk_budget_revision` char(50) DEFAULT NULL,
+  `note` varchar(255) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `budget_revision_item`
@@ -188,6 +553,21 @@ LOCK TABLES `budget_revision_item` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `budget_role`
+--
+
+DROP TABLE IF EXISTS `budget_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `budget_role` (
+  `id` char(50) NOT NULL,
+  `fk_budget` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `budget_role`
 --
 
@@ -195,6 +575,21 @@ LOCK TABLES `budget_role` WRITE;
 /*!40000 ALTER TABLE `budget_role` DISABLE KEYS */;
 /*!40000 ALTER TABLE `budget_role` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `budget_status`
+--
+
+DROP TABLE IF EXISTS `budget_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `budget_status` (
+  `id` char(50) NOT NULL,
+  `fk_budget` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `budget_status`
@@ -206,6 +601,22 @@ LOCK TABLES `budget_status` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `carier_relationship`
+--
+
+DROP TABLE IF EXISTS `carier_relationship`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `carier_relationship` (
+  `id` char(50) NOT NULL,
+  `fk_carrier` char(50) DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `carier_relationship`
 --
 
@@ -213,6 +624,19 @@ LOCK TABLES `carier_relationship` WRITE;
 /*!40000 ALTER TABLE `carier_relationship` DISABLE KEYS */;
 /*!40000 ALTER TABLE `carier_relationship` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `carrier`
+--
+
+DROP TABLE IF EXISTS `carrier`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `carrier` (
+  `id` char(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `carrier`
@@ -224,6 +648,21 @@ LOCK TABLES `carrier` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `cash_purchase_order`
+--
+
+DROP TABLE IF EXISTS `cash_purchase_order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cash_purchase_order` (
+  `id` char(50) NOT NULL,
+  `fk_facility` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `cash_purchase_order`
 --
 
@@ -231,6 +670,21 @@ LOCK TABLES `cash_purchase_order` WRITE;
 /*!40000 ALTER TABLE `cash_purchase_order` DISABLE KEYS */;
 /*!40000 ALTER TABLE `cash_purchase_order` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `cash_purchase_order_item`
+--
+
+DROP TABLE IF EXISTS `cash_purchase_order_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cash_purchase_order_item` (
+  `id` char(50) NOT NULL,
+  `fk_cash_purchase_order` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `cash_purchase_order_item`
@@ -242,6 +696,24 @@ LOCK TABLES `cash_purchase_order_item` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `cash_sales`
+--
+
+DROP TABLE IF EXISTS `cash_sales`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cash_sales` (
+  `id` char(50) NOT NULL,
+  `table_number` int(11) DEFAULT 1,
+  `fk_geographic_location` char(50) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `cash_sales_type` char(15) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `cash_sales`
 --
 
@@ -251,6 +723,29 @@ LOCK TABLES `cash_sales` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `cash_sales_line`
+--
+
+DROP TABLE IF EXISTS `cash_sales_line`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cash_sales_line` (
+  `id` char(50) NOT NULL,
+  `price` decimal(10,0) DEFAULT NULL,
+  `discount` decimal(10,0) DEFAULT NULL,
+  `charge` decimal(10,0) DEFAULT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `fk_unit_of_measure` char(50) DEFAULT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  `fk_cash_sales` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `cash_sales_line`
 --
 
@@ -258,6 +753,28 @@ LOCK TABLES `cash_sales_line` WRITE;
 /*!40000 ALTER TABLE `cash_sales_line` DISABLE KEYS */;
 /*!40000 ALTER TABLE `cash_sales_line` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `cashier_shift`
+--
+
+DROP TABLE IF EXISTS `cashier_shift`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cashier_shift` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `employee` char(50) DEFAULT NULL,
+  `is_closed` char(1) DEFAULT '0',
+  `asset` char(50) DEFAULT NULL,
+  `capital` decimal(10,0) DEFAULT NULL,
+  `start` time DEFAULT NULL,
+  `end` time DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `cashier_shift`
@@ -270,6 +787,25 @@ INSERT INTO `cashier_shift` VALUES ('163f2763-c270-41d2-b31a-cd98b6fcc3f4','2016
 UNLOCK TABLES;
 
 --
+-- Table structure for table `citizenship`
+--
+
+DROP TABLE IF EXISTS `citizenship`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `citizenship` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `nopassport` varchar(150) DEFAULT NULL,
+  `fk_person` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `citizenship`
 --
 
@@ -277,6 +813,23 @@ LOCK TABLES `citizenship` WRITE;
 /*!40000 ALTER TABLE `citizenship` DISABLE KEYS */;
 /*!40000 ALTER TABLE `citizenship` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `clinic_sales`
+--
+
+DROP TABLE IF EXISTS `clinic_sales`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `clinic_sales` (
+  `id` char(50) NOT NULL,
+  `is_bpjs` char(1) DEFAULT '0',
+  `bpjs_payment_status` char(10) DEFAULT NULL,
+  `medication_status` char(10) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `clinic_sales`
@@ -288,6 +841,28 @@ LOCK TABLES `clinic_sales` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `clinic_sales_item`
+--
+
+DROP TABLE IF EXISTS `clinic_sales_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `clinic_sales_item` (
+  `id` char(50) NOT NULL,
+  `fk_product_medicine` char(50) DEFAULT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `price` decimal(10,0) DEFAULT NULL,
+  `discount` decimal(10,0) DEFAULT NULL,
+  `charge` decimal(10,0) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `fk_medication` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `clinic_sales_item`
 --
 
@@ -297,14 +872,52 @@ LOCK TABLES `clinic_sales_item` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `company_structure`
+--
+
+DROP TABLE IF EXISTS `company_structure`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `company_structure` (
+  `id` char(50) NOT NULL,
+  `date_from` date DEFAULT NULL,
+  `date_to` date DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  `type` char(10) DEFAULT NULL,
+  `fk_company_structure_parent` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `company_structure`
 --
 
 LOCK TABLES `company_structure` WRITE;
 /*!40000 ALTER TABLE `company_structure` DISABLE KEYS */;
-INSERT INTO `company_structure` VALUES ('576b2966-dd2a-408e-ae68-d62997586b1a','2009-08-07',NULL,'980d82f2-aa01-4511-b461-985f5fcbe6a1','HOLDING',NULL,0),('8eb71405-a5cb-4ef7-b88d-b36bec31ba3b','2009-08-07',NULL,'e29c7687-30f8-4201-af68-0a4a67541b86','BRANCH','a67f9da5-bbc2-4591-bfd9-934d77532b29',0),('a67f9da5-bbc2-4591-bfd9-934d77532b29','2009-08-07',NULL,'329f661e-3386-46f8-8d3a-5fa704b6f533','COMPANY','576b2966-dd2a-408e-ae68-d62997586b1a',0);
 /*!40000 ALTER TABLE `company_structure` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `contact`
+--
+
+DROP TABLE IF EXISTS `contact`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contact` (
+  `id` char(50) NOT NULL,
+  `contact` varchar(150) DEFAULT NULL,
+  `type` char(12) DEFAULT 'PHONE',
+  `status` char(1) DEFAULT '1',
+  `fk_party` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `contact`
@@ -317,6 +930,26 @@ INSERT INTO `contact` VALUES ('0160e67e-cf07-41ad-9d33-460549d37209','0813450485
 UNLOCK TABLES;
 
 --
+-- Table structure for table `container`
+--
+
+DROP TABLE IF EXISTS `container`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `container` (
+  `id` char(50) NOT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `type` char(25) DEFAULT NULL,
+  `parent` char(50) DEFAULT NULL,
+  `fk_facility` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `container`
 --
 
@@ -327,14 +960,50 @@ INSERT INTO `container` VALUES ('1139e164-2710-49f2-98e8-557e9a468ca4','B','B','
 UNLOCK TABLES;
 
 --
+-- Table structure for table `country`
+--
+
+DROP TABLE IF EXISTS `country`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `country` (
+  `id` char(50) NOT NULL,
+  `code` char(25) DEFAULT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `country`
 --
 
 LOCK TABLES `country` WRITE;
 /*!40000 ALTER TABLE `country` DISABLE KEYS */;
-INSERT INTO `country` VALUES ('0e694333-77f0-4b5e-a2bc-832a7b240d95','INA','Indonesia',0),('bdbc5740-01fb-4a62-93f6-2e0b49a83c87','MY','Malaysia',0),('c6b0604a-f792-4ce6-9b1f-c426de84f491','SG','Singapore',0),('d739b272-ba46-4d88-b3ae-4ff1379471f9','USA','United State of America',0);
+INSERT INTO `country` VALUES ('0e694333-77f0-4b5e-a2bc-832a7b240d95','INA','Indonesia',0),('bdbc5740-01fb-4a62-93f6-2e0b49a83c87','MY','Malaysia',0),('c6b0604a-f792-4ce6-9b1f-c426de84f491','SG','Singapore',0);
 /*!40000 ALTER TABLE `country` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `course_attendance`
+--
+
+DROP TABLE IF EXISTS `course_attendance`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `course_attendance` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `fk_Schedule` char(50) DEFAULT NULL,
+  `fk_staff` char(50) DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `course_attendance`
@@ -346,6 +1015,25 @@ LOCK TABLES `course_attendance` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `course_attendance_item`
+--
+
+DROP TABLE IF EXISTS `course_attendance_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `course_attendance_item` (
+  `id` char(50) NOT NULL,
+  `fk_person` char(50) DEFAULT NULL,
+  `status` char(10) DEFAULT 'LEAVE',
+  `fk_attendance` char(50) DEFAULT NULL,
+  `fk_time_entry` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `course_attendance_item`
 --
 
@@ -353,6 +1041,24 @@ LOCK TABLES `course_attendance_item` WRITE;
 /*!40000 ALTER TABLE `course_attendance_item` DISABLE KEYS */;
 /*!40000 ALTER TABLE `course_attendance_item` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `course_discount`
+--
+
+DROP TABLE IF EXISTS `course_discount`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `course_discount` (
+  `id` char(50) NOT NULL,
+  `amount` decimal(10,0) DEFAULT NULL,
+  `fk_discount` char(50) DEFAULT NULL,
+  `fk_registration` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `course_discount`
@@ -365,6 +1071,23 @@ INSERT INTO `course_discount` VALUES ('0da7ef20-f9c2-41bf-97f1-dc3758937ef2',625
 UNLOCK TABLES;
 
 --
+-- Table structure for table `course_installment`
+--
+
+DROP TABLE IF EXISTS `course_installment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `course_installment` (
+  `id` char(50) NOT NULL,
+  `amount` decimal(10,0) DEFAULT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `fk_course_registration` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `course_installment`
 --
 
@@ -375,6 +1098,27 @@ INSERT INTO `course_installment` VALUES ('07973aa7-c4aa-4913-8d67-f656f2408cc5',
 UNLOCK TABLES;
 
 --
+-- Table structure for table `course_installment_item`
+--
+
+DROP TABLE IF EXISTS `course_installment_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `course_installment_item` (
+  `id` char(50) NOT NULL,
+  `resource` char(50) DEFAULT NULL,
+  `quantity` decimal(10,0) DEFAULT 1,
+  `uom` char(50) DEFAULT NULL,
+  `unit_price` decimal(10,0) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `fk_course_installment` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `course_installment_item`
 --
 
@@ -382,6 +1126,26 @@ LOCK TABLES `course_installment_item` WRITE;
 /*!40000 ALTER TABLE `course_installment_item` DISABLE KEYS */;
 /*!40000 ALTER TABLE `course_installment_item` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `course_item`
+--
+
+DROP TABLE IF EXISTS `course_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `course_item` (
+  `id` char(50) NOT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `price` decimal(10,0) DEFAULT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  `fk_product_feature` char(50) DEFAULT NULL,
+  `fk_course_registration` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `course_item`
@@ -394,6 +1158,32 @@ INSERT INTO `course_item` VALUES ('0776647e-5dc9-4ac0-9627-03160fa37f2d',1,25000
 UNLOCK TABLES;
 
 --
+-- Table structure for table `course_registration`
+--
+
+DROP TABLE IF EXISTS `course_registration`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `course_registration` (
+  `id` char(50) NOT NULL,
+  `fk_study_day` char(50) DEFAULT NULL,
+  `fk_study_time` char(50) DEFAULT NULL,
+  `fk_study_period` char(50) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `number` char(50) DEFAULT NULL,
+  `fk_currency` char(50) DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  `fk_staff` char(50) DEFAULT NULL,
+  `fk_student` char(50) DEFAULT NULL,
+  `fk_tax` char(50) DEFAULT NULL,
+  `fk_room` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `course_registration`
 --
 
@@ -404,6 +1194,23 @@ INSERT INTO `course_registration` VALUES ('0561ea86-7db1-4754-be5d-47ca42271dac'
 UNLOCK TABLES;
 
 --
+-- Table structure for table `course_schedule`
+--
+
+DROP TABLE IF EXISTS `course_schedule`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `course_schedule` (
+  `id` char(50) NOT NULL,
+  `day` char(15) DEFAULT NULL,
+  `fk_room` char(50) DEFAULT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `course_schedule`
 --
 
@@ -411,6 +1218,24 @@ LOCK TABLES `course_schedule` WRITE;
 /*!40000 ALTER TABLE `course_schedule` DISABLE KEYS */;
 /*!40000 ALTER TABLE `course_schedule` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `currency`
+--
+
+DROP TABLE IF EXISTS `currency`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `currency` (
+  `id` char(50) NOT NULL,
+  `code` char(15) DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `is_default` char(1) DEFAULT '0',
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `currency`
@@ -423,6 +1248,26 @@ INSERT INTO `currency` VALUES ('82159e7e-7d44-44e9-acc6-09f85e99bac0','RMY','Rin
 UNLOCK TABLES;
 
 --
+-- Table structure for table `currency_exchange_factor`
+--
+
+DROP TABLE IF EXISTS `currency_exchange_factor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `currency_exchange_factor` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `fk_currency_from` char(50) DEFAULT NULL,
+  `fk_currency_to` char(50) DEFAULT NULL,
+  `value` decimal(10,0) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `currency_exchange_factor`
 --
 
@@ -430,6 +1275,24 @@ LOCK TABLES `currency_exchange_factor` WRITE;
 /*!40000 ALTER TABLE `currency_exchange_factor` DISABLE KEYS */;
 /*!40000 ALTER TABLE `currency_exchange_factor` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `deduction`
+--
+
+DROP TABLE IF EXISTS `deduction`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `deduction` (
+  `id` char(50) NOT NULL,
+  `amount` decimal(10,0) DEFAULT NULL,
+  `fk_doduction_type` char(50) DEFAULT NULL,
+  `fk_paycheck` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `deduction`
@@ -441,6 +1304,23 @@ LOCK TABLES `deduction` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `deduction_type`
+--
+
+DROP TABLE IF EXISTS `deduction_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `deduction_type` (
+  `id` char(50) NOT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `deduction_type`
 --
 
@@ -448,6 +1328,24 @@ LOCK TABLES `deduction_type` WRITE;
 /*!40000 ALTER TABLE `deduction_type` DISABLE KEYS */;
 /*!40000 ALTER TABLE `deduction_type` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `deliverable`
+--
+
+DROP TABLE IF EXISTS `deliverable`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `deliverable` (
+  `id` char(50) NOT NULL,
+  `name` varchar(250) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `type` char(15) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `deliverable`
@@ -459,6 +1357,20 @@ LOCK TABLES `deliverable` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `disbursement`
+--
+
+DROP TABLE IF EXISTS `disbursement`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `disbursement` (
+  `id` char(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `disbursement`
 --
 
@@ -466,6 +1378,26 @@ LOCK TABLES `disbursement` WRITE;
 /*!40000 ALTER TABLE `disbursement` DISABLE KEYS */;
 /*!40000 ALTER TABLE `disbursement` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `discount`
+--
+
+DROP TABLE IF EXISTS `discount`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `discount` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `value` decimal(10,0) DEFAULT NULL,
+  `is_percent` char(1) DEFAULT '0',
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `discount`
@@ -478,6 +1410,21 @@ INSERT INTO `discount` VALUES ('1beca9e8-7df2-44ac-b266-c1a0b58654ea','2016-01-0
 UNLOCK TABLES;
 
 --
+-- Table structure for table `doctor`
+--
+
+DROP TABLE IF EXISTS `doctor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `doctor` (
+  `id` char(50) NOT NULL,
+  `fk_doctor_type` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `doctor`
 --
 
@@ -485,6 +1432,29 @@ LOCK TABLES `doctor` WRITE;
 /*!40000 ALTER TABLE `doctor` DISABLE KEYS */;
 /*!40000 ALTER TABLE `doctor` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `doctor_appointment`
+--
+
+DROP TABLE IF EXISTS `doctor_appointment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `doctor_appointment` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  `queue` int(11) DEFAULT NULL,
+  `fk_doctor` char(50) DEFAULT NULL,
+  `fk_patient` char(50) DEFAULT NULL,
+  `status` char(10) DEFAULT NULL,
+  `fk_medical_record` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `doctor_appointment`
@@ -496,6 +1466,23 @@ LOCK TABLES `doctor_appointment` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `doctor_relationship`
+--
+
+DROP TABLE IF EXISTS `doctor_relationship`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `doctor_relationship` (
+  `id` char(50) NOT NULL,
+  `fk_doctor_type` char(50) DEFAULT NULL,
+  `fk_doctor` char(50) DEFAULT NULL,
+  `fk_internal_organization` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `doctor_relationship`
 --
 
@@ -505,6 +1492,24 @@ LOCK TABLES `doctor_relationship` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `doctor_type`
+--
+
+DROP TABLE IF EXISTS `doctor_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `doctor_type` (
+  `id` char(50) NOT NULL,
+  `code` char(50) DEFAULT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `description` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `doctor_type`
 --
 
@@ -512,6 +1517,21 @@ LOCK TABLES `doctor_type` WRITE;
 /*!40000 ALTER TABLE `doctor_type` DISABLE KEYS */;
 /*!40000 ALTER TABLE `doctor_type` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `employee`
+--
+
+DROP TABLE IF EXISTS `employee`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `employee` (
+  `id` char(50) NOT NULL,
+  `username` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `employee`
@@ -524,6 +1544,20 @@ INSERT INTO `employee` VALUES ('158b3342-ff53-4db6-b7d0-0538a76c76b5','user'),('
 UNLOCK TABLES;
 
 --
+-- Table structure for table `employer`
+--
+
+DROP TABLE IF EXISTS `employer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `employer` (
+  `id` char(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `employer`
 --
 
@@ -532,6 +1566,20 @@ LOCK TABLES `employer` WRITE;
 INSERT INTO `employer` VALUES ('bb700516-6872-40ca-b2db-2e49a3a2acb2');
 /*!40000 ALTER TABLE `employer` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `employment`
+--
+
+DROP TABLE IF EXISTS `employment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `employment` (
+  `id` char(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `employment`
@@ -544,6 +1592,27 @@ INSERT INTO `employment` VALUES ('224a5af6-56b1-4e98-bce0-1755d43d3c90'),('afdb4
 UNLOCK TABLES;
 
 --
+-- Table structure for table `employment_application`
+--
+
+DROP TABLE IF EXISTS `employment_application`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `employment_application` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `status_type` char(10) DEFAULT NULL,
+  `source_type` char(15) DEFAULT NULL,
+  `fk_position` char(50) DEFAULT NULL,
+  `fk_person_referal` char(50) DEFAULT NULL,
+  `fk_person_applicant` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `employment_application`
 --
 
@@ -551,6 +1620,22 @@ LOCK TABLES `employment_application` WRITE;
 /*!40000 ALTER TABLE `employment_application` DISABLE KEYS */;
 /*!40000 ALTER TABLE `employment_application` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `erp_mode`
+--
+
+DROP TABLE IF EXISTS `erp_mode`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `erp_mode` (
+  `id` char(50) NOT NULL,
+  `segmentation` char(15) DEFAULT 'GENERAL',
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `erp_mode`
@@ -563,6 +1648,26 @@ INSERT INTO `erp_mode` VALUES ('00000','EDUCATION',1);
 UNLOCK TABLES;
 
 --
+-- Table structure for table `facility`
+--
+
+DROP TABLE IF EXISTS `facility`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `facility` (
+  `id` char(50) NOT NULL,
+  `code` varchar(150) DEFAULT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `type` char(15) DEFAULT NULL,
+  `fk_facility_parent` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `facility`
 --
 
@@ -571,6 +1676,25 @@ LOCK TABLES `facility` WRITE;
 INSERT INTO `facility` VALUES ('8de88fdd-1783-4500-a65e-5c8064212144',NULL,'Kebon Punggur','','PLANT',NULL,0),('9081de22-1c08-4a10-9e18-b99b88d47885',NULL,'Markas P. Aim','OK','BUILDING',NULL,1),('e63a8167-7ae8-4b53-93b7-bb5b9258f0ad',NULL,'Markas Nusa Indah','','OFFICE',NULL,0);
 /*!40000 ALTER TABLE `facility` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `facility_organization`
+--
+
+DROP TABLE IF EXISTS `facility_organization`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `facility_organization` (
+  `id` char(50) NOT NULL,
+  `enabled` char(1) DEFAULT NULL,
+  `fk_facility` char(50) DEFAULT NULL,
+  `organization_id` char(50) DEFAULT NULL,
+  `organization_value` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `facility_organization`
@@ -583,6 +1707,23 @@ INSERT INTO `facility_organization` VALUES ('01c7a6d7-78da-4f6b-8c88-011de339147
 UNLOCK TABLES;
 
 --
+-- Table structure for table `family_folder`
+--
+
+DROP TABLE IF EXISTS `family_folder`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `family_folder` (
+  `id` char(50) NOT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `family_folder`
 --
 
@@ -590,6 +1731,24 @@ LOCK TABLES `family_folder` WRITE;
 /*!40000 ALTER TABLE `family_folder` DISABLE KEYS */;
 /*!40000 ALTER TABLE `family_folder` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `family_member`
+--
+
+DROP TABLE IF EXISTS `family_member`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `family_member` (
+  `id` char(50) NOT NULL,
+  `fk_patient` char(50) DEFAULT NULL,
+  `member_type` char(10) DEFAULT 'HEAD',
+  `fk_folder` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `family_member`
@@ -601,6 +1760,23 @@ LOCK TABLES `family_member` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `financial_account`
+--
+
+DROP TABLE IF EXISTS `financial_account`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `financial_account` (
+  `id` char(50) NOT NULL,
+  `name` varchar(250) DEFAULT NULL,
+  `type` char(25) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `financial_account`
 --
 
@@ -608,6 +1784,24 @@ LOCK TABLES `financial_account` WRITE;
 /*!40000 ALTER TABLE `financial_account` DISABLE KEYS */;
 /*!40000 ALTER TABLE `financial_account` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `financial_account_role`
+--
+
+DROP TABLE IF EXISTS `financial_account_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `financial_account_role` (
+  `id` char(50) NOT NULL,
+  `fk_party` char(50) DEFAULT NULL,
+  `type` char(25) DEFAULT NULL,
+  `fk_account` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `financial_account_role`
@@ -619,6 +1813,25 @@ LOCK TABLES `financial_account_role` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `financial_account_transaction`
+--
+
+DROP TABLE IF EXISTS `financial_account_transaction`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `financial_account_transaction` (
+  `id` char(50) NOT NULL,
+  `transaction_date` date DEFAULT NULL,
+  `entry_date` date DEFAULT NULL,
+  `fk_payment` char(50) DEFAULT NULL,
+  `fk_account` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `financial_account_transaction`
 --
 
@@ -626,6 +1839,25 @@ LOCK TABLES `financial_account_transaction` WRITE;
 /*!40000 ALTER TABLE `financial_account_transaction` DISABLE KEYS */;
 /*!40000 ALTER TABLE `financial_account_transaction` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `geographic`
+--
+
+DROP TABLE IF EXISTS `geographic`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `geographic` (
+  `id` char(50) NOT NULL,
+  `code` char(50) DEFAULT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `type` char(10) DEFAULT 'COUNTRY',
+  `note` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `geographic`
@@ -638,6 +1870,26 @@ INSERT INTO `geographic` VALUES ('68309a5f-4606-46d3-ad20-996ed6c782d0','KAL-BAR
 UNLOCK TABLES;
 
 --
+-- Table structure for table `gl_account`
+--
+
+DROP TABLE IF EXISTS `gl_account`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `gl_account` (
+  `id` char(50) NOT NULL,
+  `number` char(50) DEFAULT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `type` char(15) DEFAULT NULL,
+  `fk_gl_account_parent` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `gl_account`
 --
 
@@ -645,6 +1897,26 @@ LOCK TABLES `gl_account` WRITE;
 /*!40000 ALTER TABLE `gl_account` DISABLE KEYS */;
 /*!40000 ALTER TABLE `gl_account` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `gl_account_balance`
+--
+
+DROP TABLE IF EXISTS `gl_account_balance`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `gl_account_balance` (
+  `id` char(50) NOT NULL,
+  `fk_accounting_period` char(50) DEFAULT NULL,
+  `fk_gl_account` char(50) DEFAULT NULL,
+  `fk_currency` char(50) DEFAULT NULL,
+  `debet_balance` decimal(10,0) DEFAULT NULL,
+  `credit_balance` decimal(10,0) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `gl_account_balance`
@@ -656,6 +1928,26 @@ LOCK TABLES `gl_account_balance` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `goods_issue`
+--
+
+DROP TABLE IF EXISTS `goods_issue`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `goods_issue` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  `fk_facility_source` char(50) DEFAULT NULL,
+  `fk_transfer_request` char(50) DEFAULT NULL,
+  `fk_person_issued_by` char(50) DEFAULT NULL,
+  `version` varchar(45) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `goods_issue`
 --
 
@@ -663,6 +1955,25 @@ LOCK TABLES `goods_issue` WRITE;
 /*!40000 ALTER TABLE `goods_issue` DISABLE KEYS */;
 /*!40000 ALTER TABLE `goods_issue` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `goods_issue_item`
+--
+
+DROP TABLE IF EXISTS `goods_issue_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `goods_issue_item` (
+  `id` char(50) NOT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `fk_request_item` char(50) DEFAULT NULL,
+  `fk_transfer_order` char(50) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `goods_issue_item`
@@ -674,6 +1985,29 @@ LOCK TABLES `goods_issue_item` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `goods_transfer`
+--
+
+DROP TABLE IF EXISTS `goods_transfer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `goods_transfer` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `number` char(50) DEFAULT NULL,
+  `fk_organization_source` char(50) DEFAULT NULL,
+  `fk_organization_destination` char(50) DEFAULT NULL,
+  `fk_facility_from` char(50) DEFAULT NULL,
+  `fk_facility_to` char(50) DEFAULT NULL,
+  `fk_transfer_order_request` char(50) DEFAULT NULL,
+  `fk_person_transfered_by` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `goods_transfer`
 --
 
@@ -681,6 +2015,25 @@ LOCK TABLES `goods_transfer` WRITE;
 /*!40000 ALTER TABLE `goods_transfer` DISABLE KEYS */;
 /*!40000 ALTER TABLE `goods_transfer` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `goods_transfer_item`
+--
+
+DROP TABLE IF EXISTS `goods_transfer_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `goods_transfer_item` (
+  `id` char(50) NOT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `fk_transfer_order_request_item` char(50) DEFAULT NULL,
+  `fk_goods_transfer` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `goods_transfer_item`
@@ -692,6 +2045,72 @@ LOCK TABLES `goods_transfer_item` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `healtcare_practitioner`
+--
+
+DROP TABLE IF EXISTS `healtcare_practitioner`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `healtcare_practitioner` (
+  `id` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `healtcare_practitioner`
+--
+
+LOCK TABLES `healtcare_practitioner` WRITE;
+/*!40000 ALTER TABLE `healtcare_practitioner` DISABLE KEYS */;
+/*!40000 ALTER TABLE `healtcare_practitioner` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `healthcare_provider`
+--
+
+DROP TABLE IF EXISTS `healthcare_provider`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `healthcare_provider` (
+  `id` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `healthcare_provider`
+--
+
+LOCK TABLES `healthcare_provider` WRITE;
+/*!40000 ALTER TABLE `healthcare_provider` DISABLE KEYS */;
+/*!40000 ALTER TABLE `healthcare_provider` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `inbox`
+--
+
+DROP TABLE IF EXISTS `inbox`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `inbox` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `is_open` char(1) DEFAULT '0',
+  `title` varchar(150) DEFAULT NULL,
+  `fk_sender` char(50) DEFAULT NULL,
+  `fk_receiver` char(50) DEFAULT NULL,
+  `content` varchar(500) DEFAULT NULL,
+  `type` char(10) DEFAULT 'Standard',
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `inbox`
 --
 
@@ -699,6 +2118,20 @@ LOCK TABLES `inbox` WRITE;
 /*!40000 ALTER TABLE `inbox` DISABLE KEYS */;
 /*!40000 ALTER TABLE `inbox` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `internal_organization`
+--
+
+DROP TABLE IF EXISTS `internal_organization`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `internal_organization` (
+  `id` char(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `internal_organization`
@@ -711,6 +2144,38 @@ INSERT INTO `internal_organization` VALUES ('742fc487-8b9d-41d8-9a0c-b55772bc2c4
 UNLOCK TABLES;
 
 --
+-- Table structure for table `inventory_item`
+--
+
+DROP TABLE IF EXISTS `inventory_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `inventory_item` (
+  `id` char(50) NOT NULL,
+  `serial_number` varchar(50) DEFAULT NULL,
+  `product_id` char(50) DEFAULT NULL,
+  `product_value` varchar(250) DEFAULT NULL,
+  `on_hand` decimal(10,0) DEFAULT NULL,
+  `facility_id` char(50) DEFAULT NULL,
+  `facility_value` varchar(250) DEFAULT NULL,
+  `expired_date` date DEFAULT NULL,
+  `container_id` char(50) DEFAULT NULL,
+  `container_value` varchar(200) DEFAULT NULL,
+  `organization_id` char(50) DEFAULT NULL,
+  `organization_value` varchar(250) DEFAULT NULL,
+  `creator` varchar(250) DEFAULT NULL,
+  `editor` varchar(250) DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `last_edited` datetime DEFAULT NULL,
+  `on_order` decimal(10,0) DEFAULT 0,
+  `control` bigint(20) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `inventory_item`
 --
 
@@ -719,6 +2184,37 @@ LOCK TABLES `inventory_item` WRITE;
 INSERT INTO `inventory_item` VALUES ('23714267-37fa-4db1-abf6-753aa02d501e',NULL,'17249794-ca76-467b-953f-a00a65404a77','Ayam Kota',1,'9081de22-1c08-4a10-9e18-b99b88d47885','Markas P. Aim',NULL,'5c43f5c3-ffd6-441f-bf63-30063f797f3a','A','e29c7687-30f8-4201-af68-0a4a67541b86','SSC PANCASILA',NULL,NULL,NULL,NULL,0,NULL,0),('6abcca90-1e12-412b-8cb7-84f0e3d46e0b',NULL,'64865838-5b79-40ca-a1e4-663d7139895a','Garang Asem Sapi',0,'9081de22-1c08-4a10-9e18-b99b88d47885','Markas P. Aim','2016-12-26','2ae63df9-e4c7-4b9d-bca6-fa25fb06ee08','A','e29c7687-30f8-4201-af68-0a4a67541b86','SSC PANCASILA',NULL,NULL,NULL,NULL,0,NULL,1),('8075845e-e02c-488e-9dd7-2f9e02f401a6','','','Ayam Kota Goreng',101,'Markas Nusa Indah',NULL,NULL,'a87af5ed-2982-4f7d-8f90-2d4420f4aa78','Lemari 1','e29c7687-30f8-4201-af68-0a4a67541b86','SSC PANCASILA','admin@belian.com','admin@belian.com','2016-09-29 09:43:07','2016-09-30 11:26:17',0,NULL,1),('b1f640a8-e179-4927-a7f2-bfc5496ca860',NULL,'64865838-5b79-40ca-a1e4-663d7139895a','Garang Asem Sapi',12,'9081de22-1c08-4a10-9e18-b99b88d47885','Markas P. Aim','2016-12-25','2ae63df9-e4c7-4b9d-bca6-fa25fb06ee08','A','e29c7687-30f8-4201-af68-0a4a67541b86','SSC PANCASILA',NULL,NULL,NULL,NULL,0,NULL,11);
 /*!40000 ALTER TABLE `inventory_item` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `invoice`
+--
+
+DROP TABLE IF EXISTS `invoice`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `invoice` (
+  `id` char(50) NOT NULL,
+  `number` char(50) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `note` varchar(200) DEFAULT NULL,
+  `message` varchar(200) DEFAULT NULL,
+  `billed_from_party_id` char(50) DEFAULT NULL,
+  `billed_from_party_value` varchar(200) DEFAULT NULL,
+  `billed_to_party_id` char(50) DEFAULT NULL,
+  `billed_to_party_value` varchar(200) DEFAULT NULL,
+  `billed_from_address_id` char(50) DEFAULT NULL,
+  `billed_from_address_value` varchar(200) DEFAULT NULL,
+  `billed_to_address_id` char(50) DEFAULT NULL,
+  `billed_to_address_value` varchar(200) DEFAULT '0',
+  `billed_from_contact_id` char(50) DEFAULT NULL,
+  `billed_from_contact_value` varchar(200) DEFAULT NULL,
+  `billed_to_contact_id` char(50) DEFAULT NULL,
+  `billed_to_contact_value` varchar(200) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `invoice`
@@ -731,6 +2227,31 @@ INSERT INTO `invoice` VALUES ('3b695877-11a8-4ef6-8e27-7e0e99b3d2a0','SIV-190120
 UNLOCK TABLES;
 
 --
+-- Table structure for table `invoice_item`
+--
+
+DROP TABLE IF EXISTS `invoice_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `invoice_item` (
+  `id` char(50) NOT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `amount` decimal(10,0) DEFAULT NULL,
+  `taxable` char(1) DEFAULT '0',
+  `type` char(40) DEFAULT NULL,
+  `product_id` char(50) DEFAULT NULL,
+  `product_value` varchar(200) DEFAULT NULL,
+  `feature_id` char(50) DEFAULT NULL,
+  `feature_value` varchar(200) DEFAULT NULL,
+  `fk_sold_with` char(50) DEFAULT NULL,
+  `fk_invoice` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `invoice_item`
 --
 
@@ -741,6 +2262,27 @@ INSERT INTO `invoice_item` VALUES ('92354e7b-558b-4911-834d-48dbefd10fcb',70,174
 UNLOCK TABLES;
 
 --
+-- Table structure for table `invoice_order_item_billing`
+--
+
+DROP TABLE IF EXISTS `invoice_order_item_billing`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `invoice_order_item_billing` (
+  `id` char(50) NOT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `amount` decimal(10,0) DEFAULT NULL,
+  `order_item_id` char(50) DEFAULT NULL,
+  `order_item_value` varchar(200) DEFAULT NULL,
+  `order_id` char(50) DEFAULT NULL,
+  `order_value` varchar(200) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `invoice_order_item_billing`
 --
 
@@ -748,6 +2290,26 @@ LOCK TABLES `invoice_order_item_billing` WRITE;
 /*!40000 ALTER TABLE `invoice_order_item_billing` DISABLE KEYS */;
 /*!40000 ALTER TABLE `invoice_order_item_billing` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `invoice_role`
+--
+
+DROP TABLE IF EXISTS `invoice_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `invoice_role` (
+  `id` char(50) NOT NULL,
+  `date` timestamp NULL DEFAULT NULL,
+  `type` char(15) DEFAULT NULL,
+  `party_id` char(50) DEFAULT NULL,
+  `party_value` varchar(200) DEFAULT NULL,
+  `fk_invoice` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `invoice_role`
@@ -760,6 +2322,26 @@ INSERT INTO `invoice_role` VALUES ('6a62a92b-0dda-4295-b10a-f9657b43b676','2017-
 UNLOCK TABLES;
 
 --
+-- Table structure for table `invoice_shipment_item_billing`
+--
+
+DROP TABLE IF EXISTS `invoice_shipment_item_billing`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `invoice_shipment_item_billing` (
+  `id` char(50) NOT NULL,
+  `shipment_item_id` char(50) DEFAULT NULL,
+  `shipment_item_value` varchar(200) DEFAULT NULL,
+  `fk_invoice_item` char(50) DEFAULT NULL,
+  `shipment_id` char(50) DEFAULT NULL,
+  `shipment_value` varchar(200) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `invoice_shipment_item_billing`
 --
 
@@ -768,6 +2350,23 @@ LOCK TABLES `invoice_shipment_item_billing` WRITE;
 INSERT INTO `invoice_shipment_item_billing` VALUES ('86162d16-7dbb-464a-b5b7-f13dcaf8cd9c','6dcd1cce-2238-4b42-955e-936e626cadfc','Garang Asem Sapi','92354e7b-558b-4911-834d-48dbefd10fcb','3c09618e-e89e-4d3c-bbab-cdf8f91f1366','SHP-19012017-1',0),('b484e752-a902-494b-a00a-de60464eb5df','357f98ea-e4ef-4bde-8c4f-66deb821e490','Garang Asem Sapi','92354e7b-558b-4911-834d-48dbefd10fcb','fe1fe914-74c7-4ffe-af6b-855df8d217de','SHP-15012017-1',0);
 /*!40000 ALTER TABLE `invoice_shipment_item_billing` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `invoice_status`
+--
+
+DROP TABLE IF EXISTS `invoice_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `invoice_status` (
+  `id` char(50) NOT NULL,
+  `date` timestamp NULL DEFAULT NULL,
+  `type` char(10) DEFAULT NULL,
+  `fk_invoice` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `invoice_status`
@@ -780,6 +2379,24 @@ INSERT INTO `invoice_status` VALUES ('c5a3b44f-f386-4882-bd98-e3364a67cb6d','201
 UNLOCK TABLES;
 
 --
+-- Table structure for table `invoice_term`
+--
+
+DROP TABLE IF EXISTS `invoice_term`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `invoice_term` (
+  `id` char(50) NOT NULL,
+  `value` decimal(10,0) DEFAULT NULL,
+  `type` char(15) DEFAULT NULL,
+  `fk_invoice` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `invoice_term`
 --
 
@@ -788,6 +2405,24 @@ LOCK TABLES `invoice_term` WRITE;
 INSERT INTO `invoice_term` VALUES ('24bb5fd2-1677-43c9-8cbf-15e2eb7d75a5',1,'PAYMENT','68ec9160-400e-40e7-ab45-b9ced12330a5',0);
 /*!40000 ALTER TABLE `invoice_term` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `invoice_time_entry_billing`
+--
+
+DROP TABLE IF EXISTS `invoice_time_entry_billing`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `invoice_time_entry_billing` (
+  `id` char(50) NOT NULL,
+  `hour` decimal(10,0) DEFAULT NULL,
+  `time_entry_id` char(50) DEFAULT NULL,
+  `time_entry_value` varchar(200) DEFAULT '0',
+  `fk_invoice_item` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `invoice_time_entry_billing`
@@ -799,6 +2434,25 @@ LOCK TABLES `invoice_time_entry_billing` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `invoice_work_effort_billing`
+--
+
+DROP TABLE IF EXISTS `invoice_work_effort_billing`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `invoice_work_effort_billing` (
+  `id` char(50) NOT NULL,
+  `percent` decimal(10,0) DEFAULT NULL,
+  `work_effort_id` char(50) DEFAULT NULL,
+  `work_effort_value` varchar(200) DEFAULT NULL,
+  `fk_invoice_item` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `invoice_work_effort_billing`
 --
 
@@ -806,6 +2460,31 @@ LOCK TABLES `invoice_work_effort_billing` WRITE;
 /*!40000 ALTER TABLE `invoice_work_effort_billing` DISABLE KEYS */;
 /*!40000 ALTER TABLE `invoice_work_effort_billing` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `journal_entry`
+--
+
+DROP TABLE IF EXISTS `journal_entry`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `journal_entry` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `total_debet` decimal(10,0) DEFAULT NULL,
+  `total_credit` char(50) DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  `fk_organization_account` char(50) DEFAULT NULL,
+  `fk_accounting_period` char(50) DEFAULT NULL,
+  `fk_currency` char(50) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `is_posted` char(1) DEFAULT '0',
+  `is_auto` char(1) DEFAULT '0',
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `journal_entry`
@@ -817,6 +2496,27 @@ LOCK TABLES `journal_entry` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `journal_entry_detail`
+--
+
+DROP TABLE IF EXISTS `journal_entry_detail`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `journal_entry_detail` (
+  `id` char(50) NOT NULL,
+  `fk_gl_account` char(50) DEFAULT NULL,
+  `type` char(6) DEFAULT NULL,
+  `amount` decimal(10,0) DEFAULT NULL,
+  `fk_journal_entry` char(50) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `fk_journal_posting` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `journal_entry_detail`
 --
 
@@ -824,6 +2524,25 @@ LOCK TABLES `journal_entry_detail` WRITE;
 /*!40000 ALTER TABLE `journal_entry_detail` DISABLE KEYS */;
 /*!40000 ALTER TABLE `journal_entry_detail` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `journal_posting`
+--
+
+DROP TABLE IF EXISTS `journal_posting`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `journal_posting` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `type` char(6) DEFAULT NULL,
+  `amount` decimal(10,0) DEFAULT NULL,
+  `fk_gl_account_balance` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `journal_posting`
@@ -835,6 +2554,25 @@ LOCK TABLES `journal_posting` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `journal_setting`
+--
+
+DROP TABLE IF EXISTS `journal_setting`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `journal_setting` (
+  `id` char(50) NOT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  `fk_gl_account_cash` char(50) DEFAULT NULL,
+  `fk_gl_account_sales` char(50) DEFAULT NULL,
+  `fk_gl_account_ppn_payable` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `journal_setting`
 --
 
@@ -842,6 +2580,24 @@ LOCK TABLES `journal_setting` WRITE;
 /*!40000 ALTER TABLE `journal_setting` DISABLE KEYS */;
 /*!40000 ALTER TABLE `journal_setting` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `laboratory`
+--
+
+DROP TABLE IF EXISTS `laboratory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `laboratory` (
+  `id` char(50) NOT NULL,
+  `is_bpjs` char(1) DEFAULT '0',
+  `bpjs_payment_status` char(10) DEFAULT NULL,
+  `lab_handling_status` char(10) DEFAULT NULL,
+  `is_personal` char(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `laboratory`
@@ -853,6 +2609,28 @@ LOCK TABLES `laboratory` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `laboratory_item`
+--
+
+DROP TABLE IF EXISTS `laboratory_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `laboratory_item` (
+  `id` char(50) NOT NULL,
+  `fk_product_service` char(50) DEFAULT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `price` decimal(10,0) DEFAULT NULL,
+  `discount` decimal(10,0) DEFAULT NULL,
+  `charge` decimal(10,0) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `fk_laboratory` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `laboratory_item`
 --
 
@@ -860,6 +2638,24 @@ LOCK TABLES `laboratory_item` WRITE;
 /*!40000 ALTER TABLE `laboratory_item` DISABLE KEYS */;
 /*!40000 ALTER TABLE `laboratory_item` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `laboratory_sales`
+--
+
+DROP TABLE IF EXISTS `laboratory_sales`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `laboratory_sales` (
+  `id` char(50) NOT NULL,
+  `is_bpjs` char(1) DEFAULT '0',
+  `bpjs_payment_status` char(10) DEFAULT NULL,
+  `lab_handling_status` char(10) DEFAULT NULL,
+  `is_personal` char(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `laboratory_sales`
@@ -871,6 +2667,28 @@ LOCK TABLES `laboratory_sales` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `laboratory_sales_item`
+--
+
+DROP TABLE IF EXISTS `laboratory_sales_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `laboratory_sales_item` (
+  `id` char(50) NOT NULL,
+  `fk_product_service` char(50) DEFAULT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `price` decimal(10,0) DEFAULT NULL,
+  `discount` decimal(10,0) DEFAULT NULL,
+  `charge` decimal(10,0) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `fk_laboratory` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `laboratory_sales_item`
 --
 
@@ -878,6 +2696,25 @@ LOCK TABLES `laboratory_sales_item` WRITE;
 /*!40000 ALTER TABLE `laboratory_sales_item` DISABLE KEYS */;
 /*!40000 ALTER TABLE `laboratory_sales_item` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `marital_status`
+--
+
+DROP TABLE IF EXISTS `marital_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `marital_status` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `type` char(25) DEFAULT 'SINGLE',
+  `fk_person` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `marital_status`
@@ -890,6 +2727,31 @@ INSERT INTO `marital_status` VALUES ('1d57fe23-cf54-4f3a-99de-9db8de9d119f','201
 UNLOCK TABLES;
 
 --
+-- Table structure for table `medical_record`
+--
+
+DROP TABLE IF EXISTS `medical_record`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `medical_record` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `anamnesis` varchar(250) DEFAULT NULL,
+  `checking_result` varchar(250) DEFAULT NULL,
+  `diagnosis` varchar(250) DEFAULT NULL,
+  `fk_patient` char(50) DEFAULT NULL,
+  `fk_doctor` char(50) DEFAULT NULL,
+  `fk_doctor_appointment` char(50) DEFAULT NULL,
+  `fk_medication` char(50) DEFAULT NULL,
+  `fk_treatment` char(50) DEFAULT NULL,
+  `fk_laboratory` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `medical_record`
 --
 
@@ -897,6 +2759,23 @@ LOCK TABLES `medical_record` WRITE;
 /*!40000 ALTER TABLE `medical_record` DISABLE KEYS */;
 /*!40000 ALTER TABLE `medical_record` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `medical_sales`
+--
+
+DROP TABLE IF EXISTS `medical_sales`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `medical_sales` (
+  `id` char(50) NOT NULL,
+  `queue` int(11) DEFAULT NULL,
+  `time` time DEFAULT NULL,
+  `status` char(15) DEFAULT 'Registered',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `medical_sales`
@@ -908,6 +2787,22 @@ LOCK TABLES `medical_sales` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `medical_treatment_sales`
+--
+
+DROP TABLE IF EXISTS `medical_treatment_sales`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `medical_treatment_sales` (
+  `id` char(50) NOT NULL,
+  `is_bpjs` char(1) DEFAULT '0',
+  `bpjs_payment_status` char(10) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `medical_treatment_sales`
 --
 
@@ -915,6 +2810,28 @@ LOCK TABLES `medical_treatment_sales` WRITE;
 /*!40000 ALTER TABLE `medical_treatment_sales` DISABLE KEYS */;
 /*!40000 ALTER TABLE `medical_treatment_sales` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `medical_treatment_sales_item`
+--
+
+DROP TABLE IF EXISTS `medical_treatment_sales_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `medical_treatment_sales_item` (
+  `id` char(50) NOT NULL,
+  `fk_product_treatment` char(50) DEFAULT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `price` decimal(10,0) DEFAULT NULL,
+  `discount` decimal(10,0) DEFAULT NULL,
+  `charge` decimal(10,0) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `fk_treatment` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `medical_treatment_sales_item`
@@ -926,6 +2843,23 @@ LOCK TABLES `medical_treatment_sales_item` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `medication`
+--
+
+DROP TABLE IF EXISTS `medication`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `medication` (
+  `id` char(50) NOT NULL,
+  `is_bpjs` char(1) DEFAULT '0',
+  `bpjs_payment_status` char(10) DEFAULT NULL,
+  `medication_status` char(10) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `medication`
 --
 
@@ -933,6 +2867,28 @@ LOCK TABLES `medication` WRITE;
 /*!40000 ALTER TABLE `medication` DISABLE KEYS */;
 /*!40000 ALTER TABLE `medication` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `medication_item`
+--
+
+DROP TABLE IF EXISTS `medication_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `medication_item` (
+  `id` char(50) NOT NULL,
+  `fk_product_medicine` char(50) DEFAULT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `price` decimal(10,0) DEFAULT NULL,
+  `discount` decimal(10,0) DEFAULT NULL,
+  `charge` decimal(10,0) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `fk_medication` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `medication_item`
@@ -944,6 +2900,26 @@ LOCK TABLES `medication_item` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `message`
+--
+
+DROP TABLE IF EXISTS `message`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `message` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `title` varchar(150) DEFAULT NULL,
+  `fk_sender` char(50) DEFAULT NULL,
+  `content` varchar(500) DEFAULT NULL,
+  `type` char(10) DEFAULT 'Draft',
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `message`
 --
 
@@ -953,6 +2929,23 @@ LOCK TABLES `message` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `message_receiver`
+--
+
+DROP TABLE IF EXISTS `message_receiver`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `message_receiver` (
+  `id` char(50) NOT NULL,
+  `fk_receiver` char(50) DEFAULT NULL,
+  `fk_message` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `message_receiver`
 --
 
@@ -960,6 +2953,26 @@ LOCK TABLES `message_receiver` WRITE;
 /*!40000 ALTER TABLE `message_receiver` DISABLE KEYS */;
 /*!40000 ALTER TABLE `message_receiver` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `module`
+--
+
+DROP TABLE IF EXISTS `module`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `module` (
+  `id` char(50) NOT NULL,
+  `code` varchar(150) DEFAULT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `module_group` char(25) DEFAULT 'GENERAL',
+  `is_enabled` char(1) DEFAULT '1',
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `module`
@@ -972,14 +2985,49 @@ INSERT INTO `module` VALUES ('07452775-a048-4071-8798-21dc943fe926','PRODUCT','P
 UNLOCK TABLES;
 
 --
+-- Table structure for table `notification`
+--
+
+DROP TABLE IF EXISTS `notification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `notification` (
+  `id` char(50) NOT NULL,
+  `new_message` int(11) DEFAULT 0,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `notification`
 --
 
 LOCK TABLES `notification` WRITE;
 /*!40000 ALTER TABLE `notification` DISABLE KEYS */;
-INSERT INTO `notification` VALUES ('sitikom',0,8),('user',0,1);
+INSERT INTO `notification` VALUES ('admin@belian.com',0,0),('sitikom',0,8),('user',0,1);
 /*!40000 ALTER TABLE `notification` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `order_adjustment`
+--
+
+DROP TABLE IF EXISTS `order_adjustment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `order_adjustment` (
+  `id` char(50) NOT NULL,
+  `amount` decimal(10,0) DEFAULT NULL,
+  `percent` decimal(10,0) DEFAULT NULL,
+  `type` char(25) DEFAULT NULL,
+  `fk_order` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `order_adjustment`
@@ -992,6 +3040,37 @@ INSERT INTO `order_adjustment` VALUES ('1493b06c-a71a-45aa-b0ea-1233b0ff7c1a',0,
 UNLOCK TABLES;
 
 --
+-- Table structure for table `order_item`
+--
+
+DROP TABLE IF EXISTS `order_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `order_item` (
+  `id` char(50) NOT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `unit_price` decimal(10,0) DEFAULT NULL,
+  `uom_id` char(50) DEFAULT NULL,
+  `uom_value` varchar(250) DEFAULT NULL,
+  `product_id` char(50) DEFAULT NULL,
+  `product_value` varchar(250) DEFAULT NULL,
+  `product_feature_id` char(50) DEFAULT NULL,
+  `product_feature_value` varchar(250) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `fk_order` char(50) DEFAULT NULL,
+  `type` char(10) DEFAULT 'PRODUCT',
+  `is_shipped` char(1) DEFAULT '0',
+  `processed` decimal(10,0) DEFAULT 0,
+  `invoiced` char(1) DEFAULT '0',
+  `requirement` char(1) DEFAULT '0',
+  `workeffort` char(1) DEFAULT '0',
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `order_item`
 --
 
@@ -1000,6 +3079,23 @@ LOCK TABLES `order_item` WRITE;
 INSERT INTO `order_item` VALUES ('15403535-f3a1-4aa6-9db1-c1af69c4088d',12,25000,'46ff493b-776b-4b9c-b199-39b9ef3b5f19','Potong','64865838-5b79-40ca-a1e4-663d7139895a','Garang Asem Sapi',NULL,NULL,'','eac4a1d1-454b-4a15-b35b-b631c595ed04','PRODUCT','0',0,'0','0','0',0),('2a45c16a-b549-4b23-9e20-81badf2e7749',1,18000,NULL,NULL,'1e21e36a-4244-4eb3-bdbe-902cde4cf9b7','Ayam Kampung Goreng',NULL,NULL,'','90fdcd0a-d324-4cab-a18c-25f27c06351f','PRODUCT','0',0,'0','0','0',0),('4afa09ca-4628-47e2-b3a0-f0040c6477c8',1,0,'eb23ea67-cdda-4668-8624-872fdf445a0c','Ekor','17249794-ca76-467b-953f-a00a65404a77','Ayam Kota',NULL,NULL,'Ayam Kota','ec50085f-9f93-4a65-9d70-4be09ec927cc','PRODUCT','0',0,'0','0','0',1),('65700f58-c5ca-45c4-9783-d09cca76a8f9',1,15000,NULL,NULL,'f2e41156-6eb1-4dc4-bd9a-05d38a712554','Ayam Kota Potong 4',NULL,NULL,'','90fdcd0a-d324-4cab-a18c-25f27c06351f','PRODUCT','0',0,'0','0','0',0),('8c9e24e2-7454-43fa-b091-823100d8aa2f',10,15000,'46ff493b-776b-4b9c-b199-39b9ef3b5f19','Potong','64865838-5b79-40ca-a1e4-663d7139895a','Garang Asem Sapi',NULL,NULL,'','7411fc95-25a0-458b-afe9-7d1505a3fda6','PRODUCT','1',10,'0','0','0',17),('9dd39daa-4c00-4a07-853a-60e36312a838',10,23000,'46ff493b-776b-4b9c-b199-39b9ef3b5f19','Potong','64865838-5b79-40ca-a1e4-663d7139895a','Garang Asem Sapi',NULL,NULL,'','ea69c005-d007-476d-931c-02e7b6daa147','PRODUCT','0',5,'0','0','0',17),('a2251e43-bfd6-4ca4-8e92-ca1af78a70fd',1,50000,'d43b50b5-3819-45e6-822f-707c7d64cb5f','Visit','bcfc5b16-4533-4a65-a8b1-2dbf0510ff32','Pemeriksaan Dokter Umum',NULL,NULL,'','388f9588-fddd-45ba-a328-bd41e24729e4','WORK','0',0,'0','1','1',2),('b9974139-3c85-49d7-9418-f5a7800a7e00',100,25000,'46ff493b-776b-4b9c-b199-39b9ef3b5f19','Potong','64865838-5b79-40ca-a1e4-663d7139895a','Garang Asem Sapi',NULL,NULL,'','ac5ef13a-c2ce-4ecb-9c3e-a911a7ad08f1','PRODUCT','0',50,'0','0','0',10),('e19b02e9-b430-4f55-bf6a-8e35755d8203',10,25000,'46ff493b-776b-4b9c-b199-39b9ef3b5f19','Potong','64865838-5b79-40ca-a1e4-663d7139895a','Garang Asem Sapi',NULL,NULL,'','e9a8f83a-c00e-424c-957a-c15a81f5262e','PRODUCT','0',0,'0','0','0',0);
 /*!40000 ALTER TABLE `order_item` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `order_item_assosiation`
+--
+
+DROP TABLE IF EXISTS `order_item_assosiation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `order_item_assosiation` (
+  `id` char(50) NOT NULL,
+  `sales_item` char(50) DEFAULT NULL,
+  `purchase_item` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `order_item_assosiation`
@@ -1011,6 +3107,23 @@ LOCK TABLES `order_item_assosiation` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `order_payment`
+--
+
+DROP TABLE IF EXISTS `order_payment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `order_payment` (
+  `id` char(50) NOT NULL,
+  `fk_purchase_order` char(50) DEFAULT NULL,
+  `fk_payment_item` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `order_payment`
 --
 
@@ -1018,6 +3131,26 @@ LOCK TABLES `order_payment` WRITE;
 /*!40000 ALTER TABLE `order_payment` DISABLE KEYS */;
 /*!40000 ALTER TABLE `order_payment` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `order_role`
+--
+
+DROP TABLE IF EXISTS `order_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `order_role` (
+  `id` char(50) NOT NULL,
+  `person_id` char(50) DEFAULT NULL,
+  `person_value` varchar(250) DEFAULT NULL,
+  `type` char(50) DEFAULT NULL,
+  `fk_order` char(50) DEFAULT NULL,
+  `percent_contribution` decimal(10,0) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `order_role`
@@ -1030,6 +3163,24 @@ INSERT INTO `order_role` VALUES ('123ec1e6-0314-4315-8c25-05f3a8283002','c21873e
 UNLOCK TABLES;
 
 --
+-- Table structure for table `order_status`
+--
+
+DROP TABLE IF EXISTS `order_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `order_status` (
+  `id` char(50) NOT NULL,
+  `date` timestamp NULL DEFAULT NULL,
+  `fk_order` char(50) DEFAULT NULL,
+  `type` char(25) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `order_status`
 --
 
@@ -1038,6 +3189,26 @@ LOCK TABLES `order_status` WRITE;
 INSERT INTO `order_status` VALUES ('238ea040-c434-4dbe-a388-225a0d120480','2017-01-22 07:37:30','388f9588-fddd-45ba-a328-bd41e24729e4','ACTIVE',0),('5e4ab688-2886-4c52-abd8-d56f214d00da','2017-01-16 02:17:06','ac5ef13a-c2ce-4ecb-9c3e-a911a7ad08f1','ACTIVE',0),('7e987489-d3ed-4d12-a586-c38ac4a6ac70','2016-10-20 02:39:38','90fdcd0a-d324-4cab-a18c-25f27c06351f','RECEIVED',0),('8139a676-c36b-4319-8c73-2497735b25dc','2016-12-19 02:49:51','ea69c005-d007-476d-931c-02e7b6daa147','ACTIVE',0),('afc92cf4-3d8b-408d-aecb-3166e037cd1d','2016-12-19 02:46:36','eac4a1d1-454b-4a15-b35b-b631c595ed04','ACTIVE',0),('df8785ca-d2f7-49d4-ae33-099345fa0793','2017-01-15 13:55:03','e9a8f83a-c00e-424c-957a-c15a81f5262e','ACTIVE',0);
 /*!40000 ALTER TABLE `order_status` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `order_term`
+--
+
+DROP TABLE IF EXISTS `order_term`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `order_term` (
+  `id` char(50) NOT NULL,
+  `fk_order` char(50) DEFAULT NULL,
+  `order_item` varchar(250) DEFAULT NULL,
+  `amount` decimal(10,0) DEFAULT NULL,
+  `term_id` char(50) DEFAULT NULL,
+  `term_value` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `order_term`
@@ -1050,6 +3221,24 @@ INSERT INTO `order_term` VALUES ('2094b15c-f44e-426f-be90-14c0d7efd8fb','ac5ef13
 UNLOCK TABLES;
 
 --
+-- Table structure for table `order_value`
+--
+
+DROP TABLE IF EXISTS `order_value`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `order_value` (
+  `id` char(50) NOT NULL,
+  `min` decimal(10,0) DEFAULT NULL,
+  `max` decimal(10,0) DEFAULT NULL,
+  `value` bigint(20) DEFAULT 0,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `order_value`
 --
 
@@ -1058,6 +3247,45 @@ LOCK TABLES `order_value` WRITE;
 INSERT INTO `order_value` VALUES ('08249304-a0a4-4532-9c08-79e9e9e32623',0,0,0,0),('0a3398c1-12d9-43fc-b63f-01d3a0efbc75',0,0,0,0),('10ad7c81-fea2-4b78-ac78-32345ef7e1e7',0,0,0,0),('19c105e8-1d66-4d6e-9ff5-9584c447283b',0,0,0,0),('33052b93-a540-41fd-92d5-fb1dd0f47291',0,0,0,0),('47c1bbe4-5fd6-4185-b3ca-cb58d21ec846',0,0,0,0),('488b6999-480e-47b7-9a14-7d3699eafece',0,0,0,0),('48b029e5-73f6-438f-a1d3-cc8c215e607a',0,0,0,0),('51e24f7f-ae8c-4f67-b3c7-7742415d3b2a',0,0,0,0),('5343807f-1b07-473d-be60-c88e70cf6a14',0,0,0,0),('70c6e029-2843-467b-899b-6fdc67a420b1',0,0,0,0),('790df32d-701a-4d92-b1a2-3aa517f9f91b',0,0,0,0),('80ac4b47-186a-486a-a4e0-e497f8e66eeb',0,0,0,0),('95a5bda0-d81e-4077-b1c2-2ffcbb8c7a44',0,0,0,0),('a9927c26-e787-4869-8caf-e7b731fd6152',0,0,0,0),('c0488a1f-3323-4b15-98e9-71ec7e79eced',0,0,0,0),('c0f88fe9-04b1-4818-8ed0-af1706372687',0,0,0,0),('d9eb6823-d62e-4f3b-b3d6-1170fc517f33',0,0,0,0),('db2bff56-a35b-4373-8074-419d7546bdd4',0,0,0,0),('e8480951-1111-4a55-ac0f-5e2cc744566d',0,0,0,0),('f297b701-536f-4783-9591-fedbd4f0a94e',0,0,0,0);
 /*!40000 ALTER TABLE `order_value` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `orders`
+--
+
+DROP TABLE IF EXISTS `orders`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `orders` (
+  `id` char(50) NOT NULL,
+  `document_number` char(50) DEFAULT NULL,
+  `order_date` date DEFAULT NULL,
+  `entry_date` date DEFAULT NULL,
+  `billing_address_id` char(50) DEFAULT NULL,
+  `billing_address_value` varchar(250) DEFAULT NULL,
+  `shipping_address_id` char(50) DEFAULT NULL,
+  `shipping_address_value` varchar(250) DEFAULT NULL,
+  `placing_order_id` char(50) DEFAULT NULL,
+  `placing_order_value` varchar(250) DEFAULT NULL,
+  `taking_order_id` char(50) DEFAULT NULL,
+  `taking_order_value` varchar(250) DEFAULT NULL,
+  `ship_to_party_id` char(50) DEFAULT NULL,
+  `ship_to_party_value` varchar(250) DEFAULT NULL,
+  `bill_to_id` char(50) DEFAULT NULL,
+  `bill_to_value` varchar(250) DEFAULT NULL,
+  `ship_to_contact_id` char(50) DEFAULT NULL,
+  `ship_to_contact_value` varchar(250) DEFAULT NULL,
+  `bill_to_contact_id` char(50) DEFAULT NULL,
+  `bill_to_contact_value` varchar(250) DEFAULT NULL,
+  `bill_to_party_id` char(50) DEFAULT NULL,
+  `bill_to_party_value` varchar(250) DEFAULT NULL,
+  `currency_id` char(50) DEFAULT NULL,
+  `currency_value` varchar(250) DEFAULT NULL,
+  `transaction_type` char(10) DEFAULT 'STANDARD',
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `orders`
@@ -1070,14 +3298,23 @@ INSERT INTO `orders` VALUES ('388f9588-fddd-45ba-a328-bd41e24729e4','SO-22012017
 UNLOCK TABLES;
 
 --
--- Dumping data for table `organization`
+-- Table structure for table `organization_account`
 --
 
-LOCK TABLES `organization` WRITE;
-/*!40000 ALTER TABLE `organization` DISABLE KEYS */;
-INSERT INTO `organization` VALUES ('329f661e-3386-46f8-8d3a-5fa704b6f533','EDUCATION'),('65e565a1-6c1c-4f65-91bd-63e412364298','GENERAL'),('980d82f2-aa01-4511-b461-985f5fcbe6a1','EDUCATION'),('a685cde5-df6b-4430-babc-0ae846f8fa29','GENERAL'),('e29c7687-30f8-4201-af68-0a4a67541b86','EDUCATION');
-/*!40000 ALTER TABLE `organization` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `organization_account`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `organization_account` (
+  `id` char(50) NOT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `status` char(1) DEFAULT '0',
+  `fk_organization` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `organization_account`
@@ -1089,6 +3326,24 @@ LOCK TABLES `organization_account` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `organization_gl_account`
+--
+
+DROP TABLE IF EXISTS `organization_gl_account`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `organization_gl_account` (
+  `id` char(50) NOT NULL,
+  `is_selected` char(1) DEFAULT '0',
+  `fk_account` char(50) DEFAULT NULL,
+  `fk_organization_account` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `organization_gl_account`
 --
 
@@ -1096,6 +3351,24 @@ LOCK TABLES `organization_gl_account` WRITE;
 /*!40000 ALTER TABLE `organization_gl_account` DISABLE KEYS */;
 /*!40000 ALTER TABLE `organization_gl_account` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `organization_period`
+--
+
+DROP TABLE IF EXISTS `organization_period`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `organization_period` (
+  `id` char(50) NOT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  `fk_accounting_period` char(50) DEFAULT NULL,
+  `is_closed` char(1) DEFAULT '0',
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `organization_period`
@@ -1107,14 +3380,57 @@ LOCK TABLES `organization_period` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `party`
+--
+
+DROP TABLE IF EXISTS `party`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `party` (
+  `id` char(50) NOT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `fk_geographic_birth_place` char(50) DEFAULT NULL,
+  `birth_date` date DEFAULT NULL,
+  `tax_code` char(50) DEFAULT NULL,
+  `code` varchar(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  `is_system` int(11) DEFAULT 0,
+  `gender` char(6) DEFAULT NULL,
+  `type` char(15) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `party`
 --
 
 LOCK TABLES `party` WRITE;
 /*!40000 ALTER TABLE `party` DISABLE KEYS */;
-INSERT INTO `party` VALUES ('017973d0-bdbc-4b6a-9b1e-bff197ab71f0','Muhammad Iqbal Putra','c4c10aee-a3a1-4e6c-a08b-62d4e26414df','2016-11-19','','M001',2),('0191c9f9-ed27-4967-93ed-add08b6f6f26','Hadi Prayoga',NULL,'1999-10-12','',NULL,1),('022b153f-c31b-4bbe-bcf3-90dfc5243579','M. Fadil Hawari',NULL,'2004-11-16','',NULL,1),('03039740-cb9e-49dc-a670-a600b41d21d1','Fitriyani Fauziah',NULL,'2000-01-09','',NULL,1),('088f14ea-d0e6-4177-8998-cca133fae524','Uray Achmad Januardi',NULL,'2016-02-22','',NULL,1),('0ee45092-38fe-4270-a4c2-6657fa59298e','Raihan Osri',NULL,'2002-10-19','',NULL,1),('11bb1ed3-dcdd-4430-908e-3d7e84870a88','Meisya Nurfajri',NULL,'2016-05-06','',NULL,1),('12529b23-3ec7-4912-a7ba-4a7dd0b14b64','M. Iqbal Fahlefy',NULL,'1999-07-31','',NULL,1),('146508c4-cdd5-44e0-9d99-4f5041bf740f','Aqilla Putri Rahmadania',NULL,'2006-09-29','',NULL,1),('1701ebcc-9dde-4e2f-9ac5-4cec4dd8d386','Raihan Al Farizy',NULL,'2002-01-05','',NULL,1),('1ceb724e-4833-417f-b34c-8086eb670f7e','Yasa Khalqiah',NULL,'2000-03-17','',NULL,1),('1eac9139-6b4f-40ff-aafb-a1be57705592','Tifani Barita Pratiwi',NULL,'2000-07-28','',NULL,1),('20266334-c727-405c-b710-f215473e4396','Ferianty Riska Endayanti',NULL,'1999-02-16','',NULL,1),('20677939-457c-4ac0-bf48-d93a5a02938a','Nadhia Rizky Aulia',NULL,'2005-07-10','',NULL,1),('2625e364-072a-416b-846e-90b6add43bef','Naufal Tricahya Putra',NULL,'2000-09-21','',NULL,1),('280c1c5f-5bfc-41c7-9162-805edadc6a7c','Ayu Baitin Ningrum',NULL,'2000-10-26','',NULL,1),('29454f3b-e557-4cd5-b95d-8cd189c3c331','Edwin Satrio Pratama',NULL,'1999-03-17','',NULL,1),('2f43245c-8573-42cc-9692-8e3236de2f97','Ropi Darmawan',NULL,'2002-09-16','',NULL,1),('329f661e-3386-46f8-8d3a-5fa704b6f533','SONY SUGEMA COLLEGE',NULL,'2009-08-07','','SSC000',1),('3459dd9e-7ec3-436f-9c39-db93a9c8f7c6','Maulidia Adinda Putri',NULL,'2004-05-12','',NULL,1),('348d0045-3db2-4e43-a632-ad70f82f86dd','Mufrih Nur Huda Tri Putra',NULL,'2002-10-31','',NULL,1),('36f481b9-37e7-4c28-99e5-369f45200634','Dicha Niswansuah Auliyah',NULL,'1999-04-15','',NULL,1),('3878879a-2e22-4a97-9929-ff37e1c31431','M. Yudhitya Eka Pratama',NULL,'1999-06-26','',NULL,1),('41095616-583a-4e15-8563-e405bc26d0d3','Nur Afifah Aulia Pangestu',NULL,'2001-02-07','',NULL,1),('4221f198-19b2-416c-bf46-71163727a0ff','Nuraini Rizka Septiyana',NULL,'2002-09-03','',NULL,1),('42901be4-86e0-4e24-be0f-0698dd7ae9bf','Harry Kalimulya',NULL,'2016-07-24','',NULL,1),('44a75f39-d018-4644-b028-cd2328ac7ef8','Alya Asyura',NULL,'2002-04-04','',NULL,1),('49a021f9-ef29-4e7b-88a6-bdd1ee2f4d70','Annisa Shafa Azzuhra P',NULL,'2002-03-28','',NULL,1),('4a842e24-386c-4380-a333-3337b7f9029b','Sondang Tiur Hertiana',NULL,'2002-01-10','',NULL,1),('4dc0134d-711c-468e-af68-6faa3aa9ea1e','Adhesty',NULL,'2003-09-09','',NULL,1),('539fc7b2-a4a1-4b0e-a520-4bb2148b5405','Dhavina Dheviarni Aulia',NULL,'2002-09-14','',NULL,1),('61105d59-ec88-4467-ac05-8334d9f66e50','Fakhri Al Fathir',NULL,'2004-08-19','',NULL,1),('633e7708-63c7-4f1f-8312-1d210e0dd065','Cyril Ahmad Khatir Syarqi',NULL,'2003-12-17','',NULL,1),('63a56e3f-f59b-432f-9c9d-463f1f744334','Rifky Nugraha Utama',NULL,'2000-07-03','',NULL,1),('65b78b03-601e-4570-bf18-14c7d44e1a18','Argha Nugroho',NULL,'1999-09-22','',NULL,1),('65e565a1-6c1c-4f65-91bd-63e412364298','Some Company Inc','68309a5f-4606-46d3-ad20-996ed6c782dx','2016-09-11','6666 5555','B011',0),('6ad80274-db6b-42e3-8013-6ad1e441fb81','Jihan Fazila',NULL,'1999-05-17','',NULL,1),('6c0fadd3-9867-4d3c-b9f5-502676b503a8','Aditya Karunia Hardy',NULL,'2001-08-18','',NULL,1),('731838a3-08f5-4f01-9cc3-7b0985239d44','Nur Rakhmi',NULL,'2000-01-16','',NULL,1),('756755c3-1ddd-4086-b862-e7e9298b30cc','Risma Aryani',NULL,'2005-05-12','',NULL,2),('763a852d-5742-4be1-8905-714bcecebefd','Aura Faradillah',NULL,'2002-08-02','',NULL,1),('77a9c861-faaa-4b4a-a7b2-2d7124be9ba3','Rizka Dhafina Putri',NULL,'2005-04-22','',NULL,3),('78171b13-766f-495b-939d-e01b79e21931','SYSADMIN',NULL,'1981-07-25','',NULL,0),('7aff71e4-ddaf-4f7b-aff6-6a95cff39ed2','Nurhana Alawiyah',NULL,'2002-04-12','',NULL,1),('819d4ae9-36e9-47d5-b572-c7fb8c76f392','Dyah Anggraeni',NULL,'2000-09-28','',NULL,1),('8459900c-a178-43dd-b215-5e5c089475a2','M. Rifki. S',NULL,'2016-01-01','',NULL,1),('895f107c-991a-4173-8dba-f6a906e13cef','DODI','c4c10aee-a3a1-4e6c-a08b-62d4e26414df','1990-08-20','','DD01',1),('8a820547-5d64-4589-bf73-837687170286','Yudha Prabaskara',NULL,'2004-09-10','',NULL,1),('8e004f0b-e655-46c5-a38d-cc0217cca15a','Mufid Hayyu Nurfahmi Arif',NULL,'2004-08-31','',NULL,1),('923274db-d2a5-4a78-9962-86348c84e283','Muhammad Farhan Pratama',NULL,'2004-03-06','',NULL,1),('924efe8c-512b-4f7b-9b59-23f0a0e87369','Ihsaan Rizgullah Lubis',NULL,'2006-08-30','',NULL,1),('964a55cc-2dbb-48ea-b45a-62e4f244a796','Achlaq Al Arif',NULL,'2000-12-29','',NULL,1),('980d82f2-aa01-4511-b461-985f5fcbe6a1','Harry Corporation','c4c10aee-a3a1-4e6c-a08b-62d4e26414df','2009-08-07','','I000',1),('9d91dc31-8244-41e6-9c4e-9a07bdef3122','Danar Gymnastiar',NULL,'2003-10-07','',NULL,1),('a3ad09a6-dac6-45b9-b678-750014a6cf73','Aulia Fitra Raihannaim',NULL,'2002-12-05','',NULL,1),('a685cde5-df6b-4430-babc-0ae846f8fa29','Rizky Chicken','c4c10aee-a3a1-4e6c-a08b-62d4e26414df','2016-12-01','','00000-0000-0001',0),('a77bcca4-aee3-4cd3-96c0-b0e78ff13f73','Bayu Setiadi',NULL,'2016-05-03','',NULL,1),('a8280d8e-553c-4074-90b4-1f71b5c34e27','M. Fakhir',NULL,'2006-09-12','',NULL,1),('aa10f218-64f3-4c41-8a90-c5a578896e17','Sigit Bramantio Haryono',NULL,'2004-06-14','',NULL,1),('b01d8d84-9815-403c-9c44-12a385e997c4','ANONYMOUS',NULL,'1980-07-25','',NULL,0),('b5cbc987-4f00-4fd8-b6d3-5c8de2e4ed45','M. Wahyu Aditya',NULL,'2000-12-16','',NULL,1),('b7afc825-ce01-493b-b59a-071b5645b682','Rama Novarianto',NULL,'2016-01-01','',NULL,1),('bc260302-c07d-47a6-ad55-bdda6b4b16e5','Reiska Ayu Tribowo',NULL,'1999-06-14','',NULL,1),('c0f065ac-a095-4a85-a28f-f116a9ba3e57','Afifah Indah S.',NULL,'2016-08-19','',NULL,1),('c21873ef-3e29-43ca-92cd-45b5eb519c6e','Siti Komarudin','c4c10aee-a3a1-4e6c-a08b-62d4e26414df','2016-11-25','','932481934',0),('c407032a-4d0d-4b6d-94a3-ae891170e65c','Ulfi Fahri',NULL,'2001-12-29','',NULL,2),('c76091c1-4d94-447e-96f8-476bfee31604','Gisella Ayu Putri',NULL,'2016-03-20','',NULL,1),('cb1e074f-7ba2-415e-8523-4c36b75e2101','Fani Puja Apriastuti',NULL,'1999-04-10','',NULL,1),('ce59473f-8bd8-4c7c-a118-6228a2b301a1','Gery Elbari',NULL,'2002-06-26','',NULL,1),('d67ddc3e-1c60-4aff-8120-66dccf9263cb','Syarif Bayu Zulmarliansyah',NULL,'2000-12-15','',NULL,1),('d73b0190-ec65-4e75-8b15-aaebbfb4dc97','Yoga Febriyanda',NULL,'2001-10-09','',NULL,1),('e196257a-b925-4413-8ede-d4a7bd9f2466','Raka Ryan Arjuna A.',NULL,'1999-11-16','',NULL,1),('e26ce188-8644-46e6-b25f-e131cf46d678','Daffa Hibatullah Lubis',NULL,'2002-04-13','',NULL,1),('e29c7687-30f8-4201-af68-0a4a67541b86','SSC PANCASILA',NULL,'2009-08-07','','SSC01',2),('e68fa2ab-75bf-48b8-ab52-55f89e7a4787','Hanna Amalia',NULL,'2002-02-26','',NULL,1),('e9ecb5e5-ec98-40d3-9282-6b7949c99924','Tony Guswanto',NULL,'1999-08-17','',NULL,1),('ec85f840-2f5d-4b17-9333-bbd0dae22958','Jajang Sanjaya','c4c10aee-a3a1-4e6c-a08b-62d4e26414df','2016-11-25','','81374713',0),('f4eded39-41dc-40b7-b249-84c7daf9713d','Fauziah Putri',NULL,'2016-03-04','',NULL,1),('f6917d75-083e-4325-bc07-77af774f043b','Firlani Danti Nanda Novea',NULL,'1999-11-18','',NULL,1),('f89abcfd-9762-4a07-8b49-ad4f844b3ca1','Akbar Nurrohim Rusliana Ade',NULL,'1999-08-20','',NULL,1),('f8c59058-2728-4039-87d2-409b42b9dbc8','Bima Novarianto',NULL,'2016-11-28','',NULL,1),('fe8c2142-a8a5-428b-b242-84d7f384c079','Tiara Cahyani',NULL,'2002-12-26','',NULL,2),('ffa7d45c-37c8-46cf-9a02-6973fa73ca3d','Abimanyu Tri Aditama',NULL,'2000-02-24','',NULL,1);
+INSERT INTO `party` VALUES ('329f661e-3386-46f8-8d3a-5fa704b6f533','SONY SUGEMA COLLEGE',NULL,'2009-08-07','','SSC000',1,0,NULL,'Organization'),('65e565a1-6c1c-4f65-91bd-63e412364298','Some Company Inc','68309a5f-4606-46d3-ad20-996ed6c782dx','2016-09-11','6666 5555','B011',0,0,NULL,'Organization'),('980d82f2-aa01-4511-b461-985f5fcbe6a1','Harry Corporation','c4c10aee-a3a1-4e6c-a08b-62d4e26414df','2009-08-07','','I000',1,0,NULL,'Organization'),('a685cde5-df6b-4430-babc-0ae846f8fa29','Rizky Chicken','c4c10aee-a3a1-4e6c-a08b-62d4e26414df','2016-12-01','','00000-0000-0001',0,0,NULL,'Organization'),('e29c7687-30f8-4201-af68-0a4a67541b86','SSC PANCASILA',NULL,'2009-08-07','','SSC01',2,0,NULL,'Organization');
 /*!40000 ALTER TABLE `party` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `party_classification`
+--
+
+DROP TABLE IF EXISTS `party_classification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `party_classification` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `type` char(35) DEFAULT NULL,
+  `value` char(50) DEFAULT NULL,
+  `fk_party` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `party_classification`
@@ -1127,6 +3443,26 @@ INSERT INTO `party_classification` VALUES ('c0420e23-a387-495b-be5d-848c11865ec3
 UNLOCK TABLES;
 
 --
+-- Table structure for table `party_rate`
+--
+
+DROP TABLE IF EXISTS `party_rate`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `party_rate` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `rate` decimal(10,0) DEFAULT NULL,
+  `type` char(50) DEFAULT NULL,
+  `fk_party` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `party_rate`
 --
 
@@ -1136,14 +3472,56 @@ LOCK TABLES `party_rate` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `party_relationship`
+--
+
+DROP TABLE IF EXISTS `party_relationship`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `party_relationship` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `fk_from_role` char(50) DEFAULT NULL,
+  `fk_to_role` char(50) DEFAULT NULL,
+  `fk_from_party` char(50) DEFAULT NULL,
+  `fk_to_party` char(50) DEFAULT NULL,
+  `type` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  `status` varchar(15) DEFAULT 'ACTIVE',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `party_relationship`
 --
 
 LOCK TABLES `party_relationship` WRITE;
 /*!40000 ALTER TABLE `party_relationship` DISABLE KEYS */;
-INSERT INTO `party_relationship` VALUES ('224a5af6-56b1-4e98-bce0-1755d43d3c90','2016-11-25','2016-11-30','bb700516-6872-40ca-b2db-2e49a3a2acb2','fff0f880-04b8-4712-8989-4740a6b91866','e29c7687-30f8-4201-af68-0a4a67541b86','ec85f840-2f5d-4b17-9333-bbd0dae22958','EMPLOYMENT_RELATIONSHIP',1),('afdb45bf-d586-47fa-812e-d57083b3b3ff','2016-11-25',NULL,'bb700516-6872-40ca-b2db-2e49a3a2acb2','158b3342-ff53-4db6-b7d0-0538a76c76b5','e29c7687-30f8-4201-af68-0a4a67541b86','895f107c-991a-4173-8dba-f6a906e13cef','EMPLOYMENT_RELATIONSHIP',0),('e1cf13d4-cb11-415d-b0fe-62b448f7a679','2016-11-25',NULL,'bb700516-6872-40ca-b2db-2e49a3a2acb2','71a2de84-c9c4-4ae2-85b0-439d47d6170d','e29c7687-30f8-4201-af68-0a4a67541b86','c21873ef-3e29-43ca-92cd-45b5eb519c6e','EMPLOYMENT_RELATIONSHIP',0);
+INSERT INTO `party_relationship` VALUES ('224a5af6-56b1-4e98-bce0-1755d43d3c90','2016-11-25','2016-11-30','bb700516-6872-40ca-b2db-2e49a3a2acb2','fff0f880-04b8-4712-8989-4740a6b91866','e29c7687-30f8-4201-af68-0a4a67541b86','ec85f840-2f5d-4b17-9333-bbd0dae22958','EMPLOYMENT_RELATIONSHIP',1,'ACTIVE'),('afdb45bf-d586-47fa-812e-d57083b3b3ff','2016-11-25',NULL,'bb700516-6872-40ca-b2db-2e49a3a2acb2','158b3342-ff53-4db6-b7d0-0538a76c76b5','e29c7687-30f8-4201-af68-0a4a67541b86','895f107c-991a-4173-8dba-f6a906e13cef','EMPLOYMENT_RELATIONSHIP',0,'ACTIVE'),('e1cf13d4-cb11-415d-b0fe-62b448f7a679','2016-11-25',NULL,'bb700516-6872-40ca-b2db-2e49a3a2acb2','71a2de84-c9c4-4ae2-85b0-439d47d6170d','e29c7687-30f8-4201-af68-0a4a67541b86','c21873ef-3e29-43ca-92cd-45b5eb519c6e','EMPLOYMENT_RELATIONSHIP',0,'ACTIVE');
 /*!40000 ALTER TABLE `party_relationship` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `party_role`
+--
+
+DROP TABLE IF EXISTS `party_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `party_role` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `fk_party` char(50) DEFAULT NULL,
+  `type` char(25) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `party_role`
@@ -1156,6 +3534,25 @@ INSERT INTO `party_role` VALUES ('013f6fbf-2c6b-4d7a-8b04-2ad181d02bd7','2016-07
 UNLOCK TABLES;
 
 --
+-- Table structure for table `party_skill`
+--
+
+DROP TABLE IF EXISTS `party_skill`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `party_skill` (
+  `id` char(50) NOT NULL,
+  `fk_party` char(50) DEFAULT NULL,
+  `fk_type` char(50) DEFAULT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `party_skill`
 --
 
@@ -1163,6 +3560,22 @@ LOCK TABLES `party_skill` WRITE;
 /*!40000 ALTER TABLE `party_skill` DISABLE KEYS */;
 /*!40000 ALTER TABLE `party_skill` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `party_skill_type`
+--
+
+DROP TABLE IF EXISTS `party_skill_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `party_skill_type` (
+  `id` char(50) NOT NULL,
+  `name` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `party_skill_type`
@@ -1174,6 +3587,25 @@ LOCK TABLES `party_skill_type` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `passport`
+--
+
+DROP TABLE IF EXISTS `passport`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `passport` (
+  `id` char(50) NOT NULL,
+  `number` char(50) DEFAULT NULL,
+  `issued_date` date DEFAULT NULL,
+  `expiration_date` date DEFAULT NULL,
+  `fk_country` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `passport`
 --
 
@@ -1181,6 +3613,21 @@ LOCK TABLES `passport` WRITE;
 /*!40000 ALTER TABLE `passport` DISABLE KEYS */;
 /*!40000 ALTER TABLE `passport` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `patient`
+--
+
+DROP TABLE IF EXISTS `patient`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `patient` (
+  `id` char(50) NOT NULL,
+  `fk_bpjs` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `patient`
@@ -1192,6 +3639,66 @@ LOCK TABLES `patient` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `patient_practitioner_relationship`
+--
+
+DROP TABLE IF EXISTS `patient_practitioner_relationship`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `patient_practitioner_relationship` (
+  `id` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `patient_practitioner_relationship`
+--
+
+LOCK TABLES `patient_practitioner_relationship` WRITE;
+/*!40000 ALTER TABLE `patient_practitioner_relationship` DISABLE KEYS */;
+/*!40000 ALTER TABLE `patient_practitioner_relationship` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `patient_provider_relationship`
+--
+
+DROP TABLE IF EXISTS `patient_provider_relationship`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `patient_provider_relationship` (
+  `id` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `patient_provider_relationship`
+--
+
+LOCK TABLES `patient_provider_relationship` WRITE;
+/*!40000 ALTER TABLE `patient_provider_relationship` DISABLE KEYS */;
+/*!40000 ALTER TABLE `patient_provider_relationship` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `patient_relationship`
+--
+
+DROP TABLE IF EXISTS `patient_relationship`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `patient_relationship` (
+  `id` char(50) NOT NULL,
+  `fk_patient` char(50) DEFAULT NULL,
+  `fk_internal_organization` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `patient_relationship`
 --
 
@@ -1199,6 +3706,26 @@ LOCK TABLES `patient_relationship` WRITE;
 /*!40000 ALTER TABLE `patient_relationship` DISABLE KEYS */;
 /*!40000 ALTER TABLE `patient_relationship` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `pay_history`
+--
+
+DROP TABLE IF EXISTS `pay_history`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pay_history` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `amount` decimal(10,0) DEFAULT NULL,
+  `fk_uom` char(50) DEFAULT NULL,
+  `fk_employment` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `pay_history`
@@ -1210,6 +3737,21 @@ LOCK TABLES `pay_history` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `payable`
+--
+
+DROP TABLE IF EXISTS `payable`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `payable` (
+  `id` char(50) NOT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `payable`
 --
 
@@ -1217,6 +3759,23 @@ LOCK TABLES `payable` WRITE;
 /*!40000 ALTER TABLE `payable` DISABLE KEYS */;
 /*!40000 ALTER TABLE `payable` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `paycheck`
+--
+
+DROP TABLE IF EXISTS `paycheck`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `paycheck` (
+  `id` char(50) NOT NULL,
+  `fk_empployment` char(50) DEFAULT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `paycheck`
@@ -1228,6 +3787,26 @@ LOCK TABLES `paycheck` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `paycheck_item`
+--
+
+DROP TABLE IF EXISTS `paycheck_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `paycheck_item` (
+  `id` char(50) NOT NULL,
+  `method` char(15) DEFAULT NULL,
+  `account` char(50) DEFAULT NULL,
+  `bank` varchar(150) DEFAULT NULL,
+  `fk_paycheck` char(50) DEFAULT NULL,
+  `amount` decimal(10,0) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `paycheck_item`
 --
 
@@ -1235,6 +3814,30 @@ LOCK TABLES `paycheck_item` WRITE;
 /*!40000 ALTER TABLE `paycheck_item` DISABLE KEYS */;
 /*!40000 ALTER TABLE `paycheck_item` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `payment`
+--
+
+DROP TABLE IF EXISTS `payment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `payment` (
+  `id` char(50) NOT NULL,
+  `reference` char(50) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `amount` decimal(10,0) DEFAULT NULL,
+  `fk_staff` char(50) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  `fk_currency` char(50) DEFAULT NULL,
+  `fk_tax` char(50) DEFAULT NULL,
+  `fk_payment_type` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `payment`
@@ -1247,6 +3850,24 @@ INSERT INTO `payment` VALUES ('b94f43aa-464d-4ea3-9866-fcfa2bc2b04e','INV1','201
 UNLOCK TABLES;
 
 --
+-- Table structure for table `payment_application`
+--
+
+DROP TABLE IF EXISTS `payment_application`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `payment_application` (
+  `id` char(50) NOT NULL,
+  `amount` decimal(10,0) DEFAULT NULL,
+  `fk_billing` char(50) DEFAULT NULL,
+  `fk_receipt` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `payment_application`
 --
 
@@ -1257,6 +3878,21 @@ INSERT INTO `payment_application` VALUES ('eba59826-35ad-425e-8085-4d3a7eda3cc2'
 UNLOCK TABLES;
 
 --
+-- Table structure for table `payment_item`
+--
+
+DROP TABLE IF EXISTS `payment_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `payment_item` (
+  `id` char(50) NOT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `payment_item`
 --
 
@@ -1264,6 +3900,23 @@ LOCK TABLES `payment_item` WRITE;
 /*!40000 ALTER TABLE `payment_item` DISABLE KEYS */;
 /*!40000 ALTER TABLE `payment_item` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `payment_method_type`
+--
+
+DROP TABLE IF EXISTS `payment_method_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `payment_method_type` (
+  `id` char(50) NOT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `payment_method_type`
@@ -1276,6 +3929,30 @@ INSERT INTO `payment_method_type` VALUES ('b4ab72cc-5153-43bb-ad33-14ae6ed7f6d6'
 UNLOCK TABLES;
 
 --
+-- Table structure for table `payroll_preference`
+--
+
+DROP TABLE IF EXISTS `payroll_preference`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `payroll_preference` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `fk_payment_method_type` char(50) DEFAULT NULL,
+  `percent` decimal(10,0) DEFAULT NULL,
+  `amount` decimal(10,0) DEFAULT NULL,
+  `bank_number` char(50) DEFAULT NULL,
+  `bank_name` varchar(150) DEFAULT NULL,
+  `period_type` char(50) DEFAULT NULL,
+  `fk_employee` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `payroll_preference`
 --
 
@@ -1285,14 +3962,19 @@ LOCK TABLES `payroll_preference` WRITE;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `person`
+-- Table structure for table `pharmacy_sales`
 --
 
-LOCK TABLES `person` WRITE;
-/*!40000 ALTER TABLE `person` DISABLE KEYS */;
-INSERT INTO `person` VALUES ('017973d0-bdbc-4b6a-9b1e-bff197ab71f0','MALE','SINGLE'),('0191c9f9-ed27-4967-93ed-add08b6f6f26','MALE','SINGLE'),('022b153f-c31b-4bbe-bcf3-90dfc5243579','MALE','SINGLE'),('03039740-cb9e-49dc-a670-a600b41d21d1','FEMALE','SINGLE'),('088f14ea-d0e6-4177-8998-cca133fae524','MALE','SINGLE'),('0ee45092-38fe-4270-a4c2-6657fa59298e','MALE','SINGLE'),('11bb1ed3-dcdd-4430-908e-3d7e84870a88','FEMALE','SINGLE'),('12529b23-3ec7-4912-a7ba-4a7dd0b14b64','MALE','SINGLE'),('146508c4-cdd5-44e0-9d99-4f5041bf740f','FEMALE','SINGLE'),('1701ebcc-9dde-4e2f-9ac5-4cec4dd8d386','MALE','SINGLE'),('1ceb724e-4833-417f-b34c-8086eb670f7e','FEMALE','SINGLE'),('1eac9139-6b4f-40ff-aafb-a1be57705592','FEMALE','SINGLE'),('20266334-c727-405c-b710-f215473e4396','FEMALE','SINGLE'),('20677939-457c-4ac0-bf48-d93a5a02938a','FEMALE','SINGLE'),('2625e364-072a-416b-846e-90b6add43bef','MALE','SINGLE'),('280c1c5f-5bfc-41c7-9162-805edadc6a7c','FEMALE','SINGLE'),('29454f3b-e557-4cd5-b95d-8cd189c3c331','MALE','SINGLE'),('2f43245c-8573-42cc-9692-8e3236de2f97','MALE','SINGLE'),('3459dd9e-7ec3-436f-9c39-db93a9c8f7c6','FEMALE','SINGLE'),('348d0045-3db2-4e43-a632-ad70f82f86dd','MALE','SINGLE'),('36f481b9-37e7-4c28-99e5-369f45200634','FEMALE','SINGLE'),('3878879a-2e22-4a97-9929-ff37e1c31431','FEMALE','SINGLE'),('41095616-583a-4e15-8563-e405bc26d0d3','FEMALE','SINGLE'),('4221f198-19b2-416c-bf46-71163727a0ff','FEMALE','SINGLE'),('42901be4-86e0-4e24-be0f-0698dd7ae9bf','MALE','SINGLE'),('44a75f39-d018-4644-b028-cd2328ac7ef8','FEMALE','SINGLE'),('49a021f9-ef29-4e7b-88a6-bdd1ee2f4d70','FEMALE','SINGLE'),('4a842e24-386c-4380-a333-3337b7f9029b','FEMALE','SINGLE'),('4dc0134d-711c-468e-af68-6faa3aa9ea1e','FEMALE','SINGLE'),('539fc7b2-a4a1-4b0e-a520-4bb2148b5405','FEMALE','SINGLE'),('61105d59-ec88-4467-ac05-8334d9f66e50','MALE','SINGLE'),('633e7708-63c7-4f1f-8312-1d210e0dd065','MALE','SINGLE'),('63a56e3f-f59b-432f-9c9d-463f1f744334','MALE','SINGLE'),('65b78b03-601e-4570-bf18-14c7d44e1a18','MALE','SINGLE'),('6ad80274-db6b-42e3-8013-6ad1e441fb81','FEMALE','SINGLE'),('6c0fadd3-9867-4d3c-b9f5-502676b503a8','MALE','SINGLE'),('731838a3-08f5-4f01-9cc3-7b0985239d44','FEMALE','SINGLE'),('756755c3-1ddd-4086-b862-e7e9298b30cc','FEMALE','SINGLE'),('763a852d-5742-4be1-8905-714bcecebefd','FEMALE','SINGLE'),('77a9c861-faaa-4b4a-a7b2-2d7124be9ba3','MALE','SINGLE'),('78171b13-766f-495b-939d-e01b79e21931','MALE','SINGLE'),('7aff71e4-ddaf-4f7b-aff6-6a95cff39ed2','FEMALE','SINGLE'),('819d4ae9-36e9-47d5-b572-c7fb8c76f392','FEMALE','SINGLE'),('8459900c-a178-43dd-b215-5e5c089475a2','MALE','SINGLE'),('895f107c-991a-4173-8dba-f6a906e13cef','MALE','SINGLE'),('8a820547-5d64-4589-bf73-837687170286','MALE','SINGLE'),('8e004f0b-e655-46c5-a38d-cc0217cca15a','MALE','SINGLE'),('923274db-d2a5-4a78-9962-86348c84e283','MALE','SINGLE'),('924efe8c-512b-4f7b-9b59-23f0a0e87369','MALE','SINGLE'),('964a55cc-2dbb-48ea-b45a-62e4f244a796','MALE','SINGLE'),('9d91dc31-8244-41e6-9c4e-9a07bdef3122','MALE','SINGLE'),('a3ad09a6-dac6-45b9-b678-750014a6cf73','FEMALE','SINGLE'),('a77bcca4-aee3-4cd3-96c0-b0e78ff13f73','MALE','SINGLE'),('a8280d8e-553c-4074-90b4-1f71b5c34e27','MALE','SINGLE'),('aa10f218-64f3-4c41-8a90-c5a578896e17','MALE','SINGLE'),('b01d8d84-9815-403c-9c44-12a385e997c4','MALE','SINGLE'),('b5cbc987-4f00-4fd8-b6d3-5c8de2e4ed45','MALE','SINGLE'),('b7afc825-ce01-493b-b59a-071b5645b682','MALE','SINGLE'),('bc260302-c07d-47a6-ad55-bdda6b4b16e5','FEMALE','SINGLE'),('c0f065ac-a095-4a85-a28f-f116a9ba3e57','MALE','SINGLE'),('c21873ef-3e29-43ca-92cd-45b5eb519c6e','FEMALE','SINGLE'),('c407032a-4d0d-4b6d-94a3-ae891170e65c','FEMALE','SINGLE'),('c76091c1-4d94-447e-96f8-476bfee31604','FEMALE','SINGLE'),('cb1e074f-7ba2-415e-8523-4c36b75e2101','FEMALE','SINGLE'),('ce59473f-8bd8-4c7c-a118-6228a2b301a1','MALE','SINGLE'),('d67ddc3e-1c60-4aff-8120-66dccf9263cb','MALE','SINGLE'),('d73b0190-ec65-4e75-8b15-aaebbfb4dc97','MALE','SINGLE'),('e196257a-b925-4413-8ede-d4a7bd9f2466','MALE','SINGLE'),('e26ce188-8644-46e6-b25f-e131cf46d678','MALE','SINGLE'),('e68fa2ab-75bf-48b8-ab52-55f89e7a4787','FEMALE','SINGLE'),('e9ecb5e5-ec98-40d3-9282-6b7949c99924','MALE','SINGLE'),('ec85f840-2f5d-4b17-9333-bbd0dae22958','MALE','SINGLE'),('f4eded39-41dc-40b7-b249-84c7daf9713d','FEMALE','SINGLE'),('f6917d75-083e-4325-bc07-77af774f043b','FEMALE','SINGLE'),('f89abcfd-9762-4a07-8b49-ad4f844b3ca1','MALE','SINGLE'),('f8c59058-2728-4039-87d2-409b42b9dbc8','MALE','SINGLE'),('fe8c2142-a8a5-428b-b242-84d7f384c079','FEMALE','SINGLE'),('ffa7d45c-37c8-46cf-9a02-6973fa73ca3d','MALE','SINGLE');
-/*!40000 ALTER TABLE `person` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `pharmacy_sales`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pharmacy_sales` (
+  `id` char(50) NOT NULL,
+  `is_reference` char(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `pharmacy_sales`
@@ -1304,6 +3986,28 @@ LOCK TABLES `pharmacy_sales` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `pharmacy_sales_item`
+--
+
+DROP TABLE IF EXISTS `pharmacy_sales_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pharmacy_sales_item` (
+  `id` char(50) NOT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `price` decimal(10,0) DEFAULT NULL,
+  `discount` decimal(10,0) DEFAULT NULL,
+  `charge` decimal(10,0) DEFAULT NULL,
+  `fk_pharmacy_sales` char(50) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `pharmacy_sales_item`
 --
 
@@ -1311,6 +4015,26 @@ LOCK TABLES `pharmacy_sales_item` WRITE;
 /*!40000 ALTER TABLE `pharmacy_sales_item` DISABLE KEYS */;
 /*!40000 ALTER TABLE `pharmacy_sales_item` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `physical_characteristic`
+--
+
+DROP TABLE IF EXISTS `physical_characteristic`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `physical_characteristic` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `type` char(25) DEFAULT NULL,
+  `value` char(15) DEFAULT NULL,
+  `fk_person` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `physical_characteristic`
@@ -1323,6 +4047,22 @@ INSERT INTO `physical_characteristic` VALUES ('2f5190b5-af40-4912-8626-5f82fb126
 UNLOCK TABLES;
 
 --
+-- Table structure for table `pick_list`
+--
+
+DROP TABLE IF EXISTS `pick_list`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pick_list` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `pick_list`
 --
 
@@ -1330,6 +4070,24 @@ LOCK TABLES `pick_list` WRITE;
 /*!40000 ALTER TABLE `pick_list` DISABLE KEYS */;
 /*!40000 ALTER TABLE `pick_list` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `pick_list_item`
+--
+
+DROP TABLE IF EXISTS `pick_list_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pick_list_item` (
+  `id` char(50) NOT NULL,
+  `quantity` decimal(10,0) DEFAULT 1,
+  `fk_inventory_item` char(50) DEFAULT NULL,
+  `fk_pick_list` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `pick_list_item`
@@ -1341,6 +4099,20 @@ LOCK TABLES `pick_list_item` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `pos_sales_order`
+--
+
+DROP TABLE IF EXISTS `pos_sales_order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pos_sales_order` (
+  `id` char(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `pos_sales_order`
 --
 
@@ -1348,6 +4120,32 @@ LOCK TABLES `pos_sales_order` WRITE;
 /*!40000 ALTER TABLE `pos_sales_order` DISABLE KEYS */;
 /*!40000 ALTER TABLE `pos_sales_order` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `position`
+--
+
+DROP TABLE IF EXISTS `position`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `position` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `actual_start_date` date DEFAULT NULL,
+  `actual_end_date` date DEFAULT NULL,
+  `worktime_status` char(15) DEFAULT NULL,
+  `temporary_status` char(15) DEFAULT NULL,
+  `salary_status` char(15) DEFAULT NULL,
+  `position_status_type` char(15) DEFAULT NULL,
+  `fk_budget_item` char(50) DEFAULT NULL,
+  `fk_position_type` char(50) DEFAULT NULL,
+  `fk_organization_owner` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `position`
@@ -1360,6 +4158,26 @@ INSERT INTO `position` VALUES ('989ee61c-cd85-4f52-8925-8226403ed4c5','2016-07-2
 UNLOCK TABLES;
 
 --
+-- Table structure for table `position_fulfillment`
+--
+
+DROP TABLE IF EXISTS `position_fulfillment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `position_fulfillment` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `fk_person_employee` char(50) DEFAULT NULL,
+  `fk_position` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `position_fulfillment`
 --
 
@@ -1367,6 +4185,27 @@ LOCK TABLES `position_fulfillment` WRITE;
 /*!40000 ALTER TABLE `position_fulfillment` DISABLE KEYS */;
 /*!40000 ALTER TABLE `position_fulfillment` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `position_reporting_structure`
+--
+
+DROP TABLE IF EXISTS `position_reporting_structure`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `position_reporting_structure` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `is_primary` char(1) DEFAULT '0',
+  `fk_position_reporting_to` char(50) DEFAULT NULL,
+  `fk_position_parent` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `position_reporting_structure`
@@ -1378,6 +4217,25 @@ LOCK TABLES `position_reporting_structure` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `position_responsibility`
+--
+
+DROP TABLE IF EXISTS `position_responsibility`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `position_responsibility` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `fk_position` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `position_responsibility`
 --
 
@@ -1385,6 +4243,23 @@ LOCK TABLES `position_responsibility` WRITE;
 /*!40000 ALTER TABLE `position_responsibility` DISABLE KEYS */;
 /*!40000 ALTER TABLE `position_responsibility` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `position_type`
+--
+
+DROP TABLE IF EXISTS `position_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `position_type` (
+  `id` char(50) NOT NULL,
+  `title` varchar(150) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `position_type`
@@ -1397,6 +4272,29 @@ INSERT INTO `position_type` VALUES ('05405e62-c71b-4e76-b28f-d5f5f148f19e','CEO'
 UNLOCK TABLES;
 
 --
+-- Table structure for table `position_type_rate`
+--
+
+DROP TABLE IF EXISTS `position_type_rate`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `position_type_rate` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `amount` decimal(10,0) DEFAULT NULL,
+  `fk_currency` char(50) DEFAULT NULL,
+  `fk_position_type` char(50) DEFAULT NULL,
+  `rate_type` char(50) DEFAULT NULL,
+  `period_type` char(25) DEFAULT NULL,
+  `comment` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `position_type_rate`
 --
 
@@ -1404,6 +4302,62 @@ LOCK TABLES `position_type_rate` WRITE;
 /*!40000 ALTER TABLE `position_type_rate` DISABLE KEYS */;
 /*!40000 ALTER TABLE `position_type_rate` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `practitioner_provider_relationship`
+--
+
+DROP TABLE IF EXISTS `practitioner_provider_relationship`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `practitioner_provider_relationship` (
+  `id` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `practitioner_provider_relationship`
+--
+
+LOCK TABLES `practitioner_provider_relationship` WRITE;
+/*!40000 ALTER TABLE `practitioner_provider_relationship` DISABLE KEYS */;
+/*!40000 ALTER TABLE `practitioner_provider_relationship` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `price_component`
+--
+
+DROP TABLE IF EXISTS `price_component`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `price_component` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `price` decimal(10,0) DEFAULT NULL,
+  `percent` decimal(10,0) DEFAULT 0,
+  `currency_id` char(50) DEFAULT NULL,
+  `currency_value` varchar(250) DEFAULT NULL,
+  `type` char(25) DEFAULT NULL,
+  `area_id` char(50) DEFAULT NULL,
+  `area_value` varchar(250) DEFAULT NULL,
+  `category_id` char(50) DEFAULT NULL,
+  `category_value` varchar(250) DEFAULT NULL,
+  `fk_quantity_break` char(50) DEFAULT NULL,
+  `fk_order_value` char(50) DEFAULT NULL,
+  `sales_type` char(50) DEFAULT NULL,
+  `party_id` char(50) DEFAULT NULL,
+  `party_value` varchar(250) DEFAULT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  `feature_id` char(50) DEFAULT NULL,
+  `feature_value` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `price_component`
@@ -1416,6 +4370,29 @@ INSERT INTO `price_component` VALUES ('353920c1-f61b-44e9-ac73-4edc522b7325','20
 UNLOCK TABLES;
 
 --
+-- Table structure for table `product`
+--
+
+DROP TABLE IF EXISTS `product`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product` (
+  `id` char(50) NOT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `introduction_date` date DEFAULT NULL,
+  `discontinuation_date` date DEFAULT NULL,
+  `support_discontinuation_date` date DEFAULT NULL,
+  `comment` varchar(250) DEFAULT NULL,
+  `uom_id` char(50) DEFAULT NULL,
+  `uom_value` varchar(250) DEFAULT NULL,
+  `type` char(25) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `product`
 --
 
@@ -1426,14 +4403,53 @@ INSERT INTO `product` VALUES ('17249794-ca76-467b-953f-a00a65404a77','Ayam Kota'
 UNLOCK TABLES;
 
 --
+-- Table structure for table `product_category`
+--
+
+DROP TABLE IF EXISTS `product_category`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_category` (
+  `id` char(50) NOT NULL,
+  `name` varchar(250) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `fk_parent` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `product_category`
 --
 
 LOCK TABLES `product_category` WRITE;
 /*!40000 ALTER TABLE `product_category` DISABLE KEYS */;
-INSERT INTO `product_category` VALUES ('18264f8e-825f-43f5-bb71-07184562f954','Ethical','Obat Resep',NULL,0),('19707584-050a-4abd-a958-d1f7dc3630c8','Sayuran','Jenis Sayur - sayuran',NULL,0),('7ad31cb1-8414-43e2-9a31-6441dbb1b26c','OTC','OTC',NULL,0),('88ca26bb-6a04-4378-9356-df272b7b8b79','Ayam Goreng','','9d22f275-afd2-46f8-ac58-4c518b98dcdf',0),('9a43a64c-149d-4d64-b56e-cd80f1ecadce','Paracetamol','Paracetamol','18264f8e-825f-43f5-bb71-07184562f954',2),('9d22f275-afd2-46f8-ac58-4c518b98dcdf','Unggas','Jenis Unggas',NULL,0);
 /*!40000 ALTER TABLE `product_category` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `product_category_classification`
+--
+
+DROP TABLE IF EXISTS `product_category_classification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_category_classification` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `category_id` char(50) DEFAULT NULL,
+  `category_value` varchar(150) DEFAULT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  `is_primary` char(1) DEFAULT '0',
+  `comment` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `product_category_classification`
@@ -1446,6 +4462,25 @@ INSERT INTO `product_category_classification` VALUES ('c23d44d3-b0ce-4835-9d7f-3
 UNLOCK TABLES;
 
 --
+-- Table structure for table `product_code`
+--
+
+DROP TABLE IF EXISTS `product_code`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_code` (
+  `id` char(50) NOT NULL,
+  `code` char(50) DEFAULT NULL,
+  `type` char(10) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `product_code`
 --
 
@@ -1453,6 +4488,29 @@ LOCK TABLES `product_code` WRITE;
 /*!40000 ALTER TABLE `product_code` DISABLE KEYS */;
 /*!40000 ALTER TABLE `product_code` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `product_component`
+--
+
+DROP TABLE IF EXISTS `product_component`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_component` (
+  `id` char(50) NOT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `product_id` char(50) DEFAULT NULL,
+  `fk_product_parent` char(50) DEFAULT NULL,
+  `product_value` varchar(250) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `type` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `product_component`
@@ -1465,6 +4523,34 @@ INSERT INTO `product_component` VALUES ('0103388f-bc0e-473b-810d-9a0a6365174a',1
 UNLOCK TABLES;
 
 --
+-- Table structure for table `product_cost`
+--
+
+DROP TABLE IF EXISTS `product_cost`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_cost` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `estimated` decimal(10,0) DEFAULT NULL,
+  `type` char(35) DEFAULT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  `currency_id` char(50) DEFAULT NULL,
+  `currency_value` varchar(250) DEFAULT NULL,
+  `geographic_id` char(50) DEFAULT NULL,
+  `geographic_value` varchar(250) DEFAULT NULL,
+  `feature_id` char(50) DEFAULT NULL,
+  `feature_value` varchar(250) DEFAULT NULL,
+  `party_id` char(50) DEFAULT NULL,
+  `party_value` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `product_cost`
 --
 
@@ -1475,14 +4561,53 @@ INSERT INTO `product_cost` VALUES ('467e2367-79de-4dfe-acc2-1d46912dfcbd','2016-
 UNLOCK TABLES;
 
 --
+-- Table structure for table `product_feature`
+--
+
+DROP TABLE IF EXISTS `product_feature`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_feature` (
+  `id` char(50) NOT NULL,
+  `value` varchar(150) DEFAULT NULL,
+  `type` char(35) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `product_feature`
 --
 
 LOCK TABLES `product_feature` WRITE;
 /*!40000 ALTER TABLE `product_feature` DISABLE KEYS */;
-INSERT INTO `product_feature` VALUES ('db6fc663-156d-4ed8-8646-dc3e04826136','Reguler','SERVICE_TYPE','ok',NULL,1);
 /*!40000 ALTER TABLE `product_feature` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `product_feature_applicability`
+--
+
+DROP TABLE IF EXISTS `product_feature_applicability`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_feature_applicability` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `category` char(50) DEFAULT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  `feature_id` char(50) DEFAULT NULL,
+  `feature_value` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `product_feature_applicability`
@@ -1492,6 +4617,25 @@ LOCK TABLES `product_feature_applicability` WRITE;
 /*!40000 ALTER TABLE `product_feature_applicability` DISABLE KEYS */;
 /*!40000 ALTER TABLE `product_feature_applicability` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `product_identification`
+--
+
+DROP TABLE IF EXISTS `product_identification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_identification` (
+  `id` char(50) NOT NULL,
+  `value` char(50) DEFAULT NULL,
+  `type` char(25) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `product_identification`
@@ -1504,6 +4648,31 @@ INSERT INTO `product_identification` VALUES ('79de68d3-e18a-42be-9e4c-2105108dd9
 UNLOCK TABLES;
 
 --
+-- Table structure for table `product_price`
+--
+
+DROP TABLE IF EXISTS `product_price`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_price` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `price` decimal(10,0) DEFAULT NULL,
+  `fk_currency` char(50) DEFAULT NULL,
+  `type` char(10) DEFAULT NULL,
+  `fk_geographic` char(50) DEFAULT NULL,
+  `fk_party` char(50) DEFAULT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  `fk_product_feature` char(50) DEFAULT NULL,
+  `is_percent` char(1) DEFAULT '0',
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `product_price`
 --
 
@@ -1514,6 +4683,25 @@ INSERT INTO `product_price` VALUES ('026dd356-17a9-4bac-8eb0-2ca710b0d351','2016
 UNLOCK TABLES;
 
 --
+-- Table structure for table `product_receivable`
+--
+
+DROP TABLE IF EXISTS `product_receivable`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_receivable` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `number` char(50) DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  `status` char(10) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `product_receivable`
 --
 
@@ -1521,6 +4709,25 @@ LOCK TABLES `product_receivable` WRITE;
 /*!40000 ALTER TABLE `product_receivable` DISABLE KEYS */;
 /*!40000 ALTER TABLE `product_receivable` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `product_requirement`
+--
+
+DROP TABLE IF EXISTS `product_requirement`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_requirement` (
+  `id` char(50) DEFAULT NULL,
+  `product_id` char(50) NOT NULL,
+  `product_value` varchar(200) DEFAULT NULL,
+  `feature_id` char(50) DEFAULT NULL,
+  `feature_value` varchar(200) DEFAULT NULL,
+  `quantity` decimal(10,0) DEFAULT 1,
+  PRIMARY KEY (`product_id`),
+  UNIQUE KEY `product_id_UNIQUE` (`product_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `product_requirement`
@@ -1533,6 +4740,25 @@ INSERT INTO `product_requirement` VALUES ('fd1a0364-e9d4-4979-9108-a4866f39d499'
 UNLOCK TABLES;
 
 --
+-- Table structure for table `product_retur`
+--
+
+DROP TABLE IF EXISTS `product_retur`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_retur` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `fk_supplier` char(50) DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  `fk_facility` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `product_retur`
 --
 
@@ -1540,6 +4766,25 @@ LOCK TABLES `product_retur` WRITE;
 /*!40000 ALTER TABLE `product_retur` DISABLE KEYS */;
 /*!40000 ALTER TABLE `product_retur` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `product_retur_item`
+--
+
+DROP TABLE IF EXISTS `product_retur_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_retur_item` (
+  `id` char(50) NOT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `expired_date` date DEFAULT NULL,
+  `fk_product_retur` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `product_retur_item`
@@ -1551,6 +4796,27 @@ LOCK TABLES `product_retur_item` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `product_supplier`
+--
+
+DROP TABLE IF EXISTS `product_supplier`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_supplier` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `supplier_id` char(50) DEFAULT NULL,
+  `supplier_value` varchar(250) DEFAULT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `product_supplier`
 --
 
@@ -1558,6 +4824,24 @@ LOCK TABLES `product_supplier` WRITE;
 /*!40000 ALTER TABLE `product_supplier` DISABLE KEYS */;
 /*!40000 ALTER TABLE `product_supplier` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `production_info`
+--
+
+DROP TABLE IF EXISTS `production_info`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `production_info` (
+  `id` char(50) NOT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `product_id` char(50) DEFAULT NULL,
+  `product_value` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `production_info`
@@ -1570,6 +4854,24 @@ INSERT INTO `production_info` VALUES ('1bfb8acf-779c-4a15-abe2-3ac055a8e565',1,N
 UNLOCK TABLES;
 
 --
+-- Table structure for table `production_run_properties`
+--
+
+DROP TABLE IF EXISTS `production_run_properties`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `production_run_properties` (
+  `id` char(50) NOT NULL,
+  `required_quantity` char(50) DEFAULT NULL,
+  `produced_quantity` char(50) DEFAULT NULL,
+  `rejected_quantity` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `production_run_properties`
 --
 
@@ -1579,6 +4881,20 @@ LOCK TABLES `production_run_properties` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `purchase_invoice`
+--
+
+DROP TABLE IF EXISTS `purchase_invoice`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `purchase_invoice` (
+  `id` char(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `purchase_invoice`
 --
 
@@ -1586,6 +4902,20 @@ LOCK TABLES `purchase_invoice` WRITE;
 /*!40000 ALTER TABLE `purchase_invoice` DISABLE KEYS */;
 /*!40000 ALTER TABLE `purchase_invoice` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `purchase_order`
+--
+
+DROP TABLE IF EXISTS `purchase_order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `purchase_order` (
+  `id` char(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `purchase_order`
@@ -1598,6 +4928,26 @@ INSERT INTO `purchase_order` VALUES ('7411fc95-25a0-458b-afe9-7d1505a3fda6'),('e
 UNLOCK TABLES;
 
 --
+-- Table structure for table `purchase_order_item`
+--
+
+DROP TABLE IF EXISTS `purchase_order_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `purchase_order_item` (
+  `id` char(50) NOT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `fk_purchase_order_request_item` char(50) DEFAULT NULL,
+  `expired_date` date DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `purchase_order_item`
 --
 
@@ -1606,6 +4956,21 @@ LOCK TABLES `purchase_order_item` WRITE;
 INSERT INTO `purchase_order_item` VALUES ('4afa09ca-4628-47e2-b3a0-f0040c6477c8',NULL,NULL,NULL,NULL,NULL,0),('8c9e24e2-7454-43fa-b091-823100d8aa2f',NULL,NULL,NULL,NULL,NULL,0);
 /*!40000 ALTER TABLE `purchase_order_item` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `purchase_order_request`
+--
+
+DROP TABLE IF EXISTS `purchase_order_request`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `purchase_order_request` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `purchase_order_request`
@@ -1617,6 +4982,25 @@ LOCK TABLES `purchase_order_request` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `purchase_order_request_item`
+--
+
+DROP TABLE IF EXISTS `purchase_order_request_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `purchase_order_request_item` (
+  `id` char(50) NOT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `fk_purchase_order_request` char(50) DEFAULT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `purchase_order_request_item`
 --
 
@@ -1624,6 +5008,21 @@ LOCK TABLES `purchase_order_request_item` WRITE;
 /*!40000 ALTER TABLE `purchase_order_request_item` DISABLE KEYS */;
 /*!40000 ALTER TABLE `purchase_order_request_item` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `purchase_order_request_review`
+--
+
+DROP TABLE IF EXISTS `purchase_order_request_review`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `purchase_order_request_review` (
+  `id` char(50) NOT NULL,
+  `fk_purchase_order_request` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `purchase_order_request_review`
@@ -1635,6 +5034,21 @@ LOCK TABLES `purchase_order_request_review` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `purchase_order_request_role`
+--
+
+DROP TABLE IF EXISTS `purchase_order_request_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `purchase_order_request_role` (
+  `id` char(50) NOT NULL,
+  `fk_purchase_order_request` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `purchase_order_request_role`
 --
 
@@ -1644,6 +5058,21 @@ LOCK TABLES `purchase_order_request_role` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `purchase_order_request_status`
+--
+
+DROP TABLE IF EXISTS `purchase_order_request_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `purchase_order_request_status` (
+  `id` char(50) NOT NULL,
+  `fk_purchase_order_request` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `purchase_order_request_status`
 --
 
@@ -1651,6 +5080,23 @@ LOCK TABLES `purchase_order_request_status` WRITE;
 /*!40000 ALTER TABLE `purchase_order_request_status` DISABLE KEYS */;
 /*!40000 ALTER TABLE `purchase_order_request_status` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `quantity_break`
+--
+
+DROP TABLE IF EXISTS `quantity_break`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `quantity_break` (
+  `id` char(50) NOT NULL,
+  `min` decimal(10,0) DEFAULT NULL,
+  `max` decimal(10,0) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `quantity_break`
@@ -1663,6 +5109,25 @@ INSERT INTO `quantity_break` VALUES ('0676041f-d86f-4d82-95d5-e8cd227074b7',0,0,
 UNLOCK TABLES;
 
 --
+-- Table structure for table `quick_launch`
+--
+
+DROP TABLE IF EXISTS `quick_launch`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `quick_launch` (
+  `id` char(50) NOT NULL,
+  `name` varchar(250) DEFAULT NULL,
+  `username` varchar(250) DEFAULT NULL,
+  `fisheye_enabled` char(1) DEFAULT '0',
+  `menu_enabled` char(1) DEFAULT '0',
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `quick_launch`
 --
 
@@ -1671,6 +5136,28 @@ LOCK TABLES `quick_launch` WRITE;
 INSERT INTO `quick_launch` VALUES ('02039aec-a94d-4cd5-83cf-3a195460c0ee','Tax','DODI','0','0',1),('dc478a65-9021-4b52-ae2a-c1d081b86315','Currency','DODI','0','0',6),('dc478a65-9021-4b52-ae2a-c1d081b86316','Setting','DODI','1','1',0),('e047568c-0969-45bc-99ff-06fbd34bdadb','Company Structure','DODI','0','0',1);
 /*!40000 ALTER TABLE `quick_launch` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `quote`
+--
+
+DROP TABLE IF EXISTS `quote`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `quote` (
+  `id` char(50) NOT NULL,
+  `issue_date` date DEFAULT NULL,
+  `valid_from` date DEFAULT NULL,
+  `valid_to` date DEFAULT NULL,
+  `type` char(25) DEFAULT NULL,
+  `description` varchar(250) DEFAULT NULL,
+  `fk_issuer` char(50) DEFAULT NULL,
+  `fk_receiver` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `quote`
@@ -1682,6 +5169,27 @@ LOCK TABLES `quote` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `quote_item`
+--
+
+DROP TABLE IF EXISTS `quote_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `quote_item` (
+  `id` char(50) NOT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `unit_price` decimal(10,0) DEFAULT NULL,
+  `delivery_date` date DEFAULT NULL,
+  `fk_uom` char(50) DEFAULT NULL,
+  `comment` char(50) DEFAULT NULL,
+  `fk_request_item` char(50) DEFAULT NULL,
+  `fk_quote` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `quote_item`
 --
 
@@ -1689,6 +5197,24 @@ LOCK TABLES `quote_item` WRITE;
 /*!40000 ALTER TABLE `quote_item` DISABLE KEYS */;
 /*!40000 ALTER TABLE `quote_item` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `quote_role`
+--
+
+DROP TABLE IF EXISTS `quote_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `quote_role` (
+  `id` char(50) NOT NULL,
+  `fk_person` char(50) DEFAULT NULL,
+  `fk_quote` char(50) DEFAULT NULL,
+  `type` char(25) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `quote_role`
@@ -1700,6 +5226,25 @@ LOCK TABLES `quote_role` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `quote_term`
+--
+
+DROP TABLE IF EXISTS `quote_term`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `quote_term` (
+  `id` char(50) NOT NULL,
+  `amount` decimal(10,0) DEFAULT NULL,
+  `fk_quote` char(50) DEFAULT NULL,
+  `fk_quote_item` char(50) DEFAULT NULL,
+  `fk_term_type` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `quote_term`
 --
 
@@ -1707,6 +5252,20 @@ LOCK TABLES `quote_term` WRITE;
 /*!40000 ALTER TABLE `quote_term` DISABLE KEYS */;
 /*!40000 ALTER TABLE `quote_term` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `receipt`
+--
+
+DROP TABLE IF EXISTS `receipt`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `receipt` (
+  `id` char(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `receipt`
@@ -1719,6 +5278,21 @@ INSERT INTO `receipt` VALUES ('b94f43aa-464d-4ea3-9866-fcfa2bc2b04e');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `receivable_order`
+--
+
+DROP TABLE IF EXISTS `receivable_order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `receivable_order` (
+  `id` char(50) NOT NULL,
+  `received` decimal(10,0) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `receivable_order`
 --
 
@@ -1729,6 +5303,21 @@ INSERT INTO `receivable_order` VALUES ('8bb7baeb-dae6-4910-92ca-d3978fa9b232',0)
 UNLOCK TABLES;
 
 --
+-- Table structure for table `recurring_payment`
+--
+
+DROP TABLE IF EXISTS `recurring_payment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `recurring_payment` (
+  `id` char(50) NOT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `recurring_payment`
 --
 
@@ -1736,6 +5325,32 @@ LOCK TABLES `recurring_payment` WRITE;
 /*!40000 ALTER TABLE `recurring_payment` DISABLE KEYS */;
 /*!40000 ALTER TABLE `recurring_payment` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `request`
+--
+
+DROP TABLE IF EXISTS `request`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `request` (
+  `id` char(50) NOT NULL,
+  `entry_date` date DEFAULT NULL,
+  `required_date` date DEFAULT NULL,
+  `order_date` date DEFAULT NULL,
+  `description` varchar(250) DEFAULT NULL,
+  `type` char(25) DEFAULT NULL,
+  `originator_id` char(50) DEFAULT NULL,
+  `originator_value` varchar(250) DEFAULT NULL,
+  `responding_id` char(50) DEFAULT NULL,
+  `responding_value` varchar(250) DEFAULT NULL,
+  `is_closed` varchar(45) DEFAULT '0',
+  `number` varchar(50) DEFAULT NULL,
+  `version` char(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `request`
@@ -1748,6 +5363,28 @@ INSERT INTO `request` VALUES ('46d9422c-b39b-494c-ad2a-9b87c67a5444','2016-11-29
 UNLOCK TABLES;
 
 --
+-- Table structure for table `request_item`
+--
+
+DROP TABLE IF EXISTS `request_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `request_item` (
+  `id` char(50) NOT NULL,
+  `required_date` date DEFAULT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `max_allowable_price` decimal(10,0) DEFAULT NULL,
+  `description` varchar(250) DEFAULT NULL,
+  `fk_request` char(50) DEFAULT NULL,
+  `product_id` char(50) DEFAULT NULL,
+  `product_value` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `request_item`
 --
 
@@ -1756,6 +5393,21 @@ LOCK TABLES `request_item` WRITE;
 INSERT INTO `request_item` VALUES ('28db322d-d6d1-4674-9f4c-20632cc623ec','2016-12-01',1,18000,'','ba959186-7702-466d-94ac-a6e2e1ecd93c','1e21e36a-4244-4eb3-bdbe-902cde4cf9b7','Ayam Kampung Goreng',0),('4186981e-4a42-4201-a939-b178561927fa','2016-12-01',1,30000,'','4e9133f1-2198-4cb1-943e-739a5a0f6846','62c50fe6-2be9-41e5-a214-990c16022a22','Ayam Kampung',0),('b896f461-94df-4ce6-abcb-5fd97ffc86c7','2016-11-29',1,1,'','46d9422c-b39b-494c-ad2a-9b87c67a5444','1e21e36a-4244-4eb3-bdbe-902cde4cf9b7','Ayam Kampung Goreng',0),('d3852a99-c54d-4c36-b88f-f2b7752c71cd','2016-12-01',1,20000,'','581ee3cb-0f00-4b7d-8f27-e31110410681','17249794-ca76-467b-953f-a00a65404a77','Ayam Kota',0),('e4e1f181-036a-458d-9670-7176914fe2f2','2016-12-01',1,1,'','9865b143-347c-4364-b592-970f968751c7','17249794-ca76-467b-953f-a00a65404a77','Ayam Kota',0);
 /*!40000 ALTER TABLE `request_item` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `request_role`
+--
+
+DROP TABLE IF EXISTS `request_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `request_role` (
+  `id` char(50) NOT NULL,
+  `fk_request` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `request_role`
@@ -1768,6 +5420,30 @@ INSERT INTO `request_role` VALUES ('09fa18d2-929a-48ac-bbe3-b060606fc030','9865b
 UNLOCK TABLES;
 
 --
+-- Table structure for table `requirement`
+--
+
+DROP TABLE IF EXISTS `requirement`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `requirement` (
+  `id` char(50) NOT NULL,
+  `number` char(50) DEFAULT NULL,
+  `creation_date` date DEFAULT NULL,
+  `required_date` date DEFAULT NULL,
+  `description` varchar(250) DEFAULT NULL,
+  `reason` varchar(250) DEFAULT NULL,
+  `estimated_budget` decimal(10,0) DEFAULT NULL,
+  `type` char(25) DEFAULT NULL,
+  `organization_id` char(50) DEFAULT NULL,
+  `organization_value` varchar(200) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `requirement`
 --
 
@@ -1776,6 +5452,25 @@ LOCK TABLES `requirement` WRITE;
 INSERT INTO `requirement` VALUES ('a012d70f-18a4-4178-beb9-ac2f0d947277','WRQ-26012017-1','2017-01-26','2017-01-26','buat kertas','perlu kertas',50000,'INTERNAL_REQUIREMENT','e29c7687-30f8-4201-af68-0a4a67541b86','SSC PANCASILA',0),('fd1a0364-e9d4-4979-9108-a4866f39d499','PRQ-26012017-1','2017-01-26','2017-01-26','Urgen','Ade yang nak beli',500000,'CUSTOMER_REQUIREMENT','e29c7687-30f8-4201-af68-0a4a67541b86','SSC PANCASILA',1);
 /*!40000 ALTER TABLE `requirement` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `requirement_order_commitment`
+--
+
+DROP TABLE IF EXISTS `requirement_order_commitment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `requirement_order_commitment` (
+  `id` char(50) NOT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `fk_order_item` char(50) DEFAULT NULL,
+  `requirement_id` char(50) DEFAULT NULL,
+  `requirement_value` varchar(200) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `requirement_order_commitment`
@@ -1788,6 +5483,23 @@ INSERT INTO `requirement_order_commitment` VALUES ('004ead01-039b-486e-aa34-b4c8
 UNLOCK TABLES;
 
 --
+-- Table structure for table `requirement_request`
+--
+
+DROP TABLE IF EXISTS `requirement_request`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `requirement_request` (
+  `id` char(50) NOT NULL,
+  `fk_request_item` char(50) DEFAULT NULL,
+  `fk_requirement` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `requirement_request`
 --
 
@@ -1795,6 +5507,27 @@ LOCK TABLES `requirement_request` WRITE;
 /*!40000 ALTER TABLE `requirement_request` DISABLE KEYS */;
 /*!40000 ALTER TABLE `requirement_request` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `requirement_role`
+--
+
+DROP TABLE IF EXISTS `requirement_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `requirement_role` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `type` char(15) DEFAULT NULL,
+  `party_id` char(50) DEFAULT NULL,
+  `party_value` varchar(250) DEFAULT NULL,
+  `fk_requirement` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `requirement_role`
@@ -1807,6 +5540,24 @@ INSERT INTO `requirement_role` VALUES ('77406370-bbcf-4849-8076-621761870ec7','2
 UNLOCK TABLES;
 
 --
+-- Table structure for table `requirement_status`
+--
+
+DROP TABLE IF EXISTS `requirement_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `requirement_status` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `type` char(25) DEFAULT NULL,
+  `fk_requirement` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `requirement_status`
 --
 
@@ -1817,6 +5568,24 @@ INSERT INTO `requirement_status` VALUES ('4f942949-fac2-465a-9eb6-21b2246b8743',
 UNLOCK TABLES;
 
 --
+-- Table structure for table `review`
+--
+
+DROP TABLE IF EXISTS `review`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `review` (
+  `id` char(50) NOT NULL,
+  `fk_party` char(50) DEFAULT NULL,
+  `result` varchar(250) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `review`
 --
 
@@ -1824,6 +5593,24 @@ LOCK TABLES `review` WRITE;
 /*!40000 ALTER TABLE `review` DISABLE KEYS */;
 /*!40000 ALTER TABLE `review` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `role`
+--
+
+DROP TABLE IF EXISTS `role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `role` (
+  `id` char(50) NOT NULL,
+  `code` varchar(150) DEFAULT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `Note` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `role`
@@ -1836,6 +5623,24 @@ INSERT INTO `role` VALUES ('096b0105-de76-492c-9bb0-5e518b46d69c','Sys Admin','S
 UNLOCK TABLES;
 
 --
+-- Table structure for table `roled`
+--
+
+DROP TABLE IF EXISTS `roled`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `roled` (
+  `id` char(50) NOT NULL,
+  `fk_party` char(50) DEFAULT NULL,
+  `role_type` char(10) DEFAULT NULL,
+  `is_done` char(1) DEFAULT '0',
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `roled`
 --
 
@@ -1843,6 +5648,20 @@ LOCK TABLES `roled` WRITE;
 /*!40000 ALTER TABLE `roled` DISABLE KEYS */;
 /*!40000 ALTER TABLE `roled` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `sales_invoice`
+--
+
+DROP TABLE IF EXISTS `sales_invoice`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sales_invoice` (
+  `id` char(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `sales_invoice`
@@ -1855,6 +5674,20 @@ INSERT INTO `sales_invoice` VALUES ('3b695877-11a8-4ef6-8e27-7e0e99b3d2a0'),('68
 UNLOCK TABLES;
 
 --
+-- Table structure for table `sales_order`
+--
+
+DROP TABLE IF EXISTS `sales_order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sales_order` (
+  `id` char(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `sales_order`
 --
 
@@ -1863,6 +5696,20 @@ LOCK TABLES `sales_order` WRITE;
 INSERT INTO `sales_order` VALUES ('388f9588-fddd-45ba-a328-bd41e24729e4'),('90fdcd0a-d324-4cab-a18c-25f27c06351f'),('ac5ef13a-c2ce-4ecb-9c3e-a911a7ad08f1'),('e9a8f83a-c00e-424c-957a-c15a81f5262e'),('ea69c005-d007-476d-931c-02e7b6daa147'),('eac4a1d1-454b-4a15-b35b-b631c595ed04');
 /*!40000 ALTER TABLE `sales_order` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `sales_order_item`
+--
+
+DROP TABLE IF EXISTS `sales_order_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sales_order_item` (
+  `id` char(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `sales_order_item`
@@ -1875,6 +5722,28 @@ INSERT INTO `sales_order_item` VALUES ('15403535-f3a1-4aa6-9db1-c1af69c4088d'),(
 UNLOCK TABLES;
 
 --
+-- Table structure for table `sequence_number`
+--
+
+DROP TABLE IF EXISTS `sequence_number`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sequence_number` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `person_id` char(50) DEFAULT NULL,
+  `organization_id` char(50) DEFAULT NULL,
+  `code` char(10) DEFAULT NULL,
+  `sequence` bigint(20) DEFAULT 1,
+  `year` int(11) DEFAULT NULL,
+  `month` int(11) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `sequence_number`
 --
 
@@ -1885,14 +5754,74 @@ INSERT INTO `sequence_number` VALUES ('08f642d9-1072-4364-a921-c91df87db1a4','20
 UNLOCK TABLES;
 
 --
+-- Table structure for table `shipment`
+--
+
+DROP TABLE IF EXISTS `shipment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `shipment` (
+  `id` char(50) NOT NULL,
+  `entry_date` date DEFAULT NULL,
+  `estimated_ship_date` date DEFAULT NULL,
+  `estimated_ready_date` date DEFAULT NULL,
+  `estimated_arrival_date` date DEFAULT NULL,
+  `allowable_cancel_date` date DEFAULT NULL,
+  `estimated_ship_cost` decimal(10,0) DEFAULT NULL,
+  `act_ship_cost` decimal(10,0) DEFAULT NULL,
+  `last_updated` date DEFAULT NULL,
+  `instruction` varchar(250) DEFAULT NULL,
+  `type` char(25) DEFAULT NULL,
+  `number` varchar(100) DEFAULT NULL,
+  `ship_from_party_id` char(50) DEFAULT NULL,
+  `ship_from_party_value` varchar(150) DEFAULT NULL,
+  `ship_from_address_id` char(50) DEFAULT NULL,
+  `ship_from_address_value` varchar(250) DEFAULT NULL,
+  `ship_from_contact_id` char(50) DEFAULT NULL,
+  `ship_from_contact_value` varchar(150) DEFAULT NULL,
+  `ship_to_party_id` char(50) DEFAULT NULL,
+  `ship_to_party_value` varchar(150) DEFAULT '0',
+  `ship_to_address_id` char(50) DEFAULT NULL,
+  `ship_to_address_value` varchar(250) DEFAULT NULL,
+  `ship_to_contact_id` char(50) DEFAULT NULL,
+  `ship_to_contact_value` varchar(150) DEFAULT NULL,
+  `fk_shipping_document` char(50) DEFAULT NULL,
+  `last_status` char(25) DEFAULT 'SCHEDULED',
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `shipment`
 --
 
 LOCK TABLES `shipment` WRITE;
 /*!40000 ALTER TABLE `shipment` DISABLE KEYS */;
-INSERT INTO `shipment` VALUES ('3c09618e-e89e-4d3c-bbab-cdf8f91f1366','2017-01-19','2017-01-19','2017-01-19','2017-01-19','2017-01-19',0,0,'2017-01-19','','CUSTOMER_SHIPMENT','SHP-19012017-1','e29c7687-30f8-4201-af68-0a4a67541b86','SSC PANCASILA','b67d4171-9534-4956-9e11-9c7aec08b01c','Alamat Gudang','d795793e-2523-4ee3-be85-da96659669a0','No HP','a685cde5-df6b-4430-babc-0ae846f8fa29','Rizky Chicken','1f876140-6015-4d4d-9e23-b742a1457d89','Alamat Kantor','26b5ad5b-4990-4329-b535-25b9a7b7278c','Telp Kantor',NULL,'SCHEDULED',0),('96139fb4-dd5a-4733-8c9e-70a2bcc8a936','2016-12-20','2016-12-20','2016-12-20','2016-12-25',NULL,150000,125000,'2017-01-19','Bungkus pake kertas minyak kadar tinggi','PURCHASE_SHIPMENT','SHP201120162','a685cde5-df6b-4430-babc-0ae846f8fa29','Rizky Chicken','1f876140-6015-4d4d-9e23-b742a1457d89','Alamat Kantor','26b5ad5b-4990-4329-b535-25b9a7b7278c','Telp Kantor','e29c7687-30f8-4201-af68-0a4a67541b86','SSC PANCASILA','276c8e3b-b325-4376-80a1-4da38cd87a02','Alamat Kantor','d795793e-2523-4ee3-be85-da96659669a0','No HP',NULL,'SCHEDULED',2),('fe1fe914-74c7-4ffe-af6b-855df8d217de','2017-01-15','2017-01-15','2017-01-15','2017-01-15','2017-01-18',0,0,'2017-01-15','','CUSTOMER_SHIPMENT','SHP-15012017-1','e29c7687-30f8-4201-af68-0a4a67541b86','SSC PANCASILA','276c8e3b-b325-4376-80a1-4da38cd87a02','Office Address','d795793e-2523-4ee3-be85-da96659669a0','Cellphone','a685cde5-df6b-4430-babc-0ae846f8fa29','Rizky Chicken','1f876140-6015-4d4d-9e23-b742a1457d89','Office Address','26b5ad5b-4990-4329-b535-25b9a7b7278c','Office Phone',NULL,'SCHEDULED',0);
 /*!40000 ALTER TABLE `shipment` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `shipment_issuance`
+--
+
+DROP TABLE IF EXISTS `shipment_issuance`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `shipment_issuance` (
+  `id` char(50) NOT NULL,
+  `number` char(50) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `organization_id` char(50) DEFAULT NULL,
+  `organization_value` varchar(250) DEFAULT NULL,
+  `destination_party_id` char(50) DEFAULT NULL,
+  `destination_party_value` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `shipment_issuance`
@@ -1904,6 +5833,37 @@ LOCK TABLES `shipment_issuance` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `shipment_issuance_item`
+--
+
+DROP TABLE IF EXISTS `shipment_issuance_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `shipment_issuance_item` (
+  `id` char(50) NOT NULL,
+  `accepted` decimal(10,0) DEFAULT NULL,
+  `rejected` decimal(10,0) DEFAULT NULL,
+  `expired` date DEFAULT NULL,
+  `serial` varchar(150) DEFAULT NULL,
+  `product_id` char(50) DEFAULT NULL,
+  `product_value` varchar(250) DEFAULT NULL,
+  `shipment_item_id` char(50) DEFAULT NULL,
+  `shipment_item_value` varchar(250) DEFAULT NULL,
+  `order_item_id` char(50) DEFAULT NULL,
+  `order_item_value` varchar(250) DEFAULT NULL,
+  `facility_id` char(50) DEFAULT NULL,
+  `facility_value` varchar(250) DEFAULT NULL,
+  `container_id` char(50) DEFAULT NULL,
+  `container_value` varchar(250) DEFAULT NULL,
+  `fk_shipment_issuance` char(50) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `shipment_issuance_item`
 --
 
@@ -1913,6 +5873,25 @@ LOCK TABLES `shipment_issuance_item` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `shipment_issuance_role`
+--
+
+DROP TABLE IF EXISTS `shipment_issuance_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `shipment_issuance_role` (
+  `id` char(50) NOT NULL,
+  `party_id` char(50) DEFAULT NULL,
+  `party_value` varchar(250) DEFAULT NULL,
+  `type` char(25) DEFAULT NULL,
+  `fk_shipment_issuance` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `shipment_issuance_role`
 --
 
@@ -1920,6 +5899,29 @@ LOCK TABLES `shipment_issuance_role` WRITE;
 /*!40000 ALTER TABLE `shipment_issuance_role` DISABLE KEYS */;
 /*!40000 ALTER TABLE `shipment_issuance_role` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `shipment_item`
+--
+
+DROP TABLE IF EXISTS `shipment_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `shipment_item` (
+  `id` char(50) NOT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `processed` decimal(10,0) DEFAULT 0,
+  `content` varchar(200) DEFAULT NULL,
+  `fk_shipment` char(50) DEFAULT NULL,
+  `fk_shipping_document` char(50) DEFAULT NULL,
+  `product_id` char(50) DEFAULT NULL,
+  `product_value` varchar(250) DEFAULT NULL,
+  `invoiced` char(1) DEFAULT '0',
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `shipment_item`
@@ -1932,6 +5934,28 @@ INSERT INTO `shipment_item` VALUES ('357f98ea-e4ef-4bde-8c4f-66deb821e490',15,0,
 UNLOCK TABLES;
 
 --
+-- Table structure for table `shipment_order`
+--
+
+DROP TABLE IF EXISTS `shipment_order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `shipment_order` (
+  `id` char(50) NOT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `unit_price` decimal(10,0) DEFAULT 0,
+  `order_item_id` char(50) DEFAULT NULL,
+  `order_item_value` varchar(100) DEFAULT NULL,
+  `order_id` char(50) DEFAULT NULL,
+  `order_value` varchar(200) DEFAULT NULL,
+  `fk_shipment_item` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `shipment_order`
 --
 
@@ -1942,14 +5966,65 @@ INSERT INTO `shipment_order` VALUES ('9c9411e0-f83b-4b07-b3db-aeed9d8e561b',10,1
 UNLOCK TABLES;
 
 --
+-- Table structure for table `shipment_receipt`
+--
+
+DROP TABLE IF EXISTS `shipment_receipt`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `shipment_receipt` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `number` char(50) DEFAULT NULL,
+  `organization_id` char(50) DEFAULT NULL,
+  `organization_value` varchar(225) DEFAULT NULL,
+  `source_party_id` char(50) DEFAULT '0',
+  `source_party_value` varchar(225) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `shipment_receipt`
 --
 
 LOCK TABLES `shipment_receipt` WRITE;
 /*!40000 ALTER TABLE `shipment_receipt` DISABLE KEYS */;
-INSERT INTO `shipment_receipt` VALUES ('78593fc2-0296-40dc-b257-fbfdcfd75458','2016-12-25','GRC251120161','e29c7687-30f8-4201-af68-0a4a67541b86','SSC PANCASILA','a685cde5-df6b-4430-babc-0ae846f8fa29','Rizky Chicken',0);
 /*!40000 ALTER TABLE `shipment_receipt` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `shipment_receipt_item`
+--
+
+DROP TABLE IF EXISTS `shipment_receipt_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `shipment_receipt_item` (
+  `id` char(50) NOT NULL,
+  `accepted` decimal(10,0) DEFAULT NULL,
+  `rejected` decimal(10,0) DEFAULT NULL,
+  `shipment_item_id` char(50) DEFAULT NULL,
+  `shipment_item_value` varchar(225) DEFAULT '0',
+  `facility_id` char(50) DEFAULT NULL,
+  `facility_value` varchar(225) DEFAULT NULL,
+  `container_id` char(50) DEFAULT NULL,
+  `container_value` varchar(225) DEFAULT NULL,
+  `fk_shipment_receipt` char(50) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `expired` date DEFAULT NULL,
+  `serial` varchar(100) DEFAULT NULL,
+  `order_item_id` char(50) DEFAULT NULL,
+  `order_item_value` varchar(250) DEFAULT NULL,
+  `product_id` char(50) DEFAULT NULL,
+  `product_value` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `shipment_receipt_item`
@@ -1957,9 +6032,27 @@ UNLOCK TABLES;
 
 LOCK TABLES `shipment_receipt_item` WRITE;
 /*!40000 ALTER TABLE `shipment_receipt_item` DISABLE KEYS */;
-INSERT INTO `shipment_receipt_item` VALUES ('3861ecff-8c72-43cc-8432-c92503b98520',10,0,'38b3e150-202e-46ec-8bf6-089ea22c6167','Garang Asem Sapi','9081de22-1c08-4a10-9e18-b99b88d47885','Markas P. Aim','2ae63df9-e4c7-4b9d-bca6-fa25fb06ee08','A','78593fc2-0296-40dc-b257-fbfdcfd75458',NULL,'2016-12-25','','8c9e24e2-7454-43fa-b091-823100d8aa2f','Garang Asem Sapi','64865838-5b79-40ca-a1e4-663d7139895a','Garang Asem Sapi',0);
 /*!40000 ALTER TABLE `shipment_receipt_item` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `shipment_receipt_role`
+--
+
+DROP TABLE IF EXISTS `shipment_receipt_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `shipment_receipt_role` (
+  `id` char(50) NOT NULL,
+  `party_id` char(50) DEFAULT NULL,
+  `party_value` varchar(150) DEFAULT NULL,
+  `type` char(35) DEFAULT NULL,
+  `fk_shipment_receipt` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `shipment_receipt_role`
@@ -1967,9 +6060,36 @@ UNLOCK TABLES;
 
 LOCK TABLES `shipment_receipt_role` WRITE;
 /*!40000 ALTER TABLE `shipment_receipt_role` DISABLE KEYS */;
-INSERT INTO `shipment_receipt_role` VALUES ('7b89db16-bafd-492f-8e16-87e58ee7ba4b','c21873ef-3e29-43ca-92cd-45b5eb519c6e','Siti Komarudin','RECEIVER','78593fc2-0296-40dc-b257-fbfdcfd75458',0);
 /*!40000 ALTER TABLE `shipment_receipt_role` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `shipment_route_segment`
+--
+
+DROP TABLE IF EXISTS `shipment_route_segment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `shipment_route_segment` (
+  `id` char(50) NOT NULL,
+  `est_start_date` date DEFAULT NULL,
+  `est_arrival_date` date DEFAULT NULL,
+  `act_start_date` date DEFAULT NULL,
+  `act_arrival_date` date DEFAULT NULL,
+  `start_mileage` decimal(10,0) DEFAULT NULL,
+  `end_mileage` decimal(10,0) DEFAULT NULL,
+  `fuel_used` decimal(10,0) DEFAULT NULL,
+  `type` char(25) DEFAULT NULL,
+  `vehicle_id` char(50) DEFAULT NULL,
+  `vehicle_value` varchar(150) DEFAULT NULL,
+  `carrier_id` char(50) DEFAULT NULL,
+  `carrier_value` varchar(250) DEFAULT NULL,
+  `fk_shipment` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `shipment_route_segment`
@@ -1979,6 +6099,23 @@ LOCK TABLES `shipment_route_segment` WRITE;
 /*!40000 ALTER TABLE `shipment_route_segment` DISABLE KEYS */;
 /*!40000 ALTER TABLE `shipment_route_segment` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `shipment_status`
+--
+
+DROP TABLE IF EXISTS `shipment_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `shipment_status` (
+  `id` char(50) NOT NULL,
+  `date` timestamp NULL DEFAULT NULL,
+  `type` char(25) DEFAULT NULL,
+  `fk_shipment` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `shipment_status`
@@ -1991,6 +6128,22 @@ INSERT INTO `shipment_status` VALUES ('0','2017-01-15 13:50:43','SCHEDULED','fe1
 UNLOCK TABLES;
 
 --
+-- Table structure for table `shipping_document`
+--
+
+DROP TABLE IF EXISTS `shipping_document`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `shipping_document` (
+  `id` char(50) NOT NULL,
+  `description` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `shipping_document`
 --
 
@@ -1998,6 +6151,29 @@ LOCK TABLES `shipping_document` WRITE;
 /*!40000 ALTER TABLE `shipping_document` DISABLE KEYS */;
 /*!40000 ALTER TABLE `shipping_document` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `simple_invoice_clinic`
+--
+
+DROP TABLE IF EXISTS `simple_invoice_clinic`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `simple_invoice_clinic` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  `fk_customer` char(50) DEFAULT NULL,
+  `fk_employe` char(50) DEFAULT NULL,
+  `fk_currency` char(50) DEFAULT NULL,
+  `note` varchar(150) DEFAULT NULL,
+  `number` char(50) DEFAULT NULL,
+  `is_paid` char(1) DEFAULT '0',
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `simple_invoice_clinic`
@@ -2010,6 +6186,24 @@ INSERT INTO `simple_invoice_clinic` VALUES ('5d2f3d5e-95f1-4926-9fa3-7b003259f83
 UNLOCK TABLES;
 
 --
+-- Table structure for table `simple_invoice_clinic_item`
+--
+
+DROP TABLE IF EXISTS `simple_invoice_clinic_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `simple_invoice_clinic_item` (
+  `id` char(50) NOT NULL,
+  `note` varchar(150) DEFAULT NULL,
+  `amount` decimal(10,0) DEFAULT NULL,
+  `fk_root` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `simple_invoice_clinic_item`
 --
 
@@ -2020,6 +6214,25 @@ INSERT INTO `simple_invoice_clinic_item` VALUES ('74d68d0a-039d-481f-b0a6-044f25
 UNLOCK TABLES;
 
 --
+-- Table structure for table `statuses`
+--
+
+DROP TABLE IF EXISTS `statuses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `statuses` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `description` varchar(250) DEFAULT NULL,
+  `type` char(10) DEFAULT NULL,
+  `fk_party` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `statuses`
 --
 
@@ -2027,6 +6240,32 @@ LOCK TABLES `statuses` WRITE;
 /*!40000 ALTER TABLE `statuses` DISABLE KEYS */;
 /*!40000 ALTER TABLE `statuses` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `stock_adjustment`
+--
+
+DROP TABLE IF EXISTS `stock_adjustment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `stock_adjustment` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `time` time DEFAULT NULL,
+  `facility_id` char(50) DEFAULT NULL,
+  `facility_value` varchar(250) DEFAULT NULL,
+  `organization_id` char(50) DEFAULT NULL,
+  `organization_value` varchar(250) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `creator` varchar(250) DEFAULT NULL,
+  `editor` varchar(250) DEFAULT NULL,
+  `created` timestamp NULL DEFAULT NULL,
+  `last_edited` timestamp NULL DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `stock_adjustment`
@@ -2039,6 +6278,30 @@ INSERT INTO `stock_adjustment` VALUES ('8879f7fa-436a-4da1-830f-09767836c57f','2
 UNLOCK TABLES;
 
 --
+-- Table structure for table `stock_adjustment_item`
+--
+
+DROP TABLE IF EXISTS `stock_adjustment_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `stock_adjustment_item` (
+  `id` char(50) NOT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `fk_stock_adjustment` char(50) DEFAULT NULL,
+  `product_id` char(50) DEFAULT NULL,
+  `product_value` varchar(250) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `expired_date` date DEFAULT NULL,
+  `type` char(25) DEFAULT NULL,
+  `container_value` varchar(250) DEFAULT NULL,
+  `container_id` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `stock_adjustment_item`
 --
 
@@ -2047,6 +6310,22 @@ LOCK TABLES `stock_adjustment_item` WRITE;
 INSERT INTO `stock_adjustment_item` VALUES ('28afef19-12e6-43cb-b7e4-1571b3df8b78',100,'8879f7fa-436a-4da1-830f-09767836c57f','Ayam Kota Goreng',NULL,'',NULL,'ADDITION','Lemari 1','a87af5ed-2982-4f7d-8f90-2d4420f4aa78',0);
 /*!40000 ALTER TABLE `stock_adjustment_item` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `stock_admin`
+--
+
+DROP TABLE IF EXISTS `stock_admin`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `stock_admin` (
+  `id` char(50) NOT NULL,
+  `fk_employee` char(50) DEFAULT NULL,
+  `fk_internal_organization` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `stock_admin`
@@ -2058,6 +6337,29 @@ LOCK TABLES `stock_admin` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `stock_history`
+--
+
+DROP TABLE IF EXISTS `stock_history`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `stock_history` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `stock_in` decimal(10,0) DEFAULT NULL,
+  `stock_out` decimal(10,0) DEFAULT NULL,
+  `fk_inventory_item` char(50) DEFAULT NULL,
+  `creator` varchar(150) DEFAULT NULL,
+  `editor` varchar(150) DEFAULT NULL,
+  `created` timestamp NULL DEFAULT NULL,
+  `last_edited` timestamp NULL DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `stock_history`
 --
 
@@ -2065,6 +6367,24 @@ LOCK TABLES `stock_history` WRITE;
 /*!40000 ALTER TABLE `stock_history` DISABLE KEYS */;
 /*!40000 ALTER TABLE `stock_history` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `stock_opname`
+--
+
+DROP TABLE IF EXISTS `stock_opname`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `stock_opname` (
+  `id` char(50) NOT NULL,
+  `date` date DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  `fk_facility` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `stock_opname`
@@ -2076,6 +6396,26 @@ LOCK TABLES `stock_opname` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `stock_opname_item`
+--
+
+DROP TABLE IF EXISTS `stock_opname_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `stock_opname_item` (
+  `id` char(50) NOT NULL,
+  `onhand` decimal(10,0) DEFAULT NULL,
+  `opnamed` decimal(10,0) DEFAULT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  `fk_parent` char(50) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `stock_opname_item`
 --
 
@@ -2083,6 +6423,23 @@ LOCK TABLES `stock_opname_item` WRITE;
 /*!40000 ALTER TABLE `stock_opname_item` DISABLE KEYS */;
 /*!40000 ALTER TABLE `stock_opname_item` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `student`
+--
+
+DROP TABLE IF EXISTS `student`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `student` (
+  `id` char(50) NOT NULL,
+  `parent_name` varchar(150) DEFAULT NULL,
+  `school_name` varchar(150) DEFAULT NULL,
+  `source` char(15) DEFAULT 'Friend',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `student`
@@ -2095,6 +6452,22 @@ INSERT INTO `student` VALUES ('013f6fbf-2c6b-4d7a-8b04-2ad181d02bd7','Lisnawati'
 UNLOCK TABLES;
 
 --
+-- Table structure for table `student_relationship`
+--
+
+DROP TABLE IF EXISTS `student_relationship`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `student_relationship` (
+  `id` char(50) NOT NULL,
+  `fk_student` char(50) DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `student_relationship`
 --
 
@@ -2103,6 +6476,28 @@ LOCK TABLES `student_relationship` WRITE;
 INSERT INTO `student_relationship` VALUES ('032be2c3-cc2e-40e3-8b02-e9fdea941293','db471402-1f99-403c-bbcc-fc0bc20f58b0','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('076ce509-80f9-43a5-817f-dec95cc60c91','bf336e36-5de1-43dc-90df-d6691ee37cb6','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('08c4b3fc-4b19-4f1a-8c30-bd56fa568597','cc0772a2-3380-4f0a-ab00-3b1dd3f13606','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('0dbac322-1500-4363-b343-a62d13017a3b','895c6562-c9c5-4b9e-8cd6-f34afa95238c','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('0dff5e0d-4271-46a5-bc99-c553e54bdbff','607abfa1-d844-466b-8e1b-99e200e06cba','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('0f2e07d7-b23a-4716-8b30-636b72823f3f','b899ae55-9627-4da2-a702-8adb2d908b0c','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('135e4c98-33e0-4bf2-944b-de7b70fdcea0','81cebf95-2bc8-47ba-b782-84722ae48ab5','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('139c104e-21c3-42d0-a166-219f0849c3fb','206fbce2-5238-443b-9840-c8d98cd1b111','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('1c54f327-4edb-453f-bb66-d88b32c1a32b','d527a974-7114-4887-b2d0-ddb3995da945','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('1f39020a-3329-4285-b1ad-0c1f193b6070','38a2b91d-a6b3-489a-a6cb-05acac001f99','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('1ff2319f-5daf-412c-81d5-86cd4ee4c7e1','86cdb736-158a-43a1-97f6-92eb5a507a9b','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('23c55f7d-514e-48fe-a253-4ad962e4e8cf','f2b8de62-48db-4af6-a587-ce0257528679','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('28557ce2-861b-4928-b19a-3f2be3be3a8d','ca5f620c-7715-452c-a9ff-76dd4ec4268f','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('2925e2a8-8fb2-41ef-a097-99230aa39ae3','aa0d0f9e-fa99-4964-a7c8-50837cfc95c4','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('2926861b-df52-4312-bfbe-74cb6e48a6f4','bf088633-0bdb-4285-976a-6c72652bbf15','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('2b729014-d894-4d64-82ed-9ce3ea6908e5','d67d6382-c999-49d9-adc8-1d22214aa367','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('2bfc959f-896e-4fe9-8c54-dec324f57108','59851383-6691-45c0-8330-10e86ac2342d','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('30255c60-7b8d-4ac3-843c-ead85edd88e1','5a6f3da9-5900-46aa-bac3-08ff13e6b0af','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('30bd079b-e877-4e72-8c6c-a2b73804596a','19056ce0-9e11-4d7f-a136-54002d343c99','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('310c82dd-78ed-4942-b10e-5509034c7e8c','d107d701-77ab-46fa-b28b-7ca533b01835','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('329e54ac-e836-4686-96aa-c942597606e7','b6e87fe4-9f31-4741-89a0-77530ba60d51','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('34cf8129-bead-4a09-b104-df235436e2fa','cee4b98e-b0ff-4ccd-b5f3-ab8f2ccc0d44','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('34e0bd3e-d7f4-4485-a7a6-36328b1619d9','9575be3b-df71-4a73-ad13-91bd9f226ebb','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('37ea2be0-018e-4099-b8ef-e40856893fa4','67a29453-75e5-427b-88d3-2dccb104f9b2','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('384b5038-10f2-4a19-a6d4-584c3c3f7d29','20f5051d-a3c7-447f-97a7-178e033547a9','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('3a4619fd-3c77-450a-9797-7d08871076a8','961de37e-d784-4190-9f3d-8b12781c3b4e','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('3ef18a42-d035-484a-9aa6-f9fa1258598f','518c3838-0f36-402f-9bad-652e93f1533c','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('42c711be-69e3-49f4-91b7-690a47b284b8','1f85a637-34bd-46cc-b824-0c67154988a9','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('453d166a-07cf-4414-ba22-3f900a43ff4d','f971e4ae-b2eb-4572-ad76-ba60843880fc','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('48a551a0-476d-4512-b664-425de879cbf5','3b535b54-dba9-4067-a2a9-1af2e1696f85','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('4d51d260-8fcc-4bcd-babf-eac8fdf495ae','3642b32d-8f15-45d9-adb6-3f325f9bb6c2','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('52629dee-9f9b-4a8c-b01a-cdb3b76d122b','acd9ad82-15a8-4460-a437-9cf049aa6fdd','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('531b848c-499c-4e6f-ab4a-46cc96e58a04','f68bcc40-325f-4991-ad69-f6c87dd6d09c','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('601daaa4-e8f7-4e32-8adf-7fbd9f1a8dfd','99aab9a3-69ed-4f66-9508-6e6dea71f5e7','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('602ad1b2-57bf-4c0b-adb9-3d4c7c051a71','7f4d7f25-a9e0-47f5-b8e3-47d8b492aa39','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('6472b733-96d7-4de4-ba0d-9bf8e4ffc29e','7dd6af66-de94-49ff-ac9b-7dd42a15cb0b','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('65b6ae84-53c2-4903-839c-c5b5589e3cd5','a6d1bcd6-f39b-498b-a888-f3a14d76757c','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('65de20c0-f5df-46bd-b91e-a8de5b03a53c','b6e6b30b-1d19-4310-a4fa-27a7cc233f30','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('6788c207-ca1e-464d-b9eb-26d33c7a4068','14bd9c3f-7770-4b64-b195-1cf29b60e38a','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('68410bee-958e-4184-95b3-9e4ff71924a6','d5feeaa3-b34d-4495-b529-1e932e953ae0','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('6a19d48c-741b-4740-832f-a5dc80c13e91','72301c4d-1c56-4fcd-84e7-c6cf1ff04308','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('6f484743-b027-43b6-ba12-09e9dded155a','5cd4779d-3fb6-40cb-a532-e543734341d3','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('709f87d5-ade6-41b9-ac4a-cebd75e56b5c','4435f12f-3a1a-45c6-bce7-0db20cd97911','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('710d06f5-4191-4aea-88eb-14a3f53a6a64','93d109dd-5451-4823-8cff-b9b1806a1ff8','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('7fc21295-ab33-4c14-bc49-ddab440c46c3','81411eb4-901e-47d6-a97d-eb6b2d09c917','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('8b67df0e-b5de-46ca-ba28-4693af99881e','3a579716-6a51-4bd5-a667-bdf6a174250f','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('8e716d34-c6aa-406f-9119-227dbb3c4d90','9c003100-b652-498f-b4aa-4c3077667683','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('8f36a40e-83c1-4960-95bb-348fa34658b0','4a79e394-7635-44c8-9aa0-d373e3f71990','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('958a5554-bff8-484a-a30d-1e61c65efbf1','71ef3dc2-f4f1-48ed-b166-e2fa24fb7601','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('a7dd038f-31e2-40a2-b65d-07d43e44c587','7dd9fbae-3b38-446e-b2cc-64f1692eb4c0','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('ac406878-2721-4b1b-bda9-13a1d099960d','bed05b14-62dc-4c93-bc6b-825930e013fc','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('ad3b5b6b-1237-49bb-9a0f-7e08a5b4eb77','ed53f41a-18b9-41e5-a5f5-09de16da9609','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('c18bbd27-c31f-4498-b873-20628f13ce56','27ba0cef-80c1-4dd8-828b-c8a331bd8fe7','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('c2960a06-c18c-44ef-94d6-a6720ab9dc1c','2919f335-3ec9-40c0-bfd2-0dea0a3f465e','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('c2bc1638-71bd-4381-bee4-f18baa7eb5c5','2b21be03-bbbd-454f-a7aa-2cd75a76f2c8','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('c3785077-cbec-4ff1-9000-52bd087abdc2','ced63b0d-655c-4094-ba4c-3a36d11efe1a','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('c39e32af-9b46-4dce-957a-c04ed5f70696','3679901a-5145-4240-be19-f6693c9c3217','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('c74385e6-156f-4065-97ef-7c45a5de504d','013f6fbf-2c6b-4d7a-8b04-2ad181d02bd7','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('c929d858-e4e5-4c5e-92ba-1091e65c836c','dfc15c98-8c01-412e-beb0-904170908b5f','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('ca7ee52a-5bc5-4563-8303-16d590c6f7c0','72833aed-7a0c-4a09-9049-35f0aab38458','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('d30b1768-45bb-41ce-8561-0344d5388aa2','58d04d5d-d3f8-43f8-b98e-09bb8afc4f54','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('d470bf2b-bb5c-41bb-81a1-b93dbe00ba3a','36395e06-fc13-4720-9466-ac6ee36099b0','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('d74a2e88-800b-4cb6-ab5e-1d9ca31e4d7f','40e222c3-db79-436c-b58a-de537f99a0df','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('d98aa4c5-2875-4899-bd1f-407e48c345a2','c6429b9c-b534-462d-9de2-daf3a26d7782','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('dc0d6440-e5ac-40dc-8198-935b0acf5a37','25e3817d-03ac-4c25-873c-589c911191b9','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('dc760901-56e6-4edc-86e6-3157c00fcdf5','6cec3c65-b6ff-4094-b90b-4748c634d508','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('e21ce90b-da25-4be6-81d3-26e6b7a7efd8','e721b7c8-ab3f-4932-9688-6d2755cbf647','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('e65816bf-e384-49a6-a874-01cfc0db40f9','f4b3800b-b0d5-4519-b86e-b5775184f4ab','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('e757012c-967f-4b9f-851a-75792a157a3c','41826c9d-5160-4912-995c-19a5b3700b45','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('f04a6b9a-c638-4cdf-a1f5-09e6f48413bc','743b9b7f-9292-407f-aa0d-9305b98becff','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('f1501be0-3f40-4620-a8c7-20f2e03a1724','a2486b77-c0c8-441e-8ad3-16d213fada1f','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('f6fe4b06-975f-4582-bd8e-fe76cf3fdd0a','09890166-4ccc-41d4-a54c-5a0e5864f6e3','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('fafb7450-1dda-466a-b92d-5f5da89230d1','51125d9e-8a12-40c1-8519-faad4b8065f2','742fc487-8b9d-41d8-9a0c-b55772bc2c49'),('fb0e872e-b148-4c31-ae38-f2a3dbe1322a','51c3c592-434d-4aea-9c66-e33cefcce8a8','742fc487-8b9d-41d8-9a0c-b55772bc2c49');
 /*!40000 ALTER TABLE `student_relationship` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `study_day`
+--
+
+DROP TABLE IF EXISTS `study_day`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `study_day` (
+  `id` char(50) NOT NULL,
+  `is_sunday` char(1) DEFAULT '0',
+  `is_monday` char(1) DEFAULT '0',
+  `is_tuesday` char(1) DEFAULT '0',
+  `is_wednesday` char(1) DEFAULT '0',
+  `is_thrusday` char(1) DEFAULT '0',
+  `is_friday` char(1) DEFAULT '0',
+  `is_saturday` char(1) DEFAULT '0',
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `study_day`
@@ -2115,6 +6510,24 @@ INSERT INTO `study_day` VALUES ('65732831-20a9-4870-8f5f-32d7e3b71edb','0','1','
 UNLOCK TABLES;
 
 --
+-- Table structure for table `study_period`
+--
+
+DROP TABLE IF EXISTS `study_period`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `study_period` (
+  `id` char(50) NOT NULL,
+  `name` varchar(150) NOT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `name_UNIQUE` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `study_period`
 --
 
@@ -2125,6 +6538,30 @@ INSERT INTO `study_period` VALUES ('e4c80e40-aaee-4127-9888-5e798aec080e','Tahun
 UNLOCK TABLES;
 
 --
+-- Table structure for table `study_room`
+--
+
+DROP TABLE IF EXISTS `study_room`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `study_room` (
+  `id` char(50) NOT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `fk_room` char(50) DEFAULT NULL,
+  `fk_period` char(50) DEFAULT NULL,
+  `fk_day` char(50) DEFAULT NULL,
+  `fk_time` char(50) DEFAULT NULL,
+  `fk_course` char(50) DEFAULT NULL,
+  `fk_organization` char(50) DEFAULT NULL,
+  `fk_feature` char(50) DEFAULT NULL,
+  `fk_staff` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `study_room`
 --
 
@@ -2132,6 +6569,23 @@ LOCK TABLES `study_room` WRITE;
 /*!40000 ALTER TABLE `study_room` DISABLE KEYS */;
 /*!40000 ALTER TABLE `study_room` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `study_time`
+--
+
+DROP TABLE IF EXISTS `study_time`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `study_time` (
+  `id` char(50) NOT NULL,
+  `start` time DEFAULT NULL,
+  `end` time DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `study_time`
@@ -2144,6 +6598,20 @@ INSERT INTO `study_time` VALUES ('2dda14a2-c020-42b2-ba43-b663a86f30c5','15:00:0
 UNLOCK TABLES;
 
 --
+-- Table structure for table `supplier`
+--
+
+DROP TABLE IF EXISTS `supplier`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `supplier` (
+  `id` char(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `supplier`
 --
 
@@ -2153,6 +6621,22 @@ LOCK TABLES `supplier` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `supplier_relationship`
+--
+
+DROP TABLE IF EXISTS `supplier_relationship`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `supplier_relationship` (
+  `id` char(50) NOT NULL,
+  `fk_supplier` char(50) DEFAULT NULL,
+  `fk_internal_organization` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `supplier_relationship`
 --
 
@@ -2160,6 +6644,26 @@ LOCK TABLES `supplier_relationship` WRITE;
 /*!40000 ALTER TABLE `supplier_relationship` DISABLE KEYS */;
 /*!40000 ALTER TABLE `supplier_relationship` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `tax`
+--
+
+DROP TABLE IF EXISTS `tax`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tax` (
+  `id` char(50) NOT NULL,
+  `code` char(50) DEFAULT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `amount` decimal(10,0) DEFAULT NULL,
+  `is_default` char(1) DEFAULT '0',
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `tax`
@@ -2172,6 +6676,22 @@ INSERT INTO `tax` VALUES ('b685e80a-5257-49c7-9c7d-11b986a49b29','PPN','PPN',NUL
 UNLOCK TABLES;
 
 --
+-- Table structure for table `term_type`
+--
+
+DROP TABLE IF EXISTS `term_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `term_type` (
+  `id` char(50) NOT NULL,
+  `description` varchar(150) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `term_type`
 --
 
@@ -2180,6 +6700,26 @@ LOCK TABLES `term_type` WRITE;
 INSERT INTO `term_type` VALUES ('00000','Tempo Pembayaran (Hari)',1);
 /*!40000 ALTER TABLE `term_type` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `time_entry`
+--
+
+DROP TABLE IF EXISTS `time_entry`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `time_entry` (
+  `id` char(50) NOT NULL,
+  `start` timestamp NULL DEFAULT NULL,
+  `end` timestamp NULL DEFAULT NULL,
+  `hours` int(11) DEFAULT NULL,
+  `fk_timesheet` char(50) DEFAULT NULL,
+  `fk_work_effort` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `time_entry`
@@ -2191,6 +6731,26 @@ LOCK TABLES `time_entry` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `timesheet`
+--
+
+DROP TABLE IF EXISTS `timesheet`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `timesheet` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `comment` varchar(250) DEFAULT NULL,
+  `worker_id` char(50) DEFAULT NULL,
+  `worker_value` varchar(250) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `timesheet`
 --
 
@@ -2198,6 +6758,23 @@ LOCK TABLES `timesheet` WRITE;
 /*!40000 ALTER TABLE `timesheet` DISABLE KEYS */;
 /*!40000 ALTER TABLE `timesheet` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `timesheet_role`
+--
+
+DROP TABLE IF EXISTS `timesheet_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `timesheet_role` (
+  `id` char(50) NOT NULL,
+  `timesheet_role_type` char(30) DEFAULT NULL,
+  `fk_timesheet` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `timesheet_role`
@@ -2209,6 +6786,20 @@ LOCK TABLES `timesheet_role` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `transfer_order_request`
+--
+
+DROP TABLE IF EXISTS `transfer_order_request`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `transfer_order_request` (
+  `id` char(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `transfer_order_request`
 --
 
@@ -2216,6 +6807,24 @@ LOCK TABLES `transfer_order_request` WRITE;
 /*!40000 ALTER TABLE `transfer_order_request` DISABLE KEYS */;
 /*!40000 ALTER TABLE `transfer_order_request` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `transfer_order_request_item`
+--
+
+DROP TABLE IF EXISTS `transfer_order_request_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `transfer_order_request_item` (
+  `id` char(50) NOT NULL,
+  `fk_product` char(50) DEFAULT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `fk_transfer_order` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `transfer_order_request_item`
@@ -2227,6 +6836,22 @@ LOCK TABLES `transfer_order_request_item` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `treatment`
+--
+
+DROP TABLE IF EXISTS `treatment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `treatment` (
+  `id` char(50) NOT NULL,
+  `is_bpjs` char(1) DEFAULT '0',
+  `bpjs_payment_status` char(10) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `treatment`
 --
 
@@ -2236,6 +6861,28 @@ LOCK TABLES `treatment` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `treatment_item`
+--
+
+DROP TABLE IF EXISTS `treatment_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `treatment_item` (
+  `id` char(50) NOT NULL,
+  `fk_product_treatment` char(50) DEFAULT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `price` decimal(10,0) DEFAULT NULL,
+  `discount` decimal(10,0) DEFAULT NULL,
+  `charge` decimal(10,0) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `fk_treatment` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `treatment_item`
 --
 
@@ -2243,6 +6890,25 @@ LOCK TABLES `treatment_item` WRITE;
 /*!40000 ALTER TABLE `treatment_item` DISABLE KEYS */;
 /*!40000 ALTER TABLE `treatment_item` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `unit_of_measure`
+--
+
+DROP TABLE IF EXISTS `unit_of_measure`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `unit_of_measure` (
+  `id` char(50) NOT NULL,
+  `code` char(25) DEFAULT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `type` char(10) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `unit_of_measure`
@@ -2255,6 +6921,24 @@ INSERT INTO `unit_of_measure` VALUES ('46ff493b-776b-4b9c-b199-39b9ef3b5f19',NUL
 UNLOCK TABLES;
 
 --
+-- Table structure for table `uom_factor`
+--
+
+DROP TABLE IF EXISTS `uom_factor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `uom_factor` (
+  `id` char(50) NOT NULL,
+  `factor` decimal(10,0) DEFAULT NULL,
+  `fk_uom_from` char(50) DEFAULT NULL,
+  `fk_uom_to` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `uom_factor`
 --
 
@@ -2265,14 +6949,53 @@ INSERT INTO `uom_factor` VALUES ('2679d072-48ba-4816-afb3-d3c4b27359e0',176,'002
 UNLOCK TABLES;
 
 --
+-- Table structure for table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user` (
+  `id` char(50) NOT NULL,
+  `email` varchar(250) DEFAULT NULL,
+  `password` varchar(250) DEFAULT NULL,
+  `is_enabled` char(1) DEFAULT '1',
+  `fk_user_setting` char(50) DEFAULT NULL,
+  `is_deleteable` char(1) DEFAULT '0',
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `user`
 --
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('50d38fb9-77b4-4a8d-9e02-c331335515d3','user','pEjeeTjtciKfTzflgzAb0xccTWOwsPybi0yANJWOvOkyuXWYY3eHUU/l6hQO/xAN','1',NULL,'0',0),('7ddcd2fd-1f28-4033-9015-b611fca264ea','sitikom','BIOLJkhguvqFN4qciWad9FRYbngY/aWf60efH0FDm5zoYPiQACHGt/GIce9QhB03','1','8a15a5cc-2549-42cc-9086-68ac948b5f74','0',1),('9173455f-4082-4e84-9188-e1d4c9038a28','DODI','eqvVrZT2maS1SzNZZTVpWJZuklDN0yMWL3uTYKOVAE9f22dDeNTpLghQAEu5Ao2P','1','8c2cea76-1f03-4dbe-a2d0-31c86fce1c15','0',2),('97dc9715-47eb-45d5-96ba-0a582fabdf3b','admin@belian.com','jIfSsj+ceSsamqTfmru/ZlLSRsjwUijQK4CJqi86fLNWb/nqSv2eY2rRrJxgpdDM','1','28fc7f13-1777-47e3-94c8-8b54436b1e96','0',1);
+INSERT INTO `user` VALUES ('97dc9715-47eb-45d5-96ba-0a582fabdf3b','admin@belian.com','jIfSsj+ceSsamqTfmru/ZlLSRsjwUijQK4CJqi86fLNWb/nqSv2eY2rRrJxgpdDM','1','28fc7f13-1777-47e3-94c8-8b54436b1e96','0',1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `user_role`
+--
+
+DROP TABLE IF EXISTS `user_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_role` (
+  `id` char(50) NOT NULL,
+  `fk_user` char(50) DEFAULT NULL,
+  `fk_role` char(50) DEFAULT NULL,
+  `role_name` varchar(200) DEFAULT NULL,
+  `is_enabled` char(1) DEFAULT '1',
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `user_role`
@@ -2280,9 +7003,37 @@ UNLOCK TABLES;
 
 LOCK TABLES `user_role` WRITE;
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
-INSERT INTO `user_role` VALUES ('65f78d37-76e8-4793-b365-1d52452e5f88','096b0105-de76-492c-9bb0-5e518b46d69c','50d38fb9-77b4-4a8d-9e02-c331335515d3','1',0),('849138a5-4b4e-41ea-8f24-e4586e7f8ab9','096b0105-de76-492c-9bb0-5e518b46d69c','97dc9715-47eb-45d5-96ba-0a582fabdf3b','1',0),('baf1db9b-44ac-4903-8e53-0d4404e4ee33','096b0105-de76-492c-9bb0-5e518b46d69c','9173455f-4082-4e84-9188-e1d4c9038a28','1',1),('e9491767-d012-423b-a86f-529343f2448e','096b0105-de76-492c-9bb0-5e518b46d69c','7ddcd2fd-1f28-4033-9015-b611fca264ea','1',0);
+INSERT INTO `user_role` VALUES ('849138a5-4b4e-41ea-8f24-e4586e7f8ab9','97dc9715-47eb-45d5-96ba-0a582fabdf3b','096b0105-de76-492c-9bb0-5e518b46d69c','System Administrator','1',0);
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `user_setting`
+--
+
+DROP TABLE IF EXISTS `user_setting`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_setting` (
+  `id` char(50) NOT NULL,
+  `organization_id` char(50) DEFAULT NULL,
+  `organization_value` varchar(150) DEFAULT NULL,
+  `location_id` char(50) DEFAULT NULL,
+  `location_value` varchar(150) DEFAULT NULL,
+  `currency_id` char(50) DEFAULT NULL,
+  `currency_value` varchar(150) DEFAULT NULL,
+  `tax_id` char(50) DEFAULT NULL,
+  `tax_value` varchar(150) DEFAULT NULL,
+  `language` varchar(250) DEFAULT NULL,
+  `row_per_page` int(11) DEFAULT 25,
+  `printer_type` char(10) DEFAULT NULL,
+  `version` bigint(20) DEFAULT NULL,
+  `facility_id` varchar(100) DEFAULT NULL,
+  `facility_value` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `user_setting`
@@ -2290,9 +7041,42 @@ UNLOCK TABLES;
 
 LOCK TABLES `user_setting` WRITE;
 /*!40000 ALTER TABLE `user_setting` DISABLE KEYS */;
-INSERT INTO `user_setting` VALUES ('28fc7f13-1777-47e3-94c8-8b54436b1e96','e29c7687-30f8-4201-af68-0a4a67541b86','SSC PANCASILA','c4c10aee-a3a1-4e6c-a08b-62d4e26414df','Pontianak','85c90912-97ff-47ce-9d6a-7d1650ab3ea9','Rupiah',NULL,NULL,'en_us',25,'POS',11),('8a15a5cc-2549-42cc-9086-68ac948b5f74','e29c7687-30f8-4201-af68-0a4a67541b86','SSC PANCASILA','c4c10aee-a3a1-4e6c-a08b-62d4e26414df','Pontianak','85c90912-97ff-47ce-9d6a-7d1650ab3ea9','Rupiah',NULL,NULL,'en_us',25,'POS',5),('8c2cea76-1f03-4dbe-a2d0-31c86fce1c15','e29c7687-30f8-4201-af68-0a4a67541b86','SSC PANCASILA','c4c10aee-a3a1-4e6c-a08b-62d4e26414df','Pontianak','85c90912-97ff-47ce-9d6a-7d1650ab3ea9','Rupiah','d4921463-e9ff-4c8e-b6ff-9a1730688fbb','R-PPN','en_us',25,'POS',2);
+INSERT INTO `user_setting` VALUES ('28fc7f13-1777-47e3-94c8-8b54436b1e96',NULL,NULL,'c4c10aee-a3a1-4e6c-a08b-62d4e26414df','Pontianak','85c90912-97ff-47ce-9d6a-7d1650ab3ea9','Rupiah',NULL,NULL,'in_id',25,'STANDARD',14,NULL,NULL),('8a15a5cc-2549-42cc-9086-68ac948b5f74','e29c7687-30f8-4201-af68-0a4a67541b86','SSC PANCASILA','c4c10aee-a3a1-4e6c-a08b-62d4e26414df','Pontianak','85c90912-97ff-47ce-9d6a-7d1650ab3ea9','Rupiah',NULL,NULL,'en_us',25,'POS',5,NULL,NULL),('8c2cea76-1f03-4dbe-a2d0-31c86fce1c15','e29c7687-30f8-4201-af68-0a4a67541b86','SSC PANCASILA','c4c10aee-a3a1-4e6c-a08b-62d4e26414df','Pontianak','85c90912-97ff-47ce-9d6a-7d1650ab3ea9','Rupiah','d4921463-e9ff-4c8e-b6ff-9a1730688fbb','R-PPN','en_us',25,'POS',2,NULL,NULL);
 /*!40000 ALTER TABLE `user_setting` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `work_effort`
+--
+
+DROP TABLE IF EXISTS `work_effort`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `work_effort` (
+  `id` char(50) NOT NULL,
+  `name` varchar(200) DEFAULT NULL,
+  `description` varchar(250) DEFAULT NULL,
+  `scheduled_start` date DEFAULT NULL,
+  `scheduled_end` date DEFAULT NULL,
+  `actual_start` date DEFAULT NULL,
+  `actual_end` date DEFAULT NULL,
+  `hours` decimal(10,0) DEFAULT NULL,
+  `max_allowed_hours` decimal(10,0) DEFAULT NULL,
+  `max_allowed_money` decimal(10,0) DEFAULT NULL,
+  `purpose` char(35) DEFAULT NULL,
+  `number` char(50) DEFAULT NULL,
+  `creation_date` date DEFAULT NULL,
+  `organization_id` char(50) DEFAULT NULL,
+  `organization_value` varchar(200) DEFAULT NULL,
+  `type` char(25) DEFAULT NULL,
+  `requester_id` char(50) DEFAULT NULL,
+  `requester_value` varchar(200) DEFAULT NULL,
+  `invoiced` char(1) DEFAULT '0',
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `work_effort`
@@ -2305,6 +7089,28 @@ INSERT INTO `work_effort` VALUES ('b8e7e852-7995-4446-8ef0-a97d5021f7d0','Pemeri
 UNLOCK TABLES;
 
 --
+-- Table structure for table `work_effort_asset_assignment`
+--
+
+DROP TABLE IF EXISTS `work_effort_asset_assignment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `work_effort_asset_assignment` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `cost` decimal(10,0) DEFAULT NULL,
+  `rate` decimal(10,0) DEFAULT 0,
+  `type` char(25) DEFAULT NULL,
+  `fk_asset` char(50) DEFAULT NULL,
+  `fk_work_effort` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `work_effort_asset_assignment`
 --
 
@@ -2312,6 +7118,23 @@ LOCK TABLES `work_effort_asset_assignment` WRITE;
 /*!40000 ALTER TABLE `work_effort_asset_assignment` DISABLE KEYS */;
 /*!40000 ALTER TABLE `work_effort_asset_assignment` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `work_effort_deliverable_produced`
+--
+
+DROP TABLE IF EXISTS `work_effort_deliverable_produced`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `work_effort_deliverable_produced` (
+  `id` char(50) NOT NULL,
+  `fk_work_effort` char(50) DEFAULT NULL,
+  `fk_deliverable` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `work_effort_deliverable_produced`
@@ -2323,6 +7146,24 @@ LOCK TABLES `work_effort_deliverable_produced` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `work_effort_info`
+--
+
+DROP TABLE IF EXISTS `work_effort_info`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `work_effort_info` (
+  `id` char(50) NOT NULL,
+  `name` varchar(250) DEFAULT NULL,
+  `type` char(25) DEFAULT NULL,
+  `hour` decimal(10,0) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `work_effort_info`
 --
 
@@ -2330,6 +7171,24 @@ LOCK TABLES `work_effort_info` WRITE;
 /*!40000 ALTER TABLE `work_effort_info` DISABLE KEYS */;
 /*!40000 ALTER TABLE `work_effort_info` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `work_effort_inventory_assignment`
+--
+
+DROP TABLE IF EXISTS `work_effort_inventory_assignment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `work_effort_inventory_assignment` (
+  `id` char(50) NOT NULL,
+  `quantity` decimal(10,0) DEFAULT NULL,
+  `fk_inventory_item` char(50) DEFAULT NULL,
+  `fk_work_effort` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `work_effort_inventory_assignment`
@@ -2341,6 +7200,23 @@ LOCK TABLES `work_effort_inventory_assignment` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `work_effort_inventorys_produced`
+--
+
+DROP TABLE IF EXISTS `work_effort_inventorys_produced`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `work_effort_inventorys_produced` (
+  `id` char(50) NOT NULL,
+  `fk_work_effort` char(50) DEFAULT NULL,
+  `fk_inventory_item` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `work_effort_inventorys_produced`
 --
 
@@ -2348,6 +7224,30 @@ LOCK TABLES `work_effort_inventorys_produced` WRITE;
 /*!40000 ALTER TABLE `work_effort_inventorys_produced` DISABLE KEYS */;
 /*!40000 ALTER TABLE `work_effort_inventorys_produced` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `work_effort_party_assignment`
+--
+
+DROP TABLE IF EXISTS `work_effort_party_assignment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `work_effort_party_assignment` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `rate` decimal(10,0) DEFAULT 0,
+  `party_id` char(50) DEFAULT NULL,
+  `party_value` varchar(200) DEFAULT '0',
+  `facility_id` char(50) DEFAULT NULL,
+  `facility_value` varchar(200) DEFAULT NULL,
+  `fk_work_effort` char(50) DEFAULT NULL,
+  `type` char(35) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `work_effort_party_assignment`
@@ -2360,6 +7260,29 @@ INSERT INTO `work_effort_party_assignment` VALUES ('e8b4c5b1-07cd-4007-b0b5-f067
 UNLOCK TABLES;
 
 --
+-- Table structure for table `work_effort_party_rate`
+--
+
+DROP TABLE IF EXISTS `work_effort_party_rate`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `work_effort_party_rate` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `commend` varchar(250) DEFAULT NULL,
+  `rate` decimal(10,0) DEFAULT NULL,
+  `type` char(30) DEFAULT NULL,
+  `fk_work_effort` char(50) DEFAULT NULL,
+  `party_id` char(50) DEFAULT NULL,
+  `party_value` varchar(200) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `work_effort_party_rate`
 --
 
@@ -2370,6 +7293,24 @@ INSERT INTO `work_effort_party_rate` VALUES ('832ad229-9230-4cb2-9cf6-1b33e2b8c2
 UNLOCK TABLES;
 
 --
+-- Table structure for table `work_effort_role`
+--
+
+DROP TABLE IF EXISTS `work_effort_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `work_effort_role` (
+  `id` char(50) NOT NULL,
+  `type` char(25) DEFAULT NULL,
+  `fk_party` char(50) DEFAULT NULL,
+  `fk_work_effort` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `work_effort_role`
 --
 
@@ -2377,6 +7318,25 @@ LOCK TABLES `work_effort_role` WRITE;
 /*!40000 ALTER TABLE `work_effort_role` DISABLE KEYS */;
 /*!40000 ALTER TABLE `work_effort_role` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `work_effort_status`
+--
+
+DROP TABLE IF EXISTS `work_effort_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `work_effort_status` (
+  `id` char(50) NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `type` char(25) DEFAULT NULL,
+  `fk_work_effort` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `work_effort_status`
@@ -2389,6 +7349,26 @@ INSERT INTO `work_effort_status` VALUES ('749bd90e-0525-4fe3-9aba-1139cc7b36dd',
 UNLOCK TABLES;
 
 --
+-- Table structure for table `work_order_item_fulfillment`
+--
+
+DROP TABLE IF EXISTS `work_order_item_fulfillment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `work_order_item_fulfillment` (
+  `id` char(50) NOT NULL,
+  `order_item_id` char(50) DEFAULT NULL,
+  `order_item_value` varchar(200) DEFAULT NULL,
+  `order_id` char(50) DEFAULT NULL,
+  `order_value` varchar(200) DEFAULT NULL,
+  `fk_work_effort` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `work_order_item_fulfillment`
 --
 
@@ -2397,6 +7377,27 @@ LOCK TABLES `work_order_item_fulfillment` WRITE;
 INSERT INTO `work_order_item_fulfillment` VALUES ('217ecda7-d723-4dad-9c27-044e6a019ca3','a2251e43-bfd6-4ca4-8e92-ca1af78a70fd','Pemeriksaan Dokter Umum','388f9588-fddd-45ba-a328-bd41e24729e4','SO-22012017-1','b8e7e852-7995-4446-8ef0-a97d5021f7d0',0);
 /*!40000 ALTER TABLE `work_order_item_fulfillment` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `work_requirement`
+--
+
+DROP TABLE IF EXISTS `work_requirement`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `work_requirement` (
+  `id` char(50) NOT NULL,
+  `fk_production_info` char(50) DEFAULT NULL,
+  `asset_id` char(50) DEFAULT NULL,
+  `asset_value` varchar(200) DEFAULT NULL,
+  `work_type` char(15) DEFAULT 'PROJECT',
+  `product_id` char(50) DEFAULT NULL,
+  `product_value` varchar(200) DEFAULT NULL,
+  `quantity` decimal(10,0) DEFAULT 1,
+  `fk_deliverable` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `work_requirement`
@@ -2409,6 +7410,24 @@ INSERT INTO `work_requirement` VALUES ('a012d70f-18a4-4178-beb9-ac2f0d947277',NU
 UNLOCK TABLES;
 
 --
+-- Table structure for table `work_requirement_fulfillment`
+--
+
+DROP TABLE IF EXISTS `work_requirement_fulfillment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `work_requirement_fulfillment` (
+  `id` char(50) NOT NULL,
+  `requirement_id` char(50) DEFAULT NULL,
+  `requirement_value` varchar(200) DEFAULT NULL,
+  `fk_work_effort` char(50) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `work_requirement_fulfillment`
 --
 
@@ -2416,6 +7435,20 @@ LOCK TABLES `work_requirement_fulfillment` WRITE;
 /*!40000 ALTER TABLE `work_requirement_fulfillment` DISABLE KEYS */;
 /*!40000 ALTER TABLE `work_requirement_fulfillment` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `worker`
+--
+
+DROP TABLE IF EXISTS `worker`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `worker` (
+  `id` char(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `worker`
@@ -2427,6 +7460,22 @@ LOCK TABLES `worker` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `worker_relationship`
+--
+
+DROP TABLE IF EXISTS `worker_relationship`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `worker_relationship` (
+  `id` char(50) NOT NULL,
+  `fk_worker` char(50) DEFAULT NULL,
+  `fk_internal_organization` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `worker_relationship`
 --
 
@@ -2436,6 +7485,25 @@ LOCK TABLES `worker_relationship` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `working_shift`
+--
+
+DROP TABLE IF EXISTS `working_shift`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `working_shift` (
+  `id` char(50) NOT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `start` time DEFAULT NULL,
+  `end` time DEFAULT NULL,
+  `is_active` char(1) DEFAULT NULL,
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `working_shift`
 --
 
@@ -2443,6 +7511,10 @@ LOCK TABLES `working_shift` WRITE;
 /*!40000 ALTER TABLE `working_shift` DISABLE KEYS */;
 /*!40000 ALTER TABLE `working_shift` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'belian'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -2453,4 +7525,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-01-26 19:45:18
+-- Dump completed on 2024-04-24 18:49:27

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.global.svc;
 
 import java.util.List;
@@ -37,23 +35,23 @@ public class AcknowledgementService extends AbstractService
 	
 	@Secured("ROLE_ACKNOWLEDGEMENT_READ")
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
-	public Acknowledgement findOne(String id)
+	public Acknowledgement findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 	
 	@Secured("ROLE_ACKNOWLEDGEMENT_READ")
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<Acknowledgement> findAll()
 	{
-		return repository.findAll(new Sort(Sort.Direction.ASC,"code"));
+		return repository.findAll(Sort.by(Sort.Direction.ASC,"code"));
 	}
 	
 	@Secured("ROLE_ACKNOWLEDGEMENT_READ")
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<Acknowledgement> findAll(int pageindex,int itemSize)
 	{
-		return repository.findAll(new PageRequest(pageindex, itemSize,new Sort(Direction.ASC, "code"))).getContent();
+		return repository.findAll(PageRequest.of(pageindex, itemSize,Sort.by(Direction.ASC, "code"))).getContent();
 	}
 	
 	@Secured("ROLE_ACKNOWLEDGEMENT_READ")
@@ -80,6 +78,6 @@ public class AcknowledgementService extends AbstractService
 	@Secured("ROLE_ACKNOWLEDGEMENT_DELETE")
 	public void delete(String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 }

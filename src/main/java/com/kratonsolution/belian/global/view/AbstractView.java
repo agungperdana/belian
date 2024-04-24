@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.global.view;
 
 import org.springframework.beans.factory.annotation.Autowired;

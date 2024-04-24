@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.invoice.view;
 
 import java.math.BigDecimal;
@@ -52,8 +50,8 @@ public class InvoiceReportView extends AbstractView
 		BigDecimal grand = BigDecimal.ZERO;
 
 		model.addAttribute("title",lang.get("invoices.grid.column.report.title.sales"));
-		model.addAttribute("company",partyRepo.findOne(organization));
-		model.addAttribute("customer",partyRepo.findOne(customer));
+		model.addAttribute("company",partyRepo.findById(organization));
+		model.addAttribute("customer",partyRepo.findById(customer));
 		model.addAttribute("from",from);
 		model.addAttribute("to",to);
 		model.addAttribute("datas", lists);
@@ -85,7 +83,7 @@ public class InvoiceReportView extends AbstractView
 			if(!invoices.isEmpty())
 			{
 				Map<String,Object> map = new HashMap<>();
-				map.put("company",partyRepo.findOne(company));
+				map.put("company",partyRepo.findById(company));
 				map.put("invoices",temp);
 
 				BigDecimal total = BigDecimal.ZERO;

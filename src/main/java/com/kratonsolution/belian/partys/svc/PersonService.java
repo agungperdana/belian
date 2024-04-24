@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.partys.svc;
 
 import java.sql.Date;
@@ -36,16 +34,16 @@ public class PersonService extends AbstractService
 
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured({"ROLE_PERSON_READ","ROLE_SYSTEM_READ"})
-	public Person findOne(String id)
+	public Person findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured({"ROLE_PERSON_READ","ROLE_SYSTEM_READ"})
-	public Person findOneByName(String name)
+	public Person findByName(String name)
 	{
-		return repository.findOneByName(name);
+		return repository.findByName(name);
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -76,7 +74,7 @@ public class PersonService extends AbstractService
 	@Secured({"ROLE_PERSON_READ","ROLE_SYSTEM_READ"})
 	public List<Person> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize,Direction.ASC,"name")).getContent();
+		return repository.findAll(PageRequest.of(pageIndex, pageSize,Direction.ASC,"name")).getContent();
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -86,7 +84,7 @@ public class PersonService extends AbstractService
 		if(Strings.isNullOrEmpty(key))
 			return findAll(pageIndex, pageSize);
 		else
-			return repository.findAll(new PageRequest(pageIndex, pageSize), key);
+			return repository.findAll(PageRequest.of(pageIndex, pageSize), key);
 	}
 
 	@Secured("ROLE_PERSON_READ")
@@ -126,7 +124,7 @@ public class PersonService extends AbstractService
 	@Secured("ROLE_PERSON_DELETE")
 	public void delete(String id)
 	{
-		Person person = findOne(id);
+		Person person = findById(id);
 		if(person != null && !person.isSystem())
 			repository.delete(person);
 	}
@@ -163,14 +161,14 @@ public class PersonService extends AbstractService
 	@Secured({"ROLE_PERSON_READ","ROLE_SYSTEM_READ"})
 	public Person anonymous()
 	{
-		return repository.findOneByName(Person.ANONYMOUS);
+		return repository.findByName(Person.ANONYMOUS);
 	}
 
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PERSON_READ")
-	public Person findOneByIdentity(String identity)
+	public Person findByIdByIdentity(String identity)
 	{
-		return repository.findOneByCode(identity);
+		return repository.findByCode(identity);
 	}
 
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -189,8 +187,8 @@ public class PersonService extends AbstractService
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	@Secured("ROLE_PERSON_READ")
-	public Person findOne(String code,String name,Date birthdate,Gender gender)
+	public Person findById(String code,String name,Date birthdate,Gender gender)
 	{
-		return repository.findOne(code, name, birthdate, gender);
+		return repository.findById(code, name, birthdate, gender);
 	}
 }

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.inventorys.shipment;
 
 import org.zkoss.zul.Listitem;
@@ -82,7 +80,7 @@ public class ShipmentIssuableList extends AbstractList<Shipment> implements Obse
 	{
 		if(ref != null && !Strings.isNullOrEmpty(ref.getId()))
 		{
-			Shipment buff = service.findOne(ref.getId());
+			Shipment buff = service.findById(ref.getId());
 			if(buff != null)
 				setDomain(buff);
 		}

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.invoice.dm;
 
 import java.sql.Date;
@@ -61,5 +59,5 @@ public interface SalesInvoiceRepository extends JpaRepository<SalesInvoice, Stri
 	public Long count(@Param("company")String company,@Param("key")String key);
 
 	@Query("SELECT DISTINCT item.invoice FROM InvoiceItem item WHERE item.id IN(:ids) ")
-	public SalesInvoice findOne(@Param("ids")Collection<String> ids);
+	public SalesInvoice findById(@Param("ids")Collection<String> ids);
 }

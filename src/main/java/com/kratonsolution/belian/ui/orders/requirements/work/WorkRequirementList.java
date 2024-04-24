@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.orders.requirements.work;
 
 import org.assertj.core.util.Strings;

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.healthcares.clinic.pos;
 
 import java.math.BigDecimal;

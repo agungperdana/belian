@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.inventorys.shipment;
 
 import java.math.BigDecimal;
@@ -105,7 +103,7 @@ public class ShipmentItemForm extends AbstractForm
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Shipment shipment = service.findOne(parent.getId());
+				Shipment shipment = service.findById(parent.getId());
 				if(shipment != null)
 				{
 					ShipmentItem shipmentItem = new ShipmentItem();
@@ -119,7 +117,7 @@ public class ShipmentItemForm extends AbstractForm
 						Row rw = (Row)com;
 						if(RowUtils.decimal(rw, 3).compareTo(BigDecimal.ZERO) > 0)
 						{
-							OrderItem orderItem = orderItemService.findOne(RowUtils.id(rw));
+							OrderItem orderItem = orderItemService.findById(RowUtils.id(rw));
 							if(orderItem != null && !orderItem.isShipped())
 							{
 								ShipmentOrder order = new ShipmentOrder();

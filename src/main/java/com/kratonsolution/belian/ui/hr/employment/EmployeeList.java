@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.hr.employment;
 
 import org.zkoss.zul.Listitem;
@@ -60,7 +58,7 @@ public class EmployeeList extends AbstractList<Employee>
 
 	public void setEmployee(String emp)
 	{
-		Employee out = service.findOne(emp);
+		Employee out = service.findById(emp);
 		if(out != null)
 		{
 			getItems().clear();

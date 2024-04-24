@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.ui.tools.notification;
 
 import org.zkoss.zk.ui.event.Event;
@@ -48,9 +45,9 @@ public class NotificationDock extends AbstractDock implements Notifiedable
 	public void fireMessageArive()
 	{
 		NotificationRepository repository = Springs.get(NotificationRepository.class);
-		if(repository != null && repository.findOne(utils.getUser().getUserName()) != null)
+		if(repository != null && repository.findById(utils.getUser().getUserName()) != null)
 		{
-			Notification notification = repository.findOne(utils.getUser().getUserName());
+			Notification notification = repository.findById(utils.getUser().getUserName()).orElse(null);
 			if(notification.getNewMessage() > 0)
 				setImage("/icons/newmessage32.gif");
 			else

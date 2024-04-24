@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.hr.employment;
 
 import java.util.ArrayList;

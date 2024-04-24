@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.inventory.facility;
 
 import java.util.HashMap;
@@ -69,7 +67,7 @@ public class FacilityOrganizationForm extends BForm
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Facility out = service.findOne(facility.getId());
+				Facility out = service.findById(facility.getId());
 				if(out != null)
 				{
 					Map<String,FacilityOrganization> maps = new HashMap<>();
@@ -88,7 +86,7 @@ public class FacilityOrganizationForm extends BForm
 						
 						in.setEnabled(RowUtils.isChecked(row, 0));
 						in.setFacility(out);
-						in.setOrganization(IDValueRef.toRef(organizationService.findOne(RowUtils.string(row, 2))));
+						in.setOrganization(IDValueRef.toRef(organizationService.findById(RowUtils.string(row, 2))));
 						
 						out.getOrganizations().add(in);
 					}
@@ -114,7 +112,7 @@ public class FacilityOrganizationForm extends BForm
 		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("1");
 
-		Facility out = service.findOne(facility.getId());
+		Facility out = service.findById(facility.getId());
 		if(out != null)
 		{
 			for(FacilityOrganization organization:out.getOrganizations())

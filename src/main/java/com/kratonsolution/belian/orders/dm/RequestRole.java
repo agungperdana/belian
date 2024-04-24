@@ -1,15 +1,13 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.orders.dm;
 
 import java.sql.Date;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 import com.kratonsolution.belian.global.dm.Acknowledgement;
 

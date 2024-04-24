@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.general.party;
 
 import org.zkoss.zul.Listitem;
@@ -115,7 +113,7 @@ public class PartyContactList extends AbstractList<Contact> implements Observer
 		{
 			getItems().clear();
 			
-			Party party = service.findOne(value.getId());
+			Party party = service.findById(value.getId());
 			for(Contact contact:party.getContacts())
 			{
 				setSelectedItem(appendItem(contact.getContact()+" ("+contact.getType().display(utils.getLanguage())+")", contact.getId()));;

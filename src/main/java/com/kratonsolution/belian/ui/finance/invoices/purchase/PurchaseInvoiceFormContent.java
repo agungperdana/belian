@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.finance.invoices.purchase;
 
 import java.math.BigDecimal;

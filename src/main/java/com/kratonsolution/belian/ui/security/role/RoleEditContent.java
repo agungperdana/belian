@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.security.role;
 
 import java.util.ArrayList;
@@ -107,7 +105,7 @@ public class RoleEditContent extends AbstractForm
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,lang.get("message.field.empty"));
 
-				Role role = service.findOne(RowUtils.id(row));
+				Role role = service.findById(RowUtils.id(row));
 				if(role != null)
 				{
 					role.setCode(code.getText());
@@ -306,12 +304,12 @@ public class RoleEditContent extends AbstractForm
 
 			List<Module> newModules = new ArrayList<Module>();
 
-			Role role = service.findOne(RowUtils.string(this.row, 4));
+			Role role = service.findById(RowUtils.string(this.row, 4));
 			for(AccessRole accessRole:role.getAccesses())
 			{
 				if(accessRole.getModule() != null)
 				{
-					Module module = moduleService.findOne(accessRole.getModule().getId());
+					Module module = moduleService.findById(accessRole.getModule().getId());
 					if(module != null && module.getGroup().equals(group))
 					{
 						Checkbox create = new Checkbox();

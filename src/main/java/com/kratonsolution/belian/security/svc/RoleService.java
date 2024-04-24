@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.security.svc;
 
 import java.util.List;
@@ -35,9 +32,9 @@ public class RoleService
 	private List<RoleEventListener> listeners;
 	
 	@Secured("ROLE_ACCESS_ROLE_READ")
-	public Role findOne(String id)
+	public Role findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 	
 	@Secured("ROLE_ACCESS_ROLE_READ")
@@ -49,7 +46,7 @@ public class RoleService
 	@Secured("ROLE_ACCESS_ROLE_READ")
 	public List<Role> findAll(int pageSize,int itemSize)
 	{
-		return repository.findAll(new PageRequest(pageSize, itemSize)).getContent();
+		return repository.findAll(PageRequest.of(pageSize, itemSize)).getContent();
 	}
 	
 	@Secured("ROLE_ACCESS_ROLE_READ")
@@ -79,8 +76,8 @@ public class RoleService
 		for(RoleEventListener listener:listeners)
 			listener.fireRoleRemoved(id);
 
-		Role role = repository.findOne(id);
+		Role role = repository.findById(id).orElse(null);
 		if(role != null && !role.isUndeleteable())
-			repository.delete(id);
+			repository.deleteById(id);
 	}
 }

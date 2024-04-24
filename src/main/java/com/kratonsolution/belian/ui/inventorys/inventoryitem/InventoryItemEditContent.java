@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.inventorys.inventoryitem;
 
 import java.math.BigDecimal;
@@ -95,7 +93,7 @@ public class InventoryItemEditContent extends AbstractForm
 				if(onhand.getValue().equals(BigDecimal.ZERO))
 					throw new WrongValueException(onhand,lang.get("message.field.empty"));
 					
-				InventoryItem inv = service.findOne(RowUtils.id(row));
+				InventoryItem inv = service.findById(RowUtils.id(row));
 				if(inv != null)
 				{
 					inv.setOrganization(organizations.getDomainAsRef());
@@ -119,7 +117,7 @@ public class InventoryItemEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		InventoryItem out = service.findOne(RowUtils.id(row));
+		InventoryItem out = service.findById(RowUtils.id(row));
 		if(out != null)
 		{
 			organizations.setDomainAsRef(out.getOrganization());

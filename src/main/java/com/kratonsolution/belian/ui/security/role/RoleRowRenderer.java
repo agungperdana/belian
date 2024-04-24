@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.security.role;
 
 import org.zkoss.zul.Label;

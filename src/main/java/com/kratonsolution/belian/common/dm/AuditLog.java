@@ -1,13 +1,11 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.common.dm;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 
 import lombok.Getter;
 import lombok.Setter;

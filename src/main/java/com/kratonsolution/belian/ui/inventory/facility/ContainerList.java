@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.inventory.facility;
 
 import java.util.Vector;
@@ -99,7 +97,7 @@ public class ContainerList extends AbstractList<Container> implements Observer
 	{
 		if(value != null && !Strings.isNullOrEmpty(value.getId()))
 		{
-			Facility facility = service.findOne(value.getId());
+			Facility facility = service.findById(value.getId());
 			if(facility != null)
 			{
 				getItems().clear();

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.hr.svc;
 
 import java.util.List;
@@ -29,9 +27,9 @@ public class EmployeeService
 	
 	@Secured({"ROLE_EMPLOYEE_READ","ROLE_USER_READ"})
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
-	public Employee findOne(String id)
+	public Employee findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 	
 	@Secured({"ROLE_EMPLOYEE_READ","ROLE_USER_READ"})
@@ -45,7 +43,7 @@ public class EmployeeService
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<Employee> findAll(int pageindex,int itemSize)
 	{
-		return repository.findAll(new PageRequest(pageindex, itemSize)).getContent();
+		return repository.findAll(PageRequest.of(pageindex, itemSize)).getContent();
 	}
 	
 	@Secured({"ROLE_EMPLOYEE_READ","ROLE_USER_READ"})
@@ -69,6 +67,6 @@ public class EmployeeService
 	@Secured("ROLE_EMPLOYEE_DELETE")
 	public void delete(String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 }

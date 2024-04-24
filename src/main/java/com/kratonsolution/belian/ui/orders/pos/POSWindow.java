@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.orders.pos;
 
 import org.zkoss.zk.ui.Page;

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.inventory.svc;
 
 import java.math.BigDecimal;
@@ -55,16 +53,16 @@ public class StockService extends AbstractService
 
 	private void store(IDValueRef prodRef,IDValueRef facility,IDValueRef container,BigDecimal quantity,Date expired)
 	{
-		Product product = productRepository.findOne(prodRef.getId());
+		Product product = productRepository.findById(prodRef.getId()).orElse(null);
 
 		if(!product.getType().equals(ProductType.SERVICE) && product.getComponents().isEmpty())
 		{
 			InventoryItem inventoryItem = null;
 
 			if(expired != null)
-				inventoryItem = repository.findOne(product.getId(), facility.getId(), container.getId(), expired);
+				inventoryItem = repository.findById(product.getId(), facility.getId(), container.getId(), expired);
 			else
-				inventoryItem = repository.findOne(product.getId(), facility.getId(), container.getId());
+				inventoryItem = repository.findById(product.getId(), facility.getId(), container.getId());
 
 			if(inventoryItem == null)
 			{
@@ -90,16 +88,16 @@ public class StockService extends AbstractService
 
 	public void unstore(IDValueRef prodRef,IDValueRef facility,IDValueRef container,BigDecimal quantity,Date expired)
 	{
-		Product product = productRepository.findOne(prodRef.getId());
+		Product product = productRepository.findById(prodRef.getId()).orElse(null);
 
 		if(!product.getType().equals(ProductType.SERVICE) && product.getComponents().isEmpty())
 		{
 			InventoryItem inventoryItem = null;
 
 			if(expired != null)
-				inventoryItem = repository.findOne(product.getId(), facility.getId(), container.getId(), expired);
+				inventoryItem = repository.findById(product.getId(), facility.getId(), container.getId(), expired);
 			else
-				inventoryItem = repository.findOne(product.getId(), facility.getId(), container.getId());
+				inventoryItem = repository.findById(product.getId(), facility.getId(), container.getId());
 
 			if(inventoryItem == null || inventoryItem.getOnhand().compareTo(quantity) < 0)
 				throw new RuntimeException("Product doesnot exist or stock less than required quantity");

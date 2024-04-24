@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.accounting.tax;
 
 import org.zkoss.zul.Checkbox;

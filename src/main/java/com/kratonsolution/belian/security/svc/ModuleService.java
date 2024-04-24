@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.security.svc;
 
 import java.util.List;
@@ -42,23 +40,23 @@ public class ModuleService
 	
 	@Secured("ROLE_MODULE_READ")
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
-	public Module findOne(String id)
+	public Module findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 	
 	@Secured("ROLE_MODULE_READ")
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<Module> findAll()
 	{
-		return repository.findAll(new Sort(Sort.Direction.ASC,"code"));
+		return repository.findAll(Sort.by(Sort.Direction.ASC,"code"));
 	}
 	
 	@Secured("ROLE_MODULE_READ")
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<Module> findAll(int pageindex,int itemSize)
 	{
-		return repository.findAll(new PageRequest(pageindex, itemSize,new Sort(Direction.ASC, "code"))).getContent();
+		return repository.findAll(PageRequest.of(pageindex, itemSize,Sort.by(Direction.ASC, "code"))).getContent();
 	}
 	
 	@Secured("ROLE_MODULE_READ")
@@ -68,7 +66,7 @@ public class ModuleService
 		if(Strings.isNullOrEmpty(key))
 			return findAll(pageindex, itemSize);
 		else
-			return repository.findAll(new PageRequest(pageindex, itemSize),key);
+			return repository.findAll(PageRequest.of(pageindex, itemSize),key);
 	}
 	
 	@Secured("ROLE_MODULE_READ")
@@ -108,6 +106,6 @@ public class ModuleService
 		for(ModuleEventListener listener:listeners)
 			listener.fireModuleRemoved(id);
 		
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 }

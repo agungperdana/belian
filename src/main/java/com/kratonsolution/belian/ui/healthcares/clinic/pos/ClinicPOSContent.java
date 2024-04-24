@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.healthcares.clinic.pos;
 
 import java.math.BigDecimal;
@@ -148,7 +146,7 @@ public class ClinicPOSContent extends POSOrder
 							items.getRows().getChildren().clear();
 							calculateResult();
 
-							Visit out = visitService.findOne(RowUtils.id(vROw));
+							Visit out = visitService.findById(RowUtils.id(vROw));
 							if(out != null)
 							{
 								if(window.isInsurance())
@@ -160,7 +158,7 @@ public class ClinicPOSContent extends POSOrder
 								}
 
 								for(HealthcareDelivery delivery:out.getDeliverys())
-									addItem(productService.findOne(delivery.getProduct().getId()), delivery.getQuantity());
+									addItem(productService.findById(delivery.getProduct().getId()), delivery.getQuantity());
 
 								customer = out.getPatient();
 
@@ -452,7 +450,7 @@ public class ClinicPOSContent extends POSOrder
 							order.addCashTerm();
 
 							//biller & receiver
-							Party billto = partyService.findOne(customer.getId());
+							Party billto = partyService.findById(customer.getId());
 							if(billto != null)
 							{
 								order.setBillToParty(billto.toRef());
@@ -468,7 +466,7 @@ public class ClinicPOSContent extends POSOrder
 							{
 								Row rw = (Row)com;
 
-								Product product = productService.findOne(RowUtils.id(rw));
+								Product product = productService.findById(RowUtils.id(rw));
 								if(product != null)
 								{
 									SalesOrderItem orderItem = new SalesOrderItem();
@@ -657,7 +655,7 @@ public class ClinicPOSContent extends POSOrder
 
 						items.getRows().appendChild(row);
 
-						Product fresh = productService.findOne(product.getId());
+						Product fresh = productService.findById(product.getId());
 						if(fresh != null)
 						{
 							for(PriceComponent price:fresh.getPrices())
@@ -693,7 +691,7 @@ public class ClinicPOSContent extends POSOrder
 		{
 			Row row = (Row)com;
 
-			Product product = productService.findOne(RowUtils.id(row));
+			Product product = productService.findById(RowUtils.id(row));
 			if(product != null)
 				subtotal = subtotal.add(RowUtils.decimal(row, 5));
 		}
@@ -703,7 +701,7 @@ public class ClinicPOSContent extends POSOrder
 		{
 			Row row = (Row)com;
 
-			Product product = productService.findOne(RowUtils.id(row));
+			Product product = productService.findById(RowUtils.id(row));
 			if(product == null)
 			{
 				try
@@ -819,7 +817,7 @@ public class ClinicPOSContent extends POSOrder
 
 		items.getRows().appendChild(row);
 
-		Product fresh = productService.findOne(product.getId());
+		Product fresh = productService.findById(product.getId());
 		if(fresh != null)
 		{
 			for(PriceComponent price:fresh.getPrices())

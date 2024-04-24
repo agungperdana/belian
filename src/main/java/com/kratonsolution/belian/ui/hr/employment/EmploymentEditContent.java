@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.hr.employment;
 
 import java.util.UUID;
@@ -90,7 +88,7 @@ public class EmploymentEditContent extends AbstractForm
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Employment employment = service.findOne(RowUtils.id(row));
+				Employment employment = service.findById(RowUtils.id(row));
 				if(employment != null)
 				{
 					employment.setStart(DateTimes.sql(start.getValue()));
@@ -107,7 +105,7 @@ public class EmploymentEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{		
-		Employment employment = service.findOne(RowUtils.id(row));
+		Employment employment = service.findById(RowUtils.id(row));
 		if(employment != null)
 		{
 			start.setValue(employment.getStart());
@@ -178,7 +176,7 @@ public class EmploymentEditContent extends AbstractForm
 		salarys.getColumns().getLastChild().setVisible(false);
 		salarys.setSpan("4");
 		
-		Employment employment = service.findOne(RowUtils.id(row));
+		Employment employment = service.findById(RowUtils.id(row));
 		if(employment != null)
 		{
 //			for(PayHistory history:employment.getSalarys())
@@ -245,7 +243,7 @@ public class EmploymentEditContent extends AbstractForm
 		benefits.getColumns().getLastChild().setVisible(false);
 		benefits.setSpan("3");
 		
-		Employment employment = service.findOne(RowUtils.id(row));
+		Employment employment = service.findById(RowUtils.id(row));
 		if(employment != null)
 		{
 //			for(Benefit benefit:employment.getBenefits())
@@ -321,7 +319,7 @@ public class EmploymentEditContent extends AbstractForm
 		payrolls.getColumns().appendChild(new Column());
 		payrolls.getColumns().getLastChild().setVisible(false);
 		
-		Employment employment = service.findOne(RowUtils.id(row));
+		Employment employment = service.findById(RowUtils.id(row));
 		if(employment != null)
 		{
 //			for(PayrollPreference preference:employment.getPreferences())

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.general.organization;
 
 import java.util.Vector;
@@ -122,7 +120,7 @@ public class OrganizationEditContent extends AbstractForm
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,lang.get("message.field.empty"));
 
-				Organization org = service.findOne(RowUtils.id(row));
+				Organization org = service.findById(RowUtils.id(row));
 				if(org != null)
 				{
 					org.setCode(code.getText());
@@ -316,7 +314,7 @@ public class OrganizationEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		Organization organization = service.findOne(RowUtils.id(row));
+		Organization organization = service.findById(RowUtils.id(row));
 		if(organization != null)
 		{
 			code.setText(organization.getCode());
@@ -403,7 +401,7 @@ public class OrganizationEditContent extends AbstractForm
 		address.getColumns().getLastChild().setVisible(false);
 		address.setSpan("1");
 
-		Organization organization = service.findOne(RowUtils.id(row));
+		Organization organization = service.findById(RowUtils.id(row));
 		if(organization != null)
 		{
 			for(Address add:organization.getAddresses())
@@ -462,7 +460,7 @@ public class OrganizationEditContent extends AbstractForm
 		contacts.getColumns().getLastChild().setVisible(false);
 		contacts.setSpan("1");
 
-		Organization organization = service.findOne(RowUtils.id(row));
+		Organization organization = service.findById(RowUtils.id(row));
 		if(organization != null)
 		{
 			for(Contact con:organization.getContacts())
@@ -513,7 +511,7 @@ public class OrganizationEditContent extends AbstractForm
 		roles.getColumns().getLastChild().setVisible(false);
 		roles.setSpan("3");
 
-		Organization organization = service.findOne(RowUtils.id(row));
+		Organization organization = service.findById(RowUtils.id(row));
 		if(organization != null)
 		{
 			for(PartyRole role:organization.getPartyRoles())
@@ -567,7 +565,7 @@ public class OrganizationEditContent extends AbstractForm
 		relationships.getColumns().getLastChild().setVisible(false);
 		relationships.setSpan("3");
 
-		Organization organization = service.findOne(RowUtils.id(row));
+		Organization organization = service.findById(RowUtils.id(row));
 		if(organization != null)
 		{
 			for(PartyRelationship role:organization.getRelationships())
@@ -629,7 +627,7 @@ public class OrganizationEditContent extends AbstractForm
 		skills.getColumns().getLastChild().setVisible(false);
 		skills.setSpan("3");
 
-		Organization organization = service.findOne(RowUtils.id(row));
+		Organization organization = service.findById(RowUtils.id(row));
 		if(organization != null)
 		{
 			for(PartySkill sk:organization.getSkills())
@@ -681,7 +679,7 @@ public class OrganizationEditContent extends AbstractForm
 		classifications.getColumns().getLastChild().setVisible(false);
 		classifications.setSpan("3");
 
-		Organization organization = service.findOne(RowUtils.id(row));
+		Organization organization = service.findById(RowUtils.id(row));
 		if(organization != null)
 		{
 			for(PartyClassification cls:organization.getClassifications())

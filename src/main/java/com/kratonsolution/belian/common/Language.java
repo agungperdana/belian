@@ -1,10 +1,9 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.common;
 
 import java.util.Locale;
 
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,21 +19,16 @@ import com.google.common.base.Strings;
 @Service
 public class Language
 {
-	Logger log = LoggerFactory.getLogger(getClass());
-	
-	@Autowired
 	private MessageSource messageSource;
-	
-	@Autowired
-	private SessionUtils utils;
+
+	public Language(MessageSource messageSource)
+	{
+		this.messageSource = messageSource;
+	}
 
 	public String get(String name)
 	{
-		String lang = "in_id";
-		if(!Strings.isNullOrEmpty(utils.getLanguage()))
-			lang = utils.getLanguage();
-		
-		Locale locale = new Locale(lang);
+		Locale locale = new Locale("in_id");
 		
 		return messageSource.getMessage(name,new Object[]{},locale);
 	}

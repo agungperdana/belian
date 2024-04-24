@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.security.svc;
 
 import java.util.List;
@@ -40,9 +38,9 @@ public class UserService
 	private StrongPasswordEncryptor encryptor = new StrongPasswordEncryptor();
 		
 	@Secured({"ROLE_USER_READ","ROLE_SYSTEM_READ"})
-	public User findOne(String id)
+	public User findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 	
 	@Secured("ROLE_USER_READ")
@@ -58,9 +56,9 @@ public class UserService
 	}
 	
 	@Secured("ROLE_USER_READ")
-	public List<User> findAll(int pageIndex,int pageSize)
+	public List<User> findAll(int pageIndex, int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex,pageSize)).getContent();
+		return repository.findAll(PageRequest.of(pageIndex, pageSize)).getContent();
 	}
 	
 	@Secured("ROLE_USER_CREATE")
@@ -82,7 +80,7 @@ public class UserService
 	@Secured("ROLE_USER_DELETE")
 	public void delete(@PathVariable String id)
 	{
-		User user = repository.findOne(id);
+		User user = repository.findById(id).orElse(null);
 		if(user != null)
 		{
 			settingRepository.delete(user.getSetting());
@@ -107,7 +105,7 @@ public class UserService
 			
 		StrongPasswordEncryptor encryptor = new StrongPasswordEncryptor();
 		
-		User user = repository.findOne(id);
+		User user = repository.findById(id).orElse(null);
 		if(user != null)
 		{
 			user.setPassword(encryptor.encryptPassword(newPassword));

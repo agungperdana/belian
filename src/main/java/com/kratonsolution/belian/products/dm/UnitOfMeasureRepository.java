@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.products.dm;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface UnitOfMeasureRepository extends JpaRepository<UnitOfMeasure, String>
 {
-	public UnitOfMeasure findOneByName(String name);
+	public UnitOfMeasure findByName(String name);
 }

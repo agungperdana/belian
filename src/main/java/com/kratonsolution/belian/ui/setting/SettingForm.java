@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.setting;
 
 import org.zkoss.zk.ui.Executions;
@@ -94,7 +92,7 @@ public class SettingForm extends AbstractForm
 				{
 					UserSetting setting = null;
 					if(user.getSetting() != null)
-						setting = userService.findOne(user.getSetting().getId());
+						setting = userService.findById(user.getSetting().getId());
 
 					if(setting == null)
 					{

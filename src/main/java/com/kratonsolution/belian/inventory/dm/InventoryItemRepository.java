@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.inventory.dm;
 
 import java.math.BigDecimal;
@@ -42,14 +40,14 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, St
 			+ "item.product.id =:product "
 			+ "AND item.facility.id =:facility "
 			+ "AND item.expiredDate IS NULL")
-	public InventoryItem findOne(@Param("product")String product,@Param("facility")String facility);
+	public InventoryItem findById(@Param("product")String product,@Param("facility")String facility);
 	
 	@Query("FROM InventoryItem item WHERE "
 			+ "item.product.id =:product "
 			+ "AND item.facility.id =:facility "
 			+ "AND item.container.id =:container "
 			+ "AND item.expiredDate =:expiredDate ")
-	public InventoryItem findOne(@Param("product")String product,
+	public InventoryItem findById(@Param("product")String product,
 								 @Param("facility")String facility,
 								 @Param("container")String container,
 								 @Param("expiredDate")Date expiredDate);
@@ -58,7 +56,7 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, St
 			+ "item.product.id =:product "
 			+ "AND item.facility.id =:facility "
 			+ "AND item.container.id =:container ")
-	public InventoryItem findOne(@Param("product")String product,
+	public InventoryItem findById(@Param("product")String product,
 								 @Param("facility")String facility,
 								 @Param("container")String container);
 	
@@ -66,7 +64,7 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, St
 			+ "item.product.id =:product "
 			+ "AND item.facility.id =:facility "
 			+ "AND item.expiredDate =:expired")
-	public InventoryItem findOne(@Param("product")String product,@Param("facility")String facility,@Param("expired")Date expired);
+	public InventoryItem findById(@Param("product")String product,@Param("facility")String facility,@Param("expired")Date expired);
 	
 	@Query("FROM InventoryItem item WHERE "
 			+ "item.facility.id IN(:warehouse) "

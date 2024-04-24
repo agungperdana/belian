@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.global.infra;
 
 import java.util.Collection;

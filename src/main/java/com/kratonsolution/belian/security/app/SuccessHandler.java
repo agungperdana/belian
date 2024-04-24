@@ -1,39 +1,32 @@
-/**
- * 
- */
 package com.kratonsolution.belian.security.app;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Service;
 
-import com.kratonsolution.belian.common.SessionUtils;
-
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
+@Slf4j
+@AllArgsConstructor
 @Service
 public class SuccessHandler implements AuthenticationSuccessHandler
 {
-	@Autowired
-	private SessionUtils utils;
-
-	/* (non-Javadoc)
-	 * @see org.springframework.security.web.authentication.AuthenticationSuccessHandler#onAuthenticationSuccess(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, org.springframework.security.core.Authentication)
-	 */
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request,
-			HttpServletResponse response, Authentication auth)
-			throws IOException, ServletException
+										HttpServletResponse response, Authentication auth)
+			throws IOException
 	{
+		log.debug("Authentication success, redirect to user home page");
 		response.sendRedirect("/svc/home");
 	}
 

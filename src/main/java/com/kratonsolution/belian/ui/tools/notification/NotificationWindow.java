@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.tools.notification;
 
 import org.zkoss.zk.ui.Page;

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.workefforts.workeffort;
 
 import java.math.BigDecimal;
@@ -223,7 +221,7 @@ public class WorkEffortFormContent extends AbstractForm
 					
 					if(RowUtils.isChecked(row))
 					{
-						WorkRequirement requirement = workRequirementService.findOne(RowUtils.id(row));
+						WorkRequirement requirement = workRequirementService.findById(RowUtils.id(row));
 						if(requirement != null)
 						{
 							WorkRequirementFulfillment fulfillment = new WorkRequirementFulfillment();
@@ -240,7 +238,7 @@ public class WorkEffortFormContent extends AbstractForm
 					
 					if(RowUtils.isChecked(row))
 					{
-						OrderItem orderItem = orderItemService.findOne(RowUtils.id(row));
+						OrderItem orderItem = orderItemService.findById(RowUtils.id(row));
 						if(orderItem != null)
 						{
 							WorkOrderItemFulfillment fulfillment = new WorkOrderItemFulfillment();

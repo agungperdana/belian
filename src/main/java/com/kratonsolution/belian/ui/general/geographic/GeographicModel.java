@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.general.geographic;
 
 import java.util.ArrayList;
