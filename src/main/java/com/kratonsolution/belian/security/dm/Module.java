@@ -1,20 +1,13 @@
-
 package com.kratonsolution.belian.security.dm;
 
 import java.io.Serializable;
 import java.util.UUID;
 
-import jakarta.persistence.Cacheable;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Version;
+import jakarta.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.type.YesNoConverter;
 
 /**
  * 
@@ -24,17 +17,17 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="module")
+@Table(name="access_module")
 @Cacheable
 public class Module implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 
-	@Column(name="code",unique=true,nullable=false)
+	@Column(name="code")
 	private String code;
 	
-	@Column(name="name",unique=true,nullable=false)
+	@Column(name="name")
 	private String name;
 	
 	@Column(name="note")
@@ -45,6 +38,7 @@ public class Module implements Serializable
 	private ModuleGroup group = ModuleGroup.GENERAL;
 	
 	@Column(name="is_enabled")
+	@Convert(converter = YesNoConverter.class)
 	private boolean enabled;
 	
 	@Version

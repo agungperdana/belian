@@ -29,7 +29,7 @@ import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.dm.CompanyStructure;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
 import com.kratonsolution.belian.partys.svc.OrganizationService;
-import com.kratonsolution.belian.security.dm.AccessRole;
+import com.kratonsolution.belian.security.dm.RoleModule;
 import com.kratonsolution.belian.security.dm.Module;
 import com.kratonsolution.belian.security.dm.ModuleGroup;
 import com.kratonsolution.belian.security.dm.Role;
@@ -119,16 +119,16 @@ public class RoleFormContent extends AbstractForm
 						Module module = moduleService.findById(RowUtils.string(_row, 6));
 						if(module != null)
 						{
-							AccessRole accessRole = new AccessRole();
-							accessRole.setModule(module);
-							accessRole.setRole(role);
-							accessRole.setCanCreate(RowUtils.isChecked(_row, 1));
-							accessRole.setCanRead(RowUtils.isChecked(_row, 2));
-							accessRole.setCanUpdate(RowUtils.isChecked(_row, 3));
-							accessRole.setCanDelete(RowUtils.isChecked(_row, 4));
-							accessRole.setCanPrint(RowUtils.isChecked(_row, 5));
+							RoleModule roleModule = new RoleModule();
+							roleModule.setModule(module);
+							roleModule.setRole(role);
+							roleModule.setCanCreate(RowUtils.isChecked(_row, 1));
+							roleModule.setCanRead(RowUtils.isChecked(_row, 2));
+							roleModule.setCanUpdate(RowUtils.isChecked(_row, 3));
+							roleModule.setCanDelete(RowUtils.isChecked(_row, 4));
+							roleModule.setCanPrint(RowUtils.isChecked(_row, 5));
 							
-							role.getAccesses().add(accessRole);
+							role.getAccesses().add(roleModule);
 						}
 					}
 				}

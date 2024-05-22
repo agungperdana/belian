@@ -2,18 +2,14 @@ package com.kratonsolution.belian.accounting.dm;
 
 import java.util.UUID;
 
-import jakarta.persistence.Cacheable;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Version;
+import jakarta.persistence.*;
 
 import com.kratonsolution.belian.api.dm.IDValueRef;
 import com.kratonsolution.belian.common.dm.Referenceable;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.type.YesNoConverter;
 
 /**
  * 
@@ -37,6 +33,7 @@ public class Currency implements Referenceable
 	private String name;
 	
 	@Column(name="is_default")
+	@Convert(converter = YesNoConverter.class)
 	private boolean base;
 	
 	@Version

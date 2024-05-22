@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.security.app;
 
 import java.util.ArrayList;
@@ -6,13 +5,13 @@ import java.util.List;
 
 import jakarta.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.kratonsolution.belian.security.dm.AccessRole;
+import com.kratonsolution.belian.security.dm.RoleModule;
 import com.kratonsolution.belian.security.dm.ModuleRepository;
 import com.kratonsolution.belian.security.dm.RoleRepository;
 import com.kratonsolution.belian.security.dm.User;
@@ -20,21 +19,19 @@ import com.kratonsolution.belian.security.dm.UserRepository;
 import com.kratonsolution.belian.security.dm.UserRole;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 @Service
 @Transactional
+@AllArgsConstructor
 public class AuthenticationService implements UserDetailsService
 {
-	@Autowired
 	private UserRepository repository;
 	
-	@Autowired
 	private RoleRepository roleRepository;
 	
-	@Autowired
 	private ModuleRepository moduleRepository;
 	
 	@Override
@@ -50,24 +47,24 @@ public class AuthenticationService implements UserDetailsService
 		{
 			if(userRole.isEnabled())
 			{
-				for(AccessRole accessRole : userRole.getRole().getAccesses())
+				for(RoleModule roleModule : userRole.getRole().getAccesses())
 				{
-					if(accessRole.getModule() != null)
+					if(roleModule.getModule() != null)
 					{
-						if(accessRole.isCanCreate())
-							list.add(new Authority("ROLE_"+accessRole.getModule().getCode()+"_CREATE"));
+						if(roleModule.isCanCreate())
+							list.add(new Authority("ROLE_"+ roleModule.getModule().getCode()+"_CREATE"));
 						
-						if(accessRole.isCanDelete())
-							list.add(new Authority("ROLE_"+accessRole.getModule().getCode()+"_DELETE"));
+						if(roleModule.isCanDelete())
+							list.add(new Authority("ROLE_"+ roleModule.getModule().getCode()+"_DELETE"));
 						
-						if(accessRole.isCanPrint())
-							list.add(new Authority("ROLE_"+accessRole.getModule().getCode()+"_PRINT"));
+						if(roleModule.isCanPrint())
+							list.add(new Authority("ROLE_"+ roleModule.getModule().getCode()+"_PRINT"));
 						
-						if(accessRole.isCanRead())
-							list.add(new Authority("ROLE_"+accessRole.getModule().getCode()+"_READ"));
+						if(roleModule.isCanRead())
+							list.add(new Authority("ROLE_"+ roleModule.getModule().getCode()+"_READ"));
 						
-						if(accessRole.isCanUpdate())
-							list.add(new Authority("ROLE_"+accessRole.getModule().getCode()+"_UPDATE"));
+						if(roleModule.isCanUpdate())
+							list.add(new Authority("ROLE_"+ roleModule.getModule().getCode()+"_UPDATE"));
 					}
 				}
 			}

@@ -29,7 +29,7 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.general.svc.CompanyStructureService;
-import com.kratonsolution.belian.security.dm.AccessRole;
+import com.kratonsolution.belian.security.dm.RoleModule;
 import com.kratonsolution.belian.security.dm.Module;
 import com.kratonsolution.belian.security.dm.ModuleGroup;
 import com.kratonsolution.belian.security.dm.Role;
@@ -119,17 +119,17 @@ public class RoleEditContent extends AbstractForm
 						{
 							Row _row = (Row)object;
 
-							Iterator<AccessRole> iterator = role.getAccesses().iterator();
+							Iterator<RoleModule> iterator = role.getAccesses().iterator();
 							while (iterator.hasNext())
 							{
-								AccessRole accessRole = (AccessRole) iterator.next();
-								if(accessRole.getId().equals(RowUtils.string(_row, 7)))
+								RoleModule roleModule = (RoleModule) iterator.next();
+								if(roleModule.getId().equals(RowUtils.string(_row, 7)))
 								{
-									accessRole.setCanCreate(RowUtils.isChecked(_row, 1));
-									accessRole.setCanRead(RowUtils.isChecked(_row, 2));
-									accessRole.setCanUpdate(RowUtils.isChecked(_row, 3));
-									accessRole.setCanDelete(RowUtils.isChecked(_row, 4));
-									accessRole.setCanPrint(RowUtils.isChecked(_row, 5));
+									roleModule.setCanCreate(RowUtils.isChecked(_row, 1));
+									roleModule.setCanRead(RowUtils.isChecked(_row, 2));
+									roleModule.setCanUpdate(RowUtils.isChecked(_row, 3));
+									roleModule.setCanDelete(RowUtils.isChecked(_row, 4));
+									roleModule.setCanPrint(RowUtils.isChecked(_row, 5));
 								}
 							}
 						}
@@ -305,27 +305,27 @@ public class RoleEditContent extends AbstractForm
 			List<Module> newModules = new ArrayList<Module>();
 
 			Role role = service.findById(RowUtils.string(this.row, 4));
-			for(AccessRole accessRole:role.getAccesses())
+			for(RoleModule roleModule :role.getAccesses())
 			{
-				if(accessRole.getModule() != null)
+				if(roleModule.getModule() != null)
 				{
-					Module module = moduleService.findById(accessRole.getModule().getId());
+					Module module = moduleService.findById(roleModule.getModule().getId());
 					if(module != null && module.getGroup().equals(group))
 					{
 						Checkbox create = new Checkbox();
-						create.setChecked(accessRole.isCanCreate());
+						create.setChecked(roleModule.isCanCreate());
 
 						Checkbox read = new Checkbox();
-						read.setChecked(accessRole.isCanRead());
+						read.setChecked(roleModule.isCanRead());
 
 						Checkbox update = new Checkbox();
-						update.setChecked(accessRole.isCanUpdate());
+						update.setChecked(roleModule.isCanUpdate());
 
 						Checkbox delete = new Checkbox();
-						delete.setChecked(accessRole.isCanDelete());
+						delete.setChecked(roleModule.isCanDelete());
 
 						Checkbox print = new Checkbox();
-						print.setChecked(accessRole.isCanPrint());
+						print.setChecked(roleModule.isCanPrint());
 
 						Row row = new Row();
 						row.appendChild(new Label(module.getName()));
@@ -335,7 +335,7 @@ public class RoleEditContent extends AbstractForm
 						row.appendChild(delete);
 						row.appendChild(print);
 						row.appendChild(new Label(module.getId()));
-						row.appendChild(new Label(accessRole.getId()));
+						row.appendChild(new Label(roleModule.getId()));
 
 						grid.getRows().appendChild(row);
 					}
@@ -345,9 +345,9 @@ public class RoleEditContent extends AbstractForm
 			for(Module module:moduleService.findAll())
 			{
 				boolean exist = false;
-				for(AccessRole accessRole:role.getAccesses())
+				for(RoleModule roleModule :role.getAccesses())
 				{
-					if(accessRole.getModule() != null && accessRole.getModule().getId().equals(module.getId()))
+					if(roleModule.getModule() != null && roleModule.getModule().getId().equals(module.getId()))
 						exist = true;
 				}
 

@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.ui.nav;
 
 import org.zkoss.zk.ui.event.Event;
@@ -14,8 +13,9 @@ import com.kratonsolution.belian.ui.util.Springs;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
-public abstract class AbstractDock extends Toolbarbutton implements Dock,EventListener<Event>
+public abstract class AbstractDock extends Toolbarbutton implements Dock, EventListener<Event>
 {
 	protected KernelTask kernel = Springs.get(KernelTask.class);
 	

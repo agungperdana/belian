@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.common.dm;
 
 import java.io.Serializable;
@@ -6,9 +5,9 @@ import java.io.Serializable;
 import com.kratonsolution.belian.api.dm.IDValueRef;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public interface Referenceable extends Serializable
 {

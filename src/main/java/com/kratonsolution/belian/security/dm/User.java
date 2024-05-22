@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.security.dm;
 
 import java.util.HashSet;
@@ -25,23 +24,23 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 @Getter
 @Setter
 @Entity
-@Table(name="user")
+@Table(name="access_user")
 public class User implements Referenceable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@Column(name="email",nullable=false,unique=true)
+	@Column(name="email")
 	private String userName;
 	
-	@Column(name="password",nullable=false)
+	@Column(name="password")
 	private String password;
 	
 	@Column(name="is_enabled")
@@ -52,15 +51,15 @@ public class User implements Referenceable
 	private UserSetting setting;
 	
 	@Column(name="is_deleteable")
-	private boolean deleteable;
-	
+	private boolean deletable;
+
 	@Transient
 	private Employee employee;
-	
+
 	@Version
 	private Long version;
 	
-	@OneToMany(mappedBy="user",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="user", cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.LAZY)
 	private Set<UserRole> roles = new HashSet<UserRole>();
 
 	public User(){}

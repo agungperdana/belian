@@ -16,6 +16,26 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `access_module`
+--
+
+DROP TABLE IF EXISTS `access_module`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `access_module` (
+  `id` char(50) NOT NULL,
+  `code` varchar(150) DEFAULT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `note` varchar(250) DEFAULT NULL,
+  `module_group` char(25) DEFAULT 'GENERAL',
+  `is_enabled` char(1) DEFAULT '1',
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `access_role`
 --
 
@@ -33,6 +53,26 @@ CREATE TABLE `access_role` (
   `is_can_delete` char(1) DEFAULT '0',
   `is_can_create` char(1) DEFAULT '0',
   `is_can_print` char(1) DEFAULT '0',
+  `version` bigint(20) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `access_user`
+--
+
+DROP TABLE IF EXISTS `access_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `access_user` (
+  `id` char(50) NOT NULL,
+  `email` varchar(250) DEFAULT NULL,
+  `password` varchar(250) DEFAULT NULL,
+  `is_enabled` char(1) DEFAULT '1',
+  `fk_user_setting` char(50) DEFAULT NULL,
+  `is_deleteable` char(1) DEFAULT '0',
   `version` bigint(20) DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
@@ -1988,26 +2028,6 @@ CREATE TABLE `message_receiver` (
   `fk_receiver` char(50) DEFAULT NULL,
   `fk_message` char(50) DEFAULT NULL,
   `version` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `module`
---
-
-DROP TABLE IF EXISTS `module`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `module` (
-  `id` char(50) NOT NULL,
-  `code` varchar(150) DEFAULT NULL,
-  `name` varchar(150) DEFAULT NULL,
-  `note` varchar(250) DEFAULT NULL,
-  `module_group` char(25) DEFAULT 'GENERAL',
-  `is_enabled` char(1) DEFAULT '1',
-  `version` bigint(20) DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
@@ -4684,26 +4704,6 @@ CREATE TABLE `uom_factor` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `user`
---
-
-DROP TABLE IF EXISTS `user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user` (
-  `id` char(50) NOT NULL,
-  `email` varchar(250) DEFAULT NULL,
-  `password` varchar(250) DEFAULT NULL,
-  `is_enabled` char(1) DEFAULT '1',
-  `fk_user_setting` char(50) DEFAULT NULL,
-  `is_deleteable` char(1) DEFAULT '0',
-  `version` bigint(20) DEFAULT 0,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `user_role`
 --
 
@@ -5080,4 +5080,4 @@ CREATE TABLE `working_shift` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-24 18:47:30
+-- Dump completed on 2024-05-22 13:13:49

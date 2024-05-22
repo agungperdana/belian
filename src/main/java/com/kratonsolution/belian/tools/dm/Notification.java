@@ -26,7 +26,7 @@ public class Notification implements Serializable
 	private String id;
 	
 	@Column(name="new_message")
-	private Integer newMessage;
+	private int newMessage;
 	
 	@Version
 	private Long version;

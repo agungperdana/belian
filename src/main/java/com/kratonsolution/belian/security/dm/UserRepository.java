@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.security.dm;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,9 +7,9 @@ import org.springframework.data.repository.query.Param;
 import com.kratonsolution.belian.global.dm.UserSetting;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public interface UserRepository extends JpaRepository<User, String>
 {	

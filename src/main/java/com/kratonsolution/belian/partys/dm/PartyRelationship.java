@@ -37,7 +37,7 @@ public class PartyRelationship implements Serializable
 	@Column(name="start",nullable=false)
 	protected Date start;
 	
-	@Column(name="end")
+	@Column(name="end_date")
 	protected Date end;
 	
 	@ManyToOne

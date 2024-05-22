@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.global.dm;
 
 import java.io.Serializable;
@@ -20,11 +19,6 @@ import com.kratonsolution.belian.api.dm.IDValueRef;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * 
- * @author Agung Dodi Perdana
- * @email agung.dodi.perdana@gmail.com
- */
 @Getter
 @Setter
 @Entity

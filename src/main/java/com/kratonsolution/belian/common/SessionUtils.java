@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.common;
 
 import java.util.ArrayList;
@@ -8,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -49,39 +49,27 @@ import com.kratonsolution.belian.security.svc.UserService;
  */
 @Service
 @Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+@AllArgsConstructor
 public class SessionUtils
 {
-	@Autowired
 	private Language lang;
-	
-	@Autowired
+
 	private UserService service;
-	
-	@Autowired
+
 	private UserSettingRepository settingRepo;
 
-	@Autowired
 	private CurrencyService currencyService;
 
-	@Autowired
 	private OrganizationService organizationService;
 
-	@Autowired
 	private CompanyStructureService companyStructureService;
-	
-	@Autowired
+
 	private EmployeeRepository employeeRepo;
 
-	@Autowired
-	private CompanyStructureRepository structureRepo;
-	
-	@Autowired
 	private EmploymentRepository employmentRepo;
-	
-	@Autowired
+
 	private TaxService taxService;
-	
-	@Autowired
+
 	private PartyService partyService;
 		
 	public User getUser()
@@ -91,8 +79,8 @@ public class SessionUtils
 			throw new RuntimeException(lang.get("message.user.empty"));
 		
 		//Update user setting with latest from database
-		if(information.getUser().getSetting() != null)
-			information.getUser().setSetting(settingRepo.findById(information.getUser().getSetting().getId()).orElse(null));
+//		if(information.getUser().getSetting() != null)
+//			information.getUser().setSetting(settingRepo.findById(information.getUser().getSetting().getId()).orElse(null));
 		
 		return information.getUser();
 	}

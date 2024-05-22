@@ -4,7 +4,6 @@ package com.kratonsolution.belian.security.dm;
 import java.io.Serializable;
 import java.util.UUID;
 
-import jakarta.persistence.Cacheable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -21,16 +20,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 @Getter
 @Setter
 @Entity
-@Table(name="access_role")
-@Cacheable
-public class AccessRole implements Serializable
+@Table(name="role_module")
+public class RoleModule implements Serializable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();

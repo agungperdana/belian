@@ -9,19 +9,9 @@ spring:
     version: 1.0.1
     description: Belian ERP v-1.0.1
   datasource:
-    url: jdbc:mariadb://127.0.0.1:3306/belian
+    url: jdbc:postgresql://127.0.0.1:5432/belian
     username: belian
     password: belian
-    driver-class-name: org.mariadb.jdbc.Driver
-  jpa:
-    show-sql: true
-    hibernate:
-      dialect: org.hibernate.dialect.MariaDB103Dialect
-      current_session_context_class: thread
-      cache:
-        use_second_level_cache: true
-        use_query_cache: true
-        region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
   messages:
     basename: messages
     cache-seconds: 0

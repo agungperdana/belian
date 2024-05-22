@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.general.dm;
 
 import jakarta.persistence.Entity;
@@ -13,6 +12,7 @@ import lombok.Setter;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 @Getter
 @Setter

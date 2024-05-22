@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.general.dm;
 
 import java.util.UUID;
@@ -17,6 +16,7 @@ import lombok.Setter;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 @Getter
 @Setter

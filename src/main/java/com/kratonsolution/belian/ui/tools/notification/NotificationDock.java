@@ -13,6 +13,7 @@ import com.kratonsolution.belian.ui.util.Springs;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class NotificationDock extends AbstractDock implements Notifiedable
 {
@@ -47,7 +48,7 @@ public class NotificationDock extends AbstractDock implements Notifiedable
 		NotificationRepository repository = Springs.get(NotificationRepository.class);
 		if(repository != null && repository.findById(utils.getUser().getUserName()) != null)
 		{
-			Notification notification = repository.findById(utils.getUser().getUserName()).orElse(null);
+			Notification notification = repository.findById(utils.getUser().getUserName()).orElse(new Notification());
 			if(notification.getNewMessage() > 0)
 				setImage("/icons/newmessage32.gif");
 			else

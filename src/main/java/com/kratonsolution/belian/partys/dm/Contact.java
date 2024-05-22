@@ -3,21 +3,14 @@ package com.kratonsolution.belian.partys.dm;
 
 import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Version;
+import jakarta.persistence.*;
 
 import com.kratonsolution.belian.api.dm.IDValueRef;
 import com.kratonsolution.belian.common.dm.Referenceable;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.type.YesNoConverter;
 
 /**
  * 
@@ -41,6 +34,7 @@ public class Contact implements Referenceable
 	private ContactType type = ContactType.OFFICE_PHONE;
 	
 	@Column(name="status")
+	@Convert(converter = YesNoConverter.class)
 	private boolean active;
 
 	@ManyToOne

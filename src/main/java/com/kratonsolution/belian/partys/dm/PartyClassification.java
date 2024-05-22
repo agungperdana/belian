@@ -34,7 +34,7 @@ public class PartyClassification implements Serializable
 	@Column(name="start")
 	private Date start;
 	
-	@Column(name="end")
+	@Column(name="end_date")
 	private Date end;
 
 	@Enumerated(EnumType.STRING)

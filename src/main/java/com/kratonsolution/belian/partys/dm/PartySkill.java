@@ -32,7 +32,7 @@ public class PartySkill implements Serializable
 	@Column(name="start")
 	private Date start;
 	
-	@Column(name="end")
+	@Column(name="end_date")
 	private Date end;
 	
 	@ManyToOne
