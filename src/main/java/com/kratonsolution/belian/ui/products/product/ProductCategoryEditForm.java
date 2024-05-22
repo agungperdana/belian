@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.products.product;
 
 import java.util.Iterator;
@@ -75,7 +73,7 @@ public class ProductCategoryEditForm extends AbstractForm
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Product fresh = service.findOne(classification.getProduct().getId());
+				Product fresh = service.findById(classification.getProduct().getId());
 				if(fresh != null && classification != null)
 				{
 					if(start.getValue() == null)

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.accounting.tax;
 
 import java.math.BigDecimal;
@@ -76,7 +74,7 @@ private Textbox code = Components.mandatoryTextBox(false);
 				if(Strings.isNullOrEmpty(value.getText()))
 					throw new WrongValueException(value,lang.get("message.field.empty"));
 			
-				Tax tax = service.findOne(RowUtils.id(row));
+				Tax tax = service.findById(RowUtils.id(row));
 				if(tax != null)
 				{
 					tax.setCode(code.getText());
@@ -94,7 +92,7 @@ private Textbox code = Components.mandatoryTextBox(false);
 	@Override
 	public void initForm()
 	{
-		Tax tax = service.findOne(RowUtils.id(row));
+		Tax tax = service.findById(RowUtils.id(row));
 		if(tax != null)
 		{
 			code.setText(tax.getCode());

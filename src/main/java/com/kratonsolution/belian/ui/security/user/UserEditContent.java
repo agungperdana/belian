@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.security.user;
 
 import java.util.HashMap;
@@ -88,7 +86,7 @@ public class UserEditContent extends AbstractForm
 				if(Strings.isNullOrEmpty(email.getText()))
 					throw new WrongValueException(email,lang.get("message.field.empty"));
 
-				User user = service.findOne(RowUtils.id(row));
+				User user = service.findById(RowUtils.id(row));
 				if(user != null)
 				{
 					user.setUserName(email.getText());
@@ -118,7 +116,7 @@ public class UserEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		User user = service.findOne(RowUtils.id(row));
+		User user = service.findById(RowUtils.id(row));
 		if(user != null)
 		{
 			link.addEventListener(Events.ON_CLICK,new EventListener<Event>()
@@ -204,7 +202,7 @@ public class UserEditContent extends AbstractForm
 		roles.appendChild(head);
 		roles.appendChild(columns);
 
-		User user = service.findOne(RowUtils.id(row));
+		User user = service.findById(RowUtils.id(row));
 		if(user != null)
 		{
 			Map<String,Boolean> already = new HashMap<>();

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.util;
 
 import org.springframework.web.context.WebApplicationContext;

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.requirement.svc;
 
 import java.util.ArrayList;
@@ -47,9 +45,9 @@ public class ProductRequirementService extends AbstractService
 	}
 	
 	@Secured("ROLE_PRODUCT_REQUIREMENT_READ")
-	public ProductRequirement findOne(String id)
+	public ProductRequirement findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 	
 	@Secured("ROLE_PRODUCT_REQUIREMENT_READ")
@@ -99,14 +97,14 @@ public class ProductRequirementService extends AbstractService
 	@Secured("ROLE_PRODUCT_REQUIREMENT_READ")
 	public List<ProductRequirement> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		return repository.findAll(PageRequest.of(pageIndex, pageSize)).getContent();
 	}
 	
 	@Secured("ROLE_PRODUCT_REQUIREMENT_READ")
 	public List<ProductRequirement> findAll(int pageIndex,int pageSize,String key)
 	{
 		if(!Strings.isNullOrEmpty(key))
-			return repository.findAll(new PageRequest(pageIndex, pageSize),key);
+			return repository.findAll(PageRequest.of(pageIndex, pageSize),key);
 		else
 			return findAll(pageIndex, pageSize);
 	}
@@ -126,7 +124,7 @@ public class ProductRequirementService extends AbstractService
 	@Secured("ROLE_PRODUCT_REQUIREMENT_DELETE")
 	public void delete(String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 	
 	@Secured("ROLE_PRODUCT_REQUIREMENT_DELETE")

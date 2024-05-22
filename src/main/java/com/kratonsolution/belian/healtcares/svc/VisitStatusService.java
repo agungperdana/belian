@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.healtcares.svc;
 
 import java.util.ArrayList;

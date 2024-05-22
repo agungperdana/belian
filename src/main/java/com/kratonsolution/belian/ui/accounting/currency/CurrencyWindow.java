@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.accounting.currency;
 
 import org.zkoss.zk.ui.Page;

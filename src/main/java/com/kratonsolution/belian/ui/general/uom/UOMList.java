@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.general.uom;
 
 import org.zkoss.zul.Listitem;
@@ -114,7 +112,7 @@ public class UOMList extends AbstractList<UnitOfMeasure> implements Observer
 	{
 		if(value != null && !Strings.isNullOrEmpty(value.getType()) && value.getType().equals(Product.class.getSimpleName()))
 		{
-			Product product = productService.findOne(value.getId());
+			Product product = productService.findById(value.getId());
 			if(product != null)
 				setDomainAsRef(product.getUom());
 		}

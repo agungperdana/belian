@@ -1,10 +1,8 @@
-/**
- * 
- */
 package com.kratonsolution.belian.partys.dm;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 import com.kratonsolution.belian.api.dm.IDValueRef;
 
@@ -12,7 +10,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
  */
@@ -20,6 +17,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="organization")
+@DiscriminatorValue("Organization")
 public class Organization extends Party
 {
 	public Organization(){}

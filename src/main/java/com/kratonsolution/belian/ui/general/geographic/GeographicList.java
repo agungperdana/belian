@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.general.geographic;
 
 import org.zkoss.zul.Listitem;

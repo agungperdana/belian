@@ -12,9 +12,7 @@ import com.kratonsolution.belian.global.dm.SequenceNumber;
 import com.kratonsolution.belian.global.dm.SequenceNumber.Code;
 import com.kratonsolution.belian.global.dm.SequenceNumberRepository;
 
-/**
- * 
- */
+
 
 /**
  * @author Agung Dodi Perdana
@@ -41,7 +39,7 @@ public class NumberGenerator
 		builder.append(calendar.get(Calendar.MONTH)<10?"0"+(calendar.get(Calendar.MONTH)+1):calendar.get(Calendar.MONTH)+1);
 		builder.append(calendar.get(Calendar.YEAR)+"-");
 		
-		SequenceNumber number = repository.findOneByCompanyIdAndDateAndCode(organization,date,code);
+		SequenceNumber number = repository.findByCompanyIdAndDateAndCode(organization,date,code);
 		if(number == null)
 		{
 			number = new SequenceNumber();
@@ -77,7 +75,7 @@ public class NumberGenerator
 		if(code == null || utils.getOrganization() == null)
 			return 0;
 		
-		SequenceNumber sequence = repository.findOneByCompanyIdAndDateAndCode(utils.getOrganization().getId(), DateTimes.currentDate(), code);
+		SequenceNumber sequence = repository.findByCompanyIdAndDateAndCode(utils.getOrganization().getId(), DateTimes.currentDate(), code);
 		if(sequence == null)
 		{
 			sequence = new SequenceNumber();

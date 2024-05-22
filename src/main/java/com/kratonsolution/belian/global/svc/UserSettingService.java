@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.global.svc;
 
 import org.jasypt.util.password.StrongPasswordEncryptor;
@@ -42,9 +39,9 @@ public class UserSettingService
 	}
 	
 	@Secured("ROLE_SYSTEM_UPDATE")
-	public UserSetting findOne(String id)
+	public UserSetting findById(String id)
 	{
-		return settingRepository.findOne(id);
+		return settingRepository.findById(id).orElse(null);
 	}
 	
 	@Secured({"ROLE_USER_SETTING_UPDATE","ROLE_SYSTEM_UPDATE"})

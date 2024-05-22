@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.products.svc;
 
 import java.util.List;
@@ -37,9 +35,9 @@ public class ProductFeatureService
 	
 	@Secured("ROLE_PRODUCT_FEATURE_READ")
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	public ProductFeature findOne(String id)
+	public ProductFeature findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -53,7 +51,7 @@ public class ProductFeatureService
 	@Secured("ROLE_PRODUCT_FEATURE_READ")
 	public List<ProductFeature> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		return repository.findAll(PageRequest.of(pageIndex, pageSize)).getContent();
 	}
 	
 	@Secured("ROLE_PRODUCT_FEATURE_CREATE")
@@ -71,6 +69,6 @@ public class ProductFeatureService
 	@Secured("ROLE_PRODUCT_FEATURE_DELETE")
 	public void delete(@PathVariable String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 }

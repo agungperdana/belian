@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.global.dm;
 
 import java.util.List;
@@ -15,5 +13,5 @@ public interface QuickLaunchRepository extends JpaRepository<QuickLaunch, String
 {
 	public List<QuickLaunch> findAllByUsername(String username);
 
-	public QuickLaunch findOneByNameAndUsername(String name,String username);
+	public QuickLaunch findByNameAndUsername(String name,String username);
 }

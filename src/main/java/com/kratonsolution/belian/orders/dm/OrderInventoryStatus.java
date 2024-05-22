@@ -1,14 +1,12 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.orders.dm;
 
 import java.math.BigDecimal;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 import lombok.Getter;
 import lombok.Setter;

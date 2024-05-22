@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.ui.setting;
 
 import org.zkoss.zk.ui.Page;
@@ -8,9 +5,9 @@ import org.zkoss.zk.ui.Page;
 import com.kratonsolution.belian.ui.AbstractWindow;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class SettingWindow extends AbstractWindow
 {

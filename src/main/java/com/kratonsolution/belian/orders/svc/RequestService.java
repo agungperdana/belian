@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.orders.svc;
 
 import java.util.ArrayList;
@@ -69,9 +67,9 @@ public class RequestService extends AbstractService
 	}
 
 	@Secured("ROLE_ORDERS_REQUEST_READ")
-	public Request findOne(String id)
+	public Request findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 
 	@Secured("ROLE_ORDERS_REQUEST_READ")
@@ -93,7 +91,7 @@ public class RequestService extends AbstractService
 		if(utils.getOrganizationIds().isEmpty())
 			return new ArrayList<>();
 
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganizationIds());
+		return repository.findAll(PageRequest.of(pageIndex, pageSize),utils.getOrganizationIds());
 	}
 
 	@Secured("ROLE_ORDERS_REQUEST_READ")
@@ -105,7 +103,7 @@ public class RequestService extends AbstractService
 		if(Strings.isNullOrEmpty(key))
 			return findAll(pageIndex, pageSize);
 
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganizationIds(),key);
+		return repository.findAll(PageRequest.of(pageIndex, pageSize),utils.getOrganizationIds(),key);
 	}
 
 	@Secured("ROLE_ORDERS_REQUEST_CREATE")
@@ -120,7 +118,7 @@ public class RequestService extends AbstractService
 //				List<Employee> employee = employeeRepo.findAllByPartyIdAndType(role.getPerson().getId(), PartyRoleType.EMPLOYEE);
 //				if(!employee.isEmpty() && !Strings.isNullOrEmpty(employee.get(0).getUsername()))
 //				{
-//					Notification notification = notificationRepo.findOne(employee.get(0).getUsername());
+//					Notification notification = notificationRepo.findById(employee.get(0).getUsername());
 //					if(notification == null)
 //					{
 //						notification = new Notification();
@@ -145,6 +143,6 @@ public class RequestService extends AbstractService
 	@Secured("ROLE_ORDERS_REQUEST_DELETE")
 	public void delete(String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 }

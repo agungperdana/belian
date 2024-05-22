@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.global.dm;
 
 import org.springframework.data.jpa.repository.JpaRepository;

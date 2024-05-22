@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.general.country;
 
 import org.zkoss.zk.ui.WrongValueException;
@@ -68,7 +66,7 @@ public class CountryEditContent extends AbstractForm
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,lang.get("message.field.empty"));
 
-				Country module = service.findOne(RowUtils.id(row));
+				Country module = service.findById(RowUtils.id(row));
 				if(module != null)
 				{
 					module.setCode(code.getText());
@@ -85,7 +83,7 @@ public class CountryEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		Country module = service.findOne(RowUtils.id(row));
+		Country module = service.findById(RowUtils.id(row));
 		if(module != null)
 		{
 			code.setText(module.getCode());

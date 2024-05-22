@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.inventorys.shipment;
 
 import java.math.BigDecimal;
@@ -132,7 +130,7 @@ public class ShipmentEditContent extends AbstractForm
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Shipment shipment = service.findOne(RowUtils.id(row));
+				Shipment shipment = service.findById(RowUtils.id(row));
 				if(shipment != null && shipment.isEditable())
 				{
 					if(types.getDomain() == null)
@@ -194,7 +192,7 @@ public class ShipmentEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		Shipment shipment = service.findOne(RowUtils.id(row));
+		Shipment shipment = service.findById(RowUtils.id(row));
 		if(shipment != null)
 		{
 			number.setText(shipment.getNumber());
@@ -361,7 +359,7 @@ public class ShipmentEditContent extends AbstractForm
 		statuses.getColumns().getLastChild().setVisible(false);
 		statuses.setSpan("2");
 
-		Shipment shipment = service.findOne(RowUtils.id(row));
+		Shipment shipment = service.findById(RowUtils.id(row));
 		if(shipment != null)
 		{
 			for(ShipmentStatus status:shipment.getStatuses())
@@ -412,7 +410,7 @@ public class ShipmentEditContent extends AbstractForm
 		items.getColumns().getLastChild().setVisible(false);
 		items.setSpan("1");
 		
-		Shipment shipment = service.findOne(RowUtils.id(row));
+		Shipment shipment = service.findById(RowUtils.id(row));
 		if(shipment != null)
 		{
 			for(ShipmentItem item:shipment.getItems())
@@ -428,7 +426,7 @@ public class ShipmentEditContent extends AbstractForm
 					@Override
 					public void onEvent(Event ev) throws Exception
 					{
-						Flow.next(getParent(), new ShipmentItemEditForm(itemService.findOne(RowUtils.id(row))));
+						Flow.next(getParent(), new ShipmentItemEditForm(itemService.findById(RowUtils.id(row))));
 					}
 				});
 			

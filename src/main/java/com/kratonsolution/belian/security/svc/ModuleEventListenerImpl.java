@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.security.svc;
 
 import java.util.Iterator;
@@ -10,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kratonsolution.belian.security.dm.AccessRole;
+import com.kratonsolution.belian.security.dm.RoleModule;
 import com.kratonsolution.belian.security.dm.Module;
 import com.kratonsolution.belian.security.dm.ModuleEventListener;
 import com.kratonsolution.belian.security.dm.Role;
@@ -27,9 +24,6 @@ public class ModuleEventListenerImpl implements ModuleEventListener
 	@Autowired
 	private RoleService roleService;
 
-	@Autowired
-	private ModuleService moduleService;
-
 	@Override
 	public void fireModuleAdded(Module module)
 	{
@@ -37,12 +31,12 @@ public class ModuleEventListenerImpl implements ModuleEventListener
 		{
 			for(Role role:roleService.findAll())
 			{
-				AccessRole accessRole = new AccessRole();
-				accessRole.setId(UUID.randomUUID().toString());
-				accessRole.setModule(module);
-				accessRole.setRole(role);
+				RoleModule roleModule = new RoleModule();
+				roleModule.setId(UUID.randomUUID().toString());
+				roleModule.setModule(module);
+				roleModule.setRole(role);
 				
-				role.getAccesses().add(accessRole);
+				role.getAccesses().add(roleModule);
 				
 				roleService.edit(role);
 			}
@@ -54,15 +48,15 @@ public class ModuleEventListenerImpl implements ModuleEventListener
 	{
 		for(Role role:roleService.findAll())
 		{
-			Iterator<AccessRole> iterator = role.getAccesses().iterator();
+			Iterator<RoleModule> iterator = role.getAccesses().iterator();
 			while (iterator.hasNext())
 			{
-				AccessRole accessRole = (AccessRole) iterator.next();
-				if(accessRole.getModule().getId().equals(id))
+				RoleModule roleModule = (RoleModule) iterator.next();
+				if(roleModule.getModule().getId().equals(id))
 				{
-					role.getAccesses().remove(accessRole);
-					accessRole.setModule(null);
-					accessRole.setRole(null);
+					role.getAccesses().remove(roleModule);
+					roleModule.setModule(null);
+					roleModule.setRole(null);
 					break;
 				}
 			}

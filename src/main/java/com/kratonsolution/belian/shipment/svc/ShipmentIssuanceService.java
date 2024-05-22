@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.shipment.svc;
 
 import java.math.BigDecimal;
@@ -66,9 +63,9 @@ public class ShipmentIssuanceService extends AbstractService
 	}
 	
 	@Secured("ROLE_SHIPMENT_ISSUANCE_READ")
-	public ShipmentIssuance findOne(String id)
+	public ShipmentIssuance findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 	
 	@Secured("ROLE_SHIPMENT_ISSUANCE_READ")
@@ -80,7 +77,7 @@ public class ShipmentIssuanceService extends AbstractService
 	@Secured("ROLE_SHIPMENT_ISSUANCE_READ")
 	public List<ShipmentIssuance> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId());
+		return repository.findAll(PageRequest.of(pageIndex, pageSize),utils.getOrganization().getId());
 	}
 	
 	@Secured("ROLE_SHIPMENT_ISSUANCE_CREATE")
@@ -97,7 +94,7 @@ public class ShipmentIssuanceService extends AbstractService
 		//update shipmentitem information
 		for(ShipmentIssuanceItem item:issuance.getItems())
 		{
-			ShipmentItem shipmentItem = itemRepo.findOne(item.getShipmentItem().getId());
+			ShipmentItem shipmentItem = itemRepo.findById(item.getShipmentItem().getId()).orElse(null);
 			if(shipmentItem != null)
 			{
 				ShipmentItemIssuanceInfo info = new ShipmentItemIssuanceInfo();
@@ -111,7 +108,7 @@ public class ShipmentIssuanceService extends AbstractService
 			}
 		}
 		
-		Shipment shipment = shipmentRepo.findOne(issuance.getShipment().getId());
+		Shipment shipment = shipmentRepo.findById(issuance.getShipment().getId()).orElse(null);
 		if(shipment != null)
 		{
 			shipment.setShipped(true);
@@ -128,7 +125,7 @@ public class ShipmentIssuanceService extends AbstractService
 	@Secured("ROLE_SHIPMENT_ISSUANCE_DELETE")
 	public void delete(String id)
 	{
-		ShipmentIssuance issuance = findOne(id);
+		ShipmentIssuance issuance = findById(id);
 		if(issuance != null)
 		{
 			stockService.addStock(issuance.getItems());
@@ -136,7 +133,7 @@ public class ShipmentIssuanceService extends AbstractService
 			//update shipmentitem information
 			for(ShipmentIssuanceItem item:issuance.getItems())
 			{
-				ShipmentItem shipmentItem = itemRepo.findOne(item.getShipmentItem().getId());
+				ShipmentItem shipmentItem = itemRepo.findById(item.getShipmentItem().getId()).orElse(null);
 				if(shipmentItem != null)
 				{
 					shipmentItem.removeIssuanceInfo(item.getAccepted());
@@ -147,7 +144,7 @@ public class ShipmentIssuanceService extends AbstractService
 		
 		repository.delete(issuance);
 		
-		Shipment shipment = shipmentRepo.findOne(issuance.getShipment().getId());
+		Shipment shipment = shipmentRepo.findById(issuance.getShipment().getId()).orElse(null);
 		if(shipment != null)
 		{
 			shipment.setShipped(false);

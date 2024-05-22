@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.orders.svc;
 
 import java.util.ArrayList;
@@ -36,9 +34,9 @@ public class OrderItemService extends AbstractService
 	}
 
 	@Secured("ROLE_SHIPMENT_RECEIPT_READ")
-	public OrderItem findOne(String id)
+	public OrderItem findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 
 	@Secured("ROLE_SHIPMENT_RECEIPT_READ")
@@ -56,7 +54,7 @@ public class OrderItemService extends AbstractService
 	@Secured("ROLE_SHIPMENT_RECEIPT_READ")
 	public List<OrderItem> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		return repository.findAll(PageRequest.of(pageIndex, pageSize)).getContent();
 	}
 	
 	@Secured("ROLE_SHIPMENT_RECEIPT_READ")
@@ -93,6 +91,6 @@ public class OrderItemService extends AbstractService
 	@Secured("ROLE_SHIPMENT_RECEIPT_DELETE")
 	public void delete(String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 }

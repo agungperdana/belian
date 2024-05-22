@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.invoice.svc;
 
 import java.math.BigDecimal;
@@ -102,9 +99,9 @@ public class SalesInvoiceService extends AbstractService
 	}
 
 	@Secured("ROLE_SALES_INVOICE_READ")
-	public SalesInvoice findOne(String id)
+	public SalesInvoice findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 
 	@Secured("ROLE_SALES_INVOICE_READ")
@@ -140,7 +137,7 @@ public class SalesInvoiceService extends AbstractService
 		if(utils.getOrganizationIds().isEmpty())
 			return new ArrayList<>();
 
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId());
+		return repository.findAll(PageRequest.of(pageIndex, pageSize),utils.getOrganization().getId());
 	}
 
 	@Secured("ROLE_SALES_INVOICE_READ")
@@ -152,7 +149,7 @@ public class SalesInvoiceService extends AbstractService
 		if(Strings.isNullOrEmpty(key))
 			return findAll(pageIndex, pageSize);
 
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId(),key);
+		return repository.findAll(PageRequest.of(pageIndex, pageSize),utils.getOrganization().getId(),key);
 	}
 
 	@Secured("ROLE_SALES_INVOICE_CREATE")
@@ -177,7 +174,7 @@ public class SalesInvoiceService extends AbstractService
 		{
 			for(OrderItemBilling billing:invoiceItem.getOrderItemBillings())
 			{
-				OrderItem orderItem = orderItemRepo.findOne(billing.getOrderItem().getId());
+				OrderItem orderItem = orderItemRepo.findById(billing.getOrderItem().getId()).orElse(null);
 				if(orderItem != null)
 				{
 					OrderItemInvoiceInfo info = new OrderItemInvoiceInfo();
@@ -193,7 +190,7 @@ public class SalesInvoiceService extends AbstractService
 			
 			for(ShipmentItemBilling billing:invoiceItem.getShipmentItemBillings())
 			{
-				ShipmentItem shipmentItem = shipmentItemRepo.findOne(billing.getShipmentItem().getId());
+				ShipmentItem shipmentItem = shipmentItemRepo.findById(billing.getShipmentItem().getId()).orElse(null);
 				if(shipmentItem != null)
 				{
 					for(ShipmentOrder order:shipmentItem.getOrders())
@@ -212,12 +209,12 @@ public class SalesInvoiceService extends AbstractService
 			{
 				BigDecimal amt = BigDecimal.ZERO;
 				
-				WorkEffort effort = effortRepo.findOne(billing.getEffort().getId());
+				WorkEffort effort = effortRepo.findById(billing.getEffort().getId()).orElse(null);
 				if(effort != null)
 				{
 					for(WorkOrderItemFulfillment fulfillment:effort.getItemFulfillments())
 					{
-						OrderItem item = orderItemRepo.findOne(fulfillment.getOrderItem().getId());
+						OrderItem item = orderItemRepo.findById(fulfillment.getOrderItem().getId()).orElse(null);
 						if(item != null)
 							amt = amt.add(item.getQuantity().multiply(item.getUntitPrice()));
 					}
@@ -236,7 +233,7 @@ public class SalesInvoiceService extends AbstractService
 	@Secured("ROLE_SALES_INVOICE_DELETE")
 	public void delete(String id)
 	{
-		SalesInvoice invoice = findOne(id);
+		SalesInvoice invoice = findById(id);
 		if(invoice != null)
 		{
 			if(invoice.isPaid())
@@ -261,7 +258,7 @@ public class SalesInvoiceService extends AbstractService
 	{
 		if(ids != null && !ids.isEmpty())
 		{
-			SalesInvoice invoice = repository.findOne(ids);
+			SalesInvoice invoice = repository.findById(ids);
 			if(invoice != null)
 			{
 				Iterator<InvoiceItem> iterator = invoice.getItems().iterator();
@@ -290,7 +287,7 @@ public class SalesInvoiceService extends AbstractService
 		{
 			for(OrderItemBilling billing:invoiceItem.getOrderItemBillings())
 			{
-				OrderItem orderItem = orderItemRepo.findOne(billing.getOrderItem().getId());
+				OrderItem orderItem = orderItemRepo.findById(billing.getOrderItem().getId()).orElse(null);
 				if(orderItem != null)
 				{
 					orderItem.removeInvoiceInfo(billing.getAmount());
@@ -300,7 +297,7 @@ public class SalesInvoiceService extends AbstractService
 			
 			for(ShipmentItemBilling billing:invoiceItem.getShipmentItemBillings())
 			{
-				ShipmentItem shipmentItem = shipmentItemRepo.findOne(billing.getShipmentItem().getId());
+				ShipmentItem shipmentItem = shipmentItemRepo.findById(billing.getShipmentItem().getId()).orElse(null);
 				if(shipmentItem != null)
 				{
 					for(ShipmentOrder order:shipmentItem.getOrders())
@@ -317,7 +314,7 @@ public class SalesInvoiceService extends AbstractService
 		{
 			for(WorkEffortBilling billing:invoiceItem.getWorkEffortBillings())
 			{
-				WorkEffort effort = effortRepo.findOne(billing.getEffort().getId());
+				WorkEffort effort = effortRepo.findById(billing.getEffort().getId()).orElse(null);
 				if(effort != null)
 				{
 					effort.setInvoiced(false);
@@ -329,7 +326,7 @@ public class SalesInvoiceService extends AbstractService
 	
 	public void setPaidStatus(String id)
 	{
-		SalesInvoice invoice = repository.findOne(id);
+		SalesInvoice invoice = repository.findById(id).orElse(null);
 		if(invoice != null && !invoice.isPaid())
 		{
 			BigDecimal amt = BigDecimal.ZERO;
@@ -352,7 +349,7 @@ public class SalesInvoiceService extends AbstractService
 	
 	public void setUnPaidStatus(String id)
 	{
-		SalesInvoice invoice = repository.findOne(id);
+		SalesInvoice invoice = repository.findById(id).orElse(null);
 		
 		if(invoice != null && invoice.isPaid())
 		{
@@ -394,7 +391,7 @@ public class SalesInvoiceService extends AbstractService
 		{
 			for(ShipmentOrder order:item.getOrders())
 			{
-				OrderItem out = orderItemRepo.findOne(order.getId());
+				OrderItem out = orderItemRepo.findById(order.getId()).orElse(null);
 				if(out != null)
 				{
 					InvoiceItem invoiceItem = new InvoiceItem();
@@ -435,7 +432,7 @@ public class SalesInvoiceService extends AbstractService
 		invoice.setBilledToAddress(salesOrder.getBillToAddress());
 		invoice.setBilledToContact(salesOrder.getBillToContact());
 		
-		Party source = partyRepo.findOne(salesOrder.getPartyTakingOrder().getId());
+		Party source = partyRepo.findById(salesOrder.getPartyTakingOrder().getId()).orElse(null);
 		if(source != null)
 		{
 			invoice.setBilledFromParty(source.toRef());

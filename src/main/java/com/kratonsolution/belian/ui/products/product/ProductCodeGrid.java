@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.products.product;
 
 import java.util.Iterator;
@@ -134,7 +132,7 @@ public class ProductCodeGrid extends GridContent
 									Checkbox check = (Checkbox)row.getFirstChild();
 									if(check.isChecked())
 									{
-										Product fresh = service.findOne(product.getId());
+										Product fresh = service.findById(product.getId());
 										if(fresh != null)
 										{
 											Iterator<ProductIdentification> iterator = fresh.getCodes().iterator();
@@ -182,7 +180,7 @@ public class ProductCodeGrid extends GridContent
 		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("2");
 
-		Product fresh = service.findOne(product.getId());
+		Product fresh = service.findById(product.getId());
 		if(fresh != null)
 		{
 			for(ProductIdentification iden:fresh.getCodes())

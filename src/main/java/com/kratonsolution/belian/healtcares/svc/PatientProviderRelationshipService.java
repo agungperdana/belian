@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.healtcares.svc;
 
 import java.sql.Date;
@@ -84,9 +81,9 @@ public class PatientProviderRelationshipService extends AbstractService
 	}
 
 	@Secured("ROLE_PATIENT_READ")
-	public PatientProviderRelationship findOne(String id)
+	public PatientProviderRelationship findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 
 	@Secured("ROLE_PATIENT_READ")
@@ -101,7 +98,7 @@ public class PatientProviderRelationshipService extends AbstractService
 		if(utils.getOrganization() == null)
 			return new ArrayList<>();
 		
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId());
+		return repository.findAll(PageRequest.of(pageIndex, pageSize),utils.getOrganization().getId());
 	}
 
 	@Secured("ROLE_PATIENT_READ")
@@ -113,7 +110,7 @@ public class PatientProviderRelationshipService extends AbstractService
 		if(Strings.isNullOrEmpty(key))
 			return findAll(pageIndex, pageSize);
 
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId(),key);
+		return repository.findAll(PageRequest.of(pageIndex, pageSize),utils.getOrganization().getId(),key);
 	}
 
 	@Secured("ROLE_PATIENT_CREATE")
@@ -142,7 +139,7 @@ public class PatientProviderRelationshipService extends AbstractService
 		/**
 		 * load person data from db
 		 */
-		Person person = personService.findOne(code,name,birthDate,gender);
+		Person person = personService.findById(code,name,birthDate,gender);
 		if(person != null)
 		{
 			/**
@@ -198,7 +195,7 @@ public class PatientProviderRelationshipService extends AbstractService
 				relationship = new PatientProviderRelationship();
 				relationship.setStart(start);
 				relationship.setFromParty(person);
-				relationship.setFromRole(roleRepo.findOne(patient.getId()));
+				relationship.setFromRole(roleRepo.findById(patient.getId()).orElse(null));
 				relationship.setToParty(utils.getOrganization());
 			
 				person.getRelationships().add(relationship);
@@ -211,7 +208,7 @@ public class PatientProviderRelationshipService extends AbstractService
 	@Secured("ROLE_PATIENT_UPDATE")
 	public void edit(PatientProviderRelationship patient)
 	{
-		Person person = personService.findOne(patient.getFromParty().getCode());
+		Person person = personService.findById(patient.getFromParty().getCode());
 		if(person != null)
 		{
 			person.setCode(patient.getFromParty().getCode());
@@ -238,7 +235,7 @@ public class PatientProviderRelationshipService extends AbstractService
 	@Secured("ROLE_PATIENT_DELETE")
 	public void delete(String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 	
 	@Secured("ROLE_PATIENT_DELETE")

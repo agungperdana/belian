@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.healtcares.pharmacy.pos;
 
 import org.zkoss.zk.ui.event.Event;

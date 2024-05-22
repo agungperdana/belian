@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.global.svc;
 
 import java.sql.Timestamp;
@@ -34,10 +32,10 @@ public class AuditTrailService
 	private SessionUtils utils;
 		
 	@Secured({"ROLE_AUDIT_TRAIL_READ","ROLE_SYSTEM_READ"})
-	public AuditTrail findOne(String id)
+	public AuditTrail findById(String id)
 	{
 		if(!Strings.isNullOrEmpty(id))
-			return repository.findOne(id);
+			return repository.findById(id).orElse(null);
 	
 		return null;
 	}
@@ -139,12 +137,12 @@ public class AuditTrailService
 	@Secured("ROLE_AUDIT_TRAIL_DELETE")
 	public void delete(String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 	
 	@Secured("ROLE_AUDIT_TRAIL_READ")
 	public List<AuditTrail> findAll(int pageIndex,int itemsSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, itemsSize)).getContent();
+		return repository.findAll(PageRequest.of(pageIndex, itemsSize)).getContent();
 	}
 }

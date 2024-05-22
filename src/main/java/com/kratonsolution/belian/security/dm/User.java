@@ -1,23 +1,20 @@
-/**
- * 
- */
 package com.kratonsolution.belian.security.dm;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.Version;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import jakarta.persistence.Version;
 
 import com.kratonsolution.belian.common.dm.Referenceable;
 import com.kratonsolution.belian.global.dm.UserSetting;
@@ -27,23 +24,23 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 @Getter
 @Setter
 @Entity
-@Table(name="user")
+@Table(name="access_user")
 public class User implements Referenceable
 {
 	@Id
 	private String id = UUID.randomUUID().toString();
 	
-	@Column(name="email",nullable=false,unique=true)
+	@Column(name="email")
 	private String userName;
 	
-	@Column(name="password",nullable=false)
+	@Column(name="password")
 	private String password;
 	
 	@Column(name="is_enabled")
@@ -54,15 +51,15 @@ public class User implements Referenceable
 	private UserSetting setting;
 	
 	@Column(name="is_deleteable")
-	private boolean deleteable;
-	
+	private boolean deletable;
+
 	@Transient
 	private Employee employee;
-	
+
 	@Version
 	private Long version;
 	
-	@OneToMany(mappedBy="user",cascade=CascadeType.ALL,orphanRemoval=true,fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="user", cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.LAZY)
 	private Set<UserRole> roles = new HashSet<UserRole>();
 
 	public User(){}

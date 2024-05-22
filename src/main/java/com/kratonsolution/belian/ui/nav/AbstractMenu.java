@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.ui.nav;
 
 import org.zkoss.zul.Menu;
@@ -13,6 +10,7 @@ import com.kratonsolution.belian.ui.util.Springs;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public abstract class AbstractMenu extends Menu
 {

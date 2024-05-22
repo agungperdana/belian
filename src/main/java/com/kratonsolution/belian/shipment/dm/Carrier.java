@@ -1,10 +1,8 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.shipment.dm;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 import com.kratonsolution.belian.partys.dm.PartyRole;
 

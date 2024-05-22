@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.orders.svc;
 
 import java.util.ArrayList;
@@ -94,9 +91,9 @@ public class SalesOrderService extends AbstractService
 	}
 
 	@Secured("ROLE_SALES_ORDER_READ")
-	public SalesOrder findOne(String id)
+	public SalesOrder findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 
 	@Secured("ROLE_SALES_ORDER_READ")
@@ -112,7 +109,7 @@ public class SalesOrderService extends AbstractService
 		if(utils.getOrganizationIds().isEmpty())
 			return new ArrayList<>();
 
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganizationIds());
+		return repository.findAll(PageRequest.of(pageIndex, pageSize),utils.getOrganizationIds());
 	}
 
 	@Secured("ROLE_SALES_ORDER_READ")
@@ -133,7 +130,7 @@ public class SalesOrderService extends AbstractService
 		if(Strings.isNullOrEmpty(key))
 			return findAll(pageIndex, pageSize);
 
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganizationIds(),key);
+		return repository.findAll(PageRequest.of(pageIndex, pageSize),utils.getOrganizationIds(),key);
 	}
 
 	public List<SalesOrderItem> findAllForWorkEffort()
@@ -163,11 +160,11 @@ public class SalesOrderService extends AbstractService
 	@Secured("ROLE_SALES_ORDER_CREATE")
 	public void addItem(SalesOrderItem orderItem)
 	{
-		Product product = productRepo.findOne(orderItem.getProduct().getId());
+		Product product = productRepo.findById(orderItem.getProduct().getId()).orElse(null);
 		if(product.isService())
 			orderItem.setType(OrderItemType.WORK);
 
-		SalesOrder out = repository.findOne(orderItem.getOrder().getId());
+		SalesOrder out = repository.findById(orderItem.getOrder().getId()).orElse(null);
 		if(out != null)
 		{
 			orderItem.setOrder(out);
@@ -186,7 +183,7 @@ public class SalesOrderService extends AbstractService
 	@Secured("ROLE_SALES_ORDER_DELETE")
 	public void delete(String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 
 	/**

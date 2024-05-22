@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.products.product;
 
 import java.math.BigDecimal;
@@ -75,7 +73,7 @@ public class ProductCostEditForm extends AbstractForm
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Flow.next(getParent(), new ProductCostGrid(service.findOne(cost.getProduct().getId())));
+				Flow.next(getParent(), new ProductCostGrid(service.findById(cost.getProduct().getId())));
 			}
 		});
 
@@ -84,7 +82,7 @@ public class ProductCostEditForm extends AbstractForm
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Product fresh = service.findOne(cost.getProduct().getId());
+				Product fresh = service.findById(cost.getProduct().getId());
 				if(fresh != null)
 				{
 					if(start.getValue() == null)

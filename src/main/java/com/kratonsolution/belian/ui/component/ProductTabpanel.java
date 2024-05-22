@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.component;
 
 import org.zkoss.zul.Tabpanel;

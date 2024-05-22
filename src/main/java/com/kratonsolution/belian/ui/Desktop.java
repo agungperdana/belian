@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.ui;
 
 import org.zkoss.zk.ui.GenericRichlet;

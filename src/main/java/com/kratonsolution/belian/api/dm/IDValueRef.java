@@ -1,13 +1,11 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.api.dm;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Transient;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Transient;
 
 import com.kratonsolution.belian.common.dm.Referenceable;
 

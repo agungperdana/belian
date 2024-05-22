@@ -1,19 +1,9 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.partys.dm;
 
 import java.util.UUID;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Version;
+import jakarta.persistence.*;
 
 import com.kratonsolution.belian.api.dm.IDValueRef;
 import com.kratonsolution.belian.common.dm.Referenceable;
@@ -22,6 +12,7 @@ import com.kratonsolution.belian.general.dm.Geographic;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.type.YesNoConverter;
 
 /**
  * 
@@ -43,7 +34,8 @@ public class Address implements Referenceable
 	@Column(name="postal",nullable=false)
 	private String postal;
 	
-	@Column(name="status",nullable=false)
+	@Column(name="status")
+	@Convert(converter = YesNoConverter.class)
 	private boolean active;
 	
 	@Column(name="type",nullable=false)

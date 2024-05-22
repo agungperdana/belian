@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.partys.svc;
 
 import java.util.ArrayList;
@@ -29,9 +27,9 @@ public class PartyRoleService
 	private PartyRoleRepository repository;
 		
 	@Secured({"ROLE_PARTY_ROLE_READ","ROLE_COMPANY_STRUCTURE_READ"})
-	public PartyRole findOne(String id)
+	public PartyRole findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 	
 	@Secured({"ROLE_PARTY_ROLE_READ","ROLE_COMPANY_STRUCTURE_READ"})
@@ -52,7 +50,7 @@ public class PartyRoleService
 	@Secured({"ROLE_PARTY_ROLE_READ","ROLE_COMPANY_STRUCTURE_READ"})
 	public List<PartyRole> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		return repository.findAll(PageRequest.of(pageIndex, pageSize)).getContent();
 	}
 	
 	public int size()
@@ -76,6 +74,6 @@ public class PartyRoleService
 	@Secured({"ROLE_PARTY_ROLE_DELETE","ROLE_COMPANY_STRUCTURE_DELETE"})
 	public void delete(String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 }

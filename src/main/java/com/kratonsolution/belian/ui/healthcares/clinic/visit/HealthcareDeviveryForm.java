@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.healthcares.clinic.visit;
 
 import java.math.BigDecimal;
@@ -90,7 +88,7 @@ public class HealthcareDeviveryForm extends AbstractForm
 				if(Strings.isNullOrEmpty(note.getText()))
 					throw new WrongValueException(note,lang.get("message.field.empty"));
 				
-				Visit out = service.findOne(visit);
+				Visit out = service.findById(visit);
 				if(out != null)
 				{
 					HealthcareDelivery delivery = new HealthcareDelivery();

@@ -84,7 +84,7 @@ public class VisitEditContent extends AbstractForm
 	@Override
 	public void initToolbar()
 	{
-		Visit out = service.findOne(RowUtils.id(row));
+		Visit out = service.findById(RowUtils.id(row));
 		if(out.isEditable() && out.isSignedIn() && out.getDoctor().getId().equals(utils.getPerson().getId()))
 		{
 			Toolbarbutton done = new Toolbarbutton(lang.get("clinic.visit.grid.column.finish"),"/icons/handled.png");
@@ -143,7 +143,7 @@ public class VisitEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		Visit visit = service.findOne(RowUtils.id(row));
+		Visit visit = service.findById(RowUtils.id(row));
 		if(visit != null)
 		{
 			date.setValue(visit.getDate());
@@ -199,7 +199,7 @@ public class VisitEditContent extends AbstractForm
 		initRoles();
 		initStatus();
 		
-		Visit visit = service.findOne(RowUtils.id(row));
+		Visit visit = service.findById(RowUtils.id(row));
 		if(visit != null && visit.getDoctor().getId().equals(utils.getPerson().getId()))
 		{
 			tabbox.getTabs().appendChild(new Tab(lang.get("clinic.visit.grid.column.deliverys")));
@@ -240,7 +240,7 @@ public class VisitEditContent extends AbstractForm
 			}
 		});
 
-		Visit visit = service.findOne(RowUtils.id(row));
+		Visit visit = service.findById(RowUtils.id(row));
 		if(visit != null)
 		{
 			for(VisitRole role:visit.getRoles())
@@ -295,7 +295,7 @@ public class VisitEditContent extends AbstractForm
 			}
 		});
 
-		Visit visit = service.findOne(RowUtils.id(row));
+		Visit visit = service.findById(RowUtils.id(row));
 		if(visit != null)
 		{
 			for(VisitStatus status:visit.getStatuses())
@@ -345,7 +345,7 @@ public class VisitEditContent extends AbstractForm
 			}
 		});
 
-		Visit visit = service.findOne(RowUtils.id(row));
+		Visit visit = service.findById(RowUtils.id(row));
 		if(visit != null)
 		{
 			for(HealthcareDelivery delivery:visit.getDeliverys())
@@ -370,7 +370,7 @@ public class VisitEditContent extends AbstractForm
 	
 	private void edit(VisitStatusType type)
 	{
-		Visit visit = service.findOne(RowUtils.id(row));
+		Visit visit = service.findById(RowUtils.id(row));
 		if(visit != null && visit.isEditable())
 		{
 			visit.setDate(DateTimes.sql(date.getValue()));

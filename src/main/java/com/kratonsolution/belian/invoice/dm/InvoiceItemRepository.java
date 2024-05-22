@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.invoice.dm;
 
 import org.springframework.data.jpa.repository.JpaRepository;

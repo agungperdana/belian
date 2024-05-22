@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.tools.view;
 
 import java.util.Collection;

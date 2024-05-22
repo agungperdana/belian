@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.finance.payments;
 
 import org.zkoss.zul.Menuseparator;

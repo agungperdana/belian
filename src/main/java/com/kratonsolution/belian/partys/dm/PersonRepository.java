@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.partys.dm;
 
 import java.sql.Date;
@@ -18,9 +16,9 @@ import org.springframework.data.repository.query.Param;
  */
 public interface PersonRepository extends JpaRepository<Person, String>
 {
-	public Person findOneByName(String name);
+	public Person findByName(String name);
 		
-	public Person findOneByCode(String code);
+	public Person findByCode(String code);
 	
 	public List<Person> findAllByNameNot(String name);
 	
@@ -41,7 +39,7 @@ public interface PersonRepository extends JpaRepository<Person, String>
 			+ "OR person.name =:name) "
 			+ "AND person.birthDate =:birthdate "
 			+ "AND person.gender =:gender ")
-	public Person findOne(@Param("code")String code,
+	public Person findById(@Param("code")String code,
 								@Param("name")String name,
 								@Param("birthdate")Date birthdate,
 								@Param("gender")Gender gender);

@@ -19,4 +19,8 @@
 	<session-config>
  		<timer-keep-alive>true</timer-keep-alive>
 	</session-config>
+	<library-property>
+		<name>org.zkoss.theme.preferred</name>
+		<value>silvertail</value>
+	</library-property>
 </zk>

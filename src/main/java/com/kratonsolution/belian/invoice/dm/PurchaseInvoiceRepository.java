@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.invoice.dm;
 
 import java.util.Collection;
@@ -53,5 +51,5 @@ public interface PurchaseInvoiceRepository extends JpaRepository<PurchaseInvoice
 	public Long count(@Param("company")String company,@Param("key")String key);
 
 	@Query("SELECT DISTINCT item.invoice FROM InvoiceItem item WHERE item.id IN(:ids) ")
-	public PurchaseInvoice findOne(@Param("ids")Collection<String> ids);
+	public PurchaseInvoice findById(@Param("ids")Collection<String> ids);
 }

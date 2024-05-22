@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.payments.svc;
 
 import java.util.ArrayList;
@@ -64,9 +61,9 @@ public class DisbursementService extends AbstractService
 	
 	@Secured("ROLE_DISBURSEMENT_READ")
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	public Disbursement findOne(String id)
+	public Disbursement findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -83,7 +80,7 @@ public class DisbursementService extends AbstractService
 		if(utils.getOrganization() == null)
 			return new ArrayList<>();
 		
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId());
+		return repository.findAll(PageRequest.of(pageIndex, pageSize),utils.getOrganization().getId());
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -96,7 +93,7 @@ public class DisbursementService extends AbstractService
 		if(Strings.isNullOrEmpty(key))
 			return findAll(pageIndex, pageSize);
 		
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId(),key);
+		return repository.findAll(PageRequest.of(pageIndex, pageSize),utils.getOrganization().getId(),key);
 	}
 	
 	@Secured("ROLE_DISBURSEMENT_CREATE")
@@ -118,7 +115,7 @@ public class DisbursementService extends AbstractService
 	@Secured("ROLE_DISBURSEMENT_DELETE")
 	public void delete(String id)
 	{
-		Disbursement disbursement = repository.findOne(id);
+		Disbursement disbursement = repository.findById(id).orElse(null);
 		if(disbursement != null)
 		{
 			for(PaymentApplication application:disbursement.getApplications())
