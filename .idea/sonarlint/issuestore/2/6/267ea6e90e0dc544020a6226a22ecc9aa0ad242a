@@ -1,0 +1,17 @@
+
+\	java:S112¥"FDefine and throw a dedicated exception instead of using a generic one.(Ý€Àò
+\	java:S112¨"FDefine and throw a dedicated exception instead of using a generic one.(Æª»Æ
+X
+java:S6813)"BRemove this field injection and use constructor injection instead.(êæÄÞ
+X
+java:S6813,"BRemove this field injection and use constructor injection instead.(êæÄÞ
+X
+java:S6813/"BRemove this field injection and use constructor injection instead.(êæÄÞ
+X
+java:S68132"BRemove this field injection and use constructor injection instead.(êæÄÞ
+X
+java:S68135"BRemove this field injection and use constructor injection instead.(êæÄÞ
+X
+java:S68138"BRemove this field injection and use constructor injection instead.(êæÄÞ
+n
+java:S3776¢"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(žÕ×Îÿÿÿÿÿ

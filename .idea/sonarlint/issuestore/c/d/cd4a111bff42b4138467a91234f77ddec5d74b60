@@ -1,0 +1,18 @@
+
+”	java:S117Ñ"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ýƒïž8±ú–ãþ1J$e93b3a28-ec02-467f-bf6f-1fdadc2de621
+•
+java:S3776E"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(º¸¸¨8ªû–ãþ1J$6d041acb-5d3d-4977-8df9-cdb44f31ee84
+x
+java:S4838^"6Change "Object" to the type handled by the Collection.(ëÔ‡N8´û–ãþ1J$af60efad-8d04-44ce-8c0d-46332c231086
+s
+java:S1905e"+Remove this unnecessary cast to "UserRole".(¾ê°Ôúÿÿÿÿ8Õû–ãþ1J$ae6f21c0-19f2-4ff7-bf93-28d475ae966d
+z
+java:S4838³"6Change "Object" to the type handled by the Collection.(ÓÃŒ»8úû–ãþ1J$0290a51b-771d-45bf-bfd5-c18c38e927ab
+€
+java:S1117µ"7Rename "row" which hides the field declared at line 55.(­©¥½ùÿÿÿÿ8þû–ãþ1J$7137eb18-a7f0-4366-ae76-14ca4222e315
+€
+java:S1117Ô"7Rename "row" which hides the field declared at line 55.(ÄÎÏàúÿÿÿÿ8‰ü–ãþ1J$d8a4ed5b-0e13-4dfd-bca5-b871363121a8
+€
+java:S1117æ"7Rename "row" which hides the field declared at line 55.(ÄÎÏàúÿÿÿÿ8‘ü–ãþ1J$d5ebd350-7f86-442b-86fa-ac45f6fc4b97
+t
+java:S1068-"1Remove this unused "personService" private field.(¥…¬©8Öý–ãþ1J$3c140846-33ff-4f59-b8cd-793c15000f3d

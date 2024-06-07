@@ -1,0 +1,17 @@
+
+a	java:S112Ö"FDefine and throw a dedicated exception instead of using a generic one.(ñìüıÿÿÿÿ
+l	java:S117Ç"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(­ÙØøÿÿÿÿ
+X
+java:S68135"BRemove this field injection and use constructor injection instead.(êæÄŞ
+X
+java:S68138"BRemove this field injection and use constructor injection instead.(êæÄŞ
+X
+java:S6813;"BRemove this field injection and use constructor injection instead.(êæÄŞ
+X
+java:S6813>"BRemove this field injection and use constructor injection instead.(êæÄŞ
+X
+java:S6813A"BRemove this field injection and use constructor injection instead.(êæÄŞ
+X
+java:S6813D"BRemove this field injection and use constructor injection instead.(êæÄŞ
+X
+java:S6813G"BRemove this field injection and use constructor injection instead.(êæÄŞ

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="delegatedBuild" value="true" />
+        <option name="testRunner" value="GRADLE" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleHome" value="$PROJECT_DIR$/../../../../build/gradle-8.0.2" />
+        <option name="gradleJvm" value="21" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/access" />
+            <option value="$PROJECT_DIR$/access/access-module-api" />
+            <option value="$PROJECT_DIR$/access/access-module-impl" />
+            <option value="$PROJECT_DIR$/access/access-role-api" />
+            <option value="$PROJECT_DIR$/access/access-role-impl" />
+            <option value="$PROJECT_DIR$/access/access-user-api" />
+            <option value="$PROJECT_DIR$/access/access-user-impl" />
+            <option value="$PROJECT_DIR$/belian-core" />
+            <option value="$PROJECT_DIR$/belian-core/company-structure-api" />
+            <option value="$PROJECT_DIR$/belian-core/company-structure-impl" />
+            <option value="$PROJECT_DIR$/belian-core/country-api" />
+            <option value="$PROJECT_DIR$/belian-core/country-impl" />
+            <option value="$PROJECT_DIR$/belian-core/geographic-api" />
+            <option value="$PROJECT_DIR$/belian-core/geographic-impl" />
+            <option value="$PROJECT_DIR$/belian-core/party-api" />
+            <option value="$PROJECT_DIR$/belian-core/party-impl" />
+            <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/common/common-app" />
+            <option value="$PROJECT_DIR$/common/common-orm" />
+            <option value="$PROJECT_DIR$/erp" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

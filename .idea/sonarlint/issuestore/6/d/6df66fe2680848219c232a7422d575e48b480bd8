@@ -1,0 +1,9 @@
+
+†	java:S112<"FDefine and throw a dedicated exception instead of using a generic one.(æŞŞıÿÿÿÿJ$d6282103-4a98-4fa0-9acf-ae63f4bbb164
+“
+java:S3776y"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(êÌ®ÊıÿÿÿÿJ$87f1fc5c-1104-40c8-9f6c-764d47e52d66
+…
+java:S6201˜"HReplace this instanceof check and cast with 'instanceof Patient patient'(şÖèJ$94f035bb-d562-4175-8b90-e2aa19c90782
+­
+java:S6201µ"pReplace this instanceof check and cast with 'instanceof PatientProviderRelationship patientproviderrelationship'(Şå‘J$6bfab05a-c6bf-4466-8056-c4ba55fbd490
+X	java:S125Å"<This block of commented-out lines of code should be removed.(‡÷—}8ÿºÛ‚ÿ1

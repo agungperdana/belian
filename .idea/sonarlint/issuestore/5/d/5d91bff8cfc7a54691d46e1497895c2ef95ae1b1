@@ -1,0 +1,7 @@
+
+Å
+java:S1845"Rename field "north" to prevent any misunderstanding/clash with field "NORTH" defined in superclass "org.zkoss.zul.Borderlayout".(ë§¦²8¥Ëçş1J$b13db54f-f1ce-4342-9bc8-4cc2f3a7058d
+Ç
+java:S1845"ƒRename field "center" to prevent any misunderstanding/clash with field "CENTER" defined in superclass "org.zkoss.zul.Borderlayout".(ùş­8¥Ëçş1J$9ee60cf7-cb9d-422a-adad-c9bfa2f76c82
+Å
+java:S1845"Rename field "south" to prevent any misunderstanding/clash with field "SOUTH" defined in superclass "org.zkoss.zul.Borderlayout".(Œçã©8¥Ëçş1J$4a0c1ddb-32a2-4563-afc7-d002f7c1b0bd

@@ -1,0 +1,6 @@
+
+|	java:S110"<This class has 9 parents which is greater than 5 authorized.(É›° şÿÿÿÿJ$fd4735a9-4c1c-4e18-9744-92cc1fb1d87e
+‡
+java:S27891"FEnsure this "Optional" could never be null and remove this null-check.(¾ù«ËüÿÿÿÿJ$57c1742e-9d03-4412-b7f9-0b6db2497804
+x
+java:S25891"7Remove this expression which always evaluates to "true"(¾ù«ËüÿÿÿÿJ$c325e7b3-fe9c-4994-98e4-a8a9c4a1bb1e

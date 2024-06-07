@@ -1,0 +1,32 @@
+
+‘	java:S117t"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ü†ÑıÿÿÿÿJ$30df1191-81f5-4a83-b490-18114f06ea85
+’	java:S117È"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ü†ÑıÿÿÿÿJ$04583c6a-c9f6-4ec2-9a54-c3964808b9dc
+’	java:S117Ú"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ü†ÑıÿÿÿÿJ$0f249e97-7905-49ab-8b7e-92a2f824c578
+’	java:S117ì"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ü†ÑıÿÿÿÿJ$a9072300-8f05-4232-a60a-35fa8c3634f4
+’	java:S117ş"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ü†ÑıÿÿÿÿJ$6240cf7b-8ce6-48fa-a538-f683697ad010
+’	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ü†ÑıÿÿÿÿJ$b60a0ba4-d8c0-4e6c-9c01-f91297f79be5
+]	java:S1100"<This class has 7 parents which is greater than 5 authorized.(ùƒÈûÿÿÿÿ8õ¢²âş1
+E
+java:S19482")Make "service" transient or serializable.(ï¢÷p8£²âş1
+R
+java:S19486"5Make "organizationService" transient or serializable.(áŒÛø8£²âş1
+M
+java:S19488"+Make "structure" transient or serializable.(á½Ÿ°øÿÿÿÿ8£²âş1
+w
+java:S4838r"6Change "Object" to the type handled by the Collection.(øÂ»·şÿÿÿÿJ$def2e071-52fe-4074-8a7c-63963e7da6b1
+
+java:S3776¦"RRefactor this method to reduce its Cognitive Complexity from 46 to the 15 allowed.(÷„ƒJ$879e7688-ec89-43b6-8bf4-17dff522a5b8
+s
+java:S4838Æ"6Change "Object" to the type handled by the Collection.(ÓÃŒ»J$d814ea92-760c-42b9-a3d1-bf3fec096282
+s
+java:S4838Ø"6Change "Object" to the type handled by the Collection.(ÓÃŒ»J$99a6979f-8eb3-4a8d-94b0-f717512d53f7
+s
+java:S4838ê"6Change "Object" to the type handled by the Collection.(ÓÃŒ»J$daddb55d-6c22-46af-8567-9d82bfaa0712
+s
+java:S4838ü"6Change "Object" to the type handled by the Collection.(ÓÃŒ»J$19fc4aa1-1672-46d7-bbd6-237206a8755c
+s
+java:S4838"6Change "Object" to the type handled by the Collection.(ÓÃŒ»J$8464446a-113b-4c00-abab-416512176d21
+s
+java:S10686"7Remove this unused "organizationService" private field.(áŒÛøJ$016ab9e7-47c7-43d8-bbc4-d8e12e89f4f6
+s
+java:S1144Å"1Remove this unused private "initCompanys" method.(ÉŒê»ıÿÿÿÿJ$130c0cb4-c245-40ce-a0cc-24cb33b17d2f

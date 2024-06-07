@@ -1,0 +1,21 @@
+plugins {
+    id 'buildlogic.java-common-conventions'
+    id 'belian.spring-boot-starter-conventions'
+    id 'belian.spring-boot-security-jpa-conventions'
+}
+
+apply plugin: "org.springframework.boot"
+apply plugin: "io.spring.dependency-management"
+
+group 'com.kratonsolution.belian'
+version '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation project(':belian-core:country-api')
+    implementation project(':common:common-orm')
+}

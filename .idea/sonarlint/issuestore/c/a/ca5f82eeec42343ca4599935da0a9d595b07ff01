@@ -1,0 +1,13 @@
+
+Ž
+java:S3776("RRefactor this method to reduce its Cognitive Complexity from 22 to the 15 allowed.(Î¾ï½J$86898d69-c3be-4a75-9e3a-ce0a80768d13
+r
+java:S4838D"6Change "Object" to the type handled by the Collection.(ÓÃŒ»J$438cef9e-6daa-4e47-b72a-45d95da27f6d
+‹
+java:S6201H"JReplace this instanceof check and cast with 'instanceof Checkbox checkbox'(ø‰¯•üÿÿÿÿJ$b5ca4357-306f-47d2-b3ea-8d51da45dd55
+r
+java:S4838Z"6Change "Object" to the type handled by the Collection.(ÓÃŒ»J$86071b55-eace-42a4-9395-ff8ccee33ff5
+‹
+java:S6201]"JReplace this instanceof check and cast with 'instanceof Checkbox checkbox'(ø‰¯•üÿÿÿÿJ$30550fcd-1fca-4391-97ce-44684cf5e3a0
+Ã
+java:S1186‡"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(‚×âÛøÿÿÿÿJ$5d3217db-5aa5-4271-b739-db7aa196b282

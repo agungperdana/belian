@@ -1,0 +1,13 @@
+plugins {
+    id 'buildlogic.java-common-conventions'
+}
+
+group 'com.kratonsolution.belian'
+version '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+}

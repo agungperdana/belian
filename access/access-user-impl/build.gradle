@@ -1,0 +1,25 @@
+plugins {
+    id 'buildlogic.java-common-conventions'
+    id 'belian.spring-boot-starter-conventions'
+    id 'belian.spring-boot-security-jpa-conventions'
+}
+
+apply plugin: "org.springframework.boot"
+apply plugin: "io.spring.dependency-management"
+
+group 'com.kratonsolution.belian'
+version '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation project(':common:common-orm')
+    implementation project(':access:access-user-api')
+    implementation project(':access:access-module-impl')
+    implementation project(':access:access-role-impl')
+
+    implementation 'org.jasypt:jasypt:latest.release'
+}

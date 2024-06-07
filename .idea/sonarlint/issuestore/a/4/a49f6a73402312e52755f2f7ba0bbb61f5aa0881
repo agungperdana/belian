@@ -1,0 +1,35 @@
+
+[	java:S112K"FDefine and throw a dedicated exception instead of using a generic one.(êæÛ
+J
+java:S3740s"/Provide the parametrized type for this generic.(ñüÏşÿÿÿÿ
+u
+java:S2293›"YReplace the type specification in this constructor call with the diamond operator ("<>").(†ĞµÌøÿÿÿÿ
+p
+java:S2293È"YReplace the type specification in this constructor call with the diamond operator ("<>").(¡¨¦
+}
+java:S1488›"aImmediately return this expression instead of assigning it to the temporary variable "locations".(†ĞµÌøÿÿÿÿ
+€
+java:S1149V"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Şú¯”ûÿÿÿÿ
+V	java:S125N"<This block of commented-out lines of code should be removed.(¸¥¨ıÿÿÿÿ
+V	java:S125}"<This block of commented-out lines of code should be removed.(ã¾Áùÿÿÿÿ
+W	java:S125’"<This block of commented-out lines of code should be removed.( ¹ô“şÿÿÿÿ
+N
+java:S1135•"2Complete the task associated to this TODO comment.(ÍÒ´íûÿÿÿÿ
+W	java:S125¢"<This block of commented-out lines of code should be removed.(ã¾Áùÿÿÿÿ
+I
+java:S1135±"2Complete the task associated to this TODO comment.(Çø«™
+W	java:S125·"<This block of commented-out lines of code should be removed.(ã¾Áùÿÿÿÿ
+N
+java:S1135Â"2Complete the task associated to this TODO comment.(÷êıûÿÿÿÿ
+Q	java:S125Ö"<This block of commented-out lines of code should be removed.(Ä¿Àm
+I
+java:S1135Û"2Complete the task associated to this TODO comment.(ºâ§È
+W	java:S125á"<This block of commented-out lines of code should be removed.(¨ÆöÍşÿÿÿÿ
+N
+java:S1135æ"2Complete the task associated to this TODO comment.(’ƒ¬€úÿÿÿÿ
+W	java:S125ì"<This block of commented-out lines of code should be removed.(ã¾Áùÿÿÿÿ
+I
+java:S1135ò"2Complete the task associated to this TODO comment.(×•„
+R	java:S125ø"<This block of commented-out lines of code should be removed.(¾ø
+N
+java:S1135û"2Complete the task associated to this TODO comment.(›±÷¯ùÿÿÿÿ

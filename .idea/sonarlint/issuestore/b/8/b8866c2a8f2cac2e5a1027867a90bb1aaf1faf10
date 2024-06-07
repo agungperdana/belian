@@ -1,0 +1,35 @@
+
+	java:S112L"FDefine and throw a dedicated exception instead of using a generic one.(êæÛJ$11bf4bb8-4d37-4fe4-af3e-939e57086634
+p
+java:S3740t"/Provide the parametrized type for this generic.(ñüÏşÿÿÿÿJ$87decf8d-65bc-4873-a515-c2599c5cc779
+›
+java:S2293œ"YReplace the type specification in this constructor call with the diamond operator ("<>").(†ĞµÌøÿÿÿÿJ$9e7e8c78-1f7e-4be3-8c0c-5904828d4bf7
+–
+java:S2293É"YReplace the type specification in this constructor call with the diamond operator ("<>").(¡¨¦J$48c22f20-fd6b-4bbe-949d-d572cc7a89dd
+£
+java:S1488œ"aImmediately return this expression instead of assigning it to the temporary variable "locations".(†ĞµÌøÿÿÿÿJ$10fa74c6-f4da-4cb6-bc44-bc7afe788fa2
+¦
+java:S1149W"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Şú¯”ûÿÿÿÿJ$94ae5afb-7336-431f-b2a1-f9d8104469a1
+|	java:S125O"<This block of commented-out lines of code should be removed.(¸¥¨ıÿÿÿÿJ$132c2798-d3ff-41eb-96de-4ef7383cbef2
+|	java:S125~"<This block of commented-out lines of code should be removed.(ã¾ÁùÿÿÿÿJ$6a66020a-35fb-4fb6-bbb3-861e05c176c8
+}	java:S125“"<This block of commented-out lines of code should be removed.( ¹ô“şÿÿÿÿJ$7a62b3dc-2279-43cd-bc82-06da1e0a8d52
+t
+java:S1135–"2Complete the task associated to this TODO comment.(ÍÒ´íûÿÿÿÿJ$219866fb-2bef-428d-8360-0dcc7417cdc4
+}	java:S125£"<This block of commented-out lines of code should be removed.(ã¾ÁùÿÿÿÿJ$8c7f3fa7-0955-4d9c-bbab-fb3b3af8aa5c
+o
+java:S1135²"2Complete the task associated to this TODO comment.(Çø«™J$76dadf38-b4ef-4bc3-9942-ae0cff6d69fa
+}	java:S125¸"<This block of commented-out lines of code should be removed.(ã¾ÁùÿÿÿÿJ$f7f18274-eed2-4be5-aa24-c3deb7cdbb2b
+t
+java:S1135Ã"2Complete the task associated to this TODO comment.(÷êıûÿÿÿÿJ$9c29bbe5-4273-41ca-a2fa-80bf8624a45e
+w	java:S125×"<This block of commented-out lines of code should be removed.(Ä¿ÀmJ$13dcdb72-8a4b-42c0-be3f-ccd59daee6fc
+o
+java:S1135Ü"2Complete the task associated to this TODO comment.(ºâ§ÈJ$2cde597b-0638-403c-b534-ffc54c98f571
+}	java:S125â"<This block of commented-out lines of code should be removed.(¨ÆöÍşÿÿÿÿJ$24bdb4bd-ed83-4725-86c2-c72055a8894a
+t
+java:S1135ç"2Complete the task associated to this TODO comment.(’ƒ¬€úÿÿÿÿJ$c241c4b0-559b-472c-8acc-471ab2a5a58c
+}	java:S125í"<This block of commented-out lines of code should be removed.(ã¾ÁùÿÿÿÿJ$1f74799b-dd38-49ce-94f2-08107cd6764b
+o
+java:S1135ó"2Complete the task associated to this TODO comment.(×•„J$02008c00-b03e-48c6-b375-1cb39a26921c
+x	java:S125ù"<This block of commented-out lines of code should be removed.(¾øJ$552ead4b-3f7e-407c-ab56-b1779478805a
+t
+java:S1135ü"2Complete the task associated to this TODO comment.(›±÷¯ùÿÿÿÿJ$a03f7786-8a0d-49e0-b481-b381aded1f22
