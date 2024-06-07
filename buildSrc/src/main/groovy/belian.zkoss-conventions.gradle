@@ -1,0 +1,14 @@
+plugins {
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation 'org.zkoss.zk:zkplus:10.0.0-jakarta'
+    implementation 'org.zkoss.zk:zhtml:10.0.0-jakarta'
+    implementation 'org.zkoss.zk:zkbind:10.0.0-jakarta'
+    implementation 'org.zkoss.theme:silvertail:latest.release'
+}
