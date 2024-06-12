@@ -1,36 +1,34 @@
-
 package com.kratonsolution.belian.inventory.svc;
+
+import com.kratonsolution.belian.common.app.AbstractService;
+import com.kratonsolution.belian.common.orm.IDValueRef;
+import com.kratonsolution.belian.inventoryitem.impl.orm.InventoryItem;
+import com.kratonsolution.belian.inventoryitem.impl.repository.InventoryItemRepository;
+import com.kratonsolution.belian.common.orm.Stockable;
+import com.kratonsolution.belian.product.impl.orm.Product;
+import com.kratonsolution.belian.product.impl.orm.ProductComponent;
+import com.kratonsolution.belian.product.impl.orm.ProductType;
+import com.kratonsolution.belian.product.impl.repository.ProductRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Collection;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.kratonsolution.belian.common.orm.IDValueRef;
-import com.kratonsolution.belian.common.app.AbstractService;
-import com.kratonsolution.belian.inventory.dm.InventoryItem;
-import com.kratonsolution.belian.inventory.dm.InventoryItemRepository;
-import com.kratonsolution.belian.inventory.dm.Stockable;
-import com.kratonsolution.belian.products.dm.Product;
-import com.kratonsolution.belian.products.dm.ProductComponent;
-import com.kratonsolution.belian.products.dm.ProductRepository;
-import com.kratonsolution.belian.products.dm.ProductType;
-
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 0.0.1
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
+@AllArgsConstructor
 public class StockService extends AbstractService
 {
-	@Autowired
 	private InventoryItemRepository repository;
 
-	@Autowired
 	private ProductRepository productRepository;
 
 	public void addStock(Collection<? extends Stockable> items)

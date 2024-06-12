@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.global.infra;
 
 import java.util.Collection;
@@ -10,9 +9,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 0.0.1
  */
 @Configuration
 public class FiltersConfiguration

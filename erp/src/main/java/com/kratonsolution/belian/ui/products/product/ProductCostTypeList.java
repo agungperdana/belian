@@ -8,7 +8,7 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.products.dm.ProductCostType;
+import com.kratonsolution.belian.product.impl.orm.ProductCostType;
 import com.kratonsolution.belian.ui.util.Springs;
 
 

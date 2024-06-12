@@ -15,9 +15,9 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 
 import com.kratonsolution.belian.common.app.DateTimes;
-import com.kratonsolution.belian.products.dm.Product;
-import com.kratonsolution.belian.products.dm.ProductCost;
-import com.kratonsolution.belian.products.svc.ProductService;
+import com.kratonsolution.belian.product.impl.orm.Product;
+import com.kratonsolution.belian.product.impl.orm.ProductCost;
+import com.kratonsolution.belian.product.impl.application.ProductService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;

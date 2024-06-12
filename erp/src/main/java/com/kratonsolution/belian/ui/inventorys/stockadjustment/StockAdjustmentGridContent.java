@@ -17,7 +17,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 import org.zkoss.zul.event.ZulEvents;
 
-import com.kratonsolution.belian.inventory.svc.StockAdjustmentService;
+import com.kratonsolution.belian.stockadjustment.impl.application.StockAdjustmentService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;

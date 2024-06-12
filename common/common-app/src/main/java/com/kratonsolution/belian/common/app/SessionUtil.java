@@ -2,6 +2,7 @@ package com.kratonsolution.belian.common.app;
 
 import com.kratonsolution.belian.common.orm.IDValueRef;
 import com.kratonsolution.belian.common.orm.Referenceable;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.UUID;
  * @email agung.dodi.perdana@gmail.com
  * @since 1.0.0
  */
+@Component
 public class SessionUtil implements Referenceable {
 
     // TODO: 6/7/2024 dummy method, please fix

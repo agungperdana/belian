@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.ui.orders;
 
 import org.zkoss.zul.Borderlayout;
@@ -12,13 +11,14 @@ import com.kratonsolution.belian.common.app.NumberGenerator;
 import com.kratonsolution.belian.orders.svc.SalesOrderService;
 import com.kratonsolution.belian.core.party.impl.application.PartyService;
 import com.kratonsolution.belian.core.party.impl.application.PersonService;
-import com.kratonsolution.belian.products.svc.ProductCategoryService;
-import com.kratonsolution.belian.products.svc.ProductService;
+import com.kratonsolution.belian.productcategory.impl.application.ProductCategoryService;
+import com.kratonsolution.belian.product.impl.application.ProductService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public abstract class POSOrder extends Borderlayout
 {

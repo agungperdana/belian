@@ -16,8 +16,8 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.app.DateTimes;
-import com.kratonsolution.belian.inventory.dm.InventoryItem;
-import com.kratonsolution.belian.inventory.svc.InventoryItemService;
+import com.kratonsolution.belian.inventoryitem.impl.orm.InventoryItem;
+import com.kratonsolution.belian.inventoryitem.impl.application.InventoryItemService;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.general.companystructure.CompanyStructureList;
 import com.kratonsolution.belian.ui.inventory.facility.ContainerList;

@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.ui.products.product;
 
 import java.util.Iterator;
@@ -14,9 +13,9 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 
 import com.kratonsolution.belian.common.app.DateTimes;
-import com.kratonsolution.belian.products.dm.Product;
-import com.kratonsolution.belian.products.dm.ProductFeatureApplicability;
-import com.kratonsolution.belian.products.svc.ProductService;
+import com.kratonsolution.belian.product.impl.orm.Product;
+import com.kratonsolution.belian.product.impl.orm.ProductFeatureApplicability;
+import com.kratonsolution.belian.product.impl.application.ProductService;
 import com.kratonsolution.belian.ui.BForm;
 import com.kratonsolution.belian.ui.products.feature.ProductFeatureCategoryList;
 import com.kratonsolution.belian.ui.products.feature.ProductFeatureList;
@@ -28,6 +27,7 @@ import com.kratonsolution.belian.ui.util.Springs;
  * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 0.0.1
  */
 public class ProductFeatureForm extends BForm
 {	

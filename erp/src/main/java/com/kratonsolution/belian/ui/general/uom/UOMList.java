@@ -6,10 +6,10 @@ import org.zkoss.zul.Listitem;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.orm.IDValueRef;
 import com.kratonsolution.belian.common.orm.Observer;
-import com.kratonsolution.belian.products.dm.Product;
-import com.kratonsolution.belian.products.dm.UnitOfMeasure;
-import com.kratonsolution.belian.products.svc.ProductService;
-import com.kratonsolution.belian.products.svc.UnitOfMeasureService;
+import com.kratonsolution.belian.product.impl.orm.Product;
+import com.kratonsolution.belian.uom.impl.orm.UnitOfMeasure;
+import com.kratonsolution.belian.product.impl.application.ProductService;
+import com.kratonsolution.belian.uom.impl.application.UnitOfMeasureService;
 import com.kratonsolution.belian.ui.component.AbstractList;
 import com.kratonsolution.belian.ui.util.Springs;
 

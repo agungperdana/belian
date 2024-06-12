@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kratonsolution.belian.common.app.DateTimes;
-import com.kratonsolution.belian.general.svc.CompanyStructureService;
+import com.kratonsolution.belian.core.companystructure.impl.application.CompanyStructureService;
 import com.kratonsolution.belian.global.view.AbstractView;
 import com.kratonsolution.belian.invoice.dm.SalesInvoice;
 import com.kratonsolution.belian.invoice.svc.SalesInvoiceService;

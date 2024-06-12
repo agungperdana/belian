@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.ui.products.feature;
 
 import org.zkoss.zk.ui.WrongValueException;
@@ -12,8 +11,8 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.products.dm.ProductFeature;
-import com.kratonsolution.belian.products.svc.ProductFeatureService;
+import com.kratonsolution.belian.productfeature.impl.orm.ProductFeature;
+import com.kratonsolution.belian.productfeature.impl.application.ProductFeatureService;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
@@ -21,9 +20,9 @@ import com.kratonsolution.belian.ui.util.RowUtils;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 0.0.1
  */
 public class FeatureEditContent extends AbstractForm
 {	

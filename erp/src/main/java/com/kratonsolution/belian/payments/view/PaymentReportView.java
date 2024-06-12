@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.payments.view;
 
 import java.math.BigDecimal;
@@ -8,14 +7,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kratonsolution.belian.common.app.DateTimes;
-import com.kratonsolution.belian.general.svc.CompanyStructureService;
+import com.kratonsolution.belian.core.companystructure.impl.application.CompanyStructureService;
 import com.kratonsolution.belian.global.view.AbstractView;
 import com.kratonsolution.belian.core.party.impl.repository.PartyRepository;
 import com.kratonsolution.belian.payments.dm.Disbursement;
@@ -29,23 +28,20 @@ import com.kratonsolution.belian.payments.dm.ReceiptRepository;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 0.0.1
  */
 @Controller
+@AllArgsConstructor
 public class PaymentReportView extends AbstractView
 {
-	@Autowired
 	private PaymentRepository paymentRepo;
 	
-	@Autowired
 	private ReceiptRepository receiptRepo;
 	
-	@Autowired
 	private DisbursementRepository disbursementRepo;
 	
-	@Autowired
 	private PartyRepository partyRepo;
 	
-	@Autowired
 	private CompanyStructureService structureService;
 	
 	@RequestMapping("/paymentreportsview")

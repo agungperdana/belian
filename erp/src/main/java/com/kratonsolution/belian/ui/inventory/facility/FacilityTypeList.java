@@ -4,7 +4,7 @@ package com.kratonsolution.belian.ui.inventory.facility;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.orm.IDValueRef;
-import com.kratonsolution.belian.inventory.dm.FacilityType;
+import com.kratonsolution.belian.facility.impl.orm.FacilityType;
 import com.kratonsolution.belian.ui.component.AbstractList;
 
 

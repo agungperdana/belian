@@ -8,7 +8,7 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.inventory.dm.StockAdjustmentType;
+import com.kratonsolution.belian.stockadjustment.impl.orm.StockAdjustmentType;
 import com.kratonsolution.belian.ui.util.Springs;
 
 

@@ -2,7 +2,6 @@
 package com.kratonsolution.belian.ui.inventory.facility;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -18,10 +17,10 @@ import org.zkoss.zul.Treerow;
 
 import com.kratonsolution.belian.common.orm.Observer;
 import com.kratonsolution.belian.common.app.Language;
-import com.kratonsolution.belian.inventory.dm.Container;
-import com.kratonsolution.belian.inventory.dm.Facility;
-import com.kratonsolution.belian.inventory.svc.ContainerService;
-import com.kratonsolution.belian.inventory.svc.FacilityService;
+import com.kratonsolution.belian.facility.impl.orm.Container;
+import com.kratonsolution.belian.facility.impl.orm.Facility;
+import com.kratonsolution.belian.facility.impl.application.ContainerService;
+import com.kratonsolution.belian.facility.impl.application.FacilityService;
 import com.kratonsolution.belian.ui.CenterContent;
 import com.kratonsolution.belian.ui.Removeable;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -165,23 +164,23 @@ public class ContainerTree extends Tree implements Removeable
 	
 	private void remove(Container container,CenterContent canvas)
 	{
-		if(container.getFacility() == null)
-			containerService.delete(container.getId());
-		else
-		{
-			Iterator<Container> iterator = container.getFacility().getContainers().iterator();
-			while (iterator.hasNext())
-			{
-				Container con = (Container) iterator.next();
-				if(con.getId().equals(container.getId()))
-				{
-					iterator.remove();
-					break;
-				}
-			}
-		
-			service.edit(container.getFacility());
-		}
+//		if(container.getFacility() == null)
+//			containerService.delete(container.getId());
+//		else
+//		{
+//			Iterator<Container> iterator = container.getFacility().getContainers().iterator();
+//			while (iterator.hasNext())
+//			{
+//				Container con = (Container) iterator.next();
+//				if(con.getId().equals(container.getId()))
+//				{
+//					iterator.remove();
+//					break;
+//				}
+//			}
+//
+//			service.edit(container.getFacility());
+//		}
 		
 		for(Observer observer:canvas.getObservers())
 			observer.valueChange(null);

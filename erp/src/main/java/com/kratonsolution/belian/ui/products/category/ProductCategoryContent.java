@@ -7,7 +7,7 @@ import org.zkoss.zul.Borderlayout;
 import org.zkoss.zul.Center;
 import org.zkoss.zul.West;
 
-import com.kratonsolution.belian.products.svc.ProductCategoryService;
+import com.kratonsolution.belian.productcategory.impl.application.ProductCategoryService;
 import com.kratonsolution.belian.ui.Removeable;
 import com.kratonsolution.belian.ui.util.Springs;
 

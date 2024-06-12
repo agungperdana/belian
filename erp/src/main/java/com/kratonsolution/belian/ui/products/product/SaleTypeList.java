@@ -8,7 +8,7 @@ import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.orm.IDValueRef;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.products.dm.SaleType;
+import com.kratonsolution.belian.product.impl.orm.SaleType;
 import com.kratonsolution.belian.ui.component.AbstractList;
 import com.kratonsolution.belian.ui.util.Springs;
 

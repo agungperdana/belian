@@ -6,7 +6,7 @@ import org.zkoss.zul.West;
 
 import com.kratonsolution.belian.common.orm.IDValueRef;
 import com.kratonsolution.belian.common.orm.Observer;
-import com.kratonsolution.belian.inventory.dm.Facility;
+import com.kratonsolution.belian.facility.impl.orm.Facility;
 import com.kratonsolution.belian.ui.CenterContent;
 import com.kratonsolution.belian.ui.Removeable;
 

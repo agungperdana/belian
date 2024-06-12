@@ -13,8 +13,8 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Toolbarbutton;
 
-import com.kratonsolution.belian.products.dm.ProductCategory;
-import com.kratonsolution.belian.products.svc.ProductCategoryService;
+import com.kratonsolution.belian.productcategory.impl.orm.ProductCategory;
+import com.kratonsolution.belian.productcategory.impl.application.ProductCategoryService;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;

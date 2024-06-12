@@ -18,7 +18,7 @@ import org.zkoss.zul.Toolbarbutton;
 import com.kratonsolution.belian.common.app.DateTimes;
 import com.kratonsolution.belian.core.companystructure.impl.orm.CompanyStructure;
 import com.kratonsolution.belian.core.companystructure.impl.orm.CompanyStructureType;
-import com.kratonsolution.belian.general.svc.CompanyStructureService;
+import com.kratonsolution.belian.core.companystructure.impl.application.CompanyStructureService;
 import com.kratonsolution.belian.core.party.impl.application.OrganizationService;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.util.Components;

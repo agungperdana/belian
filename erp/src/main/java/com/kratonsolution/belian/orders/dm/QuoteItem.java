@@ -18,7 +18,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
-import com.kratonsolution.belian.products.dm.UnitOfMeasure;
+import com.kratonsolution.belian.uom.impl.orm.UnitOfMeasure;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -4,7 +4,7 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 
-import com.kratonsolution.belian.inventory.dm.Facility;
+import com.kratonsolution.belian.facility.impl.orm.Facility;
 import com.kratonsolution.belian.ui.Dashboard;
 import com.kratonsolution.belian.ui.util.Flow;
 

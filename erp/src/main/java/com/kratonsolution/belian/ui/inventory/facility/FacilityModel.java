@@ -7,8 +7,8 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
-import com.kratonsolution.belian.inventory.dm.Facility;
-import com.kratonsolution.belian.inventory.svc.FacilityService;
+import com.kratonsolution.belian.facility.impl.orm.Facility;
+import com.kratonsolution.belian.facility.impl.application.FacilityService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**

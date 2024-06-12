@@ -17,8 +17,8 @@ import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
 
 import com.kratonsolution.belian.common.app.Language;
-import com.kratonsolution.belian.products.dm.ProductCategory;
-import com.kratonsolution.belian.products.svc.ProductCategoryService;
+import com.kratonsolution.belian.productcategory.impl.orm.ProductCategory;
+import com.kratonsolution.belian.productcategory.impl.application.ProductCategoryService;
 import com.kratonsolution.belian.ui.Removeable;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;

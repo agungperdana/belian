@@ -1,52 +1,47 @@
 package com.kratonsolution.belian.tools.svc;
 
-import java.io.InputStream;
-import java.util.UUID;
-
+import com.kratonsolution.belian.accounting.dm.CurrencyRepository;
+import com.kratonsolution.belian.common.app.DateTimes;
+import com.kratonsolution.belian.facility.impl.repository.FacilityRepository;
+import com.kratonsolution.belian.inventoryitem.impl.repository.InventoryItemRepository;
+import com.kratonsolution.belian.product.impl.orm.Product;
+import com.kratonsolution.belian.product.impl.orm.ProductCategoryClassification;
+import com.kratonsolution.belian.product.impl.orm.ProductType;
+import com.kratonsolution.belian.product.impl.repository.ProductRepository;
+import com.kratonsolution.belian.productcategory.impl.orm.ProductCategory;
+import com.kratonsolution.belian.productcategory.impl.repository.ProductCategoryRepository;
+import com.kratonsolution.belian.uom.impl.orm.UnitOfMeasure;
+import com.kratonsolution.belian.uom.impl.repository.UnitOfMeasureRepository;
+import lombok.AllArgsConstructor;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kratonsolution.belian.accounting.dm.CurrencyRepository;
-import com.kratonsolution.belian.common.app.DateTimes;
-import com.kratonsolution.belian.inventory.dm.FacilityRepository;
-import com.kratonsolution.belian.inventory.dm.InventoryItemRepository;
-import com.kratonsolution.belian.products.dm.Product;
-import com.kratonsolution.belian.products.dm.ProductCategory;
-import com.kratonsolution.belian.products.dm.ProductCategoryClassification;
-import com.kratonsolution.belian.products.dm.ProductCategoryRepository;
-import com.kratonsolution.belian.products.dm.ProductRepository;
-import com.kratonsolution.belian.products.dm.ProductType;
-import com.kratonsolution.belian.products.dm.UnitOfMeasure;
-import com.kratonsolution.belian.products.dm.UnitOfMeasureRepository;
+import java.io.InputStream;
+import java.util.UUID;
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 0.0.1
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
+@AllArgsConstructor
 public class DataImportService
 {
-	@Autowired
 	private ProductCategoryRepository categoryRepository;
 
-	@Autowired
 	private ProductRepository productRepository;
 
-	@Autowired
 	private InventoryItemRepository itemRepository;
 	
-	@Autowired
 	private UnitOfMeasureRepository measureRepository;
 	
-	@Autowired
 	private CurrencyRepository currencyRepository;
 	
-	@Autowired
 	private FacilityRepository facilityRepository;
 	
 	public void insert(InputStream excelfile) throws Exception

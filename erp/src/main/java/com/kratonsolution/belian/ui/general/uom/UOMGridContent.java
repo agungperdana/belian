@@ -17,7 +17,7 @@ import org.zkoss.zul.event.PagingEvent;
 import org.zkoss.zul.event.ZulEvents;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.products.svc.UnitOfMeasureService;
+import com.kratonsolution.belian.uom.impl.application.UnitOfMeasureService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;

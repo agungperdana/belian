@@ -8,7 +8,7 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.inventory.dm.ContainerType;
+import com.kratonsolution.belian.facility.impl.orm.ContainerType;
 import com.kratonsolution.belian.ui.util.Springs;
 
 

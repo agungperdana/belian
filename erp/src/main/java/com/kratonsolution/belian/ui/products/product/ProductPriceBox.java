@@ -26,11 +26,11 @@ import com.kratonsolution.belian.common.orm.Observer;
 import com.kratonsolution.belian.common.app.DateTimes;
 import com.kratonsolution.belian.common.app.Language;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.products.dm.PriceComponent;
-import com.kratonsolution.belian.products.dm.Product;
-import com.kratonsolution.belian.products.dm.ProductFeature;
-import com.kratonsolution.belian.products.dm.SaleType;
-import com.kratonsolution.belian.products.svc.ProductService;
+import com.kratonsolution.belian.product.impl.orm.PriceComponent;
+import com.kratonsolution.belian.product.impl.orm.Product;
+import com.kratonsolution.belian.productfeature.impl.orm.ProductFeature;
+import com.kratonsolution.belian.product.impl.orm.SaleType;
+import com.kratonsolution.belian.product.impl.application.ProductService;
 import com.kratonsolution.belian.ui.util.Numbers;
 import com.kratonsolution.belian.ui.util.Springs;
 

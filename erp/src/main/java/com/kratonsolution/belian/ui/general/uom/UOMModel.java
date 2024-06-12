@@ -7,8 +7,8 @@ import java.util.List;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.event.ListDataListener;
 
-import com.kratonsolution.belian.products.dm.UnitOfMeasure;
-import com.kratonsolution.belian.products.svc.UnitOfMeasureService;
+import com.kratonsolution.belian.uom.impl.orm.UnitOfMeasure;
+import com.kratonsolution.belian.uom.impl.application.UnitOfMeasureService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**

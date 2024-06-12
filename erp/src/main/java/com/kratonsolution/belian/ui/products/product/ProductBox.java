@@ -9,8 +9,8 @@ import org.zkoss.zul.Comboitem;
 
 import com.kratonsolution.belian.common.orm.IDValueRef;
 import com.kratonsolution.belian.common.orm.Observer;
-import com.kratonsolution.belian.products.dm.Product;
-import com.kratonsolution.belian.products.svc.ProductService;
+import com.kratonsolution.belian.product.impl.orm.Product;
+import com.kratonsolution.belian.product.impl.application.ProductService;
 import com.kratonsolution.belian.ui.component.AbstractCombobox;
 import com.kratonsolution.belian.ui.component.ListSelectionListener;
 import com.kratonsolution.belian.ui.products.feature.ProductFeatureList;

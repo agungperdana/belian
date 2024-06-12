@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
 import com.kratonsolution.belian.common.orm.IDValueRef;
-import com.kratonsolution.belian.inventory.dm.Stockable;
+import com.kratonsolution.belian.common.orm.Stockable;
 
 import lombok.Getter;
 import lombok.Setter;

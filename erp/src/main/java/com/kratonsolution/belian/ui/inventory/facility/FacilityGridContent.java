@@ -16,8 +16,8 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
 import org.zkoss.zul.event.ZulEvents;
 
-import com.kratonsolution.belian.inventory.dm.Facility;
-import com.kratonsolution.belian.inventory.svc.FacilityService;
+import com.kratonsolution.belian.facility.impl.orm.Facility;
+import com.kratonsolution.belian.facility.impl.application.FacilityService;
 import com.kratonsolution.belian.ui.GridContent;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.RowUtils;

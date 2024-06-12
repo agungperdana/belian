@@ -7,7 +7,7 @@ import org.zkoss.zul.Borderlayout;
 import org.zkoss.zul.Center;
 import org.zkoss.zul.West;
 
-import com.kratonsolution.belian.general.svc.CompanyStructureService;
+import com.kratonsolution.belian.core.companystructure.impl.application.CompanyStructureService;
 import com.kratonsolution.belian.ui.Removeable;
 import com.kratonsolution.belian.ui.util.Springs;
 

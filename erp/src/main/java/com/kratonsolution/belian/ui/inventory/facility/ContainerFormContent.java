@@ -14,10 +14,10 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.orm.Observer;
-import com.kratonsolution.belian.inventory.dm.Container;
-import com.kratonsolution.belian.inventory.dm.Facility;
-import com.kratonsolution.belian.inventory.svc.ContainerService;
-import com.kratonsolution.belian.inventory.svc.FacilityService;
+import com.kratonsolution.belian.facility.impl.orm.Container;
+import com.kratonsolution.belian.facility.impl.orm.Facility;
+import com.kratonsolution.belian.facility.impl.application.ContainerService;
+import com.kratonsolution.belian.facility.impl.application.FacilityService;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.CenterContent;
 import com.kratonsolution.belian.ui.util.Components;
@@ -83,7 +83,6 @@ public class ContainerFormContent extends AbstractForm
 					throw new WrongValueException(types,lang.get("message.field.empty"));
 				
 				Container container = new Container();
-				container.setFacility(facilitys.getDomain());
 				container.setName(name.getText());
 				container.setNote(note.getText());
 				container.setParent(containers.getDomain());

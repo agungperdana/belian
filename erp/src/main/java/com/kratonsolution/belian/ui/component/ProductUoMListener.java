@@ -1,7 +1,7 @@
 
 package com.kratonsolution.belian.ui.component;
 
-import com.kratonsolution.belian.products.dm.UnitOfMeasure;
+import com.kratonsolution.belian.uom.impl.orm.UnitOfMeasure;
 
 /**
  * @author Agung Dodi Perdana

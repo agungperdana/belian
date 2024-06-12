@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.ui.healtcares.pharmacy.pos;
 
 import java.math.BigDecimal;
@@ -45,10 +44,10 @@ import com.kratonsolution.belian.orders.dm.SalesOrderItem;
 import com.kratonsolution.belian.core.party.impl.orm.Party;
 import com.kratonsolution.belian.payments.dm.PaymentMethodInfo;
 import com.kratonsolution.belian.payments.dm.PaymentMethodType;
-import com.kratonsolution.belian.products.dm.PriceComponent;
-import com.kratonsolution.belian.products.dm.Product;
-import com.kratonsolution.belian.products.dm.ProductCategory;
-import com.kratonsolution.belian.products.dm.SaleType;
+import com.kratonsolution.belian.product.impl.orm.PriceComponent;
+import com.kratonsolution.belian.product.impl.orm.Product;
+import com.kratonsolution.belian.productcategory.impl.orm.ProductCategory;
+import com.kratonsolution.belian.product.impl.orm.SaleType;
 import com.kratonsolution.belian.ui.PrintWindow;
 import com.kratonsolution.belian.ui.component.GridLayout;
 import com.kratonsolution.belian.ui.component.ToggleButton;
@@ -60,6 +59,7 @@ import com.kratonsolution.belian.ui.util.RowUtils;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 public class PharmacyPOSContent extends POSOrder
 {
@@ -368,7 +368,7 @@ public class PharmacyPOSContent extends POSOrder
 								else
 								{
 									up.setValue(poa.getPercent().getValue());
-									tot.setValue(quan.getValue().multiply(getSubtotal().multiply(up.getValue()).divide(BigDecimal.valueOf(100),RoundingMode.HALF_UP)));
+									tot.setValue(quan.getValue().multiply(getSubtotal().multiply(up.getValue()).divide(BigDecimal.valueOf(100), RoundingMode.HALF_UP)));
 								}
 								
 								A min = new A();

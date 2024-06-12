@@ -8,7 +8,7 @@ import org.zkoss.zul.RowRenderer;
 
 import com.kratonsolution.belian.common.app.DateTimes;
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.products.dm.Product;
+import com.kratonsolution.belian.product.impl.orm.Product;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**

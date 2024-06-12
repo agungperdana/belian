@@ -13,19 +13,19 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Toolbarbutton;
 
 import com.google.common.base.Strings;
-import com.kratonsolution.belian.inventory.dm.Container;
-import com.kratonsolution.belian.inventory.dm.Facility;
-import com.kratonsolution.belian.inventory.svc.ContainerService;
-import com.kratonsolution.belian.inventory.svc.FacilityService;
+import com.kratonsolution.belian.facility.impl.orm.Container;
+import com.kratonsolution.belian.facility.impl.orm.Facility;
+import com.kratonsolution.belian.facility.impl.application.ContainerService;
+import com.kratonsolution.belian.facility.impl.application.FacilityService;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.util.Components;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 0.0.1
  */
 public class ContainerEditContent extends AbstractForm
 {	
@@ -83,7 +83,6 @@ public class ContainerEditContent extends AbstractForm
 				container = containerService.findById(container.getId());
 				if(container != null)
 				{
-					container.setFacility(facilitys.getDomain());
 					container.setName(name.getText());
 					container.setNote(note.getText());
 					container.setParent(containers.getDomain());
@@ -122,7 +121,6 @@ public class ContainerEditContent extends AbstractForm
 			types.setContainerType(container.getType());
 			note.setText(container.getNote());
 			containers.setDomain(container.getParent());
-			facilitys.setDomain(container.getFacility());
 		}
 		
 		grid.appendChild(new Columns());

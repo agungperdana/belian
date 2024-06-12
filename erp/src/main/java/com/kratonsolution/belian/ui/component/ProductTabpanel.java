@@ -5,7 +5,7 @@ import org.zkoss.zul.Tabpanel;
 
 import com.kratonsolution.belian.common.orm.IDValueRef;
 import com.kratonsolution.belian.common.orm.Observer;
-import com.kratonsolution.belian.products.svc.ProductService;
+import com.kratonsolution.belian.product.impl.application.ProductService;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**

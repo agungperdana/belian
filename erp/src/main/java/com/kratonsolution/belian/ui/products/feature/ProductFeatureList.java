@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.ui.products.feature;
 
 import java.util.HashMap;
@@ -8,10 +7,10 @@ import org.zkoss.zul.Listitem;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.orm.IDValueRef;
-import com.kratonsolution.belian.products.dm.Product;
-import com.kratonsolution.belian.products.dm.ProductFeature;
-import com.kratonsolution.belian.products.dm.ProductFeatureApplicability;
-import com.kratonsolution.belian.products.svc.ProductFeatureService;
+import com.kratonsolution.belian.product.impl.orm.Product;
+import com.kratonsolution.belian.productfeature.impl.orm.ProductFeature;
+//import com.kratonsolution.belian.productfeature.impl.orm.ProductFeatureApplicability;
+import com.kratonsolution.belian.productfeature.impl.application.ProductFeatureService;
 import com.kratonsolution.belian.ui.component.AbstractList;
 import com.kratonsolution.belian.ui.component.ListSelectionListener;
 import com.kratonsolution.belian.ui.util.Springs;
@@ -19,6 +18,7 @@ import com.kratonsolution.belian.ui.util.Springs;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 0.0.1
  */
 public class ProductFeatureList extends AbstractList<ProductFeature> implements ListSelectionListener<Product>
 {
@@ -75,8 +75,8 @@ public class ProductFeatureList extends AbstractList<ProductFeature> implements 
 	public void fireItemSelected(Product product)
 	{
 		getItems().clear();
-		for(ProductFeatureApplicability feature:product.getFeatures())
-			appendItem(feature.getFeature().getValue(),feature.getFeature().getId());
+//		for(ProductFeatureApplicability feature:product.getFeatures())
+//			appendItem(feature.getFeature().getValue(),feature.getFeature().getId());
 	}
 
 	@Override

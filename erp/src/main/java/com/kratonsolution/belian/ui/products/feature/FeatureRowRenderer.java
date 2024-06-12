@@ -6,7 +6,7 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.products.dm.ProductFeature;
+import com.kratonsolution.belian.productfeature.impl.orm.ProductFeature;
 import com.kratonsolution.belian.ui.util.Springs;
 
 

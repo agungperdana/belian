@@ -1,10 +1,0 @@
-
-	java:S112g"FDefine and throw a dedicated exception instead of using a generic one.(ã­¦òJ$1e252539-8f8d-4a0d-bd33-e542e34d7368
-g
-java:S2259:"EA "NullPointerException" could be thrown; "product" is nullable here.(öæíÄúÿÿÿÿ8ÏÎ’ƒÿ1
-g
-java:S2259]"EA "NullPointerException" could be thrown; "product" is nullable here.(öæíÄúÿÿÿÿ8ÏÎ’ƒÿ1
-~
-java:S6813"BRemove this field injection and use constructor injection instead.(êæÄŞJ$57ee82c4-39bf-476e-aa10-411b3dd197d6
-~
-java:S6813!"BRemove this field injection and use constructor injection instead.(êæÄŞJ$8f45fa9c-6fb6-461a-b2a8-4430db7659de

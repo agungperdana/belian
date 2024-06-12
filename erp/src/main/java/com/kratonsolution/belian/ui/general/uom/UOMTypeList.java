@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.ui.general.uom;
 
 import java.util.HashMap;
@@ -8,13 +7,14 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 
 import com.kratonsolution.belian.common.SessionUtils;
-import com.kratonsolution.belian.products.dm.UOMType;
+import com.kratonsolution.belian.uom.impl.orm.UOMType;
 import com.kratonsolution.belian.ui.util.Springs;
 
 
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 0.0.1
  */
 public class UOMTypeList extends Listbox
 {

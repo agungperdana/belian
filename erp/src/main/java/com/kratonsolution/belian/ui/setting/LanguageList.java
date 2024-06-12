@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.ui.setting;
 
 import java.util.Locale;
@@ -12,6 +11,7 @@ import com.kratonsolution.belian.ui.util.Springs;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 0.0.1
  */
 public class LanguageList extends Listbox
 {

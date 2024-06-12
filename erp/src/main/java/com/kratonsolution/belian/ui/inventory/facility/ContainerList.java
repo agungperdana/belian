@@ -8,9 +8,9 @@ import org.zkoss.zul.Listitem;
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.common.orm.IDValueRef;
 import com.kratonsolution.belian.common.orm.Observer;
-import com.kratonsolution.belian.inventory.dm.Container;
-import com.kratonsolution.belian.inventory.dm.Facility;
-import com.kratonsolution.belian.inventory.svc.FacilityService;
+import com.kratonsolution.belian.facility.impl.orm.Container;
+import com.kratonsolution.belian.facility.impl.orm.Facility;
+import com.kratonsolution.belian.facility.impl.application.FacilityService;
 import com.kratonsolution.belian.ui.component.AbstractList;
 import com.kratonsolution.belian.ui.util.Springs;
 

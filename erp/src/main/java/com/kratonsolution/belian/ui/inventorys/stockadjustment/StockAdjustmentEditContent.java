@@ -16,8 +16,8 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Timebox;
 
-import com.kratonsolution.belian.inventory.dm.StockAdjustment;
-import com.kratonsolution.belian.inventory.svc.StockAdjustmentService;
+import com.kratonsolution.belian.stockadjustment.impl.orm.StockAdjustment;
+import com.kratonsolution.belian.stockadjustment.impl.application.StockAdjustmentService;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.NRCToolbar;
 import com.kratonsolution.belian.ui.general.companystructure.CompanyStructureList;

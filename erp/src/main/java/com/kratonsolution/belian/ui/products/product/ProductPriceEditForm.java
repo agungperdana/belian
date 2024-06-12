@@ -15,12 +15,12 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 
 import com.kratonsolution.belian.common.app.DateTimes;
-import com.kratonsolution.belian.products.dm.OrderValue;
-import com.kratonsolution.belian.products.dm.PriceComponent;
-import com.kratonsolution.belian.products.dm.PriceComponentRepository;
-import com.kratonsolution.belian.products.dm.Product;
-import com.kratonsolution.belian.products.dm.QuantityBreak;
-import com.kratonsolution.belian.products.svc.ProductService;
+import com.kratonsolution.belian.product.impl.orm.OrderValue;
+import com.kratonsolution.belian.product.impl.orm.PriceComponent;
+import com.kratonsolution.belian.product.impl.repository.PriceComponentRepository;
+import com.kratonsolution.belian.product.impl.orm.Product;
+import com.kratonsolution.belian.product.impl.orm.QuantityBreak;
+import com.kratonsolution.belian.product.impl.application.ProductService;
 import com.kratonsolution.belian.ui.AbstractForm;
 import com.kratonsolution.belian.ui.accounting.currency.CurrencyList;
 import com.kratonsolution.belian.ui.general.geographic.GeographicList;
@@ -32,9 +32,9 @@ import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 0.0.1
  */
 public class ProductPriceEditForm extends AbstractForm
 {	

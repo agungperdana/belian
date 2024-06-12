@@ -29,6 +29,16 @@ dependencies {
 	implementation project(':belian-core:country-impl')
 	implementation project(':belian-core:geographic-impl')
 	implementation project(':belian-core:party-impl')
+	implementation project(':belian-core:company-structure-impl')
+	implementation project(':belian-core:industry-segmentation-impl')
+	implementation project(':authentication')
+	implementation project(':product-management:product-category-impl')
+	implementation project(':product-management:product-feature-impl')
+	implementation project(':product-management:unit-of-measure-impl')
+	implementation project(':product-management:product-impl')
+	implementation project(':inventory-management:facility-impl')
+	implementation project(':inventory-management:inventory-item-impl')
+	implementation project(':inventory-management:stock-adjustment-impl')
 
 	implementation 'org.jasypt:jasypt:latest.release'
 	implementation 'org.apache.poi:poi-ooxml:latest.release'

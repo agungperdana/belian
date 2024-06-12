@@ -18,7 +18,7 @@ import org.zkoss.zul.Treerow;
 
 import com.kratonsolution.belian.common.app.Language;
 import com.kratonsolution.belian.core.companystructure.impl.orm.CompanyStructure;
-import com.kratonsolution.belian.general.svc.CompanyStructureService;
+import com.kratonsolution.belian.core.companystructure.impl.application.CompanyStructureService;
 import com.kratonsolution.belian.ui.Removeable;
 import com.kratonsolution.belian.ui.util.Flow;
 import com.kratonsolution.belian.ui.util.Springs;

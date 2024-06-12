@@ -27,7 +27,7 @@ import org.zkoss.zul.Textbox;
 
 import com.google.common.base.Strings;
 import com.kratonsolution.belian.core.companystructure.impl.orm.CompanyStructure;
-import com.kratonsolution.belian.general.svc.CompanyStructureService;
+import com.kratonsolution.belian.core.companystructure.impl.application.CompanyStructureService;
 import com.kratonsolution.belian.core.party.impl.application.OrganizationService;
 import com.kratonsolution.belian.access.role.impl.orm.RoleModule;
 import com.kratonsolution.belian.access.module.impl.orm.Module;

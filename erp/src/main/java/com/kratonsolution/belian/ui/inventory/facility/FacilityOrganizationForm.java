@@ -16,10 +16,10 @@ import org.zkoss.zul.Textbox;
 
 import com.kratonsolution.belian.common.orm.IDValueRef;
 import com.kratonsolution.belian.core.companystructure.impl.orm.CompanyStructure;
-import com.kratonsolution.belian.general.svc.CompanyStructureService;
-import com.kratonsolution.belian.inventory.dm.Facility;
-import com.kratonsolution.belian.inventory.dm.FacilityOrganization;
-import com.kratonsolution.belian.inventory.svc.FacilityService;
+import com.kratonsolution.belian.core.companystructure.impl.application.CompanyStructureService;
+import com.kratonsolution.belian.facility.impl.orm.Facility;
+import com.kratonsolution.belian.facility.impl.orm.FacilityOrganization;
+import com.kratonsolution.belian.facility.impl.application.FacilityService;
 import com.kratonsolution.belian.core.party.impl.application.OrganizationService;
 import com.kratonsolution.belian.ui.BForm;
 import com.kratonsolution.belian.ui.util.Components;

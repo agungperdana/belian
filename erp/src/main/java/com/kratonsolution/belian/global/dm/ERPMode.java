@@ -1,4 +1,3 @@
-
 package com.kratonsolution.belian.global.dm;
 
 import java.io.Serializable;
@@ -12,7 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
-import com.kratonsolution.belian.general.dm.IndustrySegmentation;
+import com.kratonsolution.belian.core.industrysegmentation.impl.orm.IndustrySegmentation;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +19,7 @@ import lombok.Setter;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 0.0.1
  */
 @Getter
 @Setter
