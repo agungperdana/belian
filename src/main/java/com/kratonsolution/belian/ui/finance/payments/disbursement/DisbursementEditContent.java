@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.finance.payments.disbursement;
 
 import java.math.BigDecimal;
@@ -102,7 +100,7 @@ public class DisbursementEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		Disbursement receipt = service.findOne(RowUtils.id(row));
+		Disbursement receipt = service.findById(RowUtils.id(row));
 		if(receipt != null)
 		{
 			number.setText(receipt.getNumber());
@@ -183,7 +181,7 @@ public class DisbursementEditContent extends AbstractForm
 		applications.getColumns().appendChild(new Column(lang.get("payments.grid.column.amount"),null,"135px"));
 		applications.setSpan("0");
 
-		Disbursement receipt = service.findOne(RowUtils.id(row));
+		Disbursement receipt = service.findById(RowUtils.id(row));
 		if(receipt != null)
 		{
 			for(PaymentApplication application:receipt.getApplications())

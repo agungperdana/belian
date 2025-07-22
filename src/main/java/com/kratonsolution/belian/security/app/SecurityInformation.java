@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.security.app;
 
 import java.util.Collection;
@@ -13,9 +10,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 @Getter
 @Setter
@@ -23,12 +20,12 @@ public class SecurityInformation implements UserDetails
 {
 	private User user;
 	
-	private Collection<Authority> authoritys;
+	private Collection<Authority> authority;
 	
-	public SecurityInformation(User user,Collection<Authority> authoritys)
+	public SecurityInformation(User user,Collection<Authority> authority)
 	{
 		this.user = user;
-		this.authoritys = authoritys;
+		this.authority = authority;
 	}
 	
 	/* (non-Javadoc)
@@ -37,7 +34,7 @@ public class SecurityInformation implements UserDetails
 	@Override
 	public Collection<Authority> getAuthorities()
 	{
-		return authoritys;
+		return authority;
 	}
 
 	/* (non-Javadoc)

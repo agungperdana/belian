@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.inventorys.shipmentissuance;
 
 import org.zkoss.zk.ui.Component;
@@ -125,7 +123,7 @@ public class ShipmentIssuanceForm extends AbstractForm
 				{
 					Row row = (Row)com;
 
-					ShipmentItem shipmentItem = shipmentItemService.findOne(RowUtils.id(row));
+					ShipmentItem shipmentItem = shipmentItemService.findById(RowUtils.id(row));
 					if(shipmentItem != null)
 					{
 						FacilityList facilityList = (FacilityList)com.getChildren().get(5);
@@ -255,7 +253,7 @@ public class ShipmentIssuanceForm extends AbstractForm
 			{
 				if(shipments.getDomain() != null)
 				{
-					Shipment out = shipmentService.findOne(shipments.getDomainAsRef().getId());
+					Shipment out = shipmentService.findById(shipments.getDomainAsRef().getId());
 					if(out != null)
 					{
 						for(ShipmentItem item:out.getItems())
@@ -343,7 +341,7 @@ public class ShipmentIssuanceForm extends AbstractForm
 //				{
 //					for(ShipmentOrder order:shipmentItem.getOrders())
 //					{
-//						OrderItem orderItem = orderItemService.findOne(order.getOrderItem().getId());
+//						OrderItem orderItem = orderItemService.findById(order.getOrderItem().getId());
 //						if(orderItem != null && orderItem.getQuantity().subtract(orderItem.getProcessed()).compareTo(BigDecimal.ZERO) > 0)
 //						{
 //							Decimalbox accepted = Components.fullspanDecimalbox(orderItem.getQuantity().subtract(orderItem.getProcessed()));

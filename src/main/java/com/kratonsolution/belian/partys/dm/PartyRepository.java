@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.partys.dm;
 
 import java.util.List;
@@ -23,5 +21,5 @@ public interface PartyRepository extends JpaRepository<Party,String>
 	@Query("FROM Party agent WHERE agent.name LIKE %:name% ORDER BY agent.name ASC")
 	public List<Party> findAll(@Param("name")String name);
 	
-	public Party findOneByCode(String code);
+	public Party findByCode(String code);
 }

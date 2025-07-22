@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.inventorys.inventoryitem;
 
 import org.zkoss.zk.ui.Component;

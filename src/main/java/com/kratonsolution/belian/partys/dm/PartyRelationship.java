@@ -1,23 +1,21 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.partys.dm;
 
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.UUID;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Version;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -39,7 +37,7 @@ public class PartyRelationship implements Serializable
 	@Column(name="start",nullable=false)
 	protected Date start;
 	
-	@Column(name="end")
+	@Column(name="end_date")
 	protected Date end;
 	
 	@ManyToOne

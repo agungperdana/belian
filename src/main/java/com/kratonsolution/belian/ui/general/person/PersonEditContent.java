@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.general.person;
 
 import java.util.Vector;
@@ -137,7 +135,7 @@ public class PersonEditContent extends AbstractForm
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,lang.get("message.field.empty"));
 
-				Person person = service.findOne(RowUtils.id(row));
+				Person person = service.findById(RowUtils.id(row));
 				if(person != null)
 				{
 					person.setCode(code.getText());
@@ -409,7 +407,7 @@ public class PersonEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		Person person = service.findOne(RowUtils.id(row));
+		Person person = service.findById(RowUtils.id(row));
 		if(person != null)
 		{
 			code.setText(person.getCode());
@@ -525,7 +523,7 @@ public class PersonEditContent extends AbstractForm
 		address.getColumns().getLastChild().setVisible(false);
 		address.setSpan("1");
 
-		Person person = service.findOne(RowUtils.id(row));
+		Person person = service.findById(RowUtils.id(row));
 		if(person != null)
 		{
 			for(Address add:person.getAddresses())
@@ -584,7 +582,7 @@ public class PersonEditContent extends AbstractForm
 		contacts.getColumns().getLastChild().setVisible(false);
 		contacts.setSpan("1");
 
-		Person person = service.findOne(RowUtils.id(row));
+		Person person = service.findById(RowUtils.id(row));
 		if(person != null)
 		{
 			for(Contact con:person.getContacts())
@@ -635,7 +633,7 @@ public class PersonEditContent extends AbstractForm
 		roles.getColumns().getLastChild().setVisible(false);
 		roles.setSpan("3");
 
-		Person person = service.findOne(RowUtils.id(row));
+		Person person = service.findById(RowUtils.id(row));
 		if(person != null)
 		{
 			for(PartyRole role:person.getPartyRoles())
@@ -689,7 +687,7 @@ public class PersonEditContent extends AbstractForm
 		relationships.getColumns().getLastChild().setVisible(false);
 		relationships.setSpan("3");
 
-		Person person = service.findOne(RowUtils.id(row));
+		Person person = service.findById(RowUtils.id(row));
 		if(person != null)
 		{
 			for(PartyRelationship role:person.getRelationships())
@@ -751,7 +749,7 @@ public class PersonEditContent extends AbstractForm
 		skills.getColumns().getLastChild().setVisible(false);
 		skills.setSpan("3");
 
-		Person person = service.findOne(RowUtils.id(row));
+		Person person = service.findById(RowUtils.id(row));
 		if(person != null)
 		{
 			for(PartySkill sk:person.getSkills())
@@ -803,7 +801,7 @@ public class PersonEditContent extends AbstractForm
 		classifications.getColumns().getLastChild().setVisible(false);
 		classifications.setSpan("3");
 
-		Person person = service.findOne(RowUtils.id(row));
+		Person person = service.findById(RowUtils.id(row));
 		if(person != null)
 		{
 			for(PartyClassification cls:person.getClassifications())
@@ -856,7 +854,7 @@ public class PersonEditContent extends AbstractForm
 		maritals.setSpan("3");
 		maritals.getColumns().getLastChild().setVisible(false);
 		
-		Person person = service.findOne(RowUtils.id(row));
+		Person person = service.findById(RowUtils.id(row));
 		if(person != null)
 		{
 			for(MaritalStatus status:person.getMaritalStatuses())
@@ -908,7 +906,7 @@ public class PersonEditContent extends AbstractForm
 		physicals.setSpan("3");
 		physicals.getColumns().getLastChild().setVisible(false);
 		
-		Person person = service.findOne(RowUtils.id(row));
+		Person person = service.findById(RowUtils.id(row));
 		if(person != null)
 		{
 			for(PhysicalCharacteristic characteristic:person.getPhysicalCharacteristics())
@@ -959,7 +957,7 @@ public class PersonEditContent extends AbstractForm
 		citizenships.getColumns().appendChild(new Column(lang.get("person.grid.column.description"),null,"125px"));
 		citizenships.setSpan("3");
 		
-		Person person = service.findOne(RowUtils.id(row));
+		Person person = service.findById(RowUtils.id(row));
 		if(person != null)
 		{
 			for(Citizenship citizenship:person.getCitizenships())

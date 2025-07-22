@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.healthcares.clinic.visitqueue;
 
 import org.zkoss.zk.ui.Page;

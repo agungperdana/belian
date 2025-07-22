@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.shipment.svc;
 
 import java.util.Collection;
@@ -57,9 +54,9 @@ public class ShipmentReceiptService extends AbstractService
 	}
 	
 	@Secured("ROLE_SHIPMENT_RECEIPT_READ")
-	public ShipmentReceipt findOne(String id)
+	public ShipmentReceipt findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 	
 	@Secured("ROLE_SHIPMENT_RECEIPT_READ")
@@ -71,7 +68,7 @@ public class ShipmentReceiptService extends AbstractService
 	@Secured("ROLE_SHIPMENT_RECEIPT_READ")
 	public List<ShipmentReceipt> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId());
+		return repository.findAll(PageRequest.of(pageIndex, pageSize),utils.getOrganization().getId());
 	}
 	
 	@Secured("ROLE_SHIPMENT_RECEIPT_CREATE")
@@ -87,7 +84,7 @@ public class ShipmentReceiptService extends AbstractService
 		//update shipmentitem information
 		for(ShipmentReceiptItem item:receipt.getItems())
 		{
-			ShipmentItem shipmentItem = itemRepo.findOne(item.getShipmentItem().getId());
+			ShipmentItem shipmentItem = itemRepo.findById(item.getShipmentItem().getId()).orElse(null);
 			if(shipmentItem != null)
 			{
 				ShipmentItemReceiptInfo info = new ShipmentItemReceiptInfo();
@@ -101,7 +98,7 @@ public class ShipmentReceiptService extends AbstractService
 			}
 		}
 		
-		Shipment shipment = shipmentRepo.findOne(receipt.getShipment().getId());
+		Shipment shipment = shipmentRepo.findById(receipt.getShipment().getId()).orElse(null);
 		if(shipment != null)
 		{
 			shipment.setDelivered(true);
@@ -118,7 +115,7 @@ public class ShipmentReceiptService extends AbstractService
 	@Secured("ROLE_SHIPMENT_RECEIPT_DELETE")
 	public void delete(String id)
 	{
-		ShipmentReceipt receipt = findOne(id);
+		ShipmentReceipt receipt = findById(id);
 		if(receipt != null)
 		{
 			stockService.removeStock(receipt.getItems());
@@ -126,7 +123,7 @@ public class ShipmentReceiptService extends AbstractService
 			//update shipmentitem information
 			for(ShipmentReceiptItem item:receipt.getItems())
 			{
-				ShipmentItem shipmentItem = itemRepo.findOne(item.getShipmentItem().getId());
+				ShipmentItem shipmentItem = itemRepo.findById(item.getShipmentItem().getId()).orElse(null);
 				if(shipmentItem != null)
 				{
 					shipmentItem.removeReceiptInfo(item.getAccepted());
@@ -137,7 +134,7 @@ public class ShipmentReceiptService extends AbstractService
 		
 		repository.delete(receipt);
 		
-		Shipment shipment = shipmentRepo.findOne(receipt.getShipment().getId());
+		Shipment shipment = shipmentRepo.findById(receipt.getShipment().getId()).orElse(null);
 		if(shipment != null)
 		{
 			shipment.setDelivered(false);

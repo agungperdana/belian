@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.common;
 
 import java.util.ArrayList;
@@ -10,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -51,42 +49,27 @@ import com.kratonsolution.belian.security.svc.UserService;
  */
 @Service
 @Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+@AllArgsConstructor
 public class SessionUtils
 {
-	@Autowired
 	private Language lang;
-	
-	@Autowired
+
 	private UserService service;
-	
-	@Autowired
+
 	private UserSettingRepository settingRepo;
 
-	@Autowired
 	private CurrencyService currencyService;
 
-	@Autowired
 	private OrganizationService organizationService;
-	
-	@Autowired
-	private PersonService personService;
-	
-	@Autowired
+
 	private CompanyStructureService companyStructureService;
-	
-	@Autowired
+
 	private EmployeeRepository employeeRepo;
 
-	@Autowired
-	private CompanyStructureRepository structureRepo;
-	
-	@Autowired
 	private EmploymentRepository employmentRepo;
-	
-	@Autowired
+
 	private TaxService taxService;
-	
-	@Autowired
+
 	private PartyService partyService;
 		
 	public User getUser()
@@ -96,8 +79,8 @@ public class SessionUtils
 			throw new RuntimeException(lang.get("message.user.empty"));
 		
 		//Update user setting with latest from database
-		if(information.getUser().getSetting() != null)
-			information.getUser().setSetting(settingRepo.findOne(information.getUser().getSetting().getId()));
+//		if(information.getUser().getSetting() != null)
+//			information.getUser().setSetting(settingRepo.findById(information.getUser().getSetting().getId()).orElse(null));
 		
 		return information.getUser();
 	}
@@ -112,7 +95,7 @@ public class SessionUtils
 			vectors.addAll(companyStructureService.findAllAsOrganizations());
 		else
 		{
-			Employee employee = employeeRepo.findOneByUsername(logedin.getUserName());
+			Employee employee = employeeRepo.findByUsername(logedin.getUserName());
 			if(employee != null)
 			{
 				List<Employment> employments = employmentRepo.findAll(employee.getId(),employee.getParty().getId(), DateTimes.currentDate());
@@ -147,7 +130,7 @@ public class SessionUtils
 		   getUser().getSetting().getOrganization()!= null && 
 		   !Strings.isNullOrEmpty(getUser().getSetting().getOrganization().getId()))
 		{
-			Organization organization = organizationService.findOne(getUser().getSetting().getOrganization().getId());
+			Organization organization = organizationService.findById(getUser().getSetting().getOrganization().getId());
 			if(organization == null)
 			{
 				organization = new Organization();
@@ -182,7 +165,7 @@ public class SessionUtils
 		   getUser().getSetting().getCurrency() != null &&
 		  !Strings.isNullOrEmpty(getUser().getSetting().getCurrency().getId()))
 		{
-			Currency currency = currencyService.findOne(getUser().getSetting().getCurrency().getId());
+			Currency currency = currencyService.findById(getUser().getSetting().getCurrency().getId());
 			if(currency == null)
 			{
 				currency = new Currency();
@@ -248,7 +231,7 @@ public class SessionUtils
 		   getUser().getSetting().getTax() != null &&
 		   !Strings.isNullOrEmpty(getUser().getSetting().getTax().getId()))
 
-			return taxService.findOne(getUser().getSetting().getTax().getId());
+			return taxService.findById(getUser().getSetting().getTax().getId());
 
 		return null;
 	}
@@ -268,7 +251,7 @@ public class SessionUtils
 	
 	public String getPersonId()
 	{
-		Employee employee = employeeRepo.findOneByUsername(getUser().getUserName());
+		Employee employee = employeeRepo.findByUsername(getUser().getUserName());
 		if(employee != null)
 			return employee.getParty().getId();
 	
@@ -277,7 +260,7 @@ public class SessionUtils
 	
 	public Person getPerson()
 	{
-		Employee employee = employeeRepo.findOneByUsername(getUser().getUserName());
+		Employee employee = employeeRepo.findByUsername(getUser().getUserName());
 		if(employee != null && employee.getParty() instanceof Person)
 			return (Person)employee.getParty();
 	

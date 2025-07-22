@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.global.dm;
 
 import java.util.List;

@@ -1,32 +1,24 @@
-/**
- * 
- */
 package com.kratonsolution.belian.global.dm;
 
 import java.io.Serializable;
 import java.util.UUID;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Version;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 
 import com.kratonsolution.belian.api.dm.IDValueRef;
 
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * 
- * @author Agung Dodi Perdana
- * @email agung.dodi.perdana@gmail.com
- */
 @Getter
 @Setter
 @Entity

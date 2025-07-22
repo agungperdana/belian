@@ -1,10 +1,8 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.orders.dm;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;

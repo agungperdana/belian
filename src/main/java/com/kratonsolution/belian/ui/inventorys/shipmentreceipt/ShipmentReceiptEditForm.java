@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.inventorys.shipmentreceipt;
 
 import org.zkoss.zk.ui.event.Event;
@@ -106,7 +104,7 @@ public class ShipmentReceiptEditForm extends AbstractForm
 	@Override
 	public void initForm()
 	{		
-		ShipmentReceipt receipt = service.findOne(RowUtils.id(row));
+		ShipmentReceipt receipt = service.findById(RowUtils.id(row));
 		if(receipt != null)
 		{
 			date.setValue(receipt.getDate());
@@ -174,12 +172,12 @@ public class ShipmentReceiptEditForm extends AbstractForm
 		items.getColumns().appendChild(new Column(lang.get("shipmentreceipt.grid.column.container"),null,"135px"));
 		items.setSpan("1");
 		
-		ShipmentReceipt receipt = service.findOne(RowUtils.id(row));
+		ShipmentReceipt receipt = service.findById(RowUtils.id(row));
 		if(receipt != null)
 		{
 			for(ShipmentReceiptItem item:receipt.getItems())
 			{
-				ShipmentItem shipmentItem = shipmentItemService.findOne(item.getShipmentItem().getId());
+				ShipmentItem shipmentItem = shipmentItemService.findById(item.getShipmentItem().getId());
 				if(shipmentItem != null)
 				{
 					Row row = new Row();
@@ -211,7 +209,7 @@ public class ShipmentReceiptEditForm extends AbstractForm
 		roles.getColumns().appendChild(new Column(lang.get("shipment.grid.column.type"),null,"150px"));
 		roles.setSpan("1");
 
-		ShipmentReceipt receipt = service.findOne(RowUtils.id(row));
+		ShipmentReceipt receipt = service.findById(RowUtils.id(row));
 		if(receipt != null)
 		{
 			for(ShipmentReceiptRole role:receipt.getRoles())

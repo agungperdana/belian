@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.accounting.svc;
 
 import java.util.List;
@@ -36,10 +33,10 @@ public class CurrencyService
 	}
 	
 	@Secured({"ROLE_CURRENCY_READ","ROLE_SYSTEM_READ"})
-	public Currency findOne(String id)
+	public Currency findById(String id)
 	{
 		if(!Strings.isNullOrEmpty(id))
-			return repository.findOne(id);
+			return repository.findById(id).orElse(null);
 		
 		return null;
 	}
@@ -53,7 +50,7 @@ public class CurrencyService
 	@Secured("ROLE_CURRENCY_READ")
 	public List<Currency> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		return repository.findAll(PageRequest.of(pageIndex, pageSize)).getContent();
 	}
 	
 	@Secured("ROLE_CURRENCY_CREATE")
@@ -72,6 +69,6 @@ public class CurrencyService
 	@Secured("ROLE_CURRENCY_DELETE")
 	public void delete(@PathVariable String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 }

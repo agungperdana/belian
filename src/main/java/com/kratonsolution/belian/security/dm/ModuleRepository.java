@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.security.dm;
 
 import java.util.List;
@@ -17,9 +15,9 @@ import org.springframework.data.repository.query.Param;
  */
 public interface ModuleRepository extends JpaRepository<Module, String>
 {
-	public Module findOneByCode(String code);
+	public Module findByCode(String code);
 	
-	public Module findOneByName(String name);
+	public Module findByName(String name);
 	
 	@Query("FROM Module mod WHERE "
 			+ "mod.code LIKE %:key% "

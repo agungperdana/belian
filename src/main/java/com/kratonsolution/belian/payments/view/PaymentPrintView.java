@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.payments.view;
 
 import java.math.BigDecimal;
@@ -53,21 +50,21 @@ public class PaymentPrintView extends AbstractView
 	@RequestMapping("/receiptprint")
 	public String receipt(Model model,@RequestParam("id")String id)
 	{
-		Receipt receipt = service.findOne(id);
+		Receipt receipt = service.findById(id);
 
 		BigDecimal total = BigDecimal.ZERO;
 		
 		Vector<Map<String,String>> items = new Vector<>();
 		for(PaymentApplication application:receipt.getApplications())
 		{
-			Invoice invoice = invRepo.findOne(application.getInvoice().getId());
+			Invoice invoice = invRepo.findById(application.getInvoice().getId()).orElse(null);
 			if(invoice != null)
 			{
 				for(InvoiceItem item:invoice.getItems())
 				{
 					for(OrderItemBilling billing:item.getOrderItemBillings())
 					{
-						OrderItem orderItem = itemRepo.findOne(billing.getOrderItem().getId());
+						OrderItem orderItem = itemRepo.findById(billing.getOrderItem().getId()).orElse(null);
 						if(orderItem != null)
 						{
 							Map<String,String> map = new HashMap<>();
@@ -90,8 +87,8 @@ public class PaymentPrintView extends AbstractView
 		model.addAttribute("util", utils);
 		model.addAttribute("title",lang.get("receipt.grid.column.print.title"));
 		model.addAttribute("method",receipt.getMethod().display(utils.getLanguage()));
-		model.addAttribute("receiver",partyService.findOne(receipt.getReceiver().getId()));
-		model.addAttribute("payer",partyService.findOne(receipt.getPayer().getId()));
+		model.addAttribute("receiver",partyService.findById(receipt.getReceiver().getId()));
+		model.addAttribute("payer",partyService.findById(receipt.getPayer().getId()));
 		model.addAttribute("applications",items);
 		model.addAttribute("total",Numbers.format(total));
 		

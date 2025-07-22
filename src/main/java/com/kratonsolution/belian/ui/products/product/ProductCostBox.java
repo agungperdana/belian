@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.products.product;
 
 import java.math.BigDecimal;
@@ -118,7 +116,7 @@ public class ProductCostBox extends AbstractBox implements Observer,Observable
 			grid.getColumns().appendChild(new Column(lang.get("inventory.product.grid.column.geographic"),null,"150px"));
 			grid.getColumns().appendChild(new Column(lang.get("inventory.product.grid.column.type"),null,"150px"));
 
-			Product out = service.findOne(product.getId());
+			Product out = service.findById(product.getId());
 			if(out != null)
 			{
 				for(ProductCost cost:out.getCosts())

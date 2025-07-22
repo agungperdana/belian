@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.general.organization;
 
 import org.zkoss.zk.ui.event.Event;

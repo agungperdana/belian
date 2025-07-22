@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.orders.purchaseorder;
 
 import java.math.BigDecimal;

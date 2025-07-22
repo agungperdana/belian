@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.inventorys.stockadjustment;
 
 import java.math.BigDecimal;
@@ -81,7 +79,7 @@ public class StockAdjustmentEditContent extends AbstractForm
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				StockAdjustment adjustment = service.findOne(RowUtils.id(row));
+				StockAdjustment adjustment = service.findById(RowUtils.id(row));
 				adjustment.setNote(note.getText());
 
 				service.edit(adjustment);
@@ -94,7 +92,7 @@ public class StockAdjustmentEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		StockAdjustment adjustment = service.findOne(RowUtils.id(row));
+		StockAdjustment adjustment = service.findById(RowUtils.id(row));
 		if(adjustment != null)
 		{
 			organizations.setDomainAsRef(adjustment.getOrganization());

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.products.svc;
 
 import java.util.Collection;
@@ -55,14 +53,14 @@ public class ProductService
 		if(Strings.isNullOrEmpty(name))
 			return null;
 		
-		return repository.findOneByName(name);
+		return repository.findByName(name);
 	}
 	
 	@Secured("ROLE_PRODUCT_READ")
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
-	public Product findOne(String id)
+	public Product findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -90,7 +88,7 @@ public class ProductService
 	@Secured("ROLE_PRODUCT_READ")
 	public List<Product> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		return repository.findAll(PageRequest.of(pageIndex, pageSize)).getContent();
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
@@ -102,7 +100,7 @@ public class ProductService
 		System.out.println(key);
 		
 		if(!Strings.isNullOrEmpty(key))
-			return repository.findAll(new PageRequest(pageIndex, pageSize),key);
+			return repository.findAll(PageRequest.of(pageIndex, pageSize),key);
 		
 		return findAll(pageIndex,pageSize);
 	}
@@ -123,6 +121,6 @@ public class ProductService
 	@Secured("ROLE_PRODUCT_DELETE")
 	public void delete(@PathVariable String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 }

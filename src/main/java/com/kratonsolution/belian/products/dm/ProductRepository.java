@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.products.dm;
 
 import java.util.Collection;
@@ -17,7 +15,7 @@ import org.springframework.data.repository.query.Param;
  */
 public interface ProductRepository extends JpaRepository<Product, String>
 {
-	public Product findOneByName(String name);
+	public Product findByName(String name);
 	
 	@Query("FROM Product prd WHERE "
 			+ "prd.name LIKE %:key% "

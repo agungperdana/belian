@@ -1,8 +1,7 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.security.dm;
 
+import com.kratonsolution.belian.security.svc.RoleService;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -12,7 +11,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface RoleRepository extends JpaRepository<Role,String>
 {
-	public Role findOneByCode(String code);
-	
-	public Role findOneByName(String name);
+	public Role findByCode(String code);
+
+	public Role findByName(String name);
 }

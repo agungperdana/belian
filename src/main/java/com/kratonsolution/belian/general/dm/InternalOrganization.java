@@ -1,10 +1,7 @@
-/**
- * 
- */
 package com.kratonsolution.belian.general.dm;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 import com.kratonsolution.belian.partys.dm.Organization;
 import com.kratonsolution.belian.partys.dm.PartyRole;
@@ -15,6 +12,7 @@ import lombok.Setter;
 /**
  * @author Agung Dodi Perdana
  * @email agung.dodi.perdana@gmail.com
+ * @since 1.0.0
  */
 @Getter
 @Setter

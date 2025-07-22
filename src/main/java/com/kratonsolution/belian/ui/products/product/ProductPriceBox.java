@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.products.product;
 
 import java.math.BigDecimal;
@@ -124,7 +122,7 @@ public class ProductPriceBox extends Hbox implements Observer,Observable
 			grid.getColumns().appendChild(new Column(lang.get("inventory.product.grid.column.saletype"),null,"150px"));
 			grid.setSpan("4");
 			
-			Product out = service.findOne(product.getId());
+			Product out = service.findById(product.getId());
 			if(out != null)
 			{
 				for(PriceComponent component:out.getPrices())

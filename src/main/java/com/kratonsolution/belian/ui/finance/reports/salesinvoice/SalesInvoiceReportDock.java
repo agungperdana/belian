@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.finance.reports.salesinvoice;
 
 import org.zkoss.zk.ui.event.Event;

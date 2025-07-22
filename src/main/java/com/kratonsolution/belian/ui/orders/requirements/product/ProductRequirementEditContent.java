@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.orders.requirements.product;
 
 import java.math.BigDecimal;
@@ -109,7 +107,7 @@ public class ProductRequirementEditContent extends AbstractForm
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				ProductRequirement product = service.findOne(RowUtils.id(row));
+				ProductRequirement product = service.findById(RowUtils.id(row));
 				if(product != null)
 				{
 					product.setEstimatedBudget(estimated.getValue());
@@ -177,7 +175,7 @@ public class ProductRequirementEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		ProductRequirement requirement = service.findOne(RowUtils.id(row));
+		ProductRequirement requirement = service.findById(RowUtils.id(row));
 		if(requirement != null)
 		{
 			organizations.setDomainAsRef(requirement.getOrganization());
@@ -274,7 +272,7 @@ public class ProductRequirementEditContent extends AbstractForm
 		statuses.getColumns().getLastChild().setVisible(false);
 		statuses.setSpan("2");
 
-		ProductRequirement work = service.findOne(RowUtils.id(row));
+		ProductRequirement work = service.findById(RowUtils.id(row));
 		if(work != null)
 		{
 			for(RequirementStatus status:work.getStatuses())
@@ -325,7 +323,7 @@ public class ProductRequirementEditContent extends AbstractForm
 		roles.getColumns().getLastChild().setVisible(false);
 		roles.setSpan("3");
 
-		ProductRequirement work = service.findOne(RowUtils.id(row));
+		ProductRequirement work = service.findById(RowUtils.id(row));
 		if(work != null)
 		{
 			for(RequirementRole role:work.getRoles())

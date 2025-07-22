@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.general.svc;
 
 import java.sql.Date;
@@ -34,15 +32,15 @@ public class CompanyStructureService
 	private CompanyStructureRepository repository;
 
 	@Secured("ROLE_COMPANY_STRUCTURE_READ")
-	public CompanyStructure findOne(String id)
+	public CompanyStructure findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 	
 	@Secured({"ROLE_COMPANY_STRUCTURE_READ","ROLE_SYSTEM_READ"})
 	public CompanyStructure byOrganization(String organization)
 	{
-		return repository.findOneByOrganizationId(organization);
+		return repository.findByOrganizationId(organization);
 	}
 
 	@Secured("ROLE_COMPANY_STRUCTURE_READ")
@@ -81,7 +79,7 @@ public class CompanyStructureService
 	@Secured("ROLE_COMPANY_STRUCTURE_READ")
 	public List<CompanyStructure> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		return repository.findAll(PageRequest.of(pageIndex, pageSize)).getContent();
 	}
 
 	@Secured("ROLE_COMPANY_STRUCTURE_READ")
@@ -105,7 +103,7 @@ public class CompanyStructureService
 	@Secured("ROLE_COMPANY_STRUCTURE_DELETE")
 	public void delete(String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 	
 	@Secured("ROLE_COMPANY_STRUCTURE_READ")

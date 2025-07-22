@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.general.geographic;
 
 import org.zkoss.zk.ui.WrongValueException;
@@ -75,7 +73,7 @@ public class GeographicEditContent extends AbstractForm
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,lang.get("message.field.empty"));
 			
-				Geographic geographic = service.findOne(RowUtils.id(row));
+				Geographic geographic = service.findById(RowUtils.id(row));
 				geographic.setCode(code.getText());
 				geographic.setName(name.getText());
 				geographic.setType(GeographicType.valueOf(type.getSelectedItem().getValue().toString()));
@@ -91,7 +89,7 @@ public class GeographicEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		Geographic geographic = service.findOne(RowUtils.id(row));
+		Geographic geographic = service.findById(RowUtils.id(row));
 		if(geographic != null)
 		{
 			code.setText(geographic.getCode());

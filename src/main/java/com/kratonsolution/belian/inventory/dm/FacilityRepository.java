@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.inventory.dm;
 
 import java.util.List;
@@ -15,7 +13,7 @@ import org.springframework.data.repository.query.Param;
  */
 public interface FacilityRepository extends JpaRepository<Facility, String>
 {
-	public Facility findOneByName(String name);
+	public Facility findByName(String name);
 	
 	public List<Facility> findAllByType(String type);
 	

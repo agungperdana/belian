@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.inventory.facility;
 
 import org.zkoss.zk.ui.Component;
@@ -184,7 +182,7 @@ public class FacilityGridContent extends GridContent
 						public void onEvent(Event ev) throws Exception
 						{
 							Row row = (Row)ev.getTarget();
-							Flow.next(task.getFocused(), new FacilityDashboard(service.findOne(RowUtils.id(row))));
+							Flow.next(task.getFocused(), new FacilityDashboard(service.findById(RowUtils.id(row))));
 						}
 					});
 				}

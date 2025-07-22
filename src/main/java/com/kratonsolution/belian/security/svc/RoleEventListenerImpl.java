@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.security.svc;
 
 import java.util.Iterator;
@@ -26,9 +24,6 @@ public class RoleEventListenerImpl implements RoleEventListener
 {
 	@Autowired
 	private UserService service;
-	
-	@Autowired
-	private RoleService roleService;
 
 	@Override
 	public void fireRoleRemoved(String id)

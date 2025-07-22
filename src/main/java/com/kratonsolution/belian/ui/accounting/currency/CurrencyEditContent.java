@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.accounting.currency;
 
 import org.zkoss.zk.ui.WrongValueException;
@@ -68,7 +66,7 @@ public class CurrencyEditContent extends AbstractForm
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,lang.get("message.field.empty"));
 
-				Currency currency = service.findOne(RowUtils.id(row));
+				Currency currency = service.findById(RowUtils.id(row));
 				if(currency != null)
 				{
 					currency.setCode(code.getText());
@@ -85,7 +83,7 @@ public class CurrencyEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		Currency currency = service.findOne(RowUtils.id(row));
+		Currency currency = service.findById(RowUtils.id(row));
 		if(currency != null)
 		{
 			code.setText(currency.getCode());

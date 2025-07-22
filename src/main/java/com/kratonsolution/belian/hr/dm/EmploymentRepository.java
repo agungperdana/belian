@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.hr.dm;
 
 import java.sql.Date;

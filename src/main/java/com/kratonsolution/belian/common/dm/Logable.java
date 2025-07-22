@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.common.dm;
 
 import java.io.Serializable;

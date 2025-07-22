@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.orders.purchaseorder;
 
 import java.math.BigDecimal;
@@ -166,7 +164,7 @@ public class POEditContent extends AbstractForm
 				if(ShipToContacts.getDomain() == null)
 					throw new WrongValueException(ShipToContacts,lang.get("message.field.empty"));
 				
-				PurchaseOrder order = service.findOne(RowUtils.id(row));
+				PurchaseOrder order = service.findById(RowUtils.id(row));
 				if(order != null)
 				{
 					Map<String,Referenceable> vRoles = Models.toRefMap(order.getPartyOrderRoles());
@@ -277,7 +275,7 @@ public class POEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		PurchaseOrder order = service.findOne(RowUtils.id(row));
+		PurchaseOrder order = service.findById(RowUtils.id(row));
 		if(order != null)
 		{
 			organizations.setDomainAsRef(order.getPartyPlacingOrder());
@@ -367,7 +365,7 @@ public class POEditContent extends AbstractForm
 		payToParty.addObserver(payToAddress);
 		payToParty.addObserver(payToContacts);
 		
-		PurchaseOrder order = service.findOne(RowUtils.id(row));
+		PurchaseOrder order = service.findById(RowUtils.id(row));
 		if(order != null)
 		{
 			payToParty.setDomainAsRef(order.getPartyPlacingOrder());
@@ -406,7 +404,7 @@ public class POEditContent extends AbstractForm
 		shipToParty.addObserver(shipToAddress);
 		shipToParty.addObserver(ShipToContacts);
 		
-		PurchaseOrder order = service.findOne(RowUtils.id(row));
+		PurchaseOrder order = service.findById(RowUtils.id(row));
 		if(order != null)
 		{
 			shipToParty.setDomainAsRef(order.getShipToParty());
@@ -459,7 +457,7 @@ public class POEditContent extends AbstractForm
 		items.getColumns().getLastChild().setVisible(false);
 		items.setSpan("1");
 
-		PurchaseOrder order = service.findOne(RowUtils.id(row));
+		PurchaseOrder order = service.findById(RowUtils.id(row));
 		if(order != null)
 		{
 			for(OrderItem item:order.getItems())
@@ -518,7 +516,7 @@ public class POEditContent extends AbstractForm
 									ids.add(RowUtils.id(rw));
 							}
 							
-							PurchaseOrder out = service.findOne(RowUtils.id(row));
+							PurchaseOrder out = service.findById(RowUtils.id(row));
 							if(out != null)
 							{
 								Iterator<OrderItem> iterator = out.getItems().iterator();
@@ -565,7 +563,7 @@ public class POEditContent extends AbstractForm
 		roles.getColumns().getLastChild().setVisible(false);
 		roles.setSpan("1");
 
-		PurchaseOrder order = service.findOne(RowUtils.id(row));
+		PurchaseOrder order = service.findById(RowUtils.id(row));
 		if(order != null)
 		{
 			for(OrderRole role:order.getPartyOrderRoles())
@@ -621,7 +619,7 @@ public class POEditContent extends AbstractForm
 		statuses.getColumns().getLastChild().setVisible(false);
 		statuses.setSpan("2");
 
-		PurchaseOrder order = service.findOne(RowUtils.id(row));
+		PurchaseOrder order = service.findById(RowUtils.id(row));
 		if(order != null)
 		{
 			for(OrderStatus status:order.getStatuses())
@@ -671,7 +669,7 @@ public class POEditContent extends AbstractForm
 		terms.getColumns().getLastChild().setVisible(false);
 		terms.setSpan("1");
 
-		PurchaseOrder order = service.findOne(RowUtils.id(row));
+		PurchaseOrder order = service.findById(RowUtils.id(row));
 		if(order != null)
 		{
 			for(OrderTerm term:order.getTerms())
@@ -726,7 +724,7 @@ public class POEditContent extends AbstractForm
 		adjustments.getColumns().getLastChild().setVisible(false);
 		adjustments.setSpan("1");
 
-		PurchaseOrder order = service.findOne(RowUtils.id(row));
+		PurchaseOrder order = service.findById(RowUtils.id(row));
 		if(order != null)
 		{
 			for(OrderAdjustment adjustment:order.getAdjustments())

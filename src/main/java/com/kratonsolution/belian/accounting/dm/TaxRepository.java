@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.accounting.dm;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface TaxRepository extends JpaRepository<Tax, String>
 {
-	public Tax findOneByName(String name);
+	public Tax findByName(String name);
 
 	@Query("FROM Tax tx WHERE tx.base IS TRUE")
 	public Tax findDefault();

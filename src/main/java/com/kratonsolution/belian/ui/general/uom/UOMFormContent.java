@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.general.uom;
 
 import org.zkoss.zk.ui.Component;
@@ -83,7 +81,7 @@ public class UOMFormContent extends AbstractForm
 					
 					UOMFactor factor = new UOMFactor();
 					factor.setFrom(uom);
-					factor.setTo(service.findOne(RowUtils.string(row, 1)));
+					factor.setTo(service.findById(RowUtils.string(row, 1)));
 					factor.setFactor(RowUtils.decimal(row, 2));
 					
 					uom.getFactors().add(factor);

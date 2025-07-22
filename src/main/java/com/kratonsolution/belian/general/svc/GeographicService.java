@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.general.svc;
 
 import java.util.List;
@@ -29,10 +27,10 @@ public class GeographicService
 	private GeographicRepository repository;
 		
 	@Secured({"ROLE_GEOGRAPHIC_READ","ROLE_SYSTEM_READ"})
-	public Geographic findOne(String id)
+	public Geographic findById(String id)
 	{
 		if(!Strings.isNullOrEmpty(id))
-			return repository.findOne(id);
+			return repository.findById(id).orElse(null);
 	
 		return null;
 	}
@@ -73,12 +71,12 @@ public class GeographicService
 	@Secured("ROLE_GEOGRAPHIC_DELETE")
 	public void delete(String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 	
 	@Secured("ROLE_GEOGRAPHIC_READ")
 	public List<Geographic> findAll(int pageIndex,int itemsSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, itemsSize)).getContent();
+		return repository.findAll(PageRequest.of(pageIndex, itemsSize)).getContent();
 	}
 }

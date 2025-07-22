@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.payments.view;
 
 import java.math.BigDecimal;
@@ -61,7 +59,7 @@ public class PaymentReportView extends AbstractView
 		BigDecimal grand = BigDecimal.ZERO;
 		
 		model.addAttribute("title",lang.get("payments.grid.column.report.title"));
-		model.addAttribute("company",partyRepo.findOne(organization));
+		model.addAttribute("company",partyRepo.findById(organization));
 		model.addAttribute("from",from);
 		model.addAttribute("to",to);
 		model.addAttribute("datas", lists);
@@ -80,7 +78,7 @@ public class PaymentReportView extends AbstractView
 			if(!payments.isEmpty())
 			{
 				Map<String,Object> map = new HashMap<>();
-				map.put("company",partyRepo.findOne(company));
+				map.put("company",partyRepo.findById(company));
 				map.put("payments",payments);
 				
 				BigDecimal total = BigDecimal.ZERO;
@@ -125,7 +123,7 @@ public class PaymentReportView extends AbstractView
 		BigDecimal grand = BigDecimal.ZERO;
 		
 		model.addAttribute("title",lang.get("payments.grid.column.report.receipt.title"));
-		model.addAttribute("company",partyRepo.findOne(organization));
+		model.addAttribute("company",partyRepo.findById(organization));
 		model.addAttribute("from",from);
 		model.addAttribute("to",to);
 		model.addAttribute("datas", lists);
@@ -144,7 +142,7 @@ public class PaymentReportView extends AbstractView
 			if(!receipts.isEmpty())
 			{
 				Map<String,Object> map = new HashMap<>();
-				map.put("company",partyRepo.findOne(company));
+				map.put("company",partyRepo.findById(company));
 				map.put("receipts",receipts);
 				
 				BigDecimal total = BigDecimal.ZERO;
@@ -189,7 +187,7 @@ public class PaymentReportView extends AbstractView
 		BigDecimal grand = BigDecimal.ZERO;
 		
 		model.addAttribute("title",lang.get("payments.grid.column.report.disbursement.title"));
-		model.addAttribute("company",partyRepo.findOne(organization));
+		model.addAttribute("company",partyRepo.findById(organization));
 		model.addAttribute("from",from);
 		model.addAttribute("to",to);
 		model.addAttribute("datas", lists);
@@ -208,7 +206,7 @@ public class PaymentReportView extends AbstractView
 			if(!disbursements.isEmpty())
 			{
 				Map<String,Object> map = new HashMap<>();
-				map.put("company",partyRepo.findOne(company));
+				map.put("company",partyRepo.findById(company));
 				map.put("disbursements",disbursements);
 				
 				BigDecimal total = BigDecimal.ZERO;

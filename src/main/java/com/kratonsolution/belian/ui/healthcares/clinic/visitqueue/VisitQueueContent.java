@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.healthcares.clinic.visitqueue;
 
 import org.zkoss.zk.ui.Component;
@@ -219,7 +217,7 @@ public class VisitQueueContent extends Vlayout
 			{
 				if(visit.isEditable() && !visit.isSignedIn())
 				{
-					Visit fresh = visitService.findOne(visit.getId());
+					Visit fresh = visitService.findById(visit.getId());
 					if(fresh != null)
 					{
 						VisitStatus st = new VisitStatus();

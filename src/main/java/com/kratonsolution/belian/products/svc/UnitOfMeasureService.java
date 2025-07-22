@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.products.svc;
 
 import java.util.Collection;
@@ -37,9 +35,9 @@ public class UnitOfMeasureService
 	}
 	
 	@Secured("ROLE_UOM_READ")
-	public UnitOfMeasure findOne(String id)
+	public UnitOfMeasure findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 	
 	@Secured("ROLE_UOM_READ")
@@ -51,7 +49,7 @@ public class UnitOfMeasureService
 	@Secured("ROLE_UOM_READ")
 	public List<UnitOfMeasure> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		return repository.findAll(PageRequest.of(pageIndex, pageSize)).getContent();
 	}
 	
 	@Secured("ROLE_UOM_CREATE")
@@ -74,6 +72,6 @@ public class UnitOfMeasureService
 	@Secured("ROLE_UOM_DELETE")
 	public void delete(@PathVariable String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 }

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.general.uom;
 
 import java.util.UUID;
@@ -78,7 +76,7 @@ public class UOMEditContent extends AbstractForm
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,lang.get("message.field.empty"));
 				
-				UnitOfMeasure uom = service.findOne(RowUtils.id(row));
+				UnitOfMeasure uom = service.findById(RowUtils.id(row));
 				if(uom != null)
 				{
 					uom.setName(name.getText());
@@ -94,7 +92,7 @@ public class UOMEditContent extends AbstractForm
 						UOMFactor factor = new UOMFactor();
 						factor.setId(RowUtils.id(nrow));
 						factor.setFrom(uom);
-						factor.setTo(service.findOne(RowUtils.string(nrow, 1)));
+						factor.setTo(service.findById(RowUtils.string(nrow, 1)));
 						factor.setFactor(RowUtils.decimal(nrow, 2));
 						
 						vUOM.add(factor);
@@ -111,7 +109,7 @@ public class UOMEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		UnitOfMeasure out = service.findOne(RowUtils.id(row));
+		UnitOfMeasure out = service.findById(RowUtils.id(row));
 		if(out != null)
 		{
 			name.setText(out.getName());
@@ -155,7 +153,7 @@ public class UOMEditContent extends AbstractForm
 		factors.setSpan("1");
 		factors.getColumns().getLastChild().setVisible(false);
 		
-		UnitOfMeasure uom = service.findOne(RowUtils.id(row));
+		UnitOfMeasure uom = service.findById(RowUtils.id(row));
 		if(uom != null)
 		{
 			for(UOMFactor factor:uom.getFactors())

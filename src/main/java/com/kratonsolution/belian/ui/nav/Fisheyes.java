@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.ui.nav;
 
 import org.zkoss.zul.Space;

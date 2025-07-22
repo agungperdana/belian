@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.general.companystructure;
 
 import org.zkoss.zk.ui.Component;

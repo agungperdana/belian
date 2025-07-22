@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.products.feature;
 
 import org.zkoss.zk.ui.WrongValueException;
@@ -70,7 +68,7 @@ public class FeatureEditContent extends AbstractForm
 				if(types.getProductFeatureType() == null)
 					throw new WrongValueException(types,lang.get("message.field.empty"));
 			
-				ProductFeature feature = service.findOne(RowUtils.id(row));
+				ProductFeature feature = service.findById(RowUtils.id(row));
 				if(feature != null)
 				{
 					feature.setValue(desription.getText());
@@ -88,7 +86,7 @@ public class FeatureEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		ProductFeature feature = service.findOne(RowUtils.id(row));
+		ProductFeature feature = service.findById(RowUtils.id(row));
 		if(feature != null)
 		{
 			desription.setText(feature.getValue());

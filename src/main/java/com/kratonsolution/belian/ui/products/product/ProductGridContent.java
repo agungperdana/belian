@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.products.product;
 
 import org.zkoss.zk.ui.Component;
@@ -201,7 +199,7 @@ public class ProductGridContent extends GridContent
 						{
 							Row row = (Row)ev.getTarget();
 
-							Flow.next(getParent(), new ProductDashboard(service.findOne(RowUtils.id(row))));
+							Flow.next(getParent(), new ProductDashboard(service.findById(RowUtils.id(row))));
 						}
 					});
 				}

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.orders.salesorder;
 
 import java.math.BigDecimal;
@@ -167,7 +165,7 @@ public class SalesOrderEditContent extends AbstractForm
 				if(shipToContacts.getDomain() == null)
 					throw new WrongValueException(shipToContacts,lang.get("message.field.empty"));
 				
-				SalesOrder order = service.findOne(RowUtils.id(row));
+				SalesOrder order = service.findById(RowUtils.id(row));
 				if(order != null)
 				{
 					Map<String,Referenceable> vRoles = Models.toRefMap(order.getPartyOrderRoles());
@@ -280,7 +278,7 @@ public class SalesOrderEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		SalesOrder order = service.findOne(RowUtils.id(row));
+		SalesOrder order = service.findById(RowUtils.id(row));
 		if(order != null)
 		{
 			organizations.setDomainAsRef(order.getPartyTakingOrder());
@@ -371,7 +369,7 @@ public class SalesOrderEditContent extends AbstractForm
 		billToParty.addObserver(billToAddress);
 		billToParty.addObserver(billToContacts);
 		
-		SalesOrder order = service.findOne(RowUtils.id(row));
+		SalesOrder order = service.findById(RowUtils.id(row));
 		if(order != null)
 		{
 			billToParty.setDomainAsRef(order.getBillToParty());
@@ -410,7 +408,7 @@ public class SalesOrderEditContent extends AbstractForm
 		shipToParty.addObserver(shipToAddress);
 		shipToParty.addObserver(shipToContacts);
 		
-		SalesOrder order = service.findOne(RowUtils.id(row));
+		SalesOrder order = service.findById(RowUtils.id(row));
 		if(order != null)
 		{
 			shipToParty.setDomainAsRef(order.getShipToParty());
@@ -463,7 +461,7 @@ public class SalesOrderEditContent extends AbstractForm
 		items.getColumns().getLastChild().setVisible(false);
 		items.setSpan("1");
 
-		SalesOrder order = service.findOne(RowUtils.id(row));
+		SalesOrder order = service.findById(RowUtils.id(row));
 		if(order != null)
 		{
 			for(OrderItem item:order.getItems())
@@ -522,7 +520,7 @@ public class SalesOrderEditContent extends AbstractForm
 									ids.add(RowUtils.id(rw));
 							}
 							
-							SalesOrder out = service.findOne(RowUtils.id(row));
+							SalesOrder out = service.findById(RowUtils.id(row));
 							if(out != null)
 							{
 								Iterator<OrderItem> iterator = out.getItems().iterator();
@@ -569,7 +567,7 @@ public class SalesOrderEditContent extends AbstractForm
 		roles.getColumns().getLastChild().setVisible(false);
 		roles.setSpan("1");
 
-		SalesOrder order = service.findOne(RowUtils.id(row));
+		SalesOrder order = service.findById(RowUtils.id(row));
 		if(order != null)
 		{
 			for(OrderRole role:order.getPartyOrderRoles())
@@ -625,7 +623,7 @@ public class SalesOrderEditContent extends AbstractForm
 		statuses.getColumns().getLastChild().setVisible(false);
 		statuses.setSpan("2");
 
-		SalesOrder order = service.findOne(RowUtils.id(row));
+		SalesOrder order = service.findById(RowUtils.id(row));
 		if(order != null)
 		{
 			for(OrderStatus status:order.getStatuses())
@@ -675,7 +673,7 @@ public class SalesOrderEditContent extends AbstractForm
 		terms.getColumns().getLastChild().setVisible(false);
 		terms.setSpan("1");
 
-		SalesOrder order = service.findOne(RowUtils.id(row));
+		SalesOrder order = service.findById(RowUtils.id(row));
 		if(order != null)
 		{
 			for(OrderTerm term:order.getTerms())
@@ -730,7 +728,7 @@ public class SalesOrderEditContent extends AbstractForm
 		adjustments.getColumns().getLastChild().setVisible(false);
 		adjustments.setSpan("1");
 
-		SalesOrder order = service.findOne(RowUtils.id(row));
+		SalesOrder order = service.findById(RowUtils.id(row));
 		if(order != null)
 		{
 			for(OrderAdjustment adjustment:order.getAdjustments())

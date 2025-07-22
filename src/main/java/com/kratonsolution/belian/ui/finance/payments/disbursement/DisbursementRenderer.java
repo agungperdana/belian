@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.finance.payments.disbursement;
 
 import org.zkoss.zul.Label;

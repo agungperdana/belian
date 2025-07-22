@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.hr.dm;
 
 import java.util.List;
@@ -18,9 +16,9 @@ public interface EmployeeRepository extends JpaRepository<Employee,String>
 	@Query("FROM Employee emp WHERE emp.party.id =:person AND emp.type = 'EMPLOYEE' ")
 	public Employee findEmployee(@Param("person")String person);
 	
-	public Employee findOneByPartyId(String personId);
+	public Employee findByPartyId(String personId);
 	
-	public Employee findOneByUsername(String username);
+	public Employee findByUsername(String username);
 	
 	@Query("FROM Employee emp WHERE emp.party.name LIKE %:name% ORDER BY emp.party.name ASC")
 	public List<Employee> findAll(@Param("name")String name);

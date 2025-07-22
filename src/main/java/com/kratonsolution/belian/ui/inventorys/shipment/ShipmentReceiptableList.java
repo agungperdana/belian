@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.inventorys.shipment;
 
 import org.zkoss.zul.Listitem;
@@ -92,7 +90,7 @@ public class ShipmentReceiptableList extends AbstractList<Shipment> implements O
 	{
 		if(ref != null && !Strings.isNullOrEmpty(ref.getId()))
 		{
-			Shipment buff = service.findOne(ref.getId());
+			Shipment buff = service.findById(ref.getId());
 			if(buff != null)
 				setDomain(buff);
 		}

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.inventorys.stockadjustment;
 
 import org.zkoss.zk.ui.event.Event;

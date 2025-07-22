@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.hr.svc;
 
 import java.sql.Date;
@@ -52,9 +50,9 @@ public class EmploymentService extends AbstractService
 	private PartyRepository partyRepo;
 
 	@Secured("ROLE_EMPLOYMENT_READ")
-	public Employment findOne(String id)
+	public Employment findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 
 	@Secured("ROLE_EMPLOYMENT_READ")
@@ -90,7 +88,7 @@ public class EmploymentService extends AbstractService
 		if(utils.getOrganization() == null)
 			return new ArrayList<>();
 
-		return repository.findAll(new PageRequest(pageIndex, itemsSize),utils.getOrganization().getId());
+		return repository.findAll(PageRequest.of(pageIndex, itemsSize),utils.getOrganization().getId());
 	}
 	
 	@Secured("ROLE_EMPLOYMENT_READ")
@@ -102,7 +100,7 @@ public class EmploymentService extends AbstractService
 		if(Strings.isNullOrEmpty(key))
 			return findAll(pageIndex, itemsSize);
 
-		return repository.findAll(new PageRequest(pageIndex, itemsSize),utils.getOrganization().getId(),key);
+		return repository.findAll(PageRequest.of(pageIndex, itemsSize),utils.getOrganization().getId(),key);
 	}
 
 	@Secured("ROLE_EMPLOYMENT_CREATE")
@@ -117,7 +115,7 @@ public class EmploymentService extends AbstractService
 			employer = new Employer();
 			employer.setStart(start);
 			employer.setEnd(end);
-			employer.setParty(partyRepo.findOne(company.getId()));
+			employer.setParty(partyRepo.findById(company.getId()).orElse(null));
 			employer.setType(PartyRoleType.EMPLOYER);
 			employerRepo.save(employer);
 		}
@@ -131,13 +129,13 @@ public class EmploymentService extends AbstractService
 			employee = new Employee();
 			employee.setStart(start);
 			employee.setEnd(end);
-			employee.setParty(partyRepo.findOne(person.getId()));
+			employee.setParty(partyRepo.findById(person.getId()).orElse(null));
 			employee.setType(PartyRoleType.EMPLOYEE);
 			
 			employeeRepo.save(employee);
 		}
 		
-		Party owner = partyRepo.findOne(person.getId());
+		Party owner = partyRepo.findById(person.getId()).orElse(null);
 		if(owner != null)
 		{
 			Iterator<PartyRelationship> iterator = owner.getRelationships().iterator();
@@ -157,7 +155,7 @@ public class EmploymentService extends AbstractService
 			employment.setStart(start);
 			employment.setEnd(end);
 			employment.setFromParty(owner);
-			employment.setToParty(partyRepo.findOne(company.getId()));
+			employment.setToParty(partyRepo.findById(company.getId()).orElse(null));
 			employment.setFromRole(employee);
 			employment.setToRole(employer);
 			employment.setStatus(PartyRelationshipStatusType.ACTIVE);
@@ -180,7 +178,7 @@ public class EmploymentService extends AbstractService
 	{
 		if(!Strings.isNullOrEmpty(id))
 		{
-			Employment emp = repository.findOne(id);
+			Employment emp = repository.findById(id).orElse(null);
 			if(emp != null)
 			{
 				Iterator<PartyRelationship> frm = emp.getFromParty().getRelationships().iterator();

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.general.companystructure;
 
 import org.zkoss.zk.ui.event.Event;
@@ -72,7 +70,7 @@ public class CompanyStructureFormContent extends AbstractForm
 				CompanyStructure structure = new CompanyStructure();
 				structure.setFrom(DateTimes.sql(from.getValue()));
 				structure.setTo(DateTimes.sql(to.getValue()));
-				structure.setOrganization(organizationService.findOne(Components.string(organizations)));
+				structure.setOrganization(organizationService.findById(Components.string(organizations)));
 				structure.setType(CompanyStructureType.valueOf(Components.string(types)));
 				
 				if(parent != null)

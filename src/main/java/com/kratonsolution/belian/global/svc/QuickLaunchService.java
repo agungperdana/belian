@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.global.svc;
 
 import java.util.List;
@@ -28,18 +26,18 @@ public class QuickLaunchService
 	private QuickLaunchRepository repository;
 		
 	@Secured({"ROLE_SYSTEM_READ"})
-	public QuickLaunch findOne(String id)
+	public QuickLaunch findById(String id)
 	{
 		if(!Strings.isNullOrEmpty(id))
-			return repository.findOne(id);
+			return repository.findById(id).orElse(null);
 	
 		return null;
 	}
 	
 	@Secured({"ROLE_SYSTEM_READ"})
-	public QuickLaunch findOneByNameAndUsername(String name,String username)
+	public QuickLaunch findByNameAndUsername(String name,String username)
 	{
-		return repository.findOneByNameAndUsername(name, username);
+		return repository.findByNameAndUsername(name, username);
 	}
 	
 	@Secured({"ROLE_SYSTEM_READ"})
@@ -75,12 +73,12 @@ public class QuickLaunchService
 	@Secured("ROLE_AUDIT_TRAIL_DELETE")
 	public void delete(String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 	
 	@Secured("ROLE_SYSTEM_READ")
 	public List<QuickLaunch> findAll(int pageIndex,int itemsSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, itemsSize)).getContent();
+		return repository.findAll(PageRequest.of(pageIndex, itemsSize)).getContent();
 	}
 }

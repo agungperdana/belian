@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.general.dm;
 
 import java.sql.Date;
@@ -15,10 +13,10 @@ import org.springframework.data.repository.query.Param;
  */
 public interface InternalOrganizationRepository extends JpaRepository<InternalOrganization, String>
 {
-	public InternalOrganization findOneByPartyId(String id);
+	public InternalOrganization findByPartyId(String id);
 	
 	@Query("FROM InternalOrganization int WHERE "
 			+ "int.party.id =:company "
 			+ "AND ((:date BETWEEN int.start AND int.end) OR (int.start <= :date AND int.end IS NULL))")
-	public InternalOrganization findOne(@Param("company")String company,@Param("date")Date date);
+	public InternalOrganization findById(@Param("company")String company,@Param("date")Date date);
 }

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.inventory.svc;
 
 import java.util.ArrayList;
@@ -38,10 +36,10 @@ public class FacilityService extends AbstractService
 	}
 	
 	@Secured({"ROLE_FACILITY_READ"})
-	public Facility findOne(String id)
+	public Facility findById(String id)
 	{
 		if(!Strings.isNullOrEmpty(id))
-			return repository.findOne(id);
+			return repository.findById(id).orElse(null);
 		
 		return null;
 	}
@@ -52,7 +50,7 @@ public class FacilityService extends AbstractService
 		if(Strings.isNullOrEmpty(name))
 			return null;
 	
-		return repository.findOneByName(name);
+		return repository.findByName(name);
 	}
 	
 	public List<FacilityOrganization> findOrganizations()
@@ -80,7 +78,7 @@ public class FacilityService extends AbstractService
 	@Secured("ROLE_FACILITY_READ")
 	public List<Facility> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		return repository.findAll(PageRequest.of(pageIndex, pageSize)).getContent();
 	}
 	
 	@Secured("ROLE_FACILITY_CREATE")
@@ -99,6 +97,6 @@ public class FacilityService extends AbstractService
 	@Secured("ROLE_FACILITY_DELETE")
 	public void delete(@PathVariable String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 }

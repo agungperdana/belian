@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.shipment.svc;
 
 import java.math.BigDecimal;
@@ -64,9 +61,9 @@ public class ShipmentService extends AbstractService
 	}
 	
 	@Secured("ROLE_SHIPMENT_READ")
-	public Shipment findOne(String id)
+	public Shipment findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 	
 	@Secured("ROLE_SHIPMENT_READ")
@@ -96,13 +93,13 @@ public class ShipmentService extends AbstractService
 	@Secured("ROLE_SHIPMENT_READ")
 	public List<Shipment> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId());
+		return repository.findAll(PageRequest.of(pageIndex, pageSize),utils.getOrganization().getId());
 	}
 	
 	@Secured("ROLE_SHIPMENT_READ")
 	public List<Shipment> findAll(int pageIndex,int pageSize,String key)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId());
+		return repository.findAll(PageRequest.of(pageIndex, pageSize),utils.getOrganization().getId());
 	}
 	
 	@Secured("ROLE_SHIPMENT_READ")
@@ -141,7 +138,7 @@ public class ShipmentService extends AbstractService
 	{
 		for(ShipmentOrder order:shipmentItem.getOrders())
 		{
-			OrderItem out = orderItemRepository.findOne(order.getOrderItem().getId());
+			OrderItem out = orderItemRepository.findById(order.getOrderItem().getId()).orElse(null);
 			if(out != null)
 			{
 				OrderItemShippingInfo info = new OrderItemShippingInfo();
@@ -165,7 +162,7 @@ public class ShipmentService extends AbstractService
 	{
 		if(shipment != null && itemIds != null && !itemIds.isEmpty())
 		{
-			Shipment out = repository.findOne(shipment.getId());
+			Shipment out = repository.findById(shipment.getId()).orElse(null);
 			if(out != null)
 			{
 				Iterator<ShipmentItem> iterator = out.getItems().iterator();
@@ -192,7 +189,7 @@ public class ShipmentService extends AbstractService
 		//update order item
 		for(ShipmentOrder order:item.getOrders())
 		{
-			OrderItem out = orderItemRepository.findOne(order.getOrderItem().getId());
+			OrderItem out = orderItemRepository.findById(order.getOrderItem().getId()).orElse(null);
 			if(out != null)
 			{
 				out.removeShippingInfo(order.getQuantity());
@@ -204,7 +201,7 @@ public class ShipmentService extends AbstractService
 	@Secured("ROLE_SHIPMENT_DELETE")
 	public void delete(String id)
 	{
-		Shipment shipment = repository.findOne(id);
+		Shipment shipment = repository.findById(id).orElse(null);
 		if(shipment != null)
 		{
 			for(ShipmentItem item:shipment.getItems())
@@ -238,7 +235,7 @@ public class ShipmentService extends AbstractService
 		shipment.setInstruction("Auto generated from order ");
 		
 		//sender
-		Party sender = partyRepo.findOne(order.getPartyTakingOrder().getId());
+		Party sender = partyRepo.findById(order.getPartyTakingOrder().getId()).orElse(null);
 		if(sender != null)
 		{
 			shipment.setShipFromParty(sender.toRef());

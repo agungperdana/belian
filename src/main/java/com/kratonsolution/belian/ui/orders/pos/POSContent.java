@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.orders.pos;
 
 import java.math.BigDecimal;
@@ -659,7 +657,7 @@ public class POSContent extends POSOrder
 
 						items.getRows().appendChild(row);
 
-						Product fresh = productService.findOne(product.getId());
+						Product fresh = productService.findById(product.getId());
 						if(fresh != null && utils.getOrganization() != null)
 						{
 							for(PriceComponent price:fresh.getPrices())
@@ -698,7 +696,7 @@ public class POSContent extends POSOrder
 		{
 			Row row = (Row)com;
 
-			Product product = productService.findOne(RowUtils.id(row));
+			Product product = productService.findById(RowUtils.id(row));
 			if(product != null)
 				subtotal = subtotal.add(RowUtils.decimal(row, 5));
 		}
@@ -708,7 +706,7 @@ public class POSContent extends POSOrder
 		{
 			Row row = (Row)com;
 
-			Product product = productService.findOne(RowUtils.id(row));
+			Product product = productService.findById(RowUtils.id(row));
 			if(product == null)
 			{
 				try
@@ -778,7 +776,7 @@ public class POSContent extends POSOrder
 		/**
 		 * Payer Information
 		 */
-		Party payer = partyService.findOne(customer.getId());
+		Party payer = partyService.findById(customer.getId());
 		if(payer != null)
 		{
 			order.setBillToParty(payer.toRef());
@@ -789,7 +787,7 @@ public class POSContent extends POSOrder
 		/**
 		 * Receiver Information
 		 */
-		Party receiver = partyService.findOne(shipto.getId());
+		Party receiver = partyService.findById(shipto.getId());
 		if(receiver != null)
 		{
 			order.setShipToParty(receiver.toRef());
@@ -801,7 +799,7 @@ public class POSContent extends POSOrder
 		{
 			Row rw = (Row)com;
 
-			Product product = productService.findOne(RowUtils.id(rw));
+			Product product = productService.findById(RowUtils.id(rw));
 			if(product != null)
 			{
 				SalesOrderItem orderItem = new SalesOrderItem();

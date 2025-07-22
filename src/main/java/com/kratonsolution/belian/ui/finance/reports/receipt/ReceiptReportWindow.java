@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.finance.reports.receipt;
 
 import org.zkoss.zk.ui.Page;

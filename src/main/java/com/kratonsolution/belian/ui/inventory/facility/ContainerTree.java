@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.inventory.facility;
 
 import java.util.Collection;
@@ -51,7 +49,7 @@ public class ContainerTree extends Tree implements Removeable
 		appendChild(new Treecols());
 		appendChild(new Treechildren());
 		
-		Facility out = service.findOne(facility.getId());
+		Facility out = service.findById(facility.getId());
 		
 		getTreecols().appendChild(new Treecol(out != null?out.getName():"",null,"90%"));
 		getTreecols().appendChild(new Treecol(""));

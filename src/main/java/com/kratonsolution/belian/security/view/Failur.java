@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.security.view;
 
 import org.springframework.stereotype.Controller;

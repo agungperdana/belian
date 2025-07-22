@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.requirement.svc;
 
 import java.util.ArrayList;
@@ -53,9 +51,9 @@ public class WorkRequirementService extends AbstractService
 	}
 	
 	@Secured("ROLE_WORK_REQUIREMENT_READ")
-	public WorkRequirement findOne(String id)
+	public WorkRequirement findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 	
 	@Secured("ROLE_WORK_REQUIREMENT_READ")
@@ -77,14 +75,14 @@ public class WorkRequirementService extends AbstractService
 	@Secured("ROLE_WORK_REQUIREMENT_READ")
 	public List<WorkRequirement> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		return repository.findAll(PageRequest.of(pageIndex, pageSize)).getContent();
 	}
 	
 	@Secured("ROLE_WORK_REQUIREMENT_READ")
 	public List<WorkRequirement> findAll(int pageIndex,int pageSize,String key)
 	{
 		if(!Strings.isNullOrEmpty(key))
-			return repository.findAll(new PageRequest(pageIndex, pageSize),key);
+			return repository.findAll(PageRequest.of(pageIndex, pageSize),key);
 		else
 			return findAll(pageIndex, pageSize);
 	}
@@ -114,7 +112,7 @@ public class WorkRequirementService extends AbstractService
 	@Secured("ROLE_WORK_REQUIREMENT_DELETE")
 	public void delete(String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 	
 	@Secured("ROLE_WORK_REQUIREMENT_DELETE")
@@ -123,7 +121,7 @@ public class WorkRequirementService extends AbstractService
 		if(ids != null)
 		{
 			for(String id:ids)
-				repository.delete(id);
+				repository.deleteById(id);
 		}
 	}
 }

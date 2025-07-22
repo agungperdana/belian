@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.orders.svc;
 
 import java.math.BigDecimal;
@@ -96,9 +93,9 @@ public class PurchaseOrderService extends AbstractService
 	}
 
 	@Secured("ROLE_PURCHASE_ORDER_READ")
-	public PurchaseOrder findOne(String id)
+	public PurchaseOrder findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 
 	@Secured("ROLE_PURCHASE_ORDER_READ")
@@ -114,7 +111,7 @@ public class PurchaseOrderService extends AbstractService
 		if(utils.getOrganizationIds().isEmpty())
 			return new ArrayList<>();
 
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganizationIds());
+		return repository.findAll(PageRequest.of(pageIndex, pageSize),utils.getOrganizationIds());
 	}
 
 	@Secured("ROLE_PURCHASE_ORDER_READ")
@@ -126,7 +123,7 @@ public class PurchaseOrderService extends AbstractService
 		if(Strings.isNullOrEmpty(key))
 			return findAll(pageIndex, pageSize);
 
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganizationIds(),key);
+		return repository.findAll(PageRequest.of(pageIndex, pageSize),utils.getOrganizationIds(),key);
 	}
 
 	@Secured("ROLE_PURCHASE_ORDER_READ")
@@ -184,11 +181,11 @@ public class PurchaseOrderService extends AbstractService
 	@Secured("ROLE_PURCHASE_ORDER_CREATE")
 	public void addItem(PurchaseOrderItem item)
 	{
-		Product product = productRepo.findOne(item.getProduct().getId());
+		Product product = productRepo.findById(item.getProduct().getId()).orElse(null);
 		if(product != null && product.isService())
 			item.setType(OrderItemType.WORK);
 		
-		PurchaseOrder out = repository.findOne(item.getOrder().getId());
+		PurchaseOrder out = repository.findById(item.getOrder().getId()).orElse(null);
 		if(out != null)
 		{
 			item.setOrder(out);
@@ -207,7 +204,7 @@ public class PurchaseOrderService extends AbstractService
 	@Secured("ROLE_PURCHASE_ORDER_DELETE")
 	public void delete(String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 	
 	@Secured("ROLE_PURCHASE_ORDER_CREATE")
@@ -230,7 +227,7 @@ public class PurchaseOrderService extends AbstractService
 		purchaseOrder.setShipToContact(order.getShipToContact());
 		
 		//payer
-		Party payer = partyRepo.findOne(order.getPartyTakingOrder().getId());
+		Party payer = partyRepo.findById(order.getPartyTakingOrder().getId()).orElse(null);
 		if(payer != null)
 		{
 			purchaseOrder.setBillToParty(payer.toRef());
@@ -241,7 +238,7 @@ public class PurchaseOrderService extends AbstractService
 		//order item
 		for(OrderItem item:order.getItems())
 		{
-			Product product = productRepo.findOne(item.getProduct().getId());
+			Product product = productRepo.findById(item.getProduct().getId()).orElse(null);
 			if(product != null)
 				createItem(purchaseOrder, item.getQuantity(),item.getUntitPrice(), product);
 		}

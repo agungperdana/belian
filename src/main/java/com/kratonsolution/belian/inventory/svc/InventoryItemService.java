@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.inventory.svc;
 
 import java.sql.Date;
@@ -50,24 +48,24 @@ public class InventoryItemService
 	}
 	
 	@Secured("ROLE_INVITEM_READ")
-	public InventoryItem findOne(String id)
+	public InventoryItem findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 	
 	@Secured("ROLE_INVITEM_READ")
-	public InventoryItem findOne(String product,String facility)
+	public InventoryItem findById(String product,String facility)
 	{
-		return repository.findOne(product,facility);
+		return repository.findById(product,facility);
 	}
 	
 	@Secured("ROLE_INVITEM_READ")
-	public InventoryItem findOne(String product,String facility,Date expired)
+	public InventoryItem findById(String product,String facility,Date expired)
 	{
 		if(expired == null)
-			findOne(product, facility);
+			findById(product, facility);
 	
-		return repository.findOne(product, facility, expired);
+		return repository.findById(product, facility, expired);
 	}
 	
 	@Secured("ROLE_INVITEM_READ")
@@ -79,14 +77,14 @@ public class InventoryItemService
 	@Secured("ROLE_INVITEM_READ")
 	public List<InventoryItem> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		return repository.findAll(PageRequest.of(pageIndex, pageSize)).getContent();
 	}
 	
 	@Secured("ROLE_INVITEM_READ")
 	public List<InventoryItem> findAll(int pageIndex,int pageSize,String key)
 	{
 		if(!Strings.isNullOrEmpty(key))
-			return repository.findAll(new PageRequest(pageIndex, pageSize),key);
+			return repository.findAll(PageRequest.of(pageIndex, pageSize),key);
 		else
 			return findAll(pageIndex, pageSize);
 	}
@@ -94,7 +92,7 @@ public class InventoryItemService
 	@Secured("ROLE_INVITEM_CREATE")
 	public void add(InventoryItem item)
 	{
-		InventoryItem ondb = repository.findOne(item.getProduct().getId(),item.getFacility().getId(),item.getContainer().getId(),item.getExpiredDate());
+		InventoryItem ondb = repository.findById(item.getProduct().getId(),item.getFacility().getId(),item.getContainer().getId(),item.getExpiredDate());
 		if(ondb != null)
 			throw new RuntimeException(lang.get("inventory.message.exist"));
 
@@ -118,6 +116,6 @@ public class InventoryItemService
 	@Secured("ROLE_INVITEM_DELETE")
 	public void delete(String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 }

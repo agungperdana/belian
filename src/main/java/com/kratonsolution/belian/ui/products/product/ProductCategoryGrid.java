@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.products.product;
 
 import java.util.Iterator;
@@ -135,7 +133,7 @@ public class ProductCategoryGrid extends GridContent
 									Checkbox check = (Checkbox)row.getFirstChild();
 									if(check.isChecked())
 									{
-										Product fresh = service.findOne(product.getId());
+										Product fresh = service.findById(product.getId());
 										if(fresh != null)
 										{
 											Iterator<ProductCategoryClassification> iterator = fresh.getClassifications().iterator();
@@ -185,7 +183,7 @@ public class ProductCategoryGrid extends GridContent
 		grid.getColumns().getLastChild().setVisible(false);
 		grid.setSpan("3");
 
-		Product fresh = service.findOne(product.getId());
+		Product fresh = service.findById(product.getId());
 		if(fresh != null)
 		{
 			for(ProductCategoryClassification classification:fresh.getClassifications())

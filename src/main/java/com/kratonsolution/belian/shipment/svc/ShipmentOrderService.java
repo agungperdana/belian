@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.shipment.svc;
 
 import java.util.List;
@@ -47,9 +45,9 @@ public class ShipmentOrderService extends AbstractService
 	}
 	
 	@Secured("ROLE_SHIPMENT_READ")
-	public ShipmentOrder findOne(String id)
+	public ShipmentOrder findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 	
 	@Secured("ROLE_SHIPMENT_READ")

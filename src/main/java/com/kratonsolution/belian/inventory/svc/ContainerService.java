@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.inventory.svc;
 
 import java.util.List;
@@ -34,10 +32,10 @@ public class ContainerService
 	}
 	
 	@Secured({"ROLE_FACILITY_READ"})
-	public Container findOne(String id)
+	public Container findById(String id)
 	{
 		if(!Strings.isNullOrEmpty(id))
-			return repository.findOne(id);
+			return repository.findById(id).orElse(null);
 		
 		return null;
 	}
@@ -48,7 +46,7 @@ public class ContainerService
 		if(Strings.isNullOrEmpty(name))
 			return null;
 	
-		return repository.findOneByName(name);
+		return repository.findByName(name);
 	}
 	
 	@Secured({"ROLE_FACILITY_READ"})
@@ -60,7 +58,7 @@ public class ContainerService
 	@Secured("ROLE_FACILITY_READ")
 	public List<Container> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		return repository.findAll(PageRequest.of(pageIndex, pageSize)).getContent();
 	}
 	
 	@Secured("ROLE_FACILITY_CREATE")
@@ -79,6 +77,6 @@ public class ContainerService
 	@Secured("ROLE_FACILITY_DELETE")
 	public void delete(String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 }

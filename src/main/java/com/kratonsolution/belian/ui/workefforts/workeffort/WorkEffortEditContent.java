@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.workefforts.workeffort;
 
 import java.math.BigDecimal;
@@ -150,7 +148,7 @@ public class WorkEffortEditContent extends AbstractForm
 				if(purposeList.getDomain() == null)
 					throw new WrongValueException(purposeList,lang.get("message.field.empty"));
 
-				WorkEffort effort = service.findOne(RowUtils.id(row));
+				WorkEffort effort = service.findById(RowUtils.id(row));
 				if(effort != null)
 				{
 					effort.setActualEnd(DateTimes.timestamp(actualEnd.getValue()));
@@ -248,7 +246,7 @@ public class WorkEffortEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		WorkEffort effort = service.findOne(RowUtils.id(row));
+		WorkEffort effort = service.findById(RowUtils.id(row));
 		if(effort != null)
 		{
 			organizations.setDomainAsRef(effort.getOwner());
@@ -365,7 +363,7 @@ public class WorkEffortEditContent extends AbstractForm
 		assignments.getColumns().getLastChild().setVisible(false);
 		assignments.setSpan("3");
 
-		WorkEffort effort = service.findOne(RowUtils.id(row));
+		WorkEffort effort = service.findById(RowUtils.id(row));
 		if(effort != null)
 		{
 			for(WorkEffortPartyAssignment assignment:effort.getAssignments())
@@ -428,7 +426,7 @@ public class WorkEffortEditContent extends AbstractForm
 		statuses.getColumns().getLastChild().setVisible(false);
 		statuses.setSpan("3");
 
-		WorkEffort effort = service.findOne(RowUtils.id(row));
+		WorkEffort effort = service.findById(RowUtils.id(row));
 		if(effort != null)
 		{
 			for(WorkEffortStatus status:effort.getStatuses())
@@ -483,7 +481,7 @@ public class WorkEffortEditContent extends AbstractForm
 		rates.getColumns().getLastChild().setVisible(false);
 		rates.setSpan("3");
 
-		WorkEffort effort = service.findOne(RowUtils.id(row));
+		WorkEffort effort = service.findById(RowUtils.id(row));
 		if(effort != null)
 		{
 			for(WorkEffortPartyRate rate:effort.getRates())
@@ -540,12 +538,12 @@ public class WorkEffortEditContent extends AbstractForm
 		requirementFulfillments.getColumns().appendChild(new Column(lang.get("workrequirement.grid.column.description"),null,"200px"));
 		requirementFulfillments.setSpan("2");
 
-		WorkEffort effort = service.findOne(RowUtils.id(row));
+		WorkEffort effort = service.findById(RowUtils.id(row));
 		if(effort != null)
 		{
 			for(WorkRequirementFulfillment fill:effort.getFulfillments())
 			{
-				WorkRequirement work = workRequirementService.findOne(fill.getWorkRequirement().getId());
+				WorkRequirement work = workRequirementService.findById(fill.getWorkRequirement().getId());
 				if(work != null)
 				{
 					Row row = new Row();
@@ -575,12 +573,12 @@ public class WorkEffortEditContent extends AbstractForm
 		orderFulfillments.getColumns().appendChild(new Column(lang.get("order.items.grid.column.note"),null,"150px"));
 		orderFulfillments.setSpan("2");
 
-		WorkEffort effort = service.findOne(RowUtils.id(row));
+		WorkEffort effort = service.findById(RowUtils.id(row));
 		if(effort != null)
 		{
 			for(WorkOrderItemFulfillment fill:effort.getItemFulfillments())
 			{
-				OrderItem item = orderItemService.findOne(fill.getOrderItem().getId());
+				OrderItem item = orderItemService.findById(fill.getOrderItem().getId());
 				if(item != null)
 				{
 					Row row = new Row();

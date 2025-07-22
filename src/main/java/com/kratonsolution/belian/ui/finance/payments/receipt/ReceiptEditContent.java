@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.finance.payments.receipt;
 
 import java.math.BigDecimal;
@@ -116,7 +114,7 @@ public class ReceiptEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		Receipt receipt = service.findOne(RowUtils.id(row));
+		Receipt receipt = service.findById(RowUtils.id(row));
 		if(receipt != null)
 		{
 			number.setText(receipt.getNumber());
@@ -197,7 +195,7 @@ public class ReceiptEditContent extends AbstractForm
 		applications.getColumns().appendChild(new Column(lang.get("payments.grid.column.amount"),null,"135px"));
 		applications.setSpan("0");
 
-		Receipt receipt = service.findOne(RowUtils.id(row));
+		Receipt receipt = service.findById(RowUtils.id(row));
 		if(receipt != null)
 		{
 			for(PaymentApplication application:receipt.getApplications())

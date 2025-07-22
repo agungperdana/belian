@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.healtcares.svc;
 
 import java.util.ArrayList;
@@ -54,9 +52,9 @@ public class VisitService extends AbstractService
 	}
 
 	@Secured("ROLE_VISIT_READ")
-	public Visit findOne(String id)
+	public Visit findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 
 	@Secured("ROLE_VISIT_READ")
@@ -83,7 +81,7 @@ public class VisitService extends AbstractService
 		if(utils.getOrganization() == null)
 			return new ArrayList<>();
 		
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId());
+		return repository.findAll(PageRequest.of(pageIndex, pageSize),utils.getOrganization().getId());
 	}
 
 	@Secured("ROLE_VISIT_READ")
@@ -95,7 +93,7 @@ public class VisitService extends AbstractService
 		if(Strings.isNullOrEmpty(key))
 			return findAll(pageIndex, pageSize);
 
-		return repository.findAll(new PageRequest(pageIndex, pageSize),utils.getOrganization().getId(),key);
+		return repository.findAll(PageRequest.of(pageIndex, pageSize),utils.getOrganization().getId(),key);
 	}
 
 	@Secured("ROLE_VISIT_CREATE")
@@ -114,7 +112,7 @@ public class VisitService extends AbstractService
 	@Secured("ROLE_VISIT_DELETE")
 	public void delete(String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 	
 	@Secured("ROLE_VISIT_DELETE")

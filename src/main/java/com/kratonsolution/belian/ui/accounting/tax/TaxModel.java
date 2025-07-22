@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.accounting.tax;
 
 import java.util.ArrayList;

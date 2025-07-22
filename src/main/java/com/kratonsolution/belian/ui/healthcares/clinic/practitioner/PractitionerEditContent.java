@@ -69,7 +69,7 @@ public class PractitionerEditContent extends AbstractForm
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PractitionerProviderRelationship out = service.findOne(RowUtils.id(row));
+				PractitionerProviderRelationship out = service.findById(RowUtils.id(row));
 				if(out != null)
 				{
 					out.setStart(DateTimes.sql(start.getValue()));
@@ -90,7 +90,7 @@ public class PractitionerEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		PractitionerProviderRelationship on = service.findOne(RowUtils.id(row));
+		PractitionerProviderRelationship on = service.findById(RowUtils.id(row));
 		if(on != null)
 		{
 			start.setValue(on.getStart());

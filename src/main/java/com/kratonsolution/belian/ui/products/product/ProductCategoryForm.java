@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.products.product;
 
 import org.zkoss.zk.ui.WrongValueException;
@@ -64,7 +62,7 @@ public class ProductCategoryForm extends AbstractForm
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Flow.next(getParent(), new ProductCategoryGrid(service.findOne(product)));
+				Flow.next(getParent(), new ProductCategoryGrid(service.findById(product)));
 			}
 		});
 
@@ -73,7 +71,7 @@ public class ProductCategoryForm extends AbstractForm
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Product fresh = service.findOne(product);
+				Product fresh = service.findById(product);
 				if(fresh != null)
 				{
 					if(start.getValue() == null)

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.security.user;
 
 import org.zkoss.zk.ui.Component;

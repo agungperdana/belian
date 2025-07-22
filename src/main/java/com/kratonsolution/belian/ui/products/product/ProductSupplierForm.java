@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.products.product;
 
 import java.util.Iterator;
@@ -78,7 +76,7 @@ public class ProductSupplierForm extends BForm
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Product fresh = service.findOne(supplier.getProduct().getId());
+				Product fresh = service.findById(supplier.getProduct().getId());
 				if(fresh != null)
 				{
 					if(start.getValue() == null)

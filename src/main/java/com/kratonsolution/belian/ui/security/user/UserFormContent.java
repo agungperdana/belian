@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.security.user;
 
 import org.zkoss.zk.ui.WrongValueException;
@@ -110,7 +108,7 @@ public class UserFormContent extends AbstractForm
 				{
 					Row row = (Row)object;
 					
-					Role role = roleService.findOne(RowUtils.string(row, 2));
+					Role role = roleService.findById(RowUtils.string(row, 2));
 					if(role != null)
 					{
 						UserRole userRole = new UserRole();

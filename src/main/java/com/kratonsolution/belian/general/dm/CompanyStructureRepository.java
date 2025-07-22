@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.general.dm;
 
 import java.sql.Date;
@@ -24,7 +22,7 @@ public interface CompanyStructureRepository extends JpaRepository<CompanyStructu
 	@Query("SELECT com.organization.id FROM CompanyStructure com")
 	public List<String> findAllOrganizationId(); 
 	
-	public CompanyStructure findOneByOrganizationId(String id);
+	public CompanyStructure findByOrganizationId(String id);
 
 	@Query("FROM CompanyStructure com WHERE "
 			+ "com.type = 'BRANCH' "

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.orders.requirements.work;
 
 import java.math.BigDecimal;
@@ -122,7 +120,7 @@ public class WorkRequirementEditContent extends AbstractForm
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				WorkRequirement work = service.findOne(RowUtils.id(row));
+				WorkRequirement work = service.findById(RowUtils.id(row));
 				if(work != null)
 				{
 					work.setEstimatedBudget(estimated.getValue());
@@ -279,7 +277,7 @@ public class WorkRequirementEditContent extends AbstractForm
 		rows.getChildren().get(10).setVisible(false);
 		rows.getChildren().get(11).setVisible(false);
 		
-		WorkRequirement requirement = service.findOne(RowUtils.id(row));
+		WorkRequirement requirement = service.findById(RowUtils.id(row));
 		if(requirement != null)
 		{
 			organizations.setDomainAsRef(requirement.getOrganization());
@@ -371,7 +369,7 @@ public class WorkRequirementEditContent extends AbstractForm
 		statuses.getColumns().getLastChild().setVisible(false);
 		statuses.setSpan("2");
 
-		WorkRequirement work = service.findOne(RowUtils.id(row));
+		WorkRequirement work = service.findById(RowUtils.id(row));
 		if(work != null)
 		{
 			for(RequirementStatus status:work.getStatuses())
@@ -422,7 +420,7 @@ public class WorkRequirementEditContent extends AbstractForm
 		roles.getColumns().getLastChild().setVisible(false);
 		roles.setSpan("3");
 
-		WorkRequirement work = service.findOne(RowUtils.id(row));
+		WorkRequirement work = service.findById(RowUtils.id(row));
 		if(work != null)
 		{
 			for(RequirementRole role:work.getRoles())

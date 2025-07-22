@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.tools.svc;
 
 import java.io.InputStream;
@@ -64,7 +61,7 @@ public class DataImportService
 				
 				Row row = book.getSheetAt(0).getRow(idx);
 				
-				UnitOfMeasure uom = measureRepository.findOneByName(row.getCell(2).getStringCellValue());
+				UnitOfMeasure uom = measureRepository.findByName(row.getCell(2).getStringCellValue());
 				if(uom == null)
 				{
 					uom = new UnitOfMeasure();
@@ -85,7 +82,7 @@ public class DataImportService
 				System.out.println("raw --> "+raw);
 				for(String cat:raw.split(","))
 				{
-					ProductCategory category = categoryRepository.findOneByName(cat);
+					ProductCategory category = categoryRepository.findByName(cat);
 					if(category == null)
 					{
 						category = new ProductCategory();

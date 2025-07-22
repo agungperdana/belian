@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.security.module;
 
 import org.zkoss.zk.ui.WrongValueException;
@@ -75,7 +73,7 @@ private Textbox code = Components.mandatoryTextBox(false);
 				if(Strings.isNullOrEmpty(name.getText()))
 					throw new WrongValueException(name,lang.get("message.field.empty"));
 			
-				Module module = service.findOne(RowUtils.id(row));
+				Module module = service.findById(RowUtils.id(row));
 				if(module != null)
 				{
 					module.setCode(code.getText());
@@ -94,7 +92,7 @@ private Textbox code = Components.mandatoryTextBox(false);
 	@Override
 	public void initForm()
 	{
-		Module module = service.findOne(RowUtils.id(row));
+		Module module = service.findById(RowUtils.id(row));
 		if(module != null)
 		{
 			code.setText(module.getCode());

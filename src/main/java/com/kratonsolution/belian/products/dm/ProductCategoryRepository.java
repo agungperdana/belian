@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.products.dm;
 
 import java.util.List;
@@ -15,7 +13,7 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface ProductCategoryRepository extends JpaRepository<ProductCategory,String>
 {
-	public ProductCategory findOneByName(String name);
+	public ProductCategory findByName(String name);
 	
 	@Query("FROM ProductCategory cat WHERE cat.parent IS NULL ORDER BY cat.name ASC ")
 	public List<ProductCategory> findAllParent();

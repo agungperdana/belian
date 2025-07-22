@@ -1,15 +1,13 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.tools.dm;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Version;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -28,7 +26,7 @@ public class Notification implements Serializable
 	private String id;
 	
 	@Column(name="new_message")
-	private Integer newMessage;
+	private int newMessage;
 	
 	@Version
 	private Long version;

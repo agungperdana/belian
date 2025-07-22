@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.tools.view;
 
 import java.io.Serializable;
@@ -30,7 +27,7 @@ public class NotificationService extends AbstractService implements Serializable
 	
 	public void minus()
 	{
-		Notification notification = repository.findOne(utils.getUser().getUserName());
+		Notification notification = repository.findById(utils.getUser().getUserName()).orElse(null);
 		if(notification != null)
 			notification.minus();
 		
@@ -39,7 +36,7 @@ public class NotificationService extends AbstractService implements Serializable
 	
 	public void plus()
 	{
-		Notification notification = repository.findOne(utils.getUser().getUserName());
+		Notification notification = repository.findById(utils.getUser().getUserName()).orElse(null);
 		if(notification != null)
 			notification.plus();
 		

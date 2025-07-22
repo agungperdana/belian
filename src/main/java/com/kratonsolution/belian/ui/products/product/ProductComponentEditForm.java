@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.products.product;
 
 import java.math.BigDecimal;
@@ -77,7 +75,7 @@ public class ProductComponentEditForm extends AbstractForm
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				Product fresh = service.findOne(component.getParent().getId());
+				Product fresh = service.findById(component.getParent().getId());
 				if(fresh != null)
 				{
 					if(start.getValue() == null)

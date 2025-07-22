@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.inventorys.shipment;
 
 import java.math.BigDecimal;
@@ -150,12 +148,12 @@ public class ShipmentItemEditForm extends AbstractForm
 
 		tabbox.getTabpanels().getFirstChild().appendChild(items);
 
-		ShipmentItem item = itemService.findOne(parent.getId());
+		ShipmentItem item = itemService.findById(parent.getId());
 		if(item != null)
 		{
 			for(ShipmentOrder so:item.getOrders())
 			{
-				Order order = orderService.findOne(so.getOrder().getId());
+				Order order = orderService.findById(so.getOrder().getId());
 				if(order != null)
 				{
 					Row row = new Row();

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.general.person;
 
 import com.kratonsolution.belian.partys.dm.Person;

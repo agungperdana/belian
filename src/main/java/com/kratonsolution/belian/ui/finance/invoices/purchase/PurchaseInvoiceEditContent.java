@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.finance.invoices.purchase;
 
 import java.math.BigDecimal;
@@ -129,7 +127,7 @@ public class PurchaseInvoiceEditContent extends AbstractForm
 			@Override
 			public void onEvent(Event event) throws Exception
 			{
-				PurchaseInvoice invoice = service.findOne(RowUtils.id(row));
+				PurchaseInvoice invoice = service.findById(RowUtils.id(row));
 				if(invoice != null && !invoice.isPaid())
 				{
 					if(organizations.getDomain() == null)
@@ -240,7 +238,7 @@ public class PurchaseInvoiceEditContent extends AbstractForm
 	@Override
 	public void initForm()
 	{
-		PurchaseInvoice invoice = service.findOne(RowUtils.id(row));
+		PurchaseInvoice invoice = service.findById(RowUtils.id(row));
 		if(invoice != null)
 		{
 			date.setValue(invoice.getDate());
@@ -306,7 +304,7 @@ public class PurchaseInvoiceEditContent extends AbstractForm
 		billFrom.addObserver(fromAddress);
 		billFrom.addObserver(fromContact);
 
-		PurchaseInvoice invoice = service.findOne(RowUtils.id(row));
+		PurchaseInvoice invoice = service.findById(RowUtils.id(row));
 		if(invoice != null)
 		{
 			billFrom.setDomainAsRef(invoice.getBilledFromParty());
@@ -333,7 +331,7 @@ public class PurchaseInvoiceEditContent extends AbstractForm
 		billTo.addObserver(toAddress);
 		billTo.addObserver(toContact);
 
-		PurchaseInvoice invoice = service.findOne(RowUtils.id(row));
+		PurchaseInvoice invoice = service.findById(RowUtils.id(row));
 		if(invoice != null)
 		{
 			billTo.setDomainAsRef(invoice.getBilledToParty());
@@ -370,7 +368,7 @@ public class PurchaseInvoiceEditContent extends AbstractForm
 		statuses.getColumns().getLastChild().setVisible(false);
 		statuses.setSpan("2");
 
-		PurchaseInvoice invoice = service.findOne(RowUtils.id(row));
+		PurchaseInvoice invoice = service.findById(RowUtils.id(row));
 		if(invoice != null)
 		{
 			for(InvoiceStatus status:invoice.getStatuses())
@@ -420,7 +418,7 @@ public class PurchaseInvoiceEditContent extends AbstractForm
 		roles.getColumns().getLastChild().setVisible(false);
 		roles.setSpan("2");
 
-		PurchaseInvoice invoice = service.findOne(RowUtils.id(row));
+		PurchaseInvoice invoice = service.findById(RowUtils.id(row));
 		if(invoice != null)
 		{
 			for(InvoiceRole role:invoice.getRoles())
@@ -474,7 +472,7 @@ public class PurchaseInvoiceEditContent extends AbstractForm
 		terms.getColumns().getLastChild().setVisible(false);
 		terms.setSpan("2");
 
-		PurchaseInvoice invoice = service.findOne(RowUtils.id(row));
+		PurchaseInvoice invoice = service.findById(RowUtils.id(row));
 		if(invoice != null)
 		{
 			for(InvoiceTerm term:invoice.getTerms())
@@ -527,7 +525,7 @@ public class PurchaseInvoiceEditContent extends AbstractForm
 		items.getColumns().getLastChild().setVisible(false);
 		items.setSpan("1");
 
-		PurchaseInvoice invoice = service.findOne(RowUtils.id(row));
+		PurchaseInvoice invoice = service.findById(RowUtils.id(row));
 		if(invoice != null)
 		{
 			for(InvoiceItem item:invoice.getItems())
@@ -550,7 +548,7 @@ public class PurchaseInvoiceEditContent extends AbstractForm
 			@Override
 			public void onEvent(Event arg0) throws Exception
 			{
-				Flow.next(getParent(), new PurchaseInvoiceItemForm(service.findOne(RowUtils.id(row))));
+				Flow.next(getParent(), new PurchaseInvoiceItemForm(service.findById(RowUtils.id(row))));
 			}
 		});
 

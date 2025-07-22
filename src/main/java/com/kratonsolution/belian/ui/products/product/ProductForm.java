@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.products.product;
 
 import java.util.UUID;
@@ -89,7 +87,7 @@ public class ProductForm extends BForm
 				if(name.getText() == null)
 					throw new WrongValueException(name, lang.get("message.field.empty"));
 				
-				product = service.findOne(product.getId());
+				product = service.findById(product.getId());
 				if(product == null)
 				{
 					product = new Product();
@@ -108,7 +106,7 @@ public class ProductForm extends BForm
 				
 				Clients.showNotification("Data saved");
 				
-				Flow.next(getParent().getParent().getParent(), new ProductDashboard(service.findOne(product.getId())));
+				Flow.next(getParent().getParent().getParent(), new ProductDashboard(service.findById(product.getId())));
 			}
 		});
 	}
@@ -116,7 +114,7 @@ public class ProductForm extends BForm
 	@Override
 	public void initForm()
 	{
-		Product out = service.findOne(product.getId());
+		Product out = service.findById(product.getId());
 		if(out != null)
 		{
 			end.setValue(out.getDiscontinuationDate());

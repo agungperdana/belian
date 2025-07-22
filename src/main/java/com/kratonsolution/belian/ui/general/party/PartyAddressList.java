@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.general.party;
 
 import org.zkoss.zul.Listitem;
@@ -117,7 +115,7 @@ public class PartyAddressList extends AbstractList<Address> implements Observer
 		{
 			getItems().clear();
 
-			Party party = service.findOne(value.getId());
+			Party party = service.findById(value.getId());
 			if(party != null)
 			{
 				for(Address pr:party.getAddresses())

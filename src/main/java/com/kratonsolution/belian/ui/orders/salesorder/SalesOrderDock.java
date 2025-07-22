@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.orders.salesorder;
 
 import org.zkoss.zk.ui.event.Event;

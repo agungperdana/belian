@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.kratonsolution.belian.workefforts.svc;
 
 import java.math.BigDecimal;
@@ -62,9 +59,9 @@ public class WorkEffortService extends AbstractService
 	}
 	
 	@Secured("ROLE_WORK_EFFORT_READ")
-	public WorkEffort findOne(String id)
+	public WorkEffort findById(String id)
 	{
-		return repository.findOne(id);
+		return repository.findById(id).orElse(null);
 	}
 	
 	@Secured("ROLE_WORK_EFFORT_READ")
@@ -76,14 +73,14 @@ public class WorkEffortService extends AbstractService
 	@Secured("ROLE_WORK_EFFORT_READ")
 	public List<WorkEffort> findAll(int pageIndex,int pageSize)
 	{
-		return repository.findAll(new PageRequest(pageIndex, pageSize)).getContent();
+		return repository.findAll(PageRequest.of(pageIndex, pageSize)).getContent();
 	}
 	
 	@Secured("ROLE_WORK_EFFORT_READ")
 	public List<WorkEffort> findAll(int pageIndex,int pageSize,String key)
 	{
 		if(!Strings.isNullOrEmpty(key))
-			return repository.findAll(new PageRequest(pageIndex, pageSize),key);
+			return repository.findAll(PageRequest.of(pageIndex, pageSize),key);
 		else
 			return findAll(pageIndex, pageSize);
 	}
@@ -105,7 +102,7 @@ public class WorkEffortService extends AbstractService
 		
 		for(WorkOrderItemFulfillment fulfillment:item.getItemFulfillments())
 		{
-			OrderItem orderItem = orderItemRepo.findOne(fulfillment.getOrderItem().getId());
+			OrderItem orderItem = orderItemRepo.findById(fulfillment.getOrderItem().getId()).orElse(null);
 			if(orderItem != null)
 			{
 				orderItem.setWorkeffort(true);
@@ -123,7 +120,7 @@ public class WorkEffortService extends AbstractService
 	@Secured("ROLE_WORK_EFFORT_DELETE")
 	public void delete(String id)
 	{
-		repository.delete(id);
+		repository.deleteById(id);
 	}
 	
 	@Secured("ROLE_WORK_EFFORT_READ")

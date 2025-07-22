@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.healtcares.dm;
 
 /**

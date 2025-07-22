@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.orders;
 
 import org.zkoss.zul.Borderlayout;

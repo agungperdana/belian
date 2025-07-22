@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.orders.requirements.product;
 
 import org.zkoss.zul.Checkbox;

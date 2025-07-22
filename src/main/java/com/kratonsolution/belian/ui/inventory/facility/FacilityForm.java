@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.inventory.facility;
 
 import org.zkoss.zk.ui.WrongValueException;
@@ -81,7 +79,7 @@ public class FacilityForm extends BForm
 				}
 				else
 				{
-					Facility out = service.findOne(facility.getId());
+					Facility out = service.findById(facility.getId());
 					if(out != null)
 					{
 						out.setNote(note.getText());

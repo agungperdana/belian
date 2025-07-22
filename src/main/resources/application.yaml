@@ -1,0 +1,30 @@
+server:
+  port: 8585
+  session:
+    timeout: 86400
+
+spring:
+  application:
+    name: BelianERP
+    version: 1.0.1
+    description: Belian ERP v-1.0.1
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/belian
+    username: belian
+    password: belian
+  messages:
+    basename: messages
+    cache-seconds: 0
+    encoding: UTF-8
+    fallback-to-system-locale: false
+
+logging:
+  level:
+    root: ERROR
+    org:
+      zkoss: OFF
+      hibernate: ERROR
+      springframework: INFO
+      com:
+        kratonsolution:
+          belian: DEBUG

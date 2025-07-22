@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.global.dm;
 
 import java.sql.Date;
@@ -15,5 +13,5 @@ import com.kratonsolution.belian.global.dm.SequenceNumber.Code;
  */
 public interface SequenceNumberRepository extends JpaRepository<SequenceNumber, String>
 {
-	public SequenceNumber findOneByCompanyIdAndDateAndCode(String companyId,Date date,Code code);
+	public SequenceNumber findByCompanyIdAndDateAndCode(String companyId,Date date,Code code);
 }

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.kratonsolution.belian.ui.security.user;
 
 import org.zkoss.zul.Checkbox;
@@ -24,7 +22,7 @@ public class UserRowRenderer implements RowRenderer<User>
 	{
 		if(data != null)
 		{
-			if(!data.isDeleteable())
+			if(!data.isDeletable())
 				row.appendChild(Components.readOnlyCheckbox());
 			else
 				row.appendChild(new Checkbox());
