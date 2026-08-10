@@ -18,7 +18,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="person")
 @DiscriminatorValue("Person")
 public class Person extends Party
 {

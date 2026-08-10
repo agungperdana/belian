@@ -16,7 +16,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="organization")
 @DiscriminatorValue("Organization")
 public class Organization extends Party
 {
