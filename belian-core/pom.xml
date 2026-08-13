@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://apache.org" xmlns:xsi="http://w3.org" xsi:schemaLocation="http://apache.org http://apache.org">
+
+  	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+	    <artifactId>belian-parent</artifactId>
+	    <groupId>com.kratonsolution.belian</groupId>
+	    <version>1.0.0</version>
+	</parent>
+
+ 	<artifactId>belian-core</artifactId>
+	<name>belian-core</name>
+
+	<properties>
+		<zk.version>10.3.0.1-jakarta</zk.version> <!-- Versi Stabil ZK Framework Terbaru (Rilis Juli 2026) -->
+		<zk.theme.version>10.3.0.1</zk.theme.version>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+	            <groupId>org.springframework.boot</groupId>
+	            <artifactId>spring-boot-maven-plugin</artifactId>
+	            <!-- This tells Spring Boot not to look for a main class -->
+	            <configuration>
+	                <skip>true</skip>
+	            </configuration>
+	        </plugin>
+			<plugin>
+			  <groupId>org.apache.maven.plugins</groupId>
+			  <artifactId>maven-compiler-plugin</artifactId>
+			  <configuration>
+				  <annotationProcessorPaths>
+					  <path>
+						  <groupId>org.projectlombok</groupId>
+						  <artifactId>lombok</artifactId>
+						  <version>1.18.46</version> <!-- Mendukung penuh optimasi Java terbaru -->
+					  </path>
+				  </annotationProcessorPaths>
+			  </configuration>
+		  </plugin>
+		</plugins>
+	</build>
+  	<dependencies>
+	    <dependency>
+	    	<groupId>org.springframework.boot</groupId>
+	    	<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+	  		<groupId>org.springframework.boot</groupId>
+	  		<artifactId>spring-boot-starter-security</artifactId>
+	  	</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+	  		<groupId>org.springframework.boot</groupId>
+	  		<artifactId>spring-boot-starter-thymeleaf</artifactId>
+	  	</dependency>
+		<dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-devtools</artifactId>
+	        <optional>true</optional>
+	    </dependency>		
+	    <dependency>
+	    	<groupId>com.google.guava</groupId>
+	    	<artifactId>guava</artifactId>
+	    	<version>33.6.0-jre</version> <!-- Versi stabil terbaru Google Guava -->
+	    </dependency>
+	  	<dependency>
+	  		<groupId>com.github.ulisesbocchio</groupId>
+	  		<artifactId>jasypt-spring-boot-starter</artifactId>
+	  		<version>4.0.4</version> <!-- Versi terbaru yang dioptimasi untuk Spring Boot modern -->
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>org.zkoss.zk</groupId>
+	      	<artifactId>zkplus</artifactId>
+	      	<version>${zk.version}</version>
+	  	</dependency>
+	    <dependency>
+	      	<groupId>org.zkoss.zk</groupId>
+	      	<artifactId>zhtml</artifactId>
+	      	<version>${zk.version}</version>
+	    </dependency>
+	    <dependency>
+	      <groupId>org.zkoss.zk</groupId>
+	      <artifactId>zkbind</artifactId>
+	      <version>${zk.version}</version>
+	    </dependency>
+   		<dependency>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+			<!-- Versi dikelola otomatis oleh Spring Boot Parent -->
+		</dependency>
+   		<dependency>
+    		<groupId>org.apache.poi</groupId>
+    		<artifactId>poi-ooxml</artifactId>
+    		<version>5.5.1</version> <!-- Versi stabil terbaru Apache POI -->
+		</dependency>
+    	<dependency>
+      		<groupId>jakarta.el</groupId>
+      		<artifactId>jakarta.el-api</artifactId>
+      		<version>5.0.1</version> <!-- Menggantikan javax.el yang usang untuk standar Jakarta EE -->
+    	</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<!-- Versi dikelola otomatis oleh Spring Boot Parent -->
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+			<!-- Versi runtime dikelola otomatis oleh Spring Boot Parent -->
+		</dependency>
+  	</dependencies>
+</project>
+

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>belian-parent</artifactId>
+    <groupId>com.kratonsolution.belian</groupId>
+    <version>1.0.0</version>
+  </parent>
+
+  <artifactId>belian-erp</artifactId>
+  <name>belian-erp</name>
+
+  <dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+	  		<groupId>org.springframework.boot</groupId>
+	  		<artifactId>spring-boot-starter-thymeleaf</artifactId>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>com.kratonsolution.belian</groupId>
+	  		<artifactId>belian-dashboard</artifactId>
+	  		<version>${project.parent.version}</version>
+	  	</dependency>
+  </dependencies>
+
+  <build>
+        <plugins>
+            <!-- Packaging plugin to create executable JAR/WAR files -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                	<skip>false</skip>
+                	<mainClass>com.kratonsolution.belian.BelianERP</mainClass>
+            	</configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

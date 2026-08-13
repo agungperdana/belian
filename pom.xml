@@ -1,35 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://apache.org" xmlns:xsi="http://w3.org" xsi:schemaLocation="http://apache.org http://apache.org">
 
   	<modelVersion>4.0.0</modelVersion>
-
-  	<groupId>com.kratonsolution.belian</groupId>
- 	<artifactId>belian-parent</artifactId>
-  	<version>1.0</version>
 
 	<parent>
     	<groupId>org.springframework.boot</groupId>
     	<artifactId>spring-boot-starter-parent</artifactId>
-    	<version>4.1.0</version>
+    	<version>4.1.0</version> <!-- Versi GA Stabil Terbaru (Rilis Juni 2026) -->
 	</parent>
 
-  	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>25</java.version>
-		<spring.boot.version>3.2.5</spring.boot.version>
-		<zk.version>10.0.0-jakarta</zk.version>
-		<zk.theme.version>10.0.0</zk.theme.version>
-	</properties>
+  	<groupId>com.kratonsolution.belian</groupId>
+ 	<artifactId>belian-parent</artifactId>
+  	<version>1.0.0</version>
+  	<packaging>pom</packaging>
+
+	<name>belian</name>
 
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-      			<artifactId>spring-boot-maven-plugin</artifactId>
-      			<configuration>
-        			<executable>true</executable>
-   	 			</configuration>
-			</plugin>
+	            <groupId>org.springframework.boot</groupId>
+	            <artifactId>spring-boot-maven-plugin</artifactId>
+	            <!-- This tells Spring Boot not to look for a main class -->
+	            <configuration>
+	                <skip>true</skip>
+	            </configuration>
+	        </plugin>
 		</plugins>
 	</build>
   	<dependencies>
@@ -37,91 +33,12 @@
 	    	<groupId>org.springframework.boot</groupId>
 	    	<artifactId>spring-boot-starter</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-	  		<groupId>org.springframework.boot</groupId>
-	  		<artifactId>spring-boot-starter-security</artifactId>
-	  	</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-cache</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-	  		<groupId>org.springframework.boot</groupId>
-	  		<artifactId>spring-boot-starter-thymeleaf</artifactId>
-	  	</dependency>
-	  	<dependency>
-	        <groupId>org.springframework.boot</groupId>
-	        <artifactId>spring-boot-devtools</artifactId>
-	    </dependency>		
-	    <dependency>
-	    	<groupId>org.projectlombok</groupId>
-	    	<artifactId>lombok</artifactId>
-	    </dependency>
-	    <dependency>
-	    	<groupId>com.google.guava</groupId>
-	    	<artifactId>guava</artifactId>
-	    	<version>33.1.0-jre</version>
-	    </dependency>
-	  	<dependency>
-	  		<groupId>org.jasypt</groupId>
-	  		<artifactId>jasypt</artifactId>
-	  		<version>1.9.3</version>
-	  	</dependency>
-	  	<dependency>
-	    	<groupId>org.zkoss.zk</groupId>
-	      	<artifactId>zkplus</artifactId>
-	      	<version>${zk.version}</version>
-	  	</dependency>
-	    <dependency>
-	      	<groupId>org.zkoss.zk</groupId>
-	      	<artifactId>zhtml</artifactId>
-	      	<version>${zk.version}</version>
-	    </dependency>
-	    <dependency>
-	      <groupId>org.zkoss.zk</groupId>
-	      <artifactId>zkbind</artifactId>
-	      <version>${zk.version}</version>
-	    </dependency>
-		<dependency>
-			<groupId>org.zkoss.theme</groupId>
-			<artifactId>silvertail</artifactId>
-			<version>${zk.theme.version}</version>
-		</dependency>
-   		<dependency>
-			<groupId>org.mariadb.jdbc</groupId>
-			<artifactId>mariadb-java-client</artifactId>
-		</dependency>
-   		<dependency>
-    		<groupId>org.apache.poi</groupId>
-    		<artifactId>poi-ooxml</artifactId>
-    		<version>3.14</version>
-		</dependency>
-    	<dependency>
-      		<groupId>org.glassfish.web</groupId>
-      		<artifactId>javax.el</artifactId>
-      		<version>2.2.4</version>
-    	</dependency>
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.18.46</version>
-			<scope>provided</scope>
-		</dependency>
   	</dependencies>
+  	<modules>
+  		<module>belian-dashboard</module>
+  		<module>belian-erp</module>
+  		<module>belian-identity</module>
+  		<module>belian-core</module>
+  	</modules>
 </project>
+

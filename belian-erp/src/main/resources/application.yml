@@ -1,0 +1,15 @@
+server:
+  port: 8585
+
+spring:
+  application:
+    name: BelianERP
+    version: 1.0.1
+
+logging:
+  level:
+    root: ERROR
+    org:
+      springframework: INFO
+      com:
+        kratonsolution: INFO
