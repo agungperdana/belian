@@ -34,8 +34,9 @@ out/
 
 ### VS Code ###
 .vscode/
-.idea
 build
 /.gradle/
 
 target
+/belian-erp/src/main/resources/application-dev.yml
+/belian-erp/src/main/resources/belian.p12
